@@ -1,8 +1,8 @@
 import axios from "axios";
 
-const twitterBaseURL = process.env.REACT_APP_X_RAPIDAPI_TWITTER_URL;
+const twitterBaseURL = "https://twitter135.p.rapidapi.com/v1.1/";
 const headers = {
-  "X-RapidAPI-Key": process.env.REACT_APP_X_RAPIDAPI_KEY,
+  "X-RapidAPI-Key": "1f847bd4fbmsh94e4fd2e2359818p16211ajsnc8a86ff1ef11",
 };
 
 const createInstance = (baseURL) => {
