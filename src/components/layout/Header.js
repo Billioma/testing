@@ -10,10 +10,14 @@ const Header = () => {
     >
       <div className="w-[1296px] px-[20px] py-[24px] lg:py-[16px]">
         <div className="flex items-center w-full justify-between">
-          <div className="w-[50%] ">
+          <div className="w-[100%] lg:w-[50%]">
             <img
-              src="/assets/logo.svg"
-              className="w-[134px] h-[28px] lg:w-[256px] lg:h-[56px]"
+              src="/assets/logo.png"
+              className="flex lg:hidden w-[134px] h-[28px]"
+            />
+            <img
+              src="/assets/logo.png"
+              className="hidden lg:flex w-[268px] h-[56px]"
             />
           </div>
           <div className="w-full flex justify-end lg:hidden">
