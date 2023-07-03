@@ -2,30 +2,30 @@ import React from "react";
 
 const Hero = () => {
   return (
-    <div className="mt-[100px] lg:mt-[200px] md:mt-[150px]">
+    <div className="mt-[80px] lg:mt-[200px] md:mt-[150px]">
       <div className="flex flex-col md:flex-row w-full gap-[70px] lg:justify-between items-center">
         <div className="w-full text-[#101410]">
-          <div className="font-[Cooper] text-[32px] md:text-[45px] lg:text-[64px] leading-[120%]">
+          <div className="font-[Cooper] text-[32px] md:text-[45px] lg:text-[60px] leading-[120%]">
             Reserve and Pay for <span className="text-red">parking</span> across
             Nigeria
           </div>
 
-          <div className="mt-[15px] md:mt-[24px] w-[80%] text-sm md:text-[20px] leading-[120%]">
+          <div className="mt-[15px] md:mt-[20px] w-[80%] text-sm md:text-[18px] leading-[120%]">
             ParkinSpace is powered by EZPark Limited, a premier parking
             management company.
           </div>
 
-          <div className="flex sm:hidden md:flex items-center my-[24px] md:my-[40px] gap-[24px]">
+          <div className="flex sm:hidden md:flex items-center my-[24px] md:my-[25px] gap-[24px]">
             <img src="/assets/play-store.svg" className="cursor-pointer" />
             <img src="/assets/app-store.svg" className="cursor-pointer" />
           </div>
 
-          <div className="flex md:hidden items-center my-[24px] md:my-[40px] gap-[24px]">
+          <div className="flex md:hidden items-center my-[24px] md:my-[25px] gap-[24px]">
             <img src="/assets/play-mini.svg" className="cursor-pointer" />
             <img src="/assets/app-mini.svg" className="cursor-pointer" />
           </div>
 
-          <div className="text-[20px] md-[24px] md:mb-[40px] font-medium">
+          <div className="text-[18px] md-[24px] md:mb-[25px] font-medium">
             or
           </div>
 
@@ -42,14 +42,14 @@ const Hero = () => {
 
         <div className="w-full">
           <div className="relative flex flex-col justify-center items-center">
-            <div className="absolute top-[-25px] lg:top-[-35px] z-[-5] left-0 lg:left-[-20px] rounded-[4px] bg-black lg:w-[288px] w-[144px] h-[72px] lg:h-[143px]"></div>
+            <div className="absolute top-[-25px] lg:top-[-30px] z-[-5] left-0 rounded-[4px] bg-black lg:w-[288px] w-[144px] h-[72px] lg:h-[143px]"></div>
             <div>
               <img
                 src="/assets/hero.svg"
-                className="w-[320px] md:w-[400px] md:h-[400px] lg:w-[536px] h-[320px] lg:h-[536px] rounded-[4px]"
+                className="w-[320px] md:w-[400px] md:h-[400px] lg:w-[486px] h-[320px] lg:h-[486px] rounded-[4px]"
               />
             </div>
-            <div className="absolute bottom-[-25px] lg:bottom-[-35px] z-[-5] right-0 lg:right-[-20px] bg-red rounded-[4px] lg:w-[288px] w-[144px] h-[72px] lg:h-[143px]"></div>
+            <div className="absolute bottom-[-25px] lg:bottom-[-30px] z-[-5] right-0 bg-red rounded-[4px] lg:w-[288px] w-[144px] h-[72px] lg:h-[143px]"></div>
           </div>
         </div>
       </div>

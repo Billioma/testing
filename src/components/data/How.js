@@ -5,13 +5,13 @@ const How = () => {
   const [tab, setTab] = useState("Pay-to-Park");
   return (
     <div className="full_width mt-[56px] lg:mt-[unset]">
-      <div className="bg-[#141618] py-[56px] lg:py-[120px] flex flex-col justify-center items-center w-full">
+      <div className="bg-[#141618] py-[56px] lg:py-[90px] flex flex-col justify-center items-center w-full">
         <div className="px-[20px] lg:px-[unset] lg:w-[1256px]">
-          <div className="text-center font-[Cooper] text-white text-[64px] font-[900] ">
+          <div className="text-center font-[Cooper] text-white text-[60px] font-[900] ">
             How It Works
           </div>
 
-          <div className="flex mt-[32px] md:mt-[60px] mb-[66px] justify-center items-center w-full">
+          <div className="flex mt-[32px] md:mt-[40px] mb-[56px] justify-center items-center w-full">
             <div className="flex flex-wrap md:flex-nowrap gap-y-[16px] md:gap-y-[unset] justify-center md:justify-normal items-center w-fit border border-[#d4d6d8] rounded-[21px] md:rounded-[30px] p-[4px]">
               {howTabs.map((data, i) => (
                 <div
@@ -36,7 +36,7 @@ const How = () => {
             ).map((data, i) => (
               <div
                 key={i}
-                className="flex md:min-h-[30vh] lg:min-h-[48vh] text-white w-full flex-col items-center gap-[24px] bg-[#242628] p-[24px] rounded-[8px]"
+                className="flex md:min-h-[30vh] lg:min-h-[330px] text-white w-full flex-col items-center gap-[24px] bg-[#242628] p-[24px] rounded-[8px]"
               >
                 <div className="bg-[#EE383A] font-bold h-[25px] w-[25px] lg:h-[40px] lg:w-[40px] rounded-[80px] flex flex-col justify-center items-center">
                   {i + 1}

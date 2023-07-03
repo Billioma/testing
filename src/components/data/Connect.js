@@ -13,8 +13,8 @@ const Connect = () => {
 
   return (
     <div className="full_width">
-      <div className="pb-0 py-[56px] md:py-[70px] md:pb-0 overflow-y-hidden relative">
-        <div className="text-center font-[Cooper] text-[#242628] text-[32px] md:text-[64px] font-[900]">
+      <div className="pb-0 py-[56px] md:py-[60px] md:pb-0 overflow-y-hidden relative">
+        <div className="text-center font-[Cooper] text-[#242628] text-[32px] md:text-[60px] font-[900]">
           Connect with us
         </div>
         <div className="flex justify-center items-center w-full">
@@ -23,7 +23,7 @@ const Connect = () => {
             social media platforms
           </div>
         </div>
-        <div className="flex mt-[24px] md:mt-[56px] mb-[48px] justify-center items-center w-full">
+        <div className="flex mt-[24px] md:mt-[36px] mb-[38px] justify-center items-center w-full">
           <div className="flex text-sm md:text-base items-center w-fit border border-[#d4d6d8] rounded-[30px] p-[4px]">
             {connectTabs.map((data, i) => (
               <div

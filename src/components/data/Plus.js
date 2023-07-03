@@ -8,14 +8,14 @@ export const Divider = ({ color }) => {
 const Plus = () => {
   return (
     <div className="full_width">
-      <div className="bg-[#F4F6F8] px-[20px] py-[56px] lg:py-[120px] flex flex-col justify-center items-center">
-        <div className="w-full lg:w-[48%]">
-          <div className="text-[#242424] text-center text-[32px] lg:text-[64px] leading-[128%] font-[Cooper]">
+      <div className="bg-[#F4F6F8] px-[20px] lg:px-[120px] py-[56px] lg:py-[90px] flex flex-col justify-center items-center">
+        <div className="w-full lg:w-[54%]">
+          <div className="text-[#242424] text-center text-[32px] lg:text-[60px] leading-[128%] font-[Cooper]">
             <span className="text-red">Parkin</span>Space Plus
           </div>
 
           <div className="flex flex-col justify-center items-center w-full">
-            <div className="mt-[24px] w-[82%] text-center text-[#444] text-sm lg:text-base leading-[150%]">
+            <div className="mt-[15px] w-[82%] text-center text-[#444] text-sm lg:text-base leading-[150%]">
               For just ₦5,000 a month, gain priority access, exclusive
               discounts, and special offers that will make every parking moment
               a delightful experience. Upgrade now and enjoy the ultimate
@@ -24,13 +24,13 @@ const Plus = () => {
           </div>
         </div>
 
-        <div className="mt-[24px]">
+        <div className="mt-[15px]">
           <button className="bg-[#242424] rounded-[4px] px-[26px] py-[13px] text-white font-medium">
             Sign up now
           </button>
         </div>
 
-        <div className="mt-[40px] lg:mt-[80px]">
+        <div className="mt-[40px] lg:mt-[50px]">
           <div className="flex text-sm lg:text-base flex-col lg:flex-row w-full items-center gap-[20px] lg:gap-[40px]">
             {plusGrid.map((data, i) => (
               <div
