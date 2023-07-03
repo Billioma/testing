@@ -14,9 +14,9 @@ const Home = () => {
       <Services />
       <Membership />
       <How />
-      <Plus />
+      {/* <Plus /> */}
       <Contact />
-      <Connect />
+      {/* <Connect /> */}
     </div>
   );
 };

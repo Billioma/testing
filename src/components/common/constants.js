@@ -10,7 +10,7 @@ export const headers = [
   },
   {
     id: 2,
-    name: "Reserve Parking",
+    name: "Reserve & Park Later",
   },
   {
     id: 3,
@@ -22,7 +22,7 @@ export const headers = [
   },
   {
     id: 5,
-    name: "ParkinSpace Plus",
+    name: "Businesses",
   },
 ];
 
