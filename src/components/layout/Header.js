@@ -1,8 +1,10 @@
 import React from "react";
 import { headers } from "../common/constants";
 import { HiOutlineMenuAlt3 } from "react-icons/hi";
+import Menu from "./Menu";
 
 const Header = () => {
+  const [show, setShow] = React.useState(false);
   return (
     <div
       style={{ boxShadow: "0px 2px 24px 0px rgba(100, 102, 104, 0.15)" }}
@@ -20,7 +22,10 @@ const Header = () => {
               className="hidden lg:flex w-[268px] h-[56px]"
             />
           </div>
-          <div className="w-full flex justify-end lg:hidden">
+          <div
+            onClick={() => setShow((prev) => !prev)}
+            className="w-full flex justify-end lg:hidden"
+          >
             <HiOutlineMenuAlt3 size="24px" />
           </div>
 
@@ -36,7 +41,7 @@ const Header = () => {
               ))}
             </div>
 
-            <div className=" flex gap-[24px] items-center w-[30%]">
+            <div className="flex gap-[24px] items-center w-[30%]">
               <button className="text-[#EE383A] bg-transparent">Login</button>
               <button className="text-white bg-red rounded-[4px] w-[156px] py-[12px]">
                 Sign up
@@ -45,6 +50,8 @@ const Header = () => {
           </div>
         </div>
       </div>
+
+      <Menu isOpen={show} onClose={() => setShow(false)} />
     </div>
   );
 };
