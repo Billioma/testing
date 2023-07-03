@@ -22,7 +22,7 @@ const Services = () => {
                 </div>
                 <button className="text-black flex justify-center text-sm gap-[10px] items-center mt-[16px] bg-white rounded-[4px] py-[17px] w-full">
                   {data?.button}
-                  <img src="/assets/arrow-right.svg" />
+                  <img src="/assets/arrow-right.png" />
                 </button>
               </div>
             </div>
@@ -30,7 +30,7 @@ const Services = () => {
         </div>
 
         <img
-          src="/assets/parked-car.svg"
+          src="/assets/parked-car.png"
           className="hidden lg:flex absolute left-0 bottom-0"
         />
       </div>

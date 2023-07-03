@@ -8,7 +8,7 @@ const Facebook = () => {
         src="/assets/facebook.png"
       />
 
-      <img src="/assets/shadow.svg" className="absolute bottom-0 z-[-3]" />
+      <img src="/assets/shadow.png" className="absolute bottom-0 z-[-3]" />
     </div>
   );
 };

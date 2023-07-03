@@ -40,7 +40,7 @@ const Membership = () => {
       </div>
 
       <div className="mt-[40px] lg:mt-[50px]">
-        <img src="/assets/devices.svg" />
+        <img src="/assets/devices.png" />
       </div>
     </div>
   );

@@ -6,7 +6,7 @@ const Hero = () => {
       <div className="flex flex-col md:flex-row w-full gap-[70px] lg:justify-between items-center">
         <div className="w-full text-[#101410]">
           <div className="font-[Cooper] text-[32px] md:text-[45px] lg:text-[60px] leading-[120%]">
-            Reserves and Pay for <span className="text-red">parking</span> across
+            Reserve and Pay for <span className="text-red">parking</span> across
             Nigeria
           </div>
 
@@ -16,13 +16,13 @@ const Hero = () => {
           </div>
 
           <div className="flex sm:hidden md:flex items-center my-[24px] md:my-[25px] gap-[24px]">
-            <img src="/assets/play-store.svg" className="cursor-pointer" />
-            <img src="/assets/app-store.svg" className="cursor-pointer" />
+            <img src="/assets/play-store.png" className="cursor-pointer" />
+            <img src="/assets/app-store.png" className="cursor-pointer" />
           </div>
 
           <div className="flex md:hidden items-center my-[24px] md:my-[25px] gap-[24px]">
-            <img src="/assets/play-mini.svg" className="cursor-pointer" />
-            <img src="/assets/app-mini.svg" className="cursor-pointer" />
+            <img src="/assets/play-mini.png" className="cursor-pointer" />
+            <img src="/assets/app-mini.png" className="cursor-pointer" />
           </div>
 
           <div className="text-[18px] md-[24px] md:mb-[25px] font-medium">
@@ -45,7 +45,7 @@ const Hero = () => {
             <div className="absolute top-[-25px] lg:top-[-30px] z-[-5] left-0 rounded-[4px] bg-black lg:w-[288px] w-[144px] h-[72px] lg:h-[143px]"></div>
             <div>
               <img
-                src="/assets/hero.svg"
+                src="/assets/hero.png"
                 className="w-[320px] md:w-[400px] md:h-[400px] lg:w-[486px] h-[320px] lg:h-[486px] rounded-[4px]"
               />
             </div>

@@ -31,7 +31,7 @@ export const services = [
     id: 1,
     title: "Pay-to-Park",
     desc: "Looking for or found a parking space? Want to valet your car? Search and pay for parking on-the-go in just a few taps.",
-    pic: "/assets/pay-to-park.svg",
+    pic: "/assets/pay-to-park.png",
     button: "Park Now",
   },
   {
@@ -43,9 +43,9 @@ export const services = [
   },
   {
     id: 3,
-    title: "Pay-to-Park",
+    title: "Event Parking",
     desc: "Attending an upcoming concert or festival? Save a parking spot in advance at the event and don’t miss any part of the show.",
-    pic: "/assets/event-parking.svg",
+    pic: "/assets/event-parking.png",
     button: "Reserve Event Parking",
   },
 ];
@@ -101,22 +101,22 @@ export const information = ["Call us", "Blog", "FAQ", "Locations"];
 export const payPark = [
   {
     id: 1,
-    pic: "/assets/scan.svg",
+    pic: "/assets/scan.png",
     text: "Scan the QR code or enter the zone number on display using the   Parkin Space app",
   },
   {
     id: 2,
-    pic: "/assets/time.svg",
+    pic: "/assets/time.png",
     text: "Select the amount of time you want to park",
   },
   {
     id: 3,
-    pic: "/assets/wallet.svg",
+    pic: "/assets/wallet.png",
     text: "Confirm payment to start your parking session",
   },
   {
     id: 4,
-    pic: "/assets/alert.svg",
+    pic: "/assets/alerts.png",
     text: "Get alerts when your time is about to expire and extend your parking session via the app.",
   },
 ];
@@ -124,22 +124,22 @@ export const payPark = [
 export const reservePark = [
   {
     id: 1,
-    pic: "/assets/search.svg",
+    pic: "/assets/search.png",
     text: "Search where you are heading on the ParkinSpace app or website.",
   },
   {
     id: 2,
-    pic: "/assets/bus.svg",
+    pic: "/assets/bus.png",
     text: "Choose a parking facility based on preferences such as valet parking, gated parking, onsite security, re-entry and more.",
   },
   {
     id: 3,
-    pic: "/assets/spot.svg",
+    pic: "/assets/spot.png",
     text: "Book a parking spot and confirm reservation.",
   },
   {
     id: 4,
-    pic: "/assets/instruction.svg",
+    pic: "/assets/instruction.png",
     text: "Receive e-mail instructions on how to redeem parking upon arrival",
   },
 ];
@@ -147,22 +147,22 @@ export const reservePark = [
 export const eventPark = [
   {
     id: 1,
-    pic: "/assets/search.svg",
+    pic: "/assets/search.png",
     text: "Search for your event venue using the ParkinSpace app or website.",
   },
   {
     id: 2,
-    pic: "/assets/bus.svg",
+    pic: "/assets/bus.png",
     text: "Review our available parking options based on preferences such as valet parking, self parking and more.",
   },
   {
     id: 3,
-    pic: "/assets/arrive.svg",
+    pic: "/assets/arrive.png",
     text: "Choose arrival date/time and confirm reservation.",
   },
   {
     id: 4,
-    pic: "/assets/instruction.svg",
+    pic: "/assets/instruction.png",
     text: "Receive e-mail instructions on how to redeem parking at the event",
   },
 ];

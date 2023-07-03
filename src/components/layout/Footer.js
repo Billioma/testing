@@ -17,13 +17,13 @@ const Footer = () => {
             </div>
 
             <div className="hidden lg:flex items-center gap-[24px] w-full">
-              <img src="/assets/play-store.svg" className="cursor-pointer" />
-              <img src="/assets/app-store.svg" className="cursor-pointer" />
+              <img src="/assets/play-store.png" className="cursor-pointer" />
+              <img src="/assets/app-store.png" className="cursor-pointer" />
             </div>
 
             <div className="flex lg:hidden items-center gap-[24px] w-full">
-              <img src="/assets/play-mini.svg" className="cursor-pointer" />
-              <img src="/assets/app-mini.svg" className="cursor-pointer" />
+              <img src="/assets/play-mini.png" className="cursor-pointer" />
+              <img src="/assets/app-mini.png" className="cursor-pointer" />
             </div>
           </div>
 

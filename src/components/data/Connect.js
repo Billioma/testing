@@ -1,15 +1,11 @@
 import React, { useState } from "react";
 import { connectTabs } from "../common/constants";
-import { useGetTweets, useGetUser } from "../../services/query/twitter";
 import Twitter from "../common/Twitter";
 import Instagram from "../common/Instagram";
 import Facebook from "../common/Facebook";
 
 const Connect = () => {
   const [tab, setTab] = useState("Twitter");
-  const { data: user } = useGetUser();
-  const { data: tweets } = useGetTweets();
-  const main = user?.length && user[0];
 
   return (
     <div className="full_width">
@@ -41,15 +37,15 @@ const Connect = () => {
           </div>
         </div>
 
-        {tab === "Twitter" && <Twitter main={main} tweets={tweets} />}
+        {tab === "Twitter" && <Twitter />}
         {tab === "Instagram" && <Instagram />}
         {tab === "Facebook" && <Facebook />}
         <img
-          src="/assets/parked-right.svg"
+          src="/assets/parked-right.png"
           className="hidden md:flex absolute right-0 bottom-0"
         />
         <img
-          src="/assets/parked-right-mini.svg"
+          src="/assets/parked-right-mini.png"
           className="flex md:hidden absolute right-0 bottom-0"
         />
       </div>

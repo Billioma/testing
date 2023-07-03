@@ -8,7 +8,7 @@ const Twitter = () => {
         src="/assets/twitter.png"
       />
 
-      <img src="/assets/shadow.svg" className="absolute bottom-0 z-[-3]" />
+      <img src="/assets/shadow.png" className="absolute bottom-0 z-[-3]" />
     </div>
   );
 };

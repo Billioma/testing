@@ -26,7 +26,7 @@ const Contact = () => {
     <div className="full_width">
       <div className="relative bg-[#242628] px-[20px] lg:px-[120px] py-[56px] lg:py-[60px]">
         <img
-          src="/assets/contact-one.svg"
+          src="/assets/contact-one.png"
           className="hidden lg:flex absolute left-0 top-[64px]"
         />
         <div className="text-center font-[Cooper] text-white text-[40px] lg:text-[60px] font-[900]">
@@ -56,11 +56,11 @@ const Contact = () => {
         </div>
 
         <img
-          src="/assets/contact-two.svg"
+          src="/assets/contact-two.png"
           className="hidden lg:flex absolute right-0 bottom-[64px]"
         />
         <img
-          src="/assets/parked-car.svg"
+          src="/assets/parked-car.png"
           className="hidden lg:flex absolute left-0 bottom-0"
         />
       </div>
