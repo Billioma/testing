@@ -9,7 +9,7 @@ const Menu = ({ isOpen, onClose }) => {
     <Drawer
       open={isOpen}
       onClose={onClose}
-      direction="right"
+      direction="top"
       style={{ height: "fit-content", width: "100%", padding: "24px" }}
     >
       <div className="flex justify-between w-full items-center">
