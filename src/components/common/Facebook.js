@@ -5,7 +5,7 @@ const Facebook = () => {
     <div className="w-full justify-center text-sm flex flex-col items-center relative">
       <img
         className="cursor-pointer w-[280px] md:w-[unset]"
-        src="/assets/facebook.svg"
+        src="/assets/facebook.png"
       />
 
       <img src="/assets/shadow.svg" className="absolute bottom-0 z-[-3]" />

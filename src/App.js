@@ -14,8 +14,8 @@ const App = () => {
     "/assets/contact-two.svg",
     "/assets/devices.svg",
     "/assets/event-parking.svg",
-    "assets/facebook.svg",
-    "assets/instagram.svg",
+    "assets/facebook.png",
+    "assets/instagram.png",
     "/assets/instruction.svg",
     "/assets/iphone-mini.svg",
     "/assets/iphone.svg",
@@ -32,7 +32,7 @@ const App = () => {
     "/assets/shadow.svg",
     "/assets/spot.svg",
     "/assets/time.svg",
-    "assets/twitter.svg",
+    "assets/twitter.png",
     "/assets/wallet.svg",
   ];
 
