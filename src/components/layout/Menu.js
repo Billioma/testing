@@ -10,9 +10,9 @@ const Menu = ({ isOpen, onClose }) => {
       open={isOpen}
       onClose={onClose}
       direction="right"
-      style={{ height: "100%", width: "100%", padding: "24px" }}
+      style={{ height: "100vh", width: "100%", padding: "24px" }}
       className="bla bla bla"
-    >
+    >d
       <div className="flex justify-between w-full items-center">
         <img src="/assets/logo.png" className=" w-[134px] h-[28px]" />
         <MdClose onClick={onClose} size="25px" />
