@@ -6,7 +6,7 @@ const Hero = () => {
       <div className="flex flex-col md:flex-row w-full gap-[70px] lg:justify-between items-center">
         <div className="w-full text-[#101410]">
           <div className="font-[Cooper] text-[32px] md:text-[45px] lg:text-[60px] leading-[120%]">
-            Reserve and Pay for <span className="text-red">parking</span> across
+            Reserves and Pay for <span className="text-red">parking</span> across
             Nigeria
           </div>
 
