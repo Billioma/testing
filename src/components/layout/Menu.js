@@ -10,7 +10,7 @@ const Menu = ({ isOpen, onClose }) => {
       open={isOpen}
       onClose={onClose}
       direction="right"
-      style={{ height: "100vh", width: "100%", padding: "24px" }}
+      style={{ height: "fit-content", width: "100%", padding: "24px" }}
       className="bla bla bla"
     >
       <div className="flex justify-between w-full items-center">
