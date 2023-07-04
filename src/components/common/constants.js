@@ -1,5 +1,7 @@
-import { FaRegComment } from "react-icons/fa";
-import { AiOutlineRetweet } from "react-icons/ai";
+import { FaFacebookF, FaRegComment } from "react-icons/fa";
+import { AiOutlineRetweet, AiOutlineTwitter } from "react-icons/ai";
+import { BiLogoInstagramAlt } from "react-icons/bi";
+import { BsLinkedin, BsTwitter } from "react-icons/bs";
 import { MdOutlineFavoriteBorder } from "react-icons/md";
 import { GoUpload } from "react-icons/go";
 
@@ -89,14 +91,37 @@ export const mobileTwitterActions = [
   <GoUpload size="10px" />,
 ];
 
-export const company = [
-  "ParkinSpace",
-  "ParkinSpace Operator",
-  "Clients",
-  "Terms & Conditions",
+export const company = ["Lagos", "Abuja"];
+
+export const connect = [
+  {
+    id: 1,
+    name: "Facebook",
+    icon: "/assets/facebook_icon.png",
+  },
+  {
+    id: 2,
+    name: "Twitter",
+    icon: "/assets/twitter_icon.png",
+  },
+  {
+    id: 3,
+    name: "Instagram",
+    icon: "/assets/instagram_icon.png",
+  },
+  {
+    id: 4,
+    name: "LinkedIn",
+    icon: "/assets/linkedin_icon.png",
+  },
 ];
 
-export const information = ["Call us", "Blog", "FAQ", "Locations"];
+export const information = [
+  "About ParkinSpace",
+  "Frequently Asked Questions",
+  "Terms & Conditions",
+  "Contact Us",
+];
 
 export const payPark = [
   {

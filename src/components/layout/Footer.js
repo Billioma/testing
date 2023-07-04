@@ -1,5 +1,5 @@
 import React from "react";
-import { company, information } from "../common/constants";
+import { company, connect, information } from "../common/constants";
 
 const Footer = () => {
   return (
@@ -28,7 +28,23 @@ const Footer = () => {
           </div>
 
           <div className="hidden lg:flex flex-col gap-[24px]">
-            <div className="font-medium">COMPANY</div>
+            <div className="font-medium">CONNECT</div>
+            <div>
+              {connect.map((dat, i) => (
+                <div
+                  className="mb-[24px] flex justify-start items-center gap-[8px] "
+                  key={i}
+                >
+                  <img src={dat?.icon} className="w-[20px] h-[20px]" />
+
+                  <div>{dat?.name}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="hidden lg:flex flex-col gap-[24px]">
+            <div className="font-medium">LOCATIONS</div>
             <div>
               {company.map((dat, i) => (
                 <div className="mb-[24px]" key={i}>
