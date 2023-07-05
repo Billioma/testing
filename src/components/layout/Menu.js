@@ -3,8 +3,10 @@ import { MdClose } from "react-icons/md";
 import Drawer from "react-modern-drawer";
 import "react-modern-drawer/dist/index.css";
 import { headers } from "../common/constants";
+import { useNavigate } from "react-router-dom";
 
 const Menu = ({ isOpen, onClose }) => {
+  const navigate = useNavigate();
   return (
     <Drawer
       open={isOpen}
@@ -21,7 +23,10 @@ const Menu = ({ isOpen, onClose }) => {
         <div className="mt-[48px] flex flex-col items-center justify-center gap-[40px] text-[#444648] font-medium leading-[100%]">
           {headers.map((data, i) => (
             <div
-              onClick={onClose}
+              onClick={() => {
+                i === 3 && navigate("/operators");
+                onClose();
+              }}
               key={i}
               className="hover-underline-animation cursor-pointer"
             >
