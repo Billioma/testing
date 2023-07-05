@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { eventPark, howTabs, payPark, reservePark } from "../common/constants";
+import { eventPark, howTabs, payPark, reservePark } from "../../common/constants";
 
 const How = () => {
   const [tab, setTab] = useState("Pay-to-Park");

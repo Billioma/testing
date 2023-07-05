@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import { connectTabs } from "../common/constants";
-import Twitter from "../common/Twitter";
-import Instagram from "../common/Instagram";
-import Facebook from "../common/Facebook";
+import { connectTabs } from "../../common/constants";
+import Twitter from "../../common/Twitter";
+import Instagram from "../../common/Instagram";
+import Facebook from "../../common/Facebook";
 
 const Connect = () => {
   const [tab, setTab] = useState("Twitter");

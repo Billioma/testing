@@ -67,11 +67,16 @@ const Footer = () => {
 
           <div className="flex mt-[56px] lg:hidden justify-between w-full items-center">
             <div className="flex flex-col gap-[24px]">
-              <div className="font-medium">COMPANY</div>
+              <div className="font-medium">CONNECT</div>
               <div>
-                {company.map((dat, i) => (
-                  <div className="mb-[24px]" key={i}>
-                    {dat}
+                {connect.map((dat, i) => (
+                  <div
+                    className="mb-[24px] flex justify-start items-center gap-[8px] "
+                    key={i}
+                  >
+                    <img src={dat?.icon} className="w-[20px] h-[20px]" />
+
+                    <div>{dat?.name}</div>
                   </div>
                 ))}
               </div>
@@ -81,6 +86,19 @@ const Footer = () => {
               <div className="font-medium">INFORMATION</div>
               <div>
                 {information.map((dat, i) => (
+                  <div className="mb-[24px]" key={i}>
+                    {dat}
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          <div className="flex mt-[42px] w-full flex-col justify-center items-center">
+            <div className="flex  flex-col justify-center items-center gap-[24px]">
+              <div className="font-medium">LOCATIONS</div>
+              <div className="flex items-center gap-[24px]">
+                {company.map((dat, i) => (
                   <div className="mb-[24px]" key={i}>
                     {dat}
                   </div>

@@ -1,18 +1,18 @@
 import React from "react";
-import { services } from "../common/constants";
+import { services } from "../../common/constants";
 
 const Services = () => {
   return (
     <div className="full_width">
-      <div className="flex items-center justify-center flex-col bg-[#131618] relative py-[40px] lg:py-[100px] px-[20px] lg:px-[120px] mt-[100px] lg:mt-[144px]">
-        <div className="text-center font-[Cooper] text-white text-[40px] lg:text-[60px] font-[900] mb-[40px] lg:mb-[60px]">
+      <div className="flex items-center justify-center flex-col bg-[#131618] relative py-[40px] lg:pb-[130px] lg:pt-[100px] px-[20px] lg:px-[120px] mt-[100px] lg:mt-[144px]">
+        <div className="text-center font-[Cooper] text-white text-[40px] lg:text-[60px] font-[900] mb-[40px] lg:mb-[50px]">
           Our Services
         </div>
 
         <div className="flex flex-col lg:flex-row items-center gap-[24px] lg:gap-[40px]">
           {services.map((data, i) => (
             <div key={i} className="relative">
-              <img src={data.pic} className="md:w-[397px] lg:h-[440px]" />
+              <img src={data.pic} />
               <div className="absolute text-white bottom-[32px] px-[32px]">
                 <div className="font-[Cooper] text-[24px] lg:text-[32px] mb-[16px]">
                   {data?.title}

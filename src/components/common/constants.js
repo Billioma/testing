@@ -123,6 +123,23 @@ export const information = [
   "Contact Us",
 ];
 
+export const operatorMenu = [
+  "About Us",
+  "Services",
+  "ParkinSpace",
+  "Clients",
+  "Contact",
+];
+
+export const benefits = [
+  { id: 1, name: "Grow Revenue", img: "/assets/ben1.png" },
+  { id: 2, name: "Decrease Costs", img: "/assets/ben2.png" },
+  { id: 3, name: "Attract More Customers", img: "/assets/ben3.png" },
+  { id: 4, name: "Improve Operational Efficiency", img: "/assets/ben4.png" },
+  { id: 5, name: "Solve Multiple Parking Needs", img: "/assets/ben5.png" },
+  { id: 6, name: "Enhance Customer Experience", img: "/assets/ben6.png" },
+];
+
 export const payPark = [
   {
     id: 1,

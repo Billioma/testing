@@ -2,9 +2,11 @@ import React from "react";
 import { headers } from "../common/constants";
 import { HiOutlineMenuAlt3 } from "react-icons/hi";
 import Menu from "./Menu";
+import { useNavigate } from "react-router-dom";
 
 const Header = () => {
   const [show, setShow] = React.useState(false);
+  const navigate = useNavigate();
   return (
     <div
       style={{ boxShadow: "0px 2px 24px 0px rgba(100, 102, 104, 0.15)" }}
@@ -34,6 +36,7 @@ const Header = () => {
               {headers.map((data, i) => (
                 <div
                   key={i}
+                  onClick={() => i === 3 && navigate("/operators")}
                   className="hover-underline-animation cursor-pointer"
                 >
                   {data?.name}

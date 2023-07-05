@@ -10,7 +10,17 @@ body {
   font-weight: 700;
   src: url("../public/fonts/Sailec Bold.ttf");
 }
-
+.bg {
+  background-image: url("../public/assets/heroo.png");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+}
+.scroll {
+  background: #FFFFFF26;
+  backdrop-filter: blur(10px);
+  color: #000;
+}
 @font-face {
   font-family: Sailec;
   font-weight: 500;
@@ -54,7 +64,17 @@ body {
   }
 }
 
+.hover-underlinee-animation {
+  display: inline-block;
+  position: relative;
+}
+
 .hover-underline-animation {
+  display: inline-block;
+  position: relative;
+}
+
+.hover-underlinee-animation {
   display: inline-block;
   position: relative;
 }
@@ -72,16 +92,34 @@ body {
   transition: transform 0.25s ease-out;
 }
 
+.hover-underlinee-animation:after {
+  content: "";
+  position: absolute;
+  width: 100%;
+  transform: scaleX(0);
+  height: 2px;
+  bottom: -5px;
+  left: 0;
+  background-color: #fff;
+  transform-origin: bottom right;
+  transition: transform 0.25s ease-out;
+}
+
 .hover-underline-animation:hover:after {
   transform: scaleX(1);
   transform-origin: bottom left;
 }
 
-button:hover{
-  opacity: 0.8;
-  transition: .3s ease-in-out;
+.hover-underlinee-animation:hover:after {
+  transform: scaleX(1);
+  transform-origin: bottom left;
 }
-.full_width{
+
+button:hover {
+  opacity: 0.8;
+  transition: 0.3s ease-in-out;
+}
+.full_width {
   width: 100vw;
   margin-left: calc((100% - 100vw) / 2);
   margin-right: calc((100% - 100vw) / 2);
