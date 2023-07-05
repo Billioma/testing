@@ -11,7 +11,7 @@ const OperatorMenu = ({ isOpen, onClose }) => {
       onClose={onClose}
       direction="top"
       style={{
-        background: "#FFFFFF26",
+        background: "#FFFFFF66",
         backdropFilter: "blur(10px)",
         height: "fit-content",
         width: "100%",

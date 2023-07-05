@@ -65,7 +65,7 @@ const Footer = () => {
             </div>
           </div>
 
-          <div className="flex mt-[56px] lg:hidden justify-between w-full items-center">
+          <div className="flex lg:hidden mt-[56px] justify-between w-full items-center">
             <div className="flex flex-col gap-[24px]">
               <div className="font-medium">CONNECT</div>
               <div>
@@ -82,7 +82,7 @@ const Footer = () => {
               </div>
             </div>
 
-            <div className="flex flex-col gap-[24px]">
+            <div className="flex lg:hidden flex-col gap-[24px]">
               <div className="font-medium">INFORMATION</div>
               <div>
                 {information.map((dat, i) => (
@@ -94,7 +94,7 @@ const Footer = () => {
             </div>
           </div>
 
-          <div className="flex mt-[42px] w-full flex-col justify-center items-center">
+          <div className="flex lg:hidden mt-[42px] w-full flex-col justify-center items-center">
             <div className="flex  flex-col justify-center items-center gap-[24px]">
               <div className="font-medium">LOCATIONS</div>
               <div className="flex items-center gap-[24px]">
