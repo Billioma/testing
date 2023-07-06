@@ -1,24 +1,42 @@
 import React from "react";
-import Header from "./Header";
-import Footer from "./Footer";
-import { useLocation } from "react-router-dom";
-import OperatorHeader from "./OperatorHeader";
+import { Image } from "@chakra-ui/image";
+import { Box, Flex } from "@chakra-ui/layout";
 
-const PageLayout = ({ children }) => {
-  const location = useLocation();
+export const AuthLayout = ({ children }) => {
   return (
-    <div className="font-[Sailec] overflow-hidden w-full flex flex-col min-h-screen">
-      {location.pathname === "/" ? <Header /> : <OperatorHeader />}
-      <div className="flex justify-center items-center">
-        <div className="w-full lg:w-[1296px] min-h-screen px-[20px]">
+    <Box>
+      <Flex justifyContent="center" align="center">
+        <Box w={{ base: "full", lg: "1295px" }} minH="100vh" px="20px">
           {children}
-        </div>
-      </div>
-      <div className="mt-auto">
-        <Footer />
-      </div>
-    </div>
+        </Box>
+      </Flex>
+    </Box>
   );
 };
 
-export default PageLayout;
+export const NonAuthLayout = ({ children }) => {
+  return (
+    <Box pos="relative" h="100vh">
+      <Image
+        display={{ base: "none", md: "unset" }}
+        pos="absolute"
+        bottom="0"
+        right="0"
+        src="/assets/park-right.png"
+      />
+      <Image
+        display={{ base: "none", md: "unset" }}
+        w={{ base: "144px", md: "unset" }}
+        pos="absolute"
+        bottom="0"
+        left="0"
+        src="/assets/park-left.png"
+      />
+      <Flex justifyContent="center" align="center" w="full">
+        <Box w={{ base: "full", lg: "1295px" }} minH="100vh" px="20px">
+          {children}
+        </Box>
+      </Flex>
+    </Box>
+  );
+};

@@ -1,15 +1,30 @@
 import { lazy } from "react";
 import WithSuspense from "../components/loaders/WithSuspense";
-import { PATHS } from "./constants";
+import { PUBLIC_PATHS, PRIVATE_PATHS } from "./constants";
 import { Navigate } from "react-router-dom";
 
-const { HOME, OPERATOR } = PATHS;
+const { LOGIN, SIGNUP, RESET_PASS } = PUBLIC_PATHS;
 
-const Home = WithSuspense(lazy(() => import("../pages/Home")));
-const Operator = WithSuspense(lazy(() => import("../pages/Operator")));
+const { DASHBOARD } = PRIVATE_PATHS;
 
-export const ROUTES = [
-  { path: HOME, element: <Home /> },
-  { path: OPERATOR, element: <Operator /> },
-  { path: "*", element: <Navigate to="/" replace /> },
+const Login = WithSuspense(lazy(() => import("../pages/Authentication/Login")));
+const ResetPassword = WithSuspense(
+  lazy(() => import("../pages/Authentication/ResetPassword"))
+);
+const Signup = WithSuspense(
+  lazy(() => import("../pages/Authentication/Signup"))
+);
+const Dashboard = WithSuspense(
+  lazy(() => import("../pages/Dashboard/Dashboard"))
+);
+
+export const PUBLIC_ROUTES = [
+  { path: LOGIN, element: <Login /> },
+  { path: RESET_PASS, element: <ResetPassword /> },
+  { path: SIGNUP, element: <Signup /> },
+  { path: "*", element: <Navigate to="/login" replace /> },
+];
+export const PRIVATE_ROUTES = [
+  { path: DASHBOARD, element: <Dashboard /> },
+  { path: "*", element: <Navigate to="/overview" replace /> },
 ];
