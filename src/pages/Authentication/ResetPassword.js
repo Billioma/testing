@@ -71,7 +71,6 @@ const Reset = () => {
                 </Text>
                 <CustomInput
                   name="email"
-                  width
                   value={values?.email}
                   onChange={handleChange}
                   onBlur={handleBlur}
