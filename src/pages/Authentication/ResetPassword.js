@@ -3,7 +3,6 @@ import { Image } from "@chakra-ui/image";
 import { Box, Flex, Text } from "@chakra-ui/layout";
 import CustomInput from "../../components/common/CustomInput";
 import { Button } from "@chakra-ui/button";
-import { initValues, validateSchema } from "../../utils/validation";
 import { Form, Formik } from "formik";
 import * as Yup from "yup";
 import { useNavigate } from "react-router";
@@ -77,11 +76,11 @@ const Reset = () => {
                   onChange={handleChange}
                   onBlur={handleBlur}
                   error={errors?.email && touched?.email && errors?.email}
-                  placeholder="Enter Email address"
+                  holder="Enter Email address"
                 />
               </Box>
 
-              <Button type="submit" w="full">
+              <Button isDisabled={!isValid || !dirty} type="submit" w="full">
                 Send Reset Link
               </Button>
             </Form>

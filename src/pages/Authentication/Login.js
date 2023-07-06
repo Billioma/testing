@@ -63,7 +63,7 @@ const Login = () => {
                   onChange={handleChange}
                   onBlur={handleBlur}
                   error={errors?.email && touched?.email && errors?.email}
-                  placeholder="Enter Email address"
+                  holder="Enter Email address"
                 />
               </Box>
               <Box mt="24px">
@@ -72,7 +72,7 @@ const Login = () => {
                 </Text>
                 <CustomInput
                   mb
-                  placeholder="Enter Password"
+                  holder="Enter Password"
                   value={values?.password}
                   onChange={handleChange}
                   onBlur={handleBlur}

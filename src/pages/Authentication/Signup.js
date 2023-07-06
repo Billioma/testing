@@ -75,7 +75,7 @@ const Signup = () => {
                       touched?.firstName &&
                       errors?.firstName
                     }
-                    placeholder="Enter First Name"
+                    holder="Enter First Name"
                   />
                 </Box>
                 <Box w="full">
@@ -91,7 +91,7 @@ const Signup = () => {
                     error={
                       errors?.lastName && touched?.lastName && errors?.lastName
                     }
-                    placeholder="Enter Last Name"
+                    holder="Enter Last Name"
                   />
                 </Box>
               </Flex>
@@ -106,7 +106,7 @@ const Signup = () => {
                   onChange={handleChange}
                   onBlur={handleBlur}
                   error={errors?.email && touched?.email && errors?.email}
-                  placeholder="Enter Email address"
+                  holder="Enter Email address"
                 />
               </Box>
               <Box mt="20px">
@@ -121,7 +121,7 @@ const Signup = () => {
                   onChange={handleChange}
                   onBlur={handleBlur}
                   error={errors?.phone && touched?.phone && errors?.phone}
-                  placeholder="Enter Email address"
+                  holder="Enter Phone Number"
                 />
               </Box>
               <Box mt="20px">
@@ -130,7 +130,7 @@ const Signup = () => {
                 </Text>
                 <CustomInput
                   mb
-                  placeholder="Enter Password"
+                  holder="Enter Password"
                   value={values?.password}
                   onChange={handleChange}
                   onBlur={handleBlur}
@@ -150,7 +150,7 @@ const Signup = () => {
                 </Text>
                 <CustomInput
                   mb
-                  placeholder="Confirm Password"
+                  holder="Confirm Password"
                   value={values?.confirmPassword}
                   onChange={handleChange}
                   onBlur={handleBlur}
