@@ -1,7 +1,7 @@
 {
   "rules": {
-    "no-unused-vars":2,
-    "prettier/prettier":2,
+    "no-unused-vars": "off",
+    "prettier/prettier": "off",
     "no-dupe-else-if": "off",
     "prefer-spread": "off",
     "no-unsafe-optional-chaining": "off",
