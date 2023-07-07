@@ -9,12 +9,12 @@ export const Layout = ({ label, placeholder }) => {
       {label === "Message" ? (
         <textarea
           placeholder="Enter your message"
-          className="w-full bg-[#A4A6A8] lg:bg-transparent h-[96px] text-sm border border-[#242628] rounded-[4px] p-[14px] text-[#242628] placeholder:text-[#242628]"
+          className="w-full bg-[#C4C6C8] h-[96px] text-sm border border-[#D4D6D8] rounded-[4px] p-[14px] text-[#242628] placeholder:text-[#242628]"
         />
       ) : (
         <input
           placeholder={placeholder}
-          className="w-full bg-[#A4A6A8] lg:bg-transparent text-sm border border-[#242628] rounded-[4px] p-[14px] text-[#242628] placeholder:text-[#242628]"
+          className="w-full bg-[#C4C6C8] text-sm border border-[#D4D6D8] rounded-[4px] p-[14px] text-[#242628] placeholder:text-[#242628]"
         />
       )}
     </div>

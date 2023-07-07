@@ -4,9 +4,13 @@ import { services } from "../../common/constants";
 const Services = () => {
   return (
     <div className="full_width">
-      <div className="flex items-center justify-center flex-col bg-[#131618] relative py-[40px] lg:pb-[130px] lg:pt-[100px] px-[20px] lg:px-[120px] mt-[100px] lg:mt-[144px]">
-        <div className="text-center font-[Cooper] text-white text-[40px] lg:text-[60px] font-[900] mb-[40px] lg:mb-[50px]">
-          Our Services
+      <div className="flex items-center justify-center flex-col bg-[#131618] relative py-[40px] lg:pb-[130px] lg:pt-[70px] px-[20px] lg:px-[120px] mt-[100px] lg:mt-[144px]">
+        <div className="text-center font-[Cooper] text-white text-[40px] lg:text-[60px] font-[900] ">
+          Services
+        </div>
+
+        <div className="text-white mb-[40px] lg:mb-[50px]">
+          Available at 100+ locations between Lagos and Abuja
         </div>
 
         <div className="flex flex-col lg:flex-row items-center gap-[24px] lg:gap-[40px]">

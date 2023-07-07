@@ -16,15 +16,48 @@ export const headers = [
   },
   {
     id: 3,
-    name: "Event Parking",
-  },
-  {
-    id: 4,
-    name: "Parking Providers",
+    name: "Reserve Event Parking",
   },
   {
     id: 5,
-    name: "Businesses",
+    name: "Solutions",
+    sub: [
+      {
+        title: "Company",
+        subs: [
+          {
+            name: "About ParkinSpace",
+          },
+          {
+            name: "Services",
+          },
+          {
+            name: "Getting Started",
+          },
+          {
+            name: "How it Works",
+          },
+          {
+            name: "Contact Us",
+          },
+        ],
+      },
+      {
+        title: "Our Solutions",
+        subs: [
+          {
+            name: "Parking Providers",
+            route: "/operators",
+          },
+          {
+            name: "Businesses",
+          },
+          {
+            name: "Event Organisers",
+          },
+        ],
+      },
+    ],
   },
 ];
 
@@ -116,12 +149,7 @@ export const connect = [
   },
 ];
 
-export const information = [
-  "About ParkinSpace",
-  "Frequently Asked Questions",
-  "Terms & Conditions",
-  "Contact Us",
-];
+export const information = ["Frequently Asked Questions", "Terms & Conditions"];
 
 export const operatorMenu = [
   "About Us",
@@ -129,6 +157,29 @@ export const operatorMenu = [
   "ParkinSpace",
   "Clients",
   "Contact",
+];
+
+export const started = [
+  {
+    id: 1,
+    img: "/assets/download.png",
+    text: "Download the ParkinSpace app or visit our website",
+  },
+  {
+    id: 2,
+    img: "/assets/sign.png",
+    text: "Sign Up using your name, e-mail address and phone number",
+  },
+  {
+    id: 3,
+    img: "/assets/car.png",
+    text: "Enter your Vehicle details (Make, Model & License Plate Number)",
+  },
+  {
+    id: 4,
+    img: "/assets/wallet.png",
+    text: "Add your preferred Payment Method onto your account",
+  },
 ];
 
 export const benefits = [

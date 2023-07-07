@@ -4,6 +4,10 @@ import Pages from "./routes";
 const App = () => {
   const imagesToPreload = [
     "/assets/hero.png",
+    "/assets/car.png",
+    "/assets/sign.png",
+    "/assets/download.png",
+    "/assets/arrow.png",
     "/assets/alerts.png",
     "/assets/app-mini.png",
     "/assets/app-store.png",

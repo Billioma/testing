@@ -12,8 +12,7 @@ const Footer = () => {
             </div>
 
             <div className="text-sm lg:text-base leading-[150%]">
-              Download our app to get one free parking at select locations in
-              Lagos and Abuja with the links below
+              It's free and easy to sign up
             </div>
 
             <div className="hidden lg:flex items-center gap-[24px] w-full">
@@ -29,15 +28,13 @@ const Footer = () => {
 
           <div className="hidden lg:flex flex-col gap-[24px]">
             <div className="font-medium">CONNECT</div>
-            <div>
+            <div className="grid grid-cols-2 items-center gap-[24px]">
               {connect.map((dat, i) => (
-                <div
-                  className="mb-[24px] flex justify-start items-center gap-[8px] "
-                  key={i}
-                >
-                  <img src={dat?.icon} className="w-[20px] h-[20px]" />
-
-                  <div>{dat?.name}</div>
+                <div key={i}>
+                  <img
+                    src={dat?.icon}
+                    className="cursor-pointer w-[20px] h-[20px]"
+                  />
                 </div>
               ))}
             </div>
@@ -65,18 +62,16 @@ const Footer = () => {
             </div>
           </div>
 
-          <div className="flex lg:hidden mt-[56px] justify-between w-full items-center">
+          <div className="flex lg:hidden mt-[56px] justify-between w-full items-start">
             <div className="flex flex-col gap-[24px]">
               <div className="font-medium">CONNECT</div>
-              <div>
+              <div className="flex items-center gap-[16px]">
                 {connect.map((dat, i) => (
                   <div
                     className="mb-[24px] flex justify-start items-center gap-[8px] "
                     key={i}
                   >
-                    <img src={dat?.icon} className="w-[20px] h-[20px]" />
-
-                    <div>{dat?.name}</div>
+                    <img src={dat?.icon} className="w-[16px] h-[16px]" />
                   </div>
                 ))}
               </div>

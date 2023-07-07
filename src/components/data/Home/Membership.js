@@ -2,45 +2,45 @@ import React from "react";
 
 const Membership = () => {
   return (
-    <div className="py-[56px] pb-0 lg:py-[90px] flex flex-col justify-center items-center">
-      <div className="w-full lg:w-[48%]">
-        <div className="flex flex-col justify-center items-center">
-          <div className="text-[#242424] text-center text-[40px] leading-[150%] font-[Cooper]">
-            <span className="text-red">Parkin</span>Space <br />
-            <span className="text-[60px] hidden lg:flex">Membership</span>
+    <div className="full_width">
+      <div className="py-[56px] pb-0 lg:pt-[70px] flex flex-col justify-center items-center">
+        <div className="px-[20px] lg:px-[unset] w-full lg:w-[48%]">
+          <div className="flex flex-col justify-center items-center">
+            <div className="text-[#242424] text-center text-[45px] leading-[150%] font-[Cooper]">
+              About <span className="text-red">Parkin</span>Space
+            </div>
           </div>
 
-          <div className="mt-[20px] hidden lg:flex">
-            <button className="bg-[#FEF1F1] text-xs font-medium hover:bg-[red] hover:text-white px-[20px] text-red rounded-[4px] py-[12px]">
-              SIGN UP NOW, IT'S FREE
-            </button>
+          <div className="mt-[20px] text-center text-[#101410] text-sm leading-[150%]">
+            ParkinSpace is powered by EZPark, a premier parking management
+            company. Our technology is the easy, fast and stress-free way to
+            find, reserve and pay for parking services.
+            <br />
+            <br />
+            Sign up for a free account in seconds and immediately access valet
+            and self parking services on-demand or in advance. Want more?
+            Subscribe to a monthly plan to enjoy priority access at various
+            popular destinations and trending events in Nigeria.
+            <br />
+            <br />
+            You also get discounts on parking rates at select locations and earn
+            rewards points to use at our exclusive partners. What are you
+            waiting for? Get started now.
           </div>
         </div>
 
-        <div className="mt-[30px] text-center text-[#101410] text-sm lg:ext-base leading-[150%]">
-          With a ParkinSpace subscription, you get priority access to our
-          signature valet parking services at various destinations and trending
-          events in Nigeria.
-          <br />
-          <br />
-          Enjoy exclusive discounts and earn reward points to use towards EZPark
-          services such as pay-to-park or car wash/auto detailing. Access your
-          account to make payments, view your service history and track reward
-          points.
+        <div className="mt-[20px] flex items-center font-medium text-sm gap-[24px]">
+          <button className="bg-red rounded-[4px] px-[34px] py-[10px] text-white ">
+            Sign up
+          </button>
+          <button className="bg-transparent rounded-[4px] border border-black hover:bg-black hover:text-white px-[26px] py-[10px] text-black ">
+            Login
+          </button>
         </div>
-      </div>
 
-      <div className="mt-[20px] flex items-center font-medium text-sm gap-[24px]">
-        <button className="bg-red rounded-[4px] px-[34px] py-[10px] text-white ">
-          Sign up
-        </button>
-        <button className="bg-transparent rounded-[4px] border border-black hover:bg-black hover:text-white px-[26px] py-[10px] text-black ">
-          Login
-        </button>
-      </div>
-
-      <div className="mt-[40px] lg:mt-[50px]">
-        <img src="/assets/devices.png" />
+        <div className="mt-[40px] lg:mt-[50px]">
+          <img src="/assets/devices.png" />
+        </div>
       </div>
     </div>
   );
