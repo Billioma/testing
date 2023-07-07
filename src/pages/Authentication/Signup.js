@@ -22,7 +22,7 @@ const Signup = () => {
       w="full"
       align="center"
       h={{ base: "unset", md: "100vh" }}
-      py={{ base: "40px", md: "unset" }}
+      py={{ base: "40px", md: "40px" }}
       flexDir="column"
     >
       <Flex
@@ -34,7 +34,7 @@ const Signup = () => {
           <Image src="/assets/logo.svg" w="364px" h="56px" />
         </Flex>
 
-        <Text textAlign="center" fontSize="24px" mt="20px" fontWeight={700}>
+        <Text textAlign="center" fontSize="24px" mt="15px" fontWeight={700}>
           Sign Up
         </Text>
 
@@ -55,7 +55,7 @@ const Signup = () => {
           }) => (
             <Form onSubmit={handleSubmit}>
               <Flex
-                mt="20px"
+                mt="15px"
                 w="full"
                 flexDir={{ base: "column", md: "row" }}
                 align="center"
@@ -63,7 +63,7 @@ const Signup = () => {
               >
                 <Box w="full">
                   <Text
-                    mb="10px"
+                    mb="8px"
                     fontWeight={500}
                     color="#444648"
                     fontSize="10px"
@@ -86,7 +86,7 @@ const Signup = () => {
                 </Box>
                 <Box w="full">
                   <Text
-                    mb="10px"
+                    mb="8px"
                     fontWeight={500}
                     color="#444648"
                     fontSize="10px"
@@ -106,13 +106,8 @@ const Signup = () => {
                   />
                 </Box>
               </Flex>
-              <Box mt="20px">
-                <Text
-                  mb="10px"
-                  fontWeight={500}
-                  color="#444648"
-                  fontSize="10px"
-                >
+              <Box mt="15px">
+                <Text mb="8px" fontWeight={500} color="#444648" fontSize="10px">
                   Email Address
                 </Text>
                 <CustomInput
@@ -125,13 +120,8 @@ const Signup = () => {
                   placeholder="Enter Email address"
                 />
               </Box>
-              <Box mt="20px">
-                <Text
-                  mb="10px"
-                  fontWeight={500}
-                  color="#444648"
-                  fontSize="10px"
-                >
+              <Box mt="15px">
+                <Text mb="8px" fontWeight={500} color="#444648" fontSize="10px">
                   Phone Number
                 </Text>
                 <CustomInput
@@ -145,13 +135,8 @@ const Signup = () => {
                   placeholder="Enter Email address"
                 />
               </Box>
-              <Box mt="20px">
-                <Text
-                  mb="10px"
-                  fontWeight={500}
-                  color="#444648"
-                  fontSize="10px"
-                >
+              <Box mt="15px">
+                <Text mb="8px" fontWeight={500} color="#444648" fontSize="10px">
                   Password
                 </Text>
                 <CustomInput
@@ -170,13 +155,8 @@ const Signup = () => {
                   type={show ? "text" : "password"}
                 />
               </Box>
-              <Box mt="20px">
-                <Text
-                  mb="10px"
-                  fontWeight={500}
-                  color="#444648"
-                  fontSize="10px"
-                >
+              <Box mt="15px">
+                <Text mb="8px" fontWeight={500} color="#444648" fontSize="10px">
                   Confirm Password
                 </Text>
                 <CustomInput
@@ -218,7 +198,7 @@ const Signup = () => {
           )}
         </Formik>
 
-        <Text textAlign="center" mt="32px" color="#646668" fontSize="14px">
+        <Text textAlign="center" mt="25px" color="#646668" fontSize="14px">
           Already have an account ?{" "}
           <span
             onClick={() => navigate("/login")}
