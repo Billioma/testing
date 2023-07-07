@@ -21,7 +21,8 @@ const Signup = () => {
       justifyContent="center"
       w="full"
       align="center"
-      h="100vh"
+      h={{ base: "unset", md: "100vh" }}
+      py={{ base: "40px", md: "unset" }}
       flexDir="column"
     >
       <Flex
