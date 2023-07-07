@@ -6,8 +6,7 @@ import {
   InputRightElement,
 } from "@chakra-ui/input";
 import { Text } from "@chakra-ui/layout";
-import React from "react";
-
+import React, { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 const CustomInput = ({
@@ -30,6 +29,42 @@ const CustomInput = ({
   holder,
   type,
 }) => {
+  const [isTyping, setIsTyping] = useState(false);
+
+  const handleInputChange = (e) => {
+    setIsTyping(true);
+    onChange(e);
+  };
+
+  const handleInputBlur = (e) => {
+    setIsTyping(false);
+    onBlur(e);
+  };
+
+  const getBorderColor = () => {
+    if (isTyping) {
+      return "1px solid #646668";
+    } else if (value && !error) {
+      return "1px solid #F4F6F8";
+    } else if (error) {
+      return "1px solid #EE383A";
+    } else {
+      return "1px solid #D4D6D8";
+    }
+  };
+
+  const getBackgroundColor = () => {
+    if (isTyping) {
+      return "transparent";
+    } else if (value && !error) {
+      return "#F4F6F8";
+    } else if (error) {
+      return "#FDE8E8";
+    } else {
+      return "transparent";
+    }
+  };
+
   return (
     <FormControl mb={mb ? 0 : 5} isInvalid={error}>
       <InputGroup>
@@ -47,21 +82,14 @@ const CustomInput = ({
           name={name}
           isReadOnly={isDisabled}
           onKeyPress={handleKeyPress}
-          onChange={onChange}
-          bg={value ? "#F4F6F8" : "unset"}
-          border={
-            value
-              ? "1px solid #F4F6F8"
-              : error
-              ? "1px solid red"
-              : "1px solid #D4D6D8"
-          }
-          onBlur={onBlur}
+          onChange={handleInputChange}
+          bg={getBackgroundColor()}
+          border={getBorderColor()}
+          onBlur={handleInputBlur}
           onFocus={onFocus}
           h={opt ? "60px" : "44px"}
           type={type ? type : "text"}
           fontSize="13px"
-          // variant="secondary"
           _placeholder={{ fontSize: "13px", color: "#646668" }}
           placeholder={holder}
         />

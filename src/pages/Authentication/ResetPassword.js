@@ -66,16 +66,22 @@ const Reset = () => {
           }) => (
             <Form onSubmit={handleSubmit}>
               <Box mt="32px">
-                <Text fontWeight={500} color="#444648" fontSize="10px">
+                <Text
+                  mb="10px"
+                  fontWeight={500}
+                  color="#444648"
+                  fontSize="10px"
+                >
                   Email Address
                 </Text>
                 <CustomInput
                   name="email"
+                  width
                   value={values?.email}
                   onChange={handleChange}
                   onBlur={handleBlur}
                   error={errors?.email && touched?.email && errors?.email}
-                  holder="Enter Email address"
+                  placeholder="Enter Email address"
                 />
               </Box>
 

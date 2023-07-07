@@ -21,7 +21,7 @@ const Signup = () => {
       justifyContent="center"
       w="full"
       align="center"
-      py={{ base: "40px", md: "30px" }}
+      h="100vh"
       flexDir="column"
     >
       <Flex
@@ -61,7 +61,12 @@ const Signup = () => {
                 gap="20px"
               >
                 <Box w="full">
-                  <Text fontWeight={500} color="#444648" fontSize="10px">
+                  <Text
+                    mb="10px"
+                    fontWeight={500}
+                    color="#444648"
+                    fontSize="10px"
+                  >
                     First Name
                   </Text>
                   <CustomInput
@@ -75,11 +80,16 @@ const Signup = () => {
                       touched?.firstName &&
                       errors?.firstName
                     }
-                    holder="Enter First Name"
+                    placeholder="Enter First Name"
                   />
                 </Box>
                 <Box w="full">
-                  <Text fontWeight={500} color="#444648" fontSize="10px">
+                  <Text
+                    mb="10px"
+                    fontWeight={500}
+                    color="#444648"
+                    fontSize="10px"
+                  >
                     Last Name
                   </Text>
                   <CustomInput
@@ -91,12 +101,17 @@ const Signup = () => {
                     error={
                       errors?.lastName && touched?.lastName && errors?.lastName
                     }
-                    holder="Enter Last Name"
+                    placeholder="Enter Last Name"
                   />
                 </Box>
               </Flex>
               <Box mt="20px">
-                <Text fontWeight={500} color="#444648" fontSize="10px">
+                <Text
+                  mb="10px"
+                  fontWeight={500}
+                  color="#444648"
+                  fontSize="10px"
+                >
                   Email Address
                 </Text>
                 <CustomInput
@@ -106,11 +121,16 @@ const Signup = () => {
                   onChange={handleChange}
                   onBlur={handleBlur}
                   error={errors?.email && touched?.email && errors?.email}
-                  holder="Enter Email address"
+                  placeholder="Enter Email address"
                 />
               </Box>
               <Box mt="20px">
-                <Text fontWeight={500} color="#444648" fontSize="10px">
+                <Text
+                  mb="10px"
+                  fontWeight={500}
+                  color="#444648"
+                  fontSize="10px"
+                >
                   Phone Number
                 </Text>
                 <CustomInput
@@ -121,16 +141,21 @@ const Signup = () => {
                   onChange={handleChange}
                   onBlur={handleBlur}
                   error={errors?.phone && touched?.phone && errors?.phone}
-                  holder="Enter Phone Number"
+                  placeholder="Enter Email address"
                 />
               </Box>
               <Box mt="20px">
-                <Text fontWeight={500} color="#444648" fontSize="10px">
+                <Text
+                  mb="10px"
+                  fontWeight={500}
+                  color="#444648"
+                  fontSize="10px"
+                >
                   Password
                 </Text>
                 <CustomInput
                   mb
-                  holder="Enter Password"
+                  placeholder="Enter Password"
                   value={values?.password}
                   onChange={handleChange}
                   onBlur={handleBlur}
@@ -145,12 +170,17 @@ const Signup = () => {
                 />
               </Box>
               <Box mt="20px">
-                <Text fontWeight={500} color="#444648" fontSize="10px">
+                <Text
+                  mb="10px"
+                  fontWeight={500}
+                  color="#444648"
+                  fontSize="10px"
+                >
                   Confirm Password
                 </Text>
                 <CustomInput
                   mb
-                  holder="Confirm Password"
+                  placeholder="Confirm Password"
                   value={values?.confirmPassword}
                   onChange={handleChange}
                   onBlur={handleBlur}
