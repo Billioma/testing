@@ -2,7 +2,7 @@ import React from "react";
 import { MdClose } from "react-icons/md";
 import Drawer from "react-modern-drawer";
 import "react-modern-drawer/dist/index.css";
-import { headers, operatorMenu } from "../common/constants";
+import { operatorMenu } from "../common/constants";
 
 const OperatorMenu = ({ isOpen, onClose }) => {
   return (

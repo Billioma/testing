@@ -1,7 +1,4 @@
-import React, { useEffect, useState } from "react";
-import { HiOutlineMenuAlt3 } from "react-icons/hi";
-import { operatorMenu } from "../../common/constants";
-import OperatorHeader from "../../layout/OperatorHeader";
+import React from "react";
 
 const Hero = () => {
   return (
@@ -10,7 +7,6 @@ const Hero = () => {
         className="absolute w-full z-[-1] h-screen object-cover"
         src="/assets/heroo.png"
       />
-
 
       <div className="z-[100] flex flex-col justify-center h-[80vh] md:h-screen items-center">
         <div className="flex justify-center items-center w-full">

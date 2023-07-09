@@ -3,16 +3,16 @@ import { started } from "../../common/constants";
 
 const GettingStarted = () => {
   return (
-    <div className="pt-[100px] pb-[100px] md:pt-[120px] bg-[#F4F6F8] full_width">
+    <div className="pt-[80px] pb-[100px] md:pt-[120px] bg-[#F4F6F8] full_width">
       <div className="flex w-full flex-col justify-center items-center">
         <div className="flex w-full lg:w-[70%] flex-col justify-start lg:justify-center items-start lg:items-center">
           <div className="px-[20px] lg:px-[unset] flex flex-col md:flex-row lg:justify-between gap-[60px] lg:gap-[unset] items-center">
-            <div className="flex flex-col lg:justify-start items-center lg:items-start w-full">
-              <span className="text-black leading-[120%] text-[20px]">
+            <div className="text-center lg:text-start w-full">
+              <span className="text-black text-center w-full leading-[120%] text-[20px]">
                 Getting started with
               </span>
               <br />
-              <div className="my-[5px] lg:my-[16px] font-[Cooper] text-[45px] lg:text-[60px] leading-[120%]">
+              <div className="my-[5px] lg:my-[8px] font-[Cooper] text-[45px] lg:text-[60px] leading-[120%]">
                 <span className="text-red">Parkin</span>Space
               </div>
               <div className="text-center lg:text-start w-full lg:w-[60%] text-black leading-[150%] text-base">
@@ -20,7 +20,7 @@ const GettingStarted = () => {
                 go.
               </div>
 
-              <div className="mt-[32px] flex items-center font-medium text-sm gap-[24px]">
+              <div className="mt-[32px] justify-center lg:justify-start flex items-center font-medium text-sm gap-[24px]">
                 <button className="bg-red rounded-[4px] px-[34px] py-[10px] text-white ">
                   Sign up
                 </button>

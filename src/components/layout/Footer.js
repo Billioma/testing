@@ -5,9 +5,9 @@ const Footer = () => {
   return (
     <div className="bg-[#242628] px-[20px] flex flex-col justify-center items-center w-full">
       <div className="w-full lg:w-[1256px]">
-        <div className="text-white flex flex-col lg:flex-row items-start justify-between py-[56px] lg:py-[120px] lg:pb-[64px]">
+        <div className="text-white flex flex-col lg:flex-row items-start justify-between py-[56px] lg:py-[120px] lg:pb-[40px]">
           <div className="flex flex-col gap-[16px] lg:gap-[24px] w-full lg:w-[40%]">
-            <div className="text-[28px] lg:text-[44px] font-[Cooper]">
+            <div className="text-[28px] leading-[100%] lg:text-[44px] font-[Cooper]">
               Download our App
             </div>
 
@@ -89,7 +89,7 @@ const Footer = () => {
             </div>
           </div>
 
-          <div className="flex lg:hidden mt-[42px] w-full flex-col justify-center items-center">
+          <div className="flex lg:hidden mt-[40px] w-full flex-col justify-center items-center">
             <div className="flex  flex-col justify-center items-center gap-[24px]">
               <div className="font-medium">LOCATIONS</div>
               <div className="flex items-center gap-[24px]">
@@ -100,6 +100,14 @@ const Footer = () => {
                 ))}
               </div>
             </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="flex flex-col justify-center items-center w-full">
+        <div className="flex justify-center items-center  border-t border-[#545658] w-[100%] lg:w-[50%] pt-[40px] pb-[64px]">
+          <div className="text-white text-sm leading-[100%]">
+            ©2023 EZPark Limited. All rights reserved
           </div>
         </div>
       </div>

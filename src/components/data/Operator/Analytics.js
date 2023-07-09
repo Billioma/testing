@@ -1,5 +1,4 @@
 import React from "react";
-import { benefits } from "../../common/constants";
 
 const Analytics = () => {
   return (

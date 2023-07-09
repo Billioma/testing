@@ -1,7 +1,5 @@
-import { FaFacebookF, FaRegComment } from "react-icons/fa";
-import { AiOutlineRetweet, AiOutlineTwitter } from "react-icons/ai";
-import { BiLogoInstagramAlt } from "react-icons/bi";
-import { BsLinkedin, BsTwitter } from "react-icons/bs";
+import { FaRegComment } from "react-icons/fa";
+import { AiOutlineRetweet } from "react-icons/ai";
 import { MdOutlineFavoriteBorder } from "react-icons/md";
 import { GoUpload } from "react-icons/go";
 

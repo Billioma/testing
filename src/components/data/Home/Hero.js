@@ -11,16 +11,16 @@ const Hero = () => {
               <span className="text-red">parking services</span> across Nigeria
             </div>
 
-            <div className="font-medium mt-[15px] md:mt-[20px] w-[80%] text-sm md:text-[18px] leading-[120%]">
+            <div className="font-medium mt-[15px] md:mt-[40px] w-[80%] text-sm md:text-[18px] leading-[120%]">
               Download our free app on
             </div>
 
-            <div className="flex sm:hidden md:flex items-center my-[24px] md:my-[25px] gap-[24px]">
+            <div className="flex sm:hidden md:flex items-center my-[24px] gap-[24px]">
               <img src="/assets/play-store.png" className="cursor-pointer" />
               <img src="/assets/app-store.png" className="cursor-pointer" />
             </div>
 
-            <div className="flex md:hidden items-center my-[24px] md:my-[25px] gap-[24px]">
+            <div className="flex md:hidden items-center my-[24px] gap-[24px]">
               <img src="/assets/play-mini.png" className="cursor-pointer" />
               <img src="/assets/app-mini.png" className="cursor-pointer" />
             </div>

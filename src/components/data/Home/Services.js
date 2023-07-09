@@ -9,7 +9,7 @@ const Services = () => {
           Services
         </div>
 
-        <div className="text-white mb-[40px] lg:mb-[50px]">
+        <div className="text-white text-center mt-[20px] lg:mt-[unset] mb-[40px] lg:mb-[50px]">
           Available at 100+ locations between Lagos and Abuja
         </div>
 
