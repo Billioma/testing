@@ -4,7 +4,7 @@ const Analytics = () => {
   return (
     <div className="full_width">
       <div className="flex w-full bg-[#fff] flex-col items-center justify-center px-[20px] lg:px-[120px] py-[56px] lg:py-[120px]">
-        <div className="flex flex-col md:flex-row w-full lg:w-[1296px] justify-between gap-[40px] items-center">
+        <div className="flex flex-col md:flex-row w-full lg:w-[1326px] justify-between gap-[40px] items-center">
           <div className="bg-[#444648] flex flex-col items-center justify-center w-full text-white rounded-[4px] p-[32px]">
             <img src="/assets/anal1.png" />
 

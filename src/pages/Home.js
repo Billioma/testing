@@ -3,8 +3,8 @@ import Hero from "../components/data/Home/Hero";
 import Services from "../components/data/Home/Services";
 import Membership from "../components/data/Home/Membership";
 import How from "../components/data/Home/How";
-import Contact from "../components/data/Home/Contact";
 import GettingStarted from "../components/data/Home/GettingStarted";
+import Plus from "../components/data/Home/Plus";
 
 const Home = () => {
   return (
@@ -12,9 +12,9 @@ const Home = () => {
       <Hero />
       <Membership />
       <Services />
+      <Plus />
       <GettingStarted />
       <How />
-      <Contact />
     </div>
   );
 };

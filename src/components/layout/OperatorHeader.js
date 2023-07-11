@@ -18,7 +18,7 @@ const OperatorHeader = () => {
         scroll ? "scroll text-black" : "bg-transparent text-white"
       } z-[200]`}
     >
-      <div className="w-[1296px] px-[20px] py-[24px] lg:py-[16px]">
+      <div className="w-[1326px] px-[20px] py-[24px] lg:py-[16px]">
         <div className="flex items-center w-full justify-between">
           <div className="w-[100%]">
             {scroll ? (

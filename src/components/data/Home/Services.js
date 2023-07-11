@@ -3,8 +3,8 @@ import { services } from "../../common/constants";
 
 const Services = () => {
   return (
-    <div className="full_width">
-      <div className="flex items-center justify-center flex-col bg-[#131618] relative py-[40px] lg:pb-[130px] lg:pt-[70px] px-[20px] lg:px-[120px] mt-[100px] lg:mt-[144px]">
+    <div className="full_width" id="services">
+      <div className="flex items-center justify-center flex-col bg-[#131618] relative py-[40px] lg:pb-[130px] lg:pt-[100px] px-[20px] lg:px-[120px] mt-[100px] lg:mt-[144px]">
         <div className="text-center font-[Cooper] text-white text-[40px] lg:text-[60px] font-[900] ">
           Services
         </div>

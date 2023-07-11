@@ -9,8 +9,8 @@ import {
 const How = () => {
   const [tab, setTab] = useState("Pay-to-Park");
   return (
-    <div className="full_width">
-      <div className="bg-[#fff] py-[56px] lg:py-[90px] flex flex-col justify-center items-center w-full">
+    <div id="how" className="full_width">
+      <div className="bg-[#fff] py-[56px] lg:py-[100px] flex flex-col justify-center items-center w-full">
         <div className="px-[20px] lg:px-[unset] lg:w-[1256px]">
           <div className="text-center font-[Cooper] text-black text-[32px] md:text-[45px] lg:text-[60px] font-[900] ">
             How It Works

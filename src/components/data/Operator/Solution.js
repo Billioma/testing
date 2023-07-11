@@ -5,7 +5,7 @@ const Solution = () => {
   return (
     <div className="full_width">
       <div className="flex w-full bg-[#E4E6E8] flex-col items-center justify-center px-[20px] lg:px-[120px] py-[56px] lg:py-[120px]">
-        <div className="flex flex-col lg:flex-row w-full lg:w-[1296px] justify-between items-center">
+        <div className="flex flex-col lg:flex-row w-full lg:w-[1326px] justify-between items-center">
           <div className="w-full">
             <img src="/assets/soln.png" />
           </div>

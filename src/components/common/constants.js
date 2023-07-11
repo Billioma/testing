@@ -18,28 +18,8 @@ export const headers = [
   },
   {
     id: 5,
-    name: "Solutions",
+    name: "Solutions for Businesses",
     sub: [
-      {
-        title: "Company",
-        subs: [
-          {
-            name: "About ParkinSpace",
-          },
-          {
-            name: "Services",
-          },
-          {
-            name: "Getting Started",
-          },
-          {
-            name: "How it Works",
-          },
-          {
-            name: "Contact Us",
-          },
-        ],
-      },
       {
         title: "Our Solutions",
         subs: [
@@ -56,6 +36,31 @@ export const headers = [
         ],
       },
     ],
+  },
+];
+
+export const plus = [
+  {
+    id: 1,
+    title: "Benefits",
+    subs: [
+      "Free Account Sign Up",
+      "Access all ParkinSpace Services",
+      "Fund & Pay with Wallet",
+      "Discounted Parking Fees",
+      "Priority Access to reserved parking spaces",
+      "Reward Points redeemable at select vendors",
+      "Exclusive Deals on vehicle maintenance services",
+      "Expedited Entry to major events",
+    ],
+  },
+  {
+    id: 2,
+    title: "",
+  },
+  {
+    id: 3,
+    title: "",
   },
 ];
 
@@ -123,6 +128,28 @@ export const mobileTwitterActions = [
 ];
 
 export const company = ["Lagos", "Abuja"];
+export const companies = [
+  {
+    name: "About ParkinSpace",
+    id: "/#about",
+  },
+  {
+    name: "Services",
+    id: "/#services",
+  },
+  {
+    name: "ParkinSpace PLUS",
+    id: "/#plus",
+  },
+  {
+    name: "Getting Started",
+    id: "/#start",
+  },
+  {
+    name: "How it Work",
+    id: "/#how",
+  },
+];
 
 export const connect = [
   {
@@ -147,7 +174,12 @@ export const connect = [
   },
 ];
 
-export const information = ["Frequently Asked Questions", "Terms & Conditions"];
+export const information = [
+  { name: "Contact Us", link: "/contact-us" },
+  { name: "Terms & Conditions", link: "" },
+  { name: "Frequently Asked Questions", link: "" },
+  { name: "Careers", link: "" },
+];
 
 export const operatorMenu = [
   "About Us",

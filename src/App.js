@@ -15,6 +15,7 @@ const App = () => {
     "/assets/ben1.png",
     "/assets/ben2.png",
     "/assets/ben3.png",
+    "/assets/check.png",
     "/assets/alt-logo.png",
     "/assets/ben4.png",
     "/assets/ben5.png",

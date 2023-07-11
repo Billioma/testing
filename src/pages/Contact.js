@@ -24,16 +24,12 @@ export const Layout = ({ label, placeholder }) => {
 const Contact = () => {
   return (
     <div className="full_width">
-      <div className="relative bg-[#E4E6E8] px-[20px] lg:px-[120px] py-[56px] lg:py-[60px]">
-        <img
-          src="/assets/contact-one.png"
-          className="hidden lg:flex absolute left-0 top-[64px]"
-        />
+      <div className="relative bg-white px-[20px] lg:px-[120px] pt-[100px] pb-[56px] lg:pb-[60px] lg:pt-[150px]">
         <div className="text-center font-[Cooper] text-[#242628] text-[40px] lg:text-[60px] font-[900]">
           Contact us
         </div>
         <div className="flex flex-col justify-center items-center">
-          <div className="mt-[5px] text-center w-[75%] lg:w-[28%] text-sm text-[#242628] leading-[150%]">
+          <div className="mt-[5px] text-center w-[75%] lg:w-[24%] text-sm text-[#242628] leading-[150%]">
             Send us a message below and we’ll get back to you in 6 hours or
             less.
           </div>
@@ -55,10 +51,6 @@ const Contact = () => {
           </div>
         </div>
 
-        <img
-          src="/assets/contact-two.png"
-          className="hidden lg:flex absolute right-0 bottom-[64px]"
-        />
         <img
           src="/assets/parked-car.png"
           className="hidden lg:flex absolute left-0 bottom-0"

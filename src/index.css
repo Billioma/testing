@@ -22,12 +22,13 @@ body {
 }
 .drop {
   display: flex;
+  justify-content: center;
   padding: 24px;
   gap: 48px;
   background-color: #fff;
   border-radius: 4px;
   position: absolute;
-  width: 100%;
+  width: 25%;
   box-shadow: 0px 2px 24px 0px rgba(100, 102, 104, 0.15);
   line-height: 2.5em;
   font-size: 14px;
