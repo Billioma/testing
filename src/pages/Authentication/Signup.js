@@ -28,11 +28,12 @@ const Signup = () => {
       );
     },
   });
-  
-  const handleSubmit = (values = "") => {
-    mutate(values);
-  };
+  const [isChecked, setIsChecked] = useState(false);
 
+  const handleSubmit = (values = "") => {
+    const phoneNumber = `+234${values.phone}`;
+    mutate({ ...values, phone: phoneNumber });
+  };
   return (
     <Flex
       justifyContent="center"
@@ -145,8 +146,18 @@ const Signup = () => {
                   mb
                   ngn
                   name="phone"
-                  value={values?.phone}
-                  onChange={handleChange}
+                  value={`${values?.phone}`}
+                  onChange={(e) => {
+                    const inputPhone = e.target.value
+                      .replace(/\D/g, "")
+                      .slice(0, 10);
+                    handleChange({
+                      target: {
+                        name: "phone",
+                        value: `${inputPhone}`,
+                      },
+                    });
+                  }}
                   onBlur={handleBlur}
                   error={errors?.phone && touched?.phone && errors?.phone}
                   holder="Enter Email address"
@@ -204,13 +215,16 @@ const Signup = () => {
                 </Text>
               </Box>
               <Flex fontSize="12px" my="24px" w="full" gap="8px" align="center">
-                <Checkbox />
+                <Checkbox
+                  checked={isChecked}
+                  onChange={(e) => setIsChecked(e.target.checked)}
+                />
                 <Text color="#646668">Accept terms and condition</Text>
               </Flex>
 
               <Button
                 isLoading={isLoading}
-                isDisabled={!isValid || !dirty}
+                isDisabled={!isValid || !dirty || !isChecked}
                 type="submit"
                 w="full"
               >
