@@ -1,22 +1,23 @@
-import React from "react";
+import React, { useState } from "react";
 import { Image } from "@chakra-ui/image";
 import { Box, Flex, Text } from "@chakra-ui/layout";
 import CustomInput from "../../components/common/CustomInput";
 import { Button } from "@chakra-ui/button";
 import { Form, Formik } from "formik";
-import * as Yup from "yup";
 import { useNavigate } from "react-router";
-import { useResetPassword } from "../../services/query/auth";
+import { useUpdatePassword } from "../../services/query/auth";
 import useCustomToast from "../../utils/notifications";
+import { passValues, passSchema } from "../../utils/validation";
 
-const Reset = () => {
+const ChangePassword = () => {
+  const [show, setShow] = useState(false);
   const navigate = useNavigate();
 
   const { successToast, errorToast } = useCustomToast();
-  const { mutate, isLoading } = useResetPassword({
+  const { mutate, isLoading } = useUpdatePassword({
     onSuccess: (res) => {
       successToast(res?.message);
-      navigate("/reset-success");
+      navigate("/password-success");
     },
     onError: (err) => {
       errorToast(
@@ -25,8 +26,14 @@ const Reset = () => {
     },
   });
 
-  const handleSubmit = (values = "") => {
-    mutate(values);
+  const handleSubmit = (values) => {
+    const id = "id";
+    const hash = "hash";
+
+    mutate({
+      query: { id, hash },
+      body: values,
+    });
   };
 
   return (
@@ -48,7 +55,7 @@ const Reset = () => {
 
         <Flex justifyContent="center" align="center" flexDir="column">
           <Text textAlign="center" fontSize="24px" mt="56px" fontWeight={700}>
-            Reset Password?
+            Change Password
           </Text>
           <Text
             fontSize="14px"
@@ -58,16 +65,14 @@ const Reset = () => {
             color="#646668"
             lineHeight="150%"
           >
-            Enter your registered email to receive a password reset link
+            Enter a new password to continue
           </Text>
         </Flex>
 
         <Formik
           onSubmit={handleSubmit}
-          initialValues={{ email: "" }}
-          validationSchema={Yup.object().shape({
-            email: Yup.string().email().required("Email is required"),
-          })}
+          initialValues={passValues}
+          validationSchema={passSchema}
         >
           {({
             values,
@@ -87,26 +92,67 @@ const Reset = () => {
                   color="#444648"
                   fontSize="10px"
                 >
-                  Email Address
+                  Enter New Password
                 </Text>
                 <CustomInput
-                  name="email"
-                  width
-                  value={values?.email}
+                  mb
+                  holder="Enter Password"
+                  value={values?.password}
                   onChange={handleChange}
                   onBlur={handleBlur}
-                  error={errors?.email && touched?.email && errors?.email}
-                  holder="Enter Email address"
+                  name="password"
+                  error={
+                    errors?.password && touched?.password && errors?.password
+                  }
+                  onClick={() => setShow((prev) => !prev)}
+                  password={show ? false : true}
+                  show
+                  type={show ? "text" : "password"}
                 />
+                {/* <Text mt="8px" color="#1C0203" fontSize="10px">
+                  Minimum of 8 characters. Must contain at least one special
+                  text (!@#$%_^&*)
+                </Text> */}
+              </Box>
+              <Box mt="24px">
+                <Text
+                  mb="10px"
+                  fontWeight={500}
+                  color="#444648"
+                  fontSize="10px"
+                >
+                  Confirm New Password
+                </Text>
+                <CustomInput
+                  mb
+                  holder="Enter Password"
+                  value={values?.passwordConfirmation}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  name="passwordConfirmation"
+                  error={
+                    errors?.passwordConfirmation &&
+                    touched?.passwordConfirmation &&
+                    errors?.passwordConfirmation
+                  }
+                  onClick={() => setShow((prev) => !prev)}
+                  password={show ? false : true}
+                  show
+                  type={show ? "text" : "password"}
+                />
+                <Text textAlign="end" mt="8px" color="#1C0203" fontSize="10px">
+                  Same password as above
+                </Text>
               </Box>
 
               <Button
+                mt="24px"
                 isLoading={isLoading}
                 isDisabled={!isValid || !dirty}
                 type="submit"
                 w="full"
               >
-                Send Reset Link
+                Change Password
               </Button>
             </Form>
           )}
@@ -126,4 +172,4 @@ const Reset = () => {
   );
 };
 
-export default Reset;
+export default ChangePassword;

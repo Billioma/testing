@@ -113,7 +113,7 @@ const CustomInput = ({
         )}
       </InputGroup>
       {error && (
-        <Text fontSize="12px" color="red">
+        <Text fontSize="11px" mt="8px" color="red">
           {error}
         </Text>
       )}

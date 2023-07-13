@@ -7,13 +7,30 @@ import { Button } from "@chakra-ui/button";
 import { initValues, validateSchema } from "../../utils/validation";
 import { Form, Formik } from "formik";
 import { useNavigate } from "react-router";
+import useCustomToast from "../../utils/notifications";
+import { useLogin } from "../../services/query/auth";
 
 const Login = () => {
   const [show, setShow] = useState(false);
   const navigate = useNavigate();
 
+  const { successToast, errorToast } = useCustomToast();
+  const { mutate, isLoading } = useLogin({
+    onSuccess: (res) => {
+      sessionStorage.setItem("user", JSON.stringify(res));
+      successToast("Logged In");
+      setTimeout(() => {
+        navigate("/dashboard");
+      }, 200);
+    },
+    onError: (err) => {
+      errorToast(
+        err?.response?.data?.message || err?.message || "An Error occured"
+      );
+    },
+  });
   const handleSubmit = (values = "") => {
-    console.log(values);
+    mutate(values);
   };
 
   return (
@@ -62,12 +79,12 @@ const Login = () => {
                   Email Address
                 </Text>
                 <CustomInput
-                  name="email"
+                  name="username"
                   mb
-                  value={values?.email}
+                  value={values?.username}
                   onChange={handleChange}
                   onBlur={handleBlur}
-                  error={errors?.email && touched?.email && errors?.email}
+                  error={errors?.username && touched?.username && errors?.username}
                   holder="Enter Email address"
                 />
               </Box>
@@ -118,7 +135,12 @@ const Login = () => {
                 </Text>
               </Flex>
 
-              <Button isDisabled={!isValid || !dirty} type="submit" w="full">
+              <Button
+                isLoading={isLoading}
+                isDisabled={!isValid || !dirty}
+                type="submit"
+                w="full"
+              >
                 Login
               </Button>
             </Form>

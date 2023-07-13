@@ -1,11 +1,15 @@
 import * as Yup from "yup";
 
-export const passwordRegex =
-  /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})/;
+export const passwordRegex = /^(?=.*[!@#$%^&*])/;
 
 export const initValues = {
-  email: "",
+  username: "",
   password: "",
+};
+
+export const passValues = {
+  password: "",
+  passwordConfirmation: "",
 };
 
 export const emailValue = {
@@ -19,17 +23,29 @@ export const signValues = {
   email: "",
   phone: "",
   password: "",
-  confirmPassword: "",
+  passwordConfirmation: "",
 };
 
 export const validateSchema = Yup.object().shape({
-  email: Yup.string().email().required("Email is required"),
+  username: Yup.string().email().required("Email is required"),
   password: Yup.string()
     .required("Password required")
     .matches(
       passwordRegex,
-      "Must Be More Than 8 Digits And Must Contain One Uppercase, One Lowercase, One Number and One Special Case Character"
+      "Minimum of 8 characters, and must contain at least one uppercase, one lowercase, one number and one special  character"
     ),
+});
+
+export const passSchema = Yup.object().shape({
+  password: Yup.string()
+    .required("Password is required")
+    .matches(
+      passwordRegex,
+      "Minimum of 8 characters, and must contain at least one uppercase, one lowercase, one number and one special  character"
+    ),
+  passwordConfirmation: Yup.string()
+    .required("Confirm password is required")
+    .oneOf([Yup.ref("password")], "Passwords do not match"),
 });
 
 export const signSchema = Yup.object().shape({
@@ -42,9 +58,9 @@ export const signSchema = Yup.object().shape({
     .min(8, "Password must be more than 8 characters")
     .matches(
       passwordRegex,
-      "Must Be More Than 8 Digits And Must Contain One Uppercase, One Lowercase, One Number and One Special Case Character"
+      "Minimum of 8 characters, and must contain at least one uppercase, one lowercase, one number and one special  character"
     ),
-  confirmPassword: Yup.string()
+  passwordConfirmation: Yup.string()
     .required("Confirm password is required")
     .oneOf([Yup.ref("password")], "Passwords do not match"),
 });

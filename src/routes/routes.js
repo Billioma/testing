@@ -3,13 +3,23 @@ import WithSuspense from "../components/loaders/WithSuspense";
 import { PUBLIC_PATHS, PRIVATE_PATHS } from "./constants";
 import { Navigate } from "react-router-dom";
 
-const { LOGIN, SIGNUP, RESET_PASS } = PUBLIC_PATHS;
+const { LOGIN, SIGNUP, RESET_PASS, RESET_SENT, CHANGE_PASS, CHANGE_SUCCESS } =
+  PUBLIC_PATHS;
 
 const { DASHBOARD } = PRIVATE_PATHS;
 
 const Login = WithSuspense(lazy(() => import("../pages/Authentication/Login")));
 const ResetPassword = WithSuspense(
   lazy(() => import("../pages/Authentication/ResetPassword"))
+);
+const ResetSent = WithSuspense(
+  lazy(() => import("../pages/Authentication/ResetSent"))
+);
+const ChangePassword = WithSuspense(
+  lazy(() => import("../pages/Authentication/ChangePassword"))
+);
+const ChangeSuccess = WithSuspense(
+  lazy(() => import("../pages/Authentication/ChangeSuccess"))
 );
 const Signup = WithSuspense(
   lazy(() => import("../pages/Authentication/Signup"))
@@ -21,7 +31,10 @@ const Dashboard = WithSuspense(
 export const PUBLIC_ROUTES = [
   { path: LOGIN, element: <Login /> },
   { path: RESET_PASS, element: <ResetPassword /> },
+  { path: CHANGE_PASS, element: <ChangePassword /> },
+  { path: CHANGE_SUCCESS, element: <ChangeSuccess /> },
   { path: SIGNUP, element: <Signup /> },
+  { path: RESET_SENT, element: <ResetSent /> },
   { path: "*", element: <Navigate to="/login" replace /> },
 ];
 export const PRIVATE_ROUTES = [

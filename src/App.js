@@ -2,7 +2,12 @@ import React, { useEffect } from "react";
 import Pages from "./routes";
 
 const App = () => {
-  const imagesToPreload = ["/assets/logo.svg"];
+  const imagesToPreload = [
+    "/assets/logo.svg",
+    "/assets/ezlogo.ong",
+    "/assets/park-right.png",
+    "/assets/park-left.png",
+  ];
 
   const preloadImages = () => {
     imagesToPreload.forEach((imagePath) => {

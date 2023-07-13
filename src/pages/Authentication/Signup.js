@@ -7,13 +7,30 @@ import { Button } from "@chakra-ui/button";
 import { signValues, signSchema } from "../../utils/validation";
 import { Form, Formik } from "formik";
 import { useNavigate } from "react-router";
+import { useRegister } from "../../services/query/auth";
+import useCustomToast from "../../utils/notifications";
 
 const Signup = () => {
   const [show, setShow] = useState(false);
   const navigate = useNavigate();
 
+  const { successToast, errorToast } = useCustomToast();
+  const { mutate, isLoading } = useRegister({
+    onSuccess: () => {
+      successToast("User created");
+      setTimeout(() => {
+        navigate("/login");
+      }, 200);
+    },
+    onError: (err) => {
+      errorToast(
+        err?.response?.data?.message || err?.message || "An Error occured"
+      );
+    },
+  });
+  
   const handleSubmit = (values = "") => {
-    console.log(values);
+    mutate(values);
   };
 
   return (
@@ -81,7 +98,7 @@ const Signup = () => {
                       touched?.firstName &&
                       errors?.firstName
                     }
-                    placeholder="Enter First Name"
+                    holder="Enter First Name"
                   />
                 </Box>
                 <Box w="full">
@@ -102,7 +119,7 @@ const Signup = () => {
                     error={
                       errors?.lastName && touched?.lastName && errors?.lastName
                     }
-                    placeholder="Enter Last Name"
+                    holder="Enter Last Name"
                   />
                 </Box>
               </Flex>
@@ -117,7 +134,7 @@ const Signup = () => {
                   onChange={handleChange}
                   onBlur={handleBlur}
                   error={errors?.email && touched?.email && errors?.email}
-                  placeholder="Enter Email address"
+                  holder="Enter Email address"
                 />
               </Box>
               <Box mt="15px">
@@ -132,7 +149,7 @@ const Signup = () => {
                   onChange={handleChange}
                   onBlur={handleBlur}
                   error={errors?.phone && touched?.phone && errors?.phone}
-                  placeholder="Enter Email address"
+                  holder="Enter Email address"
                 />
               </Box>
               <Box mt="15px">
@@ -141,7 +158,7 @@ const Signup = () => {
                 </Text>
                 <CustomInput
                   mb
-                  placeholder="Enter Password"
+                  holder="Enter Password"
                   value={values?.password}
                   onChange={handleChange}
                   onBlur={handleBlur}
@@ -161,15 +178,15 @@ const Signup = () => {
                 </Text>
                 <CustomInput
                   mb
-                  placeholder="Confirm Password"
-                  value={values?.confirmPassword}
+                  holder="Confirm Password"
+                  value={values?.passwordConfirmation}
                   onChange={handleChange}
                   onBlur={handleBlur}
-                  name="confirmPassword"
+                  name="passwordConfirmation"
                   error={
-                    errors?.confirmPassword &&
-                    touched?.confirmPassword &&
-                    errors?.confirmPassword
+                    errors?.passwordConfirmation &&
+                    touched?.passwordConfirmation &&
+                    errors?.passwordConfirmation
                   }
                   onClick={() => setShow((prev) => !prev)}
                   password={show ? false : true}
@@ -191,7 +208,12 @@ const Signup = () => {
                 <Text color="#646668">Accept terms and condition</Text>
               </Flex>
 
-              <Button isDisabled={!isValid || !dirty} type="submit" w="full">
+              <Button
+                isLoading={isLoading}
+                isDisabled={!isValid || !dirty}
+                type="submit"
+                w="full"
+              >
                 Create Account
               </Button>
             </Form>
