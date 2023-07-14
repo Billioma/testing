@@ -67,10 +67,12 @@ const Footer = () => {
             <div className="grid grid-cols-2 items-center gap-[24px]">
               {connect.map((dat, i) => (
                 <div key={i}>
-                  <img
-                    src={dat?.icon}
-                    className="cursor-pointer w-[20px] h-[20px]"
-                  />
+                  <a href={dat?.link} target="_blank" rel="noreferrer">
+                    <img
+                      src={dat?.icon}
+                      className="cursor-pointer w-[20px] h-[20px]"
+                    />
+                  </a>
                 </div>
               ))}
             </div>

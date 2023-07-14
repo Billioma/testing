@@ -68,21 +68,21 @@ export const services = [
   {
     id: 1,
     title: "Pay-to-Park",
-    desc: "Looking for or found a parking space? Want to valet your car? Search and pay for parking on-the-go in just a few taps.",
+    desc: "Search, find and pay for valet or self parking services on demand",
     pic: "/assets/pay-to-park.png",
     button: "Park Now",
   },
   {
     id: 2,
     title: "Reserve Parking",
-    desc: "Heading to a busy part of town? Avoid delays upon arrival by making a parking reservation ahead of time to save a spot.",
+    desc: "Reserve a parkins space in advance and avoid any delays when you arrive",
     pic: "/assets/reserve-parking.png",
     button: "Reserve and Park Later",
   },
   {
     id: 3,
     title: "Event Parking",
-    desc: "Attending an upcoming concert or festival? Save a parking spot in advance at the event and don’t miss any part of the show.",
+    desc: "Arrive an event and drive to your reserved parking space",
     pic: "/assets/event-parking.png",
     button: "Reserve Event Parking",
   },
@@ -155,21 +155,25 @@ export const connect = [
   {
     id: 1,
     name: "Facebook",
+    link: "https://web.facebook.com/EZParkLimited/?_rdc=1&_rdr",
     icon: "/assets/facebook_icon.png",
   },
   {
     id: 2,
     name: "Twitter",
+    link: "https://twitter.com/EZParkLimited",
     icon: "/assets/twitter_icon.png",
   },
   {
     id: 3,
     name: "Instagram",
+    link: "https://www.instagram.com/ezparklimited/",
     icon: "/assets/instagram_icon.png",
   },
   {
     id: 4,
     name: "LinkedIn",
+    link: "https://www.linkedin.com/company/ezpark-limited/",
     icon: "/assets/linkedin_icon.png",
   },
 ];
@@ -193,22 +197,22 @@ export const started = [
   {
     id: 1,
     img: "/assets/download.png",
-    text: "Download the ParkinSpace app or visit our website",
+    text: "Download app or visit our website",
   },
   {
     id: 2,
     img: "/assets/sign.png",
-    text: "Sign Up using your name, e-mail address and phone number",
+    text: "Sign Up for a free account",
   },
   {
     id: 3,
     img: "/assets/car.png",
-    text: "Enter your Vehicle details (Make, Model & License Plate Number)",
+    text: "Enter your Vehicle details",
   },
   {
     id: 4,
     img: "/assets/wallet.png",
-    text: "Add your preferred Payment Method onto your account",
+    text: "Start parking",
   },
 ];
 
@@ -225,22 +229,22 @@ export const payPark = [
   {
     id: 1,
     pic: "/assets/scan.png",
-    text: "Scan the QR code or enter the zone number on display using the   Parkin Space app",
+    text: "Scan the QR code or enter the zone number",
   },
   {
     id: 2,
     pic: "/assets/time.png",
-    text: "Select the amount of time you want to park",
+    text: "Select time",
   },
   {
     id: 3,
     pic: "/assets/wallet.png",
-    text: "Confirm payment to start your parking session",
+    text: "Confirm payment",
   },
   {
     id: 4,
     pic: "/assets/alerts.png",
-    text: "Get alerts when your time is about to expire and extend your parking session via the app.",
+    text: "Get alerts on your parking status",
   },
 ];
 

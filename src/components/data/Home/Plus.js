@@ -31,7 +31,7 @@ const Plus = () => {
                     <div className="flex flex-col gap-[24px]">
                       <div className="text-red font-bold">{data?.title}</div>
                       {data?.subs?.map((dat, i) => (
-                        <div key={i} className="text-[#444]">
+                        <div key={i} className="text-[#444] mb-[12px]">
                           {dat}
                         </div>
                       ))}
@@ -42,7 +42,7 @@ const Plus = () => {
                         <span className="text-red">Parkin</span>Space
                       </div>
                       {plus[0]?.subs?.map((dat, i) => (
-                        <div key={i}>
+                        <div key={i} className="mb-[20px]">
                           {i < 3 && <img src="/assets/check.png" />}
                         </div>
                       ))}
@@ -55,7 +55,7 @@ const Plus = () => {
                           Space Plus
                         </div>
                         {plus[0]?.subs?.map((i) => (
-                          <div key={i}>
+                          <div key={i} className="mb-[20px]">
                             <img src="/assets/check.png" />
                           </div>
                         ))}
