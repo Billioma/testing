@@ -9,12 +9,12 @@ export const Layout = ({ label, placeholder }) => {
       {label === "Message" ? (
         <textarea
           placeholder="Enter your message"
-          className="w-full bg-[#C4C6C8] h-[96px] text-sm border border-[#D4D6D8] rounded-[4px] p-[14px] text-[#242628] placeholder:text-[#242628]"
+          className="w-full bg-[#E4E6E8] h-[96px] text-sm border border-[#D4D6D8] rounded-[4px] p-[14px] text-[#242628] placeholder:text-[#242628]"
         />
       ) : (
         <input
           placeholder={placeholder}
-          className="w-full bg-[#C4C6C8] text-sm border border-[#D4D6D8] rounded-[4px] p-[14px] text-[#242628] placeholder:text-[#242628]"
+          className="w-full bg-[#E4E6E8] text-sm border border-[#D4D6D8] rounded-[4px] p-[14px] text-[#242628] placeholder:text-[#242628]"
         />
       )}
     </div>
@@ -25,7 +25,7 @@ const Contact = () => {
   return (
     <div className="full_width">
       <div className="relative bg-white px-[20px] lg:px-[120px] pt-[100px] pb-[56px] lg:pb-[60px] lg:pt-[150px]">
-        <div className="text-center font-[Cooper] text-[#242628] text-[40px] lg:text-[60px] font-[900]">
+        <div className="text-center font-[Cooper] text-[#242628] text-[40px] lg:text-[64px] font-[900]">
           Contact us
         </div>
         <div className="flex flex-col justify-center items-center">
@@ -45,7 +45,7 @@ const Contact = () => {
               <Layout label="Message" />
             </div>
 
-            <button className="rounded-[4px] bg-[#242628] mt-[8px] py-[15px] w-full lg:w-[40%] text-sm text-white font-medium">
+            <button className="rounded-[4px] bg-[#0D0718] mt-[8px] py-[15px] w-full lg:w-[40%] text-sm text-white font-medium">
               Send
             </button>
           </div>

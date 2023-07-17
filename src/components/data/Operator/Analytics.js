@@ -1,5 +1,4 @@
 import React from "react";
-
 const Analytics = () => {
   return (
     <div className="full_width">
@@ -19,7 +18,7 @@ const Analytics = () => {
 
             <div className="mt-[32px] w-[70%] md:w-[50%]">
               <button className="w-full py-[17px] text-black text-sm bg-white">
-                Sign up
+                Sign Up
               </button>
             </div>
           </div>

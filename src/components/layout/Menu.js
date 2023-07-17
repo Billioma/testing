@@ -40,7 +40,7 @@ const Menu = ({ isOpen, onClose }) => {
             onClick={onClose}
             className="w-full text-white bg-red rounded-[4px] py-[12px]"
           >
-            Sign up
+            Sign Up
           </button>
         </div>
       </div>

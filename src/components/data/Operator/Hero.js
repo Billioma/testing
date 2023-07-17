@@ -10,7 +10,7 @@ const Hero = () => {
 
       <div className="z-[100] flex flex-col justify-center h-[80vh] md:h-screen items-center">
         <div className="flex justify-center items-center w-full">
-          <div className="text-white text-center text-[32px] md:text-[60px] font-[900] leading-[128%] md:w-[70%] font-[Cooper]">
+          <div className="text-white text-center text-[32px] md:text-[64px] font-[900] leading-[128%] md:w-[70%] font-[Cooper]">
             ParkinSpace operator provides solutions for parking providers
           </div>
         </div>

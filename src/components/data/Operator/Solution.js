@@ -10,7 +10,7 @@ const Solution = () => {
             <img src="/assets/soln.png" />
           </div>
           <div className="w-full">
-            <div className="text-[#242424] text-[32px] md:text-[60px] font-[900] font-[Cooper]">
+            <div className="text-[#242424] text-[32px] md:text-[64px] font-[900] font-[Cooper]">
               Our solution offers these benefits
             </div>
 

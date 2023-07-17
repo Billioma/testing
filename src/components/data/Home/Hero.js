@@ -11,7 +11,7 @@ const Hero = () => {
               <span className="text-red">parking services</span> across Nigeria
             </div>
 
-            <div className="font-medium mt-[15px] md:mt-[40px] w-[80%] text-sm md:text-[18px] leading-[120%]">
+            <div className="font-medium mt-[15px] md:mt-[40px] w-[80%] text-sm md:text-[16px] leading-[120%]">
               Download our free app on
             </div>
 
@@ -31,10 +31,10 @@ const Hero = () => {
 
             <div className="flex items-center gap-[12px]">
               <input
-                className="bg-[#F4F6F8] text-[12px] lg:text-base rounded-[4px] placeholder:text-[#242424] text-[#242424] border border-[#D4D6D8] px-[16px] font-medium w-[100%] md:w-[230px] lg:w-[280px] py-[12px] lg:py-[15px]"
+                className="bg-[#F4F6F8] text-[12px] lg:text-sm rounded-[4px] placeholder:text-[#242424] text-[#242424] border border-[#D4D6D8] px-[16px] font-medium w-[100%] md:w-[230px] lg:w-[280px] py-[12px] lg:py-[15px]"
                 placeholder="enter your email address"
               />
-              <button className="px-[16px] bg-[#EE383A] font-medium rounded-[4px] md:py-[15px] py-[12px] w-[100%] lg:w-[unset] text-[12px] lg:text-base text-white">
+              <button className="px-[16px] bg-[#EE383A] font-medium rounded-[4px] md:py-[15px] py-[12px] w-[100%] lg:w-[unset] text-[12px] lg:text-sm text-white">
                 Get download link
               </button>
             </div>

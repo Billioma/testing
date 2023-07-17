@@ -47,9 +47,6 @@ const Header = () => {
                       <div className="drop z-[999999]">
                         {data.sub?.map((item, i) => (
                           <div className="dropdown-text" key={i}>
-                            <div className="text-[#101410] mb-[24px] text-sm font-[700]">
-                              {item?.title}
-                            </div>
                             {item?.subs?.map((dat, i) => (
                               <div
                                 key={i}
@@ -73,7 +70,7 @@ const Header = () => {
           <div className="mt-[15px] sm:hidden lg:flex gap-[24px] items-center w-[30%]">
             <button className="text-[#EE383A] bg-transparent">Login</button>
             <button className="text-white bg-red rounded-[4px] w-[156px] py-[12px]">
-              Sign up
+              Sign Up
             </button>
           </div>
         </div>

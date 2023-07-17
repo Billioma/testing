@@ -41,7 +41,7 @@ const OperatorMenu = ({ isOpen, onClose }) => {
             onClick={onClose}
             className="w-full text-white bg-[#0D0718] rounded-[4px] py-[12px]"
           >
-            Sign up
+            Sign Up
           </button>
         </div>
       </div>

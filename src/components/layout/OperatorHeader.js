@@ -22,27 +22,15 @@ const OperatorHeader = () => {
         <div className="flex items-center w-full justify-between">
           <div className="w-[100%]">
             {scroll ? (
-              <>
-                <img
-                  src="/assets/alt-logo.svg"
-                  className="flex lg:hidden w-[134px] h-[28px]"
-                />
-                <img
-                  src="/assets/alt-logo.svg"
-                  className="hidden lg:flex w-[268px] h-[56px]"
-                />
-              </>
+              <img
+                src="/assets/alt-loggo.svg"
+                className="w-[154px] h-[28px] lg:w-[265px] lg:h-[37px]"
+              />
             ) : (
-              <>
-                <img
-                  src="/assets/logo.svg"
-                  className="flex lg:hidden w-[134px] h-[28px]"
-                />
-                <img
-                  src="/assets/logo.svg"
-                  className="hidden lg:flex w-[268px] h-[56px]"
-                />
-              </>
+              <img
+                src="/assets/alt-logo.svg"
+                className="w-[154px] h-[28px] lg:w-[265px] lg:h-[37px]"
+              />
             )}
           </div>
 
@@ -53,23 +41,15 @@ const OperatorHeader = () => {
             <HiOutlineMenuAlt3 size="24px" />
           </div>
 
-          <div className="w-full flex sm:hidden lg:flex mt-[15px] items-center justify-between text-sm gap-[28px]">
-            <div className="flex w-full items-center gap-[28px]">
-              {operatorMenu.map((data, i) => (
-                <div
-                  key={i}
-                  className="hover-underlinee-animation cursor-pointer"
-                >
-                  {data}
-                </div>
-              ))}
-              <div className="flex gap-[24px] items-center w-[30%]">
-                <button className="bg-transparent">Login</button>
-                <button className="text-white bg-[#0D0718] rounded-[4px] w-[156px] py-[12px]">
-                  Sign up
-                </button>
+          <div className="w-full flex sm:hidden justify-end lg:flex mt-[15px] items-center text-sm gap-[32px]">
+            {operatorMenu.map((data, i) => (
+              <div
+                key={i}
+                className="hover-underlinee-animation cursor-pointer"
+              >
+                {data}
               </div>
-            </div>
+            ))}
           </div>
         </div>
       </div>

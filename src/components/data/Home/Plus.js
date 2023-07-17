@@ -10,12 +10,12 @@ const Plus = () => {
     <div className="full_width" id="plus">
       <div className="bg-[#F4F6F8] px-[20px] lg:px-[120px] py-[56px] lg:py-[100px] flex flex-col justify-center items-center">
         <div className="w-full lg:w-[54%]">
-          <div className="text-[#242424] text-center text-[32px] lg:text-[60px] leading-[128%] font-[Cooper]">
+          <div className="text-[#242424] text-center text-[32px] lg:text-[64px] leading-[128%] font-[Cooper]">
             <span className="text-red">Parkin</span>Space Plus
           </div>
 
           <div className="flex flex-col justify-center items-center w-full">
-            <div className="mt-[15px] w-[100%] text-center text-[#444] text-sm lg:text-base leading-[150%]">
+            <div className="mt-[15px] w-[100%] text-center text-[#444] text-sm lg:text-[18px] leading-[150%]">
               Enjoy an upgraded experience with great benefits when you
               subscribe to a monthly plan for a fee
             </div>

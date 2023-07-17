@@ -16,13 +16,13 @@ const GettingStarted = () => {
                   Getting started with
                 </span>
                 <br />
-                <div className="my-[5px] text-white lg:my-[8px] font-[Cooper] text-[45px] lg:text-[60px] leading-[120%]">
+                <div className="my-[5px] text-white lg:my-[8px] font-[Cooper] text-[45px] lg:text-[64px] leading-[120%]">
                   <span className="text-red">Parkin</span>Space
                 </div>
 
-                <div className="mt-[32px] justify-center lg:justify-start flex items-center font-medium text-sm gap-[24px]">
+                <div className="mt-[32px] justify-center lg:justify-start flex items-center font-medium text-sm">
                   <button className="bg-red rounded-[4px] px-[34px] py-[10px] text-white ">
-                    Sign up
+                    Sign Up
                   </button>
                 </div>
               </div>
@@ -35,7 +35,7 @@ const GettingStarted = () => {
                       className="mb-[40px] flex items-center gap-[20px] lg:gap-[40px]"
                     >
                       <div className="relative">
-                        <div className="text-white bg-[#EE383A] font-bold h-[30px] lg:h-[40px] w-[30px] lg:w-[40px] rounded-full flex flex-col justify-center items-center">
+                        <div className="text-white text-[20px] bg-[#EE383A] font-bold h-[30px] lg:h-[40px] w-[30px] lg:w-[40px] rounded-full flex flex-col justify-center items-center">
                           {data.id}
                         </div>
                         {i !== 3 && (
