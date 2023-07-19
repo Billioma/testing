@@ -40,7 +40,7 @@ const Header = () => {
       flexDirection="column"
       bg="#fff"
       pos="fixed"
-      w={isMobile ? "calc(100% - 103px)" : "calc(100% - 390px)"}
+      w={isMobile ? "calc(100% - 85px)" : "calc(100% - 390px)"}
       borderRadius="24px"
       zIndex="5"
       py={isMobile ? "30px" : "20px"}
