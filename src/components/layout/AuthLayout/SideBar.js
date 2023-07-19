@@ -29,7 +29,7 @@ const SideBar = () => {
       pt="40px"
       h="89vh"
       px="24px"
-      w="280px"
+      w="275px"
       borderRadius="40px"
       bg="#fff"
     >

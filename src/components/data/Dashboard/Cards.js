@@ -34,7 +34,7 @@ const Cards = () => {
             py="24px"
             px="20px"
             borderRadius="16px"
-            h="26vh"
+            h="28vh"
             w="full"
           >
             <Flex align="center" gap="16px">
@@ -90,7 +90,7 @@ const Cards = () => {
             py="24px"
             px="20px"
             borderRadius="16px"
-            h="26vh"
+            h="28vh"
             w="full"
           >
             <Flex align="center" gap="16px">
@@ -224,7 +224,7 @@ const Cards = () => {
               py="24px"
               px="20px"
               borderRadius="16px"
-              h="26vh"
+              h="28vh"
               w="full"
             >
               <Flex align="center" gap="16px">
