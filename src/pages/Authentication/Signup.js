@@ -39,7 +39,7 @@ const Signup = () => {
       justifyContent="center"
       w="full"
       align="center"
-      h={{ base: "unset", md: "100vh" }}
+      h={{ base: "110vh", md: "105vh" }}
       py={{ base: "40px", md: "40px" }}
       flexDir="column"
     >
@@ -49,10 +49,10 @@ const Signup = () => {
         flexDir="column"
       >
         <Flex justifyContent="center" align="center" flexDir="column">
-          <Image src="/assets/logo.svg" w="364px" h="56px" />
+          <Image src="/assets/logo.svg" w="314px" h="45px" />
         </Flex>
 
-        <Text textAlign="center" fontSize="24px" mt="15px" fontWeight={700}>
+        <Text textAlign="center" fontSize="24px" mt="10px" fontWeight={700}>
           Sign Up
         </Text>
 
@@ -73,7 +73,7 @@ const Signup = () => {
           }) => (
             <Form onSubmit={handleSubmit}>
               <Flex
-                mt="15px"
+                mt="10px"
                 w="full"
                 flexDir={{ base: "column", md: "row" }}
                 align="center"
@@ -124,7 +124,7 @@ const Signup = () => {
                   />
                 </Box>
               </Flex>
-              <Box mt="15px">
+              <Box mt="10px">
                 <Text mb="8px" fontWeight={500} color="#444648" fontSize="10px">
                   Email Address
                 </Text>
@@ -138,7 +138,7 @@ const Signup = () => {
                   holder="Enter Email address"
                 />
               </Box>
-              <Box mt="15px">
+              <Box mt="10px">
                 <Text mb="8px" fontWeight={500} color="#444648" fontSize="10px">
                   Phone Number
                 </Text>
@@ -163,7 +163,7 @@ const Signup = () => {
                   holder="Enter Email address"
                 />
               </Box>
-              <Box mt="15px">
+              <Box mt="10px">
                 <Text mb="8px" fontWeight={500} color="#444648" fontSize="10px">
                   Password
                 </Text>
@@ -183,7 +183,7 @@ const Signup = () => {
                   type={show ? "text" : "password"}
                 />
               </Box>
-              <Box mt="15px">
+              <Box mt="10px">
                 <Text mb="8px" fontWeight={500} color="#444648" fontSize="10px">
                   Confirm Password
                 </Text>
@@ -214,7 +214,7 @@ const Signup = () => {
                   Same password as above
                 </Text>
               </Box>
-              <Flex fontSize="12px" my="24px" w="full" gap="8px" align="center">
+              <Flex fontSize="12px" my="10px" w="full" gap="8px" align="center">
                 <Checkbox
                   checked={isChecked}
                   onChange={(e) => setIsChecked(e.target.checked)}
@@ -234,7 +234,7 @@ const Signup = () => {
           )}
         </Formik>
 
-        <Text textAlign="center" mt="25px" color="#646668" fontSize="14px">
+        <Text textAlign="center" mt="20px" color="#646668" fontSize="14px">
           Already have an account ?{" "}
           <span
             onClick={() => navigate("/customer/auth/login")}

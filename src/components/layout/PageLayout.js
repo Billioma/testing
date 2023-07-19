@@ -42,6 +42,7 @@ export const AuthLayout = ({ children }) => {
 
 export const NonAuthLayout = ({ children }) => {
   const location = useLocation();
+  const [isMobile] = useMediaQuery("(max-width: 991px)");
   return (
     <Flex flexDir="column" pos="relative" h="100vh">
       <Image
@@ -60,7 +61,13 @@ export const NonAuthLayout = ({ children }) => {
         src="/assets/park-left.png"
       />
       <Flex
-        h={location.pathname === "/customer/auth/signup" ? "100vh" : "90vh"}
+        h={
+          isMobile
+            ? location.pathname === "/customer/auth/signup"
+              ? "80vh"
+              : "90vh"
+            : "90vh"
+        }
         flexDir="column"
         justifyContent="center"
         align="center"
@@ -74,7 +81,7 @@ export const NonAuthLayout = ({ children }) => {
             Powered by
           </Text>
           <Image
-            mb={location.pathname === "/customer/auth/signup" ? "20px" : "0"}
+            mb={location.pathname === "/customer/auth/signup" ? "0" : "0"}
             src="/assets/ezlogo.png"
           />
         </Flex>
