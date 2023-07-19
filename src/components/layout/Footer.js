@@ -14,6 +14,8 @@ const Footer = () => {
               Download our free App
             </div>
 
+            <p>Download our app to get one free parking at select locations in Lagos and Abuja with the links below</p>
+
             <div className="hidden lg:flex items-center gap-[24px] w-full">
               <img src="/assets/play-store.png" className="cursor-pointer" />
               <img src="/assets/app-store.png" className="cursor-pointer" />
