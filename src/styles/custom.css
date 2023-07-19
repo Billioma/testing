@@ -4,23 +4,23 @@
 ::-webkit-scrollbar {
   width: 6px;
   border-radius: 8px;
-  background-color: rgba(0, 0, 0, 0.05);
+  background-color: transparent;
 }
 
 ::-webkit-scrollbar-thumb {
-  background-color: #0f172b;
+  background-color: transparent;
 }
 
 /* Firefox */
 /* For Firefox 64+ */
 * {
-  scrollbar-color: #0f172b rgba(0, 0, 0, 0.05);
+  scrollbar-color: transparent transparent;
   scrollbar-width: thin;
 }
 
 /* For Firefox 63 and below */
 * {
-  scrollbar-color: #0f172b rgba(0, 0, 0, 0.05);
+  scrollbar-color: transparent transparent;
 }
 
 /* Microsoft Edge and IE */
@@ -31,9 +31,25 @@
 *::-webkit-scrollbar {
   width: 6px;
   border-radius: 8px;
-  background-color: rgba(0, 0, 0, 0.05);
+  background-color: transparent;
 }
 
 *::-webkit-scrollbar-thumb {
-  background-color: #0f172b;
+  background-color: transparent;
+}
+
+.hovered_image {
+  display: none;
+}
+.parent_nav:hover .child_nav {
+  color: #ee383a;
+  border-color: #ee383a;
+}
+
+.parent_nav:hover .hovered_image {
+  display: flex;
+}
+
+.parent_nav:hover .initial_image {
+  display: none;
 }

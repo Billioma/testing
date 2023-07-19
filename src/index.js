@@ -21,15 +21,14 @@ const queryClient = new QueryClient({
   },
 });
 
-
 root.render(
   <React.StrictMode>
     <ChakraProvider theme={customTheme}>
       <QueryClientProvider client={queryClient}>
-      <Fonts />
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
+        <Fonts />
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
       </QueryClientProvider>
     </ChakraProvider>
   </React.StrictMode>

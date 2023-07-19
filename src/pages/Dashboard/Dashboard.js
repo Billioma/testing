@@ -1,16 +1,16 @@
 import React from "react";
-import { Button, Flex } from "@chakra-ui/react";
-import { useLogOut } from "../../utils/helpers";
+import { Box } from "@chakra-ui/react";
+import Cards from "../../components/data/Dashboard/Cards";
+import Services from "../../components/data/Dashboard/Services";
+import ActiveSessions from "../../components/data/Dashboard/ActiveSessions";
 
 const Dashboard = () => {
-  const logout = useLogOut();
   return (
-    <div>
-      Dashboard
-      <Flex justifyContent="flex-end">
-        <Button onClick={logout}>Log Out</Button>
-      </Flex>
-    </div>
+    <Box minH="75vh">
+      <Cards />
+      <Services />
+      <ActiveSessions />
+    </Box>
   );
 };
 

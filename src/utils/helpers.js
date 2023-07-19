@@ -1,9 +1,8 @@
 export const useLogOut = () => {
-    return () => {
-      sessionStorage.clear();
-      setTimeout(() => {
-        window.location.href = "/login";
-      }, 500);
-    };
+  return () => {
+    sessionStorage.clear();
+    setTimeout(() => {
+      window.location.href = "/customer/auth/login";
+    }, 500);
   };
-  
+};

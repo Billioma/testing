@@ -10,6 +10,7 @@
     "react/jsx-key": "off",
     "react/display-name": "off",
     "jsx-a11y/no-autofocus": "off",
+    "react/no-unknown-property": "off",
     "no-undef": "off",
     "no-constant-condition": "off",
     "jsx-a11y/no-static-element-interactions": "off",

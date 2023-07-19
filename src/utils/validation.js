@@ -8,8 +8,6 @@ export const initValues = {
   password: "",
 };
 
-
-
 export const passValues = {
   password: "",
   passwordConfirmation: "",

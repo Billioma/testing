@@ -1,7 +1,6 @@
 import React from "react";
 import { Image } from "@chakra-ui/image";
 import { Flex, Text } from "@chakra-ui/layout";
-import { Button } from "@chakra-ui/button";
 import { useNavigate } from "react-router";
 
 const ChangeSuccess = () => {
@@ -40,7 +39,7 @@ const ChangeSuccess = () => {
             fontSize="14px"
             cursor="pointer"
             color="3646668"
-            onClick={() => navigate("/login")}
+            onClick={() => navigate("/customer/auth/login")}
           >
             Back to <span style={{ color: "red" }}>Login</span>
           </Text>

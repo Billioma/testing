@@ -18,6 +18,9 @@ export const register = async (body) => {
 };
 
 export const updatePassword = async ({ query, body }) => {
-  const res = await axiosInstance.post(API.CHANGE_PASSWORD(query.id, query.hash), body);
+  const res = await axiosInstance.post(
+    API.CHANGE_PASSWORD(query.id, query.hash),
+    body
+  );
   return res.data;
 };

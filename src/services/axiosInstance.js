@@ -34,13 +34,6 @@ const onResponse = (response) => {
 };
 
 const onResponseError = (error) => {
-  const statusCode = error?.response?.status;
-  // if (statusCode === 401) {
-  //   sessionStorage.removeItem("user");
-  //   setTimeout(() => {
-  //     window.location.href = "/login";
-  //   }, 500);
-  // }
   return Promise.reject(error);
 };
 

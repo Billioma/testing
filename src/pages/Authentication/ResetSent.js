@@ -46,7 +46,9 @@ const ResetSent = () => {
           align="center"
           mt="32px"
         >
-          <Button onClick={() => navigate("/login")}>Back to Login</Button>
+          <Button onClick={() => navigate("/customer/auth/login")}>
+            Back to Login
+          </Button>
         </Flex>
       </Flex>
     </Flex>

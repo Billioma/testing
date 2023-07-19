@@ -4,9 +4,20 @@ import Pages from "./routes";
 const App = () => {
   const imagesToPreload = [
     "/assets/logo.svg",
+    "/assets/calendar.png",
+    "/assets/car.png",
+    "/assets/card.png",
+    "/assets/location.svg",
     "/assets/ezlogo.ong",
     "/assets/park-right.png",
     "/assets/park-left.png",
+    "/assets/park-spot.png",
+    "/assets/park.png",
+    "/assets/service.png",
+    "/assets/user.png",
+    "/assets/wallet.png",
+    "/assets/car-icon.svg",
+    "/assets/clock-icon.svg",
   ];
 
   const preloadImages = () => {

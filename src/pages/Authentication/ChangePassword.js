@@ -5,11 +5,13 @@ import CustomInput from "../../components/common/CustomInput";
 import { Button } from "@chakra-ui/button";
 import { Form, Formik } from "formik";
 import { useNavigate } from "react-router";
+import { useParams } from "react-router-dom";
 import { useUpdatePassword } from "../../services/query/auth";
 import useCustomToast from "../../utils/notifications";
 import { passValues, passSchema } from "../../utils/validation";
 
 const ChangePassword = () => {
+  const { id, hash } = useParams();
   const [show, setShow] = useState(false);
   const navigate = useNavigate();
 
@@ -17,7 +19,6 @@ const ChangePassword = () => {
   const { mutate, isLoading } = useUpdatePassword({
     onSuccess: (res) => {
       successToast(res?.message);
-      navigate("/password-success");
     },
     onError: (err) => {
       errorToast(
@@ -27,9 +28,6 @@ const ChangePassword = () => {
   });
 
   const handleSubmit = (values) => {
-    const id = "id";
-    const hash = "hash";
-
     mutate({
       query: { id, hash },
       body: values,
@@ -161,7 +159,7 @@ const ChangePassword = () => {
         <Text textAlign="center" mt="32px" color="#646668" fontSize="14px">
           Don't have an account ?{" "}
           <span
-            onClick={() => navigate("/signup")}
+            onClick={() => navigate("/customer/auth/signup")}
             style={{ color: "red", fontWeight: 500, cursor: "pointer" }}
           >
             Sign Up

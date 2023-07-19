@@ -2,15 +2,40 @@ import React from "react";
 import { Image } from "@chakra-ui/image";
 import { Box, Flex, Text } from "@chakra-ui/layout";
 import { useLocation } from "react-router-dom";
+import { useMediaQuery } from "@chakra-ui/react";
+import Header from "./AuthLayout/Header";
+import SideBar from "./AuthLayout/SideBar";
 
 export const AuthLayout = ({ children }) => {
+  const [isMobile] = useMediaQuery("(max-width: 991px)");
+
   return (
-    <Box>
-      <Flex justifyContent="center" align="center">
-        <Box w={{ base: "full", lg: "1295px" }} minH="100vh" px="20px">
-          {children}
+    <Box color="#000" fontFamily="Sailec" h="100vh" bg="#fff" p="24px">
+      <Box
+        py="24px"
+        px={isMobile ? "5px" : "24px"}
+        bg="#F4F6F8"
+        overflowX="hidden"
+        borderRadius="40px"
+      >
+        <Box mx={!isMobile ? "310px" : "20px"}>
+          <Header />
         </Box>
-      </Flex>
+        {!isMobile && <SideBar />}
+        <Box overflow="auto" className="no_scroller">
+          <Box
+            w="100%"
+            pt={isMobile ? "150px" : "95px"}
+            color="#828282"
+            maxHeight="89vh"
+            pl={!isMobile ? "310px" : "20px"}
+            pr={!isMobile ? "" : "20px"}
+            pb={10}
+          >
+            {children}
+          </Box>
+        </Box>
+      </Box>
     </Box>
   );
 };

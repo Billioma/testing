@@ -12,11 +12,10 @@ import useCustomToast from "../../utils/notifications";
 const Reset = () => {
   const navigate = useNavigate();
 
-  const { successToast, errorToast } = useCustomToast();
+  const { errorToast } = useCustomToast();
   const { mutate, isLoading } = useResetPassword({
-    onSuccess: (res) => {
-      successToast(res?.message);
-      navigate("/reset-success");
+    onSuccess: () => {
+      navigate("/customer/auth/reset-success");
     },
     onError: (err) => {
       errorToast(
@@ -115,7 +114,7 @@ const Reset = () => {
         <Text textAlign="center" mt="32px" color="#646668" fontSize="14px">
           Don't have an account ?{" "}
           <span
-            onClick={() => navigate("/signup")}
+            onClick={() => navigate("/customer/auth/signup")}
             style={{ color: "red", fontWeight: 500, cursor: "pointer" }}
           >
             Sign Up

@@ -132,25 +132,17 @@ export const customTheme = extendTheme({
           bgColor: "red",
           borderRadius: "4px",
           color: "#fff",
+          transition: ".3s ease-in-out",
           fontSize: "14px",
           fontWeight: "500",
           _hover: {
-            bgColor: "orangeColor",
-            color: "#fff",
+            opacity: 0.9,
           },
           _disabled: {
             _hover: {
               border: "1px solid #7B47CC",
               color: "red",
             },
-          },
-          _focus: {
-            bgColor: "",
-            color: "#fff",
-          },
-          _active: {
-            bgColor: "orangeColor",
-            color: "#fff",
           },
         },
         secondary: {
@@ -168,14 +160,6 @@ export const customTheme = extendTheme({
               border: "1px solid #F3C948",
               color: "orangeColor",
             },
-          },
-          _focus: {
-            bgColor: "",
-            color: "#fff",
-          },
-          _active: {
-            bgColor: "red",
-            color: "#fff",
           },
         },
       },

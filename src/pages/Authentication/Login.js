@@ -14,13 +14,12 @@ const Login = () => {
   const [show, setShow] = useState(false);
   const navigate = useNavigate();
 
-  const { successToast, errorToast } = useCustomToast();
+  const { errorToast } = useCustomToast();
   const { mutate, isLoading } = useLogin({
     onSuccess: (res) => {
       sessionStorage.setItem("user", JSON.stringify(res));
-      successToast("Logged In");
       setTimeout(() => {
-        navigate("/dashboard");
+        navigate("/customer/dashboard");
       }, 200);
     },
     onError: (err) => {
@@ -84,7 +83,9 @@ const Login = () => {
                   value={values?.username}
                   onChange={handleChange}
                   onBlur={handleBlur}
-                  error={errors?.username && touched?.username && errors?.username}
+                  error={
+                    errors?.username && touched?.username && errors?.username
+                  }
                   holder="Enter Email address"
                 />
               </Box>
@@ -126,7 +127,7 @@ const Login = () => {
                 </Flex>
 
                 <Text
-                  onClick={() => navigate("/reset-password")}
+                  onClick={() => navigate("/customer/auth/forgot-password")}
                   cursor="pointer"
                   fontWeight={700}
                   color="red"
@@ -150,7 +151,7 @@ const Login = () => {
         <Text textAlign="center" mt="32px" color="#646668" fontSize="14px">
           Don't have an account ?{" "}
           <span
-            onClick={() => navigate("/signup")}
+            onClick={() => navigate("/customer/auth/signup")}
             style={{ color: "red", fontWeight: 500, cursor: "pointer" }}
           >
             Sign Up

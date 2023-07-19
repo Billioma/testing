@@ -19,7 +19,7 @@ const Signup = () => {
     onSuccess: () => {
       successToast("User created");
       setTimeout(() => {
-        navigate("/login");
+        navigate("/customer/auth/login");
       }, 200);
     },
     onError: (err) => {
@@ -237,7 +237,7 @@ const Signup = () => {
         <Text textAlign="center" mt="25px" color="#646668" fontSize="14px">
           Already have an account ?{" "}
           <span
-            onClick={() => navigate("/login")}
+            onClick={() => navigate("/customer/auth/login")}
             style={{ color: "red", fontWeight: 500, cursor: "pointer" }}
           >
             Login

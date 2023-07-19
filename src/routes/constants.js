@@ -1,12 +1,16 @@
 export const PUBLIC_PATHS = {
-  LOGIN: "/login",
-  RESET_PASS: "/reset-password",
-  CHANGE_PASS: "/change-password",
-  CHANGE_SUCCESS: "/password-success",
-  RESET_SENT: "/reset-success",
-  SIGNUP: "/signup",
+  LOGIN: "/customer/auth/login",
+  RESET_PASS: "/customer/auth/forgot-password",
+  CHANGE_PASS: "/customer/auth/password-reset/:id/:hash",
+  CHANGE_SUCCESS: "/customer/auth/password-success",
+  RESET_SENT: "/customer/auth/reset-success",
+  SIGNUP: "/customer/auth/signup",
 };
 
 export const PRIVATE_PATHS = {
-  DASHBOARD: "/dashboard",
+  DASHBOARD: "/customer/dashboard",
+  SERVICES: "/customer/services",
+  SUBSCRIPTION: "/customer/subscriptions",
+  HISTORY: "/customer/history",
+  HELP_CENTER: "/customer/help-center",
 };
