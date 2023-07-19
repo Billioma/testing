@@ -60,13 +60,13 @@ export const NonAuthLayout = ({ children }) => {
         src="/assets/park-left.png"
       />
       <Flex
-        h={location.pathname === "/signup" ? "100vh" : "90vh"}
+        h={location.pathname === "/customer/auth/signup" ? "100vh" : "90vh"}
         flexDir="column"
         justifyContent="center"
         align="center"
         w="full"
       >
-        <Box w={{ base: "full", lg: "1295px" }} minH="110vh" px="20px">
+        <Box w={{ base: "full", lg: "1295px" }} minH="100vh" px="20px">
           {children}
         </Box>
         <Flex mt="auto" flexDir="column" justifyContent="center" align="center">
@@ -74,7 +74,7 @@ export const NonAuthLayout = ({ children }) => {
             Powered by
           </Text>
           <Image
-            mb={location.pathname === "/signup" ? "20px" : "0"}
+            mb={location.pathname === "/customer/auth/signup" ? "20px" : "0"}
             src="/assets/ezlogo.png"
           />
         </Flex>
