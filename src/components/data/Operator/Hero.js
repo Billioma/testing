@@ -16,7 +16,7 @@ const Hero = () => {
         </div>
         <div className="mt-[24px] text-[18px] text-center md:w-[50%] leading-[150%] text-white flex justify-center items-center">
           ParkinSpace Operator is our easy-to-use, web-based technology solution
-          for parking providers that fosters simplifies the management of
+          for parking providers that fosters and simplifies the management of
           daily parking operations
         </div>
 

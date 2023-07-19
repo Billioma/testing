@@ -130,24 +130,20 @@ export const mobileTwitterActions = [
 export const company = ["Lagos", "Abuja"];
 export const companies = [
   {
-    name: "About ParkinSpace",
+    name: "ParkinSpace",
     id: "/#about",
   },
   {
-    name: "Services",
-    id: "/#services",
+    name: "ParkinSpace Operator",
+    id: "/operators",
   },
   {
-    name: "ParkinSpace PLUS",
-    id: "/#plus",
+    name: "Clients",
+    id: "/#",
   },
   {
-    name: "Getting Started",
-    id: "/#start",
-  },
-  {
-    name: "How it Work",
-    id: "/#how",
+    name: "Terms & Conditions",
+    id: "/#",
   },
 ];
 
@@ -179,10 +175,10 @@ export const connect = [
 ];
 
 export const information = [
-  { name: "Contact Us", link: "/contact-us" },
-  { name: "Terms & Conditions", link: "" },
-  { name: "Frequently Asked Questions", link: "" },
-  { name: "Careers", link: "" },
+  { name: "Call us", link: "#" },
+  { name: "Blog", link: "#" },
+  { name: "FAQ", link: "#" },
+  { name: "Locations", link: "#" },
 ];
 
 export const operatorMenu = [

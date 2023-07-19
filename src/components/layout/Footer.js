@@ -1,5 +1,5 @@
 import React from "react";
-import { companies, company, connect, information } from "../common/constants";
+import { companies, information } from "../common/constants";
 import { useNavigate } from "react-router-dom";
 
 const Footer = () => {
@@ -14,7 +14,10 @@ const Footer = () => {
               Download our free App
             </div>
 
-            <p>Download our app to get one free parking at select locations in Lagos and Abuja with the links below</p>
+            <p>
+              Download our app to get one free parking at select locations in
+              Lagos and Abuja with the links below
+            </p>
 
             <div className="hidden lg:flex items-center gap-[24px] w-full">
               <img src="/assets/play-store.png" className="cursor-pointer" />
@@ -53,7 +56,7 @@ const Footer = () => {
             </div>
           </div>
 
-          <div className="hidden lg:flex flex-col gap-[24px]">
+          {/* <div className="hidden lg:flex flex-col gap-[24px]">
             <div className="font-medium">LOCATIONS</div>
             <div>
               {company.map((dat, i) => (
@@ -62,9 +65,9 @@ const Footer = () => {
                 </div>
               ))}
             </div>
-          </div>
+          </div> */}
 
-          <div className="hidden lg:flex flex-col gap-[24px]">
+          {/* <div className="hidden lg:flex flex-col gap-[24px]">
             <div className="font-medium">CONNECT</div>
             <div className="grid grid-cols-2 items-center gap-[24px]">
               {connect.map((dat, i) => (
@@ -78,24 +81,25 @@ const Footer = () => {
                 </div>
               ))}
             </div>
-          </div>
+          </div> */}
 
-          <div className="flex lg:hidden mt-[56px] justify-between w-full items-start">
-            <div className="flex flex-col gap-[24px]">
-              <div className="font-medium">CONNECT</div>
-              <div className="flex items-center gap-[16px]">
-                {connect.map((dat, i) => (
+          <div className="flex lg:hidden mt-[56px] w-full gap-5 items-start">
+            <div className="flex lg:hidden flex-col w-1/2 gap-[24px]">
+              <div className="font-medium">COMPANY</div>
+              <div>
+                {companies.map((dat, i) => (
                   <div
-                    className="mb-[21px] flex justify-start items-center gap-[8px] "
+                    onClick={() => (i === 0 ? navigate(dat?.link) : "")}
+                    className="cursor-pointer mb-[21px]"
                     key={i}
                   >
-                    <img src={dat?.icon} className="w-[16px] h-[16px]" />
+                    {dat?.name}
                   </div>
                 ))}
               </div>
             </div>
 
-            <div className="flex lg:hidden flex-col gap-[24px]">
+            <div className="flex lg:hidden w-1/2 flex-col gap-[24px]">
               <div className="font-medium">INFORMATION</div>
               <div>
                 {information.map((dat, i) => (
@@ -111,7 +115,7 @@ const Footer = () => {
             </div>
           </div>
 
-          <div className="flex lg:hidden mt-[40px] w-full flex-col justify-center items-center">
+          {/* <div className="flex lg:hidden mt-[40px] w-full flex-col justify-center items-center">
             <div className="flex  flex-col justify-center items-center gap-[24px]">
               <div className="font-medium">LOCATIONS</div>
               <div className="flex items-center gap-[24px]">
@@ -122,7 +126,7 @@ const Footer = () => {
                 ))}
               </div>
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
 
