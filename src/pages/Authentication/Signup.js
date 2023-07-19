@@ -39,7 +39,7 @@ const Signup = () => {
       justifyContent="center"
       w="full"
       align="center"
-      h={{ base: "unset", md: "120vh" }}
+      h={{ base: "unset", md: "100vh" }}
       py={{ base: "40px", md: "40px" }}
       flexDir="column"
     >
