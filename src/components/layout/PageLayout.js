@@ -66,7 +66,7 @@ export const NonAuthLayout = ({ children }) => {
         align="center"
         w="full"
       >
-        <Box w={{ base: "full", lg: "1295px" }} minH="100vh" px="20px">
+        <Box w={{ base: "full", lg: "1295px" }} minH="110vh" px="20px">
           {children}
         </Box>
         <Flex mt="auto" flexDir="column" justifyContent="center" align="center">
