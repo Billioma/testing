@@ -12,7 +12,7 @@ const ResetSent = () => {
       justifyContent="center"
       w="full"
       align="center"
-      h={{ base: "90vh", md: "100vh" }}
+      h={{ base: "90vh", md: "90vh" }}
       flexDir="column"
     >
       <Flex
@@ -26,7 +26,7 @@ const ResetSent = () => {
 
         <Flex justifyContent="center" align="center" flexDir="column">
           <Text textAlign="center" fontSize="24px" mt="56px" fontWeight={700}>
-            Reset link sent
+            Operator Reset link sent
           </Text>
           <Text
             fontSize="14px"
@@ -46,7 +46,7 @@ const ResetSent = () => {
           align="center"
           mt="32px"
         >
-          <Button onClick={() => navigate("/customer/auth/login")}>
+          <Button onClick={() => navigate("/operator/auth/login")}>
             Back to Login
           </Button>
         </Flex>

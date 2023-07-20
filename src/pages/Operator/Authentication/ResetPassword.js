@@ -6,12 +6,26 @@ import { Button } from "@chakra-ui/button";
 import { Form, Formik } from "formik";
 import * as Yup from "yup";
 import { useNavigate } from "react-router";
+import { useResetPassword } from "../../../services/operator/query/auth";
+import useCustomToast from "../../../utils/notifications";
 
 const Reset = () => {
   const navigate = useNavigate();
 
+  const { errorToast } = useCustomToast();
+  const { mutate, isLoading } = useResetPassword({
+    onSuccess: () => {
+      navigate("/operator/auth/reset-success");
+    },
+    onError: (err) => {
+      errorToast(
+        err?.response?.data?.message || err?.message || "An Error occured"
+      );
+    },
+  });
+
   const handleSubmit = (values = "") => {
-    console.log(values);
+    mutate(values);
   };
 
   return (
@@ -85,7 +99,12 @@ const Reset = () => {
                 />
               </Box>
 
-              <Button isDisabled={!isValid || !dirty} type="submit" w="full">
+              <Button
+                isDisabled={!isValid || !dirty}
+                type="submit"
+                w="full"
+                isLoading={isLoading}
+              >
                 Send Reset Link
               </Button>
             </Form>
