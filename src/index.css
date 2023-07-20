@@ -1,0 +1,188 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  font-family: "cooper-std-black", sans-serif;
+}
+@font-face {
+  font-family: Sailec;
+  font-weight: 700;
+  src: url("../public/fonts/Sailec Bold.ttf");
+}
+.dropdown-content {
+  display: none;
+}
+
+.dropdown:hover .dropdown-content {
+  display: flex;
+  padding-top: 60px;
+  position: absolute;
+  width: 500%;
+}
+.drop {
+  display: flex;
+  justify-content: center;
+  padding: 24px;
+  gap: 48px;
+  background-color: #fff;
+  border-radius: 4px;
+  position: absolute;
+  width: 25%;
+  box-shadow: 0px 2px 24px 0px rgba(100, 102, 104, 0.15);
+  line-height: 2.5em;
+  font-size: 14px;
+}
+.bg {
+  background-image: url("../public/assets/heroo.png");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+}
+button {
+  font-weight: 500;
+}
+.scroll {
+  background: #ffffff26;
+  backdrop-filter: blur(10px);
+  color: #000;
+}
+@font-face {
+  font-family: Sailec;
+  font-weight: 500;
+  src: url("../public/fonts/Sailec Medium.ttf");
+}
+
+@font-face {
+  font-family: Cooper;
+  font-weight: 700;
+  src: url("../public/fonts/Cooper Std Black.ttf");
+}
+
+@font-face {
+  font-family: Sailec;
+  font-weight: 400;
+  src: url("../public/fonts/Sailec Light.ttf");
+}
+
+.lds-dual-ring {
+  display: inline-block;
+  width: 80px;
+  height: 80px;
+}
+.lds-dual-ring:after {
+  content: " ";
+  display: block;
+  width: 64px;
+  height: 64px;
+  margin: 8px;
+  border-radius: 50%;
+  border: 6px solid #fff;
+  border-color: #fff transparent #fff transparent;
+  animation: lds-dual-ring 1.2s linear infinite;
+}
+@keyframes lds-dual-ring {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.hover-underlinee-animation {
+  display: inline-block;
+  position: relative;
+}
+
+.hover-underline-animation {
+  display: inline-block;
+  position: relative;
+}
+
+.hover-underlinee-animation {
+  display: inline-block;
+  position: relative;
+}
+
+.hover-underline-animation:after {
+  content: "";
+  position: absolute;
+  width: 100%;
+  transform: scaleX(0);
+  height: 2px;
+  bottom: -5px;
+  left: 0;
+  background-color: #444648;
+  transform-origin: bottom right;
+  transition: transform 0.25s ease-out;
+}
+
+.hover-underlinee-animation:after {
+  content: "";
+  position: absolute;
+  width: 100%;
+  transform: scaleX(0);
+  height: 2px;
+  bottom: -5px;
+  left: 0;
+  background-color: #fff;
+  transform-origin: bottom right;
+  transition: transform 0.25s ease-out;
+}
+
+.hover-underline-animation:hover:after {
+  transform: scaleX(1);
+  transform-origin: bottom left;
+}
+
+.hover-underlinee-animation:hover:after {
+  transform: scaleX(1);
+  transform-origin: bottom left;
+}
+
+button:hover {
+  opacity: 0.8;
+  transition: 0.3s ease-in-out;
+}
+.full_width {
+  width: 100vw;
+  margin-left: calc((100% - 100vw) / 2);
+  margin-right: calc((100% - 100vw) / 2);
+  /* width: 100vw; */
+  /* margin:0 calc(1200px - 100vw); */
+}
+.row {
+  display: flex;
+  /* gap: 20px; */
+  flex-wrap: wrap;
+  padding: 0 4px;
+}
+
+/* Create four equal columns that sits next to each other */
+.column {
+  flex: 25%;
+  max-width: 25%;
+  /* padding-right: 10px; */
+}
+
+.column .img {
+  margin-top: 20px;
+  vertical-align: middle;
+}
+
+/* Responsive layout - makes a two column-layout instead of four columns */
+@media (max-width: 800px) {
+  .column {
+    flex: 50%;
+    max-width: 50%;
+  }
+}
+
+/* Responsive layout - makes the two columns stack on top of each other instead of next to each other */
+@media (max-width: 600px) {
+  .column {
+    flex: 50%;
+    max-width: 50%;
+  }
+}

@@ -44,7 +44,7 @@ export const NonAuthLayout = ({ children }) => {
   const location = useLocation();
   const [isMobile] = useMediaQuery("(max-width: 991px)");
   return (
-    <Flex flexDir="column" pos="relative" h="100vh">
+    <Flex flexDir="column" pos="relative" minH="90vh" h="100%">
       <Image
         display={{ base: "none", md: "unset" }}
         pos="absolute"
@@ -61,7 +61,7 @@ export const NonAuthLayout = ({ children }) => {
         src="/assets/park-left.png"
       />
       <Flex
-        h={
+        minH={
           isMobile
             ? location.pathname === "/customer/auth/signup"
               ? "80vh"
@@ -73,10 +73,16 @@ export const NonAuthLayout = ({ children }) => {
         align="center"
         w="full"
       >
-        <Box w={{ base: "full", lg: "1295px" }} minH="100vh" px="20px">
+        <Box w={{ base: "full", lg: "1295px" }} minH="fit" px="20px">
           {children}
         </Box>
-        <Flex mt="auto" flexDir="column" justifyContent="center" align="center">
+        <Flex
+          mt="auto"
+          flexDir="column"
+          justifyContent="center"
+          align="center"
+          pb="25px"
+        >
           <Text fontSize="12px" lineHeight="100%" mb="8px">
             Powered by
           </Text>

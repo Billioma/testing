@@ -6,12 +6,26 @@ import { Button } from "@chakra-ui/button";
 import { Form, Formik } from "formik";
 import * as Yup from "yup";
 import { useNavigate } from "react-router";
+import { useResetPassword } from "../../../services/operator/query/auth";
+import useCustomToast from "../../../utils/notifications";
 
 const Reset = () => {
   const navigate = useNavigate();
 
+  const { errorToast } = useCustomToast();
+  const { mutate, isLoading } = useResetPassword({
+    onSuccess: () => {
+      navigate("/operator/auth/reset-success");
+    },
+    onError: (err) => {
+      errorToast(
+        err?.response?.data?.message || err?.message || "An Error occured"
+      );
+    },
+  });
+
   const handleSubmit = (values = "") => {
-    console.log(values);
+    mutate(values);
   };
 
   return (
@@ -19,7 +33,7 @@ const Reset = () => {
       justifyContent="center"
       w="full"
       align="center"
-      h={{ base: "90vh", md: "100vh" }}
+      h={{ base: "90vh", md: "90vh" }}
       flexDir="column"
     >
       <Flex
@@ -33,7 +47,7 @@ const Reset = () => {
 
         <Flex justifyContent="center" align="center" flexDir="column">
           <Text textAlign="center" fontSize="24px" mt="56px" fontWeight={700}>
-            Reset Password?
+            Operator Reset Password?
           </Text>
           <Text
             fontSize="14px"
@@ -85,14 +99,19 @@ const Reset = () => {
                 />
               </Box>
 
-              <Button isDisabled={!isValid || !dirty} type="submit" w="full">
+              <Button
+                isDisabled={!isValid || !dirty}
+                type="submit"
+                w="full"
+                isLoading={isLoading}
+              >
                 Send Reset Link
               </Button>
             </Form>
           )}
         </Formik>
 
-        <Text textAlign="center" mt="32px" color="#646668" fontSize="14px">
+        {/* <Text textAlign="center" mt="32px" color="#646668" fontSize="14px">
           Don't have an account ?{" "}
           <span
             onClick={() => navigate("/customer/auth/signup")}
@@ -100,7 +119,7 @@ const Reset = () => {
           >
             Sign Up
           </span>
-        </Text>
+        </Text> */}
       </Flex>
     </Flex>
   );

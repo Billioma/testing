@@ -8,12 +8,31 @@ import { initValues, validateSchema } from "../../../utils/validation";
 import { Form, Formik } from "formik";
 import { useNavigate } from "react-router";
 
+import useCustomToast from "../../../utils/notifications";
+import { useLogin } from "../../../services/operator/query/auth";
+
 const Login = () => {
   const [show, setShow] = useState(false);
   const navigate = useNavigate();
 
+  const { errorToast, successToast } = useCustomToast();
+  const { mutate, isLoading } = useLogin({
+    onSuccess: (res) => {
+      sessionStorage.setItem("user", JSON.stringify(res));
+      successToast("Welcome back!");
+      // setTimeout(() => {
+      //   navigate("/operator/dashboard");
+      // }, 200);
+    },
+    onError: (err) => {
+      errorToast(
+        err?.response?.data?.message || err?.message || "An Error occured"
+      );
+    },
+  });
+
   const handleSubmit = (values = "") => {
-    console.log(values);
+    mutate(values);
   };
 
   return (
@@ -21,7 +40,7 @@ const Login = () => {
       justifyContent="center"
       w="full"
       align="center"
-      h={{ base: "90vh", md: "100vh" }}
+      h={{ base: "90vh", md: "90vh" }}
       flexDir="column"
     >
       <Flex
@@ -30,7 +49,7 @@ const Login = () => {
         flexDir="column"
       >
         <Flex justifyContent="center" align="center" flexDir="column">
-          <Image src="/assets/logo.svg" w="364px" h="56px" />
+          <Image src="/assets/logo.svg" w="312px" h="48px" />
         </Flex>
         <Text textAlign="center" fontSize="24px" mt="56px" fontWeight={700}>
           Operator Login
@@ -120,14 +139,19 @@ const Login = () => {
                 </Text>
               </Flex>
 
-              <Button isDisabled={!isValid || !dirty} type="submit" w="full">
+              <Button
+                isLoading={isLoading}
+                isDisabled={!isValid || !dirty}
+                type="submit"
+                w="full"
+              >
                 Login
               </Button>
             </Form>
           )}
         </Formik>
 
-        <Text textAlign="center" mt="32px" color="#646668" fontSize="14px">
+        {/* <Text textAlign="center" mt="32px" color="#646668" fontSize="14px">
           Not an operator yet ?{" "}
           <span
             onClick={() => navigate("/operator/auth/signup")}
@@ -135,7 +159,7 @@ const Login = () => {
           >
             Sign Up
           </span>
-        </Text>
+        </Text> */}
       </Flex>
     </Flex>
   );

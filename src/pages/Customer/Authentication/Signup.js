@@ -52,7 +52,7 @@ const Signup = () => {
           <Image src="/assets/logo.svg" w="314px" h="45px" />
         </Flex>
 
-        <Text textAlign="center" fontSize="24px" mt="10px" fontWeight={700}>
+        <Text textAlign="center" fontSize="24px" mt="32px" fontWeight={700}>
           Sign Up
         </Text>
 
@@ -73,7 +73,7 @@ const Signup = () => {
           }) => (
             <Form onSubmit={handleSubmit}>
               <Flex
-                mt="10px"
+                mt="30px"
                 w="full"
                 flexDir={{ base: "column", md: "row" }}
                 align="center"
