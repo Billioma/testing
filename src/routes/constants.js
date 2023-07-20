@@ -9,6 +9,8 @@ export const PUBLIC_PATHS = {
   OP_SIGNUP: "/operator/auth/signup",
   OPERATOR_RESET_PASSWORD: "/operator/auth/forgot-password",
   OPERATOR_RESET_SENT: "/operator/auth/reset-success",
+  OPERATOR_CHANGE_SUCCESS: "/operator/auth/password-success",
+  OPERATOR_CHANGE_PASS: "/operator/auth/password-reset/:id/:hash",
 };
 
 export const PRIVATE_PATHS = {

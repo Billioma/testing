@@ -11,7 +11,7 @@ const ChangeSuccess = () => {
       justifyContent="center"
       w="full"
       align="center"
-      h={{ base: "90vh", md: "100vh" }}
+      h={{ base: "90vh", md: "90vh" }}
       flexDir="column"
     >
       <Flex
@@ -20,7 +20,7 @@ const ChangeSuccess = () => {
         flexDir="column"
       >
         <Flex justifyContent="center" align="center" flexDir="column">
-          <Image src="/assets/logo.svg" w="364px" h="56px" />
+          <Image src="/assets/logo.svg" w="312px" h="48px" />
         </Flex>
 
         <Flex justifyContent="center" align="center" flexDir="column">
@@ -39,9 +39,10 @@ const ChangeSuccess = () => {
             fontSize="14px"
             cursor="pointer"
             color="3646668"
-            onClick={() => navigate("/customer/auth/login")}
+            onClick={() => navigate("/operator/auth/login")}
           >
-            Back to <span style={{ color: "red" }}>Login</span>
+            Back to{" "}
+            <span style={{ color: "red", fontWeight: "500" }}>Login</span>
           </Text>
         </Flex>
       </Flex>

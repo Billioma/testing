@@ -4,15 +4,33 @@ import { Box, Flex, Text } from "@chakra-ui/layout";
 import CustomInput from "../../../components/common/CustomInput";
 import { Button } from "@chakra-ui/button";
 import { Form, Formik } from "formik";
-import { useNavigate } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import { passValues, passSchema } from "../../../utils/validation";
+import { useUpdatePassword } from "../../../services/operator/query/auth";
+import useCustomToast from "../../../utils/notifications";
 
 const ChangePassword = () => {
   const [show, setShow] = useState(false);
   const navigate = useNavigate();
+  const { id, hash } = useParams();
 
-  const handleSubmit = (values = "") => {
-    console.log(values);
+  const { successToast, errorToast } = useCustomToast();
+  const { mutate, isLoading } = useUpdatePassword({
+    onSuccess: (res) => {
+      successToast(res?.message);
+    },
+    onError: (err) => {
+      errorToast(
+        err?.response?.data?.message || err?.message || "An Error occured"
+      );
+    },
+  });
+
+  const handleSubmit = (values) => {
+    mutate({
+      query: { id, hash },
+      body: values,
+    });
   };
 
   return (
@@ -20,7 +38,7 @@ const ChangePassword = () => {
       justifyContent="center"
       w="full"
       align="center"
-      h={{ base: "90vh", md: "100vh" }}
+      h={{ base: "90vh", md: "90vh" }}
       flexDir="column"
     >
       <Flex
@@ -29,12 +47,12 @@ const ChangePassword = () => {
         flexDir="column"
       >
         <Flex justifyContent="center" align="center" flexDir="column">
-          <Image src="/assets/logo.svg" w="364px" h="56px" />
+          <Image src="/assets/logo.svg" w="312px" h="48px" />
         </Flex>
 
         <Flex justifyContent="center" align="center" flexDir="column">
           <Text textAlign="center" fontSize="24px" mt="56px" fontWeight={700}>
-            Change Password
+            Operator Change Password
           </Text>
           <Text
             fontSize="14px"
@@ -125,22 +143,13 @@ const ChangePassword = () => {
                 isDisabled={!isValid || !dirty}
                 type="submit"
                 w="full"
+                isLoading={isLoading}
               >
                 Change Password
               </Button>
             </Form>
           )}
         </Formik>
-
-        <Text textAlign="center" mt="32px" color="#646668" fontSize="14px">
-          Don't have an account ?{" "}
-          <span
-            onClick={() => navigate("/customer/auth/signup")}
-            style={{ color: "red", fontWeight: 500, cursor: "pointer" }}
-          >
-            Sign Up
-          </span>
-        </Text>
       </Flex>
     </Flex>
   );
