@@ -13,12 +13,12 @@ const Services = () => {
           Available at 100+ locations between Lagos and Abuja
         </div>
 
-        <div className="flex flex-col lg:flex-row items-center gap-[24px] lg:gap-[40px]">
+        <div className="flex flex-col lg:flex-row items-center gap-[24px]">
           {services.map((data, i) => (
             <div key={i} className="relative">
-              <img src={data.pic} />
-              <div className="absolute text-white bottom-[32px] px-[32px]">
-                <div className="font-[Cooper] text-[24px] lg:text-[32px] mb-[16px]">
+              <img className="w-[300px] h-[360px]" src={data.pic} />
+              <div className="absolute text-white bottom-[32px] px-[16px]">
+                <div className="font-[Cooper] text-[24px] mb-[16px]">
                   {data?.title}
                 </div>
                 <div className="text-[#f4f6f8] text-sm leading-[150%]">
