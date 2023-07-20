@@ -42,7 +42,7 @@ const Reset = () => {
         flexDir="column"
       >
         <Flex justifyContent="center" align="center" flexDir="column">
-          <Image src="/assets/logo.svg" w="364px" h="56px" />
+          <Image src="/assets/logo.svg" w="312px" h="48px" />
         </Flex>
 
         <Flex justifyContent="center" align="center" flexDir="column">
