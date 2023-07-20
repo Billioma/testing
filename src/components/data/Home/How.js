@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import {
+  carService,
   eventPark,
   howTabs,
   payPark,
@@ -39,7 +40,9 @@ const How = () => {
               ? payPark
               : tab.includes("Reserve")
               ? reservePark
-              : tab.includes("Event") && eventPark
+              : tab.includes("Event")
+              ? eventPark
+              : tab.includes("Car") && carService
             ).map((data, i) => (
               <div
                 key={i}
@@ -65,7 +68,9 @@ const How = () => {
                 ? payPark
                 : tab.includes("Reserve")
                 ? reservePark
-                : tab.includes("Event") && eventPark
+                : tab.includes("Event")
+                ? eventPark
+                : tab.includes("Car") && carService
               )
                 .filter((_, index) => index === 0 || index === 2)
                 .map((data, i) => (
@@ -91,7 +96,9 @@ const How = () => {
                 ? payPark
                 : tab.includes("Reserve")
                 ? reservePark
-                : tab.includes("Event") && eventPark
+                : tab.includes("Event")
+                ? eventPark
+                : tab.includes("Car") && carService
               )
                 .filter((_, index) => index === 1 || index === 3)
                 .map((data, i) => (

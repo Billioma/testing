@@ -77,14 +77,21 @@ export const services = [
     title: "Reserve Parking",
     desc: "Reserve a parkins space in advance and avoid any delays when you arrive",
     pic: "/assets/reserve-parking.png",
-    button: "Reserve and Park Later",
+    button: "Park Now",
   },
   {
     id: 3,
     title: "Event Parking",
     desc: "Arrive an event and drive to your reserved parking space",
     pic: "/assets/event-parking.png",
-    button: "Reserve Event Parking",
+    button: "Park Now",
+  },
+  {
+    id: 4,
+    title: "Car Services",
+    desc: "Access vehicle maintenance services with ease",
+    pic: "/assets/car-service.png",
+    button: "Book a Car Service",
   },
 ];
 
@@ -110,7 +117,12 @@ export const plusGrid = [
   },
 ];
 
-export const howTabs = ["Pay-to-Park", "Reserve Parking", "Event Parking"];
+export const howTabs = [
+  "Pay-to-Park",
+  "Reserve Parking",
+  "Event Parking",
+  "Car Services",
+];
 export const connectTabs = ["Twitter", "Facebook", "Instagram"];
 
 export const twitterActions = [
@@ -130,20 +142,24 @@ export const mobileTwitterActions = [
 export const company = ["Lagos", "Abuja"];
 export const companies = [
   {
-    name: "ParkinSpace",
+    name: "About ParkinSpace",
     id: "/#about",
   },
   {
-    name: "ParkinSpace Operator",
-    id: "/operators",
+    name: "Services",
+    id: "/#services",
   },
   {
-    name: "Clients",
-    id: "/#",
+    name: "ParkinSpace PLUS",
+    id: "/#plus",
   },
   {
-    name: "Terms & Conditions",
-    id: "/#",
+    name: "Getting Started",
+    id: "/#start",
+  },
+  {
+    name: "How it Work",
+    id: "/#how",
   },
 ];
 
@@ -175,10 +191,10 @@ export const connect = [
 ];
 
 export const information = [
-  { name: "Call us", link: "#" },
-  { name: "Blog", link: "#" },
-  { name: "FAQ", link: "#" },
-  { name: "Locations", link: "#" },
+  { name: "Contact Us", link: "/contact-us" },
+  { name: "Terms & Conditions", link: "" },
+  { name: "Frequently Asked Questions", link: "" },
+  { name: "Careers", link: "" },
 ];
 
 export const operatorMenu = [
@@ -248,22 +264,45 @@ export const reservePark = [
   {
     id: 1,
     pic: "/assets/search.png",
-    text: "Search where you are heading on the ParkinSpace app or website.",
+    text: "Search parking options at your planned destination",
   },
   {
     id: 2,
     pic: "/assets/bus.png",
-    text: "Choose a parking facility based on preferences such as valet parking, gated parking, onsite security, re-entry and more.",
+    text: "Choose parking facility of your preference",
   },
   {
     id: 3,
     pic: "/assets/spot.png",
-    text: "Book a parking spot and confirm reservation.",
+    text: "Book and pay to reserve your parking spot",
   },
   {
     id: 4,
     pic: "/assets/instruction.png",
-    text: "Receive e-mail instructions on how to redeem parking upon arrival",
+    text: "Receive confirmation of your reservation",
+  },
+];
+
+export const carService = [
+  {
+    id: 1,
+    pic: "/assets/bus.png",
+    text: "Select Car Services",
+  },
+  {
+    id: 2,
+    pic: "/assets/message.png",
+    text: "Choose a car service",
+  },
+  {
+    id: 3,
+    pic: "/assets/wallet.png",
+    text: "Book and pay for car service",
+  },
+  {
+    id: 4,
+    pic: "/assets/notification.png",
+    text: "Receive confirmation",
   },
 ];
 
@@ -271,21 +310,21 @@ export const eventPark = [
   {
     id: 1,
     pic: "/assets/search.png",
-    text: "Search for your event venue using the ParkinSpace app or website.",
+    text: "Browse or Search for Event",
   },
   {
     id: 2,
-    pic: "/assets/bus.png",
-    text: "Review our available parking options based on preferences such as valet parking, self parking and more.",
+    pic: "/assets/message.png",
+    text: "Choose from available parking options",
   },
   {
     id: 3,
     pic: "/assets/arrive.png",
-    text: "Choose arrival date/time and confirm reservation.",
+    text: "Confirm selection and make payment",
   },
   {
     id: 4,
     pic: "/assets/instruction.png",
-    text: "Receive e-mail instructions on how to redeem parking at the event",
+    text: "Receive e-mail confirmation",
   },
 ];
