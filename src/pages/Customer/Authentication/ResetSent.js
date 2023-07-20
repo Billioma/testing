@@ -12,7 +12,7 @@ const ResetSent = () => {
       justifyContent="center"
       w="full"
       align="center"
-      h={{ base: "90vh", md: "100vh" }}
+      h={{ base: "90vh", md: "90vh" }}
       flexDir="column"
     >
       <Flex

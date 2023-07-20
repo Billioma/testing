@@ -8,12 +8,30 @@ import { initValues, validateSchema } from "../../../utils/validation";
 import { Form, Formik } from "formik";
 import { useNavigate } from "react-router";
 
+import useCustomToast from "../../../utils/notifications";
+import { useLogin } from "../../../services/operator/query/auth";
+
 const Login = () => {
   const [show, setShow] = useState(false);
   const navigate = useNavigate();
 
+  const { errorToast } = useCustomToast();
+  const { mutate, isLoading } = useLogin({
+    onSuccess: (res) => {
+      sessionStorage.setItem("user", JSON.stringify(res));
+      setTimeout(() => {
+        navigate("/operator/dashboard");
+      }, 200);
+    },
+    onError: (err) => {
+      errorToast(
+        err?.response?.data?.message || err?.message || "An Error occured"
+      );
+    },
+  });
+
   const handleSubmit = (values = "") => {
-    console.log(values);
+    mutate(values);
   };
 
   return (
@@ -120,7 +138,12 @@ const Login = () => {
                 </Text>
               </Flex>
 
-              <Button isDisabled={!isValid || !dirty} type="submit" w="full">
+              <Button
+                isLoading={isLoading}
+                isDisabled={!isValid || !dirty}
+                type="submit"
+                w="full"
+              >
                 Login
               </Button>
             </Form>

@@ -19,7 +19,7 @@ const Reset = () => {
       justifyContent="center"
       w="full"
       align="center"
-      h={{ base: "90vh", md: "100vh" }}
+      h={{ base: "90vh", md: "90vh" }}
       flexDir="column"
     >
       <Flex
@@ -33,7 +33,7 @@ const Reset = () => {
 
         <Flex justifyContent="center" align="center" flexDir="column">
           <Text textAlign="center" fontSize="24px" mt="56px" fontWeight={700}>
-            Reset Password?
+            Operator Reset Password?
           </Text>
           <Text
             fontSize="14px"
@@ -92,7 +92,7 @@ const Reset = () => {
           )}
         </Formik>
 
-        <Text textAlign="center" mt="32px" color="#646668" fontSize="14px">
+        {/* <Text textAlign="center" mt="32px" color="#646668" fontSize="14px">
           Don't have an account ?{" "}
           <span
             onClick={() => navigate("/customer/auth/signup")}
@@ -100,7 +100,7 @@ const Reset = () => {
           >
             Sign Up
           </span>
-        </Text>
+        </Text> */}
       </Flex>
     </Flex>
   );

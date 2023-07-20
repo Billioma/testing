@@ -12,6 +12,8 @@ const {
   CUST_RESET_SENT,
   CUST_CHANGE_PASS,
   CUST_CHANGE_SUCCESS,
+
+  OPERATOR_RESET_PASSWORD,
 } = PUBLIC_PATHS;
 
 const {
@@ -31,6 +33,11 @@ const OperatorLogin = WithSuspense(
 const CustResetPassword = WithSuspense(
   lazy(() => import("../pages/Customer/Authentication/ResetPassword"))
 );
+
+const OperatorResetPassword = WithSuspense(
+  lazy(() => import("../pages/Operator/Authentication/ResetPassword"))
+);
+
 const CustResetSent = WithSuspense(
   lazy(() => import("../pages/Customer/Authentication/ResetSent"))
 );
@@ -66,6 +73,8 @@ export const PUBLIC_ROUTES = [
   { path: CUST_LOGIN, element: <CustLogin /> },
   { path: OP_LOGIN, element: <OperatorLogin /> },
   { path: CUST_RESET_PASS, element: <CustResetPassword /> },
+
+  { path: OPERATOR_RESET_PASSWORD, element: <OperatorResetPassword /> },
   { path: CUST_CHANGE_PASS, element: <CustChangePassword /> },
   { path: CUST_CHANGE_SUCCESS, element: <CustChangeSuccess /> },
   { path: CUST_SIGNUP, element: <CustSignup /> },

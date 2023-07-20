@@ -7,6 +7,7 @@ export const PUBLIC_PATHS = {
   CUST_RESET_SENT: "/customer/auth/reset-success",
   CUST_SIGNUP: "/customer/auth/signup",
   OP_SIGNUP: "/operator/auth/signup",
+  OPERATOR_RESET_PASSWORD: "operator/auth/forgot-password",
 };
 
 export const PRIVATE_PATHS = {
