@@ -15,13 +15,14 @@ const Login = () => {
   const [show, setShow] = useState(false);
   const navigate = useNavigate();
 
-  const { errorToast } = useCustomToast();
+  const { errorToast, successToast } = useCustomToast();
   const { mutate, isLoading } = useLogin({
     onSuccess: (res) => {
       sessionStorage.setItem("user", JSON.stringify(res));
-      setTimeout(() => {
-        navigate("/operator/dashboard");
-      }, 200);
+      successToast("Welcome back!");
+      // setTimeout(() => {
+      //   navigate("/operator/dashboard");
+      // }, 200);
     },
     onError: (err) => {
       errorToast(
