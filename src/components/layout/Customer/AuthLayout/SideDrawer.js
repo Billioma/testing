@@ -10,11 +10,11 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { NavLink, useLocation } from "react-router-dom";
-import { useLogOut } from "../../../utils/helpers";
+import { useLogOut } from "../../../../utils/helpers";
 import { useState } from "react";
-import { LogoutIcon } from "../../common/images";
+import { LogoutIcon } from "../../../common/images";
 import { IoIosArrowForward } from "react-icons/io";
-import { activeStyle, general } from "../../common/constants";
+import { activeStyle, general } from "../../../common/constants";
 import { AiOutlineClose } from "react-icons/ai";
 
 const SideDrawer = ({ isOpen, onClose }) => {

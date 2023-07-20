@@ -1,6 +1,9 @@
 import React from "react";
 import { useRoutes, useLocation } from "react-router-dom";
-import { AuthLayout, NonAuthLayout } from "../components/layout/PageLayout";
+import {
+  AuthLayout,
+  NonAuthLayout,
+} from "../components/layout/Customer/PageLayout";
 import { PRIVATE_ROUTES, PUBLIC_ROUTES } from "./routes";
 
 const PublicRouteWrapper = () => {

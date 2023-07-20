@@ -1,6 +1,6 @@
 import React from "react";
 import { Box, Flex, Grid, GridItem, Image, Text } from "@chakra-ui/react";
-import { dashServices } from "../../common/constants";
+import { dashServices } from "../../../common/constants";
 
 const Services = () => {
   return (

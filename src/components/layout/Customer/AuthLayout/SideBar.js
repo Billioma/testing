@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { Box, Flex, Text } from "@chakra-ui/layout";
 import { NavLink, useLocation } from "react-router-dom";
-import { activeStyle, general } from "../../common/constants";
-import { useLogOut } from "../../../utils/helpers";
-import { LogoutIcon } from "../../common/images";
+import { activeStyle, general } from "../../../common/constants";
+import { useLogOut } from "../../../../utils/helpers";
+import { LogoutIcon } from "../../../common/images";
 import { Spinner } from "@chakra-ui/react";
 import { IoIosArrowForward } from "react-icons/io";
 

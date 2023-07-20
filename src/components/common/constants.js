@@ -80,24 +80,3 @@ export const dashServices = [
     title: "Car Services",
   },
 ];
-
-export const dashVehicles = [
-  {
-    name: "Jeep Cherokee",
-    color: "yellow",
-    state: "Lagos",
-    plate: "BT 150 KTU",
-  },
-  {
-    name: "Honda Accord",
-    color: "Black",
-    state: "Abuja",
-    plate: "JK 281 ATA",
-  },
-  {
-    name: "Totoya Camry",
-    color: "Red",
-    state: "Lagos",
-    plate: "WP 923 HDK",
-  },
-];

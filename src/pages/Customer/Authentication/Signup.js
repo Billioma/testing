@@ -1,14 +1,14 @@
 import React, { useState } from "react";
 import { Image } from "@chakra-ui/image";
 import { Box, Flex, Text } from "@chakra-ui/layout";
-import CustomInput from "../../components/common/CustomInput";
+import CustomInput from "../../../components/common/CustomInput";
 import { Checkbox } from "@chakra-ui/checkbox";
 import { Button } from "@chakra-ui/button";
-import { signValues, signSchema } from "../../utils/validation";
+import { signValues, signSchema } from "../../../utils/validation";
 import { Form, Formik } from "formik";
 import { useNavigate } from "react-router";
-import { useRegister } from "../../services/query/auth";
-import useCustomToast from "../../utils/notifications";
+import { useRegister } from "../../../services/query/auth";
+import useCustomToast from "../../../utils/notifications";
 
 const Signup = () => {
   const [show, setShow] = useState(false);
@@ -160,7 +160,7 @@ const Signup = () => {
                   }}
                   onBlur={handleBlur}
                   error={errors?.phone && touched?.phone && errors?.phone}
-                  holder="Enter Email address"
+                  holder="Enter Phone Number"
                 />
               </Box>
               <Box mt="10px">
@@ -219,7 +219,10 @@ const Signup = () => {
                   checked={isChecked}
                   onChange={(e) => setIsChecked(e.target.checked)}
                 />
-                <Text color="#646668">Accept terms and condition</Text>
+                <Text color="#646668">
+                  Accept{" "}
+                  <span style={{ color: "#EE383A" }}>terms and condition</span>{" "}
+                </Text>
               </Flex>
 
               <Button

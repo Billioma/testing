@@ -1,6 +1,8 @@
-export const LOGIN = process.env.REACT_APP_BASE_URL + "auth/login";
-export const REGISTER = process.env.REACT_APP_BASE_URL + "auth/register";
-export const RESET_PASSWORD =
-  process.env.REACT_APP_BASE_URL + "auth/password-reset";
+export const LOGIN = "auth/login";
+export const REGISTER = "auth/register";
+export const RESET_PASSWORD = "auth/password-reset";
 export const CHANGE_PASSWORD = (id = "", hash = "") =>
-  `${process.env.REACT_APP_BASE_URL}auth/update-password/${id}/${hash}`;
+  `auth/update-password/${id}/${hash}`;
+
+export const GET_VEHICLES = "vehicles";
+export const GET_USER = "auth/profile";

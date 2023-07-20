@@ -4,9 +4,12 @@ import { IoIosArrowDown, IoMdMenu } from "react-icons/io";
 import { Image, useDisclosure, useMediaQuery } from "@chakra-ui/react";
 import { useLocation } from "react-router-dom";
 import SideDrawer from "./SideDrawer";
+import { useGetUser } from "../../../../services/query/user";
 
 const Header = () => {
   const [isMobile] = useMediaQuery("(max-width: 991px)");
+
+  const { data: userData } = useGetUser();
   const { isOpen, onClose, onOpen } = useDisclosure();
   const [title, setTitle] = useState("");
 
@@ -92,7 +95,7 @@ const Header = () => {
                 <Image w="20px" h="20px" src="/assets/user.png" />
 
                 <Text fontSize="12px" fontWeight={500} lineHeight="100%">
-                  Hi Samuel
+                  Hi {userData?.profile?.firstName || ""}
                 </Text>
                 <IoIosArrowDown />
               </Flex>

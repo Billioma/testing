@@ -1,14 +1,14 @@
 import React, { useState } from "react";
 import { Image } from "@chakra-ui/image";
 import { Box, Flex, Text } from "@chakra-ui/layout";
-import CustomInput from "../../components/common/CustomInput";
+import CustomInput from "../../../components/common/CustomInput";
 import { Button } from "@chakra-ui/button";
 import { Form, Formik } from "formik";
 import { useNavigate } from "react-router";
 import { useParams } from "react-router-dom";
-import { useUpdatePassword } from "../../services/query/auth";
-import useCustomToast from "../../utils/notifications";
-import { passValues, passSchema } from "../../utils/validation";
+import { useUpdatePassword } from "../../../services/query/auth";
+import useCustomToast from "../../../utils/notifications";
+import { passValues, passSchema } from "../../../utils/validation";
 
 const ChangePassword = () => {
   const { id, hash } = useParams();
@@ -107,10 +107,6 @@ const ChangePassword = () => {
                   show
                   type={show ? "text" : "password"}
                 />
-                {/* <Text mt="8px" color="#1C0203" fontSize="10px">
-                  Minimum of 8 characters. Must contain at least one special
-                  text (!@#$%_^&*)
-                </Text> */}
               </Box>
               <Box mt="24px">
                 <Text

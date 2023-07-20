@@ -1,35 +1,19 @@
 import React, { useState } from "react";
 import { Image } from "@chakra-ui/image";
 import { Box, Flex, Text } from "@chakra-ui/layout";
-import CustomInput from "../../components/common/CustomInput";
+import CustomInput from "../../../components/common/CustomInput";
 import { Checkbox } from "@chakra-ui/checkbox";
 import { Button } from "@chakra-ui/button";
-import { initValues, validateSchema } from "../../utils/validation";
+import { initValues, validateSchema } from "../../../utils/validation";
 import { Form, Formik } from "formik";
 import { useNavigate } from "react-router";
-import useCustomToast from "../../utils/notifications";
-import { useLogin } from "../../services/query/auth";
 
 const Login = () => {
   const [show, setShow] = useState(false);
   const navigate = useNavigate();
 
-  const { errorToast } = useCustomToast();
-  const { mutate, isLoading } = useLogin({
-    onSuccess: (res) => {
-      sessionStorage.setItem("user", JSON.stringify(res));
-      setTimeout(() => {
-        navigate("/customer/dashboard");
-      }, 200);
-    },
-    onError: (err) => {
-      errorToast(
-        err?.response?.data?.message || err?.message || "An Error occured"
-      );
-    },
-  });
   const handleSubmit = (values = "") => {
-    mutate(values);
+    console.log(values);
   };
 
   return (
@@ -49,7 +33,7 @@ const Login = () => {
           <Image src="/assets/logo.svg" w="364px" h="56px" />
         </Flex>
         <Text textAlign="center" fontSize="24px" mt="56px" fontWeight={700}>
-          Login
+          Operator Login
         </Text>
 
         <Formik
@@ -127,7 +111,7 @@ const Login = () => {
                 </Flex>
 
                 <Text
-                  onClick={() => navigate("/customer/auth/forgot-password")}
+                  onClick={() => navigate("/operator/auth/forgot-password")}
                   cursor="pointer"
                   fontWeight={700}
                   color="red"
@@ -136,12 +120,7 @@ const Login = () => {
                 </Text>
               </Flex>
 
-              <Button
-                isLoading={isLoading}
-                isDisabled={!isValid || !dirty}
-                type="submit"
-                w="full"
-              >
+              <Button isDisabled={!isValid || !dirty} type="submit" w="full">
                 Login
               </Button>
             </Form>
@@ -149,9 +128,9 @@ const Login = () => {
         </Formik>
 
         <Text textAlign="center" mt="32px" color="#646668" fontSize="14px">
-          Don't have an account ?{" "}
+          Not an operator yet ?{" "}
           <span
-            onClick={() => navigate("/customer/auth/signup")}
+            onClick={() => navigate("/operator/auth/signup")}
             style={{ color: "red", fontWeight: 500, cursor: "pointer" }}
           >
             Sign Up

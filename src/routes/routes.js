@@ -3,52 +3,106 @@ import WithSuspense from "../components/loaders/WithSuspense";
 import { PUBLIC_PATHS, PRIVATE_PATHS } from "./constants";
 import { Navigate } from "react-router-dom";
 
-const { LOGIN, SIGNUP, RESET_PASS, RESET_SENT, CHANGE_PASS, CHANGE_SUCCESS } =
-  PUBLIC_PATHS;
+const {
+  CUST_LOGIN,
+  OP_LOGIN,
+  CUST_SIGNUP,
+  OP_SIGNUP,
+  CUST_RESET_PASS,
+  CUST_RESET_SENT,
+  CUST_CHANGE_PASS,
+  CUST_CHANGE_SUCCESS,
+} = PUBLIC_PATHS;
 
-const { DASHBOARD, SERVICES, SUBSCRIPTION, HELP_CENTER, HISTORY } =
-  PRIVATE_PATHS;
+const {
+  CUST_DASHBOARD,
+  CUST_SERVICES,
+  CUST_SUBSCRIPTION,
+  CUST_HELP_CENTER,
+  CUST_HISTORY,
+} = PRIVATE_PATHS;
 
-const Login = WithSuspense(lazy(() => import("../pages/Authentication/Login")));
-const ResetPassword = WithSuspense(
-  lazy(() => import("../pages/Authentication/ResetPassword"))
+const CustLogin = WithSuspense(
+  lazy(() => import("../pages/Customer/Authentication/Login"))
 );
-const ResetSent = WithSuspense(
-  lazy(() => import("../pages/Authentication/ResetSent"))
+const OperatorLogin = WithSuspense(
+  lazy(() => import("../pages/Operator/Authentication/Login"))
 );
-const ChangePassword = WithSuspense(
-  lazy(() => import("../pages/Authentication/ChangePassword"))
+const CustResetPassword = WithSuspense(
+  lazy(() => import("../pages/Customer/Authentication/ResetPassword"))
 );
-const ChangeSuccess = WithSuspense(
-  lazy(() => import("../pages/Authentication/ChangeSuccess"))
+const CustResetSent = WithSuspense(
+  lazy(() => import("../pages/Customer/Authentication/ResetSent"))
 );
-const Signup = WithSuspense(
-  lazy(() => import("../pages/Authentication/Signup"))
+const CustChangePassword = WithSuspense(
+  lazy(() => import("../pages/Customer/Authentication/ChangePassword"))
 );
-const Dashboard = WithSuspense(
-  lazy(() => import("../pages/Dashboard/Dashboard"))
+const CustChangeSuccess = WithSuspense(
+  lazy(() => import("../pages/Customer/Authentication/ChangeSuccess"))
 );
-const Services = WithSuspense(lazy(() => import("../pages/Services/Services")));
-const Help = WithSuspense(lazy(() => import("../pages/Help/Help")));
-const History = WithSuspense(lazy(() => import("../pages/History/History")));
-const Subscriptions = WithSuspense(
-  lazy(() => import("../pages/Subscriptions/Subscriptions"))
+const CustSignup = WithSuspense(
+  lazy(() => import("../pages/Customer/Authentication/Signup"))
+);
+const OpSignup = WithSuspense(
+  lazy(() => import("../pages/Operator/Authentication/Signup"))
+);
+const CustDashboard = WithSuspense(
+  lazy(() => import("../pages/Customer/Dashboard/Dashboard"))
+);
+const CustServices = WithSuspense(
+  lazy(() => import("../pages/Customer/Services/Services"))
+);
+const CustHelp = WithSuspense(
+  lazy(() => import("../pages/Customer/Help/Help"))
+);
+const CustHistory = WithSuspense(
+  lazy(() => import("../pages/Customer/History/History"))
+);
+const CustSubscriptions = WithSuspense(
+  lazy(() => import("../pages/Customer/Subscriptions/Subscriptions"))
 );
 
 export const PUBLIC_ROUTES = [
-  { path: LOGIN, element: <Login /> },
-  { path: RESET_PASS, element: <ResetPassword /> },
-  { path: CHANGE_PASS, element: <ChangePassword /> },
-  { path: CHANGE_SUCCESS, element: <ChangeSuccess /> },
-  { path: SIGNUP, element: <Signup /> },
-  { path: RESET_SENT, element: <ResetSent /> },
-  { path: "*", element: <Navigate to="/customer/auth/login" replace /> },
+  { path: CUST_LOGIN, element: <CustLogin /> },
+  { path: OP_LOGIN, element: <OperatorLogin /> },
+  { path: CUST_RESET_PASS, element: <CustResetPassword /> },
+  { path: CUST_CHANGE_PASS, element: <CustChangePassword /> },
+  { path: CUST_CHANGE_SUCCESS, element: <CustChangeSuccess /> },
+  { path: CUST_SIGNUP, element: <CustSignup /> },
+  { path: OP_SIGNUP, element: <OpSignup /> },
+  { path: CUST_RESET_SENT, element: <CustResetSent /> },
+  {
+    path: "*",
+    element: (
+      <Navigate
+        to={
+          location.pathname.includes("customer")
+            ? "/customer/auth/login"
+            : "/operator/auth/login"
+        }
+        replace
+      />
+    ),
+  },
 ];
+
 export const PRIVATE_ROUTES = [
-  { path: DASHBOARD, element: <Dashboard /> },
-  { path: SERVICES, element: <Services /> },
-  { path: SUBSCRIPTION, element: <Subscriptions /> },
-  { path: HELP_CENTER, element: <Help /> },
-  { path: HISTORY, element: <History /> },
-  { path: "*", element: <Navigate to="/customer/dashboard" replace /> },
+  { path: CUST_DASHBOARD, element: <CustDashboard /> },
+  { path: CUST_SERVICES, element: <CustServices /> },
+  { path: CUST_SUBSCRIPTION, element: <CustSubscriptions /> },
+  { path: CUST_HELP_CENTER, element: <CustHelp /> },
+  { path: CUST_HISTORY, element: <CustHistory /> },
+  {
+    path: "*",
+    element: (
+      <Navigate
+        to={
+          location.pathname.includes("customer")
+            ? "/customer/dashboard"
+            : "/operator/dashboard"
+        }
+        replace
+      />
+    ),
+  },
 ];
