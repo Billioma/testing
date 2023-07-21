@@ -77,14 +77,14 @@ export const services = [
     title: "Reserve Parking",
     desc: "Reserve a parkins space in advance and avoid any delays when you arrive",
     pic: "/assets/reserve-parking.png",
-    button: "Park Now",
+    button: "Reserve and Park Later",
   },
   {
     id: 3,
     title: "Event Parking",
     desc: "Arrive an event and drive to your reserved parking space",
     pic: "/assets/event-parking.png",
-    button: "Park Now",
+    button: "Reserve Event Parking",
   },
   {
     id: 4,
