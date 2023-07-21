@@ -6,14 +6,14 @@ import { Button } from "@chakra-ui/button";
 import { Form, Formik } from "formik";
 import * as Yup from "yup";
 import { useNavigate } from "react-router";
-import { useResetPassword } from "../../../services/operator/query/auth";
 import useCustomToast from "../../../utils/notifications";
+import { useOperatorResetPassword } from "../../../services/query/auth";
 
 const Reset = () => {
   const navigate = useNavigate();
 
   const { errorToast } = useCustomToast();
-  const { mutate, isLoading } = useResetPassword({
+  const { mutate, isLoading } = useOperatorResetPassword({
     onSuccess: () => {
       navigate("/operator/auth/reset-success");
     },
@@ -110,16 +110,6 @@ const Reset = () => {
             </Form>
           )}
         </Formik>
-
-        {/* <Text textAlign="center" mt="32px" color="#646668" fontSize="14px">
-          Don't have an account ?{" "}
-          <span
-            onClick={() => navigate("/customer/auth/signup")}
-            style={{ color: "red", fontWeight: 500, cursor: "pointer" }}
-          >
-            Sign Up
-          </span>
-        </Text> */}
       </Flex>
     </Flex>
   );

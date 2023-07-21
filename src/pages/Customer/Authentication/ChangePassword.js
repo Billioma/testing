@@ -6,7 +6,7 @@ import { Button } from "@chakra-ui/button";
 import { Form, Formik } from "formik";
 import { useNavigate } from "react-router";
 import { useParams } from "react-router-dom";
-import { useUpdatePassword } from "../../../services/query/auth";
+import { useCustomerResetPassword } from "../../../services/query/auth";
 import useCustomToast from "../../../utils/notifications";
 import { passValues, passSchema } from "../../../utils/validation";
 
@@ -16,7 +16,7 @@ const ChangePassword = () => {
   const navigate = useNavigate();
 
   const { successToast, errorToast } = useCustomToast();
-  const { mutate, isLoading } = useUpdatePassword({
+  const { mutate, isLoading } = useCustomerResetPassword({
     onSuccess: (res) => {
       successToast(res?.message);
     },
@@ -39,7 +39,7 @@ const ChangePassword = () => {
       justifyContent="center"
       w="full"
       align="center"
-      h={{ base: "90vh", md: "90vh" }}
+      h={{ base: "90vh", md: "100vh" }}
       flexDir="column"
     >
       <Flex

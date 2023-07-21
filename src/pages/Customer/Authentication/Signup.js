@@ -7,7 +7,7 @@ import { Button } from "@chakra-ui/button";
 import { signValues, signSchema } from "../../../utils/validation";
 import { Form, Formik } from "formik";
 import { useNavigate } from "react-router";
-import { useRegister } from "../../../services/query/auth";
+import { useCustomerRegister } from "../../../services/query/auth";
 import useCustomToast from "../../../utils/notifications";
 
 const Signup = () => {
@@ -15,7 +15,7 @@ const Signup = () => {
   const navigate = useNavigate();
 
   const { successToast, errorToast } = useCustomToast();
-  const { mutate, isLoading } = useRegister({
+  const { mutate, isLoading } = useCustomerRegister({
     onSuccess: () => {
       successToast("User created");
       setTimeout(() => {
@@ -34,13 +34,15 @@ const Signup = () => {
     const phoneNumber = `+234${values.phone}`;
     mutate({ ...values, phone: phoneNumber });
   };
+
   return (
     <Flex
       justifyContent="center"
       w="full"
       align="center"
-      h={{ base: "110vh", md: "105vh" }}
-      py={{ base: "40px", md: "40px" }}
+      overflowY="scroll"
+      // h={{ base: "90vh", md: "100vh" }}
+      py={{ base: "40px", md: "0" }}
       flexDir="column"
     >
       <Flex
@@ -52,7 +54,7 @@ const Signup = () => {
           <Image src="/assets/logo.svg" w="314px" h="45px" />
         </Flex>
 
-        <Text textAlign="center" fontSize="24px" mt="32px" fontWeight={700}>
+        <Text textAlign="center" fontSize="24px" mt="10px" fontWeight={700}>
           Sign Up
         </Text>
 
@@ -73,7 +75,7 @@ const Signup = () => {
           }) => (
             <Form onSubmit={handleSubmit}>
               <Flex
-                mt="30px"
+                mt="10px"
                 w="full"
                 flexDir={{ base: "column", md: "row" }}
                 align="center"

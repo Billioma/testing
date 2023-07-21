@@ -7,22 +7,20 @@ import { Button } from "@chakra-ui/button";
 import { initValues, validateSchema } from "../../../utils/validation";
 import { Form, Formik } from "formik";
 import { useNavigate } from "react-router";
-
 import useCustomToast from "../../../utils/notifications";
-import { useLogin } from "../../../services/operator/query/auth";
+import { useOperatorLogin } from "../../../services/query/auth";
 
 const Login = () => {
   const [show, setShow] = useState(false);
   const navigate = useNavigate();
 
-  const { errorToast, successToast } = useCustomToast();
-  const { mutate, isLoading } = useLogin({
+  const { errorToast } = useCustomToast();
+  const { mutate, isLoading } = useOperatorLogin({
     onSuccess: (res) => {
       sessionStorage.setItem("user", JSON.stringify(res));
-      successToast("Welcome back!");
-      // setTimeout(() => {
-      //   navigate("/operator/dashboard");
-      // }, 200);
+      setTimeout(() => {
+        navigate("/operator/dashboard");
+      }, 200);
     },
     onError: (err) => {
       errorToast(
@@ -150,16 +148,6 @@ const Login = () => {
             </Form>
           )}
         </Formik>
-
-        {/* <Text textAlign="center" mt="32px" color="#646668" fontSize="14px">
-          Not an operator yet ?{" "}
-          <span
-            onClick={() => navigate("/operator/auth/signup")}
-            style={{ color: "red", fontWeight: 500, cursor: "pointer" }}
-          >
-            Sign Up
-          </span>
-        </Text> */}
       </Flex>
     </Flex>
   );

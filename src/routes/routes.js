@@ -12,7 +12,6 @@ const {
   CUST_RESET_SENT,
   CUST_CHANGE_PASS,
   CUST_CHANGE_SUCCESS,
-
   OPERATOR_RESET_PASSWORD,
   OPERATOR_RESET_SENT,
   OPERATOR_CHANGE_PASS,
@@ -22,6 +21,7 @@ const {
 const {
   CUST_DASHBOARD,
   CUST_SERVICES,
+  OP_DASHBOARD,
   CUST_SUBSCRIPTION,
   CUST_HELP_CENTER,
   CUST_HISTORY,
@@ -72,6 +72,9 @@ const OpSignup = WithSuspense(
 const CustDashboard = WithSuspense(
   lazy(() => import("../pages/Customer/Dashboard/Dashboard"))
 );
+const OpDashboard = WithSuspense(
+  lazy(() => import("../pages/Operator/Dashboard/Dashboard"))
+);
 const CustServices = WithSuspense(
   lazy(() => import("../pages/Customer/Services/Services"))
 );
@@ -107,9 +110,9 @@ export const PUBLIC_ROUTES = [
     element: (
       <Navigate
         to={
-          location.pathname.includes("customer")
-            ? "/customer/auth/login"
-            : "/operator/auth/login"
+          location.pathname.includes("operator")
+            ? "/operator/auth/login"
+            : "/customer/auth/login"
         }
         replace
       />
@@ -119,6 +122,7 @@ export const PUBLIC_ROUTES = [
 
 export const PRIVATE_ROUTES = [
   { path: CUST_DASHBOARD, element: <CustDashboard /> },
+  { path: OP_DASHBOARD, element: <OpDashboard /> },
   { path: CUST_SERVICES, element: <CustServices /> },
   { path: CUST_SUBSCRIPTION, element: <CustSubscriptions /> },
   { path: CUST_HELP_CENTER, element: <CustHelp /> },
@@ -128,9 +132,9 @@ export const PRIVATE_ROUTES = [
     element: (
       <Navigate
         to={
-          location.pathname.includes("customer")
-            ? "/customer/dashboard"
-            : "/operator/dashboard"
+          location.pathname.includes("operator")
+            ? "/operator/dashboard"
+            : "/customer/dashboard"
         }
         replace
       />

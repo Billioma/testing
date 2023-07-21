@@ -115,7 +115,7 @@ const SideBar = () => {
       >
         {isLoading ? (
           <Flex gap="8px" color="red" align="center">
-            <Spinner size="sm" /> Loggin Out
+            <Spinner size="sm" /> Logging Out
           </Flex>
         ) : (
           <Flex gap="8px" align="center" color="#242628">

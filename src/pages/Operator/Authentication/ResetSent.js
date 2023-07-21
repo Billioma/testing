@@ -12,7 +12,7 @@ const ResetSent = () => {
       justifyContent="center"
       w="full"
       align="center"
-      h={{ base: "90vh", md: "90vh" }}
+      h={{ base: "90vh", md: "100vh" }}
       flexDir="column"
     >
       <Flex
@@ -21,12 +21,12 @@ const ResetSent = () => {
         flexDir="column"
       >
         <Flex justifyContent="center" align="center" flexDir="column">
-          <Image src="/assets/logo.svg" w="312px" h="48px" />
+          <Image src="/assets/logo.svg" w="364px" h="56px" />
         </Flex>
 
         <Flex justifyContent="center" align="center" flexDir="column">
           <Text textAlign="center" fontSize="24px" mt="56px" fontWeight={700}>
-            Operator Reset link sent
+            Reset link sent
           </Text>
           <Text
             fontSize="14px"
@@ -46,7 +46,7 @@ const ResetSent = () => {
           align="center"
           mt="32px"
         >
-          <Button onClick={() => navigate("/operator/auth/login")}>
+          <Button onClick={() => navigate("/customer/auth/login")}>
             Back to Login
           </Button>
         </Flex>

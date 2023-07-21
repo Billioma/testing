@@ -19,7 +19,15 @@ const PrivateRouteWrapper = () => {
 const Pages = () => {
   const user = sessionStorage.getItem("user");
   const location = useLocation();
-  return user ? (
+  return location.pathname.includes("operator") ? (
+    user ? (
+      <PrivateRouteWrapper key={location.pathname} />
+    ) : (
+      <NonAuthLayout>
+        <PublicRouteWrapper key={location.pathname} />
+      </NonAuthLayout>
+    )
+  ) : user ? (
     <AuthLayout>
       <PrivateRouteWrapper key={location.pathname} />
     </AuthLayout>

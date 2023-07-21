@@ -15,6 +15,7 @@ export const PUBLIC_PATHS = {
 
 export const PRIVATE_PATHS = {
   CUST_DASHBOARD: "/customer/dashboard",
+  OP_DASHBOARD: "/operator/dashboard",
   CUST_SERVICES: "/customer/services",
   CUST_SUBSCRIPTION: "/customer/subscriptions",
   CUST_HISTORY: "/customer/history",

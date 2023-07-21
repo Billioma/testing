@@ -23,8 +23,8 @@ const Signup = () => {
       justifyContent="center"
       w="full"
       align="center"
-      h={{ base: "fit", md: "fit" }}
-      py={{ base: "100px", md: "100px" }}
+      h={{ base: "110vh", md: "105vh" }}
+      py={{ base: "40px", md: "40px" }}
       flexDir="column"
     >
       <Flex
@@ -33,10 +33,10 @@ const Signup = () => {
         flexDir="column"
       >
         <Flex justifyContent="center" align="center" flexDir="column">
-          <Image src="/assets/logo.svg" w="312px" h="48px" />
+          <Image src="/assets/logo.svg" w="314px" h="45px" />
         </Flex>
 
-        <Text textAlign="center" fontSize="24px" mt="64px" fontWeight={700}>
+        <Text textAlign="center" fontSize="24px" mt="10px" fontWeight={700}>
           Operator Sign Up
         </Text>
 
@@ -56,7 +56,7 @@ const Signup = () => {
             dirty,
           }) => (
             <Form onSubmit={handleSubmit}>
-              <Box w="full" mt="30px">
+              <Box w="full" mt="10px">
                 <Text mb="8px" fontWeight={500} color="#444648" fontSize="10px">
                   Business / Operator Name
                 </Text>

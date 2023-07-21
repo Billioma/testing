@@ -1,33 +1,65 @@
 import { useMutation } from "react-query";
-import { login, register, resetPassword, updatePassword } from "../api/auth";
+import {
+  customerLogin,
+  customerRegister,
+  customerResetPassword,
+  customerUpdatePassword,
+  operatorLogin,
+  operatorResetPassword,
+  operatorUpdatePassword,
+} from "../api/auth";
 
-export const useLogin = (options = {}) => {
-  const { mutate, isLoading } = useMutation(login, {
-    mutationKey: "LOGIN",
+export const useCustomerLogin = (options = {}) => {
+  const { mutate, isLoading } = useMutation(customerLogin, {
+    mutationKey: "CUSTOMER_LOGIN",
     ...options,
   });
   return { mutate, isLoading };
 };
 
-export const useResetPassword = (options = {}) => {
-  const { mutate, isLoading } = useMutation(resetPassword, {
-    mutationKey: "RESET_PASSWORD",
+export const useCustomerResetPassword = (options = {}) => {
+  const { mutate, isLoading } = useMutation(customerResetPassword, {
+    mutationKey: "CUSTOMER_RESET_PASSWORD",
     ...options,
   });
   return { mutate, isLoading };
 };
 
-export const useUpdatePassword = (options = {}) => {
-  const { mutate, isLoading } = useMutation(updatePassword, {
-    mutationKey: "UPDATE_PASSWORD",
+export const useCustomerUpdatePassword = (options = {}) => {
+  const { mutate, isLoading } = useMutation(customerUpdatePassword, {
+    mutationKey: "CUSTOMER_UPDATE_PASSWORD",
     ...options,
   });
   return { mutate, isLoading };
 };
 
-export const useRegister = (options = {}) => {
-  const { mutate, isLoading } = useMutation(register, {
-    mutationKey: "REGISTER",
+export const useCustomerRegister = (options = {}) => {
+  const { mutate, isLoading } = useMutation(customerRegister, {
+    mutationKey: "CUSTOMER_REGISTER",
+    ...options,
+  });
+  return { mutate, isLoading };
+};
+
+export const useOperatorLogin = (options = {}) => {
+  const { mutate, isLoading } = useMutation(operatorLogin, {
+    mutationKey: "OPERATOR_LOGIN",
+    ...options,
+  });
+  return { mutate, isLoading };
+};
+
+export const useOperatorResetPassword = (options = {}) => {
+  const { mutate, isLoading } = useMutation(operatorResetPassword, {
+    mutationKey: "OPERATOR_RESET_PASSWORD",
+    ...options,
+  });
+  return { mutate, isLoading };
+};
+
+export const useOperatorUpdatePassword = (options = {}) => {
+  const { mutate, isLoading } = useMutation(operatorUpdatePassword, {
+    mutationKey: "OPERATOR_UPDATE_PASSWORD",
     ...options,
   });
   return { mutate, isLoading };

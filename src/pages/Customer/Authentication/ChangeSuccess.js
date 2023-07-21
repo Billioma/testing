@@ -11,7 +11,7 @@ const ChangeSuccess = () => {
       justifyContent="center"
       w="full"
       align="center"
-      h={{ base: "90vh", md: "90vh" }}
+      h={{ base: "90vh", md: "100vh" }}
       flexDir="column"
     >
       <Flex

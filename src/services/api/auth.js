@@ -1,24 +1,42 @@
 import * as API from "../url";
 import axiosInstance from "../axiosInstance";
 
-export const login = async (body) => {
+export const customerLogin = async (body) => {
   const res = await axiosInstance.post("customer/" + API.LOGIN, body);
   return res.data;
 };
 
-export const resetPassword = async (body) => {
+export const customerResetPassword = async (body) => {
   const res = await axiosInstance.post("customer/" + API.RESET_PASSWORD, body);
   return res.data;
 };
 
-export const register = async (body) => {
+export const customerRegister = async (body) => {
   const res = await axiosInstance.post("customer/" + API.REGISTER, body);
   return res.data;
 };
 
-export const updatePassword = async ({ query, body }) => {
+export const customerUpdatePassword = async ({ query, body }) => {
   const res = await axiosInstance.post(
     "customer/" + API.CHANGE_PASSWORD(query.id, query.hash),
+    body
+  );
+  return res.data;
+};
+
+export const operatorLogin = async (body) => {
+  const res = await axiosInstance.post("operator/" + API.LOGIN, body);
+  return res.data;
+};
+
+export const operatorResetPassword = async (body) => {
+  const res = await axiosInstance.post("operator/" + API.RESET_PASSWORD, body);
+  return res.data;
+};
+
+export const operatorUpdatePassword = async ({ query, body }) => {
+  const res = await axiosInstance.post(
+    "operator/" + API.CHANGE_PASSWORD(query.id, query.hash),
     body
   );
   return res.data;

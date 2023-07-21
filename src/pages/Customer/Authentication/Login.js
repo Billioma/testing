@@ -8,14 +8,14 @@ import { initValues, validateSchema } from "../../../utils/validation";
 import { Form, Formik } from "formik";
 import { useNavigate } from "react-router";
 import useCustomToast from "../../../utils/notifications";
-import { useLogin } from "../../../services/query/auth";
+import { useCustomerLogin } from "../../../services/query/auth";
 
 const Login = () => {
   const [show, setShow] = useState(false);
   const navigate = useNavigate();
 
   const { errorToast } = useCustomToast();
-  const { mutate, isLoading } = useLogin({
+  const { mutate, isLoading } = useCustomerLogin({
     onSuccess: (res) => {
       sessionStorage.setItem("user", JSON.stringify(res));
       setTimeout(() => {
@@ -37,7 +37,7 @@ const Login = () => {
       justifyContent="center"
       w="full"
       align="center"
-      h={{ base: "90vh", md: "90vh" }}
+      // h={{ base: "90vh", md: "100vh" }}
       flexDir="column"
     >
       <Flex
