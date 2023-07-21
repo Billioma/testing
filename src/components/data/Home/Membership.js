@@ -24,12 +24,24 @@ const Membership = () => {
         </div>
 
         <div className="mt-[20px] flex items-center font-medium text-sm gap-[24px]">
-          <button className="bg-red rounded-[4px] px-[34px] py-[10px] text-white">
-            Sign Up
-          </button>
-          <button className="bg-transparent rounded-[4px] border border-black hover:bg-black hover:text-white px-[26px] py-[10px] text-black ">
-            Login
-          </button>
+          <a
+            target="_blank"
+            rel="noreferrer"
+            href="https://parkinspace-webapp.netlify.app/customer/auth/signup"
+          >
+            <button className="bg-red rounded-[4px] px-[34px] py-[10px] text-white">
+              Sign Up
+            </button>
+          </a>
+          <a
+            target="_blank"
+            rel="noreferrer"
+            href="https://parkinspace-webapp.netlify.app/customer/auth/login"
+          >
+            <button className="bg-transparent rounded-[4px] border border-black hover:bg-black hover:text-white px-[26px] py-[10px] text-black ">
+              Login
+            </button>
+          </a>
         </div>
 
         <div className="mt-[40px] lg:mt-[50px]">

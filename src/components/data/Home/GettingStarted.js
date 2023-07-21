@@ -21,9 +21,15 @@ const GettingStarted = () => {
                 </div>
 
                 <div className="mt-[32px] justify-center lg:justify-start flex items-center font-medium text-sm">
-                  <button className="bg-red rounded-[4px] px-[34px] py-[10px] text-white ">
-                    Sign Up
-                  </button>
+                  <a
+                    target="_blank"
+                    rel="noreferrer"
+                    href="https://parkinspace-webapp.netlify.app/customer/auth/signup"
+                  >
+                    <button className="bg-red rounded-[4px] px-[34px] py-[10px] text-white ">
+                      Sign Up
+                    </button>
+                  </a>
                 </div>
               </div>
 

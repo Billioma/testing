@@ -68,10 +68,22 @@ const Header = () => {
           </div>
 
           <div className="mt-[15px] sm:hidden lg:flex gap-[24px] items-center w-[30%]">
-            <button className="text-[#EE383A] bg-transparent">Login</button>
-            <button className="text-white bg-red rounded-[4px] w-[156px] py-[12px]">
-              Sign Up
-            </button>
+            <a
+              target="_blank"
+              rel="noreferrer"
+              href="https://parkinspace-webapp.netlify.app/customer/auth/login"
+            >
+              <button className="text-[#EE383A] bg-transparent">Login</button>
+            </a>
+            <a
+              target="_blank"
+              rel="noreferrer"
+              href="https://parkinspace-webapp.netlify.app/customer/auth/signup"
+            >
+              <button className="text-white bg-red rounded-[4px] w-[156px] py-[12px]">
+                Sign Up
+              </button>
+            </a>
           </div>
         </div>
       </div>
