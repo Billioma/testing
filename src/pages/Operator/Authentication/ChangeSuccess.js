@@ -39,7 +39,7 @@ const ChangeSuccess = () => {
             fontSize="14px"
             cursor="pointer"
             color="3646668"
-            onClick={() => navigate("/customer/auth/login")}
+            onClick={() => navigate("/operator/auth/login")}
           >
             Back to <span style={{ color: "red" }}>Login</span>
           </Text>
