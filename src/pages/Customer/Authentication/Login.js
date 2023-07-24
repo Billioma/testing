@@ -33,12 +33,7 @@ const Login = () => {
   };
 
   return (
-    <Flex
-      justifyContent="center"
-      w="full"
-      align="center"
-      flexDir="column"
-    >
+    <Flex justifyContent="center" w="full" align="center" flexDir="column">
       <Flex
         justifyContent="center"
         w={{ base: "full", md: "50%", lg: "35%" }}

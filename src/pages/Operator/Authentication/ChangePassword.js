@@ -14,7 +14,7 @@ const ChangePassword = () => {
   const { id, hash } = useParams();
   const navigate = useNavigate();
 
-  const { successToast, errorToast } = useCustomToast();
+  const { errorToast } = useCustomToast();
   const { mutate, isLoading } = useOperatorUpdatePassword({
     onSuccess: () => {
       navigate("/operator/auth/password-success");

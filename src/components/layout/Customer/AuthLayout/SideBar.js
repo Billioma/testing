@@ -5,7 +5,6 @@ import { activeStyle, general } from "../../../common/constants";
 import { useLogOut } from "../../../../utils/helpers";
 import { LogoutIcon } from "../../../common/images";
 import { Spinner } from "@chakra-ui/react";
-import { IoIosArrowForward } from "react-icons/io";
 
 const SideBar = () => {
   const logout = useLogOut();

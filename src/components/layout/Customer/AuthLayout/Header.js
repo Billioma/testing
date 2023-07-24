@@ -86,7 +86,7 @@ const Header = () => {
           {!isMobile && (
             <Flex align="center" gap="18px" w={isMobile ? "" : "15%"}>
               <Flex
-                gap="12px" 
+                gap="12px"
                 bg="#F4F6F8"
                 borderRadius="12px"
                 align="center"

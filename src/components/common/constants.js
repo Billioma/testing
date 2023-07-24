@@ -66,7 +66,6 @@ export const colors = [
   "Indigo",
   "Violet",
   "Purple",
-
 ];
 
 export const activeStyle = {
