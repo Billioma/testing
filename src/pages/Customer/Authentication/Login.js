@@ -37,7 +37,6 @@ const Login = () => {
       justifyContent="center"
       w="full"
       align="center"
-      // h={{ base: "90vh", md: "100vh" }}
       flexDir="column"
     >
       <Flex

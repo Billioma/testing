@@ -74,28 +74,22 @@ const SideBar = () => {
                     transition=".3s ease-in-out"
                     align="center"
                     className="child_nav"
-                    gap="11px"
+                    gap="8px"
                   >
-                    <Box w="20px" h="20px" className="hovered_image">
-                      {item.hover}
+                    <Box w="16px" h="16px" className="hovered_image">
+                      {item.sec}
                     </Box>
 
-                    <Box w="20px" h="20px" className="initial_image">
+                    <Box w="16px" h="16px" className="initial_image">
                       {location.pathname === item.path ? item.sec : item.icon}
                     </Box>
 
                     {item.name}
                   </Flex>
-                  {(i === 1 || i === 2) && (
-                    <Flex
-                      color="#242628"
-                      border="1px solid #242628"
-                      className="child_nav"
-                      rounded="full"
-                      p="2px"
-                    >
-                      <IoIosArrowForward size="12px" />
-                    </Flex>
+                  {location.pathname === item?.path ? (
+                    <Box w="3px" h="28px" bg="#EE383A" rounded="full"></Box>
+                  ) : (
+                    ""
                   )}
                 </Flex>
               </NavLink>

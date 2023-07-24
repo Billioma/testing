@@ -23,6 +23,7 @@ const {
   CUST_SERVICES,
   OP_DASHBOARD,
   CUST_SUBSCRIPTION,
+  CUST_VEHICLES,
   CUST_HELP_CENTER,
   CUST_HISTORY,
 } = PRIVATE_PATHS;
@@ -87,20 +88,19 @@ const CustHistory = WithSuspense(
 const CustSubscriptions = WithSuspense(
   lazy(() => import("../pages/Customer/Subscriptions/Subscriptions"))
 );
+const CustVehicles = WithSuspense(
+  lazy(() => import("../pages/Customer/Vehicles/Vehicles"))
+);
 
 export const PUBLIC_ROUTES = [
   { path: CUST_LOGIN, element: <CustLogin /> },
   { path: OP_LOGIN, element: <OperatorLogin /> },
   { path: CUST_RESET_PASS, element: <CustResetPassword /> },
-
   { path: OPERATOR_RESET_PASSWORD, element: <OperatorResetPassword /> },
-
   { path: CUST_CHANGE_PASS, element: <CustChangePassword /> },
   { path: CUST_CHANGE_SUCCESS, element: <CustChangeSuccess /> },
-
   { path: OPERATOR_CHANGE_PASS, element: <OperatorChangePassword /> },
   { path: OPERATOR_CHANGE_SUCCESS, element: <OperatorChangeSuccess /> },
-
   { path: CUST_SIGNUP, element: <CustSignup /> },
   { path: OP_SIGNUP, element: <OpSignup /> },
   { path: CUST_RESET_SENT, element: <CustResetSent /> },
@@ -126,6 +126,7 @@ export const PRIVATE_ROUTES = [
   { path: CUST_SERVICES, element: <CustServices /> },
   { path: CUST_SUBSCRIPTION, element: <CustSubscriptions /> },
   { path: CUST_HELP_CENTER, element: <CustHelp /> },
+  { path: CUST_VEHICLES, element: <CustVehicles /> },
   { path: CUST_HISTORY, element: <CustHistory /> },
   {
     path: "*",

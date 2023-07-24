@@ -8,3 +8,19 @@ export const useLogOut = () => {
     }, 500);
   };
 };
+
+export const formatDate = (date, fallback = "") => {
+  if (!date) return fallback;
+
+  return new Date(date).toLocaleDateString();
+};
+
+export const formatDateTime = (date, fallback = "") => {
+  if (!date) return fallback;
+
+  return new Date(date).toLocaleTimeString("default", {
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+  });
+};

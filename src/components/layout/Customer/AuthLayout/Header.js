@@ -33,6 +33,9 @@ const Header = () => {
       case locationRoute.includes("help"):
         return setTitle("Help Center");
 
+      case locationRoute.includes("vehicles"):
+        return setTitle("Vehicles");
+
       default:
         return setTitle("");
     }
@@ -81,9 +84,9 @@ const Header = () => {
           )}
 
           {!isMobile && (
-            <Flex align="center" gap="18px" w={isMobile ? "" : "13%"}>
+            <Flex align="center" gap="18px" w={isMobile ? "" : "15%"}>
               <Flex
-                gap="12px"
+                gap="12px" 
                 bg="#F4F6F8"
                 borderRadius="12px"
                 align="center"

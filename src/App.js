@@ -17,6 +17,7 @@ const App = () => {
     "/assets/user.png",
     "/assets/wallet.png",
     "/assets/car-icon.svg",
+    "/assets/add-icon.svg",
     "/assets/clock-icon.svg",
   ];
 

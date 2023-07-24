@@ -15,10 +15,10 @@ const ChangePassword = () => {
   const [show, setShow] = useState(false);
   const navigate = useNavigate();
 
-  const { successToast, errorToast } = useCustomToast();
+  const { errorToast } = useCustomToast();
   const { mutate, isLoading } = useCustomerUpdatePassword({
-    onSuccess: (res) => {
-      successToast(res?.message);
+    onSuccess: () => {
+      navigate("/customer/auth/password-success");
     },
     onError: (err) => {
       errorToast(

@@ -20,4 +20,5 @@ export const PRIVATE_PATHS = {
   CUST_SUBSCRIPTION: "/customer/subscriptions",
   CUST_HISTORY: "/customer/history",
   CUST_HELP_CENTER: "/customer/help-center",
+  CUST_VEHICLES: "/customer/vehicles",
 };

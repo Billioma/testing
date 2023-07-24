@@ -16,8 +16,7 @@ const ChangePassword = () => {
 
   const { successToast, errorToast } = useCustomToast();
   const { mutate, isLoading } = useOperatorUpdatePassword({
-    onSuccess: (res) => {
-      successToast(res?.message);
+    onSuccess: () => {
       navigate("/operator/auth/password-success");
     },
     onError: (err) => {

@@ -12,11 +12,17 @@ import {
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import { useState } from "react";
 import { useGetVehicles } from "../../../../services/query/vehicles";
-import { useGetUser } from "../../../../services/query/user";
+import {
+  useGetUser,
+  useGetUserSubscriptions,
+} from "../../../../services/query/user";
+import { formatDate } from "../../../../utils/helpers";
 
 const Cards = () => {
   const [index, setIndex] = useState(0);
   const { data: vehicles, isLoading } = useGetVehicles();
+  const { data: subscriptions, isLoading: isSubscription } =
+    useGetUserSubscriptions();
   const { data: userData, isLoading: isUserLoading } = useGetUser();
 
   const currentVehicle = vehicles?.data?.filter((item, i) => i === index);
@@ -95,135 +101,154 @@ const Cards = () => {
         </GridItem>
 
         <GridItem>
-          <Box
-            bg="#fff"
-            py="24px"
-            px="20px"
-            borderRadius="16px"
-            h="14rem"
-            w="full"
-          >
-            <Flex align="center" gap="16px">
-              <Image src="/assets/card.png" w="40px" h="40px" />
-              <Text
-                color="red"
-                lineHeight="100%"
-                fontWeight={700}
-                fontSize="20px"
+          {subscriptions?.data?.length ? (
+            subscriptions?.data?.map((data, i) => (
+              <Box
+                key={i}
+                bg="#fff"
+                py="24px"
+                px="20px"
+                borderRadius="16px"
+                h="14rem"
+                w="full"
               >
-                Subscriptions
-              </Text>
-            </Flex>
+                <Flex align="center" gap="16px">
+                  <Image src="/assets/card.png" w="40px" h="40px" />
+                  <Text
+                    color="red"
+                    lineHeight="100%"
+                    fontWeight={700}
+                    fontSize="20px"
+                  >
+                    Subscriptions
+                  </Text>
+                </Flex>
 
-            <Flex
-              mt="32px"
-              align="center"
-              justifyContent="space-between"
-              w="full"
-            >
-              <Box>
-                <Text
-                  fontSize="12px"
-                  color="#848688"
-                  fontWeight={700}
-                  lineHeight="100%"
-                >
-                  Subscription Type
-                </Text>
-                <Text
-                  mt="8px"
-                  color="#242628"
-                  fontSize="14px"
-                  fontWeight={500}
-                  lineHeight="100%"
-                >
-                  Valet Parking (Only)
-                </Text>
-              </Box>
-
-              <Box>
-                <Text
-                  fontSize="12px"
-                  color="#848688"
-                  fontWeight={700}
-                  lineHeight="100%"
-                >
-                  Duration
-                </Text>
-                <Text
-                  mt="8px"
-                  color="#242628"
-                  fontSize="14px"
-                  fontWeight={500}
-                  lineHeight="100%"
-                >
-                  Monthly
-                </Text>
-              </Box>
-            </Flex>
-
-            <Flex
-              align="center"
-              mt="32px"
-              justifyContent="space-between"
-              w="full"
-            >
-              <Box w="full">
-                <Text
-                  fontSize="12px"
-                  color="#848688"
-                  fontWeight={700}
-                  lineHeight="100%"
-                >
-                  Amount
-                </Text>
-                <Text
-                  mt="8px"
-                  color="#242628"
-                  fontSize="14px"
-                  fontWeight={500}
-                  lineHeight="100%"
-                >
-                  ₦10,000
-                </Text>
-              </Box>
-
-              <Box w="full">
-                <Text
-                  fontSize="12px"
-                  color="#848688"
-                  fontWeight={700}
-                  lineHeight="100%"
-                >
-                  Expiry
-                </Text>
-                <Text
-                  mt="8px"
-                  color="#242628"
-                  fontSize="14px"
-                  fontWeight={500}
-                  lineHeight="100%"
-                >
-                  23/8/2023
-                </Text>
-              </Box>
-
-              <Box w="full">
-                <Button
+                <Flex
+                  mt="32px"
+                  align="center"
+                  justifyContent="space-between"
                   w="full"
-                  bg="#242628"
-                  rounded="full"
-                  py="8px"
-                  color="#fff"
-                  lineHeight="100%"
-                  fontSize="12px"
-                  fontWeight={500}
                 >
-                  Details
-                </Button>
+                  <Box>
+                    <Text
+                      fontSize="12px"
+                      color="#848688"
+                      fontWeight={700}
+                      lineHeight="100%"
+                    >
+                      Subscription Type
+                    </Text>
+                    <Text
+                      mt="8px"
+                      color="#242628"
+                      fontSize="14px"
+                      fontWeight={500}
+                      lineHeight="100%"
+                    >
+                      {data?.membershipPlan?.name}
+                    </Text>
+                  </Box>
+
+                  <Box>
+                    <Text
+                      fontSize="12px"
+                      color="#848688"
+                      fontWeight={700}
+                      lineHeight="100%"
+                    >
+                      Duration
+                    </Text>
+                    <Text
+                      mt="8px"
+                      color="#242628"
+                      fontSize="14px"
+                      fontWeight={500}
+                      lineHeight="100%"
+                    >
+                      Monthly
+                    </Text>
+                  </Box>
+                </Flex>
+
+                <Flex
+                  align="center"
+                  mt="32px"
+                  justifyContent="space-between"
+                  w="full"
+                >
+                  <Box w="full">
+                    <Text
+                      fontSize="12px"
+                      color="#848688"
+                      fontWeight={700}
+                      lineHeight="100%"
+                    >
+                      Amount
+                    </Text>
+                    <Text
+                      mt="8px"
+                      color="#242628"
+                      fontSize="14px"
+                      fontWeight={500}
+                      lineHeight="100%"
+                    >
+                      ₦{" "}
+                      {data?.membershipPlan?.amount?.toLocaleString(undefined, {
+                        maximumFractionDigits: 2,
+                      })}
+                    </Text>
+                  </Box>
+
+                  <Box w="full">
+                    <Text
+                      fontSize="12px"
+                      color="#848688"
+                      fontWeight={700}
+                      lineHeight="100%"
+                    >
+                      Next Payment
+                    </Text>
+                    <Text
+                      mt="8px"
+                      color="#242628"
+                      fontSize="14px"
+                      fontWeight={500}
+                      lineHeight="100%"
+                    >
+                      {formatDate(data?.nextPaymentDate)}
+                    </Text>
+                  </Box>
+
+                  <Box w="full">
+                    <Button
+                      w="full"
+                      bg="#242628"
+                      rounded="full"
+                      py="8px"
+                      color="#fff"
+                      lineHeight="100%"
+                      fontSize="12px"
+                      fontWeight={500}
+                    >
+                      Details
+                    </Button>
+                  </Box>
+                </Flex>
               </Box>
+            ))
+          ) : (
+            <Flex
+              h="15vh"
+              justifyContent="center"
+              align="center"
+              fontSize="13px"
+              fontWeight={500}
+              color="#000"
+            >
+              No vehicle has been added
             </Flex>
-          </Box>
+          )}
         </GridItem>
 
         <GridItem>
