@@ -4,7 +4,7 @@ import { Box, Flex, Text } from "@chakra-ui/layout";
 import CustomInput from "../../../components/common/CustomInput";
 import { Button } from "@chakra-ui/button";
 import { Form, Formik } from "formik";
-import { useParams } from "react-router";
+import { useParams, useNavigate } from "react-router-dom";
 import { passValues, passSchema } from "../../../utils/validation";
 import useCustomToast from "../../../utils/notifications";
 import { useOperatorUpdatePassword } from "../../../services/query/auth";
@@ -12,11 +12,13 @@ import { useOperatorUpdatePassword } from "../../../services/query/auth";
 const ChangePassword = () => {
   const [show, setShow] = useState(false);
   const { id, hash } = useParams();
+  const navigate = useNavigate();
 
   const { successToast, errorToast } = useCustomToast();
   const { mutate, isLoading } = useOperatorUpdatePassword({
     onSuccess: (res) => {
       successToast(res?.message);
+      navigate("/operator/auth/password-success");
     },
     onError: (err) => {
       errorToast(
@@ -146,6 +148,21 @@ const ChangePassword = () => {
               >
                 Change Password
               </Button>
+              <Flex
+                flexDirection="column"
+                justifyContent="center"
+                align="center"
+                mt="32px"
+              >
+                <Text
+                  fontSize="14px"
+                  cursor="pointer"
+                  color="3646668"
+                  onClick={() => navigate("/operator/auth/login")}
+                >
+                  Back to <span style={{ color: "red" }}>Login</span>
+                </Text>
+              </Flex>
             </Form>
           )}
         </Formik>
