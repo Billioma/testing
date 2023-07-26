@@ -14,8 +14,10 @@ const Membership = () => {
           <div className="w-[100%] flex flex-col justify-center items-center mt-[20px] text-center text-[#101410] text-sm leading-[150%]">
             <div className="w-[88%] mt-[20px] text-center text-[#101410] text-base lg:text-[20px] leading-[150%]">
               ParkinSpace is powered by EZPark, a premier parking management
-              company. Our technology is the easy, fast and stress-free way to
-              find, reserve and pay for parking services. <br />
+              company. <br />
+              <br />
+              Our technology is the easy, fast and stress-free way to find,
+              reserve and pay for parking services. <br />
               <br />
               Sign up for a free account in seconds and immediately access valet
               and self parking services on-demand or in advance.
