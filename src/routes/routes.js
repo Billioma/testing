@@ -21,6 +21,9 @@ const {
 const {
   CUST_DASHBOARD,
   CUST_SERVICES,
+  CUST_SERVICES_PARK,
+  CUST_SERVICES_RESERVE_PARK,
+  CUST_SERVICES_EVENT_PARK,
   OP_DASHBOARD,
   CUST_SUBSCRIPTION,
   CUST_VEHICLES,
@@ -79,6 +82,15 @@ const OpDashboard = WithSuspense(
 const CustServices = WithSuspense(
   lazy(() => import("../pages/Customer/Services/Services"))
 );
+const CustServicesPark = WithSuspense(
+  lazy(() => import("../pages/Customer/Services/Park"))
+);
+const CustServicesReservePark = WithSuspense(
+  lazy(() => import("../pages/Customer/Services/ReserveParking"))
+);
+const CustServicesEventPark = WithSuspense(
+  lazy(() => import("../pages/Customer/Services/EventParking"))
+);
 const CustHelp = WithSuspense(
   lazy(() => import("../pages/Customer/Help/Help"))
 );
@@ -124,6 +136,9 @@ export const PRIVATE_ROUTES = [
   { path: CUST_DASHBOARD, element: <CustDashboard /> },
   { path: OP_DASHBOARD, element: <OpDashboard /> },
   { path: CUST_SERVICES, element: <CustServices /> },
+  { path: CUST_SERVICES_PARK, element: <CustServicesPark /> },
+  { path: CUST_SERVICES_RESERVE_PARK, element: <CustServicesReservePark /> },
+  { path: CUST_SERVICES_EVENT_PARK, element: <CustServicesEventPark /> },
   { path: CUST_SUBSCRIPTION, element: <CustSubscriptions /> },
   { path: CUST_HELP_CENTER, element: <CustHelp /> },
   { path: CUST_VEHICLES, element: <CustVehicles /> },

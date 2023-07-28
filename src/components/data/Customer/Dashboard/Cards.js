@@ -178,7 +178,7 @@ const Cards = () => {
                     justifyContent="space-between"
                     w="full"
                   >
-                    <Box w="full">
+                    <Box w="80%">
                       <Text
                         fontSize="12px"
                         color="#848688"
@@ -224,12 +224,11 @@ const Cards = () => {
                       </Text>
                     </Box>
 
-                    <Box w="full">
+                    <Box w="60%">
                       <Button
                         w="full"
                         bg="#242628"
                         rounded="full"
-                        py="8px"
                         color="#fff"
                         lineHeight="100%"
                         fontSize="12px"

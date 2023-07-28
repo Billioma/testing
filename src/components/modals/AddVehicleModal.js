@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   Modal,
   ModalOverlay,
   ModalContent,
-  ModalHeader,
   ModalBody,
   Flex,
   Image,
@@ -12,38 +11,21 @@ import {
   Button,
 } from "@chakra-ui/react";
 import Select from "react-select";
-import * as nigerianStates from "nigerian-states-and-lgas";
 import CustomInput from "../common/CustomInput";
 import { colors } from "../common/constants";
 import { useCreateVehicles } from "../../services/query/vehicles";
 import useCustomToast from "../../utils/notifications";
+import ConfirmVehicleModal from "./ConfirmVehicleModal";
 
 const AddVehicleModal = ({
   isOpen,
-  dataa,
   refetch,
+  states,
+
   makes,
   models,
   onClose,
 }) => {
-  const allStates = nigerianStates.states();
-  const stateOptions = allStates.map((state) => ({
-    value: state,
-    label: state,
-  }));
-
-  const colorOptions = colors.map((color) => ({
-    value: color,
-    label: color,
-  }));
-  const modelOptions = models?.map((model) => ({
-    value: model?.id,
-    label: model?.name,
-  }));
-  const makeOptions = makes?.map((make) => ({
-    value: make?.id,
-    label: make?.name,
-  }));
   const [values, setValues] = useState({
     state: "",
     plate: "",
@@ -51,15 +33,26 @@ const AddVehicleModal = ({
     make: "",
     model: "",
   });
-
-  useEffect(() => {
-    if (dataa) {
-      setValues({
-        ...values,
-        color: dataa?.color,
-      });
-    }
-  }, [dataa]);
+  const [show, setShow] = useState(false);
+  const stateOptions = states?.data?.map((state) => ({
+    value: state?.name?.replace(" State", "")?.replace(" (FCT)", ""),
+    label: state?.name?.replace(" State", "")?.replace(" (FCT)", ""),
+  }));
+  const colorOptions = colors.map((color) => ({
+    value: color,
+    label: color,
+  }));
+  const modelToMap = models?.filter(
+    (item) => item?.make?.name === values?.make?.label
+  );
+  const modelOptions = modelToMap?.map((model) => ({
+    value: model?.id,
+    label: model?.name,
+  }));
+  const makeOptions = makes?.map((make) => ({
+    value: make?.id,
+    label: make?.name,
+  }));
 
   const handleSelectChange = (selectedOption, { name }) => {
     setValues({
@@ -69,8 +62,6 @@ const AddVehicleModal = ({
   };
 
   const isDisabled = Object.values(values).some((value) => !value);
-
-  const [menuIsOpen, setMenuIsOpen] = useState(false);
 
   const customStyles = {
     control: (provided) => ({
@@ -85,7 +76,6 @@ const AddVehicleModal = ({
       background: "unset",
     }),
   };
-  console.log(values);
   const { errorToast, successToast } = useCustomToast();
 
   const { mutate, isLoading } = useCreateVehicles({
@@ -93,6 +83,7 @@ const AddVehicleModal = ({
       refetch();
       successToast(res?.message);
       onClose();
+      setShow(false);
     },
     onError: (err) => {
       errorToast(
@@ -123,31 +114,6 @@ const AddVehicleModal = ({
     </Flex>
   );
 
-  const ColorOption = ({ data }) => (
-    <Flex
-      onClick={() => {
-        setValues({
-          ...values,
-          color: data,
-        });
-        setMenuIsOpen(false);
-      }}
-      gap="8px"
-      cursor="pointer"
-      mb="5px"
-      align="center"
-      px="15px"
-    >
-      <Flex
-        backgroundColor={data?.value}
-        width="28px"
-        height="20px"
-        borderRadius="4px"
-      ></Flex>
-      {data?.label}
-    </Flex>
-  );
-
   return (
     <Modal isCentered trapFocus={false} isOpen={isOpen} onClose={onClose}>
       <ModalOverlay backdropFilter="auto" backdropBlur="2px" />
@@ -159,8 +125,6 @@ const AddVehicleModal = ({
         bg="#fff"
         color="#000"
       >
-        <ModalHeader></ModalHeader>
-
         <ModalBody>
           <Flex justifyContent="center" align="center" flexDir="column">
             <Image w="56px" h="40px" src="/assets/car.png" />
@@ -206,7 +170,7 @@ const AddVehicleModal = ({
             </Text>
             <CustomInput
               value={values.plate}
-              onBlur={(e) => console.log(e.target.value)}
+              auth
               onChange={(e) =>
                 setValues({
                   ...values,
@@ -229,16 +193,14 @@ const AddVehicleModal = ({
             <Select
               styles={customStyles}
               components={{
-                Option: ColorOption,
                 SingleValue: ColorOptio,
               }}
+              onChange={(selectedOption) =>
+                handleSelectChange(selectedOption, { name: "color" })
+              }
               options={colorOptions}
-              menuIsOpen={menuIsOpen}
-              onMenuOpen={() => setMenuIsOpen(true)}
-              onMenuClose={() => setMenuIsOpen(false)}
             />
           </Box>
-
           <Box mb="24px">
             <Text
               color="#444648"
@@ -280,8 +242,7 @@ const AddVehicleModal = ({
           <Button
             fontSize="14px"
             fontWeight={500}
-            onClick={handleSubmit}
-            isLoading={isLoading}
+            onClick={() => setShow(true)}
             isDisabled={isDisabled}
             lineHeight="100%"
             w="full"
@@ -291,6 +252,14 @@ const AddVehicleModal = ({
           </Button>
         </ModalBody>
       </ModalContent>
+
+      <ConfirmVehicleModal
+        action={handleSubmit}
+        isLoading={isLoading}
+        values={values}
+        isOpen={show}
+        onClose={() => setShow(false)}
+      />
     </Modal>
   );
 };

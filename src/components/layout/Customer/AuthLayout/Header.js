@@ -2,16 +2,19 @@ import React, { useEffect, useState } from "react";
 import { Flex, Text } from "@chakra-ui/layout";
 import { IoIosArrowDown, IoMdMenu } from "react-icons/io";
 import { Image, useDisclosure, useMediaQuery } from "@chakra-ui/react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import SideDrawer from "./SideDrawer";
 import { useGetUser } from "../../../../services/query/user";
 
 const Header = () => {
+  const navigate = useNavigate();
+
   const [isMobile] = useMediaQuery("(max-width: 991px)");
 
   const { data: userData } = useGetUser();
   const { isOpen, onClose, onOpen } = useDisclosure();
   const [title, setTitle] = useState("");
+  const [secTitle, setSecTitle] = useState("");
 
   const location = useLocation();
   const locationRoute = location.pathname;
@@ -23,6 +26,9 @@ const Header = () => {
 
       case locationRoute.includes("services"):
         return setTitle("Services");
+
+      case locationRoute.includes("services/park"):
+        return setSecTitle("Parkc");
 
       case locationRoute.includes("subscription"):
         return setTitle("Subscription");
@@ -41,10 +47,40 @@ const Header = () => {
     }
   }, [locationRoute]);
 
+  useEffect(() => {
+    switch (true) {
+      case locationRoute.includes("services/park"):
+        return setSecTitle("Park");
+
+      case locationRoute.includes("services/reserve"):
+        return setSecTitle("Reserve Parking");
+
+      case locationRoute.includes("services/event"):
+        return setSecTitle("Event Parking");
+
+      default:
+        return setSecTitle("");
+    }
+  }, [locationRoute]);
+
+  const [scroll, setScroll] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScroll(window.scrollY > 20);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
   return (
     <Flex
       flexDirection="column"
-      bg="#fff"
+      bg={scroll ? "rgba(255, 255, 255, 0.15)" : "#fff"}
+      backdropFilter={"blur(10px)"}
       pos="fixed"
       w={isMobile ? "calc(100% - 85px)" : "calc(100% - 390px)"}
       borderRadius="24px"
@@ -60,14 +96,29 @@ const Header = () => {
         w="full"
       >
         <Flex justifyContent="space-between" align="center" w="full">
-          <Text
-            color="orangeBg"
-            fontSize="20px"
-            lineHeight="100%"
-            fontWeight={700}
-          >
-            {title}
-          </Text>
+          <Flex align="flex-end" gap="16px">
+            <Text
+              color="orangeBg"
+              fontSize="20px"
+              lineHeight="100%"
+              cursor={secTitle ? "pointer" : ""}
+              onClick={() => (secTitle ? navigate(-1) : "")}
+              fontWeight={700}
+            >
+              {title}
+            </Text>
+
+            {secTitle && (
+              <Text
+                color="#848688"
+                fontSize="14px"
+                fontWeight={500}
+                lineHeight="100%"
+              >
+                {">"} {secTitle}
+              </Text>
+            )}
+          </Flex>
           {isMobile && (
             <Flex
               color="#BDBDBD"

@@ -15,9 +15,15 @@ const App = () => {
     "/assets/park.png",
     "/assets/service.png",
     "/assets/user.png",
+    "/assets/cal.png",
+    "/assets/event.png",
     "/assets/wallet.png",
     "/assets/car-icon.svg",
     "/assets/add-icon.svg",
+    "/assets/edit.svg",
+    "/assets/bin.svg",
+    "/assets/park-confirm.png",
+    "/assets/zone_pic.png",
     "/assets/clock-icon.svg",
   ];
 

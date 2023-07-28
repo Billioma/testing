@@ -49,51 +49,55 @@ const SideBar = () => {
         </Flex>
 
         <Box mx="20px">
-          {general?.map((item, i) => (
-            <Box
-              key={i}
-              className={location.pathname !== item.path && "parent_nav"}
-            >
-              <NavLink
-                to={item.path}
-                style={({ isActive }) =>
-                  isActive
-                    ? { ...activeStyle }
-                    : {
-                        ...activeStyle,
-                        background: "transparent",
-                        fontWeight: 400,
-                        borderRight: "",
-                        color: "#242628",
-                      }
-                }
+          {general?.map((item, i) => {
+            const isActivePath = location.pathname.includes(item.path);
+
+            return (
+              <Box
+                key={i}
+                className={location.pathname !== item.path && "parent_nav"}
               >
-                <Flex align="center" justifyContent="space-between" w="full">
-                  <Flex
-                    transition=".3s ease-in-out"
-                    align="center"
-                    className="child_nav"
-                    gap="8px"
-                  >
-                    <Box w="16px" h="16px" className="hovered_image">
-                      {item.sec}
-                    </Box>
+                <NavLink
+                  to={item.path}
+                  style={({ isActive }) =>
+                    isActive
+                      ? { ...activeStyle }
+                      : {
+                          ...activeStyle,
+                          background: "transparent",
+                          fontWeight: 400,
+                          borderRight: "",
+                          color: "#242628",
+                        }
+                  }
+                >
+                  <Flex align="center" justifyContent="space-between" w="full">
+                    <Flex
+                      transition=".3s ease-in-out"
+                      align="center"
+                      className="child_nav"
+                      gap="8px"
+                    >
+                      <Box w="16px" h="16px" className="hovered_image">
+                        {item.sec}
+                      </Box>
 
-                    <Box w="16px" h="16px" className="initial_image">
-                      {location.pathname === item.path ? item.sec : item.icon}
-                    </Box>
+                      <Box w="16px" h="16px" className="initial_image">
+                        {location.pathname === item.path ? item.sec : item.icon}
+                      </Box>
 
-                    {item.name}
+                      {item.name}
+                    </Flex>
+                    {isActivePath ? (
+                      <Box w="3px" h="28px" bg="#EE383A" rounded="full"></Box>
+                    ) : (
+                      ""
+                    )}
                   </Flex>
-                  {location.pathname === item?.path ? (
-                    <Box w="3px" h="28px" bg="#EE383A" rounded="full"></Box>
-                  ) : (
-                    ""
-                  )}
-                </Flex>
-              </NavLink>
-            </Box>
-          ))}
+                </NavLink>
+              </Box>
+            );
+          })}
         </Box>
       </Box>
 

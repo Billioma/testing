@@ -1,13 +1,17 @@
 import React from "react";
 import { Box, Flex, Grid, GridItem, Image, Text } from "@chakra-ui/react";
 import { dashServices } from "../../../common/constants";
+import { useNavigate } from "react-router-dom";
 
-const Services = () => {
+const Services = ({ opt }) => {
+  const navigate = useNavigate();
   return (
     <Box mt="24px">
-      <Text mb="12px" color="#242628" fontWeight={500} lineHeight="100%">
-        Services
-      </Text>
+      {!opt && (
+        <Text mb="12px" color="#242628" fontWeight={500} lineHeight="100%">
+          Services
+        </Text>
+      )}
 
       <Grid
         gap="20px"
@@ -24,6 +28,8 @@ const Services = () => {
               bg="#fff"
               borderRadius="8px"
               border="1px solid #E4E6E8"
+              onClick={() => dat?.link && navigate(dat?.link)}
+              cursor="pointer"
               py="16px"
               px="24px"
             >

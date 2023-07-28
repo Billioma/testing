@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import {
   Box,
-  Button,
   Flex,
   Grid,
   GridItem,
@@ -17,7 +16,7 @@ import {
 } from "../../../../services/query/vehicles";
 import AddVehicleModal from "../../../modals/AddVehicleModal";
 
-const VehicleCards = () => {
+const VehicleCards = ({ states }) => {
   const { data: vehicles, isLoading, refetch } = useGetVehicles();
   const [currentVehicle, setCurrentVehicle] = useState("");
   const { data: models } = useGetModel();
@@ -121,20 +120,18 @@ const VehicleCards = () => {
                     </Text>
                   </Flex>
 
-                  <Flex align="flex-end" flexDir="column" w="full">
-                    <Button
-                      bg="transparent"
-                      border="1px solid #242628"
-                      rounded="full"
-                      px="27px"
+                  <Flex
+                    align="center"
+                    justifyContent="flex-end"
+                    gap="24px"
+                    w="full"
+                  >
+                    <Image
+                      cursor="pointer"
+                      src="/assets/edit.svg"
                       onClick={() => openMenu(data)}
-                      color="#242628"
-                      lineHeight="100%"
-                      fontSize="10px"
-                      fontWeight={500}
-                    >
-                      Edit
-                    </Button>
+                    />
+                    <Image src="/assets/bin.svg" cursor="pointer" />
                   </Flex>
                 </Flex>
               </Box>
@@ -171,6 +168,7 @@ const VehicleCards = () => {
       </Grid>
 
       <AddVehicleModal
+        states={states}
         dataa={currentVehicle}
         makes={makes}
         models={models}

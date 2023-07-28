@@ -10,7 +10,7 @@ export const AuthLayout = ({ children }) => {
   const [isMobile] = useMediaQuery("(max-width: 991px)");
 
   return (
-    <Box color="#000" fontFamily="Sailec" h="100vh" bg="#fff" p="15px">
+    <Box color="#000" fontFamily="Sailec" h="100vh" p="15px">
       <Box
         py="24px"
         px={isMobile ? "5px" : "24px"}
