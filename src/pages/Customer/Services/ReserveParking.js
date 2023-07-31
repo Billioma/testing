@@ -57,7 +57,6 @@ const ReserveParking = () => {
   const currentStateLocation = locations?.filter((dat) =>
     dat?.address?.includes(values?.city?.value)
   );
-  console.log(vehicles);
   const { mutate, data: cities } = useGetCities();
   const stateOptions = states?.data?.map((state) => ({
     value: state?.name?.replace(" State", "")?.replace(" (FCT)", ""),

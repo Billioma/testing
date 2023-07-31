@@ -5,6 +5,8 @@ import { Image, useDisclosure, useMediaQuery } from "@chakra-ui/react";
 import { useLocation, useNavigate } from "react-router-dom";
 import SideDrawer from "./SideDrawer";
 import { useGetUser } from "../../../../services/query/user";
+import { accountDrop } from "../../../common/constants";
+import { useLogOut } from "../../../../utils/helpers";
 
 const Header = () => {
   const navigate = useNavigate();
@@ -13,6 +15,7 @@ const Header = () => {
 
   const { data: userData } = useGetUser();
   const { isOpen, onClose, onOpen } = useDisclosure();
+  const [show, setShow] = useState(false);
   const [title, setTitle] = useState("");
   const [secTitle, setSecTitle] = useState("");
 
@@ -36,6 +39,9 @@ const Header = () => {
       case locationRoute.includes("history"):
         return setTitle("History");
 
+      case locationRoute.includes("account"):
+        return setTitle("Account");
+
       case locationRoute.includes("help"):
         return setTitle("Help Center");
 
@@ -58,6 +64,18 @@ const Header = () => {
       case locationRoute.includes("services/event"):
         return setSecTitle("Event Parking");
 
+      case locationRoute.includes("account/payment"):
+        return setSecTitle("Payments");
+
+      case locationRoute.includes("account/profile"):
+        return setSecTitle("Profile");
+
+      case locationRoute.includes("add-subscriptions"):
+        return setSecTitle("Add a Subscription");
+
+      case locationRoute.includes("account/settings"):
+        return setSecTitle("Settings");
+
       default:
         return setSecTitle("");
     }
@@ -75,6 +93,30 @@ const Header = () => {
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (event.target.closest(".box") === null) {
+        setShow(false);
+      }
+    };
+
+    document.addEventListener("click", handleClickOutside);
+    return () => {
+      document.removeEventListener("click", handleClickOutside);
+    };
+  }, []);
+
+  const logout = useLogOut();
+  const [isLoading, setIsLoading] = useState(false);
+
+  const action = () => {
+    setIsLoading(true);
+    setTimeout(() => {
+      logout();
+      setIsLoading(false);
+    }, 1000);
+  };
 
   return (
     <Flex
@@ -101,8 +143,10 @@ const Header = () => {
               color="orangeBg"
               fontSize="20px"
               lineHeight="100%"
-              cursor={secTitle ? "pointer" : ""}
-              onClick={() => (secTitle ? navigate(-1) : "")}
+              cursor={locationRoute.includes("account/") ? "" : "pointer"}
+              onClick={() =>
+                locationRoute.includes("account/") ? "" : navigate(-1)
+              }
               fontWeight={700}
             >
               {title}
@@ -135,12 +179,21 @@ const Header = () => {
           )}
 
           {!isMobile && (
-            <Flex align="center" gap="18px" w={isMobile ? "" : "15%"}>
+            <Flex
+              align="center"
+              pos="relative"
+              gap="18px"
+              w={isMobile ? "" : "8rem"}
+            >
               <Flex
                 gap="12px"
+                onClick={() => setShow(true)}
                 bg="#F4F6F8"
+                className="box"
+                w="full"
                 borderRadius="12px"
                 align="center"
+                justifyContent="flex-end"
                 color="#242628"
                 cursor="pointer"
                 py="6px"
@@ -153,6 +206,53 @@ const Header = () => {
                 </Text>
                 <IoIosArrowDown />
               </Flex>
+              {show && (
+                <Flex
+                  flexDir="column"
+                  align="center"
+                  justifyContent="center"
+                  bg="#F4F6F8"
+                  pos="absolute"
+                  top="35px"
+                  right="0"
+                  boxShadow="0px 4px 24px 0px rgba(0, 0, 0, 0.05)"
+                  border="1px solid #E4E6E8"
+                  borderRadius="4px"
+                  w="90%"
+                  py="12px"
+                  px="16px"
+                >
+                  {accountDrop.map((data, i) => (
+                    <Text
+                      key={i}
+                      fontSize="12px"
+                      _hover={{
+                        bg: "red",
+                        color: "#fff",
+                        borderRadius: "4px",
+                      }}
+                      cursor="pointer"
+                      lineHeight="100%"
+                      py="10px"
+                      onClick={() =>
+                        i === 3
+                          ? action()
+                          : (navigate(data?.link), setShow(false))
+                      }
+                      px="20px"
+                      fontWeight={500}
+                      color="#242628"
+                      mb="16px"
+                    >
+                      {i === 3
+                        ? isLoading
+                          ? "Logging Out"
+                          : "Logout"
+                        : data?.name}
+                    </Text>
+                  ))}
+                </Flex>
+              )}
             </Flex>
           )}
         </Flex>

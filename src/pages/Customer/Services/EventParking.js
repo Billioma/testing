@@ -26,9 +26,9 @@ const EventParking = () => {
   const [step, setStep] = useState(1);
   const { isOpen, onClose, onOpen } = useDisclosure();
 
-  //   useEffect(() => {
-  //     setStep(1);
-  //   }, []);
+  useEffect(() => {
+    setStep(1);
+  }, []);
 
   const [values, setValues] = useState({
     event: "",

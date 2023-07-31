@@ -41,7 +41,6 @@ const Signup = () => {
       w="full"
       align="center"
       overflowY="scroll"
-      // h={{ base: "90vh", md: "100vh" }}
       py={{ base: "40px", md: "0" }}
       flexDir="column"
     >

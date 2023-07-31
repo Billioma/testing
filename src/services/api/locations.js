@@ -17,6 +17,11 @@ export const getEvents = async () => {
   return res.data;
 };
 
+export const getPlans = async () => {
+  const res = await axiosInstance.get(API.GET_PLANS);
+  return res.data;
+};
+
 export const getServices = async () => {
   const res = await axiosInstance.get(API.GET_SERVICES);
   return res.data;
@@ -24,5 +29,10 @@ export const getServices = async () => {
 
 export const getCities = async (query) => {
   const res = await axios.get(API.GET_CITIES(query));
+  return res.data;
+};
+
+export const getZone = async (query) => {
+  const res = await axiosInstance.get(API.GET_ZONE(query));
   return res.data;
 };

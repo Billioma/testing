@@ -14,30 +14,112 @@ import { HiOutlineArrowNarrowLeft } from "react-icons/hi";
 import { BsCheckCircle } from "react-icons/bs";
 import Select from "react-select";
 import ConfirmParkModal from "../../../components/modals/ConfirmParkModal";
-import { useGetStates } from "../../../services/query/locations";
+import { useGetZone } from "../../../services/query/locations";
+import useCustomToast from "../../../utils/notifications";
+import { useGetVehicles } from "../../../services/query/vehicles";
+import { useGetUser } from "../../../services/query/user";
+import { useCreatePayToPark } from "../../../services/query/services";
+import { useNavigate } from "react-router-dom";
 
 const Park = () => {
   const [zone, setZone] = useState("");
   const [step, setStep] = useState(1);
+  const navigate = useNavigate();
   const { isOpen, onClose, onOpen } = useDisclosure();
+  const { errorToast, successToast } = useCustomToast();
+  const [error, setError] = useState(false);
+  const [values, setValues] = useState({
+    vehicle: "",
+    serviceType: "",
+    paymentMethod: "",
+  });
+  const { mutate, isLoading, data } = useGetZone({
+    onSuccess: () => {
+      setError(false);
+      setStep(step + 1);
+    },
+    onError: (err) => {
+      if (err?.response?.data?.message) {
+        setError(true);
+      } else {
+        errorToast(
+          err?.response?.data?.message || err?.message || "An Error occured"
+        );
+      }
+    },
+  });
+
+  const { mutate: parkMutate, isLoading: isCreating } = useCreatePayToPark({
+    onSuccess: (res) => {
+      onClose();
+      navigate("/customer/services");
+      setValues({ vehicle: "", serviceType: "", paymentMethod: "" });
+      setZone("");
+      setStep(1);
+      successToast(res?.message);
+    },
+    onError: (err) => {
+      errorToast(
+        err?.response?.data?.message || err?.message || "An Error occured"
+      );
+    },
+  });
+
+  const handleSearchZone = () => {
+    mutate(zone);
+  };
+
+  const handlePark = () => {
+    parkMutate({
+      amount: values?.serviceType?.amount,
+      paymentMethod: Number(values?.paymentMethod),
+      rate: Number(values?.serviceType?.rate),
+      service: data?.service?.id,
+      vehicle: Number(values?.vehicle?.id),
+      zone: data?.id,
+    });
+  };
 
   useEffect(() => {
     setStep(1);
+    setValues({ vehicle: "", serviceType: "", paymentMethod: "" });
+    setZone("");
   }, []);
 
-  const [values, setValues] = useState({
-    state: "",
-    plate: "",
-    color: "",
-    make: "",
-    model: "",
-  });
-
-  const { data: states } = useGetStates();
-  const stateOptions = states?.data?.map((state) => ({
-    value: state?.name?.replace(" State", "")?.replace(" (FCT)", ""),
-    label: state?.name?.replace(" State", "")?.replace(" (FCT)", ""),
+  const { data: userData } = useGetUser();
+  const { data: vehicles } = useGetVehicles();
+  const serviceOptions = data?.rates?.map((service) => ({
+    value: service?.name,
+    label: service?.name,
+    amount: service?.amount,
+    rate: service?.id,
   }));
+  const vehicleOptions = vehicles?.data?.map((car) => ({
+    value: `${car?.model?.make?.name} - ${car?.model?.name} - ${car?.licensePlate}`,
+    label: `${car?.model?.make?.name} - ${car?.model?.name} - ${car?.licensePlate}`,
+    make: `${car?.model?.make?.name} - ${car?.model?.name}`,
+    id: car?.id,
+  }));
+
+  const ServiceType = ({ data }) => (
+    <Flex
+      mt="-30px"
+      h="40px"
+      align="center"
+      justifyContent="space-between"
+      w="full"
+      backgroundColor={data?.value}
+      borderRadius="4px"
+    >
+      <Text>{data?.label}</Text>
+      <Text>
+        Price: ₦{" "}
+        {data?.amount?.toLocaleString(undefined, {
+          maximumFractionDigits: 2,
+        })}
+      </Text>
+    </Flex>
+  );
 
   const handleSelectChange = (selectedOption, { name }) => {
     setValues({
@@ -47,7 +129,7 @@ const Park = () => {
   };
 
   const customStyles = {
-    control: (provided) => ({
+    control: (provided, state) => ({
       ...provided,
       width: "100%",
       height: "44px",
@@ -56,7 +138,11 @@ const Park = () => {
       cursor: "pointer",
       borderRadius: "4px",
       border: "1px solid #D4D6D8",
-      background: "unset",
+      background: state.selectProps.menuIsOpen
+        ? "unset"
+        : state.hasValue
+        ? "#F4F6F8"
+        : "unset",
     }),
   };
 
@@ -101,8 +187,15 @@ const Park = () => {
             onChange={(e) => {
               setZone(e.target.value);
               setStep(1);
+              setError(false);
             }}
           />
+
+          {error && (
+            <Text color="red" fontSize="13px" mt="8px">
+              Zone '{zone}' was not found! Try search another zone.
+            </Text>
+          )}
 
           {(step === 2 || step === 3) && (
             <Box
@@ -131,7 +224,7 @@ const Park = () => {
                         color="#242628"
                         lineHeight="100%"
                       >
-                        LandMark Towers
+                        {data?.location?.name}
                       </Text>
                     </Box>
                     <Box>
@@ -150,7 +243,7 @@ const Park = () => {
                         color="#242628"
                         lineHeight="100%"
                       >
-                        45
+                        {data?.capacity}
                       </Text>
                     </Box>
                   </Flex>
@@ -176,7 +269,7 @@ const Park = () => {
                         color="#242628"
                         lineHeight="100%"
                       >
-                        None
+                        {data?.amenities[0]?.name}
                       </Text>
                     </Box>
                     <Box>
@@ -209,9 +302,12 @@ const Park = () => {
                 </Text>
                 <Select
                   styles={customStyles}
-                  options={stateOptions}
+                  components={{
+                    SingleValue: ServiceType,
+                  }}
+                  options={serviceOptions}
                   onChange={(selectedOption) =>
-                    handleSelectChange(selectedOption, { name: "make" })
+                    handleSelectChange(selectedOption, { name: "serviceType" })
                   }
                 />
               </Box>
@@ -227,9 +323,14 @@ const Park = () => {
                 </Text>
                 <Select
                   styles={customStyles}
-                  options={stateOptions}
+                  placeholder="Select Vehicle"
+                  options={vehicleOptions}
+                  value={values.vehicle}
+                  defaultValue={values.vehicle}
                   onChange={(selectedOption) =>
-                    handleSelectChange(selectedOption, { name: "make" })
+                    handleSelectChange(selectedOption, {
+                      name: "vehicle",
+                    })
                   }
                 />
               </Box>
@@ -244,11 +345,22 @@ const Park = () => {
                   Payment Method
                 </Text>
                 <Flex mt="17px" align="center">
-                  <RadioGroup align="center" display="flex" gap="24px">
-                    <Radio>
+                  <RadioGroup
+                    value={values.paymentMethod}
+                    onChange={(e) =>
+                      setValues({
+                        ...values,
+                        paymentMethod: e,
+                      })
+                    }
+                    align="center"
+                    display="flex"
+                    gap="24px"
+                  >
+                    <Radio value={"1"}>
                       <Text fontSize="14px"> Pay via Wallet</Text>
                     </Radio>
-                    <Radio>
+                    <Radio value={"0"}>
                       <Text fontSize="14px">Pay via card</Text>
                     </Radio>
                   </RadioGroup>
@@ -267,8 +379,11 @@ const Park = () => {
                       Wallet
                     </Text>
                     <Text fontSize="14px" color="#646668" lineHeight="100%">
-                      <span style={{ fontWeight: 500 }}> Balance: </span>₦
-                      20,000
+                      <span style={{ fontWeight: 500 }}> Balance: </span> ₦{" "}
+                      {userData?.wallet?.balance?.toLocaleString(undefined, {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2,
+                      })}
                     </Text>
                   </Box>
 
@@ -293,9 +408,16 @@ const Park = () => {
           )}
 
           <Button
-            onClick={() => (step === 3 ? onOpen() : setStep(step + 1))}
+            onClick={() =>
+              step === 3
+                ? onOpen()
+                : step === 1
+                ? handleSearchZone()
+                : setStep(step + 1)
+            }
             w="full"
             bg="red"
+            isLoading={isLoading}
             mt="32px"
             py="17px"
             isDisabled={step === 1 ? !zone : ""}
@@ -305,7 +427,14 @@ const Park = () => {
           </Button>
         </Flex>
       </Flex>
-      <ConfirmParkModal isOpen={isOpen} onClose={onClose} />
+      <ConfirmParkModal
+        isLoading={isCreating}
+        dataa={data}
+        action={handlePark}
+        values={values}
+        isOpen={isOpen}
+        onClose={onClose}
+      />
     </Box>
   );
 };

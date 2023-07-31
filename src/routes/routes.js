@@ -26,9 +26,14 @@ const {
   CUST_SERVICES_EVENT_PARK,
   OP_DASHBOARD,
   CUST_SUBSCRIPTION,
+  CUST_ADD_SUBSCRIPTION,
   CUST_VEHICLES,
   CUST_HELP_CENTER,
   CUST_HISTORY,
+  CUST_SETTINGS,
+  CUST_PAYMENT,
+  CUST_PROFILE,
+  CUST_EDIT_PROFILE,
 } = PRIVATE_PATHS;
 
 const CustLogin = WithSuspense(
@@ -70,6 +75,18 @@ const OperatorChangeSuccess = WithSuspense(
 const CustSignup = WithSuspense(
   lazy(() => import("../pages/Customer/Authentication/Signup"))
 );
+const CustSettings = WithSuspense(
+  lazy(() => import("../pages/Customer/Account/Settings"))
+);
+const CustProfile = WithSuspense(
+  lazy(() => import("../pages/Customer/Account/Profile"))
+);
+const CustPayment = WithSuspense(
+  lazy(() => import("../pages/Customer/Account/Payment"))
+);
+const CustEditProfile = WithSuspense(
+  lazy(() => import("../pages/Customer/Account/EditProfile"))
+);
 const OpSignup = WithSuspense(
   lazy(() => import("../pages/Operator/Authentication/Signup"))
 );
@@ -99,6 +116,9 @@ const CustHistory = WithSuspense(
 );
 const CustSubscriptions = WithSuspense(
   lazy(() => import("../pages/Customer/Subscriptions/Subscriptions"))
+);
+const CustAddSubscriptions = WithSuspense(
+  lazy(() => import("../pages/Customer/Subscriptions/AddSubscription"))
 );
 const CustVehicles = WithSuspense(
   lazy(() => import("../pages/Customer/Vehicles/Vehicles"))
@@ -140,9 +160,14 @@ export const PRIVATE_ROUTES = [
   { path: CUST_SERVICES_RESERVE_PARK, element: <CustServicesReservePark /> },
   { path: CUST_SERVICES_EVENT_PARK, element: <CustServicesEventPark /> },
   { path: CUST_SUBSCRIPTION, element: <CustSubscriptions /> },
+  { path: CUST_ADD_SUBSCRIPTION, element: <CustAddSubscriptions /> },
   { path: CUST_HELP_CENTER, element: <CustHelp /> },
   { path: CUST_VEHICLES, element: <CustVehicles /> },
   { path: CUST_HISTORY, element: <CustHistory /> },
+  { path: CUST_SETTINGS, element: <CustSettings /> },
+  { path: CUST_PAYMENT, element: <CustPayment /> },
+  { path: CUST_PROFILE, element: <CustProfile /> },
+  { path: CUST_EDIT_PROFILE, element: <CustEditProfile /> },
   {
     path: "*",
     element: (

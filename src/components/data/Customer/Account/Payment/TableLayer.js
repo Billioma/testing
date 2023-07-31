@@ -1,19 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { Box, Flex, Td, Text, Tr } from "@chakra-ui/react";
-import TableFormat from "../../common/TableFormat";
+import TableFormat from "../../../../common/TableFormat";
 import { FiMoreVertical } from "react-icons/fi";
-import { servicesHeader } from "../../common/constants";
-import {
-  IoIosArrowBack,
-  IoIosArrowDown,
-  IoIosArrowForward,
-} from "react-icons/io";
-import { useGetPayToPark } from "../../../services/query/services";
-import NoData from "../../common/NoData";
-import { formatDate } from "../../../utils/helpers";
+import { paymentHeader } from "../../../../common/constants";
+import NoData from "../../../../common/NoData";
+import { formatDate } from "../../../../../utils/helpers";
+import { useGetPaymentHistory } from "../../../../../services/query/payment";
+import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 
 const TableLayer = () => {
-  const { mutate, isLoading, data: payToPark } = useGetPayToPark();
+  const { mutate, isLoading, data: paymentHistory } = useGetPaymentHistory();
+
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(25);
 
@@ -24,31 +21,22 @@ const TableLayer = () => {
   }, [page, limit]);
 
   return (
-    <Box mt="24px">
-      <Text color="#242628" fontWeight={500} lineHeight="100%" mb="12px">
-        Recent Activity
-      </Text>
+    <Box mt="32px">
       <TableFormat
-        maxH={"50vh"}
+        maxH={"45vh"}
         isLoading={isLoading}
-        minH="25vh"
-        header={servicesHeader}
-        filter={
-          <Flex
-            bg="#F4F6F8"
-            color="#242628"
-            cursor="pointer"
-            borderRadius="8px"
-            gap="12px"
-            border="1px solid #E4E6E8"
-            px="16px"
-            py="5px"
-          >
-            <Text fontSize="12px" fontWeight={500} lineHeight="100%">
-              All Services
+        minH="20vh"
+        header={paymentHeader}
+        title={
+          <Flex>
+            <Text
+              color="#242628"
+              fontSize="14px"
+              lineHeight="100%"
+              fontWeight={500}
+            >
+              Payment History
             </Text>
-
-            <IoIosArrowDown />
           </Flex>
         }
         paginate={
@@ -60,16 +48,16 @@ const TableLayer = () => {
           >
             <Flex justifyContent="center" gap="32px" align="center">
               <Text fontSize="12px" color="#242628" lineHeight="100%">
-                Showing rows 1 to {limit} of {payToPark?.total}
+                Showing rows 1 to {limit} of {paymentHistory?.total}
               </Text>
 
               <Flex gap="16px" align="center">
                 <Flex
-                  opacity={payToPark?.page === 1 ? 0.5 : 1}
+                  opacity={paymentHistory?.page === 1 ? 0.5 : 1}
                   onClick={() =>
-                    payToPark?.page !== 1 ? setPage(page - 1) : ""
+                    paymentHistory?.page !== 1 ? setPage(page - 1) : ""
                   }
-                  cursor={payToPark?.page === 1 ? "" : "pointer"}
+                  cursor={paymentHistory?.page === 1 ? "" : "pointer"}
                   align="center"
                   gap="2px"
                   color="#A4A6A8"
@@ -88,7 +76,7 @@ const TableLayer = () => {
                     fontSize="12px"
                     lineHeight="100%"
                   >
-                    <Text>{payToPark?.page}</Text>
+                    <Text>{paymentHistory?.page}</Text>
                   </Flex>
                   <Text fontWeight={500} fontSize="12px">
                     -{" "}
@@ -101,19 +89,23 @@ const TableLayer = () => {
                     fontSize="12px"
                     lineHeight="100%"
                   >
-                    <Text>{payToPark?.pageCount}</Text>
+                    <Text>{paymentHistory?.pageCount}</Text>
                   </Flex>
                 </Flex>
 
                 <Flex
-                  opacity={payToPark?.page === payToPark?.pageCount ? 0.5 : 1}
+                  opacity={
+                    paymentHistory?.page === paymentHistory?.pageCount ? 0.5 : 1
+                  }
                   onClick={() =>
-                    payToPark?.page !== payToPark?.pageCount
+                    paymentHistory?.page !== paymentHistory?.pageCount
                       ? setPage(page + 1)
                       : ""
                   }
                   cursor={
-                    payToPark?.page === payToPark?.pageCount ? "" : "pointer"
+                    paymentHistory?.page === paymentHistory?.pageCount
+                      ? ""
+                      : "pointer"
                   }
                   align="center"
                   gap="2px"
@@ -128,8 +120,8 @@ const TableLayer = () => {
           </Flex>
         }
       >
-        {payToPark?.data?.length ? (
-          payToPark?.data?.map((dat, i) => (
+        {paymentHistory?.data?.length ? (
+          paymentHistory?.data?.map((dat, i) => (
             <Tr
               key={i}
               color="#646668"
@@ -137,10 +129,21 @@ const TableLayer = () => {
               fontSize="12px"
               lineHeight="100%"
             >
-              <Td textAlign="center">{dat?.ticketNumber}</Td>
-              <Td textAlign="center">{dat?.zone?.name}</Td>
-              <Td textAlign="center">{dat?.vehicle?.licensePlate}</Td>
-              <Td textAlign="center">{dat?.service?.name}</Td>
+              <Td textAlign="center">{dat?.transactionId}</Td>
+              <Td textAlign="center">
+                ₦{" "}
+                {dat?.amount?.toLocaleString(undefined, {
+                  maximumFractionDigits: 2,
+                })}
+              </Td>
+              <Td textAlign="center">
+                {dat?.paymentMethod === 1
+                  ? "Transfer"
+                  : dat?.paymentMethod === 2
+                  ? "Wallet"
+                  : "N/A"}
+              </Td>
+              <Td textAlign="center">N/A</Td>
               <Td>
                 <Flex
                   color={
@@ -163,7 +166,7 @@ const TableLayer = () => {
                   borderRadius="4px"
                   align="center"
                 >
-                  {dat?.status === 0 ? "In-Progress" : "Active"}
+                  {dat?.status === 0 ? "Pending" : "Successful"}
                 </Flex>
               </Td>
               <Td textAlign="center">{formatDate(dat?.createdAt)}</Td>

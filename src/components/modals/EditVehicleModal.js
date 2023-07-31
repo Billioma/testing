@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Modal,
   ModalOverlay,
@@ -13,14 +13,14 @@ import {
 import Select from "react-select";
 import CustomInput from "../common/CustomInput";
 import { colors } from "../common/constants";
-import { useCreateVehicles } from "../../services/query/vehicles";
+import { useUpdateVehicles } from "../../services/query/vehicles";
 import useCustomToast from "../../utils/notifications";
-import ConfirmVehicleModal from "./ConfirmVehicleModal";
 
-const AddVehicleModal = ({
+const EditVehicleModal = ({
   isOpen,
   refetch,
   states,
+  dataa,
   makes,
   models,
   onClose,
@@ -32,7 +32,6 @@ const AddVehicleModal = ({
     make: "",
     model: "",
   });
-  const [show, setShow] = useState(false);
   const stateOptions = states?.data?.map((state) => ({
     value: state?.name?.replace(" State", "")?.replace(" (FCT)", ""),
     label: state?.name?.replace(" State", "")?.replace(" (FCT)", ""),
@@ -41,10 +40,7 @@ const AddVehicleModal = ({
     value: color,
     label: color,
   }));
-  const modelToMap = models?.filter(
-    (item) => item?.make?.name === values?.make?.label
-  );
-  const modelOptions = modelToMap?.map((model) => ({
+  const modelOptions = models?.map((model) => ({
     value: model?.id,
     label: model?.name,
   }));
@@ -62,6 +58,30 @@ const AddVehicleModal = ({
 
   const isDisabled = Object.values(values).some((value) => !value);
 
+  useEffect(() => {
+    const selectedStateOption = stateOptions?.find(
+      (option) => option?.label === dataa?.state
+    );
+    const selectedColorOption = colorOptions?.find(
+      (option) => option?.label === dataa?.color
+    );
+    const selectedMakeOption = makeOptions?.find(
+      (option) => option?.label === dataa?.model?.make?.name
+    );
+    const selectedModelOption = modelOptions?.find(
+      (option) => option?.label === dataa?.model?.name
+    );
+
+    setValues({
+      ...values,
+      state: selectedStateOption,
+      plate: dataa?.licensePlate,
+      color: selectedColorOption,
+      make: selectedMakeOption,
+      model: selectedModelOption,
+    });
+  }, [dataa]);
+
   const customStyles = {
     control: (provided) => ({
       ...provided,
@@ -77,12 +97,11 @@ const AddVehicleModal = ({
   };
   const { errorToast, successToast } = useCustomToast();
 
-  const { mutate, isLoading } = useCreateVehicles({
+  const { mutate, isLoading } = useUpdateVehicles({
     onSuccess: (res) => {
       refetch();
       successToast(res?.message);
       onClose();
-      setShow(false);
     },
     onError: (err) => {
       errorToast(
@@ -93,11 +112,14 @@ const AddVehicleModal = ({
 
   const handleSubmit = () => {
     mutate({
-      licensePlate: values.plate,
-      make: values.make?.value,
-      model: values.model?.value,
-      color: values?.color?.value,
-      state: values.state,
+      query: dataa?.id,
+      body: {
+        licensePlate: values.plate,
+        make: values.make?.value,
+        model: values.model?.value,
+        color: values?.color?.value,
+        state: values.state?.value,
+      },
     });
   };
 
@@ -134,7 +156,7 @@ const AddVehicleModal = ({
               fontSize="24px"
               lineHeight="100%"
             >
-              Add Vehicle
+              Update Vehicle Details
             </Text>
           </Flex>
 
@@ -151,8 +173,9 @@ const AddVehicleModal = ({
             <Select
               styles={customStyles}
               options={stateOptions}
+              value={values.state}
               onChange={(selectedOption) =>
-                handleSelectChange(selectedOption?.value, { name: "state" })
+                handleSelectChange(selectedOption, { name: "state" })
               }
             />
           </Box>
@@ -191,6 +214,7 @@ const AddVehicleModal = ({
             </Text>
             <Select
               styles={customStyles}
+              value={values.color}
               components={{
                 SingleValue: ColorOptio,
               }}
@@ -212,6 +236,7 @@ const AddVehicleModal = ({
             </Text>
             <Select
               styles={customStyles}
+              value={values.make}
               options={makeOptions}
               onChange={(selectedOption) =>
                 handleSelectChange(selectedOption, { name: "make" })
@@ -232,6 +257,7 @@ const AddVehicleModal = ({
             <Select
               styles={customStyles}
               options={modelOptions}
+              value={values.model}
               onChange={(selectedOption) =>
                 handleSelectChange(selectedOption, { name: "model" })
               }
@@ -241,7 +267,8 @@ const AddVehicleModal = ({
           <Button
             fontSize="14px"
             fontWeight={500}
-            onClick={() => setShow(true)}
+            onClick={handleSubmit}
+            isLoading={isLoading}
             isDisabled={isDisabled}
             lineHeight="100%"
             w="full"
@@ -251,16 +278,8 @@ const AddVehicleModal = ({
           </Button>
         </ModalBody>
       </ModalContent>
-
-      <ConfirmVehicleModal
-        action={handleSubmit}
-        isLoading={isLoading}
-        values={values}
-        isOpen={show}
-        onClose={() => setShow(false)}
-      />
     </Modal>
   );
 };
 
-export default AddVehicleModal;
+export default EditVehicleModal;

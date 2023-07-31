@@ -168,3 +168,36 @@ export const VehicleIcon = ({ fill }) => {
     </svg>
   );
 };
+
+export const Add = ({ fill }) => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="20"
+      height="20"
+      viewBox="0 0 20 20"
+      fill="none"
+    >
+      <path
+        d="M5 10H10M10 10H15M10 10V15M10 10V5"
+        stroke={fill}
+        stroke-width="1.66667"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+    </svg>
+  );
+};
+
+export const CarIcon = ({ fill }) => {
+  return (
+    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="none">
+      <path
+        d="M1.5 5.5h.523m0 0h7.955m-7.955 0l.02-.076a2.07 2.07 0 0 1 .095-.234l.773-1.74c.153-.344.229-.516.35-.642a1 1 0 0 1 .383-.249c.164-.059.353-.059.729-.059h3.254c.376 0 .565 0 .729.059a1 1 0 0 1 .383.249c.121.126.197.298.35.641l.776 1.747.093.227.02.076m-7.955 0l-.015.087C2 5.649 2 5.713 2 5.84V8.5m7.977-3h.523m-.523 0l.015.087a2.06 2.06 0 0 1 .008.25V8.5m0 0H8m2 0V9a1 1 0 1 1-2 0v-.5m0 0H4m0 0H2m2 0V9a1 1 0 1 1-2 0v-.5"
+        stroke={fill}
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+    </svg>
+  );
+};

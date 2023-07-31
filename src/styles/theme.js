@@ -6,6 +6,47 @@ export const customTheme = extendTheme({
     body: `Sailec`,
   },
   components: {
+    Radio: {
+      variants: {
+        primary: {
+          control: {
+            borderColor: "#242628",
+            _checked: {
+              borderColor: "red",
+              bg: "red",
+            },
+          },
+        },
+      },
+      defaultProps: {
+        variant: "primary",
+      },
+    },
+    Switch: {
+      variants: {
+        primary: {
+          container: {
+            border: "2px solid #C4C6C8",
+            rounded: "full",
+            _checked: {
+              border: "2px solid red",
+            },
+          },
+          thumb: {
+            bg: "#C4C6C8",
+            _checked: {
+              bg: "red",
+            },
+          },
+          track: {
+            bg: "transparent",
+          },
+        },
+      },
+      defaultProps: {
+        variant: "primary",
+      },
+    },
     Input: {
       variants: {
         primary: {

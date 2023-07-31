@@ -103,6 +103,24 @@ export const dashServices = [
   },
 ];
 
+export const accountDrop = [
+  {
+    name: "Profile",
+    link: "/customer/account/profile",
+  },
+  {
+    name: "Payments",
+    link: "/customer/account/payment",
+  },
+  {
+    name: "Settings",
+    link: "/customer/account/settings",
+  },
+  {
+    name: "Logout",
+  },
+];
+
 export const servicesHeader = [
   "TICKET NUMBER",
   "ZONE",
@@ -111,4 +129,34 @@ export const servicesHeader = [
   "STATUS",
   "DATE",
   "ACTIONS",
+];
+
+export const subHeader = [
+  "PLAN",
+  "AMOUNT",
+  "DURATION",
+  "NEXT PAYMENT DATE",
+  "STATUS",
+  "DATE CREATED",
+  "ACTIONS",
+];
+
+export const paymentHeader = [
+  "TRANSACTION ID",
+  "AMOUNT",
+  "PAYMENT METHOD",
+  "TRANSACTION TYPE",
+  "STATUS",
+  "DATE",
+  "ACTIONS",
+];
+
+export const intervals = [
+  { 0: "Hourly" }, // 60 minutes
+  { 1: "Daily" }, // 1 Day
+  { 2: "Weekly" }, // 7 Days
+  { 3: "Monthly" }, // 30 Days
+  { 4: "Quarterly" }, // 3 Months
+  { 5: "Biannually" }, // 6 Months
+  { 6: "Annually" }, // 12 Months
 ];

@@ -21,7 +21,12 @@ export const PRIVATE_PATHS = {
   CUST_SERVICES_RESERVE_PARK: "/customer/services/reserve-parking",
   CUST_SERVICES_EVENT_PARK: "/customer/services/event-parking",
   CUST_SUBSCRIPTION: "/customer/subscriptions",
+  CUST_ADD_SUBSCRIPTION: "/customer/add-subscriptions",
   CUST_HISTORY: "/customer/history",
   CUST_HELP_CENTER: "/customer/help-center",
   CUST_VEHICLES: "/customer/vehicles",
+  CUST_PROFILE: "/customer/account/profile",
+  CUST_SETTINGS: "/customer/account/settings",
+  CUST_PAYMENT: "/customer/account/payment",
+  CUST_EDIT_PROFILE: "/customer/account/update-profile",
 };

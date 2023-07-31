@@ -13,10 +13,21 @@ const TableFormat = ({
   filter,
   minH,
   maxH,
+  opt,
 }) => {
   return (
-    <Box bg="#fff" borderRadius="8px" py="24px" px="23px">
-      <Flex mb="16px" align="center" justifyContent="space-between" w="full">
+    <Box
+      bg="#fff"
+      borderRadius="8px"
+      py={opt ? "" : "24px"}
+      px={opt ? "" : "23px"}
+    >
+      <Flex
+        mb={opt ? "" : "16px"}
+        align="center"
+        justifyContent="space-between"
+        w="full"
+      >
         <Text
           color="#242628"
           fontWeight={500}
@@ -42,6 +53,7 @@ const TableFormat = ({
                     key={i}
                     pos="sticky"
                     top="0"
+                    bg="#F4F6F8"
                     fontFamily="Sailec"
                     zIndex="2"
                     color="#949698"
@@ -58,7 +70,7 @@ const TableFormat = ({
         )}
       </TableContainer>
 
-      {paginate}
+      <Box mt="20px">{paginate}</Box>
     </Box>
   );
 };

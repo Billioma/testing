@@ -6,15 +6,19 @@ import {
   GridItem,
   Image,
   Skeleton,
+  Spinner,
   Text,
   useDisclosure,
 } from "@chakra-ui/react";
 import {
+  useDeleteVehicles,
   useGetMake,
   useGetModel,
   useGetVehicles,
 } from "../../../../services/query/vehicles";
 import AddVehicleModal from "../../../modals/AddVehicleModal";
+import useCustomToast from "../../../../utils/notifications";
+import EditVehicleModal from "../../../modals/EditVehicleModal";
 
 const VehicleCards = ({ states }) => {
   const { data: vehicles, isLoading, refetch } = useGetVehicles();
@@ -22,9 +26,10 @@ const VehicleCards = ({ states }) => {
   const { data: models } = useGetModel();
   const { data: makes } = useGetMake();
   const { isOpen, onClose, onOpen } = useDisclosure();
+  const [show, setShow] = useState(false);
 
   const openMenu = (data) => {
-    onOpen();
+    setShow(true);
     setCurrentVehicle(data);
   };
 
@@ -33,6 +38,23 @@ const VehicleCards = ({ states }) => {
       setCurrentVehicle("");
     }
   }, [isOpen]);
+
+  const { errorToast, successToast } = useCustomToast();
+  const { mutate, isLoading: isDeleting } = useDeleteVehicles({
+    onSuccess: (res) => {
+      successToast(res?.message);
+      refetch();
+    },
+    onError: (err) => {
+      errorToast(
+        err?.response?.data?.message || err?.message || "An Error occured"
+      );
+    },
+  });
+  const handleSubmit = (data) => {
+    mutate(data?.id);
+    setCurrentVehicle(data);
+  };
 
   return (
     <Box>
@@ -131,7 +153,15 @@ const VehicleCards = ({ states }) => {
                       src="/assets/edit.svg"
                       onClick={() => openMenu(data)}
                     />
-                    <Image src="/assets/bin.svg" cursor="pointer" />
+                    {isDeleting && currentVehicle === data ? (
+                      <Spinner size="sm" color="red" />
+                    ) : (
+                      <Image
+                        onClick={() => handleSubmit(data)}
+                        src="/assets/bin.svg"
+                        cursor="pointer"
+                      />
+                    )}
                   </Flex>
                 </Flex>
               </Box>
@@ -169,12 +199,21 @@ const VehicleCards = ({ states }) => {
 
       <AddVehicleModal
         states={states}
-        dataa={currentVehicle}
         makes={makes}
         models={models}
         refetch={refetch}
         isOpen={isOpen}
         onClose={onClose}
+      />
+
+      <EditVehicleModal
+        states={states}
+        dataa={currentVehicle}
+        makes={makes}
+        models={models}
+        refetch={refetch}
+        isOpen={show}
+        onClose={() => setShow(false)}
       />
     </Box>
   );

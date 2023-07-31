@@ -86,7 +86,7 @@ const CustomInput = ({
           onChange={handleInputChange}
           bg={getBackgroundColor()}
           border={getBorderColor()}
-          onBlur={() => (!auth ? handleInputBlur() : setIsTyping(false))}
+          onBlur={(e) => (!auth ? handleInputBlur(e) : setIsTyping(false))}
           onFocus={onFocus}
           h={opt ? "60px" : "44px"}
           type={type ? type : "text"}

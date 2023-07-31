@@ -11,7 +11,14 @@ import {
   Text,
 } from "@chakra-ui/react";
 
-const ConfirmParkModal = ({ isOpen, onClose, isLoading, action }) => {
+const ConfirmParkModal = ({
+  isOpen,
+  dataa,
+  values,
+  onClose,
+  isLoading,
+  action,
+}) => {
   return (
     <Modal isCentered trapFocus={false} isOpen={isOpen} onClose={onClose}>
       <ModalOverlay backdropFilter="auto" backdropBlur="2px" />
@@ -62,7 +69,7 @@ const ConfirmParkModal = ({ isOpen, onClose, isLoading, action }) => {
                   lineHeight="100%"
                   fontWeight={500}
                 >
-                  Landmark Towers
+                  {dataa?.location?.name}
                 </Text>
               </Flex>
 
@@ -89,7 +96,7 @@ const ConfirmParkModal = ({ isOpen, onClose, isLoading, action }) => {
                   lineHeight="100%"
                   fontWeight={500}
                 >
-                  V10021
+                  {dataa?.name}
                 </Text>
               </Flex>
 
@@ -111,7 +118,7 @@ const ConfirmParkModal = ({ isOpen, onClose, isLoading, action }) => {
                   lineHeight="100%"
                   fontWeight={500}
                 >
-                  Valet
+                  {dataa?.service?.name}
                 </Text>
               </Flex>
 
@@ -138,7 +145,7 @@ const ConfirmParkModal = ({ isOpen, onClose, isLoading, action }) => {
                   lineHeight="100%"
                   fontWeight={500}
                 >
-                  Jeep
+                  {values?.vehicle?.make}
                 </Text>
               </Flex>
             </Box>

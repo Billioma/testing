@@ -3,8 +3,10 @@ import {
   getCities,
   getEvents,
   getLocations,
+  getPlans,
   getServices,
   getStates,
+  getZone,
 } from "../api/locations";
 
 export const useGetStates = (options = {}) => {
@@ -39,9 +41,25 @@ export const useGetEvents = (options = {}) => {
   return { data, isLoading, refetch };
 };
 
+export const useGetPlans = (options = {}) => {
+  const { data, isLoading, refetch } = useQuery("GET_PLANS", getPlans, {
+    ...options,
+  });
+
+  return { data, isLoading, refetch };
+};
+
 export const useGetCities = (options = {}) => {
   const { mutate, isLoading, data } = useMutation(getCities, {
     mutationKey: "GET_CITIES",
+    ...options,
+  });
+  return { mutate, isLoading, data };
+};
+
+export const useGetZone = (options = {}) => {
+  const { mutate, isLoading, data } = useMutation(getZone, {
+    mutationKey: "GET_ZONE",
     ...options,
   });
   return { mutate, isLoading, data };

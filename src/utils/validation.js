@@ -13,6 +13,12 @@ export const passValues = {
   passwordConfirmation: "",
 };
 
+export const passwordValues = {
+  currentPassword: "",
+  password: "",
+  passwordConfirmation: "",
+};
+
 export const emailValue = {
   email: "",
   password: "",
@@ -45,6 +51,18 @@ export const validateSchema = Yup.object().shape({
 });
 
 export const passSchema = Yup.object().shape({
+  password: Yup.string().required("Password is required"),
+  // .matches(
+  //   passwordRegex,
+  //   "Minimum of 8 characters, and must contain at least one uppercase, one lowercase, one number and one special  character"
+  // ),
+  passwordConfirmation: Yup.string()
+    .required("Confirm password is required")
+    .oneOf([Yup.ref("password")], "Passwords do not match"),
+});
+
+export const passwordSchema = Yup.object().shape({
+  currentPassword: Yup.string().required("Password is required"),
   password: Yup.string().required("Password is required"),
   // .matches(
   //   passwordRegex,
