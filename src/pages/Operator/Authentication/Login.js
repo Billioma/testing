@@ -8,7 +8,7 @@ import { initValues, validateSchema } from "../../../utils/validation";
 import { Form, Formik } from "formik";
 import { useNavigate } from "react-router";
 import useCustomToast from "../../../utils/notifications";
-import { useOperatorLogin } from "../../../services/query/auth";
+import { useOperatorLogin } from "../../../services/operator/query/auth";
 
 const Login = () => {
   const [show, setShow] = useState(false);

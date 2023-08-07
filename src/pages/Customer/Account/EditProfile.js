@@ -1,12 +1,20 @@
 import React, { useEffect, useState } from "react";
-import { Box, Button, Flex, Image, Input, Text } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Flex,
+  Image,
+  Input,
+  Spinner,
+  Text,
+} from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import CustomInput from "../../../components/common/CustomInput";
 import {
   useCustomerUpdateUser,
   useCustomerUploadPic,
   useGetUser,
-} from "../../../services/query/user";
+} from "../../../services/customer/query/user";
 import useCustomToast from "../../../utils/notifications";
 
 const EditProfile = () => {
@@ -29,34 +37,45 @@ const EditProfile = () => {
       );
     },
   });
-  const { mutate: uploadMutate, isLoading: isUploading } = useCustomerUploadPic(
-    {
-      onSuccess: (res) => {
-        successToast(res?.message);
-        refetch();
-        setTimeout(() => {
-          navigate("/customer/account/profile");
-        }, 200);
-      },
-      onError: (err) => {
-        errorToast(
-          err?.response?.data?.message || err?.message || "An Error occured"
-        );
-      },
+  const {
+    mutate: uploadMutate,
+    isLoading: isUploading,
+    data: profilePicData,
+  } = useCustomerUploadPic({
+    onError: (err) => {
+      errorToast(
+        err?.response?.data?.message || err?.message || "An Error occured"
+      );
+    },
+  });
+
+  useEffect(() => {
+    if (profilePicData !== undefined) {
+      const phoneNumber = `+234${values.phone}`;
+      mutate({
+        firstName: values.firstName,
+        lastName: values.lastName,
+        phone: phoneNumber,
+        companyName: values.companyName === "N/A" ? "" : values.companyName,
+        profilePicture: profilePicData?.path,
+      });
     }
-  );
+  }, [profilePicData]);
+
   const handleUpload = (e) => {
     const selectedFile = e.target.files[0];
-
     if (!selectedFile) {
-      // No file was selected, handle this case accordingly (optional)
       return;
     }
 
     setFileType(URL.createObjectURL(selectedFile));
-    // const formData = new FormData();
-    // formData.append("file", selectedFile);
-    // uploadMutate(formData);
+    const formData = new FormData();
+    formData.append("profilePicture", selectedFile);
+    uploadMutate({
+      fileType: "avatar",
+      entityType: "customer",
+      file: formData.get("profilePicture"),
+    });
   };
 
   const [values, setValues] = useState({
@@ -142,7 +161,14 @@ const EditProfile = () => {
                 <Flex
                   cursor="pointer"
                   border="4px solid #ee383a"
-                  p={fileType ? "" : "44px"}
+                  p={
+                    isUploading
+                      ? "44px"
+                      : fileType ||
+                        !userData?.profile?.avatarUrl?.includes("null")
+                      ? ""
+                      : "44px"
+                  }
                   rounded="full"
                   w="fit-content"
                   bg="#D4D6D8"
@@ -150,13 +176,38 @@ const EditProfile = () => {
                   align="center"
                   flexDir="column"
                 >
-                  <Image
-                    w={fileType ? "120px" : "32px"}
-                    rounded={fileType ? "full" : ""}
-                    objectFit="cover"
-                    h={fileType ? "120px" : "32px"}
-                    src={fileType ? fileType : "/assets/cam.svg"}
-                  />
+                  {isUploading ? (
+                    <Spinner />
+                  ) : (
+                    <Image
+                      w={
+                        fileType ||
+                        !userData?.profile?.avatarUrl?.includes("null")
+                          ? "120px"
+                          : "32px"
+                      }
+                      rounded={
+                        fileType ||
+                        !userData?.profile?.avatarUrl?.includes("null")
+                          ? "full"
+                          : ""
+                      }
+                      objectFit="cover"
+                      h={
+                        fileType ||
+                        !userData?.profile?.avatarUrl?.includes("null")
+                          ? "120px"
+                          : "32px"
+                      }
+                      src={
+                        fileType
+                          ? fileType
+                          : userData?.profile?.avatarUrl?.includes("null")
+                          ? "/assets/cam.svg"
+                          : userData?.profile?.avatarUrl
+                      }
+                    />
+                  )}
                 </Flex>
               </label>
             </Box>
@@ -229,31 +280,6 @@ const EditProfile = () => {
               holder={values?.companyName ? "Enter Company Name" : "N/A"}
             />
           </Box>
-
-          <Box mt="16px">
-            <Text mb="8px" fontWeight={500} color="#444648" fontSize="10px">
-              Address
-            </Text>
-            <CustomInput
-              mb
-              auth
-              onChange={(value) => console.log(value)}
-              value={values?.address}
-              holder="Enter Address"
-            />
-          </Box>
-
-          <Flex
-            mt="12px"
-            color="red"
-            fontSize="12px"
-            fontWeight={500}
-            lineHeight="100%"
-            justifyContent="flex-end"
-            w="full"
-          >
-            <Text textDecor="underline">Add Another Address</Text>
-          </Flex>
 
           <Button
             mt="24px"

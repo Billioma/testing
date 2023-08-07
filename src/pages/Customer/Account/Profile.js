@@ -1,7 +1,7 @@
-import React, { useState } from "react";
-import { Box, Button, Flex, Image, Input, Text } from "@chakra-ui/react";
+import React from "react";
+import { Box, Button, Flex, Image, Text } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
-import { useGetUser } from "../../../services/query/user";
+import { useGetUser } from "../../../services/customer/query/user";
 import { formatDate } from "../../../utils/helpers";
 
 export const Layout = ({ label, data }) => {
@@ -29,14 +29,9 @@ export const Layout = ({ label, data }) => {
 };
 
 const Profile = () => {
-  const [fileType, setFileType] = useState("");
   const navigate = useNavigate();
 
   const { data: userData } = useGetUser();
-
-  const handleUpload = (e) => {
-    setFileType(URL.createObjectURL(e.target.files[0]));
-  };
 
   return (
     <Box minH="75vh">
@@ -62,34 +57,38 @@ const Profile = () => {
           </Text>
 
           <Box as="form">
-            <Input
-              id="image_upload"
-              onChange={handleUpload}
-              type="file"
-              display="none"
-              borderColor="black"
-            />
-            <label htmlFor="image_upload">
-              <Flex
-                cursor="pointer"
-                border="4px solid #ee383a"
-                p={fileType ? "" : "44px"}
-                rounded="full"
-                w="fit-content"
-                bg="#D4D6D8"
-                justifyContent="center"
-                align="center"
-                flexDir="column"
-              >
-                <Image
-                  w={fileType ? "120px" : "32px"}
-                  rounded={fileType ? "full" : ""}
-                  objectFit="cover"
-                  h={fileType ? "120px" : "32px"}
-                  src={fileType ? fileType : "/assets/cam.svg"}
-                />
-              </Flex>
-            </label>
+            <Flex
+              border="4px solid #ee383a"
+              rounded="full"
+              w="fit-content"
+              bg="#D4D6D8"
+              justifyContent="center"
+              p={!userData?.profile?.avatarUrl?.includes("null") ? "" : "44px"}
+              align="center"
+              flexDir="column"
+            >
+              <Image
+                w={
+                  !userData?.profile?.avatarUrl?.includes("null")
+                    ? "120px"
+                    : "32px"
+                }
+                rounded={
+                  !userData?.profile?.avatarUrl?.includes("null") ? "full" : ""
+                }
+                objectFit="cover"
+                h={
+                  !userData?.profile?.avatarUrl?.includes("null")
+                    ? "120px"
+                    : "32px"
+                }
+                src={
+                  !userData?.profile?.avatarUrl?.includes("null")
+                    ? userData?.profile?.avatarUrl
+                    : "/assets/cam.svg"
+                }
+              />
+            </Flex>
           </Box>
 
           <Text my="16px" fontWeight={500} lineHeight="100%" color="#646668">

@@ -28,7 +28,7 @@ const Services = ({ opt }) => {
               bg="#fff"
               borderRadius="8px"
               border="1px solid #E4E6E8"
-              onClick={() => dat?.link && navigate(dat?.link)}
+              onClick={() => navigate(dat?.link)}
               cursor="pointer"
               py="16px"
               px="24px"

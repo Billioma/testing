@@ -13,7 +13,7 @@ import {
 import Select from "react-select";
 import CustomInput from "../common/CustomInput";
 import { colors } from "../common/constants";
-import { useUpdateVehicles } from "../../services/query/vehicles";
+import { useUpdateVehicles } from "../../services/customer/query/vehicles";
 import useCustomToast from "../../utils/notifications";
 
 const EditVehicleModal = ({

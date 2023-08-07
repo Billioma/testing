@@ -13,16 +13,16 @@ import { CarIcon } from "../../../components/common/images";
 import {
   useGetLocations,
   useGetPlans,
-} from "../../../services/query/locations";
+} from "../../../services/customer/query/locations";
 import { intervals } from "../../../components/common/constants";
 import { HiOutlineArrowNarrowLeft } from "react-icons/hi";
 import Select from "react-select";
-import { useGetVehicles } from "../../../services/query/vehicles";
+import { useGetVehicles } from "../../../services/customer/query/vehicles";
 import { BsCheckCircle } from "react-icons/bs";
 import {
   useCustomerCreateSubscription,
   useGetUser,
-} from "../../../services/query/user";
+} from "../../../services/customer/query/user";
 import useCustomToast from "../../../utils/notifications";
 
 const AddSubscription = () => {

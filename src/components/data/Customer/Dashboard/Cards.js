@@ -10,22 +10,79 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
-import { useGetVehicles } from "../../../../services/query/vehicles";
+import {
+  useGetMake,
+  useGetModel,
+  useGetVehicles,
+} from "../../../../services/customer/query/vehicles";
 import {
   useGetUser,
   useGetUserSubscriptions,
-} from "../../../../services/query/user";
+} from "../../../../services/customer/query/user";
 import { formatDate } from "../../../../utils/helpers";
 import { intervals } from "../../../common/constants";
+import FundWalletDrawer from "../../../modals/FundWalletDrawer";
+import { useGetCards } from "../../../../services/customer/query/payment";
+import { usePaystackPayment } from "react-paystack";
+import EditVehicleModal from "../../../modals/EditVehicleModal";
+import { useGetStates } from "../../../../services/customer/query/locations";
 
 const Cards = () => {
   const [index, setIndex] = useState(0);
-  const { data: vehicles, isLoading } = useGetVehicles();
+  const {
+    data: vehicles,
+    isLoading,
+    refetch: refetchVehicle,
+  } = useGetVehicles();
+  const { data: states } = useGetStates();
+  const [showFunds, setShowFunds] = useState(false);
   const { data: subscriptions, isLoading: isSubscription } =
     useGetUserSubscriptions();
-  const { data: userData, isLoading: isUserLoading } = useGetUser();
+  const { data: cards, refetch: refetchCards } = useGetCards();
+  const { data: userData, isLoading: isUserLoading, refetch } = useGetUser();
+
+  const { data: models } = useGetModel();
+  const { data: makes } = useGetMake();
+
+  const [currentVehicles, setCurrentVehicles] = useState("");
+  const [show, setShow] = useState(false);
+
+  const openMenu = (data) => {
+    setShow(true);
+    setCurrentVehicles(data);
+  };
 
   const currentVehicle = vehicles?.data?.filter((item, i) => i === index);
+
+  const config = {
+    reference: new Date().getTime().toString(),
+    email: userData?.email,
+    amount: 10000,
+    publicKey: process.env.PAYSTACK_KEY,
+    metadata: {
+      custom_fields: [
+        {
+          display_name: "Transaction Type",
+          variable_name: "transaction_type",
+          value: "TOKENIZATION",
+        },
+      ],
+    },
+  };
+
+  const onSuccess = () => {
+    setTimeout(() => {
+      refetchCards();
+    }, 5000);
+  };
+
+  const onClose = () => {
+    setTimeout(() => {
+      refetchCards();
+    }, 5000);
+  };
+
+  const initializePayment = usePaystackPayment(config);
 
   return (
     <Box>
@@ -90,6 +147,7 @@ const Cards = () => {
                 bg="#242628"
                 borderRadius="8px"
                 py="14px"
+                onClick={() => setShowFunds(true)}
                 color="#fff"
                 fontSize="12px"
                 fontWeight={500}
@@ -383,6 +441,7 @@ const Cards = () => {
                           rounded="full"
                           px="27px"
                           color="#242628"
+                          onClick={() => openMenu(data)}
                           lineHeight="100%"
                           fontSize="10px"
                           fontWeight={500}
@@ -453,6 +512,24 @@ const Cards = () => {
           </Skeleton>
         </GridItem>
       </Grid>
+      <FundWalletDrawer
+        refetchUser={refetch}
+        isOpen={showFunds}
+        cards={cards}
+        action={() => {
+          initializePayment(onSuccess, onClose);
+        }}
+        onClose={() => setShowFunds(false)}
+      />
+      <EditVehicleModal
+        states={states}
+        dataa={currentVehicles}
+        makes={makes}
+        models={models}
+        refetch={refetchVehicle}
+        isOpen={show}
+        onClose={() => setShow(false)}
+      />
     </Box>
   );
 };

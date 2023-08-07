@@ -6,7 +6,7 @@ import { Button } from "@chakra-ui/button";
 import { Form, Formik } from "formik";
 import { useNavigate } from "react-router";
 import { useParams } from "react-router-dom";
-import { useCustomerUpdatePassword } from "../../../services/query/auth";
+import { useCustomerUpdatePassword } from "../../../services/customer/query/auth";
 import useCustomToast from "../../../utils/notifications";
 import { passValues, passSchema } from "../../../utils/validation";
 

@@ -1,5 +1,5 @@
 import * as API from "../url";
-import axiosInstance from "../axiosInstance";
+import axiosInstance, { uploadInstance } from "../../axiosInstance";
 
 export const getUser = async () => {
   const res = await axiosInstance.get("customer/" + API.GET_USER);
@@ -11,15 +11,26 @@ export const getUserSubscriptions = async () => {
   return res.data;
 };
 
-export const getUserSub = async (query) => {
+export const getUserSub = async ({ queryKey }) => {
+  const [, limit, page] = queryKey;
   const res = await axiosInstance.get(
-    "customer/" + API.GET_SUBSCRIPTIONS(query.query.page, query.query.limit)
+    "customer/" + `${API.GET_SUBSCRIPTIONS}?limit=${limit}&page=${page}`
   );
+  return res.data;
+};
+
+export const deleteCard = async (query) => {
+  const res = await axiosInstance.delete("customer/" + API.DEL_CARDS(query));
   return res.data;
 };
 
 export const customerUpdateUser = async (body) => {
   const res = await axiosInstance.post("customer/" + API.UPDATE_USER, body);
+  return res.data;
+};
+
+export const customerFundWallet = async (body) => {
+  const res = await axiosInstance.post("customer/" + API.FUND_WALLET, body);
   return res.data;
 };
 
@@ -32,7 +43,7 @@ export const customerCreateSubscription = async (body) => {
 };
 
 export const customerUploadPic = async (body) => {
-  const res = await axiosInstance.post(API.UPLOAD_PIC, body);
+  const res = await uploadInstance.post(API.UPLOAD_PIC, body);
   return res.data;
 };
 

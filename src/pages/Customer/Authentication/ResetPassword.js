@@ -6,7 +6,7 @@ import { Button } from "@chakra-ui/button";
 import { Form, Formik } from "formik";
 import * as Yup from "yup";
 import { useNavigate } from "react-router";
-import { useCustomerResetPassword } from "../../../services/query/auth";
+import { useCustomerResetPassword } from "../../../services/customer/query/auth";
 import useCustomToast from "../../../utils/notifications";
 
 const Reset = () => {

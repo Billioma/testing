@@ -4,7 +4,7 @@ import { IoIosArrowDown, IoMdMenu } from "react-icons/io";
 import { Image, useDisclosure, useMediaQuery } from "@chakra-ui/react";
 import { useLocation, useNavigate } from "react-router-dom";
 import SideDrawer from "./SideDrawer";
-import { useGetUser } from "../../../../services/query/user";
+import { useGetUser } from "../../../../services/customer/query/user";
 import { accountDrop } from "../../../common/constants";
 import { useLogOut } from "../../../../utils/helpers";
 
@@ -13,7 +13,7 @@ const Header = () => {
 
   const [isMobile] = useMediaQuery("(max-width: 991px)");
 
-  const { data: userData } = useGetUser();
+  const { data: userData, isLoading: isUser } = useGetUser();
   const { isOpen, onClose, onOpen } = useDisclosure();
   const [show, setShow] = useState(false);
   const [title, setTitle] = useState("");
@@ -63,6 +63,9 @@ const Header = () => {
 
       case locationRoute.includes("services/event"):
         return setSecTitle("Event Parking");
+
+      case locationRoute.includes("services/car-service"):
+        return setSecTitle("Car Services");
 
       case locationRoute.includes("account/payment"):
         return setSecTitle("Payments");
@@ -199,7 +202,18 @@ const Header = () => {
                 py="6px"
                 px="8px"
               >
-                <Image w="20px" h="20px" src="/assets/user.png" />
+                <Image
+                  w="20px"
+                  h="20px"
+                  rounded="full"
+                  src={
+                    isUser
+                      ? "/assets/user.png"
+                      : !userData?.profile?.avatarUrl?.includes("null")
+                      ? userData?.profile?.avatarUrl
+                      : "/assets/user.png"
+                  }
+                />
 
                 <Text fontSize="12px" fontWeight={500} lineHeight="100%">
                   Hi {userData?.profile?.firstName || ""}

@@ -16,11 +16,11 @@ import ConfirmEventModal from "../../../components/modals/ConfirmEventModal";
 import {
   useGetEvents,
   useGetServices,
-} from "../../../services/query/locations";
+} from "../../../services/customer/query/locations";
 import { Calendar } from "react-calendar";
 import { formatDate } from "../../../utils/helpers";
 import { IoIosArrowDown } from "react-icons/io";
-import { useGetVehicles } from "../../../services/query/vehicles";
+import { useGetVehicles } from "../../../services/customer/query/vehicles";
 
 const EventParking = () => {
   const [step, setStep] = useState(1);

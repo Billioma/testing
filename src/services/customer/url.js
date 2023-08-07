@@ -7,22 +7,26 @@ export const CHANGE_USER_PASSWORD = "update-password";
 
 export const GET_VEHICLES = "vehicles";
 export const DEL_VEHICLES = (id = "") => `vehicles/${id}`;
+export const DEL_CARDS = (id = "") => `cards/${id}`;
 export const GET_MAKE = "vehicles/get-makes";
+export const GET_CARDS = "cards";
 export const GET_MODEL = "vehicles/get-models";
 export const GET_USER = "auth/profile";
-export const GET_PAYMENT_HISTORY = (page = "", limit = "") =>
-  `transactions/?limit=${limit}&page=${page}`;
+export const GET_PAYMENT_HISTORY = "transactions";
 export const UPLOAD_PIC = "system/media-upload";
 export const PAY_TO_PARK = "pay-to-park";
-export const GET_PAY_TO_PARK = (page = "", limit = "") =>
-  `pay-to-park?limit=${limit}&page=${page}`;
+export const RESERVE_PARKING = "reserve-parking";
+export const REQUEST_RESERVE_PARKING = "reserve-parking/request-reservation";
+export const GET_PAY_TO_PARK = "pay-to-park";
 export const UPDATE_USER = "update-profile";
 export const GET_SUBSCRIPTION = "membership-subscriptions";
-export const GET_SUBSCRIPTIONS = (page = "", limit = "") =>
-  `membership-subscriptions/?limit=${limit}&page=${page}`;
+export const GET_SUBSCRIPTIONS = "membership-subscriptions";
 export const GET_LOCATIONS = "public/locations";
 export const GET_PLANS = "public/membership-plans";
+export const FUND_WALLET = "cards/fund-wallet";
 export const GET_EVENTS = "public/events";
+export const SERVICE_BOOKINGS = "service-bookings";
+export const BOOKING_RATES = "service-bookings/rates";
 export const GET_ZONE = (zone = "") => `public/zone?term=${zone}`;
 export const GET_SERVICES = "public/services";
 export const GET_STATES = "https://locus.fkkas.com/api/states";

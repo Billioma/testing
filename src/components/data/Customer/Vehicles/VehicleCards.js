@@ -15,7 +15,7 @@ import {
   useGetMake,
   useGetModel,
   useGetVehicles,
-} from "../../../../services/query/vehicles";
+} from "../../../../services/customer/query/vehicles";
 import AddVehicleModal from "../../../modals/AddVehicleModal";
 import useCustomToast from "../../../../utils/notifications";
 import EditVehicleModal from "../../../modals/EditVehicleModal";

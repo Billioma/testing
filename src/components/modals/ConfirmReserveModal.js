@@ -11,7 +11,15 @@ import {
   Text,
 } from "@chakra-ui/react";
 
-const ConfirmReserveModal = ({ isOpen, onClose, isLoading, action }) => {
+const ConfirmReserveModal = ({
+  isOpen,
+  values,
+  end,
+  start,
+  onClose,
+  isLoading,
+  action,
+}) => {
   return (
     <Modal isCentered trapFocus={false} isOpen={isOpen} onClose={onClose}>
       <ModalOverlay backdropFilter="auto" backdropBlur="2px" />
@@ -47,7 +55,7 @@ const ConfirmReserveModal = ({ isOpen, onClose, isLoading, action }) => {
               <Flex align="center" justifyContent="space-between" w="full">
                 <Text
                   color="#848688"
-                  w="full"
+                  w="40%"
                   fontSize="14px"
                   lineHeight="100%"
                   fontWeight={500}
@@ -62,7 +70,7 @@ const ConfirmReserveModal = ({ isOpen, onClose, isLoading, action }) => {
                   lineHeight="100%"
                   fontWeight={500}
                 >
-                  Landmark Towers
+                  {values?.locations?.value}
                 </Text>
               </Flex>
 
@@ -74,7 +82,7 @@ const ConfirmReserveModal = ({ isOpen, onClose, isLoading, action }) => {
               >
                 <Text
                   color="#848688"
-                  w="full"
+                  w="50%"
                   fontSize="14px"
                   lineHeight="100%"
                   fontWeight={500}
@@ -89,14 +97,14 @@ const ConfirmReserveModal = ({ isOpen, onClose, isLoading, action }) => {
                   lineHeight="100%"
                   fontWeight={500}
                 >
-                  29-02-2029 08:00am
+                  {start} {values?.arrivalTime?.value}
                 </Text>
               </Flex>
 
               <Flex align="center" justifyContent="space-between" w="full">
                 <Text
                   color="#848688"
-                  w="full"
+                  w="50%"
                   fontSize="14px"
                   lineHeight="100%"
                   fontWeight={500}
@@ -111,7 +119,7 @@ const ConfirmReserveModal = ({ isOpen, onClose, isLoading, action }) => {
                   lineHeight="100%"
                   fontWeight={500}
                 >
-                  29-02-2029 08:00am
+                  {end} {values?.departureTime?.value}
                 </Text>
               </Flex>
 
@@ -123,7 +131,7 @@ const ConfirmReserveModal = ({ isOpen, onClose, isLoading, action }) => {
               >
                 <Text
                   color="#848688"
-                  w="full"
+                  w="70%"
                   fontSize="14px"
                   lineHeight="100%"
                   fontWeight={500}
@@ -138,7 +146,7 @@ const ConfirmReserveModal = ({ isOpen, onClose, isLoading, action }) => {
                   lineHeight="100%"
                   fontWeight={500}
                 >
-                  Jeep
+                  {values?.vehicle?.main}
                 </Text>
               </Flex>
             </Box>

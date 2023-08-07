@@ -203,6 +203,28 @@ export const customTheme = extendTheme({
             },
           },
         },
+
+        adminPrimary: {
+          border: "none",
+          bgColor: "#0D0718",
+          borderRadius: "4px",
+          color: "#fff",
+          fontSize: "14px",
+          fontWeight: "500",
+          height: "45px",
+          _focus: {
+            color: "#fff",
+          },
+          _active: {
+            color: "#fff",
+          },
+          _hover: {
+            _disabled: {
+              background: "#0D0718",
+              border: "1px solid #7B47CC",
+            },
+          },
+        },
       },
       defaultProps: {
         variant: "primary",
@@ -212,5 +234,6 @@ export const customTheme = extendTheme({
 
   colors: {
     red: "#EE383A",
+    dark: "#0D0718",
   },
 });

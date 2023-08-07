@@ -16,27 +16,46 @@ import {
   useGetCities,
   useGetLocations,
   useGetStates,
-} from "../../../services/query/locations";
+} from "../../../services/customer/query/locations";
 import { CiLocationOn } from "react-icons/ci";
 import { Calendar } from "react-calendar";
-import { formatDate, timeArray } from "../../../utils/helpers";
+import {
+  formatDate,
+  formatTimeToHHMMSS,
+  timeArray,
+} from "../../../utils/helpers";
 import { IoIosArrowDown } from "react-icons/io";
-import { useGetVehicles } from "../../../services/query/vehicles";
+import { useGetVehicles } from "../../../services/customer/query/vehicles";
+import { useGetCards } from "../../../services/customer/query/payment";
+import { useGetUser } from "../../../services/customer/query/user";
+import {
+  useCreateReserveParking,
+  useRequestReserveParking,
+} from "../../../services/customer/query/services";
+import useCustomToast from "../../../utils/notifications";
+import { useNavigate } from "react-router-dom";
+import { usePaystackPayment } from "react-paystack";
+import FundWalletDrawer from "../../../components/modals/FundWalletDrawer";
 
 const ReserveParking = () => {
   const [step, setStep] = useState(1);
   const { isOpen, onClose, onOpen } = useDisclosure();
+  const [showFunds, setShowFunds] = useState(false);
 
   useEffect(() => {
     setStep(1);
   }, []);
 
+  const { data: cards, refetch: refetchCards } = useGetCards();
+  const { data: userData, refetch } = useGetUser();
   const [values, setValues] = useState({
     state: "",
     city: "",
     locations: "",
     arrivalTime: "",
     departureTime: "",
+    paymentMethod: "",
+    cardId: "",
     vehicle: "",
     color: "",
     make: "",
@@ -69,6 +88,7 @@ const ReserveParking = () => {
   const locationOptions = currentStateLocation?.map((city) => ({
     value: city?.name,
     label: city?.name,
+    id: city?.id,
   }));
   const timeOptions = timeArray?.map((time) => ({
     value: time,
@@ -77,6 +97,8 @@ const ReserveParking = () => {
   const vehicleOptions = vehicles?.data?.map((car) => ({
     value: `${car?.model?.make?.name} - ${car?.model?.name} - ${car?.licensePlate}`,
     label: `${car?.model?.make?.name} - ${car?.model?.name} - ${car?.licensePlate}`,
+    main: `${car?.model?.make?.name} - ${car?.model?.name}`,
+    id: car?.id,
   }));
 
   const handleSelectChange = (selectedOption, { name }) => {
@@ -87,6 +109,105 @@ const ReserveParking = () => {
     if (name === "state") {
       mutate(selectedOption?.value?.toLowerCase()?.replace(" ", "_"));
     }
+  };
+
+  const config = {
+    reference: new Date().getTime().toString(),
+    email: userData?.email,
+    amount: 10000,
+    publicKey: process.env.PAYSTACK_KEY,
+    metadata: {
+      custom_fields: [
+        {
+          display_name: "Transaction Type",
+          variable_name: "transaction_type",
+          value: "TOKENIZATION",
+        },
+      ],
+    },
+  };
+
+  const onSuccess = () => {
+    setTimeout(() => {
+      refetchCards();
+    }, 5000);
+  };
+
+  const onCloses = () => {
+    setTimeout(() => {
+      refetchCards();
+    }, 5000);
+  };
+
+  const initializePayment = usePaystackPayment(config);
+
+  const { mutate: reqeustReserve, data: requestData } =
+    useRequestReserveParking();
+  const navigate = useNavigate();
+  const { successToast, errorToast } = useCustomToast();
+  const { mutate: reserveMutate, isLoading: isReserving } =
+    useCreateReserveParking({
+      onSuccess: (res) => {
+        navigate("/customer/services");
+        successToast(res?.message);
+      },
+      onError: (err) => {
+        errorToast(
+          err?.response?.data?.message || err?.message || "An Error occured"
+        );
+      },
+    });
+
+  useEffect(() => {
+    if (start && end && values?.locations && values?.vehicle) {
+      reqeustReserve({
+        arrival: `${start} ${formatTimeToHHMMSS(values?.arrivalTime?.value)}`,
+        departure: `${end} ${formatTimeToHHMMSS(values?.departureTime?.value)}`,
+        location: Number(values?.locations?.id),
+        service: "3",
+        vehicle: values.vehicle?.id,
+      });
+    }
+  }, [values, start, end]);
+
+  const handleSubmit = () => {
+    const formattedDate = `${start.substr(6, 4)}-${start.substr(
+      0,
+      2
+    )}-${start.substr(3, 2)}T${formatTimeToHHMMSS(
+      values?.arrivalTime?.value
+    )}.000Z`;
+    const formattedDeparture = `${end.substr(6, 4)}-${end.substr(
+      0,
+      2
+    )}-${end.substr(3, 2)}T${formatTimeToHHMMSS(
+      values?.departureTime?.value
+    )}.000Z`;
+
+    Number(values?.paymentMethod) === 0
+      ? reserveMutate({
+          amount: requestData?.amount,
+          arrival: formattedDate,
+          cardId: values?.cardId,
+          customer: userData?.id,
+          departure: formattedDeparture,
+          paymentMethod: Number(values?.paymentMethod),
+          rates: requestData?.rates?.map((dat) => dat?.id),
+          service: "3",
+          vehicle: values.vehicle?.id,
+          zone: Number(requestData?.zone?.id),
+        })
+      : reserveMutate({
+          amount: requestData?.amount,
+          arrival: formattedDate,
+          customer: userData?.id,
+          departure: formattedDeparture,
+          paymentMethod: Number(values?.paymentMethod),
+          rates: requestData?.rates?.map((dat) => dat?.id),
+          service: "3",
+          vehicle: values.vehicle?.id,
+          zone: Number(requestData?.zone?.id),
+        });
   };
 
   const customStyles = {
@@ -156,33 +277,31 @@ const ReserveParking = () => {
 
           {step === 1 && (
             <>
-              <Flex align="center" gap="32px" w="full">
-                <Box w="full">
-                  <Select
-                    styles={customStyles}
-                    placeholder="Select State"
-                    options={stateOptions}
-                    value={values.state}
-                    defaultValue={values.state}
-                    onChange={(selectedOption) =>
-                      handleSelectChange(selectedOption, { name: "state" })
-                    }
-                  />
-                </Box>
-                <Box w="full">
-                  <Select
-                    styles={customStyles}
-                    placeholder="Select City"
-                    options={cityOptions}
-                    value={values.city}
-                    defaultValue={values.city}
-                    onChange={(selectedOption) =>
-                      handleSelectChange(selectedOption, { name: "city" })
-                    }
-                  />
-                </Box>
-              </Flex>
-              <Box w="full" mt="24px">
+              <Box w="full">
+                <Select
+                  styles={customStyles}
+                  placeholder="Select State"
+                  options={stateOptions}
+                  value={values.state}
+                  defaultValue={values.state}
+                  onChange={(selectedOption) =>
+                    handleSelectChange(selectedOption, { name: "state" })
+                  }
+                />
+              </Box>
+              <Box w="full" my="24px">
+                <Select
+                  styles={customStyles}
+                  placeholder="Select City"
+                  options={cityOptions}
+                  value={values.city}
+                  defaultValue={values.city}
+                  onChange={(selectedOption) =>
+                    handleSelectChange(selectedOption, { name: "city" })
+                  }
+                />
+              </Box>
+              <Box w="full">
                 <Select
                   styles={customStyles}
                   placeholder="Select Location"
@@ -425,56 +544,161 @@ const ReserveParking = () => {
                   Payment Method
                 </Text>
                 <Flex mt="17px" align="center">
-                  <RadioGroup align="center" display="flex" gap="24px">
-                    <Radio>
-                      <Text fontSize="14px"> Pay via Wallet</Text>
+                  <RadioGroup
+                    value={values.paymentMethod}
+                    onChange={(e) =>
+                      setValues({
+                        ...values,
+                        paymentMethod: e,
+                      })
+                    }
+                    align="center"
+                    display="flex"
+                    gap="24px"
+                  >
+                    <Radio value={"1"}>
+                      <Text fontSize="14px"> Pay with Wallet</Text>
                     </Radio>
-                    <Radio>
-                      <Text fontSize="14px">Pay via card</Text>
+                    <Radio value={"0"}>
+                      <Text fontSize="14px">Pay with Card</Text>
+                    </Radio>
+                    <Radio value={"2"}>
+                      <Text fontSize="14px">Pay with Points</Text>
                     </Radio>
                   </RadioGroup>
                 </Flex>
               </Box>
 
-              <Box
-                mt="16px"
-                border="1px solid #D4D6D8"
-                borderRadius="4px"
-                p="16px"
-              >
-                <Flex align="center" w="full" justifyContent="space-between">
-                  <Box>
+              {values.paymentMethod === "1" && (
+                <Box
+                  mt="16px"
+                  border="1px solid #D4D6D8"
+                  borderRadius="4px"
+                  p="16px"
+                >
+                  <Flex align="center" w="full" justifyContent="space-between">
+                    <Box>
+                      <Text
+                        color="#444648"
+                        fontSize="10px"
+                        lineHeight="100%"
+                        mb="8px"
+                      >
+                        Wallet
+                      </Text>
+                      <Text fontSize="14px" color="#646668" lineHeight="100%">
+                        <span style={{ fontWeight: 500 }}> Balance: </span> ₦{" "}
+                        {userData?.wallet?.balance?.toLocaleString(undefined, {
+                          minimumFractionDigits: 2,
+                          maximumFractionDigits: 2,
+                        })}
+                      </Text>
+                    </Box>
+
+                    <Box>
+                      <BsCheckCircle color="#0B841D" />
+                    </Box>
+                  </Flex>
+                </Box>
+              )}
+
+              {values.paymentMethod === "0" && (
+                <Box>
+                  {cards?.data?.length ? (
+                    cards?.data?.map((dat, i) => (
+                      <Box key={i}>
+                        <Box
+                          mt="16px"
+                          cursor="pointer"
+                          border={
+                            values?.cardId === dat?.id
+                              ? "1px solid red"
+                              : "1px solid #D4D6D8"
+                          }
+                          onClick={() =>
+                            setValues({
+                              ...values,
+                              cardId: dat?.id,
+                            })
+                          }
+                          borderRadius="4px"
+                          p="16px"
+                        >
+                          <Flex
+                            align="center"
+                            w="full"
+                            justifyContent="space-between"
+                          >
+                            <Box>
+                              <Text
+                                color="#444648"
+                                fontSize="10px"
+                                lineHeight="100%"
+                                mb="8px"
+                              >
+                                Card Details
+                              </Text>
+                              <Text
+                                fontSize="14px"
+                                textTransform="capitalize"
+                                color="#646668"
+                                lineHeight="100%"
+                              >
+                                {dat?.cardType} Ending *****{dat?.last4}
+                              </Text>
+                            </Box>
+
+                            <Box>
+                              <BsCheckCircle color="#0B841D" />
+                            </Box>
+                          </Flex>
+                        </Box>
+                      </Box>
+                    ))
+                  ) : (
+                    <Box>No Card Available</Box>
+                  )}
+                  <Flex
+                    mt="8px"
+                    color="red"
+                    fontSize="12px"
+                    fontWeight={500}
+                    lineHeight="100%"
+                    justifyContent="flex-end"
+                    w="full"
+                  >
                     <Text
-                      color="#444648"
-                      fontSize="12px"
-                      lineHeight="100%"
-                      mb="8px"
+                      cursor="pointer"
+                      onClick={() => {
+                        initializePayment(onSuccess, onCloses);
+                      }}
+                      textDecor="underline"
                     >
-                      Wallet
+                      Add a Card
                     </Text>
-                    <Text fontSize="14px" color="#646668" lineHeight="100%">
-                      <span style={{ fontWeight: 500 }}> Balance: </span>₦
-                      20,000
-                    </Text>
-                  </Box>
+                  </Flex>
+                </Box>
+              )}
 
-                  <Box>
-                    <BsCheckCircle color="#0B841D" />
-                  </Box>
+              {values.paymentMethod === "1" && (
+                <Flex
+                  mt="8px"
+                  color="red"
+                  fontSize="12px"
+                  fontWeight={500}
+                  lineHeight="100%"
+                  justifyContent="flex-end"
+                  w="full"
+                >
+                  <Text
+                    cursor="pointer"
+                    onClick={() => setShowFunds(true)}
+                    textDecor="underline"
+                  >
+                    Top Up Wallet
+                  </Text>
                 </Flex>
-              </Box>
-
-              <Flex
-                mt="8px"
-                color="red"
-                fontSize="12px"
-                fontWeight={500}
-                lineHeight="100%"
-                justifyContent="flex-end"
-                w="full"
-              >
-                <Text textDecor="underline">Top Up Wallet</Text>
-              </Flex>
+              )}
             </Box>
           )}
 
@@ -495,7 +719,24 @@ const ReserveParking = () => {
           </Button>
         </Flex>
       </Flex>
-      <ConfirmReserveModal isOpen={isOpen} onClose={onClose} />
+      <ConfirmReserveModal
+        start={start}
+        end={end}
+        action={handleSubmit}
+        values={values}
+        isLoading={isReserving}
+        isOpen={isOpen}
+        onClose={onClose}
+      />
+      <FundWalletDrawer
+        refetchUser={refetch}
+        isOpen={showFunds}
+        cards={cards}
+        action={() => {
+          initializePayment(onSuccess, onCloses);
+        }}
+        onClose={() => setShowFunds(false)}
+      />
     </Box>
   );
 };

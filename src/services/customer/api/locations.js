@@ -1,6 +1,6 @@
 import axios from "axios";
 import * as API from "../url";
-import axiosInstance from "../axiosInstance";
+import axiosInstance from "../../axiosInstance";
 
 export const getStates = async () => {
   const res = await axios.get(API.GET_STATES);

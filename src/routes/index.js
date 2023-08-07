@@ -5,6 +5,10 @@ import {
   NonAuthLayout,
 } from "../components/layout/Customer/PageLayout";
 import { PRIVATE_ROUTES, PUBLIC_ROUTES } from "./routes";
+import {
+  AuthLayout as AdminAuthLayout,
+  NonAuthLayout as AdminNonAuthLayout,
+} from "../components/layout/Admin/PageLayout";
 
 const PublicRouteWrapper = () => {
   const routes = useRoutes(PUBLIC_ROUTES);
@@ -26,6 +30,16 @@ const Pages = () => {
       <NonAuthLayout>
         <PublicRouteWrapper key={location.pathname} />
       </NonAuthLayout>
+    )
+  ) : location.pathname.includes("admin") ? (
+    user ? (
+      <AdminAuthLayout>
+        <PrivateRouteWrapper key={location.pathname} />
+      </AdminAuthLayout>
+    ) : (
+      <AdminNonAuthLayout>
+        <PublicRouteWrapper key={location.pathname} />
+      </AdminNonAuthLayout>
     )
   ) : user ? (
     <AuthLayout>

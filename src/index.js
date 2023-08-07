@@ -2,6 +2,10 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App";
 import { QueryClient, QueryClientProvider } from "react-query";
+import {
+  QueryClientProvider as TSQCP,
+  QueryClient as TSQC,
+} from "@tanstack/react-query";
 import { BrowserRouter } from "react-router-dom";
 import { ChakraProvider } from "@chakra-ui/react";
 import "./styles/custom.css";
@@ -21,13 +25,27 @@ const queryClient = new QueryClient({
   },
 });
 
+const tsQueryClient = new TSQC({
+  defaultOptions: {
+    queries: {
+      refetchOnMount: false,
+      refetchOnWindowFocus: false,
+      refetchInterval: 600_000,
+      retry: 0,
+      refetchOnReconnect: true,
+    },
+  },
+});
+
 root.render(
   <React.StrictMode>
     <ChakraProvider theme={customTheme}>
       <QueryClientProvider client={queryClient}>
         <Fonts />
         <BrowserRouter>
-          <App />
+          <TSQCP client={tsQueryClient}>
+            <App />
+          </TSQCP>
         </BrowserRouter>
       </QueryClientProvider>
     </ChakraProvider>

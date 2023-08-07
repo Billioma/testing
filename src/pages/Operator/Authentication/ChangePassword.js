@@ -7,7 +7,7 @@ import { Form, Formik } from "formik";
 import { useParams, useNavigate } from "react-router-dom";
 import { passValues, passSchema } from "../../../utils/validation";
 import useCustomToast from "../../../utils/notifications";
-import { useOperatorUpdatePassword } from "../../../services/query/auth";
+import { useOperatorUpdatePassword } from "../../../services/operator/query/auth";
 
 const ChangePassword = () => {
   const [show, setShow] = useState(false);

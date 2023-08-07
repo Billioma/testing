@@ -1,5 +1,5 @@
 import * as API from "../url";
-import axiosInstance from "../axiosInstance";
+import axiosInstance from "../../axiosInstance";
 
 export const customerLogin = async (body) => {
   const res = await axiosInstance.post("customer/" + API.LOGIN, body);

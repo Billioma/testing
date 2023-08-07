@@ -1,27 +1,21 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Box, Flex, Td, Text, Tr } from "@chakra-ui/react";
 import TableFormat from "../../common/TableFormat";
 import { FiMoreVertical } from "react-icons/fi";
-import { servicesHeader } from "../../common/constants";
+import { Status, servicesHeader } from "../../common/constants";
 import {
   IoIosArrowBack,
   IoIosArrowDown,
   IoIosArrowForward,
 } from "react-icons/io";
-import { useGetPayToPark } from "../../../services/query/services";
+import { useGetPayToPark } from "../../../services/customer/query/services";
 import NoData from "../../common/NoData";
 import { formatDate } from "../../../utils/helpers";
 
 const TableLayer = () => {
-  const { mutate, isLoading, data: payToPark } = useGetPayToPark();
   const [page, setPage] = useState(1);
-  const [limit, setLimit] = useState(25);
-
-  useEffect(() => {
-    mutate({
-      query: { page, limit },
-    });
-  }, [page, limit]);
+  const limit = 25;
+  const { isLoading, data: payToPark } = useGetPayToPark(limit, page);
 
   return (
     <Box mt="24px">
@@ -143,27 +137,15 @@ const TableLayer = () => {
               <Td textAlign="center">{dat?.service?.name}</Td>
               <Td>
                 <Flex
-                  color={
-                    dat?.status === 0
-                      ? "#F9A11E"
-                      : dat?.status === 1
-                      ? "#008000"
-                      : "#E81313"
-                  }
-                  bg={
-                    dat?.status === 0
-                      ? "#FDF6E7"
-                      : dat?.status === 1
-                      ? "#E5FFE5"
-                      : "#F9D0CD"
-                  }
+                  color={Object.values(Status[dat?.status])[0]}
+                  bg={Object.values(Status[dat?.status])[2]}
                   py="5px"
                   px="16px"
                   justifyContent="center"
                   borderRadius="4px"
                   align="center"
                 >
-                  {dat?.status === 0 ? "In-Progress" : "Active"}
+                  {Object.values(Status[dat?.status])[1]}
                 </Flex>
               </Td>
               <Td textAlign="center">{formatDate(dat?.createdAt)}</Td>

@@ -21,6 +21,21 @@ export const formatDate = (date, fallback = "") => {
   return `${month}-${day}-${year}`;
 };
 
+export const formatDateHour = (date, fallback = "") => {
+  if (!date) return fallback;
+
+  const formattedDate = new Date(date);
+
+  const year = formattedDate.getFullYear();
+  const month = (formattedDate.getMonth() + 1).toString().padStart(2, "0");
+  const day = formattedDate.getDate().toString().padStart(2, "0");
+  const hours = formattedDate.getHours().toString().padStart(2, "0");
+  const minutes = formattedDate.getMinutes().toString().padStart(2, "0");
+  const seconds = formattedDate.getSeconds().toString().padStart(2, "0");
+
+  return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+};
+
 export const formatDateTime = (date, fallback = "") => {
   if (!date) return fallback;
 
@@ -47,3 +62,21 @@ const generateTimeArray = () => {
 };
 
 export const timeArray = generateTimeArray();
+
+export const formatTimeToHHMMSS = (time) => {
+  if (!time) {
+    return "";
+  }
+
+  const [timePart, period] = time.split(" ");
+  let [hours, minutes] = timePart.split(":");
+
+  if (period === "PM" && hours !== "12") {
+    hours = String(parseInt(hours, 10) + 12);
+  } else if (period === "AM" && hours === "12") {
+    hours = "00";
+  }
+
+  const seconds = "00";
+  return `${hours}:${minutes}:${seconds}`;
+};

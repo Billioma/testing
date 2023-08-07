@@ -1,26 +1,20 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Box, Button, Flex, Image, Td, Text, Tr } from "@chakra-ui/react";
 import TableFormat from "../../../common/TableFormat";
 import { FiMoreVertical } from "react-icons/fi";
-import { intervals, subHeader } from "../../../common/constants";
+import { Status, intervals, subHeader } from "../../../common/constants";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
-import { useGetUserSub } from "../../../../services/query/user";
+import { useGetUserSub } from "../../../../services/customer/query/user";
 import { formatDate } from "../../../../utils/helpers";
 import TableLoader from "../../../loaders/TableLoader";
 import { Add } from "../../../common/images";
 import { useNavigate } from "react-router-dom";
 
 const TableLayer = () => {
-  const { mutate, isLoading, data: subs } = useGetUserSub();
   const navigate = useNavigate();
   const [page, setPage] = useState(1);
-  const [limit, setLimit] = useState(25);
-
-  useEffect(() => {
-    mutate({
-      query: { page, limit },
-    });
-  }, [page, limit]);
+  const limit = 25;
+  const { isLoading, data: subs } = useGetUserSub(limit, page);
 
   return (
     <Box mt="16px">
@@ -130,27 +124,15 @@ const TableLayer = () => {
               <Td textAlign="center">{formatDate(dat?.nextPaymentDate)}</Td>
               <Td>
                 <Flex
-                  color={
-                    dat?.status === 0
-                      ? "#F9A11E"
-                      : dat?.status === 1
-                      ? "#008000"
-                      : "#E81313"
-                  }
-                  bg={
-                    dat?.status === 0
-                      ? "#FDF6E7"
-                      : dat?.status === 1
-                      ? "#E5FFE5"
-                      : "#F9D0CD"
-                  }
+                  color={Object.values(Status[dat?.status])[0]}
+                  bg={Object.values(Status[dat?.status])[2]}
                   py="5px"
                   px="16px"
                   justifyContent="center"
                   borderRadius="4px"
                   align="center"
                 >
-                  {dat?.status === 0 ? "In-Progress" : "Active"}
+                  {Object.values(Status[dat?.status])[1]}
                 </Flex>
               </Td>
               <Td textAlign="center">{formatDate(dat?.createdAt)}</Td>

@@ -1,9 +1,11 @@
 import { useMutation, useQuery } from "react-query";
 import {
   customerCreateSubscription,
+  customerFundWallet,
   customerUpdatePassword,
   customerUpdateUser,
   customerUploadPic,
+  deleteCard,
   getUser,
   getUserSub,
   getUserSubscriptions,
@@ -37,25 +39,45 @@ export const useCustomerUpdateUser = (options = {}) => {
   return { mutate, isLoading };
 };
 
-export const useGetUserSub = (options = {}) => {
-  const { mutate, isLoading, data } = useMutation(getUserSub, {
-    mutationKey: "GET_SUBSCRIPTIONS",
+export const useGetUserSub = (limit = "", page = "", options = {}) => {
+  const { mutate, isLoading, data } = useQuery(
+    ["GET_SUBSCRIPTIONS", limit, page],
+    getUserSub,
+    {
+      ...options,
+    }
+  );
+
+  return { mutate, isLoading, data };
+};
+
+export const useCustomerUploadPic = (options = {}) => {
+  const { mutate, isLoading, data } = useMutation(customerUploadPic, {
+    mutationKey: "UPLOAD_PIC",
     ...options,
   });
   return { mutate, isLoading, data };
 };
 
-export const useCustomerUploadPic = (options = {}) => {
-  const { mutate, isLoading } = useMutation(customerUploadPic, {
-    mutationKey: "UPLOAD_PIC",
+export const useDeleteCard = (options = {}) => {
+  const { mutate, isLoading, data } = useMutation(deleteCard, {
+    mutationKey: "DELETE_CARD",
     ...options,
   });
-  return { mutate, isLoading };
+  return { mutate, isLoading, data };
 };
 
 export const useCustomerUpdatePassword = (options = {}) => {
   const { mutate, isLoading } = useMutation(customerUpdatePassword, {
     mutationKey: "UPDATE_PASSWORD",
+    ...options,
+  });
+  return { mutate, isLoading };
+};
+
+export const useCustomerFundWallet = (options = {}) => {
+  const { mutate, isLoading } = useMutation(customerFundWallet, {
+    mutationKey: "FUND_WALLET",
     ...options,
   });
   return { mutate, isLoading };

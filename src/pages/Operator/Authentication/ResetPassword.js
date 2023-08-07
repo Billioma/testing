@@ -7,7 +7,7 @@ import { Form, Formik } from "formik";
 import * as Yup from "yup";
 import { useNavigate } from "react-router";
 import useCustomToast from "../../../utils/notifications";
-import { useOperatorResetPassword } from "../../../services/query/auth";
+import { useOperatorResetPassword } from "../../../services/customer/query/auth";
 
 const Reset = () => {
   const navigate = useNavigate();

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Box, Button, Text } from "@chakra-ui/react";
 import useCustomToast from "../../../../../utils/notifications";
-import { useCustomerUpdatePassword } from "../../../../../services/query/user";
+import { useCustomerUpdatePassword } from "../../../../../services/customer/query/user";
 import CustomInput from "../../../../common/CustomInput";
 import { Form, Formik } from "formik";
 import {

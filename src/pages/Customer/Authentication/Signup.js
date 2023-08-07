@@ -7,7 +7,7 @@ import { Button } from "@chakra-ui/button";
 import { signValues, signSchema } from "../../../utils/validation";
 import { Form, Formik } from "formik";
 import { useNavigate } from "react-router";
-import { useCustomerRegister } from "../../../services/query/auth";
+import { useCustomerRegister } from "../../../services/customer/query/auth";
 import useCustomToast from "../../../utils/notifications";
 
 const Signup = () => {

@@ -29,6 +29,8 @@ const CustomInput = ({
   onFocus,
   holder,
   type,
+  bg,
+  border,
 }) => {
   const [isTyping, setIsTyping] = useState(false);
 
@@ -50,7 +52,7 @@ const CustomInput = ({
     } else if (error) {
       return "1px solid #EE383A";
     } else {
-      return "1px solid #D4D6D8";
+      return border || "1px solid #D4D6D8";
     }
   };
 
@@ -62,7 +64,7 @@ const CustomInput = ({
     } else if (error) {
       return "#FDE8E8";
     } else {
-      return "transparent";
+      return bg || "transparent";
     }
   };
 

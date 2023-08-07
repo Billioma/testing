@@ -14,6 +14,7 @@ const TableFormat = ({
   minH,
   maxH,
   opt,
+  bg = "#F4F6F8",
 }) => {
   return (
     <Box
@@ -45,7 +46,7 @@ const TableFormat = ({
           <TableLoader />
         ) : (
           <Table>
-            <Thead bg="#F4F6F8">
+            <Thead bg={bg}>
               <Tr>
                 {header?.map((data, i) => (
                   <Th
@@ -53,7 +54,7 @@ const TableFormat = ({
                     key={i}
                     pos="sticky"
                     top="0"
-                    bg="#F4F6F8"
+                    bg={bg}
                     fontFamily="Sailec"
                     zIndex="2"
                     color="#949698"
