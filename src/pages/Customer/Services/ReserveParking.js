@@ -115,7 +115,7 @@ const ReserveParking = () => {
     reference: new Date().getTime().toString(),
     email: userData?.email,
     amount: 10000,
-    publicKey: process.env.PAYSTACK_KEY,
+    publicKey: process.env.REACT_APP_PAYSTACK_KEY,
     metadata: {
       custom_fields: [
         {
