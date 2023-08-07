@@ -24,6 +24,10 @@ import {
   useGetUser,
 } from "../../../services/customer/query/user";
 import useCustomToast from "../../../utils/notifications";
+import { useNavigate } from "react-router-dom";
+import { useGetCards } from "../../../services/customer/query/payment";
+import { usePaystackPayment } from "react-paystack";
+import FundWalletDrawer from "../../../components/modals/FundWalletDrawer";
 
 const AddSubscription = () => {
   const { data: plans } = useGetPlans();
@@ -31,7 +35,8 @@ const AddSubscription = () => {
   const [currentSub, setCurrentSub] = useState({});
   const { data: vehicles } = useGetVehicles();
 
-  const { data: userData } = useGetUser();
+  const { data: cards, refetch: refetchCards } = useGetCards();
+  const { data: userData, refetch } = useGetUser();
   const { data: locations } = useGetLocations();
 
   const [values, setValues] = useState({
@@ -84,7 +89,7 @@ const AddSubscription = () => {
     control: (provided, state) => ({
       ...provided,
       width: "100%",
-      // height: "44px",
+      minHeight: "44px",
       color: "#646668",
       fontSize: "14px",
       cursor: "pointer",
@@ -97,7 +102,40 @@ const AddSubscription = () => {
         : "unset",
     }),
   };
+
+  const [showFunds, setShowFunds] = useState(false);
+
+  const config = {
+    reference: new Date().getTime().toString(),
+    email: userData?.email,
+    amount: 10000,
+    publicKey: process.env.REACT_APP_PAYSTACK_KEY,
+    metadata: {
+      custom_fields: [
+        {
+          display_name: "Transaction Type",
+          variable_name: "transaction_type",
+          value: "TOKENIZATION",
+        },
+      ],
+    },
+  };
+
+  const onSuccess = () => {
+    setTimeout(() => {
+      refetchCards();
+    }, 5000);
+  };
+
+  const onCloses = () => {
+    setTimeout(() => {
+      refetchCards();
+    }, 5000);
+  };
+
+  const initializePayment = usePaystackPayment(config);
   const { successToast, errorToast } = useCustomToast();
+  const navigate = useNavigate();
   const { mutate, isLoading } = useCustomerCreateSubscription({
     onSuccess: (res) => {
       navigate("/customer/subscriptions");
@@ -364,7 +402,7 @@ const AddSubscription = () => {
                 </Flex>
               </Box>
 
-              <Flex align="center" gap="15px">
+              <Flex align="center" gap="15px" mb="16px">
                 <Text fontSize="10px" fontWeight={500} color="#444648">
                   Auto Renew
                 </Text>
@@ -379,48 +417,132 @@ const AddSubscription = () => {
                 />
               </Flex>
 
-              <Box
-                mt="17px"
-                border="1px solid #D4D6D8"
-                borderRadius="4px"
-                p="16px"
-              >
-                <Flex align="center" w="full" justifyContent="space-between">
-                  <Box>
-                    <Text
-                      color="#444648"
-                      fontSize="12px"
-                      lineHeight="100%"
-                      mb="8px"
-                    >
-                      Wallet
-                    </Text>
-                    <Text fontSize="14px" color="#646668" lineHeight="100%">
-                      <span style={{ fontWeight: 500 }}> Balance: </span> ₦{" "}
-                      {userData?.wallet?.balance?.toLocaleString(undefined, {
-                        minimumFractionDigits: 2,
-                        maximumFractionDigits: 2,
-                      })}
-                    </Text>
-                  </Box>
+              {values.paymentMethod === "1" && (
+                <Box border="1px solid #D4D6D8" borderRadius="4px" p="16px">
+                  <Flex align="center" w="full" justifyContent="space-between">
+                    <Box>
+                      <Text
+                        color="#444648"
+                        fontSize="10px"
+                        lineHeight="100%"
+                        mb="8px"
+                      >
+                        Wallet
+                      </Text>
+                      <Text fontSize="14px" color="#646668" lineHeight="100%">
+                        <span style={{ fontWeight: 500 }}> Balance: </span> ₦{" "}
+                        {userData?.wallet?.balance?.toLocaleString(undefined, {
+                          minimumFractionDigits: 2,
+                          maximumFractionDigits: 2,
+                        })}
+                      </Text>
+                    </Box>
 
-                  <Box>
-                    <BsCheckCircle color="#0B841D" />
-                  </Box>
+                    <Box>
+                      <BsCheckCircle color="#0B841D" />
+                    </Box>
+                  </Flex>
+                </Box>
+              )}
+
+              {values.paymentMethod === "0" && (
+                <Box>
+                  {cards?.data?.length ? (
+                    cards?.data?.map((dat, i) => (
+                      <Box key={i}>
+                        <Box
+                          mt="16px"
+                          cursor="pointer"
+                          border={
+                            values?.cardId === dat?.id
+                              ? "1px solid red"
+                              : "1px solid #D4D6D8"
+                          }
+                          onClick={() =>
+                            setValues({
+                              ...values,
+                              cardId: dat?.id,
+                            })
+                          }
+                          borderRadius="4px"
+                          p="16px"
+                        >
+                          <Flex
+                            align="center"
+                            w="full"
+                            justifyContent="space-between"
+                          >
+                            <Box>
+                              <Text
+                                color="#444648"
+                                fontSize="10px"
+                                lineHeight="100%"
+                                mb="8px"
+                              >
+                                Card Details
+                              </Text>
+                              <Text
+                                fontSize="14px"
+                                textTransform="capitalize"
+                                color="#646668"
+                                lineHeight="100%"
+                              >
+                                {dat?.cardType} Ending *****{dat?.last4}
+                              </Text>
+                            </Box>
+
+                            <Box>
+                              <BsCheckCircle color="#0B841D" />
+                            </Box>
+                          </Flex>
+                        </Box>
+                      </Box>
+                    ))
+                  ) : (
+                    <Box>No Card Available</Box>
+                  )}
+                  <Flex
+                    mt="8px"
+                    color="red"
+                    mb="16px"
+                    fontSize="12px"
+                    fontWeight={500}
+                    lineHeight="100%"
+                    justifyContent="flex-end"
+                    w="full"
+                  >
+                    <Text
+                      cursor="pointer"
+                      onClick={() => {
+                        initializePayment(onSuccess, onCloses);
+                      }}
+                      textDecor="underline"
+                    >
+                      Add a Card
+                    </Text>
+                  </Flex>
+                </Box>
+              )}
+              {values.paymentMethod === "1" && (
+                <Flex
+                  mt="8px"
+                  color="red"
+                  fontSize="12px"
+                  mb="16px"
+                  fontWeight={500}
+                  lineHeight="100%"
+                  justifyContent="flex-end"
+                  w="full"
+                >
+                  <Text
+                    cursor="pointer"
+                    onClick={() => setShowFunds(true)}
+                    textDecor="underline"
+                  >
+                    Top Up Wallet
+                  </Text>
                 </Flex>
-              </Box>
-              <Flex
-                mt="8px"
-                mb="32px"
-                color="red"
-                fontSize="12px"
-                fontWeight={500}
-                lineHeight="100%"
-                justifyContent="flex-end"
-                w="full"
-              >
-                <Text textDecor="underline">Top Up Wallet</Text>
-              </Flex>
+              )}
 
               <Button
                 isLoading={isLoading}
@@ -435,6 +557,16 @@ const AddSubscription = () => {
           )}
         </Flex>
       </Flex>
+
+      <FundWalletDrawer
+        refetchUser={refetch}
+        isOpen={showFunds}
+        cards={cards}
+        action={() => {
+          initializePayment(onSuccess, onCloses);
+        }}
+        onClose={() => setShowFunds(false)}
+      />
     </Box>
   );
 };
