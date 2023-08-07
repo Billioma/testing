@@ -43,6 +43,7 @@ const AddSubscription = () => {
     vehicle: "",
     location: "",
     autoRenew: false,
+    cardId: "",
     paymentMethod: "",
   });
 
@@ -159,26 +160,48 @@ const AddSubscription = () => {
     values?.vehicle && values?.vehicle?.map((item) => Number(item.id));
 
   const handlePay = () => {
-    mutate({
-      autoRenewal: values.autoRenew ? 1 : 0,
-      membershipPlan: currentSub?.id,
-      paymentMethod: Number(values?.paymentMethod),
-      subscriptionOptions: [
-        {
-          data: vehicledIds,
-          planFeature: "34",
-          type: "vehicle",
-        },
-        {
-          data: [Number(values.location?.id)],
-          planFeature: "33",
-          type: "location",
-        },
-        {
-          planFeature: "35",
-        },
-      ],
-    });
+    Number(values?.paymentMethod) === 0
+      ? mutate({
+          autoRenewal: values.autoRenew ? 1 : 0,
+          membershipPlan: currentSub?.id,
+          cardId: values?.cardId,
+          paymentMethod: Number(values?.paymentMethod),
+          subscriptionOptions: [
+            {
+              data: vehicledIds,
+              planFeature: "34",
+              type: "vehicle",
+            },
+            {
+              data: [Number(values.location?.id)],
+              planFeature: "33",
+              type: "location",
+            },
+            {
+              planFeature: "35",
+            },
+          ],
+        })
+      : mutate({
+          autoRenewal: values.autoRenew ? 1 : 0,
+          membershipPlan: currentSub?.id,
+          paymentMethod: Number(values?.paymentMethod),
+          subscriptionOptions: [
+            {
+              data: vehicledIds,
+              planFeature: "34",
+              type: "vehicle",
+            },
+            {
+              data: [Number(values.location?.id)],
+              planFeature: "33",
+              type: "location",
+            },
+            {
+              planFeature: "35",
+            },
+          ],
+        });
   };
 
   return (
