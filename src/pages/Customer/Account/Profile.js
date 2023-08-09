@@ -43,7 +43,7 @@ const Profile = () => {
           px="32px"
           justifyContent="center"
           align="center"
-          w="30rem"
+          w={{ base: "full", md: "30rem" }}
           flexDir="column"
         >
           <Text
@@ -117,7 +117,7 @@ const Profile = () => {
           />
           <Layout label="Phone" data={userData?.profile?.phone} />
           <Layout
-            label="Company Data"
+            label="Company Name"
             data={userData?.profile?.companyName || "N/A"}
           />
           <Layout

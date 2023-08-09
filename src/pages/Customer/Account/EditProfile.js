@@ -130,7 +130,7 @@ const EditProfile = () => {
           borderRadius="12px"
           py="40px"
           px="62px"
-          w="30rem"
+          w={{ base: "full", md: "30rem" }}
           flexDir="column"
         >
           <Flex

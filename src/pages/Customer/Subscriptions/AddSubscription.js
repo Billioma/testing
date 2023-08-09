@@ -213,7 +213,7 @@ const AddSubscription = () => {
           py="40px"
           px="32px"
           justifyContent="center"
-          w="30rem"
+          w={{ base: "full", md: "30rem" }}
           flexDir="column"
         >
           <Text
@@ -478,7 +478,7 @@ const AddSubscription = () => {
                           cursor="pointer"
                           border={
                             values?.cardId === dat?.id
-                              ? "1px solid red"
+                              ? "1px solid #0B841D"
                               : "1px solid #D4D6D8"
                           }
                           onClick={() =>
@@ -514,9 +514,11 @@ const AddSubscription = () => {
                               </Text>
                             </Box>
 
-                            <Box>
-                              <BsCheckCircle color="#0B841D" />
-                            </Box>
+                            {values.cardId === dat?.id && (
+                              <Box>
+                                <BsCheckCircle color="#0B841D" />
+                              </Box>
+                            )}
                           </Flex>
                         </Box>
                       </Box>

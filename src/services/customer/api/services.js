@@ -11,6 +11,11 @@ export const createReserveParking = async (body) => {
   return res.data;
 };
 
+export const createEventParking = async (body) => {
+  const res = await axiosInstance.post("customer/" + API.EVENT_PARKING, body);
+  return res.data;
+};
+
 export const requestReserveParking = async (body) => {
   const res = await axiosInstance.post(
     "customer/" + API.REQUEST_RESERVE_PARKING,
@@ -39,6 +44,22 @@ export const getReserveParking = async ({ queryKey }) => {
   const [, limit, page] = queryKey;
   const res = await axiosInstance.get(
     "customer/" + `${API.RESERVE_PARKING}?limit=${limit}&page=${page}`
+  );
+  return res.data;
+};
+
+export const getEventParking = async ({ queryKey }) => {
+  const [, limit, page] = queryKey;
+  const res = await axiosInstance.get(
+    "customer/" + `${API.EVENT_PARKING}?limit=${limit}&page=${page}`
+  );
+  return res.data;
+};
+
+export const getCarService = async ({ queryKey }) => {
+  const [, limit, page] = queryKey;
+  const res = await axiosInstance.get(
+    "customer/" + `${API.SERVICE_BOOKINGS}?limit=${limit}&page=${page}`
   );
   return res.data;
 };

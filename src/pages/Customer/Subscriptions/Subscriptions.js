@@ -9,7 +9,13 @@ const Subscriptions = () => {
   return (
     <Box minH="75vh">
       <Box bg="#fff" w="full" px="23px" py="24px" borderRadius="8px">
-        <Flex align="center" justifyContent="space-between" w="full">
+        <Flex
+          align={{ base: "flex-start", md: "center" }}
+          gap={{ base: "20px", md: "unset" }}
+          flexDirection={{ base: "column", md: "row" }}
+          justifyContent="space-between"
+          w="full"
+        >
           <Text color="#242628" fontWeight={500} lineHeight="100%">
             Subscriptions
           </Text>

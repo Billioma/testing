@@ -6,7 +6,6 @@ import {
   GridItem,
   Image,
   Skeleton,
-  Spinner,
   Text,
   useDisclosure,
 } from "@chakra-ui/react";
@@ -19,9 +18,11 @@ import {
 import AddVehicleModal from "../../../modals/AddVehicleModal";
 import useCustomToast from "../../../../utils/notifications";
 import EditVehicleModal from "../../../modals/EditVehicleModal";
+import ConfirmDeleteModal from "../../../modals/ConfirmDeleteModal";
 
 const VehicleCards = ({ states }) => {
   const { data: vehicles, isLoading, refetch } = useGetVehicles();
+  const [showDelete, setShowDelete] = useState(false);
   const [currentVehicle, setCurrentVehicle] = useState("");
   const { data: models } = useGetModel();
   const { data: makes } = useGetMake();
@@ -42,6 +43,7 @@ const VehicleCards = ({ states }) => {
   const { errorToast, successToast } = useCustomToast();
   const { mutate, isLoading: isDeleting } = useDeleteVehicles({
     onSuccess: (res) => {
+      setShowDelete(false);
       successToast(res?.message);
       refetch();
     },
@@ -51,9 +53,14 @@ const VehicleCards = ({ states }) => {
       );
     },
   });
-  const handleSubmit = (data) => {
-    mutate(data?.id);
+
+  const openDelete = (data) => {
+    setShowDelete(true);
     setCurrentVehicle(data);
+  };
+
+  const handleSubmit = () => {
+    mutate(currentVehicle?.id);
   };
 
   return (
@@ -153,15 +160,12 @@ const VehicleCards = ({ states }) => {
                       src="/assets/edit.svg"
                       onClick={() => openMenu(data)}
                     />
-                    {isDeleting && currentVehicle === data ? (
-                      <Spinner size="sm" color="red" />
-                    ) : (
-                      <Image
-                        onClick={() => handleSubmit(data)}
-                        src="/assets/bin.svg"
-                        cursor="pointer"
-                      />
-                    )}
+
+                    <Image
+                      onClick={() => openDelete(data)}
+                      src="/assets/bin.svg"
+                      cursor="pointer"
+                    />
                   </Flex>
                 </Flex>
               </Box>
@@ -214,6 +218,13 @@ const VehicleCards = ({ states }) => {
         refetch={refetch}
         isOpen={show}
         onClose={() => setShow(false)}
+      />
+      <ConfirmDeleteModal
+        isOpen={showDelete}
+        isLoading={isDeleting}
+        action={handleSubmit}
+        title="Vehicle"
+        onClose={() => setShowDelete(false)}
       />
     </Box>
   );

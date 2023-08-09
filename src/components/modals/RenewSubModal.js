@@ -1,51 +1,33 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   Box,
   Button,
   Flex,
-  Image,
   Modal,
   ModalBody,
   ModalContent,
   ModalOverlay,
   Text,
 } from "@chakra-ui/react";
-import CustomInput from "../common/CustomInput";
 import { BsCheckCircle } from "react-icons/bs";
-import { useCustomerFundWallet } from "../../services/customer/query/user";
-import useCustomToast from "../../utils/notifications";
 
-const FundWalletDrawer = ({ isOpen, cards, refetchUser, onClose, action }) => {
-  const [values, setValues] = useState({
-    cardId: "",
-    amount: "",
-  });
-
+const RenewSubModal = ({
+  isOpen,
+  cards,
+  userData,
+  values,
+  setValues,
+  handleRenew,
+  onClose,
+  isLoading,
+  action,
+}) => {
   const close = () => {
     onClose();
     setValues({
       cardId: "",
+      paymentMethod: "",
       amount: "",
-    });
-  };
-  const { successToast, errorToast } = useCustomToast();
-  const { mutate, isLoading } = useCustomerFundWallet({
-    onSuccess: (res) => {
-      close();
-      successToast(res?.message);
-      refetchUser();
-    },
-    onError: (err) => {
-      errorToast(
-        err?.response?.data?.message || err?.message || "An Error occured"
-      );
-    },
-  });
-
-  const handleSubmit = () => {
-    mutate({
-      amount: Number(values?.amount),
-      cardId: Number(values?.cardId),
     });
   };
 
@@ -63,42 +45,68 @@ const FundWalletDrawer = ({ isOpen, cards, refetchUser, onClose, action }) => {
         <ModalBody>
           <Box>
             <Flex align="center" flexDirection="column">
-              <Image w="40px" h="40px" src="/assets/purse.png" />
               <Text
-                my="24px"
                 color="#444648"
                 fontSize="24px"
                 fontWeight={700}
                 lineHeight="100%"
               >
-                Add Funds
+                Renew Subscription
               </Text>
             </Flex>
 
-            <Box>
-              <Box mb="24px">
-                <Text
-                  color="#444648"
-                  fontWeight={500}
-                  lineHeight="100%"
-                  fontSize="10px"
-                  mb="8px"
-                >
-                  Enter Funding Amount
-                </Text>
-                <CustomInput
-                  mb
-                  value={values?.amount}
-                  onChange={(e) =>
-                    setValues({
-                      ...values,
-                      amount: e.target.value,
-                    })
-                  }
-                  auth
-                />
-              </Box>
+            <Box my="24px">
+              <Text fontSize="14px" mb="8px">
+                Pay with Wallet
+              </Text>
+              <Box
+                cursor="pointer"
+                onClick={() =>
+                  setValues({
+                    ...values,
+                    paymentMethod: "1",
+                  })
+                }
+                border={
+                  values?.paymentMethod === "1"
+                    ? "1px solid #0B841D"
+                    : "1px solid #D4D6D8"
+                }
+                borderRadius="4px"
+                p="16px"
+              >
+                <Flex align="center" w="full" justifyContent="space-between">
+                  <Box>
+                    <Text
+                      color="#444648"
+                      fontSize="10px"
+                      lineHeight="100%"
+                      mb="8px"
+                    >
+                      Wallet
+                    </Text>
+                    <Text fontSize="14px" color="#646668" lineHeight="100%">
+                      <span style={{ fontWeight: 500 }}> Balance: </span> ₦{" "}
+                      {userData?.wallet?.balance?.toLocaleString(undefined, {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2,
+                      })}
+                    </Text>
+                  </Box>
 
+                  {values?.paymentMethod === "1" && (
+                    <Box>
+                      <BsCheckCircle color="#0B841D" />
+                    </Box>
+                  )}
+                </Flex>
+              </Box>
+            </Box>
+
+            <Box>
+              <Text fontSize="14px" mb="8px">
+                Pay with Card
+              </Text>
               {cards?.data?.length
                 ? cards?.data?.map((dat, i) => (
                     <Box key={i}>
@@ -106,6 +114,7 @@ const FundWalletDrawer = ({ isOpen, cards, refetchUser, onClose, action }) => {
                         mb="16px"
                         cursor="pointer"
                         border={
+                          values?.paymentMethod === "0" &&
                           values?.cardId === dat?.id
                             ? "1px solid #0B841D"
                             : "1px solid #D4D6D8"
@@ -114,6 +123,7 @@ const FundWalletDrawer = ({ isOpen, cards, refetchUser, onClose, action }) => {
                           setValues({
                             ...values,
                             cardId: dat?.id,
+                            paymentMethod: "0",
                           })
                         }
                         borderRadius="4px"
@@ -143,11 +153,12 @@ const FundWalletDrawer = ({ isOpen, cards, refetchUser, onClose, action }) => {
                             </Text>
                           </Box>
 
-                          {values.cardId === dat?.id && (
-                            <Box>
-                              <BsCheckCircle color="#0B841D" />
-                            </Box>
-                          )}
+                          {values?.paymentMethod === "0" &&
+                            values?.cardId === dat?.id && (
+                              <Box>
+                                <BsCheckCircle color="#0B841D" />
+                              </Box>
+                            )}
                         </Flex>
                       </Box>
                     </Box>
@@ -158,6 +169,7 @@ const FundWalletDrawer = ({ isOpen, cards, refetchUser, onClose, action }) => {
                 color="red"
                 onClick={action}
                 fontSize="12px"
+                mt="8px"
                 _hover={{ textDecor: "underline" }}
                 textAlign="end"
                 cursor="pointer"
@@ -173,10 +185,11 @@ const FundWalletDrawer = ({ isOpen, cards, refetchUser, onClose, action }) => {
                 w="100%"
                 py="25px"
                 fontSize="12px"
-                onClick={handleSubmit}
+                onClick={handleRenew}
+                isDisabled={!values?.paymentMethod}
                 isLoading={isLoading}
               >
-                Fund Wallet
+                Renew Subscription
               </Button>
             </Flex>
           </Box>
@@ -186,4 +199,4 @@ const FundWalletDrawer = ({ isOpen, cards, refetchUser, onClose, action }) => {
   );
 };
 
-export default FundWalletDrawer;
+export default RenewSubModal;

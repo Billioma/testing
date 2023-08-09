@@ -19,6 +19,21 @@ export const getUserSub = async ({ queryKey }) => {
   return res.data;
 };
 
+export const cancelSub = async (query) => {
+  const res = await axiosInstance.get(
+    "customer/" + API.CANCEL_SUBSCRIPTIONS(query)
+  );
+  return res.data;
+};
+
+export const renewSub = async ({ query, body }) => {
+  const res = await axiosInstance.post(
+    "customer/" + API.RENEW_SUBSCRIPTIONS(query),
+    body
+  );
+  return res.data;
+};
+
 export const deleteCard = async (query) => {
   const res = await axiosInstance.delete("customer/" + API.DEL_CARDS(query));
   return res.data;

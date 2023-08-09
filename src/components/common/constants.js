@@ -382,6 +382,12 @@ export const BookingSlots = [
   "17:30 - 19:00",
 ];
 
+export const subOptions = [
+  "Renew Subscription",
+  "Automate Renewal",
+  "Cancel Subscription",
+];
+
 export const accountDrop = [
   {
     name: "Profile",
@@ -407,6 +413,49 @@ export const servicesHeader = [
   "SERVICE TYPE",
   "STATUS",
   "DATE",
+  "ACTIONS",
+];
+
+export const payToParkHeader = [
+  "TICKET NUMBER",
+  "ZONE",
+  "VEHICLE",
+  "SERVICE TYPE",
+  "STATUS",
+  "DATE",
+  "ACTIONS",
+];
+
+export const reserveHeader = [
+  "RESERVATION ID",
+  "ZONE",
+  "AMOUNT",
+  "VEHICLE",
+  "ARRIVAL",
+  "DEPARTURE",
+  "STATUS",
+  "ACTIONS",
+];
+
+export const eventHeader = [
+  "TICKET NUMBER",
+  "AMOUNT",
+  "ZONE",
+  "VEHICLE",
+  "SERVICE TYPE",
+  "EVENT",
+  "STATUS",
+  "DATE",
+  "ACTIONS",
+];
+
+export const carHeader = [
+  "BOOKING ID",
+  "BOOKING TYPE",
+  "SERVICE TYPE",
+  "AMOUNT",
+  "APPOINTMENT SLOT",
+  "APPOINTMENT DATE",
   "ACTIONS",
 ];
 
@@ -438,4 +487,11 @@ export const intervals = [
   { 4: "Quarterly" }, // 3 Months
   { 5: "Biannually" }, // 6 Months
   { 6: "Annually" }, // 12 Months
+];
+
+export const serviceTabs = [
+  "Pay-To-Park",
+  "Reserve Parking",
+  "Event Parking",
+  "Car Services",
 ];

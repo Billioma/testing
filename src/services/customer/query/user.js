@@ -1,5 +1,6 @@
 import { useMutation, useQuery } from "react-query";
 import {
+  cancelSub,
   customerCreateSubscription,
   customerFundWallet,
   customerUpdatePassword,
@@ -9,6 +10,7 @@ import {
   getUser,
   getUserSub,
   getUserSubscriptions,
+  renewSub,
 } from "../api/user";
 
 export const useGetUser = (options = {}) => {
@@ -40,7 +42,7 @@ export const useCustomerUpdateUser = (options = {}) => {
 };
 
 export const useGetUserSub = (limit = "", page = "", options = {}) => {
-  const { mutate, isLoading, data } = useQuery(
+  const { isLoading, data, refetch } = useQuery(
     ["GET_SUBSCRIPTIONS", limit, page],
     getUserSub,
     {
@@ -48,6 +50,22 @@ export const useGetUserSub = (limit = "", page = "", options = {}) => {
     }
   );
 
+  return { isLoading, data, refetch };
+};
+
+export const useCancelSub = (options = {}) => {
+  const { mutate, isLoading, data } = useMutation(cancelSub, {
+    mutationKey: "CANCEL_SUB",
+    ...options,
+  });
+  return { mutate, isLoading, data };
+};
+
+export const useRenewSub = (options = {}) => {
+  const { mutate, isLoading, data } = useMutation(renewSub, {
+    mutationKey: "RENEW_SUB",
+    ...options,
+  });
   return { mutate, isLoading, data };
 };
 

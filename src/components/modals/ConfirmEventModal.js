@@ -10,8 +10,17 @@ import {
   ModalOverlay,
   Text,
 } from "@chakra-ui/react";
+import { formatDate } from "../../utils/helpers";
 
-const ConfirmEventModal = ({ isOpen, onClose, isLoading, action }) => {
+const ConfirmEventModal = ({
+  isOpen,
+  values,
+  event,
+  start,
+  onClose,
+  isLoading,
+  action,
+}) => {
   return (
     <Modal isCentered trapFocus={false} isOpen={isOpen} onClose={onClose}>
       <ModalOverlay backdropFilter="auto" backdropBlur="2px" />
@@ -62,7 +71,7 @@ const ConfirmEventModal = ({ isOpen, onClose, isLoading, action }) => {
                   lineHeight="100%"
                   fontWeight={500}
                 >
-                  Landmark Towers
+                  {event?.address}
                 </Text>
               </Flex>
 
@@ -79,7 +88,7 @@ const ConfirmEventModal = ({ isOpen, onClose, isLoading, action }) => {
                   lineHeight="100%"
                   fontWeight={500}
                 >
-                  Date
+                  Reserved Date
                 </Text>
                 <Text
                   color="#242628"
@@ -89,7 +98,7 @@ const ConfirmEventModal = ({ isOpen, onClose, isLoading, action }) => {
                   lineHeight="100%"
                   fontWeight={500}
                 >
-                  29-02-2029 08:00am
+                  {start}
                 </Text>
               </Flex>
 
@@ -101,7 +110,7 @@ const ConfirmEventModal = ({ isOpen, onClose, isLoading, action }) => {
                   lineHeight="100%"
                   fontWeight={500}
                 >
-                  Duration
+                  Start Date
                 </Text>
                 <Text
                   color="#242628"
@@ -111,16 +120,38 @@ const ConfirmEventModal = ({ isOpen, onClose, isLoading, action }) => {
                   lineHeight="100%"
                   fontWeight={500}
                 >
-                  480 Minutes
+                  {formatDate(event?.eventStartDateTime)}
                 </Text>
               </Flex>
 
               <Flex
-                mt="24px"
+                my="24px"
                 align="center"
                 justifyContent="space-between"
                 w="full"
               >
+                <Text
+                  color="#848688"
+                  w="full"
+                  fontSize="14px"
+                  lineHeight="100%"
+                  fontWeight={500}
+                >
+                  End Date
+                </Text>
+                <Text
+                  color="#242628"
+                  textAlign="end"
+                  w="full"
+                  fontSize="14px"
+                  lineHeight="100%"
+                  fontWeight={500}
+                >
+                  {formatDate(event?.eventEndDateTime)}
+                </Text>
+              </Flex>
+
+              <Flex align="center" justifyContent="space-between" w="full">
                 <Text
                   color="#848688"
                   w="full"
@@ -138,7 +169,7 @@ const ConfirmEventModal = ({ isOpen, onClose, isLoading, action }) => {
                   lineHeight="100%"
                   fontWeight={500}
                 >
-                  Jeep
+                  {values?.vehicle?.main}
                 </Text>
               </Flex>
             </Box>

@@ -33,20 +33,19 @@ const SideBar = () => {
       bg="#fff"
     >
       <Box flex="1">
-        <Flex pb="58px" justifyContent="space-between" align="center">
-          <Box>
-            <Text
-              fontSize="24px"
-              lineHeight="120%"
-              fontWeight={900}
-              fontFamily="Cooper"
-              className="font-bold font-[Cooper]"
-            >
-              <span style={{ color: "red" }}>Parkin</span>
-              Space Plus
-            </Text>
-          </Box>
-        </Flex>
+        <Box pb="58px">
+          <Text
+            fontSize="24px"
+            lineHeight="120%"
+            textAlign="center"
+            fontWeight={900}
+            fontFamily="Cooper"
+            className="font-bold font-[Cooper]"
+          >
+            <span style={{ color: "red" }}>Parkin</span>
+            Space
+          </Text>
+        </Box>
 
         <Box mx="20px">
           {general?.map((item, i) => {

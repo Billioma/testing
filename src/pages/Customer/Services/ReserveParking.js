@@ -30,6 +30,7 @@ import { useGetCards } from "../../../services/customer/query/payment";
 import { useGetUser } from "../../../services/customer/query/user";
 import {
   useCreateReserveParking,
+  useGetReserveParking,
   useRequestReserveParking,
 } from "../../../services/customer/query/services";
 import useCustomToast from "../../../utils/notifications";
@@ -145,9 +146,11 @@ const ReserveParking = () => {
     useRequestReserveParking();
   const navigate = useNavigate();
   const { successToast, errorToast } = useCustomToast();
+  const { refetch: refetchParking } = useGetReserveParking(10, 1);
   const { mutate: reserveMutate, isLoading: isReserving } =
     useCreateReserveParking({
       onSuccess: (res) => {
+        refetchParking();
         navigate("/customer/services");
         successToast(res?.message);
       },
@@ -251,7 +254,7 @@ const ReserveParking = () => {
           py="40px"
           px="32px"
           justifyContent="center"
-          w="30rem"
+          w={{ base: "full", md: "30rem" }}
           flexDir="column"
         >
           <Text
@@ -612,7 +615,7 @@ const ReserveParking = () => {
                           cursor="pointer"
                           border={
                             values?.cardId === dat?.id
-                              ? "1px solid red"
+                              ? "1px solid #0B841D"
                               : "1px solid #D4D6D8"
                           }
                           onClick={() =>
@@ -648,9 +651,11 @@ const ReserveParking = () => {
                               </Text>
                             </Box>
 
-                            <Box>
-                              <BsCheckCircle color="#0B841D" />
-                            </Box>
+                            {values.cardId === dat?.id && (
+                              <Box>
+                                <BsCheckCircle color="#0B841D" />
+                              </Box>
+                            )}
                           </Flex>
                         </Box>
                       </Box>

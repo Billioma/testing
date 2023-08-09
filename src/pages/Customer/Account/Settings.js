@@ -12,8 +12,8 @@ const Settings = () => {
           bg="#fff"
           borderRadius="12px"
           py="40px"
-          px="62px"
-          w="30rem"
+          px={{ base: "25px", md: "62px" }}
+          w={{ base: "full", md: "30rem" }}
           flexDir="column"
         >
           <Flex w="full" flexDir="column">

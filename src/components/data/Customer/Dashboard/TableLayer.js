@@ -9,7 +9,7 @@ import { formatDate } from "../../../../utils/helpers";
 
 const TableLayer = () => {
   const page = 1;
-  const limit = 25;
+  const limit = 10;
   const { isLoading, data: payToPark } = useGetPayToPark(limit, page);
 
   return (

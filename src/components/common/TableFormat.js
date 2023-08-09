@@ -8,6 +8,7 @@ const TableFormat = ({
   isLoading,
   paginate,
   header,
+  tab,
   act,
   title,
   filter,
@@ -23,24 +24,36 @@ const TableFormat = ({
       py={opt ? "" : "24px"}
       px={opt ? "" : "23px"}
     >
-      <Flex
-        mb={opt ? "" : "16px"}
-        align="center"
-        justifyContent="space-between"
-        w="full"
-      >
-        <Text
-          color="#242628"
-          fontWeight={500}
-          fontSize="14px"
-          lineHeight="100%"
-          mb="12px"
+      {!tab ? (
+        <Flex
+          mb={opt ? "" : "16px"}
+          align="center"
+          justifyContent="space-between"
+          w="full"
         >
-          {title}
-        </Text>
+          <Text
+            color="#242628"
+            fontWeight={500}
+            fontSize="14px"
+            lineHeight="100%"
+            mb="12px"
+          >
+            {title}
+          </Text>
 
-        <Box>{filter}</Box>
-      </Flex>
+          <Box>{filter}</Box>
+        </Flex>
+      ) : (
+        <Flex
+          justifyContent="center"
+          mb="24px"
+          align="center"
+          w="full"
+          flexDir="column"
+        >
+          {tab}
+        </Flex>
+      )}
       <TableContainer maxH={maxH} minH={minH} overflowY="scroll">
         {isLoading ? (
           <TableLoader />

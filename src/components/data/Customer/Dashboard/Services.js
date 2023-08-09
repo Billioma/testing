@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 const Services = ({ opt }) => {
   const navigate = useNavigate();
   return (
-    <Box mt="24px">
+    <Box mt={!opt && "24px"}>
       {!opt && (
         <Text mb="12px" color="#242628" fontWeight={500} lineHeight="100%">
           Services

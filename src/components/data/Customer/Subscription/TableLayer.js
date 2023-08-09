@@ -1,20 +1,165 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Box, Button, Flex, Image, Td, Text, Tr } from "@chakra-ui/react";
 import TableFormat from "../../../common/TableFormat";
 import { FiMoreVertical } from "react-icons/fi";
-import { Status, intervals, subHeader } from "../../../common/constants";
+import {
+  Status,
+  intervals,
+  subHeader,
+  subOptions,
+} from "../../../common/constants";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
-import { useGetUserSub } from "../../../../services/customer/query/user";
+import {
+  useCancelSub,
+  useGetUser,
+  useGetUserSub,
+  useRenewSub,
+} from "../../../../services/customer/query/user";
 import { formatDate } from "../../../../utils/helpers";
 import TableLoader from "../../../loaders/TableLoader";
 import { Add } from "../../../common/images";
 import { useNavigate } from "react-router-dom";
+import ConfirmDeleteModal from "../../../modals/ConfirmDeleteModal";
+import useCustomToast from "../../../../utils/notifications";
+import RenewSubModal from "../../../modals/RenewSubModal";
+import { useGetCards } from "../../../../services/customer/query/payment";
+import { usePaystackPayment } from "react-paystack";
 
 const TableLayer = () => {
   const navigate = useNavigate();
+  const [showRenew, setShowRenew] = useState(false);
   const [page, setPage] = useState(1);
-  const limit = 25;
-  const { isLoading, data: subs } = useGetUserSub(limit, page);
+  const [show, setShow] = useState(false);
+  const limit = 10;
+  const { data: userData } = useGetUser();
+  const [showCancel, setShowCancel] = useState(false);
+  const { isLoading, data: subs, refetch } = useGetUserSub(limit, page);
+
+  const [values, setValues] = useState({
+    cardId: "",
+    paymentMethod: "",
+    amount: "",
+  });
+
+  const sortedSubs = subs?.data?.sort(
+    (a, b) => new Date(b?.createdAt) - new Date(a?.createdAt)
+  );
+
+  const [currentSub, setCurrentSub] = useState("");
+
+  const open = (dat) => {
+    setShow(true);
+    setCurrentSub(dat);
+  };
+
+  const openOption = (dat, i) => {
+    i === 0
+      ? (setShowRenew(true), setCurrentSub(dat))
+      : i === 2
+      ? (setShowCancel(true), setCurrentSub(dat))
+      : "";
+  };
+  const { data: cards, refetch: refetchCards } = useGetCards();
+
+  const config = {
+    reference: new Date().getTime().toString(),
+    email: userData?.email,
+    amount: 10000,
+    publicKey: process.env.REACT_APP_PAYSTACK_KEY,
+    metadata: {
+      custom_fields: [
+        {
+          display_name: "Transaction Type",
+          variable_name: "transaction_type",
+          value: "TOKENIZATION",
+        },
+      ],
+    },
+  };
+
+  const onSuccess = () => {
+    setTimeout(() => {
+      refetchCards();
+    }, 5000);
+  };
+
+  const onCloses = () => {
+    setTimeout(() => {
+      refetchCards();
+    }, 5000);
+  };
+
+  const initializePayment = usePaystackPayment(config);
+
+  const { errorToast, successToast } = useCustomToast();
+  const { mutate, isLoading: isCancel } = useCancelSub({
+    onSuccess: (res) => {
+      setShowCancel(false);
+      successToast(res?.message);
+      refetch();
+    },
+    onError: (err) => {
+      errorToast(
+        err?.response?.data?.message || err?.message || "An Error occured"
+      );
+    },
+  });
+
+  const { mutate: renewMutate, isLoading: isRenew } = useRenewSub({
+    onSuccess: (res) => {
+      refetch();
+      setShowRenew(false);
+      setValues({ cardId: "", paymentMethod: "", amount: "" });
+      successToast(res?.message);
+    },
+    onError: (err) => {
+      errorToast(
+        err?.response?.data?.message || err?.message || "An Error occured"
+      );
+    },
+  });
+
+  const handleRenew = () => {
+    Number(values.paymentMethod) === 0
+      ? renewMutate({
+          query: currentSub?.id,
+          body: {
+            autoRenewal: 1,
+            paymentMethod: Number(values.paymentMethod),
+            cardId: Number(values?.cardId),
+          },
+        })
+      : renewMutate({
+          query: currentSub?.id,
+          body: {
+            autoRenewal: 1,
+            paymentMethod: Number(values.paymentMethod),
+          },
+        });
+  };
+
+  const handleSubmit = () => {
+    mutate(currentSub?.id);
+  };
+
+  useEffect(() => {
+    if (showCancel || showRenew) {
+      setShow(false);
+    }
+  }, [showCancel, showRenew]);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (event.target.closest(".box") === null) {
+        setShow(false);
+      }
+    };
+
+    document.addEventListener("click", handleClickOutside);
+    return () => {
+      document.removeEventListener("click", handleClickOutside);
+    };
+  }, []);
 
   return (
     <Box mt="16px">
@@ -33,7 +178,12 @@ const TableLayer = () => {
               flexDir="column"
               w="full"
             >
-              <Flex justifyContent="center" gap="32px" align="center">
+              <Flex
+                flexDir={{ base: "column", md: "row" }}
+                justifyContent="center"
+                gap={{ base: "10px", md: "32px" }}
+                align="center"
+              >
                 <Text fontSize="12px" color="#242628" lineHeight="100%">
                   Showing rows 1 to {subs?.total < limit ? subs?.total : limit}{" "}
                   of {subs?.total}
@@ -103,7 +253,7 @@ const TableLayer = () => {
             </Flex>
           }
         >
-          {subs?.data?.map((dat, i) => (
+          {sortedSubs?.map((dat, i) => (
             <Tr
               key={i}
               color="#646668"
@@ -124,21 +274,74 @@ const TableLayer = () => {
               <Td textAlign="center">{formatDate(dat?.nextPaymentDate)}</Td>
               <Td>
                 <Flex
-                  color={Object.values(Status[dat?.status])[0]}
-                  bg={Object.values(Status[dat?.status])[2]}
+                  color={
+                    dat?.cancelled === 1
+                      ? "#E81313"
+                      : Object.values(Status[dat?.status])[0]
+                  }
+                  bg={
+                    dat?.cancelled === 1
+                      ? "#F9D0CD"
+                      : Object.values(Status[dat?.status])[2]
+                  }
                   py="5px"
                   px="16px"
                   justifyContent="center"
                   borderRadius="4px"
                   align="center"
                 >
-                  {Object.values(Status[dat?.status])[1]}
+                  {dat?.cancelled === 1
+                    ? "Cancelled"
+                    : Object.values(Status[dat?.status])[1]}
                 </Flex>
               </Td>
               <Td textAlign="center">{formatDate(dat?.createdAt)}</Td>
               <Td>
-                <Flex justifyContent="center" align="center">
+                <Flex
+                  pos="relative"
+                  cursor="pointer"
+                  onClick={() => open(dat)}
+                  justifyContent="center"
+                  className="box"
+                  align="center"
+                >
                   <FiMoreVertical />
+
+                  {show && currentSub === dat && (
+                    <Box
+                      border="1px solid #F4F6F8"
+                      px="4px"
+                      py="8px"
+                      bg="#fff"
+                      borderRadius="4px"
+                      pos="absolute"
+                      right="0"
+                      zIndex={5555555}
+                      top="20px"
+                      boxShadow="0px 8px 16px 0px rgba(0, 0, 0, 0.08)"
+                    >
+                      {subOptions.map((item, i) => (
+                        <Flex
+                          key={i}
+                          mb="8px"
+                          py="6px"
+                          px="8px"
+                          borderRadius="2px"
+                          justifyContent="center"
+                          align="center"
+                          onClick={() => openOption(dat, i)}
+                          _hover={{ bg: "#F4F6F8" }}
+                          cursor="pointer"
+                          fontSize="10px"
+                          color={i !== 2 ? "#646668" : "#A11212"}
+                          lineHeight="100%"
+                          fontWeight={500}
+                        >
+                          {item}
+                        </Flex>
+                      ))}
+                    </Box>
+                  )}
                 </Flex>
               </Td>
             </Tr>
@@ -174,6 +377,29 @@ const TableLayer = () => {
           </Button>
         </Flex>
       )}
+
+      <ConfirmDeleteModal
+        cancel
+        title="Subscription"
+        action={handleSubmit}
+        isLoading={isCancel}
+        isOpen={showCancel}
+        onClose={() => setShowCancel(false)}
+      />
+      <RenewSubModal
+        currentSub={currentSub}
+        isLoading={isRenew}
+        values={values}
+        setValues={setValues}
+        handleRenew={handleRenew}
+        userData={userData}
+        action={() => {
+          initializePayment(onSuccess, onCloses);
+        }}
+        cards={cards}
+        isOpen={showRenew}
+        onClose={() => setShowRenew(false)}
+      />
     </Box>
   );
 };

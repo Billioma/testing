@@ -15,8 +15,11 @@ import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 
 const TableLayer = () => {
   const [page, setPage] = useState(1);
-  const limit = 25;
+  const limit = 10;
   const { isLoading, data: paymentHistory } = useGetPaymentHistory(limit, page);
+  const sortedPaymentHistory = paymentHistory?.data?.sort(
+    (a, b) => new Date(b?.createdAt) - new Date(a?.createdAt)
+  );
 
   return (
     <Box mt="32px">
@@ -44,7 +47,12 @@ const TableLayer = () => {
             flexDir="column"
             w="full"
           >
-            <Flex justifyContent="center" gap="32px" align="center">
+            <Flex
+              flexDir={{ base: "column", md: "row" }}
+              justifyContent="center"
+              gap={{ base: "10px", md: "32px" }}
+              align="center"
+            >
               <Text fontSize="12px" color="#242628" lineHeight="100%">
                 Showing rows 1 to {limit} of {paymentHistory?.total}
               </Text>
@@ -119,7 +127,7 @@ const TableLayer = () => {
         }
       >
         {paymentHistory?.data?.length ? (
-          paymentHistory?.data?.map((dat, i) => (
+          sortedPaymentHistory?.map((dat, i) => (
             <Tr
               key={i}
               color="#646668"

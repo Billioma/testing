@@ -7,7 +7,6 @@ import {
   GridItem,
   Image,
   Skeleton,
-  Spinner,
   Text,
 } from "@chakra-ui/react";
 import { useGetUser } from "../../../../../services/customer/query/user";
@@ -18,6 +17,7 @@ import { useDeleteCard } from "../../../../../services/customer/query/user";
 import useCustomToast from "../../../../../utils/notifications";
 import { usePaystackPayment } from "react-paystack";
 import FundWalletDrawer from "../../../../modals/FundWalletDrawer";
+import ConfirmDeleteModal from "../../../../modals/ConfirmDeleteModal";
 
 const Cards = () => {
   const {
@@ -61,9 +61,11 @@ const Cards = () => {
   };
 
   const initializePayment = usePaystackPayment(config);
+  const [showDelete, setShowDelete] = useState(false);
   const { mutate, isLoading: isDeleting } = useDeleteCard({
     onSuccess: (res) => {
       setIndex(0);
+      setShowDelete(false);
       successToast(res?.message);
       refetch();
     },
@@ -74,9 +76,13 @@ const Cards = () => {
     },
   });
 
-  const handleSubmit = (data) => {
-    mutate(data?.id);
+  const openDelete = (data) => {
+    setShowDelete(true);
     setCurrentCards(data);
+  };
+
+  const handleSubmit = () => {
+    mutate(currentCards?.id);
   };
 
   const [index, setIndex] = useState(0);
@@ -266,17 +272,13 @@ const Cards = () => {
                           </Flex>
 
                           <Box>
-                            {isDeleting && currentCards === data ? (
-                              <Spinner size="sm" color="red" />
-                            ) : (
-                              <Image
-                                onClick={() => handleSubmit(data)}
-                                src="/assets/bin.svg"
-                                cursor="pointer"
-                                w="20px"
-                                h="20px"
-                              />
-                            )}
+                            <Image
+                              onClick={() => openDelete(data)}
+                              src="/assets/bin.svg"
+                              cursor="pointer"
+                              w="20px"
+                              h="20px"
+                            />
                           </Box>
                         </Flex>
                       </Box>
@@ -324,6 +326,13 @@ const Cards = () => {
         }}
         isOpen={showFund}
         onClose={() => setShowFund(false)}
+      />
+      <ConfirmDeleteModal
+        isOpen={showDelete}
+        isLoading={isDeleting}
+        action={handleSubmit}
+        title="Card"
+        onClose={() => setShowDelete(false)}
       />
     </Box>
   );

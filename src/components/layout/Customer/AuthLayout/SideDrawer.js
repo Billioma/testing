@@ -13,7 +13,6 @@ import { NavLink, useLocation } from "react-router-dom";
 import { useLogOut } from "../../../../utils/helpers";
 import { useState } from "react";
 import { LogoutIcon } from "../../../common/images";
-import { IoIosArrowForward } from "react-icons/io";
 import { activeStyle, general } from "../../../common/constants";
 import { AiOutlineClose } from "react-icons/ai";
 
@@ -112,17 +111,6 @@ const SideDrawer = ({ isOpen, onClose }) => {
 
                         {item.name}
                       </Flex>
-                      {(i === 1 || i === 2) && (
-                        <Flex
-                          color="#242628"
-                          border="1px solid #242628"
-                          className="child_nav"
-                          rounded="full"
-                          p="2px"
-                        >
-                          <IoIosArrowForward size="12px" />
-                        </Flex>
-                      )}
                     </Flex>
                   </NavLink>
                 </Box>

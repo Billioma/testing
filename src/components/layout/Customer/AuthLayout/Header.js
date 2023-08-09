@@ -84,19 +84,6 @@ const Header = () => {
     }
   }, [locationRoute]);
 
-  const [scroll, setScroll] = useState(false);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setScroll(window.scrollY > 20);
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, []);
-
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (event.target.closest(".box") === null) {
@@ -124,8 +111,7 @@ const Header = () => {
   return (
     <Flex
       flexDirection="column"
-      bg={scroll ? "rgba(255, 255, 255, 0.15)" : "#fff"}
-      backdropFilter={"blur(10px)"}
+      bg={"#fff"}
       pos="fixed"
       w={isMobile ? "calc(100% - 85px)" : "calc(100% - 390px)"}
       borderRadius="24px"
@@ -157,8 +143,9 @@ const Header = () => {
 
             {secTitle && (
               <Text
-                color="#848688"
                 fontSize="14px"
+                display={isMobile ? "none" : "flex"}
+                color="#848688"
                 fontWeight={500}
                 lineHeight="100%"
               >
@@ -166,22 +153,8 @@ const Header = () => {
               </Text>
             )}
           </Flex>
-          {isMobile && (
-            <Flex
-              color="#BDBDBD"
-              borderRadius="20px"
-              border="1px solid rgba(104, 132, 202, 0.5)"
-              p="7px"
-              onClick={onOpen}
-              w="fit-content"
-              ml={isMobile ? "25px" : "320px"}
-              cursor="pointer"
-            >
-              <IoMdMenu size="20px" />
-            </Flex>
-          )}
 
-          {!isMobile && (
+          <Flex align="center">
             <Flex
               align="center"
               pos="relative"
@@ -268,7 +241,22 @@ const Header = () => {
                 </Flex>
               )}
             </Flex>
-          )}
+
+            {isMobile && (
+              <Flex
+                color="#BDBDBD"
+                borderRadius="20px"
+                border="1px solid rgba(104, 132, 202, 0.5)"
+                p="7px"
+                onClick={onOpen}
+                w="fit-content"
+                ml={isMobile ? "25px" : "320px"}
+                cursor="pointer"
+              >
+                <IoMdMenu size="20px" />
+              </Flex>
+            )}
+          </Flex>
         </Flex>
       </Flex>
 

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   Box,
   Button,
@@ -18,7 +18,10 @@ import { useGetZone } from "../../../services/customer/query/locations";
 import useCustomToast from "../../../utils/notifications";
 import { useGetVehicles } from "../../../services/customer/query/vehicles";
 import { useGetUser } from "../../../services/customer/query/user";
-import { useCreatePayToPark } from "../../../services/customer/query/services";
+import {
+  useCreatePayToPark,
+  useGetPayToPark,
+} from "../../../services/customer/query/services";
 import { useNavigate } from "react-router-dom";
 import { useGetCards } from "../../../services/customer/query/payment";
 import { usePaystackPayment } from "react-paystack";
@@ -86,9 +89,11 @@ const Park = () => {
     },
   });
 
+  const { refetch: refetchPark } = useGetPayToPark(10, 1);
   const { mutate: parkMutate, isLoading: isCreating } = useCreatePayToPark({
     onSuccess: (res) => {
       onClose();
+      refetchPark();
       navigate("/customer/services");
       setValues({ vehicle: "", serviceType: "", paymentMethod: "" });
       setZone("");
@@ -127,11 +132,11 @@ const Park = () => {
         });
   };
 
-  useEffect(() => {
-    setStep(1);
-    setValues({ vehicle: "", serviceType: "", paymentMethod: "", cardId: "" });
-    setZone("");
-  }, []);
+  // useEffect(() => {
+  //   setStep(1);
+  //   setValues({ vehicle: "", serviceType: "", paymentMethod: "", cardId: "" });
+  //   setZone("");
+  // }, []);
 
   const { data: vehicles } = useGetVehicles();
   const serviceOptions = data?.rates?.map((service) => ({
@@ -201,7 +206,7 @@ const Park = () => {
           py="40px"
           px="32px"
           justifyContent="center"
-          w="30rem"
+          w={{ base: "full", md: "30rem" }}
           flexDir="column"
         >
           <Text
@@ -481,7 +486,7 @@ const Park = () => {
                           cursor="pointer"
                           border={
                             values?.cardId === dat?.id
-                              ? "1px solid red"
+                              ? "1px solid #0B841D"
                               : "1px solid #D4D6D8"
                           }
                           onClick={() =>
@@ -517,9 +522,11 @@ const Park = () => {
                               </Text>
                             </Box>
 
-                            <Box>
-                              <BsCheckCircle color="#0B841D" />
-                            </Box>
+                            {values.cardId === dat?.id && (
+                              <Box>
+                                <BsCheckCircle color="#0B841D" />
+                              </Box>
+                            )}
                           </Flex>
                         </Box>
                       </Box>

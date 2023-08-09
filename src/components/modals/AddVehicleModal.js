@@ -77,11 +77,15 @@ const AddVehicleModal = ({
   };
   const { errorToast, successToast } = useCustomToast();
 
+  const close = () => {
+    onClose();
+    setValues({ state: "", plate: "", color: "", make: "", model: "" });
+  };
   const { mutate, isLoading } = useCreateVehicles({
     onSuccess: (res) => {
       refetch();
       successToast(res?.message);
-      onClose();
+      close();
       setShow(false);
     },
     onError: (err) => {
@@ -114,7 +118,7 @@ const AddVehicleModal = ({
   );
 
   return (
-    <Modal isCentered trapFocus={false} isOpen={isOpen} onClose={onClose}>
+    <Modal isCentered trapFocus={false} isOpen={isOpen} onClose={close}>
       <ModalOverlay backdropFilter="auto" backdropBlur="2px" />
       <ModalContent
         py="32px"

@@ -36,6 +36,26 @@ export const formatDateHour = (date, fallback = "") => {
   return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
 };
 
+export const formatDateTimes = (date, fallback = "") => {
+  if (!date) return fallback;
+
+  return new Date(date).toLocaleTimeString("default", {
+    day: "numeric",
+    month: "numeric",
+    year: "numeric",
+  });
+};
+
+export const formatTime = (date, fallback = "") => {
+  if (!date) return fallback;
+
+  return new Date(date).toLocaleTimeString("default", {
+    hour: "numeric",
+    minute: "numeric",
+    second: undefined,
+  });
+};
+
 export const formatDateTime = (date, fallback = "") => {
   if (!date) return fallback;
 

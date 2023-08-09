@@ -16,11 +16,16 @@ export const GET_PAYMENT_HISTORY = "transactions";
 export const UPLOAD_PIC = "system/media-upload";
 export const PAY_TO_PARK = "pay-to-park";
 export const RESERVE_PARKING = "reserve-parking";
+export const EVENT_PARKING = "event-parking";
 export const REQUEST_RESERVE_PARKING = "reserve-parking/request-reservation";
 export const GET_PAY_TO_PARK = "pay-to-park";
 export const UPDATE_USER = "update-profile";
 export const GET_SUBSCRIPTION = "membership-subscriptions";
 export const GET_SUBSCRIPTIONS = "membership-subscriptions";
+export const CANCEL_SUBSCRIPTIONS = (id = "") =>
+  `membership-subscriptions/cancel/${id}`;
+export const RENEW_SUBSCRIPTIONS = (id = "") =>
+  `membership-subscriptions/renew/${id}`;
 export const GET_LOCATIONS = "public/locations";
 export const GET_PLANS = "public/membership-plans";
 export const FUND_WALLET = "cards/fund-wallet";

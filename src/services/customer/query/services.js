@@ -7,6 +7,9 @@ import {
   getReserveParking,
   requestReserveParking,
   createReserveParking,
+  getCarService,
+  getEventParking,
+  createEventParking,
 } from "../api/services";
 
 export const useGetPayToPark = (limit = "", page = "", options = {}) => {
@@ -31,6 +34,28 @@ export const useGetReserveParking = (limit = "", page = "", options = {}) => {
   return { data, isLoading, refetch };
 };
 
+export const useGetEventParking = (limit = "", page = "", options = {}) => {
+  const { data, isLoading, refetch } = useQuery(
+    ["EVENT_PARKING", limit, page],
+    getEventParking,
+    {
+      ...options,
+    }
+  );
+  return { data, isLoading, refetch };
+};
+
+export const useGetCarService = (limit = "", page = "", options = {}) => {
+  const { data, isLoading, refetch } = useQuery(
+    ["CAR_SERVICE", limit, page],
+    getCarService,
+    {
+      ...options,
+    }
+  );
+  return { data, isLoading, refetch };
+};
+
 export const useCreateServiceBookings = (options = {}) => {
   const { mutate, isLoading, data } = useMutation(createServiceBookings, {
     mutationKey: "CREATE_SERVICE_BOOKINGS",
@@ -42,6 +67,14 @@ export const useCreateServiceBookings = (options = {}) => {
 export const useCreateReserveParking = (options = {}) => {
   const { mutate, isLoading, data } = useMutation(createReserveParking, {
     mutationKey: "CREATE_RESERVE_PARKING",
+    ...options,
+  });
+  return { mutate, isLoading, data };
+};
+
+export const useCreateEventParking = (options = {}) => {
+  const { mutate, isLoading, data } = useMutation(createEventParking, {
+    mutationKey: "CREATE_EVENT_PARKING",
     ...options,
   });
   return { mutate, isLoading, data };

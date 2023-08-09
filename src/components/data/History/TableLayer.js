@@ -14,8 +14,8 @@ import {
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import {
   useGetCarService,
-  useGetEventParking,
   useGetPayToPark,
+  useGetEventParking,
   useGetReserveParking,
 } from "../../../services/customer/query/services";
 import NoData from "../../common/NoData";
@@ -48,13 +48,11 @@ const TableLayer = () => {
   const sortedCar = carService?.data?.sort(
     (a, b) => new Date(b?.appointmentDate) - new Date(a?.appointmentDate)
   );
+
   return (
-    <Box mt="24px">
-      <Text color="#242628" fontWeight={500} lineHeight="100%" mb="12px">
-        Recent Activity
-      </Text>
+    <Box>
       <TableFormat
-        maxH={"50vh"}
+        maxH={"55vh"}
         tab={
           <Flex flexWrap="wrap" rowGap={{ base: "20px", md: "unset" }}>
             {serviceTabs.map((dat, i) => (
@@ -355,7 +353,6 @@ const TableLayer = () => {
               <Td textAlign="center">{dat?.bookingType}</Td>
               <Td textAlign="center">{dat?.serviceType}</Td>
               <Td textAlign="center">
-                {" "}
                 ₦{" "}
                 {dat?.amount?.toLocaleString(undefined, {
                   maximumFractionDigits: 2,
