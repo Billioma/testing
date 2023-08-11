@@ -78,7 +78,7 @@ export default function AdminHeader() {
       <Flex alignItems={"center"} h="100%" justifyContent={"space-between"}>
         <Text
           as="h4"
-          fontSize="15px"
+          fontSize="16px"
           fontWeight={500}
           display="flex"
           alignItems="end"
@@ -93,8 +93,7 @@ export default function AdminHeader() {
               gap="4px"
               alignItems="center"
             >
-              <FaGreaterThan size={8} color="#242628" />
-              {title.sub}
+              &gt; {title.sub}
             </Text>
           )}
           {title.sub2 && (

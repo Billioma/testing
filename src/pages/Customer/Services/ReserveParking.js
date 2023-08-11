@@ -149,10 +149,10 @@ const ReserveParking = () => {
   const { refetch: refetchParking } = useGetReserveParking(10, 1);
   const { mutate: reserveMutate, isLoading: isReserving } =
     useCreateReserveParking({
-      onSuccess: (res) => {
+      onSuccess: () => {
         refetchParking();
         navigate("/customer/services");
-        successToast(res?.message);
+        successToast("Payment Successful");
       },
       onError: (err) => {
         errorToast(
@@ -172,6 +172,18 @@ const ReserveParking = () => {
       });
     }
   }, [values, start, end]);
+  const formattedDate = `${start.substr(6, 4)}-${start.substr(
+    0,
+    2
+  )}-${start.substr(3, 2)}T${formatTimeToHHMMSS(
+    values?.arrivalTime?.value
+  )}.000Z`;
+  const formattedDeparture = `${end.substr(6, 4)}-${end.substr(
+    0,
+    2
+  )}-${end.substr(3, 2)}T${formatTimeToHHMMSS(
+    values?.departureTime?.value
+  )}.000Z`;
 
   const handleSubmit = () => {
     const formattedDate = `${start.substr(6, 4)}-${start.substr(
@@ -257,26 +269,51 @@ const ReserveParking = () => {
           w={{ base: "full", md: "30rem" }}
           flexDir="column"
         >
+          {step !== 1 && (
+            <Flex
+              align="center"
+              gap="8px"
+              mb="23px"
+              onClick={() => {
+                setStep(step - 1);
+                setValues({
+                  state: "",
+                  city: "",
+                  locations: "",
+                  arrivalTime: "",
+                  departureTime: "",
+                  paymentMethod: "",
+                  cardId: "",
+                  vehicle: "",
+                  color: "",
+                  make: "",
+                  model: "",
+                });
+              }}
+              cursor="pointer"
+              w="fit-content"
+            >
+              <HiOutlineArrowNarrowLeft size="24px" color="#242628" />
+              <Text
+                lineHeight="100%"
+                color="#242628"
+                fontSize="14px"
+                fontWeight={500}
+              >
+                Back
+              </Text>
+            </Flex>
+          )}
           <Text
             fontSize="20px"
             color="#242628"
+            textAlign={step === 1 ? "start" : "center"}
+            mb={"32px"}
             lineHeight="100%"
             fontWeight={500}
-            mb="32px"
           >
             Reserve Parking
           </Text>
-
-          {step !== 1 && (
-            <Box mb="32px">
-              <HiOutlineArrowNarrowLeft
-                cursor="pointer"
-                onClick={() => setStep(step - 1)}
-                size="24px"
-                color="#242628"
-              />
-            </Box>
-          )}
 
           {step === 1 && (
             <>
@@ -505,7 +542,7 @@ const ReserveParking = () => {
                     fontWeight={500}
                     color="#444648"
                   >
-                    Departure Date
+                    Departure Time
                   </Text>
 
                   <Select
@@ -522,6 +559,15 @@ const ReserveParking = () => {
                   />
                 </Box>
               </Flex>
+              {start &&
+                end &&
+                values.arrivalTime &&
+                values.departureTime &&
+                formattedDeparture < formattedDate && (
+                  <Text mt="8px" fontSize="12px" color="red">
+                    Departure Date is earlier than Arrival Date
+                  </Text>
+                )}
 
               <Box w="full" my="16px">
                 <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
@@ -716,6 +762,12 @@ const ReserveParking = () => {
             isDisabled={
               step === 1
                 ? !values?.state || !values?.city || !values?.locations
+                : step === 2
+                ? start &&
+                  end &&
+                  values.arrivalTime &&
+                  values.departureTime &&
+                  formattedDeparture < formattedDate
                 : ""
             }
             fontSize="14px"
@@ -727,6 +779,7 @@ const ReserveParking = () => {
       <ConfirmReserveModal
         start={start}
         end={end}
+        amount={requestData?.amount}
         action={handleSubmit}
         values={values}
         isLoading={isReserving}

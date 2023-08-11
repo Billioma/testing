@@ -8,20 +8,25 @@ import { initValues, validateSchema } from "../../../utils/validation";
 import { Form, Formik } from "formik";
 import { useNavigate } from "react-router";
 import { useLogin } from "../../../services/admin/query/auth";
+import useCustomToast from "../../../utils/notifications";
 
 const Login = () => {
   const [show, setShow] = useState(false);
   const navigate = useNavigate();
+  const { errorToast, successToast } = useCustomToast();
 
   const { mutate, isLoading } = useLogin({
     onSuccess: (data) => {
       sessionStorage.setItem("user", JSON.stringify(data));
+      successToast("Welcome back!");
       navigate("/admin/dashboard");
     },
 
     onError: (error) => {
-      toast.error(
-        error?.response?.data?.message || "Unable to login. Try again."
+      errorToast(
+        error?.response?.data?.message ||
+          error?.message ||
+          "Unable to login. Try again."
       );
     },
   });

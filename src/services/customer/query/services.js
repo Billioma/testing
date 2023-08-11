@@ -12,9 +12,9 @@ import {
   createEventParking,
 } from "../api/services";
 
-export const useGetPayToPark = (limit = "", page = "", options = {}) => {
+export const useGetPayToPark = (options = {}) => {
   const { data, isLoading, refetch } = useQuery(
-    ["GET_PAY_TO_PARK", limit, page],
+    ["GET_PAY_TO_PARK"],
     getPayToPark,
     {
       ...options,
@@ -23,9 +23,9 @@ export const useGetPayToPark = (limit = "", page = "", options = {}) => {
   return { data, isLoading, refetch };
 };
 
-export const useGetReserveParking = (limit = "", page = "", options = {}) => {
+export const useGetReserveParking = (options = {}) => {
   const { data, isLoading, refetch } = useQuery(
-    ["RESERVE_PARKING", limit, page],
+    ["RESERVE_PARKING"],
     getReserveParking,
     {
       ...options,
@@ -34,9 +34,9 @@ export const useGetReserveParking = (limit = "", page = "", options = {}) => {
   return { data, isLoading, refetch };
 };
 
-export const useGetEventParking = (limit = "", page = "", options = {}) => {
+export const useGetEventParking = (options = {}) => {
   const { data, isLoading, refetch } = useQuery(
-    ["EVENT_PARKING", limit, page],
+    ["EVENT_PARKING"],
     getEventParking,
     {
       ...options,
@@ -45,9 +45,9 @@ export const useGetEventParking = (limit = "", page = "", options = {}) => {
   return { data, isLoading, refetch };
 };
 
-export const useGetCarService = (limit = "", page = "", options = {}) => {
+export const useGetCarService = (options = {}) => {
   const { data, isLoading, refetch } = useQuery(
-    ["CAR_SERVICE", limit, page],
+    ["CAR_SERVICE"],
     getCarService,
     {
       ...options,

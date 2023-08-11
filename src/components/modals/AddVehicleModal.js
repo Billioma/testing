@@ -53,11 +53,25 @@ const AddVehicleModal = ({
     label: make?.name,
   }));
 
+  const handleKeyPress = (e) => {
+    if (values?.plate?.length >= 8) {
+      e.preventDefault();
+    }
+  };
+
   const handleSelectChange = (selectedOption, { name }) => {
-    setValues({
-      ...values,
-      [name]: selectedOption,
-    });
+    if (name === "make") {
+      setValues((prevValues) => ({
+        ...prevValues,
+        make: selectedOption,
+        model: "",
+      }));
+    } else {
+      setValues((prevValues) => ({
+        ...prevValues,
+        [name]: selectedOption,
+      }));
+    }
   };
 
   const isDisabled = Object.values(values).some((value) => !value);
@@ -174,6 +188,7 @@ const AddVehicleModal = ({
             <CustomInput
               value={values.plate}
               auth
+              handleKeyPress={handleKeyPress}
               onChange={(e) =>
                 setValues({
                   ...values,
@@ -216,6 +231,7 @@ const AddVehicleModal = ({
             </Text>
             <Select
               styles={customStyles}
+              value={values.make}
               options={makeOptions}
               onChange={(selectedOption) =>
                 handleSelectChange(selectedOption, { name: "make" })
@@ -235,6 +251,7 @@ const AddVehicleModal = ({
             </Text>
             <Select
               styles={customStyles}
+              value={values.model}
               options={modelOptions}
               onChange={(selectedOption) =>
                 handleSelectChange(selectedOption, { name: "model" })

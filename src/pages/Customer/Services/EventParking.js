@@ -153,9 +153,9 @@ const EventParking = () => {
   const { successToast, errorToast } = useCustomToast();
   const navigate = useNavigate();
   const { mutate: eventMutate, isLoading: isEventing } = useCreateEventParking({
-    onSuccess: (res) => {
+    onSuccess: () => {
       navigate("/customer/services");
-      successToast(res?.message);
+      successToast("Payment Successful");
       onClose();
       refetchEvent();
       setEvent({});
@@ -244,7 +244,16 @@ const EventParking = () => {
             <Flex align="center" gap="8px" color="#242628">
               <HiOutlineArrowNarrowLeft
                 cursor="pointer"
-                onClick={() => setStep(step - 1)}
+                onClick={() => {
+                  setStep(step - 1);
+                  setValues({
+                    event: "",
+                    service: "",
+                    vehicle: "",
+                    cardId: "",
+                    paymentMethod: "",
+                  });
+                }}
                 size="24px"
               />
               <Text fontSize="14px" fontWeight={500}>

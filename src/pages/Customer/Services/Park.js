@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
   Button,
@@ -91,14 +91,14 @@ const Park = () => {
 
   const { refetch: refetchPark } = useGetPayToPark(10, 1);
   const { mutate: parkMutate, isLoading: isCreating } = useCreatePayToPark({
-    onSuccess: (res) => {
+    onSuccess: () => {
       onClose();
       refetchPark();
       navigate("/customer/services");
       setValues({ vehicle: "", serviceType: "", paymentMethod: "" });
       setZone("");
       setStep(1);
-      successToast(res?.message);
+      successToast("Payment Successful");
     },
     onError: (err) => {
       errorToast(
@@ -132,11 +132,11 @@ const Park = () => {
         });
   };
 
-  // useEffect(() => {
-  //   setStep(1);
-  //   setValues({ vehicle: "", serviceType: "", paymentMethod: "", cardId: "" });
-  //   setZone("");
-  // }, []);
+  useEffect(() => {
+    setStep(1);
+    setValues({ vehicle: "", serviceType: "", paymentMethod: "", cardId: "" });
+    setZone("");
+  }, []);
 
   const { data: vehicles } = useGetVehicles();
   const serviceOptions = data?.rates?.map((service) => ({
@@ -209,26 +209,44 @@ const Park = () => {
           w={{ base: "full", md: "30rem" }}
           flexDir="column"
         >
+          {step !== 1 && (
+            <Flex
+              align="center"
+              gap="8px"
+              mb="23px"
+              onClick={() => {
+                setStep(step - 1);
+                setValues({
+                  vehicle: "",
+                  serviceType: "",
+                  paymentMethod: "",
+                  cardId: "",
+                });
+              }}
+              cursor="pointer"
+              w="fit-content"
+            >
+              <HiOutlineArrowNarrowLeft size="24px" color="#242628" />
+              <Text
+                lineHeight="100%"
+                color="#242628"
+                fontSize="14px"
+                fontWeight={500}
+              >
+                Back
+              </Text>
+            </Flex>
+          )}
           <Text
             fontSize="20px"
             color="#242628"
+            textAlign={step === 1 ? "start" : "center"}
+            mb="32px"
             lineHeight="100%"
             fontWeight={500}
-            mb="32px"
           >
             Park Now
           </Text>
-
-          {step !== 1 && (
-            <Box mb="32px">
-              <HiOutlineArrowNarrowLeft
-                cursor="pointer"
-                onClick={() => setStep(step - 1)}
-                size="24px"
-                color="#242628"
-              />
-            </Box>
-          )}
 
           <CustomInput
             auth

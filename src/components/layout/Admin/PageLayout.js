@@ -20,7 +20,11 @@ export const AuthLayout = ({ children }) => {
         newOpenSubItems[item] = false;
       });
 
-      // newOpenSubItems[activeParentItem] = true;
+      const activeParentItem = sidebarItems.find((item) =>
+        pathname.includes(item.path)
+      )?.title;
+
+      newOpenSubItems[activeParentItem] = true;
 
       // Open the selected sub-item
       if (title) newOpenSubItems[title] = !prevState[title];
@@ -53,7 +57,15 @@ export const AuthLayout = ({ children }) => {
             Admin
           </Text>
 
-          <VStack align="stretch" spacing={2} p={2} mt="30px">
+          <VStack
+            align="stretch"
+            spacing={2}
+            p={2}
+            mt="30px"
+            overflowY="scroll"
+            maxHeight="90vh"
+            pb={12}
+          >
             {sidebarItems.map((item) => (
               <SidebarItem
                 key={item.title}

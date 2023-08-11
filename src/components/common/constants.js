@@ -73,7 +73,7 @@ export const sidebarItems = [
       },
       {
         title: "Operators",
-        path: "/admin/users/operators",
+        path: "/admin/users/operatrs",
       },
     ],
   },
@@ -423,12 +423,12 @@ export const payToParkHeader = [
 ];
 
 export const reserveHeader = [
-  "RESERVATION ID",
   "ZONE",
   "AMOUNT",
   "VEHICLE",
   "ARRIVAL",
   "DEPARTURE",
+  "DATE CREATED",
   "STATUS",
   "ACTIONS",
 ];
@@ -452,6 +452,7 @@ export const carHeader = [
   "AMOUNT",
   "APPOINTMENT SLOT",
   "APPOINTMENT DATE",
+  "DATE CREATED",
   "ACTIONS",
 ];
 

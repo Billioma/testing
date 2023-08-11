@@ -44,11 +44,10 @@ const SidebarItem = ({
             p={2}
             cursor="pointer"
             onClick={() => (subItems ? handleToggle() : navigate(path))}
-            _hover={{ bg: "white", color: "#000" }}
             bg={isOpen || pathname.includes(path) ? "white" : "inherit"}
-            color={pathname.includes(path) ? "black" : "#fff"}
+            color={pathname.includes(path) || isOpen ? "black" : "#fff"}
+            _hover={{ bg: "white", color: "inherit" }}
             transition=".3s ease-in-out"
-            className="child_nav"
             borderTopRadius={4}
             borderBottomRadius={isOpen ? 0 : 4}
             position="relative"
@@ -59,13 +58,7 @@ const SidebarItem = ({
               {pathname.includes(path) ? hoverIcon : isOpen ? hoverIcon : icon}
             </Box>
             <Box>
-              <Text
-                pt={1}
-                color={isOpen ? "#000" : "inherit"}
-                fontSize="12px"
-                ml={4}
-                mb={0}
-              >
+              <Text pt={1} color={"inherit"} fontSize="12px" ml={4} mb={0}>
                 {title}
               </Text>
             </Box>
@@ -98,7 +91,7 @@ const SidebarItem = ({
           {subItems && (
             <Collapse in={isOpen}>
               <VStack
-                pl={8}
+                pl={3}
                 align="stretch"
                 bg="white"
                 borderBottomRadius={4}

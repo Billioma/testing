@@ -177,7 +177,7 @@ const VehicleCards = ({ states }) => {
 
         <GridItem>
           <Flex
-            h="22.1vh"
+            h="10.5rem"
             w="full"
             cursor="pointer"
             bg="#fff"

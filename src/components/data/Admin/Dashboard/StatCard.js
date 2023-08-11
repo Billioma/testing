@@ -21,7 +21,7 @@ const StatCard = ({
 }) => {
   return (
     <Box
-      minW="274px"
+      w="100%"
       borderRadius="lg"
       overflow="hidden"
       bg={bg ? bg : "#F4F6F8"}

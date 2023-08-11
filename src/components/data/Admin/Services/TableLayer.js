@@ -30,6 +30,7 @@ const TableLayer = ({ data, isLoading, page, setPage, limit, handleEdit }) => {
       <TableFormat
         isLoading={isLoading}
         minH="25vh"
+        maxH="65vh"
         header={headers}
         bg="#fff"
         opt

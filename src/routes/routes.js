@@ -292,7 +292,7 @@ export const PRIVATE_ROUTES = [
   { path: ADMIN_CUSTOMERS, element: <AdminCustomers /> },
   { path: ADMIN_SERVICES, element: <AdminServices /> },
   { path: ADMIN_ADMINISTRATORS, element: <AdminAdministrators /> },
-  { path: ADMIN_OPERATORS, element: <AdminOperators /> },
+  // { path: ADMIN_OPERATORS, element: <AdminOperators /> },
   { path: ADMIN_ATTENDANTS, element: <AdminAttendants /> },
   { path: ADMIN_ADD_ATTENDANT, element: <AdminAddAttendant /> },
   { path: ADMIN_VIEW_ATTENDANT, element: <AdminViewAttendant /> },

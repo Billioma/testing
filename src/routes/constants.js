@@ -56,7 +56,7 @@ export const PRIVATE_PATHS = {
   ADMIN_ADD_ADMINISTRATOR: "/admin/users/administrators/new",
   ADMIN_VIEW_ADMINISTRATOR: "/admin/users/administrators/details/:id",
 
-  ADMIN_OPERATORS: "/admin/users/operators",
+  ADMIN_OPERATORS: "/admin/users/operatrs",
   ADMIN_ADD_OPERATOR: "/admin/users/operators/new",
   ADMIN_VIEW_OPERATOR: "/admin/users/operators/details/:id",
 };

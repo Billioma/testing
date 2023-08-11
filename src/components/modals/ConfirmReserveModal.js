@@ -14,6 +14,7 @@ import {
 const ConfirmReserveModal = ({
   isOpen,
   values,
+  amount,
   end,
   start,
   onClose,
@@ -147,6 +148,36 @@ const ConfirmReserveModal = ({
                   fontWeight={500}
                 >
                   {values?.vehicle?.main}
+                </Text>
+              </Flex>
+
+              <Flex
+                mt="24px"
+                align="center"
+                justifyContent="space-between"
+                w="full"
+              >
+                <Text
+                  color="#848688"
+                  w="70%"
+                  fontSize="14px"
+                  lineHeight="100%"
+                  fontWeight={500}
+                >
+                  Amount
+                </Text>
+                <Text
+                  color="#242628"
+                  textAlign="end"
+                  w="full"
+                  fontSize="14px"
+                  lineHeight="100%"
+                  fontWeight={500}
+                >
+                  ₦{" "}
+                  {amount?.toLocaleString(undefined, {
+                    maximumFractionDigits: 2,
+                  })}
                 </Text>
               </Flex>
             </Box>

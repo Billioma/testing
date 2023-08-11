@@ -134,6 +134,7 @@ const CarServices = () => {
       maximumFractionDigits: 2,
     })}`,
     type: item?.carServiceType,
+    amount: item?.amount,
   }));
 
   const timeOptions = BookingSlots?.map((time) => ({
@@ -157,7 +158,7 @@ const CarServices = () => {
 
   const { mutate: bookMutate, isLoading: isBooking } = useCreateServiceBookings(
     {
-      onSuccess: (res) => {
+      onSuccess: () => {
         startChange("");
         setValues({
           serviceId: "",
@@ -177,7 +178,7 @@ const CarServices = () => {
         });
         setStep(1);
         navigate("/customer/services");
-        successToast(res?.message);
+        successToast("Payment Successful");
       },
       onError: (err) => {
         errorToast(
@@ -193,7 +194,7 @@ const CarServices = () => {
 
   const handleBook = () => {
     Number(values?.paymentMethod) === 0
-      ? bookMutate({
+      ? console.log({
           address: values?.address,
           appointmentDate: start,
           appointmentDateType: 0,
@@ -282,7 +283,26 @@ const CarServices = () => {
               align="center"
               gap="8px"
               mb="23px"
-              onClick={() => setStep(step - 1)}
+              onClick={() => {
+                setStep(step - 1);
+                setValues({
+                  serviceId: "",
+                  address: "",
+                  appointmentTime: "",
+                  img: "",
+                  desc: "",
+                  appointmentDateType: "",
+                  appointmentSlot: "",
+                  billingRate: "",
+                  billingType: "",
+                  bookingType: "",
+                  cardId: "",
+                  paymentMethod: "",
+                  service: "",
+                  vehicle: "",
+                });
+                startChange("");
+              }}
               cursor="pointer"
               w="fit-content"
             >
@@ -613,6 +633,36 @@ const CarServices = () => {
                     fontWeight={500}
                   >
                     {values?.vehicle?.main}
+                  </Text>
+                </Flex>
+
+                <Flex
+                  mt="24px"
+                  align="center"
+                  justifyContent="space-between"
+                  w="full"
+                >
+                  <Text
+                    color="#242628"
+                    w="full"
+                    fontSize="14px"
+                    lineHeight="100%"
+                    fontWeight={500}
+                  >
+                    Amount
+                  </Text>
+                  <Text
+                    color="#242628"
+                    textAlign="end"
+                    w="full"
+                    fontSize="14px"
+                    lineHeight="100%"
+                    fontWeight={500}
+                  >
+                    ₦{" "}
+                    {values?.billingRate?.amount?.toLocaleString(undefined, {
+                      maximumFractionDigits: 2,
+                    })}
                   </Text>
                 </Flex>
               </Box>

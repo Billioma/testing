@@ -67,9 +67,12 @@ const TableFormat = ({
                 {header?.map((data, i) => (
                   <Th
                     textAlign={
-                      act
-                        ? "start"
-                        : (alignFirstHeader && i === 0) ||
+                      data.toLowerCase() === "status" ||
+                      data.toLowerCase() === "date" ||
+                      data.toLowerCase() === "action"
+                        ? "center"
+                        : act ||
+                          (alignFirstHeader && i === 0) ||
                           (alignSecondHeader && i === 1) ||
                           (alignThirdHeader && i === 2)
                         ? "start"
