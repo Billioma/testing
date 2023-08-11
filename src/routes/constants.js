@@ -47,4 +47,16 @@ export const PRIVATE_PATHS = {
   ADMIN_SERVICES: "/admin/services",
   ADMIN_ATTENDANTS: "/admin/users/attendants",
   ADMIN_CUSTOMERS: "/admin/users/customers",
+  ADMIN_ADD_ATTENDANT: "/admin/users/attendants/new",
+  ADMIN_VIEW_ATTENDANT: "/admin/users/attendants/details/:id",
+  ADMIN_ADD_CUSTOMER: "/admin/users/customers/new",
+  ADMIN_VIEW_CUSTOMER: "/admin/users/customers/details/:id",
+
+  ADMIN_ADMINISTRATORS: "/admin/users/administrators",
+  ADMIN_ADD_ADMINISTRATOR: "/admin/users/administrators/new",
+  ADMIN_VIEW_ADMINISTRATOR: "/admin/users/administrators/details/:id",
+
+  ADMIN_OPERATORS: "/admin/users/operators",
+  ADMIN_ADD_OPERATOR: "/admin/users/operators/new",
+  ADMIN_VIEW_OPERATOR: "/admin/users/operators/details/:id",
 };

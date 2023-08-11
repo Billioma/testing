@@ -4,14 +4,17 @@ import { Box, Button, Flex, Text } from "@chakra-ui/react";
 import { FiPlus } from "react-icons/fi";
 import { useGetAttendants } from "../../../services/admin/query/users";
 import { VscDebugRestart } from "react-icons/vsc";
+import { useNavigate } from "react-router-dom";
+import { PRIVATE_PATHS } from "../../../routes/constants";
 
 export default function () {
   const [page, setPage] = useState(1);
   const [limit] = useState(25);
   const [startRow, setStartRow] = useState(1);
   const [endRow, setEndRow] = useState(0);
+  const navigate = useNavigate();
 
-  const { data, isLoading } = useGetAttendants(
+  const { data, isLoading, refetch } = useGetAttendants(
     {
       refetchOnWindowFocus: true,
       onSuccess: (data) => {
@@ -36,7 +39,7 @@ export default function () {
             variant="adminPrimary"
             gap={2}
             fontSize={"12px"}
-            // onClick={() => setIsOpen(true)}
+            onClick={() => navigate(PRIVATE_PATHS.ADMIN_ADD_ATTENDANT)}
           >
             Add an Attendant <FiPlus size={18} />
           </Button>
@@ -46,6 +49,7 @@ export default function () {
             h="43px"
             border="1px solid #000"
             color="#000"
+            onClick={refetch}
           >
             <VscDebugRestart size={20} />
           </Button>
@@ -60,7 +64,6 @@ export default function () {
         setPage={setPage}
         startRow={startRow}
         endRow={endRow || 25}
-        // handleEdit={handleEdit}
       />
     </Box>
   );

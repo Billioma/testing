@@ -1,17 +1,20 @@
 import React, { useState } from "react";
-import CustomersTableLayer from "../../../components/data/Admin/Users/CustomersTableLayer";
+import AttendantsTableLayer from "../../../components/data/Admin/Users/AttendantsTableLayer";
 import { Box, Button, Flex, Text } from "@chakra-ui/react";
 import { FiPlus } from "react-icons/fi";
-import { useGetCustomers } from "../../../services/admin/query/users";
+import { useGetAttendants } from "../../../services/admin/query/users";
 import { VscDebugRestart } from "react-icons/vsc";
+import { useNavigate } from "react-router-dom";
+import { PRIVATE_PATHS } from "../../../routes/constants";
 
 export default function () {
   const [page, setPage] = useState(1);
   const [limit] = useState(25);
   const [startRow, setStartRow] = useState(1);
   const [endRow, setEndRow] = useState(0);
+  const navigate = useNavigate();
 
-  const { data, isLoading } = useGetCustomers(
+  const { data, isLoading, refetch } = useGetAttendants(
     {
       refetchOnWindowFocus: true,
       onSuccess: (data) => {
@@ -30,15 +33,15 @@ export default function () {
   return (
     <Box w="full" border={"1px solid #E4E6E8"} borderRadius={"12px"}>
       <Flex justifyContent={"space-between"} alignItems="center" py={3} px={5}>
-        <Text fontWeight="500">All Customers</Text>
+        <Text fontWeight="500">All Attendants</Text>
         <Flex gap="6px">
           <Button
             variant="adminPrimary"
             gap={2}
             fontSize={"12px"}
-            // onClick={() => setIsOpen(true)}
+            onClick={() => navigate(PRIVATE_PATHS.ADMIN_ADD_ATTENDANT)}
           >
-            Add a Customer <FiPlus size={18} />
+            Add an Attendant <FiPlus size={18} />
           </Button>
           <Button
             bg="white"
@@ -46,13 +49,14 @@ export default function () {
             h="43px"
             border="1px solid #000"
             color="#000"
+            onClick={refetch}
           >
             <VscDebugRestart size={20} />
           </Button>
         </Flex>
       </Flex>
       <hr />
-      <CustomersTableLayer
+      <AttendantsTableLayer
         data={data}
         isLoading={isLoading}
         page={page}
@@ -60,7 +64,6 @@ export default function () {
         setPage={setPage}
         startRow={startRow}
         endRow={endRow || 25}
-        // handleEdit={handleEdit}
       />
     </Box>
   );

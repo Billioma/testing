@@ -41,7 +41,7 @@ const CustomInput = ({
 
   const handleInputBlur = (e) => {
     setIsTyping(false);
-    onBlur(e);
+    onBlur && onBlur(e);
   };
 
   const getBorderColor = () => {

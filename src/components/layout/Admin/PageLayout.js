@@ -20,11 +20,7 @@ export const AuthLayout = ({ children }) => {
         newOpenSubItems[item] = false;
       });
 
-      const activeParentItem = sidebarItems.find((item) =>
-        pathname.includes(item.path)
-      )?.title;
-
-      newOpenSubItems[activeParentItem] = true;
+      // newOpenSubItems[activeParentItem] = true;
 
       // Open the selected sub-item
       if (title) newOpenSubItems[title] = !prevState[title];

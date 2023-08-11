@@ -42,7 +42,27 @@ export const customTheme = extendTheme({
             bg: "transparent",
           },
         },
+
+        adminPrimary: {
+          container: {
+            border: "2px solid #C4C6C8",
+            rounded: "full",
+            _checked: {
+              border: "2px solid #0D0718",
+            },
+          },
+          thumb: {
+            bg: "#C4C6C8",
+            _checked: {
+              bg: "#0D0718",
+            },
+          },
+          track: {
+            bg: "transparent",
+          },
+        },
       },
+
       defaultProps: {
         variant: "primary",
       },
@@ -217,6 +237,52 @@ export const customTheme = extendTheme({
           },
           _active: {
             color: "#fff",
+          },
+          _hover: {
+            _disabled: {
+              background: "#0D0718",
+              border: "1px solid #7B47CC",
+            },
+          },
+        },
+
+        adminDanger: {
+          bgColor: "#fff",
+          borderRadius: "4px",
+          color: "#A11212",
+          fontSize: "14px",
+          fontWeight: "500",
+          borderColor: "#A11212",
+          borderWidth: "1px",
+          height: "45px",
+          _focus: {
+            color: "#fff",
+          },
+          _active: {
+            color: "#fff",
+          },
+          _hover: {
+            _disabled: {
+              background: "#fff",
+              border: "1px solid #A11212",
+            },
+          },
+        },
+
+        adminSecondary: {
+          bgColor: "#fff",
+          borderRadius: "4px",
+          color: "#0D0718",
+          fontSize: "14px",
+          fontWeight: "500",
+          borderColor: "#0D0718",
+          borderWidth: "1px",
+          height: "45px",
+          _focus: {
+            color: "#0D0718",
+          },
+          _active: {
+            color: "#0D0718",
           },
           _hover: {
             _disabled: {

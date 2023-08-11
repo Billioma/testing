@@ -51,6 +51,16 @@ const {
   ADMIN_DASHBOARD,
   ADMIN_SERVICES,
   ADMIN_ATTENDANTS,
+  ADMIN_ADD_ATTENDANT,
+  ADMIN_VIEW_ATTENDANT,
+  ADMIN_ADD_CUSTOMER,
+  ADMIN_VIEW_CUSTOMER,
+  ADMIN_ADMINISTRATORS,
+  ADMIN_ADD_ADMINISTRATOR,
+  ADMIN_VIEW_ADMINISTRATOR,
+  ADMIN_OPERATORS,
+  ADMIN_ADD_OPERATOR,
+  ADMIN_VIEW_OPERATOR,
 } = PRIVATE_PATHS;
 
 //CUSTOMER PAGES
@@ -166,15 +176,55 @@ const AdminResetPasswordLink = WithSuspense(
 );
 
 const AdminServices = WithSuspense(
-  lazy(() => import("../pages/Admin/Dashboard/Services"))
+  lazy(() => import("../pages/Admin/Services/Services"))
 );
 
 const AdminAttendants = WithSuspense(
-  lazy(() => import("../pages/Admin/Dashboard/Attendants"))
+  lazy(() => import("../pages/Admin/Users/Attendants"))
 );
 
 const AdminCustomers = WithSuspense(
-  lazy(() => import("../pages/Admin/Dashboard/Customers"))
+  lazy(() => import("../pages/Admin/Users/Customers"))
+);
+
+const AdminAddAttendant = WithSuspense(
+  lazy(() => import("../pages/Admin/Users/AddAttendant"))
+);
+
+const AdminViewAttendant = WithSuspense(
+  lazy(() => import("../pages/Admin/Users/ViewAttendant"))
+);
+
+const AdminAddCustomer = WithSuspense(
+  lazy(() => import("../pages/Admin/Users/AddCustomer"))
+);
+
+const AdminViewCustomer = WithSuspense(
+  lazy(() => import("../pages/Admin/Users/ViewCustomer"))
+);
+
+const AdminOperators = WithSuspense(
+  lazy(() => import("../pages/Admin/Users/Operators"))
+);
+
+const AdminAddOperator = WithSuspense(
+  lazy(() => import("../pages/Admin/Users/AddOperator"))
+);
+
+const AdminViewOperator = WithSuspense(
+  lazy(() => import("../pages/Admin/Users/ViewOperator"))
+);
+
+const AdminAdministrators = WithSuspense(
+  lazy(() => import("../pages/Admin/Users/Administrators"))
+);
+
+const AdminAddAdministrator = WithSuspense(
+  lazy(() => import("../pages/Admin/Users/AddAdministrator"))
+);
+
+const AdminViewAdministrator = WithSuspense(
+  lazy(() => import("../pages/Admin/Users/ViewAdministrator"))
 );
 
 export const PUBLIC_ROUTES = [
@@ -241,7 +291,17 @@ export const PRIVATE_ROUTES = [
   { path: ADMIN_DASHBOARD, element: <AdminDashboard /> },
   { path: ADMIN_CUSTOMERS, element: <AdminCustomers /> },
   { path: ADMIN_SERVICES, element: <AdminServices /> },
+  { path: ADMIN_ADMINISTRATORS, element: <AdminAdministrators /> },
+  { path: ADMIN_OPERATORS, element: <AdminOperators /> },
   { path: ADMIN_ATTENDANTS, element: <AdminAttendants /> },
+  { path: ADMIN_ADD_ATTENDANT, element: <AdminAddAttendant /> },
+  { path: ADMIN_VIEW_ATTENDANT, element: <AdminViewAttendant /> },
+  { path: ADMIN_ADD_CUSTOMER, element: <AdminAddCustomer /> },
+  { path: ADMIN_VIEW_CUSTOMER, element: <AdminViewCustomer /> },
+  { path: ADMIN_ADD_ADMINISTRATOR, element: <AdminAddAdministrator /> },
+  { path: ADMIN_VIEW_ADMINISTRATOR, element: <AdminViewAdministrator /> },
+  { path: ADMIN_ADD_OPERATOR, element: <AdminAddOperator /> },
+  { path: ADMIN_VIEW_OPERATOR, element: <AdminViewOperator /> },
 
   {
     path: "*",

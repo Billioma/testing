@@ -382,11 +382,7 @@ export const BookingSlots = [
   "17:30 - 19:00",
 ];
 
-export const subOptions = [
-  "Renew Subscription",
-  "Automate Renewal",
-  "Cancel Subscription",
-];
+export const subOptions = ["Renew Subscription", "Cancel Subscription"];
 
 export const accountDrop = [
   {

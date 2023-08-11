@@ -16,6 +16,9 @@ const TableFormat = ({
   maxH,
   opt,
   bg = "#F4F6F8",
+  alignFirstHeader,
+  alignSecondHeader,
+  alignThirdHeader,
 }) => {
   return (
     <Box
@@ -63,7 +66,15 @@ const TableFormat = ({
               <Tr>
                 {header?.map((data, i) => (
                   <Th
-                    textAlign={act ? "start" : "center"}
+                    textAlign={
+                      act
+                        ? "start"
+                        : (alignFirstHeader && i === 0) ||
+                          (alignSecondHeader && i === 1) ||
+                          (alignThirdHeader && i === 2)
+                        ? "start"
+                        : "center"
+                    }
                     key={i}
                     pos="sticky"
                     top="0"

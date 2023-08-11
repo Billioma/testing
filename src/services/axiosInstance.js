@@ -34,6 +34,14 @@ const onResponse = (response) => {
 };
 
 const onResponseError = (error) => {
+  if (error.response) {
+    if (error.response.status === 401) {
+      if (window.location.pathname.includes("admin")) {
+        sessionStorage.clear();
+        window.location.href = "/admin/auth/login";
+      }
+    }
+  }
   return Promise.reject(error);
 };
 

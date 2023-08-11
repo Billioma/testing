@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Box,
   Flex,
@@ -15,13 +15,18 @@ import { FiMoreVertical, FiEdit, FiTrash2 } from "react-icons/fi";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import NoData from "../../../common/NoData";
 import { formatDate } from "../../../../utils/helpers";
+import { HiOutlineInformationCircle } from "react-icons/hi";
+import { useNavigate } from "react-router-dom";
+import AdminDeleteModal from "../../../modals/AdminDeleteModal";
+import useCustomToast from "../../../../utils/notifications";
+import { useDeleteCustomer } from "../../../../services/admin/query/users";
 
 const TableLayer = ({
   data,
   isLoading,
   page,
   setPage,
-  handleEdit,
+  refetch,
   startRow,
   endRow,
 }) => {
@@ -35,12 +40,33 @@ const TableLayer = ({
     "DATE",
     "ACTIONS",
   ];
+  const [selectedRow, setSelectedRow] = useState({ isOpen: false, id: null });
+  const navigate = useNavigate();
+  const { errorToast, successToast } = useCustomToast();
+
+  const { mutate, isLoading: isDeleting } = useDeleteCustomer({
+    onSuccess: (res) => {
+      successToast(res?.message);
+      refetch();
+    },
+    onError: (err) => {
+      errorToast(
+        err?.response?.data?.message || err?.message || "An Error occured"
+      );
+    },
+  });
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    mutate(selectedRow.id);
+  };
 
   return (
     <Box>
       <TableFormat
         isLoading={isLoading}
         minH="25vh"
+        maxH="65vh"
         header={headers}
         opt
         act
@@ -153,7 +179,26 @@ const TableLayer = ({
                         gap="12px"
                         alignItems="center"
                         fontWeight="500"
-                        onClick={() => handleEdit(customer)}
+                        onClick={() =>
+                          navigate(
+                            "/admin/users/customers/details/" + customer.id,
+                            { state: { ...customer, isEdit: false } }
+                          )
+                        }
+                      >
+                        <HiOutlineInformationCircle />
+                        View
+                      </MenuItem>
+                      <MenuItem
+                        gap="12px"
+                        alignItems="center"
+                        fontWeight="500"
+                        onClick={() =>
+                          navigate(
+                            "/admin/users/customers/details/" + customer.id,
+                            { state: { ...customer, isEdit: true } }
+                          )
+                        }
                       >
                         <FiEdit />
                         Edit
@@ -163,6 +208,9 @@ const TableLayer = ({
                         alignItems="center"
                         fontWeight="500"
                         color="red"
+                        onClick={() =>
+                          setSelectedRow({ isOpen: true, id: customer.id })
+                        }
                       >
                         <FiTrash2 />
                         Delete
@@ -184,6 +232,15 @@ const TableLayer = ({
           </Tr>
         )}
       </TableFormat>
+
+      <AdminDeleteModal
+        isOpen={selectedRow.isOpen}
+        onClose={() => setSelectedRow({ ...selectedRow, isOpen: false })}
+        title="Delete Customer"
+        subTitle="Are you sure you want to delete this customer?"
+        handleSubmit={handleSubmit}
+        isLoading={isDeleting}
+      />
     </Box>
   );
 };

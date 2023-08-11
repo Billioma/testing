@@ -1,7 +1,6 @@
 import * as API from "../url";
 import axiosInstance from "../../axiosInstance";
 
-e;
 export const operatorLogin = async (body) => {
   const res = await axiosInstance.post("operator/" + API.LOGIN, body);
   return res.data;

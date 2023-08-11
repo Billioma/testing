@@ -32,8 +32,8 @@ const TableLayer = ({
 }) => {
   const headers = [
     "NAME",
-    "USER ID",
-    "ACCOUNT TYPE",
+    "EMAIL ADDRESS",
+    "ROLE",
     "STATUS",
     "DATE",
     "ACTIONS",
@@ -68,7 +68,9 @@ const TableLayer = ({
         maxH="65vh"
         header={headers}
         opt
-        alignFirstHeader="start"
+        alignFirstHeader
+        alignSecondHeader
+        alignThirdHeader
         paginate={
           <Flex
             justifyContent="center"
@@ -141,7 +143,7 @@ const TableLayer = ({
         }
       >
         {data?.data?.length ? (
-          data?.data?.map((attendant, i) => (
+          data?.data?.map((administrator, i) => (
             <Tr
               key={i}
               color="#646668"
@@ -149,22 +151,24 @@ const TableLayer = ({
               fontSize="12px"
               lineHeight="100%"
             >
-              <Td>{attendant?.name}</Td>
-              <Td textAlign="center">{attendant?.userId}</Td>
-              <Td textAlign="center">{attendant?.accountType}</Td>
+              <Td>
+                {administrator?.firstName} {administrator?.lastName}
+              </Td>
+              <Td>{administrator?.email}</Td>
+              <Td>{administrator?.role?.displayName}</Td>
               <Td textAlign="center">
                 <Flex
-                  bg={attendant?.status ? "#E5FFE5" : "#FEF1F1"}
-                  color={attendant?.status ? "#0B841D" : "#EE383A"}
+                  bg={administrator?.status ? "#E5FFE5" : "#FEF1F1"}
+                  color={administrator?.status ? "#0B841D" : "#EE383A"}
                   justifyContent={"center"}
                   alignItems="center"
                   padding="7px 10px"
                   borderRadius="4px"
                 >
-                  {attendant?.status ? "Active" : "Inactive"}
+                  {administrator?.status ? "Active" : "Inactive"}
                 </Flex>
               </Td>
-              <Td textAlign="center">{formatDate(attendant?.createdAt)}</Td>
+              <Td textAlign="center">{formatDate(administrator?.createdAt)}</Td>
               <Td textAlign="center">
                 <Flex justifyContent="center" align="center">
                   <Menu>
@@ -178,8 +182,9 @@ const TableLayer = ({
                         fontWeight="500"
                         onClick={() =>
                           navigate(
-                            "/admin/users/attendants/details/" + attendant.id,
-                            { state: { ...attendant, isEdit: false } }
+                            "/admin/users/administrators/details/" +
+                              administrator.id,
+                            { state: { ...administrator, isEdit: false } }
                           )
                         }
                       >
@@ -192,8 +197,9 @@ const TableLayer = ({
                         fontWeight="500"
                         onClick={() =>
                           navigate(
-                            "/admin/users/attendants/details/" + attendant.id,
-                            { state: { ...attendant, isEdit: true } }
+                            "/admin/users/administrators/details/" +
+                              administrator.id,
+                            { state: { ...administrator, isEdit: true } }
                           )
                         }
                       >
@@ -206,7 +212,7 @@ const TableLayer = ({
                         fontWeight="500"
                         color="red"
                         onClick={() =>
-                          setSelectedRow({ isOpen: true, id: attendant.id })
+                          setSelectedRow({ isOpen: true, id: administrator.id })
                         }
                       >
                         <FiTrash2 />
@@ -222,8 +228,8 @@ const TableLayer = ({
           <Tr>
             <Td colSpan={7} rowSpan={2}>
               <NoData
-                title="No Attendants"
-                desc="You have not added an attendants"
+                title="No Administrators"
+                desc="You have not added an administrator"
               />
             </Td>
           </Tr>
@@ -233,8 +239,8 @@ const TableLayer = ({
       <AdminDeleteModal
         isOpen={selectedRow.isOpen}
         onClose={() => setSelectedRow({ ...selectedRow, isOpen: false })}
-        title="Delete Attendant"
-        subTitle="Are you sure you want to delete this attendant?"
+        title="Delete Administrator"
+        subTitle="Are you sure you want to delete this administrator?"
         handleSubmit={handleSubmit}
         isLoading={isDeleting}
       />

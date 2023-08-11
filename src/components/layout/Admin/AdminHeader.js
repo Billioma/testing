@@ -41,8 +41,25 @@ export default function AdminHeader() {
 
       case pathname.includes("users"):
         switch (true) {
+          case pathname.includes("attendants") && pathname.includes("details"):
+            return setTitle({
+              header: "Users",
+              sub: "Attendants",
+              sub2: "Details",
+            });
+
           case pathname.includes("attendants"):
-            return setTitle({ header: "Users", sub: "Attendants" });
+            return setTitle({
+              header: "Users",
+              sub: "Attendants",
+            });
+
+          case pathname.includes("customers") && pathname.includes("details"):
+            return setTitle({
+              header: "Users",
+              sub: "Customers",
+              sub2: "Details",
+            });
 
           case pathname.includes("customers"):
             return setTitle({ header: "Users", sub: "Customers" });
@@ -78,6 +95,18 @@ export default function AdminHeader() {
             >
               <FaGreaterThan size={8} color="#242628" />
               {title.sub}
+            </Text>
+          )}
+          {title.sub2 && (
+            <Text
+              display="flex"
+              fontSize="10px"
+              color="#646668"
+              gap="4px"
+              alignItems="center"
+            >
+              <FaGreaterThan size={8} color="#242628" />
+              {title.sub2}
             </Text>
           )}
         </Text>

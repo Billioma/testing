@@ -19,8 +19,6 @@ export default function TopUserSection() {
 
   const { data } = useGetAdminDashboardData();
 
-  console.log(data);
-
   const handleOptionSelect = (option) => {
     setSelectedOption(option);
   };

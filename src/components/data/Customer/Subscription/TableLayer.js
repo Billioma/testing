@@ -55,7 +55,7 @@ const TableLayer = () => {
   const openOption = (dat, i) => {
     i === 0
       ? (setShowRenew(true), setCurrentSub(dat))
-      : i === 2
+      : i === 1
       ? (setShowCancel(true), setCurrentSub(dat))
       : "";
   };

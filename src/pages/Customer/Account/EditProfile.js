@@ -49,19 +49,6 @@ const EditProfile = () => {
     },
   });
 
-  useEffect(() => {
-    if (profilePicData !== undefined) {
-      const phoneNumber = `+234${values.phone}`;
-      mutate({
-        firstName: values.firstName,
-        lastName: values.lastName,
-        phone: phoneNumber,
-        companyName: values.companyName === "N/A" ? "" : values.companyName,
-        profilePicture: profilePicData?.path,
-      });
-    }
-  }, [profilePicData]);
-
   const handleUpload = (e) => {
     const selectedFile = e.target.files[0];
     if (!selectedFile) {
@@ -83,6 +70,7 @@ const EditProfile = () => {
     lastName: "",
     phone: "",
     companyName: "",
+    pic: "",
   });
 
   const handleChange = (e, { name }) => {
@@ -107,6 +95,7 @@ const EditProfile = () => {
       lastName: values.lastName,
       phone: phoneNumber,
       companyName: values.companyName === "N/A" ? "" : values.companyName,
+      profilePicture: profilePicData?.path || values.pic,
     });
   };
 
@@ -118,6 +107,10 @@ const EditProfile = () => {
         lastName: userData?.profile?.lastName,
         phone: userData?.profile?.phone?.replace("+234", ""),
         companyName: userData?.profile?.companyName,
+        pic: userData?.profile?.avatarUrl.replace(
+          "https://staging-api.ezpark.ng/",
+          ""
+        ),
       });
     }
   }, [userData]);
@@ -284,6 +277,7 @@ const EditProfile = () => {
           <Button
             mt="24px"
             onClick={handleSubmit}
+            isDisabled={isUploading || isLoading}
             isLoading={isLoading}
             type="submit"
             w="full"
