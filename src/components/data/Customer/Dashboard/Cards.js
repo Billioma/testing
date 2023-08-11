@@ -29,6 +29,7 @@ import { useGetStates } from "../../../../services/customer/query/locations";
 
 const Cards = () => {
   const [index, setIndex] = useState(0);
+  const [subIndex, setSubIndex] = useState(0);
   const {
     data: vehicles,
     isLoading,
@@ -53,6 +54,7 @@ const Cards = () => {
   };
 
   const currentVehicle = vehicles?.data?.filter((item, i) => i === index);
+  const currentSub = subscriptions?.data?.filter((item, i) => i === subIndex);
 
   const config = {
     reference: new Date().getTime().toString(),
@@ -180,7 +182,7 @@ const Cards = () => {
                 </Text>
               </Flex>
               {subscriptions?.data?.length ? (
-                subscriptions?.data?.slice(0, 1)?.map((data, i) => (
+                currentSub?.map((data, i) => (
                   <Box key={i}>
                     <Flex
                       mt="32px"
@@ -285,19 +287,49 @@ const Cards = () => {
                         </Text>
                       </Box>
 
-                      <Box w="60%">
-                        <Button
-                          w="full"
-                          bg="#242628"
-                          rounded="full"
-                          color="#fff"
+                      <Flex
+                        flexDir="column"
+                        justifyContent="center"
+                        align="center"
+                        gap="4px"
+                        w="15%"
+                      >
+                        <Text
+                          fontSize="10px"
+                          color="#848688"
+                          fontWeight={700}
                           lineHeight="100%"
-                          fontSize="12px"
-                          fontWeight={500}
                         >
-                          Details
-                        </Button>
-                      </Box>
+                          {subIndex + 1} of {subscriptions?.data?.length}
+                        </Text>
+                        <Flex align="center" gap="16px">
+                          <Flex
+                            cursor="pointer"
+                            border="1px solid #242628"
+                            opacity={subIndex !== 0 ? 1 : 0.4}
+                            onClick={() => subIndex !== 0 && setSubIndex(subIndex - 1)}
+                            rounded="full"
+                            p="2px"
+                          >
+                            <IoIosArrowBack size="13px" />
+                          </Flex>
+                          <Flex
+                            cursor="pointer"
+                            opacity={
+                              subscriptions?.data?.length !== subIndex + 1 ? 1 : 0.4
+                            }
+                            onClick={() =>
+                              subscriptions?.data?.length !== subIndex + 1 &&
+                              setSubIndex(subIndex + 1)
+                            }
+                            border="1px solid #242628"
+                            rounded="full"
+                            p="2px"
+                          >
+                            <IoIosArrowForward size="13px" />
+                          </Flex>
+                        </Flex>
+                      </Flex>
                     </Flex>
                   </Box>
                 ))
