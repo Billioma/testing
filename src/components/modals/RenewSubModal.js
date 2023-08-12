@@ -182,6 +182,17 @@ const RenewSubModal = ({
 
             <Flex mt="24px" w="100%" gap="24px" align="center">
               <Button
+                bg="transparent"
+                color="#0D0718"
+                fontSize="14px"
+                onClick={close}
+                w="full"
+                border="1px solid #0D0718"
+                py="25px"
+              >
+                Cancel
+              </Button>
+              <Button
                 w="100%"
                 py="25px"
                 fontSize="12px"
