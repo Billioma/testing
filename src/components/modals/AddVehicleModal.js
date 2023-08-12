@@ -259,17 +259,31 @@ const AddVehicleModal = ({
             />
           </Box>
 
-          <Button
-            fontSize="14px"
-            fontWeight={500}
-            onClick={() => setShow(true)}
-            isDisabled={isDisabled}
-            lineHeight="100%"
-            w="full"
-            py="17px"
-          >
-            Save
-          </Button>
+          <Flex align="center" gap="15px">
+            <Button
+              bg="transparent"
+              color="#0D0718"
+              fontSize="14px"
+              onClick={close}
+              w="full"
+              border="1px solid #0D0718"
+              py="17px"
+            >
+              Cancel
+            </Button>
+
+            <Button
+              fontSize="14px"
+              fontWeight={500}
+              onClick={() => setShow(true)}
+              isDisabled={isDisabled}
+              lineHeight="100%"
+              w="full"
+              py="17px"
+            >
+              Save
+            </Button>
+          </Flex>
         </ModalBody>
       </ModalContent>
 

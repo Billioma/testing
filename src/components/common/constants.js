@@ -325,7 +325,7 @@ export const carServiceIcon = [
 export const carServiceDesc = [
   "Car Wash",
   "Car Fueling",
-  "Tire gauge",
+  "Tyre gauge",
   "Car Tow",
 ];
 

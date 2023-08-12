@@ -31,7 +31,7 @@ const TableLayer = () => {
   const [page, setPage] = useState(1);
   const [show, setShow] = useState(false);
   const limit = 10;
-  const { data: userData } = useGetUser();
+  const { data: userData, refetch: refetchUser } = useGetUser();
   const [showCancel, setShowCancel] = useState(false);
   const { isLoading, data: subs, refetch } = useGetUserSub(limit, page);
 
@@ -108,6 +108,7 @@ const TableLayer = () => {
   const { mutate: renewMutate, isLoading: isRenew } = useRenewSub({
     onSuccess: (res) => {
       refetch();
+      refetchUser();
       setShowRenew(false);
       setValues({ cardId: "", paymentMethod: "", amount: "" });
       successToast(res?.message);

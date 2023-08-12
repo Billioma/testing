@@ -42,13 +42,6 @@ const ReserveParking = () => {
   const [step, setStep] = useState(1);
   const { isOpen, onClose, onOpen } = useDisclosure();
   const [showFunds, setShowFunds] = useState(false);
-
-  useEffect(() => {
-    setStep(1);
-  }, []);
-
-  const { data: cards, refetch: refetchCards } = useGetCards();
-  const { data: userData, refetch } = useGetUser();
   const [values, setValues] = useState({
     state: "",
     city: "",
@@ -63,6 +56,26 @@ const ReserveParking = () => {
     model: "",
   });
 
+  useEffect(() => {
+    setStep(1);
+    setValues({
+      state: "",
+      city: "",
+      locations: "",
+      arrivalTime: "",
+      departureTime: "",
+      paymentMethod: "",
+      cardId: "",
+      vehicle: "",
+      color: "",
+      make: "",
+      model: "",
+    });
+  }, []);
+
+  const { data: cards, refetch: refetchCards } = useGetCards();
+  const { data: userData, refetch } = useGetUser();
+
   const [startDate, setStartDate] = useState(false);
   const [startValue, startChange] = useState("");
   const [endValue, endChange] = useState("");
@@ -70,6 +83,35 @@ const ReserveParking = () => {
 
   const start = formatDate(startValue);
   const end = formatDate(endValue);
+
+  const startDateRange = new Date();
+
+  const isDateDisabled = (date) => {
+    return date < startDateRange;
+  };
+  const handleEndDateChange = (date) => {
+    if (!isDateDisabled(date)) {
+      endChange(date);
+    }
+    setEndDate(false);
+  };
+
+  const handleDateChange = (date) => {
+    if (!isDateDisabled(date)) {
+      startChange(date);
+    }
+    setStartDate(false);
+  };
+
+  const tileClassName = ({ date }) => {
+    if (date.getDate() === startDateRange.getDate()) {
+      return "selected-date";
+    }
+    if (isDateDisabled(date)) {
+      return "disabled-date";
+    }
+    return null;
+  };
 
   const { data: states } = useGetStates();
   const { data: locations } = useGetLocations();
@@ -146,10 +188,11 @@ const ReserveParking = () => {
     useRequestReserveParking();
   const navigate = useNavigate();
   const { successToast, errorToast } = useCustomToast();
-  const { refetch: refetchParking } = useGetReserveParking(10, 1);
+  const { refetch: refetchParking } = useGetReserveParking();
   const { mutate: reserveMutate, isLoading: isReserving } =
     useCreateReserveParking({
       onSuccess: () => {
+        refetch();
         refetchParking();
         navigate("/customer/services");
         successToast("Payment Successful");
@@ -186,19 +229,6 @@ const ReserveParking = () => {
   )}.000Z`;
 
   const handleSubmit = () => {
-    const formattedDate = `${start.substr(6, 4)}-${start.substr(
-      0,
-      2
-    )}-${start.substr(3, 2)}T${formatTimeToHHMMSS(
-      values?.arrivalTime?.value
-    )}.000Z`;
-    const formattedDeparture = `${end.substr(6, 4)}-${end.substr(
-      0,
-      2
-    )}-${end.substr(3, 2)}T${formatTimeToHHMMSS(
-      values?.departureTime?.value
-    )}.000Z`;
-
     Number(values?.paymentMethod) === 0
       ? reserveMutate({
           amount: requestData?.amount,
@@ -454,11 +484,10 @@ const ReserveParking = () => {
                     {startDate && (
                       <Box pos="absolute" top="50px" w="200%" zIndex="3">
                         <Calendar
-                          onChange={(e) => {
-                            startChange(e);
-                            setStartDate(false);
-                          }}
+                          onChange={handleDateChange}
                           value={startValue}
+                          minDate={startDateRange}
+                          tileClassName={tileClassName}
                         />
                       </Box>
                     )}
@@ -524,11 +553,10 @@ const ReserveParking = () => {
                     {endDate && (
                       <Box pos="absolute" top="70" w="200%" zIndex="3">
                         <Calendar
-                          onChange={(e) => {
-                            endChange(e);
-                            setEndDate(false);
-                          }}
-                          value={startValue}
+                          onChange={handleEndDateChange}
+                          value={endValue}
+                          minDate={startDateRange}
+                          tileClassName={tileClassName}
                         />
                       </Box>
                     )}
@@ -763,11 +791,13 @@ const ReserveParking = () => {
               step === 1
                 ? !values?.state || !values?.city || !values?.locations
                 : step === 2
-                ? start &&
-                  end &&
-                  values.arrivalTime &&
-                  values.departureTime &&
-                  formattedDeparture < formattedDate
+                ? (start &&
+                    end &&
+                    values.arrivalTime &&
+                    values.departureTime &&
+                    formattedDeparture < formattedDate) ||
+                  !values.arrivalTime ||
+                  !values.departureTime
                 : ""
             }
             fontSize="14px"

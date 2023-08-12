@@ -50,12 +50,19 @@ const EditVehicleModal = ({
   }));
 
   const handleSelectChange = (selectedOption, { name }) => {
-    setValues({
-      ...values,
-      [name]: selectedOption,
-    });
+    if (name === "make") {
+      setValues((prevValues) => ({
+        ...prevValues,
+        make: selectedOption,
+        model: "",
+      }));
+    } else {
+      setValues((prevValues) => ({
+        ...prevValues,
+        [name]: selectedOption,
+      }));
+    }
   };
-
   const isDisabled = Object.values(values).some((value) => !value);
 
   useEffect(() => {
@@ -264,18 +271,31 @@ const EditVehicleModal = ({
             />
           </Box>
 
-          <Button
-            fontSize="14px"
-            fontWeight={500}
-            onClick={handleSubmit}
-            isLoading={isLoading}
-            isDisabled={isDisabled}
-            lineHeight="100%"
-            w="full"
-            py="17px"
-          >
-            Save
-          </Button>
+          <Flex align="center" gap="15px">
+            <Button
+              bg="transparent"
+              color="#0D0718"
+              fontSize="14px"
+              onClick={onClose}
+              w="full"
+              border="1px solid #0D0718"
+              py="17px"
+            >
+              Cancel
+            </Button>
+            <Button
+              fontSize="14px"
+              fontWeight={500}
+              onClick={handleSubmit}
+              isLoading={isLoading}
+              isDisabled={isDisabled}
+              lineHeight="100%"
+              w="full"
+              py="17px"
+            >
+              Save
+            </Button>
+          </Flex>
         </ModalBody>
       </ModalContent>
     </Modal>

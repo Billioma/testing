@@ -79,7 +79,16 @@ const VehicleCards = ({ states }) => {
         ) : vehicles?.data?.length ? (
           vehicles?.data?.map((data, i) => (
             <GridItem key={i}>
-              <Box w="full" bg="#fff" py="24px" px="20px" borderRadius="8px">
+              <Flex
+                flexDir="column"
+                justifyContent="center"
+                align="center"
+                w="full"
+                minH="12rem"
+                bg="#fff"
+                px="20px"
+                borderRadius="8px"
+              >
                 <Flex justifyContent="space-between" w="full" align="center">
                   <Box w="full">
                     <Text
@@ -168,7 +177,7 @@ const VehicleCards = ({ states }) => {
                     />
                   </Flex>
                 </Flex>
-              </Box>
+              </Flex>
             </GridItem>
           ))
         ) : (
@@ -177,14 +186,14 @@ const VehicleCards = ({ states }) => {
 
         <GridItem>
           <Flex
-            h="10.5rem"
+            minH="12rem"
             w="full"
             cursor="pointer"
             bg="#fff"
             flexDir="column"
-            onClick={onOpen}
             justifyContent="center"
             align="center"
+            onClick={onOpen}
             borderRadius="8px"
           >
             <Image src="/assets/add-icon.svg" />

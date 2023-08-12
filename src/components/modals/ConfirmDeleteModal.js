@@ -48,11 +48,11 @@ const ConfirmDeleteModal = ({
 
             <Flex mt="32px" gap="24px" w="full" align="center">
               <Button
+                onClick={onClose}
                 bg="transparent"
                 color="#0D0718"
                 fontSize="14px"
                 w="full"
-                onClick={onClose}
                 border="1px solid #0D0718"
                 py="17px"
               >

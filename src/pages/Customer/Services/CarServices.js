@@ -28,6 +28,7 @@ import { useGetUser } from "../../../services/customer/query/user";
 import {
   useGetBookingRate,
   useCreateServiceBookings,
+  useGetCarService,
 } from "../../../services/customer/query/services";
 import { useGetCards } from "../../../services/customer/query/payment";
 import useCustomToast from "../../../utils/notifications";
@@ -41,22 +42,60 @@ const CarServices = () => {
   const { data } = useGetServices();
   const { data: cards, refetch: refetchCards } = useGetCards();
   const { data: userData, refetch } = useGetUser();
+  const { refetch: refetchBooking } = useGetCarService();
+  const [startDate, setStartDate] = useState(false);
+  const [startValue, startChange] = useState("");
+
+  const startDateRange = new Date();
+
+  const isDateDisabled = (date) => {
+    return date < startDateRange;
+  };
+
+  const handleDateChange = (date) => {
+    if (!isDateDisabled(date)) {
+      startChange(date);
+    }
+    setStartDate(false);
+  };
+
+  const tileClassName = ({ date }) => {
+    if (date.getDate() === startDateRange.getDate()) {
+      return "selected-date";
+    }
+    if (isDateDisabled(date)) {
+      return "disabled-date";
+    }
+    return null;
+  };
+
   const [values, setValues] = useState({
     serviceId: "",
     address: "",
     appointmentTime: "",
     img: "",
     desc: "",
-    appointmentDateType: "",
-    appointmentSlot: "",
     billingRate: "",
-    billingType: "",
-    bookingType: "",
     cardId: "",
     paymentMethod: "",
-    service: "",
     vehicle: "",
   });
+
+  // useEffect(() => {
+  //   setStep(1);
+  //   startChange("");
+  //   setValues({
+  //     serviceId: "",
+  //     address: "",
+  //     appointmentTime: "",
+  //     img: "",
+  //     desc: "",
+  //     billingRate: "",
+  //     cardId: "",
+  //     paymentMethod: "",
+  //     vehicle: "",
+  //   });
+  // }, []);
 
   const targetNames = [
     "Wash my car",
@@ -100,9 +139,6 @@ const CarServices = () => {
       (targetName) => targetName.toLowerCase() === item?.name?.toLowerCase()
     )
   );
-
-  const [startDate, setStartDate] = useState(false);
-  const [startValue, startChange] = useState("");
 
   const start = formatDate(startValue);
 
@@ -160,20 +196,17 @@ const CarServices = () => {
     {
       onSuccess: () => {
         startChange("");
+        refetch();
+        refetchBooking();
         setValues({
           serviceId: "",
           address: "",
           appointmentTime: "",
           img: "",
           desc: "",
-          appointmentDateType: "",
-          appointmentSlot: "",
           billingRate: "",
-          billingType: "",
-          bookingType: "",
           cardId: "",
           paymentMethod: "",
-          service: "",
           vehicle: "",
         });
         setStep(1);
@@ -194,13 +227,13 @@ const CarServices = () => {
 
   const handleBook = () => {
     Number(values?.paymentMethod) === 0
-      ? console.log({
+      ? bookMutate({
           address: values?.address,
           appointmentDate: start,
           appointmentDateType: 0,
           appointmentSlot: selectedIndex,
           billingRate: values?.billingRate?.value,
-          billingType: Number(values?.billingType),
+          billingType: 0,
           bookingType: "ONETIME",
           paymentMethod: Number(values?.paymentMethod),
           cardId: Number(values?.cardId),
@@ -214,7 +247,7 @@ const CarServices = () => {
           appointmentDateType: 0,
           appointmentSlot: selectedIndex,
           billingRate: values?.billingRate?.value,
-          billingType: Number(values?.billingType),
+          billingType: 0,
           bookingType: "ONETIME",
           paymentMethod: Number(values?.paymentMethod),
           service: values?.serviceId?.value,
@@ -291,14 +324,12 @@ const CarServices = () => {
                   appointmentTime: "",
                   img: "",
                   desc: "",
-                  appointmentDateType: "",
-                  appointmentSlot: "",
+
                   billingRate: "",
-                  billingType: "",
-                  bookingType: "",
+
                   cardId: "",
                   paymentMethod: "",
-                  service: "",
+
                   vehicle: "",
                 });
                 startChange("");
@@ -465,11 +496,10 @@ const CarServices = () => {
                     {startDate && (
                       <Box pos="absolute" top="50px" w="200%" zIndex="3">
                         <Calendar
-                          onChange={(e) => {
-                            startChange(e);
-                            setStartDate(false);
-                          }}
+                          onChange={handleDateChange}
                           value={startValue}
+                          minDate={startDateRange}
+                          tileClassName={tileClassName}
                         />
                       </Box>
                     )}
@@ -525,7 +555,20 @@ const CarServices = () => {
           {step === 3 && (
             <Box border="1px solid #D4D6D8" borderRadius="8px" p="24px">
               <Flex flexDir="column" justifyContent="center" align="center">
-                <Image w="40px" h="40px" src={values.img} />
+                <Image
+                  w="40px"
+                  h="40px"
+                  src={
+                    values.img ||
+                    carServiceIcon.find((item) =>
+                      item
+                        ?.toLowerCase()
+                        .includes(
+                          values?.serviceId?.label?.toLowerCase().split(" ")[0]
+                        )
+                    )
+                  }
+                />
                 <Text
                   mt="16px"
                   mb="32px"
@@ -533,7 +576,15 @@ const CarServices = () => {
                   fontWeight={500}
                   lineHeight="100%"
                 >
-                  Schedule {values?.desc}
+                  Schedule{" "}
+                  {values?.desc ||
+                    carServiceDesc.find((item) =>
+                      item
+                        ?.toLowerCase()
+                        .includes(
+                          values?.serviceId?.label?.toLowerCase().split(" ")[0]
+                        )
+                    )}
                 </Text>
               </Flex>
 
@@ -837,6 +888,21 @@ const CarServices = () => {
               onClick={() => (step === 2 ? setStep(step + 1) : handleBook())}
               mt="32px"
               isLoading={isBooking}
+              isDisabled={
+                step === 3
+                  ? values.paymentMethod === "0"
+                    ? !values.cardId
+                    : !values.paymentMethod
+                  : step === 2
+                  ? !values.address ||
+                    !values.appointmentTime ||
+                    !values.billingRate ||
+                    !values.desc ||
+                    !values.img ||
+                    !values.serviceId ||
+                    !values.vehicle
+                  : ""
+              }
               fontSize="14px"
               py="17px"
               w="full"

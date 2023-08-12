@@ -39,13 +39,27 @@ import { useNavigate } from "react-router-dom";
 const EventParking = () => {
   const [step, setStep] = useState(1);
   const { isOpen, onClose, onOpen } = useDisclosure();
+  const [values, setValues] = useState({
+    event: "",
+    service: "",
+    vehicle: "",
+    cardId: "",
+    paymentMethod: "",
+  });
 
   useEffect(() => {
     setStep(1);
+    setValues({
+      event: "",
+      service: "",
+      vehicle: "",
+      cardId: "",
+      paymentMethod: "",
+    });
   }, []);
   const [showFunds, setShowFunds] = useState(false);
   const { data: userData, refetch } = useGetUser();
-  const { refetch: refetchEvent } = useGetEventParking(10, 1);
+  const { refetch: refetchEvent } = useGetEventParking();
   const { data: cards, refetch: refetchCards } = useGetCards();
 
   const config = {
@@ -78,13 +92,6 @@ const EventParking = () => {
 
   const initializePayment = usePaystackPayment(config);
 
-  const [values, setValues] = useState({
-    event: "",
-    service: "",
-    vehicle: "",
-    cardId: "",
-    paymentMethod: "",
-  });
   const [event, setEvent] = useState({});
 
   const [startDate, setStartDate] = useState(false);
@@ -157,6 +164,7 @@ const EventParking = () => {
       navigate("/customer/services");
       successToast("Payment Successful");
       onClose();
+      refetch();
       refetchEvent();
       setEvent({});
       setValues({
@@ -800,7 +808,15 @@ const EventParking = () => {
             display={step === 1 ? "none" : "flex"}
             mt="32px"
             py="17px"
-            isDisabled={step === 1 ? !values?.event : ""}
+            isDisabled={
+              step === 1
+                ? !values?.event
+                : step === 2
+                ? values.paymentMethod === "0"
+                  ? !values.cardId
+                  : !values.service || !values.vehicle || !values.paymentMethod
+                : ""
+            }
             fontSize="14px"
           >
             {step === 1 ? "Enter" : "Reserve and Park Later"}

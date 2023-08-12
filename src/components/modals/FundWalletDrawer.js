@@ -173,6 +173,7 @@ const FundWalletDrawer = ({ isOpen, cards, refetchUser, onClose, action }) => {
                 w="100%"
                 py="25px"
                 fontSize="12px"
+                isDisabled={!values.cardId || !values.amount}
                 onClick={handleSubmit}
                 isLoading={isLoading}
               >

@@ -159,7 +159,7 @@ const Header = () => {
               align="center"
               pos="relative"
               gap="18px"
-              w={isMobile ? "" : "8rem"}
+              w={isMobile ? "" : "fit-content"}
             >
               <Flex
                 gap="12px"

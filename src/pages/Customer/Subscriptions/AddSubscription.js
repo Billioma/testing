@@ -22,6 +22,7 @@ import { BsCheckCircle } from "react-icons/bs";
 import {
   useCustomerCreateSubscription,
   useGetUser,
+  useGetUserSub,
 } from "../../../services/customer/query/user";
 import useCustomToast from "../../../utils/notifications";
 import { useNavigate } from "react-router-dom";
@@ -135,10 +136,13 @@ const AddSubscription = () => {
   };
 
   const initializePayment = usePaystackPayment(config);
+  const { refetch: refetchSub } = useGetUserSub();
   const { successToast, errorToast } = useCustomToast();
   const navigate = useNavigate();
   const { mutate, isLoading } = useCustomerCreateSubscription({
     onSuccess: (res) => {
+      refetch();
+      refetchSub();
       navigate("/customer/subscriptions");
       setValues({
         vehicle: "",
@@ -574,6 +578,15 @@ const AddSubscription = () => {
                 onClick={handlePay}
                 w="full"
                 py="17px"
+                isDisabled={
+                  step === 2
+                    ? values.paymentMethod === "0"
+                      ? !values.cardId
+                      : !values.vehicle ||
+                        !values.location ||
+                        !values.paymentMethod
+                    : ""
+                }
                 fontSize="14px"
               >
                 Make Payment

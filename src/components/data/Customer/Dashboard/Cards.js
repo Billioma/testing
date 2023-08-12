@@ -307,7 +307,9 @@ const Cards = () => {
                             cursor="pointer"
                             border="1px solid #242628"
                             opacity={subIndex !== 0 ? 1 : 0.4}
-                            onClick={() => subIndex !== 0 && setSubIndex(subIndex - 1)}
+                            onClick={() =>
+                              subIndex !== 0 && setSubIndex(subIndex - 1)
+                            }
                             rounded="full"
                             p="2px"
                           >
@@ -316,7 +318,9 @@ const Cards = () => {
                           <Flex
                             cursor="pointer"
                             opacity={
-                              subscriptions?.data?.length !== subIndex + 1 ? 1 : 0.4
+                              subscriptions?.data?.length !== subIndex + 1
+                                ? 1
+                                : 0.4
                             }
                             onClick={() =>
                               subscriptions?.data?.length !== subIndex + 1 &&

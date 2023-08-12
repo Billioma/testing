@@ -89,13 +89,19 @@ const Park = () => {
     },
   });
 
-  const { refetch: refetchPark } = useGetPayToPark(10, 1);
+  const { refetch: refetchPark } = useGetPayToPark();
   const { mutate: parkMutate, isLoading: isCreating } = useCreatePayToPark({
     onSuccess: () => {
       onClose();
       refetchPark();
+      refetch();
       navigate("/customer/services");
-      setValues({ vehicle: "", serviceType: "", paymentMethod: "" });
+      setValues({
+        vehicle: "",
+        serviceType: "",
+        paymentMethod: "",
+        cardId: "",
+      });
       setZone("");
       setStep(1);
       successToast("Payment Successful");
