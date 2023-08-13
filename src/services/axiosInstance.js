@@ -39,6 +39,8 @@ const onResponseError = (error) => {
       sessionStorage.clear();
       if (window.location.pathname.includes("admin")) {
         window.location.href = "/admin/auth/login";
+      } else if (window.location.pathname.includes("operator")) {
+        window.location.href = "/operator/auth/login";
       } else if (window.location.pathname.includes("customer")) {
         window.location.href = "/customer/auth/login";
       } else if (window.location.pathname.includes("client")) {

@@ -22,6 +22,8 @@ export const GET_PAY_TO_PARK = "pay-to-park";
 export const UPDATE_USER = "update-profile";
 export const GET_SUBSCRIPTION = "membership-subscriptions";
 export const GET_SUBSCRIPTIONS = "membership-subscriptions";
+export const CANCEL_RESERVE = (id = "") => `reserve-parking/cancel/${id}`;
+export const CANCEL_BOOKING = (id = "") => `service-bookings/cancel/${id}`;
 export const CANCEL_SUBSCRIPTIONS = (id = "") =>
   `membership-subscriptions/cancel/${id}`;
 export const RENEW_SUBSCRIPTIONS = (id = "") =>

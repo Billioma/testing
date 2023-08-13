@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Box, Flex, Td, Text, Tr } from "@chakra-ui/react";
 import TableFormat from "../../common/TableFormat";
 import { FiMoreVertical } from "react-icons/fi";
@@ -13,6 +13,8 @@ import {
 } from "../../common/constants";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import {
+  useCancelBooking,
+  useCancelReserve,
   useGetCarService,
   useGetEventParking,
   useGetPayToPark,
@@ -20,15 +22,72 @@ import {
 } from "../../../services/customer/query/services";
 import NoData from "../../common/NoData";
 import { formatDate, formatDateTime } from "../../../utils/helpers";
+import ConfirmDeleteModal from "../../modals/ConfirmDeleteModal";
+import useCustomToast from "../../../utils/notifications";
 
 const TableLayer = () => {
   const [tab, setTab] = useState("Pay-To-Park");
   const { isLoading, data: payToPark } = useGetPayToPark();
-  const { isLoading: isReserving, data: reserveParking } =
-    useGetReserveParking();
+  const {
+    isLoading: isReserving,
+    data: reserveParking,
+    refetch,
+  } = useGetReserveParking();
+  const [show, setShow] = useState(false);
+  const [showCancel, setShowCancel] = useState(false);
+  const [currentItem, setCurrentItem] = useState("");
 
-  const { isLoading: isCar, data: carService } = useGetCarService();
+  useEffect(() => {
+    if (showCancel) {
+      setShow(false);
+    }
+  }, [showCancel]);
+
+  const open = (dat) => {
+    setShow(true);
+    setCurrentItem(dat);
+  };
+
+  const {
+    isLoading: isCar,
+    data: carService,
+    refetch: refetchBook,
+  } = useGetCarService();
   const { isLoading: isEvent, data: eventParking } = useGetEventParking();
+  const { errorToast, successToast } = useCustomToast();
+
+  const { mutate: bookCancel, isLoading: isCancelBook } = useCancelBooking({
+    onSuccess: () => {
+      setShowCancel(false);
+      successToast("Reservation Cancelled");
+      refetchBook();
+    },
+    onError: (err) => {
+      errorToast(
+        err?.response?.data?.message || err?.message || "An Error occured"
+      );
+    },
+  });
+  const { mutate, isLoading: isCancel } = useCancelReserve({
+    onSuccess: () => {
+      setShowCancel(false);
+      successToast("Reservation Cancelled");
+      refetch();
+    },
+    onError: (err) => {
+      errorToast(
+        err?.response?.data?.message || err?.message || "An Error occured"
+      );
+    },
+  });
+
+  const handleCancel = () => {
+    bookCancel(currentItem?.id);
+  };
+
+  const handleSubmit = () => {
+    mutate(currentItem?.id);
+  };
 
   const itemsPerPage = 10;
   const [currentPage, setCurrentPage] = useState(1);
@@ -263,7 +322,6 @@ const TableLayer = () => {
                 lineHeight="100%"
               >
                 <Td textAlign="center">{dat?.ticketNumber}</Td>
-                <Td textAlign="center">{dat?.zone?.name}</Td>
                 <Td textAlign="center">{dat?.vehicle?.licensePlate}</Td>
                 <Td textAlign="center">{dat?.service?.name}</Td>
                 <Td>
@@ -307,7 +365,6 @@ const TableLayer = () => {
                 fontSize="12px"
                 lineHeight="100%"
               >
-                <Td textAlign="center">{dat?.zone?.name}</Td>
                 <Td textAlign="center">
                   ₦{" "}
                   {dat?.amount?.toLocaleString(undefined, {
@@ -336,8 +393,47 @@ const TableLayer = () => {
                   </Flex>
                 </Td>
                 <Td>
-                  <Flex justifyContent="center" align="center">
+                  <Flex
+                    pos="relative"
+                    cursor="pointer"
+                    onClick={() => open(dat)}
+                    justifyContent="center"
+                    className="box"
+                    align="center"
+                  >
                     <FiMoreVertical />
+
+                    {show && currentItem === dat && (
+                      <Box
+                        border="1px solid #F4F6F8"
+                        px="4px"
+                        py="8px"
+                        bg="#fff"
+                        borderRadius="4px"
+                        pos="absolute"
+                        right="0"
+                        zIndex={5555555}
+                        top="20px"
+                        boxShadow="0px 8px 16px 0px rgba(0, 0, 0, 0.08)"
+                      >
+                        <Flex
+                          py="6px"
+                          px="8px"
+                          borderRadius="2px"
+                          justifyContent="center"
+                          align="center"
+                          onClick={() => setShowCancel(true)}
+                          _hover={{ bg: "#F4F6F8" }}
+                          cursor="pointer"
+                          fontSize="10px"
+                          color="#646668"
+                          lineHeight="100%"
+                          fontWeight={500}
+                        >
+                          Cancel Reservation
+                        </Flex>
+                      </Box>
+                    )}
                   </Flex>
                 </Td>
               </Tr>
@@ -369,7 +465,6 @@ const TableLayer = () => {
                     maximumFractionDigits: 2,
                   })}
                 </Td>
-                <Td textAlign="center">{dat?.zone?.name}</Td>
                 <Td textAlign="center">{dat?.vehicle?.licensePlate}</Td>
                 <Td textAlign="center">
                   <Flex
@@ -423,8 +518,6 @@ const TableLayer = () => {
               fontSize="12px"
               lineHeight="100%"
             >
-              <Td textAlign="center">{dat?.bookingId}</Td>
-              <Td textAlign="center">{dat?.bookingType}</Td>
               <Td textAlign="center">{dat?.serviceType}</Td>
               <Td textAlign="center">
                 {" "}
@@ -447,10 +540,63 @@ const TableLayer = () => {
 
               <Td textAlign="center">{dat?.appointmentDate}</Td>
               <Td textAlign="center">{formatDate(dat?.createdAt)}</Td>
+              <Td>
+                {" "}
+                <Flex
+                  color={Object.values(Status[dat?.status])[0]}
+                  bg={Object.values(Status[dat?.status])[2]}
+                  py="5px"
+                  px="16px"
+                  justifyContent="center"
+                  borderRadius="4px"
+                  align="center"
+                >
+                  {Object.values(Status[dat?.status])[1]}
+                </Flex>
+              </Td>
 
               <Td>
-                <Flex justifyContent="center" align="center">
+                <Flex
+                  pos="relative"
+                  cursor="pointer"
+                  onClick={() => open(dat)}
+                  justifyContent="center"
+                  className="box"
+                  align="center"
+                >
                   <FiMoreVertical />
+
+                  {show && currentItem === dat && (
+                    <Box
+                      border="1px solid #F4F6F8"
+                      px="4px"
+                      py="8px"
+                      bg="#fff"
+                      borderRadius="4px"
+                      pos="absolute"
+                      right="0"
+                      zIndex={5555555}
+                      top="20px"
+                      boxShadow="0px 8px 16px 0px rgba(0, 0, 0, 0.08)"
+                    >
+                      <Flex
+                        py="6px"
+                        px="8px"
+                        borderRadius="2px"
+                        justifyContent="center"
+                        align="center"
+                        onClick={() => setShowCancel(true)}
+                        _hover={{ bg: "#F4F6F8" }}
+                        cursor="pointer"
+                        fontSize="10px"
+                        color="#646668"
+                        lineHeight="100%"
+                        fontWeight={500}
+                      >
+                        Cancel Reservation
+                      </Flex>
+                    </Box>
+                  )}
                 </Flex>
               </Td>
             </Tr>
@@ -466,6 +612,23 @@ const TableLayer = () => {
           </Tr>
         )}
       </TableFormat>
+
+      <ConfirmDeleteModal
+        title="Reservation"
+        isOpen={showCancel}
+        action={() =>
+          tab === "Reserve Parking"
+            ? handleSubmit()
+            : tab === "Car Services" && handleCancel()
+        }
+        isLoading={
+          tab === "Reserve Parking"
+            ? isCancel
+            : tab === "Car Services" && isCancelBook
+        }
+        cancel
+        onClose={() => setShowCancel(false)}
+      />
     </Box>
   );
 };

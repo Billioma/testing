@@ -8,6 +8,7 @@ const App = () => {
     "/assets/car.png",
     "/assets/card.png",
     "/assets/cards.png",
+    "/assets/refresh.svg",
     "/assets/location.svg",
     "/assets/ezlogo.ong",
     "/assets/park-right.png",

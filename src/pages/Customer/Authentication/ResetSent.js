@@ -8,13 +8,7 @@ const ResetSent = () => {
   const navigate = useNavigate();
 
   return (
-    <Flex
-      justifyContent="center"
-      w="full"
-      align="center"
-      h={{ base: "90vh", md: "100vh" }}
-      flexDir="column"
-    >
+    <Flex justifyContent="center" w="full" align="center" flexDir="column">
       <Flex
         justifyContent="center"
         w={{ base: "full", md: "50%", lg: "35%" }}
@@ -46,7 +40,7 @@ const ResetSent = () => {
           align="center"
           mt="32px"
         >
-          <Button onClick={() => navigate("/customer/auth/login")}>
+          <Button w="80%" onClick={() => navigate("/customer/auth/login")}>
             Back to Login
           </Button>
         </Flex>

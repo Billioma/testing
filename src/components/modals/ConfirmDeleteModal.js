@@ -15,6 +15,7 @@ const ConfirmDeleteModal = ({
   onClose,
   admin,
   title,
+  user,
   isLoading,
   action,
 }) => {
@@ -38,11 +39,12 @@ const ConfirmDeleteModal = ({
               fontWeight={700}
               lineHeight="100%"
             >
-              {cancel ? "Cancel" : "Delete"} {title}
+              {cancel ? "Cancel" : user ? "Remove" : "Delete"} {title}
             </Text>
 
             <Text textAlign="center">
-              Are you sure you want to {cancel ? "cancel" : "delete"} this{" "}
+              Are you sure you want to{" "}
+              {cancel ? "cancel" : user ? "remove" : "delete"} this{" "}
               <span style={{ textTransform: "lowercase" }}>{title}</span>?
             </Text>
 

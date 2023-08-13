@@ -89,6 +89,12 @@ const EditVehicleModal = ({
     });
   }, [dataa]);
 
+  const handleKeyPress = (e) => {
+    if (values?.plate?.length >= 8) {
+      e.preventDefault();
+    }
+  };
+
   const customStyles = {
     control: (provided) => ({
       ...provided,
@@ -199,6 +205,7 @@ const EditVehicleModal = ({
             </Text>
             <CustomInput
               value={values.plate}
+              handleKeyPress={handleKeyPress}
               auth
               onChange={(e) =>
                 setValues({

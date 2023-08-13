@@ -42,6 +42,16 @@ export const getReserveParking = async () => {
   return res.data;
 };
 
+export const cancelBooking = async (query) => {
+  const res = await axiosInstance.get("customer/" + API.CANCEL_BOOKING(query));
+  return res.data;
+};
+
+export const cancelReserve = async (query) => {
+  const res = await axiosInstance.get("customer/" + API.CANCEL_RESERVE(query));
+  return res.data;
+};
+
 export const getEventParking = async () => {
   const res = await axiosInstance.get("customer/" + `${API.EVENT_PARKING}`);
   return res.data;

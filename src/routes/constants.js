@@ -7,6 +7,13 @@ export const PUBLIC_PATHS = {
   CUST_RESET_SENT: "/customer/auth/reset-success",
   CUST_SIGNUP: "/customer/auth/signup",
 
+  // CLIENT ROUTES
+  CLIENT_LOGIN: "/client/auth/login",
+  CLIENT_RESET_PASS: "/client/auth/forgot-password",
+  CLIENT_CHANGE_PASS: "/client/auth/password-reset/:id/:hash",
+  CLIENT_CHANGE_SUCCESS: "/client/auth/password-success",
+  CLIENT_RESET_SENT: "/client/auth/reset-success",
+
   //OPERATOR ROUTES
   OP_LOGIN: "/operator/auth/login",
   OP_SIGNUP: "/operator/auth/signup",
@@ -38,6 +45,16 @@ export const PRIVATE_PATHS = {
   CUST_SETTINGS: "/customer/account/settings",
   CUST_PAYMENT: "/customer/account/payment",
   CUST_EDIT_PROFILE: "/customer/account/update-profile",
+
+  //CLIENT ROUTES
+  CLIENT_DASHBOARD: "/client/dashboard",
+  CLIENT_USERS: "/client/users",
+  CLIENT_ADD_USER: "/client/add-user",
+  CLIENT_EVENTS: "/client/events",
+  CLIENT_ADD_EVENT: "/client/add-event",
+  CLIENT_EDIT_EVENT: "/client/edit-event/:id",
+  CLIENT_ADD_SUB: "/client/add-subscription",
+  CLIENT_VIEW_SUB: "/client/view-subscriptions",
 
   //OPERATOR ROUTES
   OP_DASHBOARD: "/operator/dashboard",

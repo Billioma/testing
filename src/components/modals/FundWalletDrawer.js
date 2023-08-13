@@ -89,6 +89,7 @@ const FundWalletDrawer = ({ isOpen, cards, refetchUser, onClose, action }) => {
                 <CustomInput
                   mb
                   value={values?.amount}
+                  type="number"
                   onChange={(e) =>
                     setValues({
                       ...values,

@@ -4,6 +4,10 @@ import {
   AuthLayout,
   NonAuthLayout,
 } from "../components/layout/Customer/PageLayout";
+import {
+  AuthLayout as ClientAuthLayout,
+  NonAuthLayout as ClientNonAuthLayout,
+} from "../components/layout/Client/PageLayout";
 import { PRIVATE_ROUTES, PUBLIC_ROUTES } from "./routes";
 import {
   AuthLayout as AdminAuthLayout,
@@ -40,6 +44,16 @@ const Pages = () => {
       <AdminNonAuthLayout>
         <PublicRouteWrapper key={location.pathname} />
       </AdminNonAuthLayout>
+    )
+  ) : location.pathname.includes("client") ? (
+    user ? (
+      <ClientAuthLayout>
+        <PrivateRouteWrapper key={location.pathname} />
+      </ClientAuthLayout>
+    ) : (
+      <ClientNonAuthLayout>
+        <PublicRouteWrapper key={location.pathname} />
+      </ClientNonAuthLayout>
     )
   ) : user ? (
     <AuthLayout>

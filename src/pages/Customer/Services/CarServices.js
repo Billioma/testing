@@ -81,21 +81,21 @@ const CarServices = () => {
     vehicle: "",
   });
 
-  // useEffect(() => {
-  //   setStep(1);
-  //   startChange("");
-  //   setValues({
-  //     serviceId: "",
-  //     address: "",
-  //     appointmentTime: "",
-  //     img: "",
-  //     desc: "",
-  //     billingRate: "",
-  //     cardId: "",
-  //     paymentMethod: "",
-  //     vehicle: "",
-  //   });
-  // }, []);
+  useEffect(() => {
+    setStep(1);
+    startChange("");
+    setValues({
+      serviceId: "",
+      address: "",
+      appointmentTime: "",
+      img: "",
+      desc: "",
+      billingRate: "",
+      cardId: "",
+      paymentMethod: "",
+      vehicle: "",
+    });
+  }, []);
 
   const targetNames = [
     "Wash my car",
@@ -897,8 +897,6 @@ const CarServices = () => {
                   ? !values.address ||
                     !values.appointmentTime ||
                     !values.billingRate ||
-                    !values.desc ||
-                    !values.img ||
                     !values.serviceId ||
                     !values.vehicle
                   : ""

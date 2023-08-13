@@ -7,13 +7,7 @@ const ChangeSuccess = () => {
   const navigate = useNavigate();
 
   return (
-    <Flex
-      justifyContent="center"
-      w="full"
-      align="center"
-      h={{ base: "90vh", md: "100vh" }}
-      flexDir="column"
-    >
+    <Flex justifyContent="center" w="full" align="center" flexDir="column">
       <Flex
         justifyContent="center"
         w={{ base: "full", md: "50%", lg: "35%" }}

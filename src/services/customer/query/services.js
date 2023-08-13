@@ -10,6 +10,8 @@ import {
   getCarService,
   getEventParking,
   createEventParking,
+  cancelReserve,
+  cancelBooking,
 } from "../api/services";
 
 export const useGetPayToPark = (options = {}) => {
@@ -32,6 +34,22 @@ export const useGetReserveParking = (options = {}) => {
     }
   );
   return { data, isLoading, refetch };
+};
+
+export const useCancelReserve = (options = {}) => {
+  const { mutate, isLoading, data } = useMutation(cancelReserve, {
+    mutationKey: "CANCEL_RESERVE",
+    ...options,
+  });
+  return { mutate, isLoading, data };
+};
+
+export const useCancelBooking = (options = {}) => {
+  const { mutate, isLoading, data } = useMutation(cancelBooking, {
+    mutationKey: "CANCEL_BOOKING",
+    ...options,
+  });
+  return { mutate, isLoading, data };
 };
 
 export const useGetEventParking = (options = {}) => {

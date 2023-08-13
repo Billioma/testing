@@ -4,9 +4,17 @@ export const useLogOut = () => {
     setTimeout(() => {
       window.location.href = location.pathname.includes("operator")
         ? "/operator/auth/login"
-        : "/customer/auth/login";
+        : (window.location.href = location.pathname.includes("admin")
+            ? "/admin/auth/login"
+            : (window.location.href = location.pathname.includes("client")
+                ? "/client/auth/login"
+                : "/customer/auth/login"));
     }, 500);
   };
+};
+
+export const trim = (str) => {
+  return str?.length > 20 ? str.substring(0, 20) + "..." : str;
 };
 
 export const formatDate = (date, fallback = "") => {

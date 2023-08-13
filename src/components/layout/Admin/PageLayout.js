@@ -116,12 +116,12 @@ export const NonAuthLayout = ({ children }) => {
         <Box w={{ base: "full", lg: "1295px" }} minH="90vh" px="20px">
           {children}
         </Box>
-        <div className="text-center">
-          <span className="text-black text-xs font-normal leading-3">
+        <Flex mt="auto" flexDir="column" justifyContent="center" align="center">
+          <Text fontSize="12px" lineHeight="100%" mb="8px">
             Powered by
-          </span>
+          </Text>
           <Image src="/assets/ezlogo.png" />
-        </div>
+        </Flex>
       </Flex>
     </Box>
   );

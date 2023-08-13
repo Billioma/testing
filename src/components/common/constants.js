@@ -1,4 +1,6 @@
 import {
+  ClientEventIcon,
+  ClientUserIcon,
   DashboardIcon,
   HelpIcon,
   HistoryIcon,
@@ -263,6 +265,61 @@ export const general = [
   },
 ];
 
+export const clientEventHeader = [
+  "Name",
+  "Website",
+  "Event Start Date",
+  "Event End Date",
+  "Status",
+  "Date",
+  "Actions",
+];
+
+export const clientUserHeader = [
+  "Full Name",
+  "Phone",
+  "Company Name",
+  "Email Address",
+  "Status",
+  "Date Created",
+  "Actions",
+];
+
+export const clientSidebar = [
+  {
+    id: 0,
+    name: "Dashboard",
+    path: "/client/dashboard",
+    icon: <DashboardIcon fill="#444648" />,
+    sec: <DashboardIcon fill="#fff" />,
+    hover: <DashboardIcon fill="#ee383a" />,
+  },
+  {
+    id: 1,
+    name: "Users",
+    path: "/client/users",
+    icon: <ClientUserIcon fill="#444648" />,
+    sec: <ClientUserIcon fill="#fff" />,
+    hover: <ClientUserIcon fill="#ee383a" />,
+  },
+  {
+    id: 2,
+    name: "Events",
+    path: "/client/events",
+    icon: <ClientEventIcon fill="#444648" />,
+    sec: <ClientEventIcon fill="#fff" />,
+    hover: <ClientEventIcon fill="#ee383a" />,
+  },
+  {
+    id: 3,
+    name: "Subscriptions",
+    path: "/client/subscriptions",
+    icon: <SubscriptionIcon fill="#444648" />,
+    sec: <SubscriptionIcon fill="#fff" />,
+    hover: <SubscriptionIcon fill="#ee383a" />,
+  },
+];
+
 export const colors = [
   "White",
   "Black",
@@ -278,6 +335,19 @@ export const colors = [
   "Violet",
   "Purple",
 ];
+
+export const clientStyle = {
+  background: "#EE383A",
+  alignItems: "center",
+  display: "flex",
+  color: "#fff",
+  fontWeight: 500,
+  borderRadius: "4px",
+  fontSize: "12px",
+  lineHeight: "100%",
+  margin: "0 -20px 12px",
+  padding: "5px 2px 5px 16px",
+};
 
 export const activeStyle = {
   background: "#FDE8E8",
@@ -363,6 +433,12 @@ export const cardImg = [
   { img: "/assets/verve.svg", name: "verve" },
 ];
 
+export const SecStatus = [
+  { color: "#F9A11E", name: "Pending", bg: "#FDF6E7" },
+  { color: "#008000", name: "Active", bg: "#E5FFE5" },
+  { color: "#E81313", name: "Inactive", bg: "#F9D0CD" },
+];
+
 export const Status = [
   { color: "#F9A11E", name: "Pending", bg: "#FDF6E7" },
   { color: "#008000", name: "Completed", bg: "#E5FFE5" },
@@ -383,6 +459,7 @@ export const BookingSlots = [
 ];
 
 export const subOptions = ["Renew Subscription", "Cancel Subscription"];
+export const eventOptions = ["Edit Event", "Delete Event"];
 
 export const accountDrop = [
   {
@@ -414,7 +491,6 @@ export const servicesHeader = [
 
 export const payToParkHeader = [
   "TICKET NUMBER",
-  "ZONE",
   "VEHICLE",
   "SERVICE TYPE",
   "STATUS",
@@ -423,7 +499,6 @@ export const payToParkHeader = [
 ];
 
 export const reserveHeader = [
-  "ZONE",
   "AMOUNT",
   "VEHICLE",
   "ARRIVAL",
@@ -436,7 +511,6 @@ export const reserveHeader = [
 export const eventHeader = [
   "TICKET NUMBER",
   "AMOUNT",
-  "ZONE",
   "VEHICLE",
   "SERVICE TYPE",
   "EVENT",
@@ -446,13 +520,12 @@ export const eventHeader = [
 ];
 
 export const carHeader = [
-  "BOOKING ID",
-  "BOOKING TYPE",
   "SERVICE TYPE",
   "AMOUNT",
   "APPOINTMENT SLOT",
   "APPOINTMENT DATE",
   "DATE CREATED",
+  "STATUS",
   "ACTIONS",
 ];
 

@@ -53,6 +53,18 @@
 .parent_nav:hover .initial_image {
   display: none;
 }
+.mirrored-icon {
+  animation: rotateInfinity 2s linear infinite;
+}
+
+@keyframes rotateInfinity {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(-360deg);
+  }
+}
 
 .react-calendar {
   width: 100%;

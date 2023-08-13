@@ -12,6 +12,13 @@ const {
   CUST_CHANGE_PASS,
   CUST_CHANGE_SUCCESS,
 
+  // CLIENT ROUTES
+  CLIENT_LOGIN,
+  CLIENT_RESET_PASS,
+  CLIENT_RESET_SENT,
+  CLIENT_CHANGE_PASS,
+  CLIENT_CHANGE_SUCCESS,
+
   // OPERATOR ROUTES
   OP_LOGIN,
   OP_SIGNUP,
@@ -43,6 +50,16 @@ const {
   CUST_PAYMENT,
   CUST_PROFILE,
   CUST_EDIT_PROFILE,
+
+  // CLIENt ROUTES
+  CLIENT_DASHBOARD,
+  CLIENT_USERS,
+  CLIENT_ADD_USER,
+  CLIENT_EVENTS,
+  CLIENT_ADD_EVENT,
+  CLIENT_EDIT_EVENT,
+  CLIENT_ADD_SUB,
+  CLIENT_VIEW_SUB,
 
   // OPERATOR ROUTES
   OP_DASHBOARD,
@@ -132,6 +149,50 @@ const CustAddSubscriptions = WithSuspense(
 );
 const CustVehicles = WithSuspense(
   lazy(() => import("../pages/Customer/Vehicles/Vehicles"))
+);
+
+//CUSTOMER PAGES
+const ClientLogin = WithSuspense(
+  lazy(() => import("../pages/Client/Authentication/Login"))
+);
+
+const ClientResetPassword = WithSuspense(
+  lazy(() => import("../pages/Client/Authentication/ResetPassword"))
+);
+
+const ClientResetSent = WithSuspense(
+  lazy(() => import("../pages/Client/Authentication/ResetSent"))
+);
+
+const ClientChangePassword = WithSuspense(
+  lazy(() => import("../pages/Client/Authentication/ChangePassword"))
+);
+const ClientChangeSuccess = WithSuspense(
+  lazy(() => import("../pages/Client/Authentication/ChangeSuccess"))
+);
+const ClientDashboard = WithSuspense(
+  lazy(() => import("../pages/Client/Dashboard/Dashboard"))
+);
+const ClientAddSub = WithSuspense(
+  lazy(() => import("../pages/Client/Subscriptions/AddSub"))
+);
+const ClientViewSub = WithSuspense(
+  lazy(() => import("../pages/Client/Subscriptions/ViewSub"))
+);
+const ClientEvents = WithSuspense(
+  lazy(() => import("../pages/Client/Events/Events"))
+);
+const ClientAddEvent = WithSuspense(
+  lazy(() => import("../pages/Client/Events/AddEvent"))
+);
+const ClientEditEvent = WithSuspense(
+  lazy(() => import("../pages/Client/Events/EditEvent"))
+);
+const ClientAddUser = WithSuspense(
+  lazy(() => import("../pages/Client/Users/AddUser"))
+);
+const ClientUsers = WithSuspense(
+  lazy(() => import("../pages/Client/Users/Users"))
 );
 
 //OPERATOR PAGES
@@ -236,6 +297,13 @@ export const PUBLIC_ROUTES = [
   { path: CUST_SIGNUP, element: <CustSignup /> },
   { path: CUST_RESET_SENT, element: <CustResetSent /> },
 
+  //CLIENT ROUTES
+  { path: CLIENT_LOGIN, element: <ClientLogin /> },
+  { path: CLIENT_RESET_PASS, element: <ClientResetPassword /> },
+  { path: CLIENT_CHANGE_PASS, element: <ClientChangePassword /> },
+  { path: CLIENT_CHANGE_SUCCESS, element: <ClientChangeSuccess /> },
+  { path: CLIENT_RESET_SENT, element: <ClientResetSent /> },
+
   // OPERATOR ROUTES
   { path: OP_LOGIN, element: <OperatorLogin /> },
   { path: OPERATOR_RESET_PASSWORD, element: <OperatorResetPassword /> },
@@ -258,6 +326,8 @@ export const PUBLIC_ROUTES = [
             ? "/operator/auth/login"
             : location.pathname.includes("admin")
             ? "/admin/auth/login"
+            : location.pathname.includes("client")
+            ? "/client/auth/login"
             : "/customer/auth/login"
         }
         replace
@@ -283,6 +353,16 @@ export const PRIVATE_ROUTES = [
   { path: CUST_PROFILE, element: <CustProfile /> },
   { path: CUST_SERVICES_CAR_SERVICE, element: <CustServicesCar /> },
   { path: CUST_EDIT_PROFILE, element: <CustEditProfile /> },
+
+  // CLIENT ROUTES
+  { path: CLIENT_DASHBOARD, element: <ClientDashboard /> },
+  { path: CLIENT_USERS, element: <ClientUsers /> },
+  { path: CLIENT_ADD_USER, element: <ClientAddUser /> },
+  { path: CLIENT_EVENTS, element: <ClientEvents /> },
+  { path: CLIENT_ADD_EVENT, element: <ClientAddEvent /> },
+  { path: CLIENT_EDIT_EVENT, element: <ClientEditEvent /> },
+  { path: CLIENT_ADD_SUB, element: <ClientAddSub /> },
+  { path: CLIENT_VIEW_SUB, element: <ClientViewSub /> },
 
   // OPERATOR ROUTES
   { path: OP_DASHBOARD, element: <OpDashboard /> },
@@ -310,6 +390,8 @@ export const PRIVATE_ROUTES = [
         to={
           location.pathname.includes("operator")
             ? "/operator/dashboard"
+            : location.pathname.includes("client")
+            ? "/client/dashboard"
             : location.pathname.includes("admin")
             ? "/admin/dashboard"
             : "/customer/dashboard"
