@@ -74,6 +74,10 @@ export const PRIVATE_PATHS = {
   ADMIN_VIEW_ADMINISTRATOR: "/admin/users/administrators/details/:id",
 
   ADMIN_OPERATORS: "/admin/users/operatrs",
-  ADMIN_ADD_OPERATOR: "/admin/users/operators/new",
-  ADMIN_VIEW_OPERATOR: "/admin/users/operators/details/:id",
+  ADMIN_ADD_OPERATOR: "/admin/users/operatrs/new",
+  ADMIN_VIEW_OPERATOR: "/admin/users/operatrs/details/:id",
+
+  ADMIN_VEHICLES: "/admin/vehicles",
+  ADMIN_VIEW_VEHICLE: "/admin/vehicles/details/:id",
+  ADMIN_ADD_VEHICLE: "/admin/vehicles/new",
 };

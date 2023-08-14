@@ -154,8 +154,8 @@ export const sidebarItems = [
 
   {
     id: 4,
-    title: "Customer Transactions",
-    path: "/customer-transactions",
+    title: "Transactions",
+    path: "/transactions",
     icon: <CustomerIcon />,
     hover: <CustomerIcon fill="#fff" stroke="black" />,
     subItems: [
@@ -498,6 +498,11 @@ export const payToParkHeader = [
   "ACTIONS",
 ];
 
+export const clientDahboard = [
+  {
+    title: "Subscription",
+  }
+]
 export const reserveHeader = [
   "AMOUNT",
   "VEHICLE",
@@ -565,3 +570,21 @@ export const serviceTabs = [
   "Event Parking",
   "Car Services",
 ];
+
+export const customStyles = {
+  control: (provided) => ({
+    ...provided,
+    width: "100%",
+    minHeight: "44px",
+    color: "#646668",
+    fontSize: "14px",
+    cursor: "pointer",
+    borderRadius: "4px",
+    border: "1px solid #D4D6D8",
+    background: "unset",
+  }),
+  menu: (provided) => ({
+    ...provided,
+    fontSize: "13px",
+  }),
+};

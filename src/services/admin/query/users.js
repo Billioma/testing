@@ -69,7 +69,7 @@ export const useDeleteAdministrator = (options = {}) => {
   return { isLoading, data, mutate };
 };
 
-export const useGetOperators = (options = {}, page, limit) => {
+export const useGetOperators = (options = {}, page = 1, limit = 25) => {
   const { data, isLoading, refetch } = useQuery(
     ["GET_OPERATORS", page, limit],
     () => getOperators(page, limit),

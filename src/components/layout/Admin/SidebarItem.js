@@ -93,10 +93,10 @@ const SidebarItem = ({
               <VStack
                 pl={3}
                 align="stretch"
-                bg="white"
                 borderBottomRadius={4}
                 pb="2"
                 gap={3}
+                pt={4}
               >
                 {subItems.map((subItem) => (
                   <Link
@@ -106,10 +106,12 @@ const SidebarItem = ({
                       padding: "2",
                       fontSize: "10px",
                       textDecoration: "none",
-                      color: "black",
+                      color: pathname.includes(subItem.path)
+                        ? "#fff"
+                        : "#848688",
                       fontWeight: pathname.includes(subItem.path)
                         ? "500"
-                        : "normal",
+                        : "400",
                     }}
                   >
                     {subItem.title}

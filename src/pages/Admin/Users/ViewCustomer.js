@@ -8,6 +8,7 @@ import { useEditCustomer } from "../../../services/admin/query/users";
 import useCustomToast from "../../../utils/notifications";
 import Select from "react-select";
 import AdminChangePassword from "../../../components/modals/AdminChangePasswordModal";
+import GoBackTab from "../../../components/data/Admin/GoBackTab";
 
 export default function ViewCustomer() {
   const [isEdit, setIsEdit] = useState(false);
@@ -64,6 +65,7 @@ export default function ViewCustomer() {
         flexDir={{ md: "row", base: "column" }}
         gap={5}
       >
+        <GoBackTab />
         <Flex
           bg="#fff"
           borderRadius="16px"
@@ -218,7 +220,7 @@ export default function ViewCustomer() {
             <Button
               variant="adminSecondary"
               w="45%"
-              onClick={() => navigate(PRIVATE_PATHS.ADMIN_ATTENDANTS)}
+              onClick={() => navigate(PRIVATE_PATHS.ADMIN_CUSTOMERS)}
             >
               Cancel
             </Button>

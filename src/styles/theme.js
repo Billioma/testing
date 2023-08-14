@@ -291,6 +291,28 @@ export const customTheme = extendTheme({
             },
           },
         },
+
+        adminAlt: {
+          border: "none",
+          bgColor: "#1BC5BD",
+          borderRadius: "4px",
+          color: "#fff",
+          fontSize: "14px",
+          fontWeight: "500",
+          height: "45px",
+          _focus: {
+            color: "#fff",
+          },
+          _active: {
+            color: "#fff",
+          },
+          _hover: {
+            _disabled: {
+              background: "#1BC5BD",
+              border: "1px solid #7B47CC",
+            },
+          },
+        },
       },
       defaultProps: {
         variant: "primary",

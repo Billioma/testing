@@ -11,7 +11,7 @@ import {
   MenuItem,
 } from "@chakra-ui/react";
 import TableFormat from "../../../common/TableFormat";
-import { FiMoreVertical, FiEdit, FiTrash2 } from "react-icons/fi";
+import {  FiEdit, FiTrash2 } from "react-icons/fi";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import NoData from "../../../common/NoData";
 import { formatDate } from "../../../../utils/helpers";
@@ -20,6 +20,7 @@ import { useNavigate } from "react-router-dom";
 import AdminDeleteModal from "../../../modals/AdminDeleteModal";
 import useCustomToast from "../../../../utils/notifications";
 import { useDeleteCustomer } from "../../../../services/admin/query/users";
+import { BsChevronDown } from "react-icons/bs";
 
 const TableLayer = ({
   data,
@@ -153,7 +154,7 @@ const TableLayer = ({
               <Td>{customer?.profile?.firstName}</Td>
               <Td>{customer?.profile?.lastName}</Td>
               <Td>{customer?.profile?.phone}</Td>
-              <Td>{customer?.profile?.companyName}</Td>
+              <Td>{customer?.profile?.companyName || "N/A"}</Td>
               <Td>{customer?.email}</Td>
               <Td>
                 <Flex
@@ -172,7 +173,7 @@ const TableLayer = ({
                 <Flex justifyContent="center" align="center">
                   <Menu>
                     <MenuButton as={Text} cursor="pointer">
-                      <FiMoreVertical />
+                      <BsChevronDown />
                     </MenuButton>
                     <MenuList>
                       <MenuItem

@@ -31,16 +31,13 @@ export default function AddAttendants() {
   const navigate = useNavigate();
   const [isDisabled, setIsDisabled] = useState(true);
   const { errorToast, successToast } = useCustomToast();
-  const [roleOptions, setRoleOptions] = useState([]);
-  const { data: allRoles } = useGetAllRoles({
-    onSuccess: (data) => {
-      const temp = data.data?.map((role) => ({
-        label: role.displayName,
-        value: parseInt(role.id),
-      }));
-      setRoleOptions(temp);
-    },
-  });
+  const { data: allRoles } = useGetAllRoles();
+
+  const roleOptions =
+    allRoles?.data?.map((role) => ({
+      label: role.displayName,
+      value: parseInt(role.id),
+    })) || [];
 
   const { mutate, isLoading } = useCreateAdministrator({
     onSuccess: () => {
@@ -309,7 +306,7 @@ export default function AddAttendants() {
               Cancel
             </Button>
             <Button
-              variant="adminPrimary"
+              variant="adminAlt"
               w="55%"
               isDisabled={isDisabled}
               isLoading={isLoading || uploadingImage}

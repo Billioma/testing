@@ -1,17 +1,18 @@
 import React, { useState, useEffect } from "react";
 import { Box, Flex, Text, Button } from "@chakra-ui/react";
 import CustomInput from "../../../components/common/CustomInput";
-import { AiOutlineCamera } from "react-icons/ai";
+import { customStyles } from "../../../components/common/constants";
 import Select from "react-select";
-import { useGetAllOperators } from "../../../services/admin/query/operators";
 import { useNavigate, useLocation } from "react-router-dom";
 import { PRIVATE_PATHS } from "../../../routes/constants";
-import { useEditAttendant } from "../../../services/admin/query/users";
+import { useEditOperator } from "../../../services/admin/query/users";
 import useCustomToast from "../../../utils/notifications";
-import { useGetAllLocations } from "../../../services/admin/query/locations";
+import { useGetStates } from "../../../services/customer/query/locations";
 import AdminChangePassword from "../../../components/modals/AdminChangePasswordModal";
+import GoBackTab from "../../../components/data/Admin/GoBackTab";
+import { useGetOperators } from "../../../services/admin/query/users";
 
-export default function AddAttendants() {
+export default function ViewOperator() {
   const [state, setState] = useState({
     name: "",
     operator: "",
@@ -22,16 +23,17 @@ export default function AddAttendants() {
   });
   const [isEdit, setIsEdit] = useState(false);
   const location = useLocation();
-  const [operatorOptions, setOperatorOptions] = useState([]);
+  const { data: states } = useGetStates();
   const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
-  const { data } = useGetAllOperators();
   const [isDisabled, setIsDisabled] = useState(true);
   const { errorToast, successToast } = useCustomToast();
-  const { mutate, isLoading } = useEditAttendant({
+  const { refetch } = useGetOperators();
+  const { mutate, isLoading } = useEditOperator({
     onSuccess: () => {
-      successToast("Attendant updated successfully!");
-      navigate(PRIVATE_PATHS.ADMIN_ATTENDANTS);
+      successToast("Operator updated successfully!");
+      refetch();
+      navigate(PRIVATE_PATHS.ADMIN_OPERATORS);
     },
     onError: (error) => {
       errorToast(
@@ -40,16 +42,14 @@ export default function AddAttendants() {
     },
   });
 
-  const { data: locationsData } = useGetAllLocations();
-  const [locationOptions, setLocationOptions] = useState([]);
-
   const isFormValid = () => {
     return (
       !state.name ||
-      !state.userId ||
-      !state.accountType ||
-      !state.operator ||
-      !state.locations?.length
+      !state.email ||
+      !state.state ||
+      !state.phone ||
+      !state.contactPerson ||
+      !state.address
     );
   };
 
@@ -57,72 +57,28 @@ export default function AddAttendants() {
     setIsDisabled(isFormValid);
   }, [state]);
 
-  const customStyles = {
-    control: (provided) => ({
-      ...provided,
-      width: "100%",
-      minHeight: "44px",
-      color: "#646668",
-      fontSize: "14px",
-      cursor: "pointer",
-      borderRadius: "4px",
-      border: "1px solid #D4D6D8",
-      background: "unset",
-    }),
-    menu: (provided) => ({
-      ...provided,
-      fontSize: "13px",
-    }),
-  };
-
-  const selectOptions = [
-    { label: "PARKING", value: "PARKING" },
-    { label: "VALET", value: "VALET" },
-    { label: "SERVICE", value: "SERVICE" },
-    { label: "OTHERS", value: "OTHERS" },
-  ];
+  const stateOptions = states?.data?.map((state) => ({
+    value: state?.name?.replace(" State", "")?.replace(" (FCT)", ""),
+    label: state?.name?.replace(" State", "")?.replace(" (FCT)", ""),
+  }));
 
   const handleSubmit = (data = state) => {
-    mutate({ ...data, id: state.id, locations: state.locations });
+    mutate({ ...data, id: state.id });
   };
-
-  useEffect(() => {
-    if (!data?.data) return;
-    const temp = data?.data?.map((operator) => ({
-      label: operator.name,
-      value: operator.id,
-    }));
-    setOperatorOptions(temp);
-  }, [data?.data]);
-
-  useEffect(() => {
-    const temp = locationsData?.data?.map((location) => ({
-      label: location.name,
-      value: location.id,
-    }));
-    setLocationOptions(temp);
-  }, [locationsData]);
 
   useEffect(() => {
     setState({
       ...state,
       ...location.state,
-      operator: parseInt(location.state?.operator?.id),
-      locations: locationOptions
-        ?.filter((option) =>
-          location.state.locations?.find(
-            (location) => location.id === option.value
-          )
-        )
-        ?.map((option) => parseInt(option.value)),
     });
 
     setIsEdit(location?.state?.isEdit);
-  }, [location.state, locationOptions]);
+  }, [location.state]);
 
   return (
     <Box minH="75vh">
       <Flex justifyContent="center" align="center" w="full" flexDir="column">
+        <GoBackTab />
         <Flex
           bg="#fff"
           borderRadius="16px"
@@ -133,54 +89,15 @@ export default function AddAttendants() {
           flexDir="column"
           border="1px solid #E4E6E8"
         >
-          <Box
-            alignSelf={"center"}
-            justifyContent={"center"}
-            mb={5}
-            display="flex"
-            flexDir="column"
-          >
-            <Text
-              fontSize="10px"
-              fontWeight={500}
-              color="#444648"
-              textAlign="center"
-            >
-              Avatar
-            </Text>
-            <Box
-              w="120px"
-              h="120px"
-              justifyContent="center"
-              alignItems="center"
-              border="4px solid #0D0718"
-              borderRadius="12px"
-              display="flex"
-              cursor="pointer"
-              alignSelf={"center"}
-            >
-              <AiOutlineCamera size={32} />
-            </Box>
-
-            <Button
-              variant="adminSecondary"
-              fontSize="12px"
-              mt={4}
-              h="32px"
-              onClick={() => setIsOpen(true)}
-            >
-              Change Password
-            </Button>
-          </Box>
           <Box w="full" mb={4}>
             <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
-              Full Name
+              Name
             </Text>
             <CustomInput
               auth
               value={state.name}
               mb
-              holder="Enter full name"
+              holder="Enter operator name"
               onChange={(e) => setState({ ...state, name: e.target.value })}
               isDisabled={!isEdit}
             />
@@ -188,79 +105,85 @@ export default function AddAttendants() {
 
           <Box w="full" mb={4}>
             <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
-              User ID
+              Email Address
             </Text>
             <CustomInput
               auth
-              value={state.userId}
+              value={state.email}
               mb
-              holder="Enter user ID"
-              onChange={(e) => setState({ ...state, userId: e.target.value })}
+              holder="Enter email address"
+              onChange={(e) => setState({ ...state, email: e.target.value })}
               isDisabled={!isEdit}
             />
           </Box>
 
           <Box mb={4}>
+            <Text mb="8px" fontWeight={500} color="#444648" fontSize="10px">
+              Phone Number
+            </Text>
+            <CustomInput
+              mb
+              ngn
+              name="phone"
+              value={`${state?.phone}`}
+              onChange={(e) => {
+                const inputPhone = e.target.value
+                  .replace(/\D/g, "")
+                  .slice(0, 10);
+                setState({
+                  ...state,
+                  phone: inputPhone,
+                });
+              }}
+              holder="Enter Phone Number"
+              isDisabled={!isEdit}
+            />
+          </Box>
+
+          <Box w="full" mb={4}>
             <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
-              Select Account Type
+              Address
+            </Text>
+            <CustomInput
+              auth
+              value={state.address}
+              mb
+              holder="Enter operator address"
+              onChange={(e) => setState({ ...state, address: e.target.value })}
+              isDisabled={!isEdit}
+            />
+          </Box>
+          <Box mb={4}>
+            <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
+              State
             </Text>
             <Select
               styles={customStyles}
-              options={selectOptions}
-              placeholder="Select account type"
+              placeholder="Select State"
+              options={stateOptions}
+              value={stateOptions?.find(
+                (option) => option.value === state.state
+              )}
               onChange={(selectedOption) =>
-                setState({
-                  ...state,
-                  accountType: selectedOption.value,
-                })
+                setState({ ...state, state: selectedOption.value })
               }
-              value={selectOptions?.find(
-                (option) => option.value === state.accountType
-              )}
               isDisabled={!isEdit}
             />
           </Box>
 
-          <Box mb={4}>
+          <Box w="full" mb={4}>
             <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
-              Assign Operator
+              Contact Person
             </Text>
-            <Select
-              styles={customStyles}
-              options={operatorOptions}
-              placeholder="Select an operator"
-              onChange={(selectedOption) =>
-                setState({
-                  ...state,
-                  operator: parseInt(selectedOption.value),
-                })
+            <CustomInput
+              auth
+              value={state.contactPerson}
+              mb
+              holder="Enter contact person"
+              onChange={(e) =>
+                setState({ ...state, contactPerson: e.target.value })
               }
-              value={operatorOptions?.find(
-                (operator) => operator.value == state.operator
-              )}
               isDisabled={!isEdit}
-            />
-          </Box>
-
-          <Box mb={4}>
-            <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
-              Locations
-            </Text>
-            <Select
-              styles={customStyles}
-              options={locationOptions}
-              placeholder="Select locations"
-              onChange={(selectedOptions) =>
-                setState({
-                  ...state,
-                  locations: selectedOptions.map((option) => option.value),
-                })
-              }
-              value={locationOptions?.filter((option) =>
-                state.locations?.find((location) => location == option.value)
-              )}
-              isDisabled={!isEdit}
-              isMulti
             />
           </Box>
 
@@ -288,6 +211,17 @@ export default function AddAttendants() {
               isDisabled={!isEdit}
             />
           </Box>
+
+          <Button
+            variant="adminSecondary"
+            fontSize="12px"
+            mt={4}
+            h="32px"
+            onClick={() => setIsOpen(true)}
+            alignSelf={"center"}
+          >
+            Change Password
+          </Button>
 
           <Flex gap={4} mt={4}>
             <Button

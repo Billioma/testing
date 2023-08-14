@@ -12,6 +12,7 @@ import { useNavigate } from "react-router-dom";
 import { PRIVATE_PATHS } from "../../../routes/constants";
 import { useCreateAttendant } from "../../../services/admin/query/users";
 import useCustomToast from "../../../utils/notifications";
+import GoBackTab from "../../../components/data/Admin/GoBackTab";
 
 export default function AddAttendants() {
   const [state, setState] = useState({
@@ -89,6 +90,7 @@ export default function AddAttendants() {
   return (
     <Box minH="75vh">
       <Flex justifyContent="center" align="center" w="full" flexDir="column">
+        <GoBackTab />
         <Flex
           bg="#fff"
           borderRadius="16px"
@@ -142,6 +144,7 @@ export default function AddAttendants() {
               auth
               value={state.userId}
               mb
+              type="number"
               holder="Enter user ID"
               onChange={(e) => setState({ ...state, userId: e.target.value })}
             />
@@ -254,7 +257,7 @@ export default function AddAttendants() {
               Cancel
             </Button>
             <Button
-              variant="adminPrimary"
+              variant="adminAlt"
               w="55%"
               isDisabled={isDisabled}
               isLoading={isLoading}

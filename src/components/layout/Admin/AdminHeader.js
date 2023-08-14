@@ -39,6 +39,18 @@ export default function AdminHeader() {
       case pathname.includes("services"):
         return setTitle({ header: "Services", sub: "" });
 
+      case pathname.includes("vehicle"):
+        switch (true) {
+          case pathname.includes("vehicles") && pathname.includes("details"):
+            return setTitle({ header: "Vehicles", sub: "Details" });
+
+          case pathname.includes("vehicles") && pathname.includes("new"):
+            return setTitle({ header: "Vehicles", sub: "Add Vehicle" });
+
+          default:
+            return setTitle({ header: "Vehicles", sub: "" });
+        }
+
       case pathname.includes("users"):
         switch (true) {
           case pathname.includes("attendants") && pathname.includes("details"):

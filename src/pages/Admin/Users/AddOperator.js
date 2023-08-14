@@ -1,38 +1,39 @@
 import React, { useState, useEffect } from "react";
 import { Box, Flex, Text, Button } from "@chakra-ui/react";
 import CustomInput from "../../../components/common/CustomInput";
-import {
-  AiOutlineEye,
-  AiOutlineEyeInvisible,
-  AiOutlineCamera,
-} from "react-icons/ai";
+import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import Select from "react-select";
-import { useGetAllOperators } from "../../../services/admin/query/operators";
+import { customStyles } from "../../../components/common/constants";
 import { useNavigate } from "react-router-dom";
 import { PRIVATE_PATHS } from "../../../routes/constants";
-import { useCreateAttendant } from "../../../services/admin/query/users";
+import { useCreateOperator } from "../../../services/admin/query/users";
 import useCustomToast from "../../../utils/notifications";
+import GoBackTab from "../../../components/data/Admin/GoBackTab";
+import { useGetStates } from "../../../services/customer/query/locations";
 
-export default function AddAttendants() {
+export default function AddOperator() {
   const [state, setState] = useState({
     name: "",
     password: "",
+
+    email: "",
     passwordConfirmation: "",
-    operator: "",
-    accountType: "",
-    userId: "",
+    phone: "",
+    address: "",
+    contactPerson: "",
+    state: "",
     status: 1,
   });
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const navigate = useNavigate();
-  const { data } = useGetAllOperators();
   const [isDisabled, setIsDisabled] = useState(true);
   const { errorToast, successToast } = useCustomToast();
-  const { mutate, isLoading } = useCreateAttendant({
+  const { data: states } = useGetStates();
+  const { mutate, isLoading } = useCreateOperator({
     onSuccess: () => {
-      successToast("Attendant added successfully!");
-      navigate(PRIVATE_PATHS.ADMIN_ATTENDANTS);
+      successToast("Operator added successfully!");
+      navigate(PRIVATE_PATHS.ADMIN_OPERATORS);
     },
     onError: (error) => {
       errorToast(
@@ -41,14 +42,21 @@ export default function AddAttendants() {
     },
   });
 
+  const stateOptions = states?.data?.map((state) => ({
+    value: state?.name?.replace(" State", "")?.replace(" (FCT)", ""),
+    label: state?.name?.replace(" State", "")?.replace(" (FCT)", ""),
+  }));
+
   const isFormValid = () => {
     return (
       !state.name ||
-      !state.userId ||
+      !state.email ||
       !state.password ||
       !state.passwordConfirmation ||
-      !state.accountType ||
-      !state.operator
+      !state.state ||
+      !state.phone ||
+      !state.contactPerson ||
+      !state.address
     );
   };
 
@@ -56,39 +64,15 @@ export default function AddAttendants() {
     setIsDisabled(isFormValid);
   }, [state]);
 
-  const customStyles = {
-    control: (provided) => ({
-      ...provided,
-      width: "100%",
-      height: "44px",
-      color: "#646668",
-      fontSize: "14px",
-      cursor: "pointer",
-      borderRadius: "4px",
-      border: "1px solid #D4D6D8",
-      background: "unset",
-    }),
-    menu: (provided) => ({
-      ...provided,
-      fontSize: "13px",
-    }),
-  };
-
-  const selectOptions = [
-    { label: "PARKING", value: "PARKING" },
-    { label: "VALET", value: "VALET" },
-    { label: "SERVICE", value: "SERVICE" },
-    { label: "OTHERS", value: "OTHERS" },
-  ];
-
   const handleSubmit = (e) => {
     e.preventDefault();
-    mutate(state);
+    mutate({ ...state, phone: `0${state.phone}` });
   };
 
   return (
     <Box minH="75vh">
       <Flex justifyContent="center" align="center" w="full" flexDir="column">
+        <GoBackTab />
         <Flex
           bg="#fff"
           borderRadius="16px"
@@ -99,51 +83,95 @@ export default function AddAttendants() {
           flexDir="column"
           border="1px solid #E4E6E8"
         >
-          <Box alignSelf={"center"} mb={5}>
-            <Text
-              fontSize="10px"
-              fontWeight={500}
-              color="#444648"
-              textAlign="center"
-            >
-              Avatar
-            </Text>
-            <Box
-              w="120px"
-              h="120px"
-              justifyContent="center"
-              alignItems="center"
-              border="4px solid #0D0718"
-              borderRadius="12px"
-              display="flex"
-              cursor="pointer"
-            >
-              <AiOutlineCamera size={32} />
-            </Box>
-          </Box>
           <Box w="full" mb={4}>
             <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
-              Full Name
+              Name
             </Text>
             <CustomInput
               auth
               value={state.name}
               mb
-              holder="Enter full name"
+              holder="Enter operator name"
               onChange={(e) => setState({ ...state, name: e.target.value })}
             />
           </Box>
 
           <Box w="full" mb={4}>
             <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
-              User ID
+              Email Address
             </Text>
             <CustomInput
               auth
-              value={state.userId}
+              value={state.email}
               mb
-              holder="Enter user ID"
-              onChange={(e) => setState({ ...state, userId: e.target.value })}
+              holder="Enter email address"
+              onChange={(e) => setState({ ...state, email: e.target.value })}
+            />
+          </Box>
+
+          <Box mb={4}>
+            <Text mb="8px" fontWeight={500} color="#444648" fontSize="10px">
+              Phone Number
+            </Text>
+            <CustomInput
+              mb
+              ngn
+              name="phone"
+              value={`${state?.phone}`}
+              onChange={(e) => {
+                const inputPhone = e.target.value
+                  .replace(/\D/g, "")
+                  .slice(0, 10);
+                setState({
+                  ...state,
+                  phone: inputPhone,
+                });
+              }}
+              holder="Enter Phone Number"
+            />
+          </Box>
+
+          <Box w="full" mb={4}>
+            <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
+              Address
+            </Text>
+            <CustomInput
+              auth
+              value={state.address}
+              mb
+              holder="Enter operator address"
+              onChange={(e) => setState({ ...state, address: e.target.value })}
+            />
+          </Box>
+          <Box mb={4}>
+            <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
+              State
+            </Text>
+            <Select
+              styles={customStyles}
+              placeholder="Select State"
+              options={stateOptions}
+              value={stateOptions?.find(
+                (option) => option.value === state.state
+              )}
+              onChange={(selectedOption) =>
+                setState({ ...state, state: selectedOption.value })
+              }
+            />
+          </Box>
+
+          <Box w="full" mb={4}>
+            <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
+              Contact Person
+            </Text>
+            <CustomInput
+              auth
+              value={state.contactPerson}
+              mb
+              holder="Enter contact person"
+              onChange={(e) =>
+                setState({ ...state, contactPerson: e.target.value })
+              }
             />
           </Box>
 
@@ -162,7 +190,7 @@ export default function AddAttendants() {
             <Box
               w="fit-content"
               position="absolute"
-              zIndex={2}
+              zIndex={0.5}
               right={"10px"}
               top="35px"
               cursor="pointer"
@@ -194,7 +222,7 @@ export default function AddAttendants() {
             <Box
               w="fit-content"
               position="absolute"
-              zIndex={2}
+              zIndex={0.5}
               right={"10px"}
               top="35px"
               cursor="pointer"
@@ -208,43 +236,6 @@ export default function AddAttendants() {
             </Box>
           </Box>
 
-          <Box mb={4}>
-            <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
-              Select Account Type
-            </Text>
-            <Select
-              styles={customStyles}
-              options={selectOptions}
-              placeholder="Select account type"
-              onChange={(selectedOption) =>
-                setState({
-                  ...state,
-                  accountType: selectedOption.value,
-                })
-              }
-            />
-          </Box>
-
-          <Box>
-            <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
-              Assign Operator
-            </Text>
-            <Select
-              styles={customStyles}
-              options={data?.data?.map((operator) => ({
-                label: operator.name,
-                value: operator.id,
-              }))}
-              placeholder="Select an operator"
-              onChange={(selectedOption) =>
-                setState({
-                  ...state,
-                  operator: parseInt(selectedOption.value),
-                })
-              }
-            />
-          </Box>
-
           <Flex gap={4} mt={4}>
             <Button
               variant="adminSecondary"
@@ -254,7 +245,7 @@ export default function AddAttendants() {
               Cancel
             </Button>
             <Button
-              variant="adminPrimary"
+              variant="adminAlt"
               w="55%"
               isDisabled={isDisabled}
               isLoading={isLoading}

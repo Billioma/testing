@@ -11,7 +11,7 @@ import {
   MenuItem,
 } from "@chakra-ui/react";
 import TableFormat from "../../../common/TableFormat";
-import { FiMoreVertical, FiEdit, FiTrash2 } from "react-icons/fi";
+import { FiEdit, FiTrash2 } from "react-icons/fi";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import NoData from "../../../common/NoData";
 import { formatDate } from "../../../../utils/helpers";
@@ -20,6 +20,7 @@ import { HiOutlineInformationCircle } from "react-icons/hi";
 import AdminDeleteModal from "../../../modals/AdminDeleteModal";
 import useCustomToast from "../../../../utils/notifications";
 import { useDeleteAttendant } from "../../../../services/admin/query/users";
+import { BsChevronDown } from "react-icons/bs";
 
 const TableLayer = ({
   data,
@@ -169,7 +170,7 @@ const TableLayer = ({
                 <Flex justifyContent="center" align="center">
                   <Menu>
                     <MenuButton as={Text} cursor="pointer">
-                      <FiMoreVertical />
+                      <BsChevronDown />
                     </MenuButton>
                     <MenuList>
                       <MenuItem

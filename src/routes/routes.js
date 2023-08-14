@@ -78,6 +78,9 @@ const {
   ADMIN_OPERATORS,
   ADMIN_ADD_OPERATOR,
   ADMIN_VIEW_OPERATOR,
+  ADMIN_ADD_VEHICLE,
+  ADMIN_VEHICLES,
+  ADMIN_VIEW_VEHICLE,
 } = PRIVATE_PATHS;
 
 //CUSTOMER PAGES
@@ -288,6 +291,17 @@ const AdminViewAdministrator = WithSuspense(
   lazy(() => import("../pages/Admin/Users/ViewAdministrator"))
 );
 
+const AdminVehicles = WithSuspense(
+  lazy(() => import("../pages/Admin/Vehicles/Vehicles"))
+);
+
+const AdminAddVehicle = WithSuspense(
+  lazy(() => import("../pages/Admin/Vehicles/AddVehicle"))
+);
+const AdminViewVehicle = WithSuspense(
+  lazy(() => import("../pages/Admin/Vehicles/ViewVehicle"))
+);
+
 export const PUBLIC_ROUTES = [
   //CUSTOMER ROUTES
   { path: CUST_LOGIN, element: <CustLogin /> },
@@ -372,7 +386,7 @@ export const PRIVATE_ROUTES = [
   { path: ADMIN_CUSTOMERS, element: <AdminCustomers /> },
   { path: ADMIN_SERVICES, element: <AdminServices /> },
   { path: ADMIN_ADMINISTRATORS, element: <AdminAdministrators /> },
-  // { path: ADMIN_OPERATORS, element: <AdminOperators /> },
+  { path: ADMIN_OPERATORS, element: <AdminOperators /> },
   { path: ADMIN_ATTENDANTS, element: <AdminAttendants /> },
   { path: ADMIN_ADD_ATTENDANT, element: <AdminAddAttendant /> },
   { path: ADMIN_VIEW_ATTENDANT, element: <AdminViewAttendant /> },
@@ -382,6 +396,9 @@ export const PRIVATE_ROUTES = [
   { path: ADMIN_VIEW_ADMINISTRATOR, element: <AdminViewAdministrator /> },
   { path: ADMIN_ADD_OPERATOR, element: <AdminAddOperator /> },
   { path: ADMIN_VIEW_OPERATOR, element: <AdminViewOperator /> },
+  { path: ADMIN_VEHICLES, element: <AdminVehicles /> },
+  { path: ADMIN_ADD_VEHICLE, element: <AdminAddVehicle /> },
+  { path: ADMIN_VIEW_VEHICLE, element: <AdminViewVehicle /> },
 
   {
     path: "*",

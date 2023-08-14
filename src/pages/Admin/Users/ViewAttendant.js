@@ -10,6 +10,7 @@ import { useEditAttendant } from "../../../services/admin/query/users";
 import useCustomToast from "../../../utils/notifications";
 import { useGetAllLocations } from "../../../services/admin/query/locations";
 import AdminChangePassword from "../../../components/modals/AdminChangePasswordModal";
+import GoBackTab from "../../../components/data/Admin/GoBackTab";
 
 export default function AddAttendants() {
   const [state, setState] = useState({
@@ -123,6 +124,7 @@ export default function AddAttendants() {
   return (
     <Box minH="75vh">
       <Flex justifyContent="center" align="center" w="full" flexDir="column">
+        <GoBackTab />
         <Flex
           bg="#fff"
           borderRadius="16px"
@@ -194,6 +196,7 @@ export default function AddAttendants() {
               auth
               value={state.userId}
               mb
+              type="number"
               holder="Enter user ID"
               onChange={(e) => setState({ ...state, userId: e.target.value })}
               isDisabled={!isEdit}

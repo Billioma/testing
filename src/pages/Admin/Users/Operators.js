@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import AttendantsTableLayer from "../../../components/data/Admin/Users/AttendantsTableLayer";
+import OperatorsTableLayer from "../../../components/data/Admin/Users/OperatorsTableLayer";
 import { Box, Button, Flex, Text } from "@chakra-ui/react";
 import { FiPlus } from "react-icons/fi";
-import { useGetAttendants } from "../../../services/admin/query/users";
+import { useGetOperators } from "../../../services/admin/query/users";
 import { VscDebugRestart } from "react-icons/vsc";
 import { useNavigate } from "react-router-dom";
 import { PRIVATE_PATHS } from "../../../routes/constants";
@@ -14,9 +14,8 @@ export default function () {
   const [endRow, setEndRow] = useState(0);
   const navigate = useNavigate();
 
-  const { data, isLoading, refetch } = useGetAttendants(
+  const { data, isLoading, refetch } = useGetOperators(
     {
-      refetchOnWindowFocus: true,
       onSuccess: (data) => {
         const nextStartRow = endRow + 1;
         const nextEndRow = Math.min(endRow + limit, data?.total);
@@ -29,19 +28,20 @@ export default function () {
     page,
     limit
   );
+  
 
   return (
     <Box w="full" border={"1px solid #E4E6E8"} borderRadius={"12px"}>
       <Flex justifyContent={"space-between"} alignItems="center" py={3} px={5}>
-        <Text fontWeight="500">All Attendants</Text>
+        <Text fontWeight="500">All Operators</Text>
         <Flex gap="6px">
           <Button
             variant="adminPrimary"
             gap={2}
             fontSize={"12px"}
-            onClick={() => navigate(PRIVATE_PATHS.ADMIN_ADD_ATTENDANT)}
+            onClick={() => navigate(PRIVATE_PATHS.ADMIN_ADD_OPERATOR)}
           >
-            Add an Attendant <FiPlus size={18} />
+            Add an Operator <FiPlus size={18} />
           </Button>
           <Button
             bg="white"
@@ -56,7 +56,7 @@ export default function () {
         </Flex>
       </Flex>
       <hr />
-      <AttendantsTableLayer
+      <OperatorsTableLayer
         data={data}
         isLoading={isLoading}
         page={page}

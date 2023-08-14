@@ -116,7 +116,13 @@ export const NonAuthLayout = ({ children }) => {
         <Box w={{ base: "full", lg: "1295px" }} minH="90vh" px="20px">
           {children}
         </Box>
-        <Flex mt="auto" flexDir="column" justifyContent="center" align="center">
+        <Flex
+          mt="auto"
+          mb="20px"
+          flexDir="column"
+          justifyContent="center"
+          align="center"
+        >
           <Text fontSize="12px" lineHeight="100%" mb="8px">
             Powered by
           </Text>

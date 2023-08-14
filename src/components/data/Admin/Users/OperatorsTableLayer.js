@@ -11,7 +11,7 @@ import {
   MenuItem,
 } from "@chakra-ui/react";
 import TableFormat from "../../../common/TableFormat";
-import { FiMoreVertical, FiEdit, FiTrash2 } from "react-icons/fi";
+import { FiEdit, FiTrash2 } from "react-icons/fi";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import NoData from "../../../common/NoData";
 import { formatDate } from "../../../../utils/helpers";
@@ -19,7 +19,9 @@ import { useNavigate } from "react-router-dom";
 import { HiOutlineInformationCircle } from "react-icons/hi";
 import AdminDeleteModal from "../../../modals/AdminDeleteModal";
 import useCustomToast from "../../../../utils/notifications";
-import { useDeleteAttendant } from "../../../../services/admin/query/users";
+import { useDeleteOperator } from "../../../../services/admin/query/users";
+import { PRIVATE_PATHS } from "../../../../routes/constants";
+import { BsChevronDown } from "react-icons/bs";
 
 const TableLayer = ({
   data,
@@ -32,15 +34,17 @@ const TableLayer = ({
 }) => {
   const headers = [
     "NAME",
-    "USER ID",
-    "ACCOUNT TYPE",
+    "EMAIL ADDRESS",
+    "CONTACT PERSON",
+    "PHONE",
+    "STATE",
     "STATUS",
     "DATE",
     "ACTIONS",
   ];
   const { errorToast, successToast } = useCustomToast();
 
-  const { mutate, isLoading: isDeleting } = useDeleteAttendant({
+  const { mutate, isLoading: isDeleting } = useDeleteOperator({
     onSuccess: (res) => {
       successToast(res?.message);
       refetch();
@@ -68,6 +72,7 @@ const TableLayer = ({
         maxH="65vh"
         header={headers}
         opt
+        act
         alignFirstHeader="start"
         paginate={
           <Flex
@@ -141,7 +146,7 @@ const TableLayer = ({
         }
       >
         {data?.data?.length ? (
-          data?.data?.map((attendant, i) => (
+          data?.data?.map((operator, i) => (
             <Tr
               key={i}
               color="#646668"
@@ -149,27 +154,29 @@ const TableLayer = ({
               fontSize="12px"
               lineHeight="100%"
             >
-              <Td>{attendant?.name}</Td>
-              <Td textAlign="center">{attendant?.userId}</Td>
-              <Td textAlign="center">{attendant?.accountType}</Td>
+              <Td>{operator?.name}</Td>
+              <Td>{operator?.email}</Td>
+              <Td>{operator?.contactPerson}</Td>
+              <Td>{operator?.phone}</Td>
+              <Td>{operator?.state}</Td>
               <Td textAlign="center">
                 <Flex
-                  bg={attendant?.status ? "#E5FFE5" : "#FEF1F1"}
-                  color={attendant?.status ? "#0B841D" : "#EE383A"}
+                  bg={operator?.status ? "#E5FFE5" : "#FEF1F1"}
+                  color={operator?.status ? "#0B841D" : "#EE383A"}
                   justifyContent={"center"}
                   alignItems="center"
                   padding="7px 10px"
                   borderRadius="4px"
                 >
-                  {attendant?.status ? "Active" : "Inactive"}
+                  {operator?.status ? "Active" : "Inactive"}
                 </Flex>
               </Td>
-              <Td textAlign="center">{formatDate(attendant?.createdAt)}</Td>
+              <Td textAlign="center">{formatDate(operator?.createdAt)}</Td>
               <Td textAlign="center">
                 <Flex justifyContent="center" align="center">
                   <Menu>
                     <MenuButton as={Text} cursor="pointer">
-                      <FiMoreVertical />
+                      <BsChevronDown />
                     </MenuButton>
                     <MenuList>
                       <MenuItem
@@ -178,8 +185,8 @@ const TableLayer = ({
                         fontWeight="500"
                         onClick={() =>
                           navigate(
-                            "/admin/users/attendants/details/" + attendant.id,
-                            { state: { ...attendant, isEdit: false } }
+                            `${PRIVATE_PATHS.ADMIN_OPERATORS}/details/${operator.id}`,
+                            { state: { ...operator, isEdit: false } }
                           )
                         }
                       >
@@ -192,8 +199,8 @@ const TableLayer = ({
                         fontWeight="500"
                         onClick={() =>
                           navigate(
-                            "/admin/users/attendants/details/" + attendant.id,
-                            { state: { ...attendant, isEdit: true } }
+                            `${PRIVATE_PATHS.ADMIN_OPERATORS}/details/${operator.id}`,
+                            { state: { ...operator, isEdit: true } }
                           )
                         }
                       >
@@ -206,7 +213,7 @@ const TableLayer = ({
                         fontWeight="500"
                         color="red"
                         onClick={() =>
-                          setSelectedRow({ isOpen: true, id: attendant.id })
+                          setSelectedRow({ isOpen: true, id: operator.id })
                         }
                       >
                         <FiTrash2 />
@@ -233,8 +240,8 @@ const TableLayer = ({
       <AdminDeleteModal
         isOpen={selectedRow.isOpen}
         onClose={() => setSelectedRow({ ...selectedRow, isOpen: false })}
-        title="Delete Attendant"
-        subTitle="Are you sure you want to delete this attendant?"
+        title="Delete Operator"
+        subTitle="Are you sure you want to delete this operator?"
         handleSubmit={handleSubmit}
         isLoading={isDeleting}
       />

@@ -6,12 +6,13 @@ import Select from "react-select";
 import { useGetAllOperators } from "../../../services/admin/query/operators";
 import { useNavigate, useLocation } from "react-router-dom";
 import { PRIVATE_PATHS } from "../../../routes/constants";
-import { useEditAttendant } from "../../../services/admin/query/users";
+import { useEditAdministrator } from "../../../services/admin/query/users";
 import useCustomToast from "../../../utils/notifications";
-import { useGetAllLocations } from "../../../services/admin/query/locations";
 import AdminChangePassword from "../../../components/modals/AdminChangePasswordModal";
 import { useGetAllRoles } from "../../../services/admin/query/roles";
 import GoBackTab from "../../../components/data/Admin/GoBackTab";
+import { useUploadMedia } from "../../../services/admin/query/general";
+import { customStyles } from "../../../components/common/constants";
 
 export default function AddAttendants() {
   const [state, setState] = useState({
@@ -24,16 +25,15 @@ export default function AddAttendants() {
   });
   const [isEdit, setIsEdit] = useState(false);
   const location = useLocation();
-  const [operatorOptions, setOperatorOptions] = useState([]);
+
   const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
-  const { data } = useGetAllOperators();
   const [isDisabled, setIsDisabled] = useState(true);
   const { errorToast, successToast } = useCustomToast();
-  const { mutate, isLoading } = useEditAttendant({
+  const { mutate, isLoading } = useEditAdministrator({
     onSuccess: () => {
-      successToast("Attendant updated successfully!");
-      navigate(PRIVATE_PATHS.ADMIN_ATTENDANTS);
+      successToast("Administrator updated successfully!");
+      navigate(PRIVATE_PATHS.ADMIN_ADMINISTRATORS);
     },
     onError: (error) => {
       errorToast(
@@ -41,20 +41,25 @@ export default function AddAttendants() {
       );
     },
   });
-  const [roleOptions, setRoleOptions] = useState([]);
-  const { data: allRoles } = useGetAllRoles({
+
+  const { data: allRoles } = useGetAllRoles();
+
+  const roleOptions =
+    allRoles?.data?.map((role) => ({
+      label: role.displayName,
+      value: parseInt(role.id),
+    })) || [];
+
+  const { mutate: uploadMedia, isLoading: uploadingImage } = useUploadMedia({
     onSuccess: (data) => {
-      const temp = data.data?.map((role) => ({
-        label: role.displayName,
-        value: parseInt(role.id),
-      }));
-      setRoleOptions(temp);
+      mutate({ ...state, avatar: data.path });
+    },
+    onError: (err) => {
+      errorToast(
+        err?.response?.data?.message || err?.message || "An Error occured"
+      );
     },
   });
-
-  const { data: locationsData } = useGetAllLocations();
-  const [locationOptions, setLocationOptions] = useState([]);
-
   const handleAvatarImageChange = (e) => {
     const selectedImage = e.target.files[0];
     if (selectedImage) {
@@ -66,66 +71,35 @@ export default function AddAttendants() {
   };
 
   const isFormValid = () => {
-    return (
-      !state.name ||
-      !state.userId ||
-      !state.accountType ||
-      !state.operator ||
-      !state.locations?.length
-    );
+    return !state.firstName || !state.lastName || !state.email || !state.role;
   };
 
   useEffect(() => {
     setIsDisabled(isFormValid);
   }, [state]);
 
-  const customStyles = {
-    control: (provided) => ({
-      ...provided,
-      width: "100%",
-      minHeight: "44px",
-      color: "#646668",
-      fontSize: "14px",
-      cursor: "pointer",
-      borderRadius: "4px",
-      border: "1px solid #D4D6D8",
-      background: "unset",
-    }),
-    menu: (provided) => ({
-      ...provided,
-      fontSize: "13px",
-    }),
-  };
-
   const handleSubmit = (data = state) => {
-    mutate({ ...data, id: state.id, locations: state.locations });
+    if (typeof state.avatarImage != "string" && state.avatarImage) {
+      const formData = new FormData();
+      formData.append("profilePicture", state.avatarImage);
+      uploadMedia({
+        fileType: "avatar",
+        entityType: "admin",
+        file: formData.get("profilePicture"),
+      });
+    } else {
+      mutate({ ...data, id: state.id });
+    }
   };
-
-  useEffect(() => {
-    if (!data?.data) return;
-    const temp = data?.data?.map((operator) => ({
-      label: operator.name,
-      value: operator.id,
-    }));
-    setOperatorOptions(temp);
-  }, [data?.data]);
-
-  useEffect(() => {
-    const temp = locationsData?.data?.map((location) => ({
-      label: location.name,
-      value: location.id,
-    }));
-    setLocationOptions(temp);
-  }, [locationsData]);
 
   useEffect(() => {
     setState({
       ...location.state,
-      role: location.state.role.id,
+      role: parseInt(location.state.role?.id),
     });
 
     setIsEdit(location?.state?.isEdit);
-  }, [location.state, locationOptions]);
+  }, [location.state]);
 
   return (
     <Box minH="75vh">

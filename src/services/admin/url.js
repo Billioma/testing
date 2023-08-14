@@ -17,3 +17,7 @@ export const GET_LOCATIONS = "admin/locations";
 
 export const ADMIN_ROLES = "admin/roles";
 export const UPLOAD_MEDIA = "system/media-upload";
+
+export const ADMIN_VEHICLES = "admin/vehicles";
+export const ADMIN_VEHICLE_MAKES = "admin/vehicle-makes";
+export const ADMIN_VEHICLE_MODELS = "admin/vehicle-models";

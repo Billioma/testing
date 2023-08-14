@@ -10,6 +10,7 @@ import { useNavigate } from "react-router-dom";
 import { PRIVATE_PATHS } from "../../../routes/constants";
 import { useCreateCustomer } from "../../../services/admin/query/users";
 import useCustomToast from "../../../utils/notifications";
+import GoBackTab from "../../../components/data/Admin/GoBackTab";
 
 export default function AddCustomer() {
   const [state, setState] = useState({
@@ -60,6 +61,7 @@ export default function AddCustomer() {
   return (
     <Box minH="75vh">
       <Flex justifyContent="center" align="center" w="full" flexDir="column">
+        <GoBackTab />
         <Flex
           bg="#fff"
           borderRadius="16px"
@@ -240,7 +242,7 @@ export default function AddCustomer() {
               Cancel
             </Button>
             <Button
-              variant="adminPrimary"
+              variant="adminAlt"
               w="55%"
               isDisabled={isDisabled}
               isLoading={isLoading}
