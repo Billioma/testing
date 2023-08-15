@@ -60,6 +60,7 @@ const {
   CLIENT_EDIT_EVENT,
   CLIENT_ADD_SUB,
   CLIENT_VIEW_SUB,
+  CLIENT_PROFILE,
 
   // OPERATOR ROUTES
   OP_DASHBOARD,
@@ -172,6 +173,9 @@ const ClientChangePassword = WithSuspense(
 );
 const ClientChangeSuccess = WithSuspense(
   lazy(() => import("../pages/Client/Authentication/ChangeSuccess"))
+);
+const ClientProfile = WithSuspense(
+  lazy(() => import("../pages/Client/Account/Profile"))
 );
 const ClientDashboard = WithSuspense(
   lazy(() => import("../pages/Client/Dashboard/Dashboard"))
@@ -377,6 +381,7 @@ export const PRIVATE_ROUTES = [
   { path: CLIENT_EDIT_EVENT, element: <ClientEditEvent /> },
   { path: CLIENT_ADD_SUB, element: <ClientAddSub /> },
   { path: CLIENT_VIEW_SUB, element: <ClientViewSub /> },
+  { path: CLIENT_PROFILE, element: <ClientProfile /> },
 
   // OPERATOR ROUTES
   { path: OP_DASHBOARD, element: <OpDashboard /> },

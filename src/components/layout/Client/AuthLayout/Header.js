@@ -122,8 +122,10 @@ const Header = () => {
                 gap="12px"
                 bg="#fff"
                 className="box"
+                border="1px solid #E4E6E8"
+                onClick={() => navigate("/client/profile")}
                 w="full"
-                borderRadius="12px"
+                borderRadius="8px"
                 align="center"
                 justifyContent="flex-end"
                 color="#242628"

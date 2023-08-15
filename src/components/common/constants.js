@@ -500,9 +500,28 @@ export const payToParkHeader = [
 
 export const clientDahboard = [
   {
-    title: "Subscription",
-  }
-]
+    title: "Subscriptions",
+    opt: "In Service",
+    color: "#EE383A",
+    secOpt: "Completed",
+    img: "/assets/subs.jpg",
+  },
+  {
+    title: "Users",
+    opt: "Inactive",
+    color: "#0B841D",
+    secOpt: "Active",
+    img: "/assets/users.jpg",
+  },
+  {
+    title: "Events",
+    color: "#242628",
+    opt: "Upcoming",
+    secOpt: "Past",
+    img: "/assets/events.jpg",
+  },
+];
+
 export const reserveHeader = [
   "AMOUNT",
   "VEHICLE",

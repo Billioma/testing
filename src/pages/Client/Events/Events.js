@@ -30,10 +30,9 @@ const Events = () => {
             All Events
           </Text>
 
-          <Flex align="center " gap="24px">
+          <Flex align="center" gap="24px">
             <Button
               onClick={() => navigate("/client/add-event")}
-              bg="#000"
               display="flex"
               gap="8px"
               fontSize=""

@@ -49,6 +49,7 @@ export const PRIVATE_PATHS = {
   //CLIENT ROUTES
   CLIENT_DASHBOARD: "/client/dashboard",
   CLIENT_USERS: "/client/users",
+  CLIENT_PROFILE: "/client/profile",
   CLIENT_ADD_USER: "/client/add-user",
   CLIENT_EVENTS: "/client/events",
   CLIENT_ADD_EVENT: "/client/add-event",

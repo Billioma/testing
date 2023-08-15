@@ -20,7 +20,7 @@ export const AuthLayout = ({ children }) => {
             w="100%"
             pt={isMobile ? "150px" : "110px"}
             color="#828282"
-            maxHeight="89vh"
+            maxHeight="92vh"
             pl={!isMobile ? "310px" : "20px"}
             pr={!isMobile ? "32px" : "20px"}
             pb={10}

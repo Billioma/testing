@@ -144,7 +144,6 @@ const AddUser = () => {
                       isLoading={isAttaching}
                       display="flex"
                       gap="8px"
-                      fontSize=""
                     >
                       <Text fontSize="12px">Add a User</Text>
                       <MdAdd size="20px" />
@@ -161,7 +160,6 @@ const AddUser = () => {
             onClick={() => (step === 1 ? handleSearch() : setStep(1))}
             w="full"
             isLoading={isLoading}
-            bg="black"
             py="17px"
             fontSize="14px"
           >

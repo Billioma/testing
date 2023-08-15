@@ -14,7 +14,7 @@ const Users = () => {
   }, []);
 
   return (
-    <Box minH="75vh">
+    <Box>
       <Box borderRadius="8px" border="1px solid #d4d6d8" p="16px 23px 24px">
         <Flex align="center" justifyContent="space-between" w="full">
           <Text
@@ -29,7 +29,6 @@ const Users = () => {
           <Flex align="center " gap="24px">
             <Button
               onClick={() => navigate("/client/add-user")}
-              bg="#000"
               display="flex"
               gap="8px"
               fontSize=""

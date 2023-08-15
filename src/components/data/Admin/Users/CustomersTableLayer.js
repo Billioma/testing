@@ -11,7 +11,7 @@ import {
   MenuItem,
 } from "@chakra-ui/react";
 import TableFormat from "../../../common/TableFormat";
-import {  FiEdit, FiTrash2 } from "react-icons/fi";
+import { FiEdit, FiTrash2 } from "react-icons/fi";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import NoData from "../../../common/NoData";
 import { formatDate } from "../../../../utils/helpers";

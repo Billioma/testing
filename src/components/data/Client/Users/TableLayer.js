@@ -95,7 +95,7 @@ const TableLayer = ({ isLoading, data, userMutate }) => {
               <Tr>
                 {clientUserHeader?.map((data, i) => (
                   <Th
-                    textAlign="center"
+                    textAlign={i === 0 ? "start" : "center"}
                     key={i}
                     pos="sticky"
                     top="0"
@@ -115,7 +115,7 @@ const TableLayer = ({ isLoading, data, userMutate }) => {
               {data?.data?.length ? (
                 paginatedData?.map((item, i) => (
                   <Tr fontSize="12px" fontWeight={500} color="#646668" key={i}>
-                    <Td textAlign="center">
+                    <Td>
                       {item?.profile?.firstName} {item?.profile?.lastName}
                     </Td>
 

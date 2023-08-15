@@ -28,7 +28,6 @@ export default function () {
     page,
     limit
   );
-  
 
   return (
     <Box w="full" border={"1px solid #E4E6E8"} borderRadius={"12px"}>

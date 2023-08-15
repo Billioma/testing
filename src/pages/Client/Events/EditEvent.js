@@ -577,7 +577,6 @@ const EditEvent = () => {
             w="full"
             isLoading={isLoading}
             onClick={handleCreate}
-            bg="black"
             py="17px"
             fontSize="14px"
           >
