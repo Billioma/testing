@@ -1,4 +1,5 @@
 import { FormControl } from "@chakra-ui/form-control";
+import React, { useState } from "react";
 import {
   Input,
   InputGroup,
@@ -6,7 +7,6 @@ import {
   InputRightElement,
 } from "@chakra-ui/input";
 import { Text } from "@chakra-ui/layout";
-import React, { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 const CustomInput = ({

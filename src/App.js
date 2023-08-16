@@ -11,6 +11,8 @@ const App = () => {
     "/assets/subs.jpg",
     "/assets/users.jpg",
     "/assets/events.jpg",
+    "/assets/help.jpg",
+    "/assets/faq.jpg",
     "/assets/refresh.svg",
     "/assets/location.svg",
     "/assets/ezlogo.png",

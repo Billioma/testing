@@ -522,6 +522,19 @@ export const clientDahboard = [
   },
 ];
 
+export const customerHelp = [
+  {
+    title: "Frequently Asked Questions",
+    img: "/assets/faq.jpg",
+    link: "/customer/help-center/FAQs",
+  },
+  {
+    title: "Send us an email",
+    img: "/assets/help.jpg",
+    link: "/customer/help-center/contact-us",
+  },
+];
+
 export const reserveHeader = [
   "AMOUNT",
   "VEHICLE",
