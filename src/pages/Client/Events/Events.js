@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Box, Button, Flex, Image, Text } from "@chakra-ui/react";
 import { MdAdd } from "react-icons/md";
 import TableLayer from "../../../components/data/Client/Events/TableLayer";
@@ -7,15 +7,15 @@ import { useNavigate } from "react-router-dom";
 
 const Events = () => {
   const { mutate, data, isLoading } = useGetEvents();
-  const sortedEvent = data?.data?.sort(
-    (a, b) => new Date(b?.createdAt) - new Date(a?.createdAt)
-  );
+
+  const [page, setPage] = useState(0);
+  const limit = 10;
 
   const navigate = useNavigate();
 
   useEffect(() => {
-    mutate();
-  }, []);
+    mutate({ limit, page: page + 1 });
+  }, [page]);
 
   return (
     <Box minH="75vh">
@@ -64,7 +64,10 @@ const Events = () => {
 
         <TableLayer
           eventMutate={mutate}
-          data={sortedEvent}
+          page={page}
+          setPage={setPage}
+          data={data}
+          limit={limit}
           isLoading={isLoading}
         />
       </Box>

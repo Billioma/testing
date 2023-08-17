@@ -17,9 +17,6 @@ const TableLayer = () => {
   const [page, setPage] = useState(1);
   const limit = 10;
   const { isLoading, data: paymentHistory } = useGetPaymentHistory(limit, page);
-  const sortedPaymentHistory = paymentHistory?.data?.sort(
-    (a, b) => new Date(b?.createdAt) - new Date(a?.createdAt)
-  );
 
   return (
     <Box mt="32px">
@@ -127,7 +124,7 @@ const TableLayer = () => {
         }
       >
         {paymentHistory?.data?.length ? (
-          sortedPaymentHistory?.map((dat, i) => (
+          paymentHistory?.data?.map((dat, i) => (
             <Tr
               key={i}
               color="#646668"

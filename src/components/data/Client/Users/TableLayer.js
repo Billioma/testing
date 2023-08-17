@@ -21,11 +21,7 @@ import ConfirmDeleteModal from "../../../modals/ConfirmDeleteModal";
 import useCustomToast from "../../../../utils/notifications";
 import { useDetachUser } from "../../../../services/client/query/users";
 
-const TableLayer = ({ isLoading, data, userMutate }) => {
-  const itemsPerPage = 10;
-  const [currentPage, setCurrentPage] = useState(1);
-
-  const startIndex = (currentPage - 1) * itemsPerPage;
+const TableLayer = ({ isLoading, data, page, setPage, userMutate, limit }) => {
   const [show, setShow] = useState(false);
   const [showDelete, setShowDelete] = useState(false);
   const [currentUser, setCurrentUser] = useState("");
@@ -33,17 +29,6 @@ const TableLayer = ({ isLoading, data, userMutate }) => {
   const open = (item) => {
     setShow(true);
     setCurrentUser(item);
-  };
-
-  const endIndex = startIndex + itemsPerPage;
-  const totalItems = data?.data?.length;
-
-  const totalPages = Math.ceil(totalItems / itemsPerPage);
-
-  const paginatedData = data?.data?.slice(startIndex, endIndex);
-
-  const handlePageChange = (pageNumber) => {
-    setCurrentPage(pageNumber);
   };
 
   useEffect(() => {
@@ -113,7 +98,7 @@ const TableLayer = ({ isLoading, data, userMutate }) => {
             </Thead>
             <Tbody>
               {data?.data?.length ? (
-                paginatedData?.map((item, i) => (
+                data?.data?.map((item, i) => (
                   <Tr fontSize="12px" fontWeight={500} color="#646668" key={i}>
                     <Td>
                       {item?.profile?.firstName} {item?.profile?.lastName}
@@ -210,16 +195,14 @@ const TableLayer = ({ isLoading, data, userMutate }) => {
           align="center"
         >
           <Text fontSize="12px" color="#242628" lineHeight="100%">
-            Showing rows 1 to {itemsPerPage} of {data?.data?.length}
+            Showing rows 1 to {limit} of {data?.total}
           </Text>
 
           <Flex gap="16px" align="center">
             <Flex
-              opacity={currentPage === 1 ? 0.5 : 1}
-              onClick={() =>
-                currentPage === 1 ? "" : handlePageChange(currentPage - 1)
-              }
-              cursor={currentPage === 1 ? "" : "pointer"}
+              opacity={data?.page === 1 ? 0.5 : 1}
+              onClick={() => (data?.page === 1 ? "" : setPage(page - 1))}
+              cursor={data?.page === 1 ? "" : "pointer"}
               align="center"
               gap="2px"
               color="#A4A6A8"
@@ -238,7 +221,7 @@ const TableLayer = ({ isLoading, data, userMutate }) => {
                 fontSize="12px"
                 lineHeight="100%"
               >
-                <Text>{currentPage}</Text>
+                <Text>{data?.page}</Text>
               </Flex>
               <Text fontWeight={500} fontSize="12px">
                 -{" "}
@@ -251,18 +234,16 @@ const TableLayer = ({ isLoading, data, userMutate }) => {
                 fontSize="12px"
                 lineHeight="100%"
               >
-                <Text>{totalPages}</Text>
+                <Text>{data?.pageCount}</Text>
               </Flex>
             </Flex>
 
             <Flex
-              opacity={endIndex >= data?.data?.length ? 0.5 : 1}
+              opacity={data?.page === data?.pageCount ? 0.5 : 1}
               onClick={() =>
-                endIndex >= data?.data?.length
-                  ? ""
-                  : handlePageChange(currentPage + 1)
+                data?.page === data?.pageCount ? "" : setPage(page + 1)
               }
-              cursor={endIndex >= data?.data?.length ? "" : "pointer"}
+              cursor={data?.page === data?.pageCount ? "" : "pointer"}
               align="center"
               gap="2px"
               color="#A4A6A8"

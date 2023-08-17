@@ -32,13 +32,39 @@ export const createServiceBookings = async (body) => {
   return res.data;
 };
 
-export const getPayToPark = async () => {
-  const res = await axiosInstance.get("customer/" + `${API.GET_PAY_TO_PARK}`);
+export const getPayToPark = async ({ queryKey }) => {
+  const [, limit, page] = queryKey;
+  const res = await axiosInstance.get(
+    "customer/" +
+      `${API.GET_PAY_TO_PARK}?limit=${limit}&page=${page}&sort=id,DESC`
+  );
   return res.data;
 };
 
-export const getReserveParking = async () => {
-  const res = await axiosInstance.get("customer/" + `${API.RESERVE_PARKING}`);
+export const getReserveParking = async ({ queryKey }) => {
+  const [, limit, page] = queryKey;
+  const res = await axiosInstance.get(
+    "customer/" +
+      `${API.RESERVE_PARKING}?limit=${limit}&page=${page}&sort=id,DESC`
+  );
+  return res.data;
+};
+
+export const getEventParking = async ({ queryKey }) => {
+  const [, limit, page] = queryKey;
+  const res = await axiosInstance.get(
+    "customer/" +
+      `${API.EVENT_PARKING}?limit=${limit}&page=${page}&sort=id,DESC`
+  );
+  return res.data;
+};
+
+export const getCarService = async ({ queryKey }) => {
+  const [, limit, page] = queryKey;
+  const res = await axiosInstance.get(
+    "customer/" +
+      `${API.SERVICE_BOOKINGS}?limit=${limit}&page=${page}&sort=id,DESC`
+  );
   return res.data;
 };
 
@@ -49,16 +75,6 @@ export const cancelBooking = async (query) => {
 
 export const cancelReserve = async (query) => {
   const res = await axiosInstance.get("customer/" + API.CANCEL_RESERVE(query));
-  return res.data;
-};
-
-export const getEventParking = async () => {
-  const res = await axiosInstance.get("customer/" + `${API.EVENT_PARKING}`);
-  return res.data;
-};
-
-export const getCarService = async () => {
-  const res = await axiosInstance.get("customer/" + `${API.SERVICE_BOOKINGS}`);
   return res.data;
 };
 

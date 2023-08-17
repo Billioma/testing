@@ -1,7 +1,7 @@
 import React from "react";
 import { Box } from "@chakra-ui/react";
 import Service from "../../../components/data/Customer/Dashboard/Services";
-import TableLayer from "../../../components/data/Services/TableLayer";
+import TableLayer from "../../../components/data/Customer/Services/TableLayer";
 
 const Services = () => {
   return (

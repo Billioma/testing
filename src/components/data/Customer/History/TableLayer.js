@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Box, Flex, Td, Text, Tr } from "@chakra-ui/react";
-import TableFormat from "../../common/TableFormat";
+import TableFormat from "../../../common/TableFormat";
 import { FiMoreVertical } from "react-icons/fi";
 import {
   Status,
@@ -10,7 +10,7 @@ import {
   eventHeader,
   carHeader,
   BookingSlots,
-} from "../../common/constants";
+} from "../../../common/constants";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import {
   useCancelBooking,
@@ -19,20 +19,33 @@ import {
   useGetEventParking,
   useGetPayToPark,
   useGetReserveParking,
-} from "../../../services/customer/query/services";
-import NoData from "../../common/NoData";
-import { formatDate, formatDateTime } from "../../../utils/helpers";
-import ConfirmDeleteModal from "../../modals/ConfirmDeleteModal";
-import useCustomToast from "../../../utils/notifications";
+} from "../../../../services/customer/query/services";
+import NoData from "../../../common/NoData";
+import { formatDate, formatDateTime } from "../../../../utils/helpers";
+import ConfirmDeleteModal from "../../../modals/ConfirmDeleteModal";
+import useCustomToast from "../../../../utils/notifications";
+import { useEffect } from "react";
 
 const TableLayer = () => {
+  const [page, setPage] = useState(1);
   const [tab, setTab] = useState("Pay-To-Park");
-  const { isLoading, data: payToPark } = useGetPayToPark();
+  const limit = 10;
+  const { isLoading, data: payToPark } = useGetPayToPark(limit, page);
   const {
     isLoading: isReserving,
     data: reserveParking,
     refetch,
-  } = useGetReserveParking();
+  } = useGetReserveParking(limit, page);
+  const {
+    isLoading: isCar,
+    data: carService,
+    refetch: refetchBook,
+  } = useGetCarService(limit, page);
+  const { isLoading: isEvent, data: eventParking } = useGetEventParking(
+    limit,
+    page
+  );
+
   const [show, setShow] = useState(false);
   const [showCancel, setShowCancel] = useState(false);
   const [currentItem, setCurrentItem] = useState("");
@@ -47,13 +60,6 @@ const TableLayer = () => {
     setShow(true);
     setCurrentItem(dat);
   };
-
-  const {
-    isLoading: isCar,
-    data: carService,
-    refetch: refetchBook,
-  } = useGetCarService();
-  const { isLoading: isEvent, data: eventParking } = useGetEventParking();
   const { errorToast, successToast } = useCustomToast();
 
   const { mutate: bookCancel, isLoading: isCancelBook } = useCancelBooking({
@@ -89,49 +95,21 @@ const TableLayer = () => {
     mutate(currentItem?.id);
   };
 
-  const itemsPerPage = 10;
-  const [currentPage, setCurrentPage] = useState(1);
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (event.target.closest(".box") === null) {
+        setShow(false);
+      }
+    };
 
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const endIndex = startIndex + itemsPerPage;
-  const totalItems =
-    tab === "Pay-To-Park"
-      ? payToPark?.data?.length
-      : tab === "Reserve Parking"
-      ? reserveParking?.data?.length
-      : tab === "Event Parking"
-      ? eventParking?.data?.length
-      : tab === "Car Services" && carService?.data?.length;
-
-  const totalPages = Math.ceil(totalItems / itemsPerPage);
-
-  const paginatedData =
-    tab === "Pay-To-Park"
-      ? payToPark?.data
-          ?.sort((a, b) => new Date(b?.createdAt) - new Date(a?.createdAt))
-          ?.slice(startIndex, endIndex)
-      : tab === "Reserve Parking"
-      ? reserveParking?.data
-          ?.sort((a, b) => new Date(b?.createdAt) - new Date(a?.createdAt))
-          ?.slice(startIndex, endIndex)
-      : tab === "Event Parking"
-      ? eventParking?.data
-          ?.sort((a, b) => new Date(b?.createdAt) - new Date(a?.createdAt))
-          ?.slice(startIndex, endIndex)
-      : tab === "Car Services" &&
-        carService?.data
-          ?.sort((a, b) => new Date(b?.createdAt) - new Date(a?.createdAt))
-          ?.slice(startIndex, endIndex);
-
-  const handlePageChange = (pageNumber) => {
-    setCurrentPage(pageNumber);
-  };
+    document.addEventListener("click", handleClickOutside);
+    return () => {
+      document.removeEventListener("click", handleClickOutside);
+    };
+  }, []);
 
   return (
-    <Box mt="24px">
-      <Text color="#242628" fontWeight={500} lineHeight="100%" mb="12px">
-        Recent Activity
-      </Text>
+    <Box>
       <TableFormat
         maxH={"50vh"}
         tab={
@@ -144,7 +122,7 @@ const TableLayer = () => {
                 cursor="pointer"
                 onClick={() => {
                   setTab(dat);
-                  setCurrentPage(1);
+                  setPage(1);
                 }}
                 _hover={{ color: "red" }}
                 transition=".4s ease-in-out"
@@ -191,23 +169,62 @@ const TableLayer = () => {
               align="center"
             >
               <Text fontSize="12px" color="#242628" lineHeight="100%">
-                Showing rows 1 to {itemsPerPage} of{" "}
-                {tab === "Pay-To-Park"
-                  ? payToPark?.data?.length
-                  : tab === "Reserve Parking"
-                  ? reserveParking?.data?.length
-                  : tab === "Event Parking"
-                  ? eventParking?.data?.length
-                  : tab === "Car Services" && carService?.data?.length}
+                Showing rows 1 to {limit} of {payToPark?.total}
               </Text>
 
               <Flex gap="16px" align="center">
                 <Flex
-                  opacity={currentPage === 1 ? 0.5 : 1}
-                  onClick={() =>
-                    currentPage === 1 ? "" : handlePageChange(currentPage - 1)
+                  opacity={
+                    tab === "Pay-To-Park"
+                      ? payToPark?.page === 1
+                        ? 0.5
+                        : 1
+                      : tab === "Reserve Parking"
+                      ? reserveParking?.page === 1
+                        ? 0.5
+                        : 1
+                      : tab === "Event Parking"
+                      ? eventParking?.page === 1
+                        ? 0.5
+                        : 1
+                      : tab === "Car Services" && carService?.page === 1
+                      ? 0.5
+                      : 1
                   }
-                  cursor={currentPage === 1 ? "" : "pointer"}
+                  onClick={() =>
+                    tab === "Pay-To-Park"
+                      ? payToPark?.page !== 1
+                        ? setPage(page - 1)
+                        : ""
+                      : tab === "Reserve Parking"
+                      ? reserveParking?.page !== 1
+                        ? setPage(page - 1)
+                        : ""
+                      : tab === "Event Parking"
+                      ? eventParking?.page !== 1
+                        ? setPage(page - 1)
+                        : ""
+                      : tab === "Car Services" && carService?.page !== 1
+                      ? setPage(page - 1)
+                      : ""
+                  }
+                  cursor={
+                    tab === "Pay-To-Park"
+                      ? payToPark?.page === 1
+                        ? ""
+                        : "pointer"
+                      : tab === "Reserve Parking"
+                      ? reserveParking?.page === 1
+                        ? ""
+                        : "pointer"
+                      : tab === "Event Parking"
+                      ? eventParking?.page === 1
+                        ? ""
+                        : "pointer"
+                      : tab === "Car Services" && carService?.page === 1
+                      ? ""
+                      : "pointer"
+                  }
                   align="center"
                   gap="2px"
                   color="#A4A6A8"
@@ -226,7 +243,15 @@ const TableLayer = () => {
                     fontSize="12px"
                     lineHeight="100%"
                   >
-                    <Text>{currentPage}</Text>
+                    <Text>
+                      {tab === "Pay-To-Park"
+                        ? payToPark?.page
+                        : tab === "Reserve Parking"
+                        ? reserveParking?.page
+                        : tab === "Event Parking"
+                        ? eventParking?.page
+                        : tab === "Car Services" && carService?.page}
+                    </Text>
                   </Flex>
                   <Text fontWeight={500} fontSize="12px">
                     -{" "}
@@ -239,62 +264,70 @@ const TableLayer = () => {
                     fontSize="12px"
                     lineHeight="100%"
                   >
-                    <Text>{totalPages}</Text>
+                    <Text>
+                      {tab === "Pay-To-Park"
+                        ? payToPark?.pageCount
+                        : tab === "Reserve Parking"
+                        ? reserveParking?.pageCount
+                        : tab === "Event Parking"
+                        ? eventParking?.pageCount
+                        : tab === "Car Services" && carService?.pageCount}
+                    </Text>
                   </Flex>
                 </Flex>
 
                 <Flex
                   opacity={
                     tab === "Pay-To-Park"
-                      ? endIndex >= payToPark?.data?.length
+                      ? payToPark?.page === payToPark?.pageCount
                         ? 0.5
                         : 1
                       : tab === "Reserve Parking"
-                      ? endIndex >= reserveParking?.data?.length
+                      ? reserveParking?.page === reserveParking?.pageCount
                         ? 0.5
                         : 1
                       : tab === "Event Parking"
-                      ? endIndex >= eventParking?.data?.length
+                      ? eventParking?.page === eventParking?.pageCount
                         ? 0.5
                         : 1
                       : tab === "Car Services" &&
-                        endIndex >= carService?.data?.length
+                        carService?.page === carService?.pageCount
                       ? 0.5
                       : 1
                   }
                   onClick={() =>
                     tab === "Pay-To-Park"
-                      ? endIndex >= payToPark?.data?.length
-                        ? ""
-                        : handlePageChange(currentPage + 1)
+                      ? payToPark?.page !== payToPark?.pageCount
+                        ? setPage(page + 1)
+                        : ""
                       : tab === "Reserve Parking"
-                      ? endIndex >= reserveParking?.data?.length
-                        ? ""
-                        : handlePageChange(currentPage + 1)
+                      ? reserveParking?.page !== reserveParking?.pageCount
+                        ? setPage(page + 1)
+                        : ""
                       : tab === "Event Parking"
-                      ? endIndex >= eventParking?.data?.length
-                        ? ""
-                        : handlePageChange(currentPage + 1)
+                      ? eventParking?.page !== eventParking?.pageCount
+                        ? setPage(page + 1)
+                        : ""
                       : tab === "Car Services" &&
-                        endIndex >= carService?.data?.length
-                      ? ""
-                      : handlePageChange(currentPage + 1)
+                        carService?.page !== carService?.pageCount
+                      ? setPage(page + 1)
+                      : ""
                   }
                   cursor={
                     tab === "Pay-To-Park"
-                      ? endIndex >= payToPark?.data?.length
+                      ? payToPark?.page === payToPark?.pageCount
                         ? ""
                         : "pointer"
                       : tab === "Reserve Parking"
-                      ? endIndex >= reserveParking?.data?.length
+                      ? reserveParking?.page === reserveParking?.pageCount
                         ? ""
                         : "pointer"
                       : tab === "Event Parking"
-                      ? endIndex >= eventParking?.data?.length
+                      ? eventParking?.page === eventParking?.pageCount
                         ? ""
                         : "pointer"
                       : tab === "Car Services" &&
-                        endIndex >= carService?.data?.length
+                        carService?.page === carService?.pageCount
                       ? ""
                       : "pointer"
                   }
@@ -313,7 +346,7 @@ const TableLayer = () => {
       >
         {tab === "Pay-To-Park" ? (
           payToPark?.data?.length ? (
-            paginatedData?.map((dat, i) => (
+            payToPark?.data?.map((dat, i) => (
               <Tr
                 key={i}
                 color="#646668"
@@ -357,7 +390,7 @@ const TableLayer = () => {
           )
         ) : tab === "Reserve Parking" ? (
           reserveParking?.data?.length ? (
-            paginatedData?.map((dat, i) => (
+            reserveParking?.data?.map((dat, i) => (
               <Tr
                 key={i}
                 color="#646668"
@@ -379,6 +412,7 @@ const TableLayer = () => {
                   {formatDateTime(dat?.departure) || "N/A"}
                 </Td>
                 <Td textAlign="center">{formatDate(dat?.createdAt)}</Td>
+
                 <Td>
                   <Flex
                     color={Object.values(Status[dat?.status])[0]}
@@ -450,7 +484,7 @@ const TableLayer = () => {
           )
         ) : tab === "Event Parking" ? (
           eventParking?.data?.length ? (
-            paginatedData?.map((dat, i) => (
+            eventParking?.data?.map((dat, i) => (
               <Tr
                 key={i}
                 color="#646668"
@@ -510,7 +544,7 @@ const TableLayer = () => {
             </Tr>
           )
         ) : carService?.data?.length ? (
-          paginatedData?.map((dat, i) => (
+          carService?.data?.map((dat, i) => (
             <Tr
               key={i}
               color="#646668"
@@ -539,6 +573,7 @@ const TableLayer = () => {
               </Td>
 
               <Td textAlign="center">{dat?.appointmentDate}</Td>
+
               <Td textAlign="center">{formatDate(dat?.createdAt)}</Td>
               <Td>
                 {" "}
@@ -554,7 +589,6 @@ const TableLayer = () => {
                   {Object.values(Status[dat?.status])[1]}
                 </Flex>
               </Td>
-
               <Td>
                 <Flex
                   pos="relative"

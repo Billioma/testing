@@ -1,6 +1,6 @@
 import React from "react";
 import { Box } from "@chakra-ui/react";
-import TableLayer from "../../../components/data/History/TableLayer";
+import TableLayer from "../../../components/data/Customer/History/TableLayer";
 
 const History = () => {
   return (

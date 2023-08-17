@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Box, Button, Flex, Image, Text } from "@chakra-ui/react";
 import { MdAdd } from "react-icons/md";
 import TableLayer from "../../../components/data/Client/Users/TableLayer";
@@ -7,11 +7,14 @@ import { useNavigate } from "react-router-dom";
 
 const Users = () => {
   const { mutate, data, isLoading } = useGetUsers();
+  const [page, setPage] = useState(0);
+  const limit = 10;
+
   const navigate = useNavigate();
 
   useEffect(() => {
-    mutate();
-  }, []);
+    mutate({ limit, page: page + 1 });
+  }, [page]);
 
   return (
     <Box>
@@ -58,7 +61,14 @@ const Users = () => {
           </Flex>
         </Flex>
 
-        <TableLayer userMutate={mutate} data={data} isLoading={isLoading} />
+        <TableLayer
+          setPage={setPage}
+          page={page}
+          userMutate={mutate}
+          limit={limit}
+          data={data}
+          isLoading={isLoading}
+        />
       </Box>
     </Box>
   );

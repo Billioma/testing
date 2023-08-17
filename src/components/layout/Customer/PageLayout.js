@@ -5,9 +5,21 @@ import { useLocation } from "react-router-dom";
 import { useMediaQuery } from "@chakra-ui/react";
 import Header from "./AuthLayout/Header";
 import SideBar from "./AuthLayout/SideBar";
+import { useGetUser } from "../../../services/customer/query/user";
 
 export const AuthLayout = ({ children }) => {
   const [isMobile] = useMediaQuery("(max-width: 991px)");
+
+  const { data: userData } = useGetUser();
+  // To set unique user id in your system when it is available
+  window?.fcWidget?.setExternalId(userData?.profile?.id);
+
+  // To set user name
+  window?.fcWidget?.user?.setFirstName(userData?.profile?.firstName);
+  window?.fcWidget?.user?.setLastName(userData?.profile?.lastName);
+
+  // To set user email
+  window?.fcWidget?.user?.setEmail(userData?.email);
 
   return (
     <Box color="#000" fontFamily="Sailec" h="100vh" p="15px">

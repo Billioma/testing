@@ -5,12 +5,14 @@ export const CHANGE_PASSWORD = (id = "", hash = "") =>
   `auth/update-password/${id}/${hash}`;
 export const CHANGE_USER_PASSWORD = "update-password";
 export const GET_CLIENT_DETAILS = "auth/profile";
-export const GET_USERS = () => `client/users`;
+export const GET_USERS = (limit = "", page = "") =>
+  `client/users?limit=${limit}&page=${page}&sort=id,DESC`;
 export const GET_USERS_COUNT = "client/dashboard/users";
 export const GET_SUB_COUNT = "client/dashboard/subscriptions";
 export const GET_EVENT_COUNT = "client/dashboard/events";
 export const CREATE_EVENTS = "client/events";
-export const GET_EVENTS = () => `client/events`;
+export const GET_EVENTS = (limit = "", page = "") =>
+  `client/events?limit=${limit}&page=${page}&sort=id,DESC`;
 export const DEL_EVENTS = (id = "") => `client/events/${id}`;
 export const LOOKUP_USER = (email = "") =>
   `client/users/lookup-user?email=${email}`;

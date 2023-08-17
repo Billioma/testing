@@ -41,10 +41,6 @@ const TableLayer = () => {
     amount: "",
   });
 
-  const sortedSubs = subs?.data?.sort(
-    (a, b) => new Date(b?.createdAt) - new Date(a?.createdAt)
-  );
-
   const [currentSub, setCurrentSub] = useState("");
 
   const open = (dat) => {
@@ -254,7 +250,7 @@ const TableLayer = () => {
             </Flex>
           }
         >
-          {sortedSubs?.map((dat, i) => (
+          {subs?.data?.map((dat, i) => (
             <Tr
               key={i}
               color="#646668"
