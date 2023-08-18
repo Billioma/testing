@@ -69,7 +69,7 @@ const TableLayer = ({ isLoading, limit, data, setPage, page, eventMutate }) => {
   const { mutate: deleteMutate, isLoading: isDelete } = useDelEvent({
     onSuccess: () => {
       successToast("Event has been removed");
-      eventMutate();
+      eventMutate({ limit: 10, page: 1 });
       setShowDelete(false);
     },
     onError: (err) => {

@@ -148,7 +148,7 @@ const EditEvent = () => {
   const { mutate, isLoading } = useEditEvent({
     onSuccess: () => {
       successToast("Event Updated");
-      eventMutate();
+      eventMutate({ limit: 10, page: 1 });
       navigate("/client/events");
     },
     onError: (err) => {

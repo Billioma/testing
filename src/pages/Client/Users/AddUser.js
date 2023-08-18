@@ -26,7 +26,7 @@ const AddUser = () => {
   const { mutate: attachMutate, isLoading: isAttaching } = useAttachUser({
     onSuccess: () => {
       successToast("User was added successfully");
-      userMutate();
+      userMutate({ limit: 10, page: 1 });
       setEmail("");
       setStep(1);
       navigate("/client/users");

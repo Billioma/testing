@@ -89,7 +89,7 @@ const Park = () => {
     },
   });
 
-  const { refetch: refetchPark } = useGetPayToPark();
+  const { refetch: refetchPark } = useGetPayToPark(10, 1);
   const { mutate: parkMutate, isLoading: isCreating } = useCreatePayToPark({
     onSuccess: () => {
       onClose();

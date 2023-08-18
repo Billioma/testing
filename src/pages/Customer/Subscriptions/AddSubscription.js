@@ -136,7 +136,7 @@ const AddSubscription = () => {
   };
 
   const initializePayment = usePaystackPayment(config);
-  const { refetch: refetchSub } = useGetUserSub();
+  const { refetch: refetchSub } = useGetUserSub(10, 1);
   const { successToast, errorToast } = useCustomToast();
   const navigate = useNavigate();
   const { mutate, isLoading } = useCustomerCreateSubscription({

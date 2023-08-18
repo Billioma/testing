@@ -188,7 +188,7 @@ const ReserveParking = () => {
     useRequestReserveParking();
   const navigate = useNavigate();
   const { successToast, errorToast } = useCustomToast();
-  const { refetch: refetchParking } = useGetReserveParking();
+  const { refetch: refetchParking } = useGetReserveParking(10, 1);
   const { mutate: reserveMutate, isLoading: isReserving } =
     useCreateReserveParking({
       onSuccess: () => {

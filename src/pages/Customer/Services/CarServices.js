@@ -42,7 +42,7 @@ const CarServices = () => {
   const { data } = useGetServices();
   const { data: cards, refetch: refetchCards } = useGetCards();
   const { data: userData, refetch } = useGetUser();
-  const { refetch: refetchBooking } = useGetCarService();
+  const { refetch: refetchBooking } = useGetCarService(10, 1);
   const [startDate, setStartDate] = useState(false);
   const [startValue, startChange] = useState("");
 

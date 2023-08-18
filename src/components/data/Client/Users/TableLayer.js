@@ -55,7 +55,7 @@ const TableLayer = ({ isLoading, data, page, setPage, userMutate, limit }) => {
   const { mutate: detachMutate, isLoading: isDelete } = useDetachUser({
     onSuccess: () => {
       successToast("User has been removed");
-      userMutate();
+      userMutate({ limit: 10, page: 1 });
       setShowDelete(false);
     },
     onError: (err) => {

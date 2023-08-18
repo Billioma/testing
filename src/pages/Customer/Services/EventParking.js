@@ -59,7 +59,7 @@ const EventParking = () => {
   }, []);
   const [showFunds, setShowFunds] = useState(false);
   const { data: userData, refetch } = useGetUser();
-  const { refetch: refetchEvent } = useGetEventParking();
+  const { refetch: refetchEvent } = useGetEventParking(10, 1);
   const { data: cards, refetch: refetchCards } = useGetCards();
 
   const config = {
@@ -819,7 +819,7 @@ const EventParking = () => {
             }
             fontSize="14px"
           >
-            {step === 1 ? "Enter" : "Reserve and Park Later"}
+            {step === 1 ? "Enter" : "Reserve Event Parking"}
           </Button>
         </Flex>
       </Flex>

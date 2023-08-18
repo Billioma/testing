@@ -132,9 +132,19 @@ const Header = () => {
               color="orangeBg"
               fontSize="20px"
               lineHeight="100%"
-              cursor={locationRoute.includes("account/") ? "" : "pointer"}
+              cursor={
+                locationRoute.includes("account/")
+                  ? ""
+                  : !secTitle
+                  ? ""
+                  : "pointer"
+              }
               onClick={() =>
-                locationRoute.includes("account/") ? "" : navigate(-1)
+                locationRoute.includes("account/")
+                  ? ""
+                  : !secTitle
+                  ? ""
+                  : navigate(-1)
               }
               fontWeight={700}
             >

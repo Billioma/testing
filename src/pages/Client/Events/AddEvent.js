@@ -138,7 +138,7 @@ const AddEvent = () => {
   const { mutate, isLoading } = useCreateEvents({
     onSuccess: () => {
       successToast("Event Created");
-      eventMutate();
+      eventMutate({ limit: 10, page: 1 });
       navigate("/client/events");
     },
     onError: (err) => {
