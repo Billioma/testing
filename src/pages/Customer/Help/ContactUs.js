@@ -76,7 +76,7 @@ const ContactUs = () => {
             color="#646668"
             mt="24px"
             fontSize="14px"
-            lineHeight="100%"
+            lineHeight="150%"
           >
             Send us a message below and we’ll get back to you in 6 hours or
             less.

@@ -3,6 +3,8 @@ import {
   Box,
   Button,
   Flex,
+  Grid,
+  GridItem,
   Image,
   Radio,
   RadioGroup,
@@ -217,7 +219,11 @@ const AddSubscription = () => {
           py="40px"
           px="32px"
           justifyContent="center"
-          w={{ base: "full", md: "30rem" }}
+          w={{
+            base: "full",
+            sm: "30rem",
+            lg: step === 2 ? "30rem" : "unset",
+          }}
           flexDir="column"
         >
           <Text
@@ -240,129 +246,276 @@ const AddSubscription = () => {
             </Box>
           )}
 
-          {plans?.length
-            ? plans?.map((dat, i) => (
-                <Box
-                  key={i}
-                  mb={step === 1 ? "32px" : "24px"}
-                  p="12px"
-                  borderRadius="8px"
-                  border="1px solid #D4D6D8"
-                >
-                  <Flex
-                    align="flex-start"
-                    justifyContent="space-between"
-                    w="full"
-                  >
-                    <Box w="full">
-                      <Text fontSize="10px" color="#242628" lineHeight="100%">
-                        Subscription Name
-                      </Text>
-                      <Text
-                        mt="8px"
-                        color="#848688"
-                        fontSize="14px"
-                        fontWeight={500}
-                        lineHeight="100%"
+          {step === 1 && (
+            <Grid
+              gap="24px"
+              templateColumns={[
+                "repeat(1,1fr)",
+                "repeat(1,1fr)",
+                "repeat(1,1fr)",
+                "repeat(2,1fr)",
+              ]}
+            >
+              {plans?.length
+                ? plans?.map((dat, i) => (
+                    <GridItem key={i}>
+                      <Box
+                        key={i}
+                        mb={step === 1 ? "32px" : "24px"}
+                        p="12px"
+                        borderRadius="8px"
+                        minW={{ base: "full", md: "26rem" }}
+                        border="1px solid #D4D6D8"
                       >
-                        {dat?.name}
-                      </Text>
-                    </Box>
-
-                    <Box w="90%">
-                      <Text fontSize="10px" color="#242628" lineHeight="100%">
-                        Duration
-                      </Text>
-                      <Text
-                        mt="8px"
-                        color="#848688"
-                        fontSize="14px"
-                        fontWeight={500}
-                        lineHeight="100%"
-                      >
-                        {Object.values(intervals[dat?.interval])[0]}
-                      </Text>
-                    </Box>
-
-                    <Flex justifyContent="flex-end" w="30%">
-                      <Text
-                        fontSize="10px"
-                        color="#242628"
-                        lineHeight="100%"
-                        textDecor="underline"
-                      >
-                        Details
-                      </Text>
-                    </Flex>
-                  </Flex>
-
-                  <Flex
-                    mt="30px"
-                    align="center"
-                    justifyContent="space-between"
-                    w="full"
-                  >
-                    <Box w="full">
-                      <Text fontSize="10px" color="#242628" lineHeight="100%">
-                        Price
-                      </Text>
-                      <Text
-                        mt="8px"
-                        color="#848688"
-                        fontSize="14px"
-                        fontWeight={500}
-                        lineHeight="100%"
-                      >
-                        ₦{" "}
-                        {dat?.amount?.toLocaleString(undefined, {
-                          maximumFractionDigits: 2,
-                        })}
-                      </Text>
-                    </Box>
-
-                    <Box w="70%">
-                      <Text fontSize="10px" color="#242628" lineHeight="100%">
-                        Features
-                      </Text>
-                      <Flex mt="8px" align="center" gap="16px">
-                        {dat?.features?.slice(0, 2)?.map((item, i) => (
-                          <Flex align="center" gap="4px">
-                            {i === 0 ? (
-                              <Image src="/assets/location.svg" />
-                            ) : (
-                              <CarIcon fill="#EE383A" />
-                            )}
+                        <Flex
+                          align="flex-start"
+                          justifyContent="space-between"
+                          w="full"
+                        >
+                          <Box w="full">
                             <Text
-                              color="#838688"
-                              fontSize="14px"
+                              fontSize="10px"
+                              color="#242628"
                               lineHeight="100%"
-                              fontWeight={500}
                             >
-                              {item?.value}
+                              Subscription Name
+                            </Text>
+                            <Text
+                              mt="8px"
+                              color="#848688"
+                              fontSize="14px"
+                              fontWeight={500}
+                              lineHeight="100%"
+                            >
+                              {dat?.name}
+                            </Text>
+                          </Box>
+
+                          <Box w="90%">
+                            <Text
+                              fontSize="10px"
+                              color="#242628"
+                              lineHeight="100%"
+                            >
+                              Duration
+                            </Text>
+                            <Text
+                              mt="8px"
+                              color="#848688"
+                              fontSize="14px"
+                              fontWeight={500}
+                              lineHeight="100%"
+                            >
+                              {Object.values(intervals[dat?.interval])[0]}
+                            </Text>
+                          </Box>
+
+                          <Flex justifyContent="flex-end" w="30%">
+                            <Text
+                              fontSize="10px"
+                              color="#242628"
+                              lineHeight="100%"
+                              textDecor="underline"
+                            >
+                              Details
                             </Text>
                           </Flex>
-                        ))}
-                      </Flex>
-                    </Box>
+                        </Flex>
 
-                    <Flex justifyContent="flex-end" w="30%">
-                      <Button
-                        onClick={() => (step === 1 ? move(dat) : "")}
-                        w="full"
-                        py="17px"
-                        px="26px"
-                        fontSize="12px"
-                      >
-                        Select
-                      </Button>
-                    </Flex>
-                  </Flex>
-                </Box>
-              ))
-            : ""}
+                        <Flex
+                          mt="30px"
+                          align="center"
+                          justifyContent="space-between"
+                          w="full"
+                        >
+                          <Box w="full">
+                            <Text
+                              fontSize="10px"
+                              color="#242628"
+                              lineHeight="100%"
+                            >
+                              Price
+                            </Text>
+                            <Text
+                              mt="8px"
+                              color="#848688"
+                              fontSize="14px"
+                              fontWeight={500}
+                              lineHeight="100%"
+                            >
+                              ₦{" "}
+                              {dat?.amount?.toLocaleString(undefined, {
+                                maximumFractionDigits: 2,
+                              })}
+                            </Text>
+                          </Box>
+
+                          <Box w="70%">
+                            <Text
+                              fontSize="10px"
+                              color="#242628"
+                              lineHeight="100%"
+                            >
+                              Features
+                            </Text>
+                            <Flex mt="8px" align="center" gap="16px">
+                              {dat?.features?.slice(0, 2)?.map((item, i) => (
+                                <Flex align="center" gap="4px">
+                                  {i === 0 ? (
+                                    <Image src="/assets/location.svg" />
+                                  ) : (
+                                    <CarIcon fill="#EE383A" />
+                                  )}
+                                  <Text
+                                    color="#838688"
+                                    fontSize="14px"
+                                    lineHeight="100%"
+                                    fontWeight={500}
+                                  >
+                                    {item?.value}
+                                  </Text>
+                                </Flex>
+                              ))}
+                            </Flex>
+                          </Box>
+
+                          <Flex justifyContent="flex-end" w="30%">
+                            <Button
+                              onClick={() => (step === 1 ? move(dat) : "")}
+                              w="full"
+                              py="17px"
+                              px="26px"
+                              fontSize="12px"
+                            >
+                              Select
+                            </Button>
+                          </Flex>
+                        </Flex>
+                      </Box>
+                    </GridItem>
+                  ))
+                : ""}
+            </Grid>
+          )}
 
           {step === 2 && (
             <>
+              <Box
+                mb="24px"
+                p="12px"
+                borderRadius="8px"
+                minW={{ base: "full", md: "26rem" }}
+                border="1px solid #D4D6D8"
+              >
+                <Flex
+                  align="flex-start"
+                  justifyContent="space-between"
+                  w="full"
+                >
+                  <Box w="full">
+                    <Text fontSize="10px" color="#242628" lineHeight="100%">
+                      Subscription Name
+                    </Text>
+                    <Text
+                      mt="8px"
+                      color="#848688"
+                      fontSize="14px"
+                      fontWeight={500}
+                      lineHeight="100%"
+                    >
+                      {currentSub?.name}
+                    </Text>
+                  </Box>
+
+                  <Box w="90%">
+                    <Text fontSize="10px" color="#242628" lineHeight="100%">
+                      Duration
+                    </Text>
+                    <Text
+                      mt="8px"
+                      color="#848688"
+                      fontSize="14px"
+                      fontWeight={500}
+                      lineHeight="100%"
+                    >
+                      {Object.values(intervals[currentSub?.interval])[0]}
+                    </Text>
+                  </Box>
+
+                  <Flex justifyContent="flex-end" w="30%">
+                    <Text
+                      fontSize="10px"
+                      color="#242628"
+                      lineHeight="100%"
+                      textDecor="underline"
+                    >
+                      Details
+                    </Text>
+                  </Flex>
+                </Flex>
+
+                <Flex
+                  mt="30px"
+                  align="center"
+                  justifyContent="space-between"
+                  w="full"
+                >
+                  <Box w="full">
+                    <Text fontSize="10px" color="#242628" lineHeight="100%">
+                      Price
+                    </Text>
+                    <Text
+                      mt="8px"
+                      color="#848688"
+                      fontSize="14px"
+                      fontWeight={500}
+                      lineHeight="100%"
+                    >
+                      ₦{" "}
+                      {currentSub?.amount?.toLocaleString(undefined, {
+                        maximumFractionDigits: 2,
+                      })}
+                    </Text>
+                  </Box>
+
+                  <Box w="70%">
+                    <Text fontSize="10px" color="#242628" lineHeight="100%">
+                      Features
+                    </Text>
+                    <Flex mt="8px" align="center" gap="16px">
+                      {currentSub?.features?.slice(0, 2)?.map((item, i) => (
+                        <Flex align="center" gap="4px">
+                          {i === 0 ? (
+                            <Image src="/assets/location.svg" />
+                          ) : (
+                            <CarIcon fill="#EE383A" />
+                          )}
+                          <Text
+                            color="#838688"
+                            fontSize="14px"
+                            lineHeight="100%"
+                            fontWeight={500}
+                          >
+                            {item?.value}
+                          </Text>
+                        </Flex>
+                      ))}
+                    </Flex>
+                  </Box>
+
+                  <Flex justifyContent="flex-end" w="30%">
+                    <Button
+                      // onClick={() => (step === 1 ? move(dat) : "")}
+                      w="full"
+                      py="17px"
+                      px="26px"
+                      fontSize="12px"
+                    >
+                      Select
+                    </Button>
+                  </Flex>
+                </Flex>
+              </Box>
               <Box w="full" mb="24px">
                 <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
                   Select up to 2 vehicles
@@ -402,6 +555,26 @@ const AddSubscription = () => {
                 />
               </Box>
 
+              <Flex
+                align="center"
+                justifyContent="flex-end"
+                gap="24px"
+                mb="24px"
+              >
+                <Text fontSize="10px" fontWeight={500} color="#444648">
+                  Autorenew Subscription
+                </Text>
+                <Switch
+                  onChange={() =>
+                    setValues({
+                      ...values,
+                      autoRenew: !values.autoRenew,
+                    })
+                  }
+                  size="sm"
+                />
+              </Flex>
+
               <Box mb="24px">
                 <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
                   Payment Method
@@ -419,30 +592,15 @@ const AddSubscription = () => {
                     display="flex"
                     gap="24px"
                   >
-                    <Radio value={"1"}>
+                    <Radio size="sm" value={"1"}>
                       <Text fontSize="14px"> Pay via Wallet</Text>
                     </Radio>
-                    <Radio value={"0"}>
+                    <Radio size="sm" value={"0"}>
                       <Text fontSize="14px">Pay via card</Text>
                     </Radio>
                   </RadioGroup>
                 </Flex>
               </Box>
-
-              <Flex align="center" gap="15px" mb="16px">
-                <Text fontSize="10px" fontWeight={500} color="#444648">
-                  Auto Renew
-                </Text>
-                <Switch
-                  onChange={() =>
-                    setValues({
-                      ...values,
-                      autoRenew: !values.autoRenew,
-                    })
-                  }
-                  size="sm"
-                />
-              </Flex>
 
               {values.paymentMethod === "1" && (
                 <Box border="1px solid #D4D6D8" borderRadius="4px" p="16px">

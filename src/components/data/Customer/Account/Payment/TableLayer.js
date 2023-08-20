@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Box, Flex, Td, Text, Tr } from "@chakra-ui/react";
+import { Box, Flex, Image, Td, Text, Tr } from "@chakra-ui/react";
 import TableFormat from "../../../../common/TableFormat";
 import { FiMoreVertical } from "react-icons/fi";
 import {
@@ -8,7 +8,6 @@ import {
   TransactionTypes,
   paymentHeader,
 } from "../../../../common/constants";
-import NoData from "../../../../common/NoData";
 import { formatDate } from "../../../../../utils/helpers";
 import { useGetPaymentHistory } from "../../../../../services/customer/query/payment";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
@@ -185,10 +184,34 @@ const TableLayer = () => {
         ) : (
           <Tr>
             <Td colSpan={7} rowSpan={2}>
-              <NoData
-                title="No Service"
-                desc="You have not initiated a service"
-              />
+              <Flex
+                textAlign="center"
+                justifyContent="center"
+                mt="30px"
+                align="center"
+                flexDir="column"
+              >
+                <Image src="/assets/no-sub.jpg" w="48px" h="48px" />
+
+                <Text
+                  my="16px"
+                  color="#646668"
+                  lineHeight="100%"
+                  fontWeight={700}
+                  w="50%"
+                >
+                  No Recent Activity
+                </Text>
+                <Text
+                  fontSize="11px"
+                  color="#A4A6A8"
+                  fontWeight={500}
+                  lineHeight="100%"
+                  w="50%"
+                >
+                  No Recent Activity
+                </Text>
+              </Flex>
             </Td>
           </Tr>
         )}

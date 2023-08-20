@@ -244,7 +244,7 @@ const EventParking = () => {
           w={{
             base: "full",
             sm: "30rem",
-            lg: events?.length > 1 && step === 1 ? "60rem" : "30rem",
+            lg: "unset",
           }}
           flexDir="column"
         >
@@ -292,6 +292,7 @@ const EventParking = () => {
                 >
                   <CustomInput
                     holder="Search Event"
+                    search
                     auth
                     value={values.event}
                     onChange={(e) =>
@@ -326,11 +327,12 @@ const EventParking = () => {
                             border="1px solid #D4D6D8"
                             borderRadius="10px"
                             p="12px"
-                            minH="8rem"
+                            minW={{ base: "full", md: "26rem" }}
+                            minH="7.5rem"
                           >
-                            <Flex align="center">
+                            <Flex align="center" gap="12px">
                               <Box
-                                w="40%"
+                                w="36%"
                                 display={{ base: "none", md: "flex" }}
                               >
                                 <Image
@@ -651,13 +653,13 @@ const EventParking = () => {
                     display="flex"
                     gap="24px"
                   >
-                    <Radio value={"1"}>
+                    <Radio size="sm" value={"1"}>
                       <Text fontSize="14px"> Pay with Wallet</Text>
                     </Radio>
-                    <Radio value={"0"}>
+                    <Radio size="sm" value={"0"}>
                       <Text fontSize="14px">Pay with Card</Text>
                     </Radio>
-                    <Radio value={"2"}>
+                    <Radio size="sm" value={"2"}>
                       <Text fontSize="14px">Pay with Points</Text>
                     </Radio>
                   </RadioGroup>

@@ -215,7 +215,7 @@ const Signup = () => {
                   Same password as above
                 </Text>
               </Box>
-              <Flex fontSize="12px" my="10px" w="full" gap="8px" align="center">
+              <Flex fontSize="12px" my="24px" w="full" gap="8px" align="center">
                 <Checkbox
                   checked={isChecked}
                   onChange={(e) => setIsChecked(e.target.checked)}

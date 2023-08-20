@@ -17,6 +17,7 @@ import {
 } from "../../../../services/customer/query/vehicles";
 import AddVehicleModal from "../../../modals/AddVehicleModal";
 import useCustomToast from "../../../../utils/notifications";
+import { AiOutlineCheckCircle } from "react-icons/ai";
 import EditVehicleModal from "../../../modals/EditVehicleModal";
 import ConfirmDeleteModal from "../../../modals/ConfirmDeleteModal";
 
@@ -84,11 +85,24 @@ const VehicleCards = ({ states }) => {
                 justifyContent="center"
                 align="center"
                 w="full"
-                minH="12rem"
+                minH="11.75rem"
                 bg="#fff"
                 px="20px"
                 borderRadius="8px"
               >
+                <Flex
+                  color="red"
+                  mb="24px"
+                  w="full"
+                  justifyContent="space-between"
+                  align="center"
+                >
+                  <Text fontSize="14px" fontWeight={500} lineHeight="100%">
+                    Default
+                  </Text>
+
+                  <AiOutlineCheckCircle size="20px" />
+                </Flex>
                 <Flex justifyContent="space-between" w="full" align="center">
                   <Box w="full">
                     <Text
@@ -186,7 +200,7 @@ const VehicleCards = ({ states }) => {
 
         <GridItem>
           <Flex
-            minH="12rem"
+            minH="11.75rem"
             w="full"
             cursor="pointer"
             bg="#fff"

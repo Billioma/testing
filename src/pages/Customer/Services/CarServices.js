@@ -740,13 +740,13 @@ const CarServices = () => {
                     display="flex"
                     gap="24px"
                   >
-                    <Radio value={"1"}>
+                    <Radio size="sm" value={"1"}>
                       <Text fontSize="13px"> Pay via Wallet</Text>
                     </Radio>
-                    <Radio value={"0"}>
+                    <Radio size="sm" value={"0"}>
                       <Text fontSize="13px">Pay via Card</Text>
                     </Radio>
-                    <Radio value={"2"}>
+                    <Radio size="sm" value={"2"}>
                       <Text fontSize="13px">Pay via Points</Text>
                     </Radio>
                   </RadioGroup>

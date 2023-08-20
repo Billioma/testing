@@ -330,7 +330,7 @@ const TableLayer = () => {
                           _hover={{ bg: "#F4F6F8" }}
                           cursor="pointer"
                           fontSize="10px"
-                          color={i !== 2 ? "#646668" : "#A11212"}
+                          color={i !== 1 ? "#646668" : "#A11212"}
                           lineHeight="100%"
                           fontWeight={500}
                         >

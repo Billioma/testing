@@ -8,6 +8,7 @@ import {
   Image,
   Skeleton,
   Text,
+  useDisclosure,
 } from "@chakra-ui/react";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import {
@@ -25,10 +26,13 @@ import FundWalletDrawer from "../../../modals/FundWalletDrawer";
 import { useGetCards } from "../../../../services/customer/query/payment";
 import { usePaystackPayment } from "react-paystack";
 import EditVehicleModal from "../../../modals/EditVehicleModal";
+import AddVehicleModal from "../../../modals/AddVehicleModal";
 import { useGetStates } from "../../../../services/customer/query/locations";
+import { useNavigate } from "react-router-dom";
 
 const Cards = () => {
   const [index, setIndex] = useState(0);
+  const [showAdd, setShowAdd] = useState(false);
   const [subIndex, setSubIndex] = useState(0);
   const {
     data: vehicles,
@@ -55,7 +59,7 @@ const Cards = () => {
 
   const currentVehicle = vehicles?.data?.filter((item, i) => i === index);
   const currentSub = subscriptions?.data?.filter((item, i) => i === subIndex);
-
+  const navigate = useNavigate();
   const config = {
     reference: new Date().getTime().toString(),
     email: userData?.email,
@@ -338,16 +342,18 @@ const Cards = () => {
                   </Box>
                 ))
               ) : (
-                <Flex
-                  h="15vh"
-                  justifyContent="center"
-                  align="center"
-                  fontSize="13px"
-                  fontWeight={500}
-                  color="#000"
-                >
-                  You are yet to make a subscription
-                </Flex>
+                <Box fontSize="13px" fontWeight={500} color="#000">
+                  <Text my="37px" textAlign="center">
+                    You are yet to make a subscription
+                  </Text>
+                  <Button
+                    onClick={() => navigate("/customer/add-subscriptions")}
+                    borderRadius="8px"
+                    w="full"
+                  >
+                    Add a Subscription
+                  </Button>
+                </Box>
               )}
             </Box>
           </Skeleton>
@@ -475,7 +481,8 @@ const Cards = () => {
                           bg="transparent"
                           border="1px solid #242628"
                           rounded="full"
-                          px="27px"
+                          px="24px"
+                          py="7px"
                           color="#242628"
                           onClick={() => openMenu(data)}
                           lineHeight="100%"
@@ -533,16 +540,18 @@ const Cards = () => {
                   </Box>
                 ))
               ) : (
-                <Flex
-                  h="15vh"
-                  justifyContent="center"
-                  align="center"
-                  fontSize="13px"
-                  fontWeight={500}
-                  color="#000"
-                >
-                  No vehicle has been added
-                </Flex>
+                <Box fontSize="13px" fontWeight={500} color="#000">
+                  <Text my="37px" textAlign="center">
+                    You are yet to add a vehicle
+                  </Text>
+                  <Button
+                    onClick={() => setShowAdd(true)}
+                    borderRadius="8px"
+                    w="full"
+                  >
+                    Add a Vehicle
+                  </Button>
+                </Box>
               )}
             </Box>
           </Skeleton>
@@ -557,11 +566,19 @@ const Cards = () => {
         }}
         onClose={() => setShowFunds(false)}
       />
+      <AddVehicleModal
+        states={states}
+        makes={makes}
+        refetch={refetchVehicle}
+        models={models}
+        isOpen={showAdd}
+        onClose={() => setShowAdd(false)}
+      />
       <EditVehicleModal
         states={states}
-        dataa={currentVehicles}
         makes={makes}
         models={models}
+        dataa={currentVehicles}
         refetch={refetchVehicle}
         isOpen={show}
         onClose={() => setShow(false)}
