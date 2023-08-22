@@ -46,8 +46,8 @@ const SideBar = () => {
             <span style={{ color: "red" }}>Parkin</span>
             Space
           </Text>
-          <Text textAlign="center" fontSize="12px" mt="16px" color="#646668">
-            Business
+          <Text textAlign="center" fontSize="12px" mt="10px" color="#646668">
+            Client
           </Text>
         </Box>
 

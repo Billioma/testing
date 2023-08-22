@@ -68,7 +68,7 @@ const Header = () => {
       w={isMobile ? "calc(100% - 85px)" : "calc(100% - 343px)"}
       borderRadius="8px"
       zIndex="5"
-      py={isMobile ? "30px" : "20px"}
+      py={isMobile ? "30px" : "8px"}
       color="#000"
     >
       <Flex
@@ -112,12 +112,7 @@ const Header = () => {
           </Flex>
 
           <Flex align="center">
-            <Flex
-              align="center"
-              pos="relative"
-              gap="18px"
-              w={isMobile ? "" : "fit-content"}
-            >
+            <Flex align="center" gap="18px" w={isMobile ? "" : "fit-content"}>
               <Flex
                 gap="12px"
                 bg="#fff"

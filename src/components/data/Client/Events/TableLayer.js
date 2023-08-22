@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import {
   Box,
   Flex,
+  Icon,
   Table,
   TableContainer,
   Tbody,
@@ -15,7 +16,7 @@ import TableLoader from "../../../loaders/TableLoader";
 import {
   SecStatus,
   clientEventHeader,
-  eventOptions,
+  eventOption,
 } from "../../../common/constants";
 import NoData from "../../../common/NoData";
 import { formatDate, formatDateTimes, trim } from "../../../../utils/helpers";
@@ -165,14 +166,14 @@ const TableLayer = ({ isLoading, limit, data, setPage, page, eventMutate }) => {
                             zIndex={5555555}
                             boxShadow="0px 8px 16px 0px rgba(0, 0, 0, 0.08)"
                           >
-                            {eventOptions.map((item, i) => (
+                            {eventOption.map((item, i) => (
                               <Flex
                                 key={i}
                                 mb="8px"
                                 py="6px"
                                 px="8px"
+                                w="full"
                                 borderRadius="2px"
-                                justifyContent="center"
                                 align="center"
                                 onClick={() => openOption(i)}
                                 _hover={{ bg: "#F4F6F8" }}
@@ -180,9 +181,11 @@ const TableLayer = ({ isLoading, limit, data, setPage, page, eventMutate }) => {
                                 fontSize="10px"
                                 color={i !== 2 ? "#646668" : "#A11212"}
                                 lineHeight="100%"
+                                gap="12px"
                                 fontWeight={500}
                               >
-                                {item}
+                                <Icon as={item.icon} w="16px" h="16px" />
+                                {item?.name}
                               </Flex>
                             ))}
                           </Box>
@@ -274,7 +277,6 @@ const TableLayer = ({ isLoading, limit, data, setPage, page, eventMutate }) => {
               color="#A4A6A8"
               fontSize="12px"
             >
-              {console.log(page)}
               <IoIosArrowForward />
               <Text lineHeight="100%">Next</Text>
             </Flex>

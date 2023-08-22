@@ -52,9 +52,7 @@ const Profile = () => {
             fontWeight={500}
             lineHeight="100%"
             color="#242628"
-          >
-            Edit Profile
-          </Text>
+          ></Text>
 
           <Box as="form">
             <Flex

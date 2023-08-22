@@ -215,7 +215,6 @@ const Header = () => {
                   boxShadow="0px 4px 24px 0px rgba(0, 0, 0, 0.05)"
                   border="1px solid #E4E6E8"
                   borderRadius="4px"
-                  w="90%"
                   py="12px"
                   px="16px"
                 >
@@ -228,6 +227,8 @@ const Header = () => {
                         color: "#fff",
                         borderRadius: "4px",
                       }}
+                      textAlign="center"
+                      w="full"
                       cursor="pointer"
                       lineHeight="100%"
                       py="10px"

@@ -1,12 +1,12 @@
-import { FormControl } from "@chakra-ui/form-control";
 import React, { useState } from "react";
+import { FormControl } from "@chakra-ui/form-control";
 import {
   Input,
   InputGroup,
   InputLeftElement,
   InputRightElement,
 } from "@chakra-ui/input";
-import { Text } from "@chakra-ui/layout";
+import { Text, Flex } from "@chakra-ui/layout";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { BsSearch } from "react-icons/bs";
 
@@ -28,6 +28,7 @@ const CustomInput = ({
   dis,
   onBlur,
   onFocus,
+  pass2,
   holder,
   type,
   bg,
@@ -121,11 +122,28 @@ const CustomInput = ({
           </InputRightElement>
         )}
       </InputGroup>
-      {error && (
-        <Text fontSize="11px" mt="8px" color="red">
-          {error}
-        </Text>
-      )}
+      <Flex
+        align="center"
+        w="full"
+        justifyContent={error ? "space-between" : "flex-end"}
+      >
+        {error && (
+          <Text fontSize="10px" mt="8px" color="red">
+            {error}
+          </Text>
+        )}
+        {pass2 && (
+          <Text
+            mt="8px"
+            fontSize="10px"
+            cursor="pointer"
+            color="#1C0203"
+            textAlign="end"
+          >
+            Same password as above
+          </Text>
+        )}
+      </Flex>
     </FormControl>
   );
 };

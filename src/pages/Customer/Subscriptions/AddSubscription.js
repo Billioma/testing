@@ -226,16 +226,7 @@ const AddSubscription = () => {
           }}
           flexDir="column"
         >
-          <Text
-            fontSize="20px"
-            color="#242628"
-            lineHeight="100%"
-            fontWeight={500}
-            mb="32px"
-          >
-            Subscribe
-          </Text>
-          {step !== 1 && (
+          {/* {step !== 1 && (
             <Box mb="32px">
               <HiOutlineArrowNarrowLeft
                 cursor="pointer"
@@ -244,7 +235,38 @@ const AddSubscription = () => {
                 color="#242628"
               />
             </Box>
+          )} */}
+
+          {step !== 1 && (
+            <Flex
+              align="center"
+              gap="8px"
+              mb="23px"
+              onClick={() => setStep(step - 1)}
+              cursor="pointer"
+              w="fit-content"
+            >
+              <HiOutlineArrowNarrowLeft size="24px" color="#242628" />
+              <Text
+                lineHeight="100%"
+                color="#242628"
+                fontSize="14px"
+                fontWeight={500}
+              >
+                Back
+              </Text>
+            </Flex>
           )}
+          <Text
+            fontSize="20px"
+            color="#242628"
+            textAlign={step === 1 ? "start" : "center"}
+            mb="32px"
+            lineHeight="100%"
+            fontWeight={500}
+          >
+            Subscribe
+          </Text>
 
           {step === 1 && (
             <Grid
@@ -533,6 +555,11 @@ const AddSubscription = () => {
                       name: "vehicle",
                     })
                   }
+                  components={{
+                    IndicatorSeparator: () => (
+                      <div style={{ display: "none" }}></div>
+                    ),
+                  }}
                 />
               </Box>
 
@@ -552,6 +579,11 @@ const AddSubscription = () => {
                       name: "location",
                     })
                   }
+                  components={{
+                    IndicatorSeparator: () => (
+                      <div style={{ display: "none" }}></div>
+                    ),
+                  }}
                 />
               </Box>
 

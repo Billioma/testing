@@ -20,7 +20,6 @@ import {
 } from "../../../utils/helpers";
 import { Calendar } from "react-calendar";
 import Select from "react-select";
-import { IoIosArrowDown } from "react-icons/io";
 import { useCustomerUploadPic } from "../../../services/customer/query/user";
 import {
   useEditEvent,
@@ -204,6 +203,15 @@ const EditEvent = () => {
         : state.hasValue
         ? "#F4F6F8"
         : "unset",
+    }),
+    menu: (provided) => ({
+      ...provided,
+      backgroundColor: "#f4f6f8",
+    }),
+    option: (provided, state) => ({
+      ...provided,
+      color: state.isFocused ? "" : "",
+      backgroundColor: state.isFocused ? "#d4d6d8" : "",
     }),
   };
 
@@ -430,7 +438,7 @@ const EditEvent = () => {
                 >
                   <Text>{start ? start : "Select Date"}</Text>
 
-                  <IoIosArrowDown />
+                  <Image src="/assets/cal.svg" w="20px" h="20px" />
                 </Flex>
                 {startDate && (
                   <Box pos="absolute" top="50px" w="200%" zIndex="3">
@@ -455,7 +463,18 @@ const EditEvent = () => {
                 placeholder="Select Time"
                 options={timeOptions}
                 value={values.arrivalTime}
-                // defaultValue={values.arrivalTime}
+                components={{
+                  IndicatorSeparator: () => (
+                    <div style={{ display: "none" }}></div>
+                  ),
+                  DropdownIndicator: () => (
+                    <Image
+                      src="/assets/clock.svg"
+                      mr="16px"
+                      style={{ width: "20px", height: "20px" }}
+                    />
+                  ),
+                }}
                 onChange={(selectedOption) =>
                   handleSelectChange(selectedOption, {
                     name: "arrivalTime",
@@ -488,8 +507,7 @@ const EditEvent = () => {
                   px="16px"
                 >
                   <Text>{end ? end : "Select Date"}</Text>
-
-                  <IoIosArrowDown />
+                  <Image src="/assets/cal.svg" w="20px" h="20px" />{" "}
                 </Flex>
                 {endDate && (
                   <Box pos="absolute" top="70" w="200%" zIndex="3">
@@ -520,6 +538,18 @@ const EditEvent = () => {
                     name: "departureTime",
                   })
                 }
+                components={{
+                  IndicatorSeparator: () => (
+                    <div style={{ display: "none" }}></div>
+                  ),
+                  DropdownIndicator: () => (
+                    <Image
+                      src="/assets/clock.svg"
+                      mr="16px"
+                      style={{ width: "20px", height: "20px" }}
+                    />
+                  ),
+                }}
               />
             </Box>
           </Flex>

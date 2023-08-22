@@ -21,7 +21,6 @@ import { useGetVehicles } from "../../../services/customer/query/vehicles";
 import Select from "react-select";
 import { Calendar } from "react-calendar";
 import { formatDate } from "../../../utils/helpers";
-import { IoIosArrowDown } from "react-icons/io";
 import CustomInput from "../../../components/common/CustomInput";
 import { BsCheckCircle } from "react-icons/bs";
 import { useGetUser } from "../../../services/customer/query/user";
@@ -272,6 +271,15 @@ const CarServices = () => {
         ? "#F4F6F8"
         : "unset",
     }),
+    menu: (provided) => ({
+      ...provided,
+      backgroundColor: "#f4f6f8",
+    }),
+    option: (provided, state) => ({
+      ...provided,
+      color: state.isFocused ? "" : "",
+      backgroundColor: state.isFocused ? "#d4d6d8" : "",
+    }),
   };
 
   useEffect(() => {
@@ -424,6 +432,11 @@ const CarServices = () => {
                       name: "serviceId",
                     })
                   }
+                  components={{
+                    IndicatorSeparator: () => (
+                      <div style={{ display: "none" }}></div>
+                    ),
+                  }}
                 />
               </Box>
 
@@ -442,6 +455,11 @@ const CarServices = () => {
                       name: "billingRate",
                     })
                   }
+                  components={{
+                    IndicatorSeparator: () => (
+                      <div style={{ display: "none" }}></div>
+                    ),
+                  }}
                 />
               </Box>
 
@@ -491,7 +509,7 @@ const CarServices = () => {
                     >
                       <Text>{start ? start : "Select Date"}</Text>
 
-                      <IoIosArrowDown />
+                      <Image src="/assets/cal.svg" w="20px" h="20px" />
                     </Flex>
                     {startDate && (
                       <Box pos="absolute" top="50px" w="200%" zIndex="3">
@@ -527,6 +545,18 @@ const CarServices = () => {
                         name: "appointmentTime",
                       })
                     }
+                    components={{
+                      IndicatorSeparator: () => (
+                        <div style={{ display: "none" }}></div>
+                      ),
+                      DropdownIndicator: () => (
+                        <Image
+                          src="/assets/clock.svg"
+                          mr="16px"
+                          style={{ width: "20px", height: "20px" }}
+                        />
+                      ),
+                    }}
                   />
                 </Box>
               </Flex>
@@ -547,6 +577,11 @@ const CarServices = () => {
                       name: "vehicle",
                     })
                   }
+                  components={{
+                    IndicatorSeparator: () => (
+                      <div style={{ display: "none" }}></div>
+                    ),
+                  }}
                 />
               </Box>
             </Box>

@@ -107,6 +107,15 @@ const EditVehicleModal = ({
       border: "1px solid #D4D6D8",
       background: "unset",
     }),
+    menu: (provided) => ({
+      ...provided,
+      backgroundColor: "#f4f6f8",
+    }),
+    option: (provided, state) => ({
+      ...provided,
+      color: state.isFocused ? "" : "",
+      backgroundColor: state.isFocused ? "#d4d6d8" : "",
+    }),
   };
   const { errorToast, successToast } = useCustomToast();
 

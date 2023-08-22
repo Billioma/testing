@@ -23,7 +23,6 @@ import {
 } from "../../../services/customer/query/locations";
 import { Calendar } from "react-calendar";
 import { formatDate, formatTime } from "../../../utils/helpers";
-import { IoIosArrowDown } from "react-icons/io";
 import { useGetVehicles } from "../../../services/customer/query/vehicles";
 import { useGetCards } from "../../../services/customer/query/payment";
 import { useGetUser } from "../../../services/customer/query/user";
@@ -216,6 +215,15 @@ const EventParking = () => {
         : state.hasValue
         ? "#F4F6F8"
         : "unset",
+    }),
+    menu: (provided) => ({
+      ...provided,
+      backgroundColor: "#f4f6f8",
+    }),
+    option: (provided, state) => ({
+      ...provided,
+      color: state.isFocused ? "" : "",
+      backgroundColor: state.isFocused ? "#d4d6d8" : "",
     }),
   };
 
@@ -581,8 +589,7 @@ const EventParking = () => {
                     px="16px"
                   >
                     <Text>{start ? start : "Select Date"}</Text>
-
-                    <IoIosArrowDown />
+                    <Image src="/assets/cal.svg" w="20px" h="20px" />{" "}
                   </Flex>
                   {startDate && (
                     <Box pos="absolute" top="50px" w="full" zIndex="3">
@@ -614,6 +621,11 @@ const EventParking = () => {
                       name: "service",
                     })
                   }
+                  components={{
+                    IndicatorSeparator: () => (
+                      <div style={{ display: "none" }}></div>
+                    ),
+                  }}
                 />
               </Box>
 
@@ -633,6 +645,11 @@ const EventParking = () => {
                       name: "vehicle",
                     })
                   }
+                  components={{
+                    IndicatorSeparator: () => (
+                      <div style={{ display: "none" }}></div>
+                    ),
+                  }}
                 />
               </Box>
 

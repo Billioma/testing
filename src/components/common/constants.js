@@ -1,3 +1,4 @@
+import { MdAutorenew } from "react-icons/md";
 import {
   ClientEventIcon,
   ClientUserIcon,
@@ -22,6 +23,9 @@ import {
   ReportsIcon,
   ConfigIcon,
 } from "./images";
+import { FcCancel } from "react-icons/fc";
+import { BsTrash } from "react-icons/bs";
+import { AiOutlineEdit } from "react-icons/ai";
 
 export const sidebarItems = [
   {
@@ -458,7 +462,26 @@ export const BookingSlots = [
   "17:30 - 19:00",
 ];
 
-export const subOptions = ["Renew Subscription", "Cancel Subscription"];
+export const subOption = [
+  {
+    name: "Renew Subscription",
+    icon: MdAutorenew,
+  },
+  {
+    name: "Cancel Subscription",
+    icon: FcCancel,
+  },
+];
+export const eventOption = [
+  {
+    name: "Edit Event",
+    icon: AiOutlineEdit,
+  },
+  {
+    name: "Delete Event",
+    icon: BsTrash,
+  },
+];
 export const eventOptions = ["Edit Event", "Delete Event"];
 
 export const accountDrop = [
@@ -486,7 +509,6 @@ export const servicesHeader = [
   "SERVICE TYPE",
   "STATUS",
   "DATE",
-  "ACTIONS",
 ];
 
 export const payToParkHeader = [
@@ -495,7 +517,6 @@ export const payToParkHeader = [
   "SERVICE TYPE",
   "STATUS",
   "DATE",
-  "ACTIONS",
 ];
 
 export const clientDahboard = [
@@ -553,7 +574,6 @@ export const eventHeader = [
   "EVENT",
   "STATUS",
   "DATE",
-  "ACTIONS",
 ];
 
 export const carHeader = [
@@ -583,7 +603,6 @@ export const paymentHeader = [
   "TRANSACTION TYPE",
   "STATUS",
   "DATE",
-  "ACTIONS",
 ];
 
 export const intervals = [
@@ -614,9 +633,5 @@ export const customStyles = {
     borderRadius: "4px",
     border: "1px solid #D4D6D8",
     background: "unset",
-  }),
-  menu: (provided) => ({
-    ...provided,
-    fontSize: "13px",
   }),
 };

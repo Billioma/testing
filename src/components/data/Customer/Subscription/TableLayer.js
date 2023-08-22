@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { Box, Button, Flex, Image, Td, Text, Tr } from "@chakra-ui/react";
+import { Box, Button, Flex, Icon, Image, Td, Text, Tr } from "@chakra-ui/react";
 import TableFormat from "../../../common/TableFormat";
 import { FiMoreVertical } from "react-icons/fi";
 import {
   Status,
   intervals,
   subHeader,
-  subOptions,
+  subOption,
 } from "../../../common/constants";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import {
@@ -317,7 +317,7 @@ const TableLayer = () => {
                       top="20px"
                       boxShadow="0px 8px 16px 0px rgba(0, 0, 0, 0.08)"
                     >
-                      {subOptions.map((item, i) => (
+                      {subOption.map((item, i) => (
                         <Flex
                           key={i}
                           mb="8px"
@@ -330,11 +330,14 @@ const TableLayer = () => {
                           _hover={{ bg: "#F4F6F8" }}
                           cursor="pointer"
                           fontSize="10px"
+                          gap="12px"
+                          w="full"
                           color={i !== 1 ? "#646668" : "#A11212"}
                           lineHeight="100%"
                           fontWeight={500}
                         >
-                          {item}
+                          <Icon as={item.icon} w="20px" h="20px" />
+                          {item?.name}
                         </Flex>
                       ))}
                     </Box>

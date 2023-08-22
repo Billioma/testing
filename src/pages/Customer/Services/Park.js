@@ -201,6 +201,15 @@ const Park = () => {
         ? "#F4F6F8"
         : "unset",
     }),
+    menu: (provided) => ({
+      ...provided,
+      backgroundColor: "#f4f6f8",
+    }),
+    option: (provided, state) => ({
+      ...provided,
+      color: state.isFocused ? "" : "",
+      backgroundColor: state.isFocused ? "#d4d6d8" : "",
+    }),
   };
 
   return (
@@ -379,6 +388,9 @@ const Park = () => {
                   styles={customStyles}
                   components={{
                     SingleValue: ServiceType,
+                    IndicatorSeparator: () => (
+                      <div style={{ display: "none" }}></div>
+                    ),
                   }}
                   options={serviceOptions}
                   onChange={(selectedOption) =>
@@ -401,6 +413,11 @@ const Park = () => {
                   placeholder="Select Vehicle"
                   options={vehicleOptions}
                   value={values.vehicle}
+                  components={{
+                    IndicatorSeparator: () => (
+                      <div style={{ display: "none" }}></div>
+                    ),
+                  }}
                   defaultValue={values.vehicle}
                   onChange={(selectedOption) =>
                     handleSelectChange(selectedOption, {

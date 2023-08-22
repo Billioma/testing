@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Box, Flex, Image, Td, Text, Tr } from "@chakra-ui/react";
 import TableFormat from "../../../common/TableFormat";
 import { FiMoreVertical } from "react-icons/fi";
@@ -23,7 +23,7 @@ import {
 import { formatDate, formatDateTime } from "../../../../utils/helpers";
 import ConfirmDeleteModal from "../../../modals/ConfirmDeleteModal";
 import useCustomToast from "../../../../utils/notifications";
-import { useEffect } from "react";
+import { FcCancel } from "react-icons/fc";
 
 const TableLayer = () => {
   const [page, setPage] = useState(1);
@@ -370,11 +370,6 @@ const TableLayer = () => {
                   </Flex>
                 </Td>
                 <Td textAlign="center">{formatDate(dat?.createdAt)}</Td>
-                <Td>
-                  <Flex justifyContent="center" align="center">
-                    <FiMoreVertical />
-                  </Flex>
-                </Td>
               </Tr>
             ))
           ) : (
@@ -405,7 +400,7 @@ const TableLayer = () => {
                     lineHeight="100%"
                     w="50%"
                   >
-                    No Recent Activity
+                    Make use of any of our parking services
                   </Text>
                 </Flex>
               </Td>
@@ -483,10 +478,13 @@ const TableLayer = () => {
                           _hover={{ bg: "#F4F6F8" }}
                           cursor="pointer"
                           fontSize="10px"
-                          color="#646668"
+                          color="red"
                           lineHeight="100%"
                           fontWeight={500}
+                          gap="12px"
+                          w="full"
                         >
+                          <FcCancel size="15px" />
                           Cancel Reservation
                         </Flex>
                       </Box>
@@ -523,7 +521,7 @@ const TableLayer = () => {
                     lineHeight="100%"
                     w="50%"
                   >
-                    No Recent Activity
+                    Make use of any of our parking services
                   </Text>
                 </Flex>
               </Td>
@@ -573,11 +571,6 @@ const TableLayer = () => {
                   </Flex>
                 </Td>
                 <Td textAlign="center">{formatDate(dat?.createdAt)}</Td>
-                <Td>
-                  <Flex justifyContent="center" align="center">
-                    <FiMoreVertical />
-                  </Flex>
-                </Td>
               </Tr>
             ))
           ) : (
@@ -608,7 +601,7 @@ const TableLayer = () => {
                     lineHeight="100%"
                     w="50%"
                   >
-                    No Recent Activity
+                    Make use of any of our parking services
                   </Text>
                 </Flex>
               </Td>
@@ -694,10 +687,13 @@ const TableLayer = () => {
                         _hover={{ bg: "#F4F6F8" }}
                         cursor="pointer"
                         fontSize="10px"
-                        color="#646668"
+                        color="red"
                         lineHeight="100%"
+                        w="full"
+                        gap="12px"
                         fontWeight={500}
                       >
+                        <FcCancel size="15px" />
                         Cancel Reservation
                       </Flex>
                     </Box>
@@ -709,7 +705,7 @@ const TableLayer = () => {
         ) : (
           <Tr>
             <Td colSpan={7} rowSpan={2}>
-            <Flex
+              <Flex
                 textAlign="center"
                 justifyContent="center"
                 mt="30px"
@@ -734,7 +730,7 @@ const TableLayer = () => {
                   lineHeight="100%"
                   w="50%"
                 >
-                  No Recent Activity
+                  Make use of any of our car services
                 </Text>
               </Flex>
             </Td>

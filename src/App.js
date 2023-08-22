@@ -26,6 +26,7 @@ const App = () => {
     "/assets/user.png",
     "/assets/cal.png",
     "/assets/sub.png",
+    "/assets/cal.svg",
     "/assets/event.png",
     "/assets/wallet.png",
     "/assets/add-icon.svg",

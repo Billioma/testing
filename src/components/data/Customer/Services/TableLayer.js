@@ -24,6 +24,7 @@ import { formatDate, formatDateTime } from "../../../../utils/helpers";
 import ConfirmDeleteModal from "../../../modals/ConfirmDeleteModal";
 import useCustomToast from "../../../../utils/notifications";
 import { useEffect } from "react";
+import { FcCancel } from "react-icons/fc";
 
 const TableLayer = () => {
   const [page, setPage] = useState(1);
@@ -373,44 +374,39 @@ const TableLayer = () => {
                   </Flex>
                 </Td>
                 <Td textAlign="center">{formatDate(dat?.createdAt)}</Td>
-                <Td>
-                  <Flex justifyContent="center" align="center">
-                    <FiMoreVertical />
-                  </Flex>
-                </Td>
               </Tr>
             ))
           ) : (
             <Tr>
               <Td colSpan={7} rowSpan={2}>
                 <Flex
-                textAlign="center"
-                justifyContent="center"
-                mt="30px"
-                align="center"
-                flexDir="column"
-              >
-                <Image src="/assets/no-sub.jpg" w="48px" h="48px" />
+                  textAlign="center"
+                  justifyContent="center"
+                  mt="30px"
+                  align="center"
+                  flexDir="column"
+                >
+                  <Image src="/assets/no-sub.jpg" w="48px" h="48px" />
 
-                <Text
-                  my="16px"
-                  color="#646668"
-                  lineHeight="100%"
-                  fontWeight={700}
-                  w="50%"
-                >
-                  No Recent Activity
-                </Text>
-                <Text
-                  fontSize="11px"
-                  color="#A4A6A8"
-                  fontWeight={500}
-                  lineHeight="100%"
-                  w="50%"
-                >
-                  No Recent Activity
-                </Text>
-              </Flex>
+                  <Text
+                    my="16px"
+                    color="#646668"
+                    lineHeight="100%"
+                    fontWeight={700}
+                    w="50%"
+                  >
+                    No Recent Activity
+                  </Text>
+                  <Text
+                    fontSize="11px"
+                    color="#A4A6A8"
+                    fontWeight={500}
+                    lineHeight="100%"
+                    w="50%"
+                  >
+                    Make use of any of our parking services
+                  </Text>
+                </Flex>
               </Td>
             </Tr>
           )
@@ -486,10 +482,13 @@ const TableLayer = () => {
                           _hover={{ bg: "#F4F6F8" }}
                           cursor="pointer"
                           fontSize="10px"
-                          color="#646668"
+                          color="red"
                           lineHeight="100%"
+                          gap="12px"
+                          w="full"
                           fontWeight={500}
                         >
+                          <FcCancel size="15px" />
                           Cancel Reservation
                         </Flex>
                       </Box>
@@ -502,33 +501,33 @@ const TableLayer = () => {
             <Tr>
               <Td colSpan={7} rowSpan={2}>
                 <Flex
-                textAlign="center"
-                justifyContent="center"
-                mt="30px"
-                align="center"
-                flexDir="column"
-              >
-                <Image src="/assets/no-sub.jpg" w="48px" h="48px" />
+                  textAlign="center"
+                  justifyContent="center"
+                  mt="30px"
+                  align="center"
+                  flexDir="column"
+                >
+                  <Image src="/assets/no-sub.jpg" w="48px" h="48px" />
 
-                <Text
-                  my="16px"
-                  color="#646668"
-                  lineHeight="100%"
-                  fontWeight={700}
-                  w="50%"
-                >
-                  No Recent Activity
-                </Text>
-                <Text
-                  fontSize="11px"
-                  color="#A4A6A8"
-                  fontWeight={500}
-                  lineHeight="100%"
-                  w="50%"
-                >
-                  No Recent Activity
-                </Text>
-              </Flex>
+                  <Text
+                    my="16px"
+                    color="#646668"
+                    lineHeight="100%"
+                    fontWeight={700}
+                    w="50%"
+                  >
+                    No Recent Activity
+                  </Text>
+                  <Text
+                    fontSize="11px"
+                    color="#A4A6A8"
+                    fontWeight={500}
+                    lineHeight="100%"
+                    w="50%"
+                  >
+                    Make use of any of our parking services
+                  </Text>
+                </Flex>
               </Td>
             </Tr>
           )
@@ -576,44 +575,39 @@ const TableLayer = () => {
                   </Flex>
                 </Td>
                 <Td textAlign="center">{formatDate(dat?.createdAt)}</Td>
-                <Td>
-                  <Flex justifyContent="center" align="center">
-                    <FiMoreVertical />
-                  </Flex>
-                </Td>
               </Tr>
             ))
           ) : (
             <Tr>
               <Td colSpan={8} rowSpan={2}>
                 <Flex
-                textAlign="center"
-                justifyContent="center"
-                mt="30px"
-                align="center"
-                flexDir="column"
-              >
-                <Image src="/assets/no-sub.jpg" w="48px" h="48px" />
+                  textAlign="center"
+                  justifyContent="center"
+                  mt="30px"
+                  align="center"
+                  flexDir="column"
+                >
+                  <Image src="/assets/no-sub.jpg" w="48px" h="48px" />
 
-                <Text
-                  my="16px"
-                  color="#646668"
-                  lineHeight="100%"
-                  fontWeight={700}
-                  w="50%"
-                >
-                  No Recent Activity
-                </Text>
-                <Text
-                  fontSize="11px"
-                  color="#A4A6A8"
-                  fontWeight={500}
-                  lineHeight="100%"
-                  w="50%"
-                >
-                  No Recent Activity
-                </Text>
-              </Flex>
+                  <Text
+                    my="16px"
+                    color="#646668"
+                    lineHeight="100%"
+                    fontWeight={700}
+                    w="50%"
+                  >
+                    No Recent Activity
+                  </Text>
+                  <Text
+                    fontSize="11px"
+                    color="#A4A6A8"
+                    fontWeight={500}
+                    lineHeight="100%"
+                    w="50%"
+                  >
+                    Make use of any of our parking services
+                  </Text>
+                </Flex>
               </Td>
             </Tr>
           )
@@ -697,10 +691,13 @@ const TableLayer = () => {
                         _hover={{ bg: "#F4F6F8" }}
                         cursor="pointer"
                         fontSize="10px"
-                        color="#646668"
+                        color="red"
+                        gap="12px"
+                        w="full"
                         lineHeight="100%"
                         fontWeight={500}
                       >
+                        <FcCancel size="15px" />
                         Cancel Reservation
                       </Flex>
                     </Box>
@@ -712,7 +709,7 @@ const TableLayer = () => {
         ) : (
           <Tr>
             <Td colSpan={7} rowSpan={2}>
-            <Flex
+              <Flex
                 textAlign="center"
                 justifyContent="center"
                 mt="30px"
@@ -737,7 +734,7 @@ const TableLayer = () => {
                   lineHeight="100%"
                   w="50%"
                 >
-                  No Recent Activity
+                  Make use of any of our car services
                 </Text>
               </Flex>
             </Td>

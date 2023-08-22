@@ -195,6 +195,7 @@ const Signup = () => {
                   onChange={handleChange}
                   onBlur={handleBlur}
                   name="passwordConfirmation"
+                  pass2
                   error={
                     errors?.passwordConfirmation &&
                     touched?.passwordConfirmation &&
@@ -205,15 +206,6 @@ const Signup = () => {
                   show
                   type={show ? "text" : "password"}
                 />
-                <Text
-                  mt="8px"
-                  fontSize="10px"
-                  cursor="pointer"
-                  color="#1C0203"
-                  textAlign="end"
-                >
-                  Same password as above
-                </Text>
               </Box>
               <Flex fontSize="12px" my="24px" w="full" gap="8px" align="center">
                 <Checkbox

@@ -20,6 +20,7 @@ import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import ConfirmDeleteModal from "../../../modals/ConfirmDeleteModal";
 import useCustomToast from "../../../../utils/notifications";
 import { useDetachUser } from "../../../../services/client/query/users";
+import { BsTrash } from "react-icons/bs";
 
 const TableLayer = ({ isLoading, data, page, setPage, userMutate, limit }) => {
   const [show, setShow] = useState(false);
@@ -157,10 +158,13 @@ const TableLayer = ({ isLoading, data, page, setPage, userMutate, limit }) => {
                               _hover={{ bg: "#F4F6F8" }}
                               cursor="pointer"
                               fontSize="10px"
-                              color="#646668"
+                              color="red"
+                              w="full"
                               lineHeight="100%"
                               fontWeight={500}
+                              gap="12px"
                             >
+                              <BsTrash size="15px" />
                               Remove User
                             </Flex>
                           </Box>

@@ -1,7 +1,6 @@
 import React from "react";
 import { Box, Flex, Image, Td, Text, Tr } from "@chakra-ui/react";
 import TableFormat from "../../../common/TableFormat";
-import { FiMoreVertical } from "react-icons/fi";
 import { Status, servicesHeader } from "../../../common/constants";
 import { useGetPayToPark } from "../../../../services/customer/query/services";
 import { formatDate } from "../../../../utils/helpers";
@@ -61,11 +60,6 @@ const TableLayer = () => {
                 </Flex>
               </Td>
               <Td textAlign="center">{formatDate(dat?.createdAt)}</Td>
-              <Td>
-                <Flex justifyContent="center" align="center">
-                  <FiMoreVertical />
-                </Flex>
-              </Td>
             </Tr>
           ))
         ) : (
@@ -96,7 +90,7 @@ const TableLayer = () => {
                   lineHeight="100%"
                   w="50%"
                 >
-                  No Recent Activity
+                  Make use of any of our parking services
                 </Text>
               </Flex>
             </Td>

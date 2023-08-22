@@ -8,7 +8,6 @@ import {
   Image,
   Skeleton,
   Text,
-  useDisclosure,
 } from "@chakra-ui/react";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import {

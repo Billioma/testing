@@ -50,11 +50,17 @@ const FundWalletDrawer = ({ isOpen, cards, refetchUser, onClose, action }) => {
   };
 
   return (
-    <Modal isCentered trapFocus={false} isOpen={isOpen} onClose={close}>
+    <Modal
+      size="sm"
+      isCentered
+      trapFocus={false}
+      isOpen={isOpen}
+      onClose={close}
+    >
       <ModalOverlay backdropFilter="auto" backdropBlur="2px" />
       <ModalContent
         py="32px"
-        px="24px"
+        px="5px"
         overflowY="auto"
         borderRadius="8px"
         bg="#fff"

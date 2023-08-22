@@ -35,63 +35,65 @@ const ContactUs = () => {
   const navigate = useNavigate();
   return (
     <Box minH="75vh">
-      <Flex
-        onClick={() => navigate(-1)}
-        color="#242628"
-        align="center"
-        cursor="pointer"
-        mb="23px"
-        w="fit-content"
-        pos="sticky"
-        top="6rem"
-        gap="8px"
-      >
-        <HiOutlineArrowNarrowLeft size="24px" color="#242628" />
-        <Text fontSize="14px" fontWeight={500} lineHeight="100%">
-          Back
-        </Text>
-      </Flex>
-
-      <Flex justifyContent="center" align="center" w="full" flexDir="column">
+      <Flex align="flex-start">
         <Flex
-          bg="#fff"
-          borderRadius="12px"
-          py="32px"
-          px="24px"
-          justifyContent="center"
-          w={{ base: "full", md: "30rem" }}
-          flexDir="column"
+          onClick={() => navigate(-1)}
+          color="#242628"
+          align="center"
+          cursor="pointer"
+          mb="23px"
+          w="fit-content"
+          pos="sticky"
+          top="6rem"
+          gap="8px"
         >
-          <Text
-            textAlign="center"
-            color="#242628"
-            fontWeight={700}
-            fontSize="24px"
-            lineHeight="100%"
-          >
-            Send us a Mail
+          <HiOutlineArrowNarrowLeft size="24px" color="#242628" />
+          <Text fontSize="14px" fontWeight={500} lineHeight="100%">
+            Back
           </Text>
-          <Text
-            textAlign="center"
-            color="#646668"
-            mt="24px"
-            fontSize="14px"
-            lineHeight="150%"
+        </Flex>
+
+        <Flex justifyContent="center" align="center" w="full" flexDir="column">
+          <Flex
+            bg="#fff"
+            borderRadius="12px"
+            py="32px"
+            px="24px"
+            justifyContent="center"
+            w={{ base: "full", md: "30rem" }}
+            flexDir="column"
           >
-            Send us a message below and we’ll get back to you in 6 hours or
-            less.
-          </Text>
+            <Text
+              textAlign="center"
+              color="#242628"
+              fontWeight={700}
+              fontSize="24px"
+              lineHeight="100%"
+            >
+              Send us a Mail
+            </Text>
+            <Text
+              textAlign="center"
+              color="#646668"
+              mt="24px"
+              fontSize="14px"
+              lineHeight="150%"
+            >
+              Send us a message below and we’ll get back to you in 6 hours or
+              less.
+            </Text>
 
-          <Box mt="32px">
-            <Layout label="Name" holder="Enter your name" />
-            <Layout label="Email" holder="Enter your email address" />
-            <Layout label="Phone Number" holder="Enter your phone number" />
-            <Layout label="Message" holder="Enter your message" area />
+            <Box mt="32px">
+              <Layout label="Name" holder="Enter your name" />
+              <Layout label="Email" holder="Enter your email address" />
+              <Layout label="Phone Number" holder="Enter your phone number" />
+              <Layout label="Message" holder="Enter your message" area />
 
-            <Button w="full" fontSize="14px" py="15px" mt="32px">
-              Send
-            </Button>
-          </Box>
+              <Button w="full" fontSize="14px" py="15px" mt="32px">
+                Send
+              </Button>
+            </Box>
+          </Flex>
         </Flex>
       </Flex>
     </Box>

@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Box, Flex, Image, Td, Text, Tr } from "@chakra-ui/react";
 import TableFormat from "../../../../common/TableFormat";
-import { FiMoreVertical } from "react-icons/fi";
 import {
   PaymentMethods,
   Status,
@@ -174,11 +173,6 @@ const TableLayer = () => {
                 </Flex>
               </Td>
               <Td textAlign="center">{formatDate(dat?.createdAt)}</Td>
-              <Td>
-                <Flex justifyContent="center" align="center">
-                  <FiMoreVertical />
-                </Flex>
-              </Td>
             </Tr>
           ))
         ) : (

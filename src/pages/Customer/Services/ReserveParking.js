@@ -3,6 +3,7 @@ import {
   Box,
   Button,
   Flex,
+  Image,
   Radio,
   RadioGroup,
   Text,
@@ -24,7 +25,6 @@ import {
   formatTimeToHHMMSS,
   timeArray,
 } from "../../../utils/helpers";
-import { IoIosArrowDown } from "react-icons/io";
 import { useGetVehicles } from "../../../services/customer/query/vehicles";
 import { useGetCards } from "../../../services/customer/query/payment";
 import { useGetUser } from "../../../services/customer/query/user";
@@ -271,6 +271,15 @@ const ReserveParking = () => {
         ? "#F4F6F8"
         : "unset",
     }),
+    menu: (provided) => ({
+      ...provided,
+      backgroundColor: "#f4f6f8",
+    }),
+    option: (provided, state) => ({
+      ...provided,
+      color: state.isFocused ? "" : "",
+      backgroundColor: state.isFocused ? "#d4d6d8" : "",
+    }),
   };
 
   useEffect(() => {
@@ -357,6 +366,11 @@ const ReserveParking = () => {
                   onChange={(selectedOption) =>
                     handleSelectChange(selectedOption, { name: "state" })
                   }
+                  components={{
+                    IndicatorSeparator: () => (
+                      <div style={{ display: "none" }}></div>
+                    ),
+                  }}
                 />
               </Box>
               <Box w="full" my="24px">
@@ -369,6 +383,11 @@ const ReserveParking = () => {
                   onChange={(selectedOption) =>
                     handleSelectChange(selectedOption, { name: "city" })
                   }
+                  components={{
+                    IndicatorSeparator: () => (
+                      <div style={{ display: "none" }}></div>
+                    ),
+                  }}
                 />
               </Box>
               <Box w="full">
@@ -381,6 +400,11 @@ const ReserveParking = () => {
                   onChange={(selectedOption) =>
                     handleSelectChange(selectedOption, { name: "locations" })
                   }
+                  components={{
+                    IndicatorSeparator: () => (
+                      <div style={{ display: "none" }}></div>
+                    ),
+                  }}
                 />
               </Box>
             </>
@@ -478,8 +502,7 @@ const ReserveParking = () => {
                       px="16px"
                     >
                       <Text>{start ? start : "Select Date"}</Text>
-
-                      <IoIosArrowDown />
+                      <Image src="/assets/cal.svg" w="20px" h="20px" />{" "}
                     </Flex>
                     {startDate && (
                       <Box pos="absolute" top="50px" w="200%" zIndex="3">
@@ -515,6 +538,18 @@ const ReserveParking = () => {
                         name: "arrivalTime",
                       })
                     }
+                    components={{
+                      IndicatorSeparator: () => (
+                        <div style={{ display: "none" }}></div>
+                      ),
+                      DropdownIndicator: () => (
+                        <Image
+                          src="/assets/clock.svg"
+                          mr="16px"
+                          style={{ width: "20px", height: "20px" }}
+                        />
+                      ),
+                    }}
                   />
                 </Box>
               </Flex>
@@ -547,8 +582,7 @@ const ReserveParking = () => {
                       px="16px"
                     >
                       <Text>{end ? end : "Select Date"}</Text>
-
-                      <IoIosArrowDown />
+                      <Image src="/assets/cal.svg" w="20px" h="20px" />{" "}
                     </Flex>
                     {endDate && (
                       <Box pos="absolute" top="70" w="200%" zIndex="3">
@@ -584,6 +618,18 @@ const ReserveParking = () => {
                         name: "departureTime",
                       })
                     }
+                    components={{
+                      IndicatorSeparator: () => (
+                        <div style={{ display: "none" }}></div>
+                      ),
+                      DropdownIndicator: () => (
+                        <Image
+                          src="/assets/clock.svg"
+                          mr="16px"
+                          style={{ width: "20px", height: "20px" }}
+                        />
+                      ),
+                    }}
                   />
                 </Box>
               </Flex>
@@ -613,6 +659,11 @@ const ReserveParking = () => {
                       name: "vehicle",
                     })
                   }
+                  components={{
+                    IndicatorSeparator: () => (
+                      <div style={{ display: "none" }}></div>
+                    ),
+                  }}
                 />
               </Box>
 
