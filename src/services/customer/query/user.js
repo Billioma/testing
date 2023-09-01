@@ -4,14 +4,17 @@ import {
   customerCreateSubscription,
   customerFundWallet,
   customerUpdatePassword,
+  customerUpdatePreference,
   customerUpdateUser,
   customerUploadPic,
   deleteCard,
   getFaq,
+  getPreference,
   getUser,
   getUserSub,
   getUserSubscriptions,
   renewSub,
+  sendMail,
 } from "../api/user";
 
 export const useGetUser = (options = {}) => {
@@ -26,6 +29,18 @@ export const useGetFaq = (options = {}) => {
   const { data, isLoading, refetch } = useQuery("GET_FAQ", getFaq, {
     ...options,
   });
+
+  return { data, isLoading, refetch };
+};
+
+export const useGetPreference = (options = {}) => {
+  const { data, isLoading, refetch } = useQuery(
+    "GET_PREFERENCE",
+    getPreference,
+    {
+      ...options,
+    }
+  );
 
   return { data, isLoading, refetch };
 };
@@ -50,6 +65,14 @@ export const useCustomerUpdateUser = (options = {}) => {
   return { mutate, isLoading };
 };
 
+export const useCustomerUpdatePreference = (options = {}) => {
+  const { mutate, isLoading } = useMutation(customerUpdatePreference, {
+    mutationKey: "CUSTOMER_UPDATE_PREFERENCE",
+    ...options,
+  });
+  return { mutate, isLoading };
+};
+
 export const useGetUserSub = (limit = "", page = "", options = {}) => {
   const { isLoading, data, refetch } = useQuery(
     ["GET_SUBSCRIPTIONS", limit, page],
@@ -65,6 +88,14 @@ export const useGetUserSub = (limit = "", page = "", options = {}) => {
 export const useCancelSub = (options = {}) => {
   const { mutate, isLoading, data } = useMutation(cancelSub, {
     mutationKey: "CANCEL_SUB",
+    ...options,
+  });
+  return { mutate, isLoading, data };
+};
+
+export const useSendMail = (options = {}) => {
+  const { mutate, isLoading, data } = useMutation(sendMail, {
+    mutationKey: "SEND_MAIL",
     ...options,
   });
   return { mutate, isLoading, data };

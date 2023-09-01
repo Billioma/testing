@@ -11,14 +11,11 @@ export const AuthLayout = ({ children }) => {
   const [isMobile] = useMediaQuery("(max-width: 991px)");
 
   const { data: userData } = useGetUser();
-  // To set unique user id in your system when it is available
   window?.fcWidget?.setExternalId(userData?.profile?.id);
 
-  // To set user name
   window?.fcWidget?.user?.setFirstName(userData?.profile?.firstName);
   window?.fcWidget?.user?.setLastName(userData?.profile?.lastName);
 
-  // To set user email
   window?.fcWidget?.user?.setEmail(userData?.email);
 
   return (
@@ -82,7 +79,7 @@ export const NonAuthLayout = ({ children }) => {
         flexDir="column"
         justifyContent="center"
         align="center"
-        minH="90vh"
+        minH={location.pathname === "/customer/pay-to-park" ? "unset" : "90vh"}
         pt={
           !isMobile && location.pathname === "/customer/auth/signup"
             ? "30px"

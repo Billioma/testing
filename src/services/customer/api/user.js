@@ -11,6 +11,11 @@ export const getUserSubscriptions = async () => {
   return res.data;
 };
 
+export const getPreference = async () => {
+  const res = await axiosInstance.get("customer/" + API.GET_PREFERENCE);
+  return res.data;
+};
+
 export const getFaq = async () => {
   const res = await axiosInstance.get(API.GET_FAQ);
   return res.data;
@@ -45,8 +50,21 @@ export const deleteCard = async (query) => {
   return res.data;
 };
 
+export const customerUpdatePreference = async (body) => {
+  const res = await axiosInstance.patch(
+    "customer/" + API.UPDATE_PREFERENCE,
+    body
+  );
+  return res.data;
+};
+
 export const customerUpdateUser = async (body) => {
   const res = await axiosInstance.post("customer/" + API.UPDATE_USER, body);
+  return res.data;
+};
+
+export const sendMail = async (body) => {
+  const res = await axiosInstance.post(API.SEND_MAIL, body);
   return res.data;
 };
 

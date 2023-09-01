@@ -90,7 +90,7 @@ const Profile = () => {
           </Box>
 
           <Text my="16px" fontWeight={500} lineHeight="100%" color="#646668">
-            Bilal Omari
+            {userData?.profile?.firstName} {userData?.profile?.lastName}
           </Text>
 
           <Button

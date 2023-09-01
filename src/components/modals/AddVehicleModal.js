@@ -12,7 +12,7 @@ import {
 } from "@chakra-ui/react";
 import Select from "react-select";
 import CustomInput from "../common/CustomInput";
-import { colors } from "../common/constants";
+import { colorTypes } from "../common/constants";
 import { useCreateVehicles } from "../../services/customer/query/vehicles";
 import useCustomToast from "../../utils/notifications";
 import ConfirmVehicleModal from "./ConfirmVehicleModal";
@@ -37,9 +37,9 @@ const AddVehicleModal = ({
     value: state?.name?.replace(" State", "")?.replace(" (FCT)", ""),
     label: state?.name?.replace(" State", "")?.replace(" (FCT)", ""),
   }));
-  const colorOptions = colors.map((color) => ({
-    value: color,
-    label: color,
+  const colorOptions = colorTypes.map((color) => ({
+    value: color.color,
+    label: color.label,
   }));
   const modelToMap = models?.filter(
     (item) => item?.make?.name === values?.make?.label
@@ -178,6 +178,11 @@ const AddVehicleModal = ({
             <Select
               styles={customStyles}
               options={stateOptions}
+              components={{
+                IndicatorSeparator: () => (
+                  <div style={{ display: "none" }}></div>
+                ),
+              }}
               onChange={(selectedOption) =>
                 handleSelectChange(selectedOption?.value, { name: "state" })
               }
@@ -221,6 +226,9 @@ const AddVehicleModal = ({
               styles={customStyles}
               components={{
                 SingleValue: ColorOptio,
+                IndicatorSeparator: () => (
+                  <div style={{ display: "none" }}></div>
+                ),
               }}
               onChange={(selectedOption) =>
                 handleSelectChange(selectedOption, { name: "color" })
@@ -241,6 +249,11 @@ const AddVehicleModal = ({
             <Select
               styles={customStyles}
               value={values.make}
+              components={{
+                IndicatorSeparator: () => (
+                  <div style={{ display: "none" }}></div>
+                ),
+              }}
               options={makeOptions}
               onChange={(selectedOption) =>
                 handleSelectChange(selectedOption, { name: "make" })
@@ -262,6 +275,11 @@ const AddVehicleModal = ({
               styles={customStyles}
               value={values.model}
               options={modelOptions}
+              components={{
+                IndicatorSeparator: () => (
+                  <div style={{ display: "none" }}></div>
+                ),
+              }}
               onChange={(selectedOption) =>
                 handleSelectChange(selectedOption, { name: "model" })
               }

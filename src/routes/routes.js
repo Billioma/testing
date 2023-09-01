@@ -10,6 +10,8 @@ const {
   CUST_RESET_PASS,
   CUST_RESET_SENT,
   CUST_CHANGE_PASS,
+  CUST_PARK,
+  CUST_SCAN_PARK,
   CUST_CHANGE_SUCCESS,
 
   // CLIENT ROUTES
@@ -106,6 +108,12 @@ const CustChangeSuccess = WithSuspense(
   lazy(() => import("../pages/Customer/Authentication/ChangeSuccess"))
 );
 
+const CustScan = WithSuspense(
+  lazy(() => import("../pages/Customer/Authentication/ScanPark"))
+);
+const CustPark = WithSuspense(
+  lazy(() => import("../pages/Customer/Authentication/PayToPark"))
+);
 const CustSignup = WithSuspense(
   lazy(() => import("../pages/Customer/Authentication/Signup"))
 );
@@ -320,6 +328,8 @@ export const PUBLIC_ROUTES = [
   { path: CUST_CHANGE_SUCCESS, element: <CustChangeSuccess /> },
   { path: CUST_SIGNUP, element: <CustSignup /> },
   { path: CUST_RESET_SENT, element: <CustResetSent /> },
+  { path: CUST_PARK, element: <CustPark /> },
+  { path: CUST_SCAN_PARK, element: <CustScan /> },
 
   //CLIENT ROUTES
   { path: CLIENT_LOGIN, element: <ClientLogin /> },

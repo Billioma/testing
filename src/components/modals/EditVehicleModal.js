@@ -12,7 +12,7 @@ import {
 } from "@chakra-ui/react";
 import Select from "react-select";
 import CustomInput from "../common/CustomInput";
-import { colors } from "../common/constants";
+import { colorTypes } from "../common/constants";
 import { useUpdateVehicles } from "../../services/customer/query/vehicles";
 import useCustomToast from "../../utils/notifications";
 
@@ -36,9 +36,9 @@ const EditVehicleModal = ({
     value: state?.name?.replace(" State", "")?.replace(" (FCT)", ""),
     label: state?.name?.replace(" State", "")?.replace(" (FCT)", ""),
   }));
-  const colorOptions = colors.map((color) => ({
-    value: color,
-    label: color,
+  const colorOptions = colorTypes.map((color) => ({
+    value: color.color,
+    label: color.label,
   }));
   const modelOptions = models?.map((model) => ({
     value: model?.id,

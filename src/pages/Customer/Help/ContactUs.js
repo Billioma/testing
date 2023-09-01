@@ -1,11 +1,13 @@
+import React, { useState } from "react";
 import { Box, Button, Flex, Text } from "@chakra-ui/react";
-import React from "react";
 import { HiOutlineArrowNarrowLeft } from "react-icons/hi";
 import { useNavigate } from "react-router-dom";
 import CustomInput from "../../../components/common/CustomInput";
 import TextInput from "../../../components/common/TextInput";
+import { useSendMail } from "../../../services/customer/query/user";
+import useCustomToast from "../../../utils/notifications";
 
-export const Layout = ({ label, holder, area }) => {
+export const Layout = ({ label, holder, value, ngn, onChange, area }) => {
   return (
     <Box mb="24px">
       <Text
@@ -19,13 +21,20 @@ export const Layout = ({ label, holder, area }) => {
       </Text>
       {area ? (
         <TextInput
-          onChange={(e) => console.log(e)}
-          h="96px"
           auth
+          value={value}
+          onChange={onChange}
           holder={holder}
+          h="96px"
         />
       ) : (
-        <CustomInput auth holder={holder} onChange={(e) => console.log(e)} />
+        <CustomInput
+          auth
+          value={value}
+          holder={holder}
+          ngn={ngn}
+          onChange={onChange}
+        />
       )}
     </Box>
   );
@@ -33,6 +42,38 @@ export const Layout = ({ label, holder, area }) => {
 
 const ContactUs = () => {
   const navigate = useNavigate();
+  const [values, setValues] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    message: "",
+  });
+
+  const { errorToast, successToast } = useCustomToast();
+
+  const { mutate, isLoading } = useSendMail({
+    onSuccess: (res) => {
+      successToast(res?.message);
+      setValues({ name: "", email: "", phone: "", message: "" });
+    },
+    onError: (err) => {
+      errorToast(
+        err?.response?.data?.message || err?.message || "An Error occured"
+      );
+    },
+  });
+
+  const isDisabled = Object.values(values).some((value) => !value);
+
+  const handleSubmit = () => {
+    mutate({
+      name: values.name,
+      email: values.email,
+      phone: values.phone,
+      message: values.message,
+    });
+  };
+
   return (
     <Box minH="75vh">
       <Flex align="flex-start">
@@ -84,12 +125,52 @@ const ContactUs = () => {
             </Text>
 
             <Box mt="32px">
-              <Layout label="Name" holder="Enter your name" />
-              <Layout label="Email" holder="Enter your email address" />
-              <Layout label="Phone Number" holder="Enter your phone number" />
-              <Layout label="Message" holder="Enter your message" area />
+              <Layout
+                value={values.name}
+                onChange={(e) => setValues({ ...values, name: e.target.value })}
+                label="Name"
+                holder="Enter your name"
+              />
+              <Layout
+                value={values.email}
+                onChange={(e) =>
+                  setValues({ ...values, email: e.target.value })
+                }
+                label="Email"
+                holder="Enter your email address"
+              />
+              <Layout
+                label="Phone Number"
+                holder="Enter your phone number"
+                ngn
+                value={`${values?.phone}`}
+                onChange={(e) => {
+                  const inputPhone = e.target.value
+                    .replace(/\D/g, "")
+                    .slice(0, 10);
+                  setValues({ ...values, phone: inputPhone });
+                }}
+              />
+              <Layout
+                label="Message"
+                holder="Enter your message"
+                area
+                value={values.message}
+                onChange={(e) =>
+                  setValues({ ...values, message: e.target.value })
+                }
+              />
 
-              <Button w="full" fontSize="14px" py="15px" mt="32px">
+              <Button
+                isLoading={isLoading}
+                isDisabled={isDisabled}
+                w="full"
+                onClick={handleSubmit}
+                type="submit"
+                fontSize="14px"
+                py="15px"
+                mt="32px"
+              >
                 Send
               </Button>
             </Box>
