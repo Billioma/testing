@@ -60,21 +60,26 @@ export const NonAuthLayout = ({ children }) => {
       pos="relative"
       minH="100vh"
     >
-      <Image
-        display={{ base: "none", md: "unset" }}
-        pos="fixed"
-        bottom="0"
-        right="0"
-        src="/assets/park-right.png"
-      />
-      <Image
-        display={{ base: "none", md: "unset" }}
-        w={{ base: "144px", md: "unset" }}
-        pos="fixed"
-        bottom="0"
-        left="0"
-        src="/assets/park-left.png"
-      />
+      {location.pathname !== "/pay-to-park" ||
+        (location.pathname !== "/scan-qr" && (
+          <>
+            <Image
+              display={{ base: "none", md: "unset" }}
+              pos="fixed"
+              bottom="0"
+              right="0"
+              src="/assets/park-right.png"
+            />
+            <Image
+              display={{ base: "none", md: "unset" }}
+              w={{ base: "144px", md: "unset" }}
+              pos="fixed"
+              bottom="0"
+              left="0"
+              src="/assets/park-left.png"
+            />
+          </>
+        ))}
       <Flex
         flexDir="column"
         justifyContent="center"

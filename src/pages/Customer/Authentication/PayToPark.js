@@ -3,11 +3,13 @@ import {
   Box,
   Button,
   Flex,
+  Heading,
   Image,
   Radio,
   RadioGroup,
   Text,
   useDisclosure,
+  useMediaQuery,
 } from "@chakra-ui/react";
 import CustomInput from "../../../components/common/CustomInput";
 import { HiOutlineArrowNarrowLeft } from "react-icons/hi";
@@ -172,491 +174,526 @@ const PayToPark = () => {
     }),
   };
 
+  const [isMobile] = useMediaQuery("(max-width: 820px)");
+
   return (
     <Box w="full">
-      <Image my="24px" src="/assets/park-logo.jpg" w="134px" h="28px" />
-      <Flex justifyContent="center" w="full" flexDir="column">
-        <Flex
-          bg="#fff"
-          borderRadius="12px"
-          justifyContent="center"
-          // w={{ base: "full", md: "30rem" }}
-          flexDir="column"
-          minH="80vh"
-        >
-          {step !== 1 && (
+      {isMobile ? (
+        <>
+          <Image my="24px" src="/assets/park-logo.jpg" w="134px" h="28px" />
+          <Flex
+            justifyContent="center"
+            align={{ base: "flex-start", md: "center" }}
+            w="full"
+            flexDir="column"
+          >
             <Flex
-              align="center"
-              justifyContent="space-between"
-              w="full"
-              mb="32px"
-              onClick={() => {
-                setStep(step - 1);
-                setValues({
-                  vehicle: "",
-                  serviceType: "",
-                  paymentMethod: "",
-                  cardId: "",
-                });
-              }}
-              cursor="pointer"
+              bg="#fff"
+              borderRadius="12px"
+              justifyContent="center"
+              w={{ base: "full", md: "30rem" }}
+              flexDir="column"
+              minH="80vh"
             >
-              <Box w="full">
-                <HiOutlineArrowNarrowLeft size="24px" color="#242628" />
-              </Box>
-              <Box w="full">
-                <Text
-                  lineHeight="100%"
-                  color="#444648"
-                  fontSize="14px"
-                  fontWeight={500}
-                >
-                  Make Payment
-                </Text>
-              </Box>
-              <Box w="full"></Box>
-            </Flex>
-          )}
-
-          {step === 1 && (
-            <Box
-              mt="16px"
-              w="full"
-              border="1px solid #D4D6D8"
-              borderRadius="8px"
-              p="12px"
-            >
-              <Flex align="center" gap="12px">
-                <Image src="/assets/zone_pic.png" w="96px" h="96px" />
-                <Box w="full">
-                  <Flex align="center" justifyContent="space-between" w="full">
-                    <Box>
-                      <Text
-                        fontSize="14px"
-                        color="#848688"
-                        lineHeight="100%"
-                        fontWeight={500}
-                      >
-                        Zone T10003
-                      </Text>
-                      <Text
-                        mt="8px"
-                        fontSize="12px"
-                        color="#242628"
-                        lineHeight="100%"
-                      >
-                        Landmark Beach
-                      </Text>
-                    </Box>
-                    <Box>
-                      <Text
-                        fontSize="14px"
-                        color="#848688"
-                        lineHeight="100%"
-                        fontWeight={500}
-                      >
-                        Price
-                      </Text>
-                      <Text
-                        mt="8px"
-                        textAlign="center"
-                        fontSize="12px"
-                        color="#242628"
-                        lineHeight="100%"
-                      >
-                        ₦ 20,000
-                      </Text>
-                    </Box>
-                  </Flex>
-
-                  <Flex
-                    align="flex-end"
-                    mt="30px"
-                    justifyContent="space-between"
-                    w="full"
-                  >
-                    <Box>
-                      <Text
-                        fontSize="14px"
-                        color="#848688"
-                        lineHeight="100%"
-                        fontWeight={500}
-                      >
-                        Amenities{" "}
-                      </Text>
-                      <Text
-                        mt="8px"
-                        fontSize="12px"
-                        color="#242628"
-                        lineHeight="100%"
-                      >
-                        View
-                      </Text>
-                    </Box>
-                    <Box>
-                      <Text
-                        fontSize="14px"
-                        color="#848688"
-                        lineHeight="100%"
-                        fontWeight={500}
-                      >
-                        Service Type
-                      </Text>
-                      <Text
-                        mt="8px"
-                        fontSize="12px"
-                        color="#242628"
-                        lineHeight="100%"
-                      >
-                        Pay-To-Park
-                      </Text>
-                    </Box>
-                  </Flex>
-                </Box>
-              </Flex>
-            </Box>
-          )}
-
-          {step === 1 && (
-            <Box>
-              <Box mt="16px">
-                <Text
-                  color="#444648"
-                  fontSize="10px"
-                  lineHeight="100%"
-                  mb="8px"
-                >
-                  Enter Your Phone Number
-                </Text>
-                <CustomInput
-                  auth
-                  ngn
-                  mb
-                  value={values.phone}
-                  onChange={(e) =>
+              {step !== 1 && (
+                <Flex
+                  align="center"
+                  justifyContent="space-between"
+                  w="full"
+                  mb="32px"
+                  onClick={() => {
+                    setStep(step - 1);
                     setValues({
-                      ...values,
-                      phone: e.target.value,
-                    })
-                  }
-                />
-              </Box>
-
-              <Box my="16px">
-                <Text
-                  color="#444648"
-                  fontSize="10px"
-                  lineHeight="100%"
-                  mb="8px"
-                >
-                  Enter your Vehicle Licence Number
-                </Text>
-                <CustomInput
-                  auth
-                  mb
-                  handleKeyPress={handleKeyPress}
-                  value={values.plate}
-                  onChange={(e) =>
-                    setValues({
-                      ...values,
-                      plate: e.target.value,
-                    })
-                  }
-                />
-              </Box>
-
-              <Box>
-                <Text
-                  color="#444648"
-                  fontSize="10px"
-                  lineHeight="100%"
-                  mb="8px"
-                >
-                  Select Vehicle Make
-                </Text>
-                <Select
-                  styles={customStyles}
-                  placeholder="Select Make"
-                  options={colorOptions}
-                  value={values.vehicle}
-                  components={{
-                    IndicatorSeparator: () => (
-                      <div style={{ display: "none" }}></div>
-                    ),
+                      vehicle: "",
+                      serviceType: "",
+                      paymentMethod: "",
+                      cardId: "",
+                    });
                   }}
-                  defaultValue={values.vehicle}
-                  onChange={(selectedOption) =>
-                    handleSelectChange(selectedOption, {
-                      name: "make",
-                    })
-                  }
-                />
-              </Box>
-
-              <Box my="16px">
-                <Text
-                  color="#444648"
-                  fontSize="10px"
-                  lineHeight="100%"
-                  mb="8px"
+                  cursor="pointer"
                 >
-                  Select Vehicle Model
-                </Text>
-                <Select
-                  styles={customStyles}
-                  placeholder="Select Model"
-                  options={colorOptions}
-                  value={values.vehicle}
-                  components={{
-                    IndicatorSeparator: () => (
-                      <div style={{ display: "none" }}></div>
-                    ),
-                  }}
-                  defaultValue={values.vehicle}
-                  onChange={(selectedOption) =>
-                    handleSelectChange(selectedOption, {
-                      name: "model",
-                    })
-                  }
-                />
-              </Box>
-
-              <Box>
-                <Text
-                  color="#444648"
-                  fontSize="10px"
-                  lineHeight="100%"
-                  mb="8px"
-                >
-                  Select Vehicle Color
-                </Text>
-                <Select
-                  styles={customStyles}
-                  components={{
-                    SingleValue: ColorOptio,
-                    IndicatorSeparator: () => (
-                      <div style={{ display: "none" }}></div>
-                    ),
-                  }}
-                  onChange={(selectedOption) =>
-                    handleSelectChange(selectedOption, { name: "color" })
-                  }
-                  options={colorOptions}
-                />
-              </Box>
-            </Box>
-          )}
-
-          {step === 2 && (
-            <Flex flexDir="column" minH="75vh">
-              <Flex
-                border="1px solid #D4D6D8"
-                borderRadius="8px"
-                p="24px"
-                flexDir="column"
-              >
-                <Flex flexDir="column" justifyContent="center" align="center">
-                  <Image w="40px" h="40px" src="/assets/park-confirm.png" />
-                  <Text
-                    mt="16px"
-                    mb="24px"
-                    color="#242628"
-                    fontWeight={500}
-                    lineHeight="100%"
-                  >
-                    Summary
-                  </Text>
+                  <Box w="full">
+                    <HiOutlineArrowNarrowLeft size="24px" color="#242628" />
+                  </Box>
+                  <Box w="full">
+                    <Text
+                      lineHeight="100%"
+                      color="#444648"
+                      fontSize="14px"
+                      fontWeight={500}
+                    >
+                      Make Payment
+                    </Text>
+                  </Box>
+                  <Box w="full"></Box>
                 </Flex>
+              )}
 
-                <Box>
-                  <Flex align="center" justifyContent="space-between" w="full">
-                    <Text
-                      color="#848688"
-                      w="full"
-                      fontSize="14px"
-                      lineHeight="100%"
-                      fontWeight={500}
-                    >
-                      Service
-                    </Text>
-                    <Text
-                      color="#242628"
-                      textAlign="end"
-                      w="full"
-                      fontSize="14px"
-                      lineHeight="100%"
-                      fontWeight={500}
-                    >
-                      Pay-To-Park
-                    </Text>
-                  </Flex>
+              {step === 1 && (
+                <Box
+                  mt="16px"
+                  w="full"
+                  border="1px solid #D4D6D8"
+                  borderRadius="8px"
+                  p="12px"
+                >
+                  <Flex align="center" gap="12px">
+                    <Image src="/assets/zone_pic.png" w="96px" h="96px" />
+                    <Box w="full">
+                      <Flex
+                        align="center"
+                        justifyContent="space-between"
+                        w="full"
+                      >
+                        <Box>
+                          <Text
+                            fontSize="14px"
+                            color="#848688"
+                            lineHeight="100%"
+                            fontWeight={500}
+                          >
+                            Zone T10003
+                          </Text>
+                          <Text
+                            mt="8px"
+                            fontSize="12px"
+                            color="#242628"
+                            lineHeight="100%"
+                          >
+                            Landmark Beach
+                          </Text>
+                        </Box>
+                        <Box>
+                          <Text
+                            fontSize="14px"
+                            color="#848688"
+                            lineHeight="100%"
+                            fontWeight={500}
+                          >
+                            Price
+                          </Text>
+                          <Text
+                            mt="8px"
+                            textAlign="center"
+                            fontSize="12px"
+                            color="#242628"
+                            lineHeight="100%"
+                          >
+                            ₦ 20,000
+                          </Text>
+                        </Box>
+                      </Flex>
 
-                  <Flex
-                    my="24px"
-                    align="center"
-                    justifyContent="space-between"
-                    w="full"
-                  >
-                    <Text
-                      color="#848688"
-                      w="full"
-                      fontSize="14px"
-                      lineHeight="100%"
-                      fontWeight={500}
-                    >
-                      Price
-                    </Text>
-                    <Text
-                      color="#242628"
-                      textAlign="end"
-                      w="full"
-                      fontSize="14px"
-                      lineHeight="100%"
-                      fontWeight={500}
-                    >
-                      ₦ 20,000
-                    </Text>
-                  </Flex>
-
-                  <Flex align="center" justifyContent="space-between" w="full">
-                    <Text
-                      color="#848688"
-                      w="full"
-                      fontSize="14px"
-                      lineHeight="100%"
-                      fontWeight={500}
-                    >
-                      Location
-                    </Text>
-                    <Text
-                      color="#242628"
-                      textAlign="end"
-                      w="full"
-                      fontSize="14px"
-                      lineHeight="100%"
-                      fontWeight={500}
-                    >
-                      Landmark Towers
-                    </Text>
-                  </Flex>
-
-                  <Flex
-                    align="center"
-                    my="24px"
-                    justifyContent="space-between"
-                    w="full"
-                  >
-                    <Text
-                      color="#848688"
-                      w="full"
-                      fontSize="14px"
-                      lineHeight="100%"
-                      fontWeight={500}
-                    >
-                      Zone
-                    </Text>
-                    <Text
-                      color="#242628"
-                      textAlign="end"
-                      w="full"
-                      fontSize="14px"
-                      lineHeight="100%"
-                      fontWeight={500}
-                    >
-                      T10003
-                    </Text>
-                  </Flex>
-
-                  <Flex align="center" justifyContent="space-between" w="full">
-                    <Text
-                      color="#848688"
-                      w="full"
-                      fontSize="14px"
-                      lineHeight="100%"
-                      fontWeight={500}
-                    >
-                      License Number
-                    </Text>
-                    <Text
-                      color="#242628"
-                      textAlign="end"
-                      w="full"
-                      fontSize="14px"
-                      lineHeight="100%"
-                      fontWeight={500}
-                    >
-                      BT02383J
-                    </Text>
-                  </Flex>
-
-                  <Flex
-                    mt="24px"
-                    align="center"
-                    justifyContent="space-between"
-                    w="full"
-                  >
-                    <Text
-                      color="#848688"
-                      w="full"
-                      fontSize="14px"
-                      lineHeight="100%"
-                      fontWeight={500}
-                    >
-                      Vehicle
-                    </Text>
-                    <Text
-                      color="#242628"
-                      textAlign="end"
-                      w="full"
-                      fontSize="14px"
-                      lineHeight="100%"
-                      fontWeight={500}
-                    >
-                      Toyota Corrola
-                    </Text>
+                      <Flex
+                        align="flex-end"
+                        mt="30px"
+                        justifyContent="space-between"
+                        w="full"
+                      >
+                        <Box>
+                          <Text
+                            fontSize="14px"
+                            color="#848688"
+                            lineHeight="100%"
+                            fontWeight={500}
+                          >
+                            Amenities{" "}
+                          </Text>
+                          <Text
+                            mt="8px"
+                            fontSize="12px"
+                            color="#242628"
+                            lineHeight="100%"
+                          >
+                            View
+                          </Text>
+                        </Box>
+                        <Box>
+                          <Text
+                            fontSize="14px"
+                            color="#848688"
+                            lineHeight="100%"
+                            fontWeight={500}
+                          >
+                            Service Type
+                          </Text>
+                          <Text
+                            mt="8px"
+                            fontSize="12px"
+                            color="#242628"
+                            lineHeight="100%"
+                          >
+                            Pay-To-Park
+                          </Text>
+                        </Box>
+                      </Flex>
+                    </Box>
                   </Flex>
                 </Box>
-              </Flex>
-              <Flex mt="auto" w="100%" gap="24px" align="center">
-                <Button w="100%" fontSize="12px">
-                  Pay via Transfer
-                </Button>
-                <Button
-                  bg="transparent"
-                  color="#444648"
-                  fontSize="12px"
-                  w="100%"
-                  border="1px solid #444648"
-                  py="17px"
-                >
-                  Pay via Card
-                </Button>
-              </Flex>
-            </Flex>
-          )}
+              )}
 
-          {step === 1 && (
-            <Button
-              onClick={() => setStep(step + 1)}
-              w="full"
-              bg="red"
-              mt="auto"
-              py="17px"
-              // isDisabled={step === 1 ? isDisabled : false}
-              fontSize="14px"
-            >
-              {step === 1 ? "Proceed" : "Park Now"}
-            </Button>
-          )}
+              {step === 1 && (
+                <Box>
+                  <Box mt="16px">
+                    <Text
+                      color="#444648"
+                      fontSize="10px"
+                      lineHeight="100%"
+                      mb="8px"
+                    >
+                      Enter Your Phone Number
+                    </Text>
+                    <CustomInput
+                      auth
+                      ngn
+                      mb
+                      value={values.phone}
+                      onChange={(e) =>
+                        setValues({
+                          ...values,
+                          phone: e.target.value,
+                        })
+                      }
+                    />
+                  </Box>
+
+                  <Box my="16px">
+                    <Text
+                      color="#444648"
+                      fontSize="10px"
+                      lineHeight="100%"
+                      mb="8px"
+                    >
+                      Enter your Vehicle Licence Number
+                    </Text>
+                    <CustomInput
+                      auth
+                      mb
+                      handleKeyPress={handleKeyPress}
+                      value={values.plate}
+                      onChange={(e) =>
+                        setValues({
+                          ...values,
+                          plate: e.target.value,
+                        })
+                      }
+                    />
+                  </Box>
+
+                  <Box>
+                    <Text
+                      color="#444648"
+                      fontSize="10px"
+                      lineHeight="100%"
+                      mb="8px"
+                    >
+                      Select Vehicle Make
+                    </Text>
+                    <Select
+                      styles={customStyles}
+                      placeholder="Select Make"
+                      options={colorOptions}
+                      value={values.vehicle}
+                      components={{
+                        IndicatorSeparator: () => (
+                          <div style={{ display: "none" }}></div>
+                        ),
+                      }}
+                      defaultValue={values.vehicle}
+                      onChange={(selectedOption) =>
+                        handleSelectChange(selectedOption, {
+                          name: "make",
+                        })
+                      }
+                    />
+                  </Box>
+
+                  <Box my="16px">
+                    <Text
+                      color="#444648"
+                      fontSize="10px"
+                      lineHeight="100%"
+                      mb="8px"
+                    >
+                      Select Vehicle Model
+                    </Text>
+                    <Select
+                      styles={customStyles}
+                      placeholder="Select Model"
+                      options={colorOptions}
+                      value={values.vehicle}
+                      components={{
+                        IndicatorSeparator: () => (
+                          <div style={{ display: "none" }}></div>
+                        ),
+                      }}
+                      defaultValue={values.vehicle}
+                      onChange={(selectedOption) =>
+                        handleSelectChange(selectedOption, {
+                          name: "model",
+                        })
+                      }
+                    />
+                  </Box>
+
+                  <Box>
+                    <Text
+                      color="#444648"
+                      fontSize="10px"
+                      lineHeight="100%"
+                      mb="8px"
+                    >
+                      Select Vehicle Color
+                    </Text>
+                    <Select
+                      styles={customStyles}
+                      components={{
+                        SingleValue: ColorOptio,
+                        IndicatorSeparator: () => (
+                          <div style={{ display: "none" }}></div>
+                        ),
+                      }}
+                      onChange={(selectedOption) =>
+                        handleSelectChange(selectedOption, { name: "color" })
+                      }
+                      options={colorOptions}
+                    />
+                  </Box>
+                </Box>
+              )}
+
+              {step === 2 && (
+                <Flex flexDir="column" minH="75vh">
+                  <Flex
+                    border="1px solid #D4D6D8"
+                    borderRadius="8px"
+                    p="24px"
+                    flexDir="column"
+                  >
+                    <Flex
+                      flexDir="column"
+                      justifyContent="center"
+                      align="center"
+                    >
+                      <Image w="40px" h="40px" src="/assets/park-confirm.png" />
+                      <Text
+                        mt="16px"
+                        mb="24px"
+                        color="#242628"
+                        fontWeight={500}
+                        lineHeight="100%"
+                      >
+                        Summary
+                      </Text>
+                    </Flex>
+
+                    <Box>
+                      <Flex
+                        align="center"
+                        justifyContent="space-between"
+                        w="full"
+                      >
+                        <Text
+                          color="#848688"
+                          w="full"
+                          fontSize="14px"
+                          lineHeight="100%"
+                          fontWeight={500}
+                        >
+                          Service
+                        </Text>
+                        <Text
+                          color="#242628"
+                          textAlign="end"
+                          w="full"
+                          fontSize="14px"
+                          lineHeight="100%"
+                          fontWeight={500}
+                        >
+                          Pay-To-Park
+                        </Text>
+                      </Flex>
+
+                      <Flex
+                        my="24px"
+                        align="center"
+                        justifyContent="space-between"
+                        w="full"
+                      >
+                        <Text
+                          color="#848688"
+                          w="full"
+                          fontSize="14px"
+                          lineHeight="100%"
+                          fontWeight={500}
+                        >
+                          Price
+                        </Text>
+                        <Text
+                          color="#242628"
+                          textAlign="end"
+                          w="full"
+                          fontSize="14px"
+                          lineHeight="100%"
+                          fontWeight={500}
+                        >
+                          ₦ 20,000
+                        </Text>
+                      </Flex>
+
+                      <Flex
+                        align="center"
+                        justifyContent="space-between"
+                        w="full"
+                      >
+                        <Text
+                          color="#848688"
+                          w="full"
+                          fontSize="14px"
+                          lineHeight="100%"
+                          fontWeight={500}
+                        >
+                          Location
+                        </Text>
+                        <Text
+                          color="#242628"
+                          textAlign="end"
+                          w="full"
+                          fontSize="14px"
+                          lineHeight="100%"
+                          fontWeight={500}
+                        >
+                          Landmark Towers
+                        </Text>
+                      </Flex>
+
+                      <Flex
+                        align="center"
+                        my="24px"
+                        justifyContent="space-between"
+                        w="full"
+                      >
+                        <Text
+                          color="#848688"
+                          w="full"
+                          fontSize="14px"
+                          lineHeight="100%"
+                          fontWeight={500}
+                        >
+                          Zone
+                        </Text>
+                        <Text
+                          color="#242628"
+                          textAlign="end"
+                          w="full"
+                          fontSize="14px"
+                          lineHeight="100%"
+                          fontWeight={500}
+                        >
+                          T10003
+                        </Text>
+                      </Flex>
+
+                      <Flex
+                        align="center"
+                        justifyContent="space-between"
+                        w="full"
+                      >
+                        <Text
+                          color="#848688"
+                          w="full"
+                          fontSize="14px"
+                          lineHeight="100%"
+                          fontWeight={500}
+                        >
+                          License Number
+                        </Text>
+                        <Text
+                          color="#242628"
+                          textAlign="end"
+                          w="full"
+                          fontSize="14px"
+                          lineHeight="100%"
+                          fontWeight={500}
+                        >
+                          BT02383J
+                        </Text>
+                      </Flex>
+
+                      <Flex
+                        mt="24px"
+                        align="center"
+                        justifyContent="space-between"
+                        w="full"
+                      >
+                        <Text
+                          color="#848688"
+                          w="full"
+                          fontSize="14px"
+                          lineHeight="100%"
+                          fontWeight={500}
+                        >
+                          Vehicle
+                        </Text>
+                        <Text
+                          color="#242628"
+                          textAlign="end"
+                          w="full"
+                          fontSize="14px"
+                          lineHeight="100%"
+                          fontWeight={500}
+                        >
+                          Toyota Corrola
+                        </Text>
+                      </Flex>
+                    </Box>
+                  </Flex>
+                  <Flex mt="auto" w="100%" gap="24px" align="center">
+                    <Button w="100%" fontSize="12px">
+                      Pay via Transfer
+                    </Button>
+                    <Button
+                      bg="transparent"
+                      color="#444648"
+                      fontSize="12px"
+                      w="100%"
+                      border="1px solid #444648"
+                      py="17px"
+                    >
+                      Pay via Card
+                    </Button>
+                  </Flex>
+                </Flex>
+              )}
+
+              {step === 1 && (
+                <Button
+                  onClick={() => setStep(step + 1)}
+                  w="full"
+                  bg="red"
+                  mt="auto"
+                  py="17px"
+                  // isDisabled={step === 1 ? isDisabled : false}
+                  fontSize="14px"
+                >
+                  {step === 1 ? "Proceed" : "Park Now"}
+                </Button>
+              )}
+            </Flex>
+          </Flex>
+          <ConfirmParkModal
+            dataa={data}
+            action={handlePark}
+            values={values}
+            isOpen={isOpen}
+            onClose={onClose}
+          />
+        </>
+      ) : (
+        <Flex justifyContent="center" align="center" h="75vh">
+          <Heading>Please Open this URL on your mobile device</Heading>
         </Flex>
-      </Flex>
-      <ConfirmParkModal
-        dataa={data}
-        action={handlePark}
-        values={values}
-        isOpen={isOpen}
-        onClose={onClose}
-      />
+      )}
     </Box>
   );
 };
