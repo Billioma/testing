@@ -23,7 +23,6 @@ const {
 
   // OPERATOR ROUTES
   OP_LOGIN,
-  OP_SIGNUP,
   OPERATOR_RESET_PASSWORD,
   OPERATOR_RESET_SENT,
   OPERATOR_CHANGE_PASS,
@@ -60,6 +59,12 @@ const {
   CLIENT_USERS,
   CLIENT_ADD_USER,
   CLIENT_EVENTS,
+  CLIENT_LOGS,
+  CLIENT_TRAN,
+  CLIENT_LOGS_VALET,
+  CLIENT_LOGS_DETAILS,
+  CLIENT_LOGS_VALET_DETAILS,
+  CLIENT_TRAN_DETAILS,
   CLIENT_ADD_EVENT,
   CLIENT_EDIT_EVENT,
   CLIENT_ADD_SUB,
@@ -203,6 +208,25 @@ const ClientViewSub = WithSuspense(
 const ClientEvents = WithSuspense(
   lazy(() => import("../pages/Client/Events/Events"))
 );
+const ClientLogs = WithSuspense(
+  lazy(() => import("../pages/Client/Logs/Logs"))
+);
+const ClientLogsValet = WithSuspense(
+  lazy(() => import("../pages/Client/Logs/Valet"))
+);
+const ClientLogsDetails = WithSuspense(
+  lazy(() => import("../pages/Client/Logs/ParkDetails"))
+);
+
+const ClientLogsValetDetails = WithSuspense(
+  lazy(() => import("../pages/Client/Logs/ValetDetails"))
+);
+const ClientTran = WithSuspense(
+  lazy(() => import("../pages/Client/Transactions/Transactions"))
+);
+const ClientTranDetails = WithSuspense(
+  lazy(() => import("../pages/Client/Transactions/TransactionDetails"))
+);
 const ClientAddEvent = WithSuspense(
   lazy(() => import("../pages/Client/Events/AddEvent"))
 );
@@ -232,9 +256,6 @@ const OperatorChangePassword = WithSuspense(
 );
 const OperatorChangeSuccess = WithSuspense(
   lazy(() => import("../pages/Operator/Authentication/ChangeSuccess"))
-);
-const OpSignup = WithSuspense(
-  lazy(() => import("../pages/Operator/Authentication/Signup"))
 );
 const OpDashboard = WithSuspense(
   lazy(() => import("../pages/Operator/Dashboard/Dashboard"))
@@ -343,7 +364,6 @@ export const PUBLIC_ROUTES = [
   { path: OPERATOR_RESET_PASSWORD, element: <OperatorResetPassword /> },
   { path: OPERATOR_CHANGE_PASS, element: <OperatorChangePassword /> },
   { path: OPERATOR_CHANGE_SUCCESS, element: <OperatorChangeSuccess /> },
-  { path: OP_SIGNUP, element: <OpSignup /> },
   { path: OPERATOR_RESET_SENT, element: <OperatorResetSent /> },
 
   // ADMIN ROUTES
@@ -395,6 +415,14 @@ export const PRIVATE_ROUTES = [
   { path: CLIENT_USERS, element: <ClientUsers /> },
   { path: CLIENT_ADD_USER, element: <ClientAddUser /> },
   { path: CLIENT_EVENTS, element: <ClientEvents /> },
+  { path: CLIENT_EVENTS, element: <ClientEvents /> },
+  { path: CLIENT_EVENTS, element: <ClientEvents /> },
+  { path: CLIENT_TRAN, element: <ClientTran /> },
+  { path: CLIENT_TRAN_DETAILS, element: <ClientTranDetails /> },
+  { path: CLIENT_LOGS, element: <ClientLogs /> },
+  { path: CLIENT_LOGS_DETAILS, element: <ClientLogsDetails /> },
+  { path: CLIENT_LOGS_VALET, element: <ClientLogsValet /> },
+  { path: CLIENT_LOGS_VALET_DETAILS, element: <ClientLogsValetDetails /> },
   { path: CLIENT_ADD_EVENT, element: <ClientAddEvent /> },
   { path: CLIENT_EDIT_EVENT, element: <ClientEditEvent /> },
   { path: CLIENT_ADD_SUB, element: <ClientAddSub /> },

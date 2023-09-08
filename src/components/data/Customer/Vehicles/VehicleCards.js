@@ -17,7 +17,6 @@ import {
 } from "../../../../services/customer/query/vehicles";
 import AddVehicleModal from "../../../modals/AddVehicleModal";
 import useCustomToast from "../../../../utils/notifications";
-import { AiOutlineCheckCircle } from "react-icons/ai";
 import EditVehicleModal from "../../../modals/EditVehicleModal";
 import ConfirmDeleteModal from "../../../modals/ConfirmDeleteModal";
 
@@ -90,7 +89,7 @@ const VehicleCards = ({ states }) => {
                 px="20px"
                 borderRadius="8px"
               >
-                <Flex
+                {/* <Flex
                   color="red"
                   mb="24px"
                   w="full"
@@ -102,7 +101,7 @@ const VehicleCards = ({ states }) => {
                   </Text>
 
                   <AiOutlineCheckCircle size="20px" />
-                </Flex>
+                </Flex> */}
                 <Flex justifyContent="space-between" w="full" align="center">
                   <Box w="full">
                     <Text

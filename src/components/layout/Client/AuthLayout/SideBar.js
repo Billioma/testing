@@ -1,15 +1,23 @@
 import React, { useState } from "react";
 import { Box, Flex, Text } from "@chakra-ui/layout";
 import { NavLink, useLocation } from "react-router-dom";
-import { clientStyle, clientSidebar } from "../../../common/constants";
+import {
+  clientStyle,
+  corpSidebar,
+  eventSidebar,
+  businessSidebar,
+  clientSubStyle,
+} from "../../../common/constants";
 import { useLogOut } from "../../../../utils/helpers";
 import { LogoutIcon } from "../../../common/images";
 import { Spinner } from "@chakra-ui/react";
 import { IoIosArrowForward } from "react-icons/io";
+import { useGetClientDetails } from "../../../../services/client/query/user";
 
 const SideBar = () => {
   const logout = useLogOut();
   const location = useLocation();
+  const { data: userData } = useGetClientDetails();
   const [isLoading, setIsLoading] = useState(false);
 
   const action = () => {
@@ -19,6 +27,15 @@ const SideBar = () => {
       setIsLoading(false);
     }, 1000);
   };
+
+  const sideBarMap =
+    userData?.accountType === "CORPORATE"
+      ? corpSidebar
+      : userData?.accountType === "EVENT_PLANNER"
+      ? eventSidebar
+      : userData?.accountType === "BUSINESS"
+      ? businessSidebar
+      : corpSidebar;
 
   return (
     <Flex
@@ -52,18 +69,27 @@ const SideBar = () => {
         </Box>
 
         <Box mx="20px">
-          {clientSidebar?.map((item, i) => {
-            const isActivePath = location.pathname.includes(item.path);
-
+          {sideBarMap?.map((item, i) => {
+            const isLogsPath = location.pathname.includes("client/logs");
+            const isActivePath =
+              location.pathname.includes(item.path) || (isLogsPath && item.sub);
             return (
               <Box
                 key={i}
-                className={location.pathname !== item.path && "parent_nav"}
+                className={
+                  item.path.includes("client/logs")
+                    ? ""
+                    : location.pathname !== item.path && "parent_nav"
+                }
               >
                 <NavLink
-                  to={item.path}
+                  to={
+                    item.path === "/client/logs"
+                      ? "/client/logs/pay-to-park"
+                      : item?.path
+                  }
                   style={({ isActive }) =>
-                    isActive
+                    isActive || isActivePath
                       ? { ...clientStyle }
                       : {
                           ...clientStyle,
@@ -91,11 +117,13 @@ const SideBar = () => {
 
                       {item.name}
                     </Flex>
-                    {i === 3 && (
-                      <Box className="child_nav">
-                        <IoIosArrowForward />
-                      </Box>
-                    )}
+                    {i === 1 &&
+                      !isLogsPath &&
+                      userData?.accountType === "BUSINESS" && (
+                        <Box className="child_nav">
+                          <IoIosArrowForward />
+                        </Box>
+                      )}
                     {isActivePath ? (
                       <Box w="3px" h="28px" bg="#fff" rounded="full"></Box>
                     ) : (
@@ -103,6 +131,49 @@ const SideBar = () => {
                     )}
                   </Flex>
                 </NavLink>
+
+                {location.pathname.includes("client/logs") &&
+                  item?.sub?.map((data) => (
+                    <Box mt="-10px">
+                      <NavLink
+                        to={data.path}
+                        style={({ isActive }) =>
+                          isActive
+                            ? { ...clientSubStyle }
+                            : {
+                                ...clientSubStyle,
+                                fontWeight: 400,
+                                color: "#848688",
+                              }
+                        }
+                      >
+                        <Flex
+                          align="center"
+                          justifyContent="space-between"
+                          w="full"
+                        >
+                          <Flex
+                            transition=".3s ease-in-out"
+                            align="center"
+                            w="full"
+                            gap="8px"
+                          >
+                            {data.name}
+                          </Flex>{" "}
+                          {isActivePath ? (
+                            <Box
+                              w="3px"
+                              h="24px"
+                              bg="#fff"
+                              rounded="full"
+                            ></Box>
+                          ) : (
+                            ""
+                          )}
+                        </Flex>
+                      </NavLink>
+                    </Box>
+                  ))}
               </Box>
             );
           })}

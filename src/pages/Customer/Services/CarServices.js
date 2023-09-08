@@ -11,7 +11,10 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { HiOutlineArrowNarrowLeft } from "react-icons/hi";
-import { useGetServices } from "../../../services/customer/query/locations";
+import {
+  useGetLocations,
+  useGetServices,
+} from "../../../services/customer/query/locations";
 import {
   BookingSlots,
   carServiceDesc,
@@ -21,7 +24,6 @@ import { useGetVehicles } from "../../../services/customer/query/vehicles";
 import Select from "react-select";
 import { Calendar } from "react-calendar";
 import { formatDate } from "../../../utils/helpers";
-import CustomInput from "../../../components/common/CustomInput";
 import { BsCheckCircle } from "react-icons/bs";
 import { useGetUser } from "../../../services/customer/query/user";
 import {
@@ -37,13 +39,46 @@ import { usePaystackPayment } from "react-paystack";
 
 const CarServices = () => {
   const [step, setStep] = useState(1);
-
+  const { data: locations } = useGetLocations();
   const { data } = useGetServices();
   const { data: cards, refetch: refetchCards } = useGetCards();
   const { data: userData, refetch } = useGetUser();
   const { refetch: refetchBooking } = useGetCarService(10, 1);
+
+  const [values, setValues] = useState({
+    serviceId: "",
+    address: "",
+    appointmentTime: "",
+    img: "",
+    desc: "",
+    billingRate: "",
+    cardId: "",
+    paymentMethod: "",
+    vehicle: "",
+  });
   const [startDate, setStartDate] = useState(false);
   const [startValue, startChange] = useState("");
+  const [filteredLocations, setFilteredLocations] = useState([]);
+
+  useEffect(() => {
+    if (locations && values?.serviceId?.label) {
+      const searchTerm = values?.serviceId?.label.includes("Gauge")
+        ? values?.serviceId?.label
+            ?.toLowerCase()
+            .split(" ")[2]
+            ?.replace("s", "")
+        : values?.serviceId?.label?.toLowerCase().split(" ")[0];
+
+      const filteredLocations = locations.filter((location) => {
+        const matchingAmenities = location?.amenities?.filter((amenity) =>
+          amenity?.name?.toLowerCase().includes(searchTerm)
+        );
+        return matchingAmenities.length > 0;
+      });
+
+      setFilteredLocations(filteredLocations);
+    }
+  }, [locations, values]);
 
   const startDateRange = new Date();
 
@@ -68,21 +103,10 @@ const CarServices = () => {
     return null;
   };
 
-  const [values, setValues] = useState({
-    serviceId: "",
-    address: "",
-    appointmentTime: "",
-    img: "",
-    desc: "",
-    billingRate: "",
-    cardId: "",
-    paymentMethod: "",
-    vehicle: "",
-  });
-
   useEffect(() => {
     setStep(1);
     startChange("");
+
     setValues({
       serviceId: "",
       address: "",
@@ -158,6 +182,11 @@ const CarServices = () => {
 
   const rateArray = basicArray?.concat(premiumArray);
 
+  const addressOptions = filteredLocations?.map((item) => ({
+    value: item?.name,
+    label: item?.name,
+  }));
+
   const servicesOptions = carServiceArray?.map((item) => ({
     value: item?.id,
     label: item?.name,
@@ -197,6 +226,7 @@ const CarServices = () => {
         startChange("");
         refetch();
         refetchBooking();
+
         setValues({
           serviceId: "",
           address: "",
@@ -227,7 +257,7 @@ const CarServices = () => {
   const handleBook = () => {
     Number(values?.paymentMethod) === 0
       ? bookMutate({
-          address: values?.address,
+          address: values?.address?.value,
           appointmentDate: start,
           appointmentDateType: 0,
           appointmentSlot: selectedIndex,
@@ -241,7 +271,7 @@ const CarServices = () => {
           vehicle: values?.vehicle?.value,
         })
       : bookMutate({
-          address: values?.address,
+          address: values?.address?.value,
           appointmentDate: start,
           appointmentDateType: 0,
           appointmentSlot: selectedIndex,
@@ -326,6 +356,7 @@ const CarServices = () => {
               mb="23px"
               onClick={() => {
                 setStep(step - 1);
+
                 setValues({
                   serviceId: "",
                   address: "",
@@ -467,16 +498,21 @@ const CarServices = () => {
                 <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
                   Enter Address
                 </Text>
-                <CustomInput
-                  auth
-                  value={values?.address}
-                  holder="Enter Address"
-                  onChange={(e) =>
-                    setValues({
-                      ...values,
-                      address: e.target.value,
+                <Select
+                  styles={customStyles}
+                  placeholder="Enter Address"
+                  options={addressOptions}
+                  value={values.address}
+                  onChange={(selectedOption) =>
+                    handleSelectChange(selectedOption, {
+                      name: "address",
                     })
                   }
+                  components={{
+                    IndicatorSeparator: () => (
+                      <div style={{ display: "none" }}></div>
+                    ),
+                  }}
                 />
               </Box>
 

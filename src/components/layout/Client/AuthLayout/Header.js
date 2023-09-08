@@ -15,6 +15,7 @@ const Header = () => {
   const { isOpen, onClose, onOpen } = useDisclosure();
   const [title, setTitle] = useState("");
   const [secTitle, setSecTitle] = useState("");
+  const [finTitle, setFinTitle] = useState("");
 
   const location = useLocation();
   const locationRoute = location.pathname;
@@ -33,6 +34,12 @@ const Header = () => {
       case locationRoute.includes("event"):
         return setTitle("Events");
 
+      case locationRoute.includes("logs"):
+        return setTitle("Logs");
+
+      case locationRoute.includes("transaction"):
+        return setTitle("Transactions");
+
       default:
         return setTitle("");
     }
@@ -46,6 +53,18 @@ const Header = () => {
       case locationRoute.includes("edit-event"):
         return setSecTitle("Edit Event");
 
+      case locationRoute.includes("details"):
+        return setFinTitle("Log Details");
+
+      case locationRoute.includes("valet-park"):
+        return setSecTitle("Valet Parking");
+
+      case locationRoute.includes("pay-to-park"):
+        return setSecTitle("Pay-To-Park");
+
+      case locationRoute.includes("transaction"):
+        return setSecTitle("Pay-To-Park");
+
       case locationRoute.includes("add-event"):
         return setSecTitle("Add Event");
 
@@ -56,7 +75,17 @@ const Header = () => {
         return setSecTitle("View Subscriptions");
 
       default:
-        return setSecTitle("");
+        return setSecTitle(""), setFinTitle("");
+    }
+  }, [locationRoute]);
+
+  useEffect(() => {
+    if (
+      locationRoute === "/client/logs/pay-to-park" ||
+      locationRoute === "/client/logs/valet-park" ||
+      locationRoute === "/client/transactions"
+    ) {
+      setFinTitle("");
     }
   }, [locationRoute]);
 
@@ -78,18 +107,24 @@ const Header = () => {
         w="full"
       >
         <Flex justifyContent="space-between" align="center" w="full">
-          <Flex align="flex-end" gap="16px">
+          <Flex align="flex-end" gap="4px">
             <Text
               color="orangeBg"
               fontSize="20px"
               lineHeight="100%"
               cursor={
-                locationRoute.includes("account/") || secTitle === ""
+                locationRoute.includes("account/") ||
+                locationRoute.includes("transactions") ||
+                locationRoute.includes("client/logs") ||
+                secTitle === ""
                   ? ""
                   : "pointer"
               }
               onClick={() =>
-                locationRoute.includes("account/") || secTitle === ""
+                locationRoute.includes("account/") ||
+                locationRoute.includes("transactions") ||
+                locationRoute.includes("client/logs") ||
+                secTitle === ""
                   ? ""
                   : navigate(-1)
               }
@@ -100,13 +135,25 @@ const Header = () => {
 
             {secTitle && (
               <Text
-                fontSize="14px"
+                fontSize="10px"
                 display={isMobile ? "none" : "flex"}
                 color="#848688"
                 fontWeight={500}
                 lineHeight="100%"
               >
                 {">"} {secTitle}
+              </Text>
+            )}
+
+            {finTitle && (
+              <Text
+                fontSize="10px"
+                display={isMobile ? "none" : "flex"}
+                color="#848688"
+                fontWeight={500}
+                lineHeight="100%"
+              >
+                {">"} {finTitle}
               </Text>
             )}
           </Flex>
@@ -131,6 +178,7 @@ const Header = () => {
                 <Image
                   w="32px"
                   h="32px"
+                  objectFit="cover"
                   rounded="full"
                   src={
                     isUser

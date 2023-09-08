@@ -183,28 +183,38 @@ const TableLayer = () => {
                 justifyContent="center"
                 mt="30px"
                 align="center"
-                flexDir="column"
+                w="full"
               >
-                <Image src="/assets/no-sub.jpg" w="48px" h="48px" />
+                <Flex
+                  textAlign="center"
+                  justifyContent="center"
+                  align="center"
+                  flexDir="column"
+                  border="1px solid #e4e6e8"
+                  borderRadius="8px"
+                  py="16px"
+                  px="24px"
+                  w="fit-content"
+                >
+                  <Image src="/assets/no-sub.jpg" w="48px" h="48px" />
 
-                <Text
-                  my="16px"
-                  color="#646668"
-                  lineHeight="100%"
-                  fontWeight={700}
-                  w="50%"
-                >
-                  No Recent Activity
-                </Text>
-                <Text
-                  fontSize="11px"
-                  color="#A4A6A8"
-                  fontWeight={500}
-                  lineHeight="100%"
-                  w="50%"
-                >
-                  No Recent Activity
-                </Text>
+                  <Text
+                    my="16px"
+                    color="#646668"
+                    lineHeight="100%"
+                    fontWeight={700}
+                  >
+                    No Recent Activity
+                  </Text>
+                  <Text
+                    fontSize="11px"
+                    color="#A4A6A8"
+                    fontWeight={500}
+                    lineHeight="100%"
+                  >
+                    Make use of any of our parking services
+                  </Text>
+                </Flex>
               </Flex>
             </Td>
           </Tr>

@@ -18,7 +18,6 @@ export const PUBLIC_PATHS = {
 
   //OPERATOR ROUTES
   OP_LOGIN: "/operator/auth/login",
-  OP_SIGNUP: "/operator/auth/signup",
   OPERATOR_RESET_PASSWORD: "/operator/auth/forgot-password",
   OPERATOR_RESET_SENT: "/operator/auth/reset-success",
   OPERATOR_CHANGE_SUCCESS: "/operator/auth/password-success",
@@ -56,6 +55,12 @@ export const PRIVATE_PATHS = {
   CLIENT_PROFILE: "/client/profile",
   CLIENT_ADD_USER: "/client/add-user",
   CLIENT_EVENTS: "/client/events",
+  CLIENT_LOGS: "/client/logs/pay-to-park",
+  CLIENT_LOGS_DETAILS: "/client/logs/pay-to-park/details",
+  CLIENT_LOGS_VALET: "/client/logs/valet-park",
+  CLIENT_LOGS_VALET_DETAILS: "/client/logs/valet-park/details",
+  CLIENT_TRAN: "/client/transactions",
+  CLIENT_TRAN_DETAILS: "/client/transaction-details",
   CLIENT_ADD_EVENT: "/client/add-event",
   CLIENT_EDIT_EVENT: "/client/edit-event/:id",
   CLIENT_ADD_SUB: "/client/add-subscription",

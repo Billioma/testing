@@ -13,13 +13,29 @@ import { NavLink, useLocation } from "react-router-dom";
 import { useLogOut } from "../../../../utils/helpers";
 import { useState } from "react";
 import { LogoutIcon } from "../../../common/images";
-import { activeStyle, general } from "../../../common/constants";
+import {
+  activeStyle,
+  businessSidebar,
+  corpSidebar,
+  eventSidebar,
+} from "../../../common/constants";
 import { AiOutlineClose } from "react-icons/ai";
+import { useGetClientDetails } from "../../../../services/client/query/user";
 
 const SideDrawer = ({ isOpen, onClose }) => {
   const logout = useLogOut();
   const location = useLocation();
+  const { data: userData } = useGetClientDetails();
   const [isLoading, setIsLoading] = useState(false);
+
+  const sideBarMap =
+    userData?.accountType === "CORPORATE"
+      ? corpSidebar
+      : userData?.accountType === "EVENT_PLANNER"
+      ? eventSidebar
+      : userData?.accountType === "BUSINESS"
+      ? businessSidebar
+      : corpSidebar;
 
   const action = () => {
     setIsLoading(true);
@@ -68,7 +84,7 @@ const SideDrawer = ({ isOpen, onClose }) => {
             </Flex>
 
             <Box mx="20px">
-              {general?.map((item, i) => (
+              {sideBarMap?.map((item, i) => (
                 <Box
                   key={i}
                   onClick={onClose}

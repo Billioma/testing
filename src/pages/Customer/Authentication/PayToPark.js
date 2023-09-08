@@ -1,98 +1,42 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   Box,
   Button,
   Flex,
   Heading,
   Image,
-  Radio,
-  RadioGroup,
   Text,
-  useDisclosure,
   useMediaQuery,
 } from "@chakra-ui/react";
 import CustomInput from "../../../components/common/CustomInput";
 import { HiOutlineArrowNarrowLeft } from "react-icons/hi";
-import { BsCheckCircle } from "react-icons/bs";
 import Select from "react-select";
-import ConfirmParkModal from "../../../components/modals/ConfirmParkModal";
-import { useGetZone } from "../../../services/customer/query/locations";
-import useCustomToast from "../../../utils/notifications";
-
-import { useNavigate } from "react-router-dom";
-import { usePaystackPayment } from "react-paystack";
 import { colorTypes } from "../../../components/common/constants";
 
 const PayToPark = () => {
-  const [zone, setZone] = useState("");
   const [step, setStep] = useState(1);
-  const [showFunds, setShowFunds] = useState(false);
-  const navigate = useNavigate();
-  const { isOpen, onClose, onOpen } = useDisclosure();
-  const { errorToast, successToast } = useCustomToast();
-  const [error, setError] = useState(false);
 
-  const config = {
-    reference: new Date().getTime().toString(),
-    // email: userData?.email,
-    amount: 10000,
-    publicKey: process.env.REACT_APP_PAYSTACK_KEY,
-    metadata: {
-      custom_fields: [
-        {
-          display_name: "Transaction Type",
-          variable_name: "transaction_type",
-          value: "TOKENIZATION",
-        },
-      ],
-    },
-  };
-
-  const onSuccess = () => {
-    setTimeout(() => {
-      console.log("success");
-    }, 5000);
-  };
-
-  const onCloses = () => {
-    setTimeout(() => {
-      console.log("close");
-    }, 5000);
-  };
-
-  const initializePayment = usePaystackPayment(config);
   const [values, setValues] = useState({
     phone: "",
+    name: "",
+    email: "",
     plate: "",
     make: "",
     model: "",
     color: "",
   });
 
-  const isDisabled = Object.values(values).some((value) => !value);
-  const { mutate, isLoading, data } = useGetZone({
-    onSuccess: () => {
-      setError(false);
-      setStep(step + 1);
-    },
-    onError: (err) => {
-      if (err?.response?.data?.message) {
-        setError(true);
-      } else {
-        errorToast(
-          err?.response?.data?.message || err?.message || "An Error occured"
-        );
-      }
-    },
-  });
+  const isDisabled = Object.keys(values)
+    .filter((key) => key !== "phone")
+    .some((key) => !values[key]);
 
   const colorOptions = colorTypes.map((color) => ({
     value: color.color,
     label: color.label,
   }));
 
-  const handleKeyPress = (e) => {
-    if (values?.plate?.length >= 8) {
+  const handleKeyPress = (e, limit) => {
+    if (limit && e.target.value.length >= limit) {
       e.preventDefault();
     }
   };
@@ -108,37 +52,6 @@ const PayToPark = () => {
       {data?.label}
     </Flex>
   );
-
-  const handleSearchZone = () => {
-    console.log(zone);
-  };
-
-  const handlePark = () => {
-    Number(values?.paymentMethod) === 0
-      ? console.log({
-          amount: values?.serviceType?.amount,
-          paymentMethod: Number(values?.paymentMethod),
-          cardId: Number(values?.cardId),
-          rate: Number(values?.serviceType?.rate),
-          //   service: data?.service?.id,
-          vehicle: Number(values?.vehicle?.id),
-          //   zone: data?.id,
-        })
-      : console.log({
-          amount: values?.serviceType?.amount,
-          paymentMethod: Number(values?.paymentMethod),
-          rate: Number(values?.serviceType?.rate),
-          //   service: data?.service?.id,
-          vehicle: Number(values?.vehicle?.id),
-          //   zone: data?.id,
-        });
-  };
-
-  // useEffect(() => {
-  //   setStep(1);
-  //   setValues({ vehicle: "", serviceType: "", paymentMethod: "", cardId: "" });
-  //   setZone("");
-  // }, []);
 
   const handleSelectChange = (selectedOption, { name }) => {
     setValues({
@@ -181,6 +94,29 @@ const PayToPark = () => {
       {isMobile ? (
         <>
           <Image my="24px" src="/assets/park-logo.jpg" w="134px" h="28px" />
+
+          <Flex align="center" justifyContent="space-between" w="full">
+            {step === 1 ? (
+              <Image src="/assets/fill.svg" />
+            ) : (
+              step !== 1 &&
+              values.phone?.length === 10 && (
+                <Image src="/assets/complete.svg" />
+              )
+            )}
+            {step === 2 ? (
+              <Image src="/assets/fill.svg" />
+            ) : step !== 2 && !isDisabled && values.plate?.length === 8 ? (
+              <Image src="/assets/complete.svg" />
+            ) : (
+              <Image src="/assets/empty.svg" />
+            )}
+            {step === 3 ? (
+              <Image src="/assets/fill.svg" />
+            ) : (
+              <Image src="/assets/empty.svg" />
+            )}
+          </Flex>
           <Flex
             justifyContent="center"
             align={{ base: "flex-start", md: "center" }}
@@ -203,12 +139,6 @@ const PayToPark = () => {
                   mb="32px"
                   onClick={() => {
                     setStep(step - 1);
-                    setValues({
-                      vehicle: "",
-                      serviceType: "",
-                      paymentMethod: "",
-                      cardId: "",
-                    });
                   }}
                   cursor="pointer"
                 >
@@ -229,7 +159,7 @@ const PayToPark = () => {
                 </Flex>
               )}
 
-              {step === 1 && (
+              {step !== 3 && (
                 <Box
                   mt="16px"
                   w="full"
@@ -347,11 +277,64 @@ const PayToPark = () => {
                       auth
                       ngn
                       mb
+                      handleKeyPress={(e) => handleKeyPress(e, 10)}
                       value={values.phone}
+                      type="number"
                       onChange={(e) =>
                         setValues({
                           ...values,
                           phone: e.target.value,
+                        })
+                      }
+                    />
+                  </Box>
+                </Box>
+              )}
+
+              {step === 2 && (
+                <Flex flexDir="column" mb="30px">
+                  <Box my="16px">
+                    <Text
+                      color="#444648"
+                      fontSize="10px"
+                      lineHeight="100%"
+                      mb="8px"
+                    >
+                      Name
+                    </Text>
+                    <CustomInput
+                      auth
+                      holder="Enter Your Name"
+                      mb
+                      value={values.name}
+                      onChange={(e) =>
+                        setValues({
+                          ...values,
+                          name: e.target.value,
+                        })
+                      }
+                    />
+                  </Box>
+
+                  <Box>
+                    <Text
+                      color="#444648"
+                      fontSize="10px"
+                      lineHeight="100%"
+                      mb="8px"
+                    >
+                      Enter Your Email
+                    </Text>
+                    <CustomInput
+                      auth
+                      mb
+                      type="email"
+                      holder="Email address"
+                      value={values.email}
+                      onChange={(e) =>
+                        setValues({
+                          ...values,
+                          email: e.target.value,
                         })
                       }
                     />
@@ -369,7 +352,8 @@ const PayToPark = () => {
                     <CustomInput
                       auth
                       mb
-                      handleKeyPress={handleKeyPress}
+                      holder="Enter Licence Number"
+                      handleKeyPress={(e) => handleKeyPress(e, 8)}
                       value={values.plate}
                       onChange={(e) =>
                         setValues({
@@ -393,7 +377,7 @@ const PayToPark = () => {
                       styles={customStyles}
                       placeholder="Select Make"
                       options={colorOptions}
-                      value={values.vehicle}
+                      value={values.make}
                       components={{
                         IndicatorSeparator: () => (
                           <div style={{ display: "none" }}></div>
@@ -421,7 +405,7 @@ const PayToPark = () => {
                       styles={customStyles}
                       placeholder="Select Model"
                       options={colorOptions}
-                      value={values.vehicle}
+                      value={values.model}
                       components={{
                         IndicatorSeparator: () => (
                           <div style={{ display: "none" }}></div>
@@ -447,6 +431,7 @@ const PayToPark = () => {
                     </Text>
                     <Select
                       styles={customStyles}
+                      value={values.color}
                       components={{
                         SingleValue: ColorOptio,
                         IndicatorSeparator: () => (
@@ -459,11 +444,11 @@ const PayToPark = () => {
                       options={colorOptions}
                     />
                   </Box>
-                </Box>
+                </Flex>
               )}
 
-              {step === 2 && (
-                <Flex flexDir="column" minH="75vh">
+              {step === 3 && (
+                <Flex flexDir="column" minH="70vh">
                   <Flex
                     border="1px solid #D4D6D8"
                     borderRadius="8px"
@@ -488,6 +473,87 @@ const PayToPark = () => {
                     </Flex>
 
                     <Box>
+                      <Flex
+                        mb="24px"
+                        align="center"
+                        justifyContent="space-between"
+                        w="full"
+                      >
+                        <Text
+                          color="#848688"
+                          w="full"
+                          fontSize="14px"
+                          lineHeight="100%"
+                          fontWeight={500}
+                        >
+                          Name
+                        </Text>
+                        <Text
+                          color="#242628"
+                          textAlign="end"
+                          w="full"
+                          fontSize="14px"
+                          lineHeight="100%"
+                          fontWeight={500}
+                        >
+                          Bilal Omari
+                        </Text>
+                      </Flex>
+
+                      <Flex
+                        mb="24px"
+                        align="center"
+                        justifyContent="space-between"
+                        w="full"
+                      >
+                        <Text
+                          color="#848688"
+                          w="full"
+                          fontSize="14px"
+                          lineHeight="100%"
+                          fontWeight={500}
+                        >
+                          Email
+                        </Text>
+                        <Text
+                          color="#242628"
+                          textAlign="end"
+                          w="full"
+                          fontSize="14px"
+                          lineHeight="100%"
+                          fontWeight={500}
+                        >
+                          balablu@gmail.com
+                        </Text>
+                      </Flex>
+
+                      <Flex
+                        mb="24px"
+                        align="center"
+                        justifyContent="space-between"
+                        w="full"
+                      >
+                        <Text
+                          color="#848688"
+                          w="full"
+                          fontSize="14px"
+                          lineHeight="100%"
+                          fontWeight={500}
+                        >
+                          Phone Number
+                        </Text>
+                        <Text
+                          color="#242628"
+                          textAlign="end"
+                          w="full"
+                          fontSize="14px"
+                          lineHeight="100%"
+                          fontWeight={500}
+                        >
+                          +2349028944933
+                        </Text>
+                      </Flex>
+
                       <Flex
                         align="center"
                         justifyContent="space-between"
@@ -648,46 +714,42 @@ const PayToPark = () => {
                       </Flex>
                     </Box>
                   </Flex>
+
                   <Flex mt="auto" w="100%" gap="24px" align="center">
-                    <Button w="100%" fontSize="12px">
-                      Pay via Transfer
-                    </Button>
                     <Button
-                      bg="transparent"
-                      color="#444648"
-                      fontSize="12px"
-                      w="100%"
-                      border="1px solid #444648"
+                      w="full"
+                      bg="red"
+                      mt="auto"
                       py="17px"
+                      fontSize="14px"
                     >
-                      Pay via Card
+                      Make Payment
                     </Button>
                   </Flex>
                 </Flex>
               )}
 
-              {step === 1 && (
+              {step !== 3 && (
                 <Button
                   onClick={() => setStep(step + 1)}
                   w="full"
                   bg="red"
                   mt="auto"
                   py="17px"
-                  // isDisabled={step === 1 ? isDisabled : false}
+                  isDisabled={
+                    step === 1
+                      ? values.phone?.length < 10
+                      : step === 2
+                      ? isDisabled || values?.plate?.length < 8
+                      : false
+                  }
                   fontSize="14px"
                 >
-                  {step === 1 ? "Proceed" : "Park Now"}
+                  {step !== 3 ? "Proceed" : "Park Now"}
                 </Button>
               )}
             </Flex>
           </Flex>
-          <ConfirmParkModal
-            dataa={data}
-            action={handlePark}
-            values={values}
-            isOpen={isOpen}
-            onClose={onClose}
-          />
         </>
       ) : (
         <Flex justifyContent="center" align="center" h="75vh">

@@ -1,6 +1,8 @@
 import { MdAutorenew } from "react-icons/md";
 import {
   ClientEventIcon,
+  ClientLogIcon,
+  ClientTranIcon,
   ClientUserIcon,
   DashboardIcon,
   HelpIcon,
@@ -289,7 +291,47 @@ export const clientUserHeader = [
   "Actions",
 ];
 
-export const clientSidebar = [
+export const businessSidebar = [
+  {
+    id: 0,
+    name: "Dashboard",
+    path: "/client/dashboard",
+    icon: <DashboardIcon fill="#444648" />,
+    sec: <DashboardIcon fill="#fff" />,
+    hover: <DashboardIcon fill="#ee383a" />,
+  },
+
+  {
+    id: 1,
+    name: "Logs",
+    path: "/client/logs",
+    icon: <ClientLogIcon fill="#444648" />,
+    sec: <ClientLogIcon fill="#fff" />,
+    hover: <ClientLogIcon fill="#ee383a" />,
+    sub: [
+      {
+        id: 1,
+        name: "Pay-To-Park",
+        path: "/client/logs/pay-to-park",
+      },
+      {
+        id: 2,
+        name: "Valet Parking",
+        path: "/client/logs/valet-park",
+      },
+    ],
+  },
+  {
+    id: 2,
+    name: "Transactions",
+    path: "/client/transactions",
+    icon: <ClientTranIcon fill="#444648" />,
+    sec: <ClientTranIcon fill="#fff" />,
+    hover: <ClientTranIcon fill="#ee383a" />,
+  },
+];
+
+export const corpSidebar = [
   {
     id: 0,
     name: "Dashboard",
@@ -306,21 +348,93 @@ export const clientSidebar = [
     sec: <ClientUserIcon fill="#fff" />,
     hover: <ClientUserIcon fill="#ee383a" />,
   },
+
   {
     id: 2,
+    name: "Subscriptions",
+    path: "/client/subscriptions",
+    icon: <SubscriptionIcon fill="#444648" />,
+    sec: <SubscriptionIcon fill="#fff" />,
+    hover: <SubscriptionIcon fill="#ee383a" />,
+  },
+];
+
+export const eventSidebar = [
+  {
+    id: 0,
+    name: "Dashboard",
+    path: "/client/dashboard",
+    icon: <DashboardIcon fill="#444648" />,
+    sec: <DashboardIcon fill="#fff" />,
+    hover: <DashboardIcon fill="#ee383a" />,
+  },
+  {
+    id: 3,
+    name: "Transactions",
+    path: "/client/transactions",
+    icon: <ClientTranIcon fill="#444648" />,
+    sec: <ClientTranIcon fill="#fff" />,
+    hover: <ClientTranIcon fill="#ee383a" />,
+  },
+  {
+    id: 4,
     name: "Events",
     path: "/client/events",
     icon: <ClientEventIcon fill="#444648" />,
     sec: <ClientEventIcon fill="#fff" />,
     hover: <ClientEventIcon fill="#ee383a" />,
   },
+];
+
+export const clientTranHeader = [
+  "TICKET NUMBER",
+  "FULL NAME",
+  "AMOUNT",
+  "ZONE",
+  "VEHICLE",
+  "SERVICE",
+  "STATUS",
+  "DATE",
+  "ACTIONS",
+];
+
+export const clientLogPayHeader = [
+  "TICKET NUMBER",
+  "LICENSE PLATE",
+  "CUSTOMER",
+  "LOCATION",
+  "ZONE",
+  "ATTENDANT",
+  "AMOUNT",
+  "STATUS",
+  "DATE",
+  "ACTIONS",
+];
+
+export const clientTranBody = [
   {
-    id: 3,
-    name: "Subscriptions",
-    path: "/client/subscriptions",
-    icon: <SubscriptionIcon fill="#444648" />,
-    sec: <SubscriptionIcon fill="#fff" />,
-    hover: <SubscriptionIcon fill="#ee383a" />,
+    ticket: "003832",
+    fullName: "Bilal Omari",
+    amount: "3000",
+    zone: "V10098",
+    plate: "ABJD833H",
+    type: "Pay-To-Park",
+    status: 1,
+    date: "24-07-2023 7:00 AM",
+  },
+];
+
+export const clientLogPayBody = [
+  {
+    ticket: "003832",
+    plate: "ABJD833H",
+    customer: "Bilal Omari",
+    location: "Regno Sei / EZPark Car Park",
+    zone: "V10098",
+    attendant: "Bilal Omari",
+    amount: "3000",
+    status: 1,
+    date: "24-07-2023 7:00 AM",
   },
 ];
 
@@ -396,6 +510,18 @@ export const colors = [
   "Violet",
   "Purple",
 ];
+
+export const clientSubStyle = {
+  alignItems: "center",
+  display: "flex",
+  color: "#444648",
+  fontWeight: 700,
+  borderRadius: "4px",
+  fontSize: "10px",
+  lineHeight: "100%",
+  margin: "0 -20px 12px",
+  padding: "5px 2px 5px 16px",
+};
 
 export const clientStyle = {
   background: "#EE383A",

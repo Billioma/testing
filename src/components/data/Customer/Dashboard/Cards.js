@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
   Button,
@@ -17,7 +17,8 @@ import {
 } from "../../../../services/customer/query/vehicles";
 import {
   useGetUser,
-  useGetUserSubscriptions,
+  useGetUserSub,
+  useRenewSub,
 } from "../../../../services/customer/query/user";
 import { formatDate } from "../../../../utils/helpers";
 import { intervals } from "../../../common/constants";
@@ -28,6 +29,9 @@ import EditVehicleModal from "../../../modals/EditVehicleModal";
 import AddVehicleModal from "../../../modals/AddVehicleModal";
 import { useGetStates } from "../../../../services/customer/query/locations";
 import { useNavigate } from "react-router-dom";
+import { MdOutlineRefresh } from "react-icons/md";
+import RenewSubModal from "../../../modals/RenewSubModal";
+import useCustomToast from "../../../../utils/notifications";
 
 const Cards = () => {
   const [index, setIndex] = useState(0);
@@ -40,8 +44,11 @@ const Cards = () => {
   } = useGetVehicles();
   const { data: states } = useGetStates();
   const [showFunds, setShowFunds] = useState(false);
-  const { data: subscriptions, isLoading: isSubscription } =
-    useGetUserSubscriptions();
+  const {
+    isLoading: isSubscription,
+    data: subscriptions,
+    refetch: refetchSub,
+  } = useGetUserSub(10, 1);
   const { data: cards, refetch: refetchCards } = useGetCards();
   const { data: userData, isLoading: isUserLoading, refetch } = useGetUser();
 
@@ -58,6 +65,65 @@ const Cards = () => {
 
   const currentVehicle = vehicles?.data?.filter((item, i) => i === index);
   const currentSub = subscriptions?.data?.filter((item, i) => i === subIndex);
+  const today = new Date();
+
+  const [renew, setRenew] = useState("");
+  const [showRenew, setShowRenew] = useState(false);
+  const [currentSubs, setCurrentSubs] = useState("");
+  const openOption = (data) => {
+    setShowRenew(true), setCurrentSubs(data);
+  };
+  const [values, setValues] = useState({
+    cardId: "",
+    paymentMethod: "",
+    amount: "",
+  });
+  const { successToast, errorToast } = useCustomToast();
+  const { mutate: renewMutate, isLoading: isRenew } = useRenewSub({
+    onSuccess: (res) => {
+      refetch();
+      refetchSub();
+      setShowRenew(false);
+      setValues({ cardId: "", paymentMethod: "", amount: "" });
+      successToast(res?.message);
+    },
+    onError: (err) => {
+      errorToast(
+        err?.response?.data?.message || err?.message || "An Error occured"
+      );
+    },
+  });
+
+  const handleRenew = () => {
+    Number(values.paymentMethod) === 0
+      ? renewMutate({
+          query: currentSubs?.id,
+          body: {
+            autoRenewal: 1,
+            paymentMethod: Number(values.paymentMethod),
+            cardId: Number(values?.cardId),
+          },
+        })
+      : renewMutate({
+          query: currentSubs?.id,
+          body: {
+            autoRenewal: 1,
+            paymentMethod: Number(values.paymentMethod),
+          },
+        });
+  };
+
+  useEffect(() => {
+    if (currentSub?.length) {
+      const nextPaymentDate = new Date(currentSub[0]?.nextPaymentDate);
+
+      const timeDifference = nextPaymentDate - today;
+
+      const daysDifference = Math.ceil(timeDifference / (1000 * 60 * 60 * 24));
+      setRenew(daysDifference);
+    }
+  }, [currentSub]);
+
   const navigate = useNavigate();
   const config = {
     reference: new Date().getTime().toString(),
@@ -173,16 +239,72 @@ const Cards = () => {
               h="14rem"
               w="full"
             >
-              <Flex align="center" gap="16px">
-                <Image src="/assets/card.png" w="40px" h="40px" />
-                <Text
-                  color="red"
-                  lineHeight="100%"
-                  fontWeight={700}
-                  fontSize="20px"
+              <Flex align="center" justifyContent="space-between" w="full">
+                <Flex align="center" gap="16px" w="full">
+                  <Image src="/assets/card.png" w="40px" h="40px" />
+                  <Text
+                    color="red"
+                    lineHeight="100%"
+                    fontWeight={700}
+                    fontSize="20px"
+                  >
+                    Subscriptions
+                  </Text>
+                </Flex>
+
+                <Flex
+                  flexDir="column"
+                  justifyContent="flex-end"
+                  align="flex-end"
+                  gap="4px"
+                  w="100%"
                 >
-                  Subscriptions
-                </Text>
+                  <Flex
+                    flexDir="column"
+                    justifyContent="center"
+                    align="center"
+                    gap="4px"
+                    w="30%"
+                  >
+                    <Text
+                      fontSize="10px"
+                      color="#848688"
+                      fontWeight={700}
+                      lineHeight="100%"
+                    >
+                      {subIndex + 1} of {subscriptions?.data?.length}
+                    </Text>
+                    <Flex align="center" gap="16px">
+                      <Flex
+                        cursor="pointer"
+                        border="1px solid #242628"
+                        opacity={subIndex !== 0 ? 1 : 0.4}
+                        onClick={() =>
+                          subIndex !== 0 && setSubIndex(subIndex - 1)
+                        }
+                        rounded="full"
+                        p="2px"
+                      >
+                        <IoIosArrowBack size="13px" />
+                      </Flex>
+                      <Flex
+                        cursor="pointer"
+                        opacity={
+                          subscriptions?.data?.length !== subIndex + 1 ? 1 : 0.4
+                        }
+                        onClick={() =>
+                          subscriptions?.data?.length !== subIndex + 1 &&
+                          setSubIndex(subIndex + 1)
+                        }
+                        border="1px solid #242628"
+                        rounded="full"
+                        p="2px"
+                      >
+                        <IoIosArrowForward size="13px" />
+                      </Flex>
+                    </Flex>
+                  </Flex>
+                </Flex>
               </Flex>
               {subscriptions?.data?.length ? (
                 currentSub?.map((data, i) => (
@@ -239,7 +361,7 @@ const Cards = () => {
                     </Flex>
 
                     <Flex
-                      align="center"
+                      align="flex-end"
                       mt="32px"
                       justifyContent="space-between"
                       w="full"
@@ -269,7 +391,6 @@ const Cards = () => {
                           )}
                         </Text>
                       </Box>
-
                       <Box w="full">
                         <Text
                           fontSize="12px"
@@ -289,60 +410,40 @@ const Cards = () => {
                           {formatDate(data?.nextPaymentDate)}
                         </Text>
                       </Box>
-
-                      <Flex
-                        flexDir="column"
-                        justifyContent="center"
-                        align="center"
-                        gap="4px"
-                        w="15%"
-                      >
-                        <Text
-                          fontSize="10px"
-                          color="#848688"
-                          fontWeight={700}
-                          lineHeight="100%"
+                      <Box w={renew < 5 ? "100%" : "60%"}>
+                        <Flex
+                          color="#0B841D"
+                          cursor="pointer"
+                          align="center"
+                          onClick={() =>
+                            renew < 5
+                              ? openOption(data)
+                              : navigate("/customer/subscriptions")
+                          }
+                          gap="4px"
                         >
-                          {subIndex + 1} of {subscriptions?.data?.length}
-                        </Text>
-                        <Flex align="center" gap="16px">
-                          <Flex
-                            cursor="pointer"
-                            border="1px solid #242628"
-                            opacity={subIndex !== 0 ? 1 : 0.4}
-                            onClick={() =>
-                              subIndex !== 0 && setSubIndex(subIndex - 1)
-                            }
-                            rounded="full"
-                            p="2px"
+                          <Text
+                            fontSize="10px"
+                            fontWeight={700}
+                            lineHeight="100%"
                           >
-                            <IoIosArrowBack size="13px" />
-                          </Flex>
-                          <Flex
-                            cursor="pointer"
-                            opacity={
-                              subscriptions?.data?.length !== subIndex + 1
-                                ? 1
-                                : 0.4
-                            }
-                            onClick={() =>
-                              subscriptions?.data?.length !== subIndex + 1 &&
-                              setSubIndex(subIndex + 1)
-                            }
-                            border="1px solid #242628"
-                            rounded="full"
-                            p="2px"
-                          >
-                            <IoIosArrowForward size="13px" />
-                          </Flex>
+                            {renew <= 5
+                              ? " Renew Subscription"
+                              : "View Details"}
+                          </Text>
+                          {renew < 5 ? (
+                            <MdOutlineRefresh size="12px" />
+                          ) : (
+                            <IoIosArrowForward size="12px" />
+                          )}
                         </Flex>
-                      </Flex>
+                      </Box>
                     </Flex>
                   </Box>
                 ))
               ) : (
                 <Box fontSize="13px" fontWeight={500} color="#000">
-                  <Text my="37px" textAlign="center">
+                  <Text color="#848688" my="37px" textAlign="center">
                     You are yet to make a subscription
                   </Text>
                   <Button
@@ -368,16 +469,68 @@ const Cards = () => {
               h="14rem"
               w="full"
             >
-              <Flex align="center" gap="16px">
-                <Image src="/assets/car.png" w="56px" h="40px" />
-                <Text
-                  color="red"
-                  lineHeight="100%"
-                  fontWeight={700}
-                  fontSize="20px"
+              <Flex align="center" justifyContent="space-between" w="full">
+                <Flex align="center" gap="16px">
+                  <Image src="/assets/car.png" w="56px" h="40px" />
+                  <Text
+                    color="red"
+                    lineHeight="100%"
+                    fontWeight={700}
+                    fontSize="20px"
+                  >
+                    Vehicles
+                  </Text>
+                </Flex>
+
+                <Flex
+                  flexDir="column"
+                  justifyContent="flex-end"
+                  align="flex-end"
+                  gap="4px"
+                  w="100%"
                 >
-                  Vehicles
-                </Text>
+                  <Flex
+                    flexDir="column"
+                    justifyContent="center"
+                    align="center"
+                    gap="4px"
+                    w="30%"
+                  >
+                    <Text
+                      fontSize="10px"
+                      color="#848688"
+                      fontWeight={700}
+                      lineHeight="100%"
+                    >
+                      {index + 1} of {vehicles?.data?.length}
+                    </Text>
+                    <Flex align="center" gap="16px">
+                      <Flex
+                        cursor="pointer"
+                        border="1px solid #242628"
+                        opacity={index !== 0 ? 1 : 0.4}
+                        onClick={() => index !== 0 && setIndex(index - 1)}
+                        rounded="full"
+                        p="2px"
+                      >
+                        <IoIosArrowBack size="13px" />
+                      </Flex>
+                      <Flex
+                        cursor="pointer"
+                        opacity={vehicles?.data?.length !== index + 1 ? 1 : 0.4}
+                        onClick={() =>
+                          vehicles?.data?.length !== index + 1 &&
+                          setIndex(index + 1)
+                        }
+                        border="1px solid #242628"
+                        rounded="full"
+                        p="2px"
+                      >
+                        <IoIosArrowForward size="13px" />
+                      </Flex>
+                    </Flex>
+                  </Flex>
+                </Flex>
               </Flex>
               {vehicles?.data?.length ? (
                 currentVehicle?.map((data, i) => (
@@ -427,8 +580,15 @@ const Cards = () => {
                           {data?.color}
                         </Text>
                       </Box>
+                    </Flex>
 
-                      <Box>
+                    <Flex
+                      align="center"
+                      mt="32px"
+                      justifyContent="space-between"
+                      w="full"
+                    >
+                      <Box w="full">
                         <Text
                           fontSize="12px"
                           color="#848688"
@@ -447,14 +607,7 @@ const Cards = () => {
                           {data?.state}
                         </Text>
                       </Box>
-                    </Flex>
 
-                    <Flex
-                      align="center"
-                      mt="32px"
-                      justifyContent="space-between"
-                      w="full"
-                    >
                       <Box w="full">
                         <Text
                           fontSize="12px"
@@ -475,64 +628,35 @@ const Cards = () => {
                         </Text>
                       </Box>
 
-                      <Flex w="full">
-                        <Button
-                          bg="transparent"
-                          border="1px solid #242628"
-                          rounded="full"
-                          px="24px"
-                          py="7px"
-                          color="#242628"
-                          onClick={() => openMenu(data)}
-                          lineHeight="100%"
-                          fontSize="10px"
-                          fontWeight={500}
-                        >
-                          Edit
-                        </Button>
-                      </Flex>
-
                       <Flex
                         flexDir="column"
-                        justifyContent="center"
-                        align="center"
+                        justifyContent="flex-end"
+                        align="flex-end"
                         gap="4px"
-                        w="15%"
+                        w="100%"
                       >
-                        <Text
-                          fontSize="10px"
-                          color="#848688"
-                          fontWeight={700}
-                          lineHeight="100%"
+                        <Flex
+                          flexDir="column"
+                          justifyContent="center"
+                          align="center"
+                          gap="4px"
+                          w="100%"
                         >
-                          {index + 1} of {vehicles?.data?.length}
-                        </Text>
-                        <Flex align="center" gap="16px">
-                          <Flex
-                            cursor="pointer"
-                            border="1px solid #242628"
-                            opacity={index !== 0 ? 1 : 0.4}
-                            onClick={() => index !== 0 && setIndex(index - 1)}
-                            rounded="full"
-                            p="2px"
-                          >
-                            <IoIosArrowBack size="13px" />
-                          </Flex>
-                          <Flex
-                            cursor="pointer"
-                            opacity={
-                              vehicles?.data?.length !== index + 1 ? 1 : 0.4
-                            }
-                            onClick={() =>
-                              vehicles?.data?.length !== index + 1 &&
-                              setIndex(index + 1)
-                            }
+                          <Button
+                            bg="transparent"
                             border="1px solid #242628"
                             rounded="full"
-                            p="2px"
+                            px="24px"
+                            py="7px"
+                            w="full"
+                            color="#242628"
+                            onClick={() => openMenu(data)}
+                            lineHeight="100%"
+                            fontSize="10px"
+                            fontWeight={500}
                           >
-                            <IoIosArrowForward size="13px" />
-                          </Flex>
+                            Edit
+                          </Button>
                         </Flex>
                       </Flex>
                     </Flex>
@@ -540,7 +664,7 @@ const Cards = () => {
                 ))
               ) : (
                 <Box fontSize="13px" fontWeight={500} color="#000">
-                  <Text my="37px" textAlign="center">
+                  <Text my="37px" color="#848688" textAlign="center">
                     You are yet to add a vehicle
                   </Text>
                   <Button
@@ -581,6 +705,20 @@ const Cards = () => {
         refetch={refetchVehicle}
         isOpen={show}
         onClose={() => setShow(false)}
+      />
+      <RenewSubModal
+        currentSub={currentSub}
+        isLoading={isRenew}
+        values={values}
+        setValues={setValues}
+        handleRenew={handleRenew}
+        userData={userData}
+        action={() => {
+          initializePayment(onSuccess, onClose);
+        }}
+        cards={cards}
+        isOpen={showRenew}
+        onClose={() => setShowRenew(false)}
       />
     </Box>
   );

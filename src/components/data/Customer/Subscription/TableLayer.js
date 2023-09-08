@@ -3,7 +3,7 @@ import { Box, Button, Flex, Icon, Image, Td, Text, Tr } from "@chakra-ui/react";
 import TableFormat from "../../../common/TableFormat";
 import { FiMoreVertical } from "react-icons/fi";
 import {
-  Status,
+  SecStatus,
   intervals,
   subHeader,
   subOption,
@@ -86,6 +86,8 @@ const TableLayer = () => {
   };
 
   const initializePayment = usePaystackPayment(config);
+
+  const today = new Date();
 
   const { errorToast, successToast } = useCustomToast();
   const { mutate, isLoading: isCancel } = useCancelSub({
@@ -250,102 +252,114 @@ const TableLayer = () => {
             </Flex>
           }
         >
-          {subs?.data?.map((dat, i) => (
-            <Tr
-              key={i}
-              color="#646668"
-              fontWeight={500}
-              fontSize="12px"
-              lineHeight="100%"
-            >
-              <Td textAlign="center">{dat?.membershipPlan?.name}</Td>
-              <Td textAlign="center">
-                ₦{" "}
-                {dat?.membershipPlan?.amount?.toLocaleString(undefined, {
-                  maximumFractionDigits: 2,
-                })}
-              </Td>
-              <Td textAlign="center">
-                {Object.values(intervals[dat?.membershipPlan?.interval])[0]}
-              </Td>
-              <Td textAlign="center">{formatDate(dat?.nextPaymentDate)}</Td>
-              <Td>
-                <Flex
-                  color={
-                    dat?.cancelled === 1
-                      ? "#E81313"
-                      : Object.values(Status[dat?.status])[0]
-                  }
-                  bg={
-                    dat?.cancelled === 1
-                      ? "#F9D0CD"
-                      : Object.values(Status[dat?.status])[2]
-                  }
-                  py="5px"
-                  px="16px"
-                  justifyContent="center"
-                  borderRadius="4px"
-                  align="center"
-                >
-                  {dat?.cancelled === 1
-                    ? "Cancelled"
-                    : Object.values(Status[dat?.status])[1]}
-                </Flex>
-              </Td>
-              <Td textAlign="center">{formatDate(dat?.createdAt)}</Td>
-              <Td>
-                <Flex
-                  pos="relative"
-                  cursor="pointer"
-                  onClick={() => open(dat)}
-                  justifyContent="center"
-                  className="box"
-                  align="center"
-                >
-                  <FiMoreVertical />
+          {subs?.data?.map((dat, i) => {
+            const nextPaymentDate = new Date(dat?.nextPaymentDate);
 
-                  {show && currentSub === dat && (
-                    <Box
-                      border="1px solid #F4F6F8"
-                      px="4px"
-                      py="8px"
-                      bg="#fff"
-                      borderRadius="4px"
-                      pos="absolute"
-                      right="0"
-                      zIndex={5555555}
-                      top="20px"
-                      boxShadow="0px 8px 16px 0px rgba(0, 0, 0, 0.08)"
-                    >
-                      {subOption.map((item, i) => (
-                        <Flex
-                          key={i}
-                          mb="8px"
-                          py="6px"
-                          px="8px"
-                          borderRadius="2px"
-                          justifyContent="center"
-                          align="center"
-                          onClick={() => openOption(dat, i)}
-                          _hover={{ bg: "#F4F6F8" }}
-                          cursor="pointer"
-                          fontSize="10px"
-                          gap="12px"
-                          w="full"
-                          color={i !== 1 ? "#646668" : "#A11212"}
-                          lineHeight="100%"
-                          fontWeight={500}
-                        >
-                          <Icon as={item.icon} w="20px" h="20px" />
-                          {item?.name}
-                        </Flex>
-                      ))}
-                    </Box>
-                  )}
-                </Flex>
-              </Td>
-            </Tr>
-          ))}
+            const timeDifference = nextPaymentDate - today;
+
+            const daysDifference = Math.ceil(
+              timeDifference / (1000 * 60 * 60 * 24)
+            );
+            return (
+              <Tr
+                key={i}
+                color="#646668"
+                fontWeight={500}
+                fontSize="12px"
+                lineHeight="100%"
+              >
+                <Td textAlign="center">{dat?.membershipPlan?.name}</Td>
+                <Td textAlign="center">
+                  ₦{" "}
+                  {dat?.membershipPlan?.amount?.toLocaleString(undefined, {
+                    maximumFractionDigits: 2,
+                  })}
+                </Td>
+                <Td textAlign="center">
+                  {Object.values(intervals[dat?.membershipPlan?.interval])[0]}
+                </Td>
+                <Td textAlign="center">{formatDate(dat?.nextPaymentDate)}</Td>
+                <Td>
+                  <Flex
+                    color={
+                      dat?.cancelled === 1
+                        ? "#E81313"
+                        : Object.values(SecStatus[dat?.status])[0]
+                    }
+                    bg={
+                      dat?.cancelled === 1
+                        ? "#F9D0CD"
+                        : Object.values(SecStatus[dat?.status])[2]
+                    }
+                    py="5px"
+                    px="16px"
+                    justifyContent="center"
+                    borderRadius="4px"
+                    align="center"
+                  >
+                    {dat?.cancelled === 1
+                      ? "Cancelled"
+                      : Object.values(SecStatus[dat?.status])[1]}
+                  </Flex>
+                </Td>
+                <Td textAlign="center">{formatDate(dat?.createdAt)}</Td>
+                <Td>
+                  <Flex
+                    pos="relative"
+                    cursor="pointer"
+                    onClick={() => open(dat)}
+                    justifyContent="center"
+                    className="box"
+                    align="center"
+                  >
+                    <FiMoreVertical />
+
+                    {show && currentSub === dat && (
+                      <Box
+                        border="1px solid #F4F6F8"
+                        px="4px"
+                        py="8px"
+                        bg="#fff"
+                        borderRadius="4px"
+                        pos="absolute"
+                        right="0"
+                        zIndex={5555555}
+                        top="20px"
+                        boxShadow="0px 8px 16px 0px rgba(0, 0, 0, 0.08)"
+                      >
+                        {(daysDifference >= 5
+                          ? subOption?.slice(1, 2)
+                          : subOption
+                        ).map((item, i) => (
+                          <Flex
+                            key={i}
+                            mb="8px"
+                            py="6px"
+                            px="8px"
+                            borderRadius="2px"
+                            justifyContent="center"
+                            align="center"
+                            onClick={() => openOption(dat, i)}
+                            _hover={{ bg: "#F4F6F8" }}
+                            cursor="pointer"
+                            fontSize="10px"
+                            gap="12px"
+                            w="full"
+                            color={i !== 1 ? "#646668" : "#A11212"}
+                            lineHeight="100%"
+                            fontWeight={500}
+                          >
+                            <Icon as={item.icon} w="20px" h="20px" />
+                            {item?.name}
+                          </Flex>
+                        ))}
+                      </Box>
+                    )}
+                  </Flex>
+                </Td>
+              </Tr>
+            );
+          })}
         </TableFormat>
       ) : (
         <Flex

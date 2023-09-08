@@ -12,26 +12,14 @@ const TableLayer = () => {
 
   return (
     <Box mt="32px">
-      <Text color="#242628" fontWeight={500} lineHeight="100%" mb="12px">
-        Recent Activity
+      <Text color="#242628" fontWeight={700} lineHeight="100%" mb="12px">
+        Active Sessions
       </Text>
       <TableFormat
         maxH={"70vh"}
         isLoading={isLoading}
         minH="20vh"
         header={servicesHeader}
-        title={
-          <Flex>
-            <Text
-              color="#242628"
-              fontSize="14px"
-              lineHeight="100%"
-              fontWeight={500}
-            >
-              Recent Activity
-            </Text>
-          </Flex>
-        }
       >
         {payToPark?.data?.length ? (
           payToPark?.data?.slice(0, 2)?.map((dat, i) => (
@@ -70,28 +58,38 @@ const TableLayer = () => {
                 justifyContent="center"
                 mt="30px"
                 align="center"
-                flexDir="column"
+                w="full"
               >
-                <Image src="/assets/no-sub.jpg" w="48px" h="48px" />
+                <Flex
+                  textAlign="center"
+                  justifyContent="center"
+                  align="center"
+                  flexDir="column"
+                  border="1px solid #e4e6e8"
+                  borderRadius="8px"
+                  py="16px"
+                  px="24px"
+                  w="fit-content"
+                >
+                  <Image src="/assets/no-sub.jpg" w="48px" h="48px" />
 
-                <Text
-                  my="16px"
-                  color="#646668"
-                  lineHeight="100%"
-                  fontWeight={700}
-                  w="50%"
-                >
-                  No Recent Activity
-                </Text>
-                <Text
-                  fontSize="11px"
-                  color="#A4A6A8"
-                  fontWeight={500}
-                  lineHeight="100%"
-                  w="50%"
-                >
-                  Make use of any of our parking services
-                </Text>
+                  <Text
+                    my="16px"
+                    color="#646668"
+                    lineHeight="100%"
+                    fontWeight={700}
+                  >
+                    No Recent Activity
+                  </Text>
+                  <Text
+                    fontSize="11px"
+                    color="#A4A6A8"
+                    fontWeight={500}
+                    lineHeight="100%"
+                  >
+                    Make use of any of our parking services
+                  </Text>
+                </Flex>
               </Flex>
             </Td>
           </Tr>

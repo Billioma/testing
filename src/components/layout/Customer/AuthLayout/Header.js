@@ -189,6 +189,7 @@ const Header = () => {
                   w="20px"
                   h="20px"
                   rounded="full"
+                  objectFit="cover"
                   src={
                     isUser
                       ? "/assets/user.png"

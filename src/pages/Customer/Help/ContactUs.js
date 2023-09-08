@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Box, Button, Flex, Text } from "@chakra-ui/react";
 import { HiOutlineArrowNarrowLeft } from "react-icons/hi";
 import { useNavigate } from "react-router-dom";
 import CustomInput from "../../../components/common/CustomInput";
 import TextInput from "../../../components/common/TextInput";
-import { useSendMail } from "../../../services/customer/query/user";
+import { useGetUser, useSendMail } from "../../../services/customer/query/user";
 import useCustomToast from "../../../utils/notifications";
 
 export const Layout = ({ label, holder, value, ngn, onChange, area }) => {
@@ -50,11 +50,11 @@ const ContactUs = () => {
   });
 
   const { errorToast, successToast } = useCustomToast();
-
+  const { data: userData } = useGetUser();
   const { mutate, isLoading } = useSendMail({
     onSuccess: (res) => {
       successToast(res?.message);
-      setValues({ name: "", email: "", phone: "", message: "" });
+      setValues({ message: "" });
     },
     onError: (err) => {
       errorToast(
@@ -65,14 +65,26 @@ const ContactUs = () => {
 
   const isDisabled = Object.values(values).some((value) => !value);
 
+  const phoneNumber = `+234${values.phone}`;
   const handleSubmit = () => {
     mutate({
       name: values.name,
       email: values.email,
-      phone: values.phone,
+      phone: phoneNumber,
       message: values.message,
     });
   };
+
+  useEffect(() => {
+    setValues({
+      name: `${
+        userData?.profile?.firstName
+      } ${userData?.profile?.lastName?.replace(".", "")}`,
+      email: userData?.email,
+      phone: userData?.profile?.phone?.replace("+234", ""),
+      message: "",
+    });
+  }, [userData]);
 
   return (
     <Box minH="75vh">
@@ -111,7 +123,7 @@ const ContactUs = () => {
               fontSize="24px"
               lineHeight="100%"
             >
-              Send us a Mail
+              Send us a Message
             </Text>
             <Text
               textAlign="center"
