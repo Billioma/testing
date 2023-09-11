@@ -7,6 +7,7 @@ import {
   DashboardIcon,
   HelpIcon,
   HistoryIcon,
+  LocateIcon,
   ServiceIcon,
   SubscriptionIcon,
   VehicleIcon,
@@ -271,6 +272,153 @@ export const general = [
   },
 ];
 
+export const operatorUsersHeader = [
+  "NAME",
+  "USER ID",
+  "ACCOUNT TYPE",
+  "DATE CREATED",
+  "ACTIONS",
+];
+
+export const operatorPoliciesHeader = [
+  "TITLE",
+  "LOCATION",
+  "DATE CREATED",
+  "ACTIONS",
+];
+
+export const operatorLogHeader = [
+  "TICKET NUMBER",
+  "LOCATION",
+  "ZONE",
+  "ATTENDANT",
+  "DATE CREATED",
+  "ACTIONS",
+];
+
+export const operatorRepLocationHeader = [
+  "NAME",
+  "STATE",
+  "ZONES",
+  "LOCATION TYPE",
+  "DATE CREATED",
+];
+
+export const operatorRepZoneHeader = [
+  "NAME",
+  "LOCATION",
+  "CAPACITY",
+  "RESERVABLE",
+  "RESERVABLE SPACE",
+  "SERVICE",
+  "DATE CREATED",
+];
+
+export const operatorPayGrid = [
+  "Total Amount Due",
+  "Total Amount Received",
+  "Total Payments",
+];
+
+export const operatorRepPaymentHeader = [
+  "LOCATION",
+  "ZONE",
+  "ATTENDANT",
+  "AMOUNT",
+  "AMOUNT PAID",
+  "SERVICE",
+  "DATE CREATED",
+];
+
+export const operatorRepLogHeader = [
+  "TICKET NO",
+  "SERVICE",
+  "LOCATION",
+  "ZONE",
+  "AMOUNT PAID",
+  "STATUS",
+  "DATE CREATED",
+];
+
+export const operatorLocationsHeader = [
+  "NAME",
+  "OPERATOR",
+  "STATE",
+  "DATE CREATED",
+  "ACTIONS",
+];
+
+export const operatorRatesHeader = [
+  "NAME",
+  "DURATION TYPE",
+  "DURATION START",
+  "DURATION LIMIT",
+  "AMOUNT",
+  "DATE CREATED",
+  "ACTIONS",
+];
+
+export const operatorZonesHeader = [
+  "NAME",
+  "LOCATION",
+  "CAPACITY",
+  "MIN DURATION",
+  "DURATION TYPE",
+  "DATE CREATED",
+  "ACTIONS",
+];
+
+export const LocationTypes = [
+  "RESTAURANT_CAFE",
+  "BAR_LOUNGE_NIGHTCLUB",
+  "OFFICE_BUILDING",
+  "RESORT_LEISURE_CENTER",
+  "EVENT_CENTER",
+  "SPORTING_CENTER",
+  "HOTEL_CONFERENCE_CENTER",
+  "HALL_SHOPPING_CENTER",
+  "GARAGE_PARKING_LOT",
+];
+
+export const allStates = [
+  "Abia",
+  "Adamawa",
+  "Akwa Ibom",
+  "Anambra",
+  "Bauchi",
+  "Bayelsa",
+  "Benue",
+  "Borno",
+  "Cross River",
+  "Delta",
+  "Ebonyi",
+  "Edo",
+  "Ekiti",
+  "Enugu",
+  "FCT",
+  "Gombe",
+  "Imo",
+  "Jigawa",
+  "Kaduna",
+  "Kano",
+  "Katsina",
+  "Kebbi",
+  "Kogi",
+  "Kwara",
+  "Lagos",
+  "Nasarawa",
+  "Niger",
+  "Ogun",
+  "Ondo",
+  "Osun",
+  "Oyo",
+  "Plateau",
+  "Rivers",
+  "Sokoto",
+  "Taraba",
+  "Yobe",
+  "Zamfara",
+];
 export const clientEventHeader = [
   "Name",
   "Website",
@@ -290,6 +438,8 @@ export const clientUserHeader = [
   "Date Created",
   "Actions",
 ];
+
+export const operatorDashboardFilter = ["All Time", "Year", "Month", "Week"];
 
 export const businessSidebar = [
   {
@@ -383,6 +533,117 @@ export const eventSidebar = [
     icon: <ClientEventIcon fill="#444648" />,
     sec: <ClientEventIcon fill="#fff" />,
     hover: <ClientEventIcon fill="#ee383a" />,
+  },
+];
+
+export const operatorSidebar = [
+  {
+    id: 0,
+    name: "Dashboard",
+    path: "/operator/dashboard",
+    icon: <DashboardIcon fill="#444648" />,
+    sec: <DashboardIcon fill="#fff" />,
+    hover: <DashboardIcon fill="#ee383a" />,
+  },
+  {
+    id: 1,
+    name: "Users",
+    path: "/operator/users",
+    icon: <ClientUserIcon fill="#444648" />,
+    sec: <ClientUserIcon fill="#fff" />,
+    hover: <ClientUserIcon fill="#ee383a" />,
+    sub: [
+      {
+        id: 1,
+        name: "Attendants",
+        path: "/operator/users/attendants",
+      },
+    ],
+  },
+  {
+    id: 2,
+    name: "Locations",
+    path: "/operator/location",
+    icon: <LocateIcon fill="#444648" />,
+    sec: <LocateIcon fill="#fff" />,
+    hover: <LocateIcon fill="#ee383a" />,
+    sub: [
+      {
+        id: 1,
+        name: "Locations",
+        path: "/operator/locations/all",
+      },
+      {
+        id: 2,
+        name: "Zones",
+        path: "/operator/locations/zones",
+      },
+      {
+        id: 3,
+        name: "Rates",
+        path: "/operator/locations/rates",
+      },
+      {
+        id: 4,
+        name: "Policies",
+        path: "/operator/locations/policies",
+      },
+    ],
+  },
+  {
+    id: 3,
+    name: "Logs",
+    path: "/operator/logs",
+    icon: <ClientLogIcon fill="#444648" />,
+    sec: <ClientLogIcon fill="#fff" />,
+    hover: <ClientLogIcon fill="#ee383a" />,
+    sub: [
+      {
+        id: 1,
+        name: "Valeted Vehicles",
+        path: "/operator/logs/valeted-vehicles",
+      },
+      {
+        id: 2,
+        name: "Parked Vehicles",
+        path: "/operator/logs/parked-vehicles",
+      },
+      {
+        id: 3,
+        name: "Serviced Vehicles",
+        path: "/operator/logs/serviced-vehicles",
+      },
+    ],
+  },
+  {
+    id: 4,
+    name: "Reports",
+    path: "/operator/reports",
+    icon: <ClientLogIcon fill="#444648" />,
+    sec: <ClientLogIcon fill="#fff" />,
+    hover: <ClientLogIcon fill="#ee383a" />,
+    sub: [
+      {
+        id: 1,
+        name: "Payments",
+        path: "/operator/reports/payments",
+      },
+      {
+        id: 2,
+        name: "Locations",
+        path: "/operator/reports/locations",
+      },
+      {
+        id: 3,
+        name: "Zones",
+        path: "/operator/reports/zones",
+      },
+      {
+        id: 3,
+        name: "Logs",
+        path: "/operator/reports/logs",
+      },
+    ],
   },
 ];
 
@@ -655,6 +916,7 @@ export const subOption = [
     icon: FcCancel,
   },
 ];
+
 export const eventOption = [
   {
     name: "Edit Event",
@@ -665,6 +927,9 @@ export const eventOption = [
     icon: BsTrash,
   },
 ];
+
+export const accountType = ["VALET", "PARKING", "GENERAL", "SERVICE"];
+
 export const eventOptions = ["Edit Event", "Delete Event"];
 
 export const accountDrop = [
@@ -700,6 +965,43 @@ export const payToParkHeader = [
   "SERVICE TYPE",
   "STATUS",
   "DATE",
+];
+
+export const operatorDashCards = [
+  {
+    title: "Locations",
+    img: "/assets/locationn.jpg",
+  },
+  {
+    title: "Zones",
+    img: "/assets/zones.jpg",
+  },
+  {
+    title: "Attendants",
+    img: "/assets/attendant.jpg",
+  },
+  {
+    title: "Transactions",
+    img: "/assets/trans.jpg",
+  },
+];
+
+export const operatorDahboard = [
+  {
+    title: "Valeted Vehicles",
+    color: "#EE383A",
+    img: "/assets/valeted.jpg",
+  },
+  {
+    title: "Parked Vehicles",
+    color: "#0B841D",
+    img: "/assets/park-confirm.png",
+  },
+  {
+    title: "Serviced Vehicles",
+    color: "#242628",
+    img: "/assets/service.png",
+  },
 ];
 
 export const clientDahboard = [

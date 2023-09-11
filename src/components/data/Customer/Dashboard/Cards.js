@@ -27,7 +27,6 @@ import { useGetCards } from "../../../../services/customer/query/payment";
 import { usePaystackPayment } from "react-paystack";
 import EditVehicleModal from "../../../modals/EditVehicleModal";
 import AddVehicleModal from "../../../modals/AddVehicleModal";
-import { useGetStates } from "../../../../services/customer/query/locations";
 import { useNavigate } from "react-router-dom";
 import { MdOutlineRefresh } from "react-icons/md";
 import RenewSubModal from "../../../modals/RenewSubModal";
@@ -42,7 +41,6 @@ const Cards = () => {
     isLoading,
     refetch: refetchVehicle,
   } = useGetVehicles();
-  const { data: states } = useGetStates();
   const [showFunds, setShowFunds] = useState(false);
   const {
     isLoading: isSubscription,
@@ -690,7 +688,6 @@ const Cards = () => {
         onClose={() => setShowFunds(false)}
       />
       <AddVehicleModal
-        states={states}
         makes={makes}
         refetch={refetchVehicle}
         models={models}
@@ -698,7 +695,6 @@ const Cards = () => {
         onClose={() => setShowAdd(false)}
       />
       <EditVehicleModal
-        states={states}
         makes={makes}
         models={models}
         dataa={currentVehicles}

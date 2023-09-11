@@ -8,6 +8,10 @@ import {
   AuthLayout as ClientAuthLayout,
   NonAuthLayout as ClientNonAuthLayout,
 } from "../components/layout/Client/PageLayout";
+import {
+  AuthLayout as OperatorAuthLayout,
+  NonAuthLayout as OperatorNonAuthLayout,
+} from "../components/layout/Operator/PageLayout";
 import { PRIVATE_ROUTES, PUBLIC_ROUTES } from "./routes";
 import {
   AuthLayout as AdminAuthLayout,
@@ -27,15 +31,7 @@ const PrivateRouteWrapper = () => {
 const Pages = () => {
   const user = sessionStorage.getItem("user");
   const location = useLocation();
-  return location.pathname.includes("operator") ? (
-    user ? (
-      <PrivateRouteWrapper key={location.pathname} />
-    ) : (
-      <NonAuthLayout>
-        <PublicRouteWrapper key={location.pathname} />
-      </NonAuthLayout>
-    )
-  ) : location.pathname.includes("admin") ? (
+  return location.pathname.includes("admin") ? (
     user ? (
       <AdminAuthLayout>
         <PrivateRouteWrapper key={location.pathname} />
@@ -54,6 +50,16 @@ const Pages = () => {
       <ClientNonAuthLayout>
         <PublicRouteWrapper key={location.pathname} />
       </ClientNonAuthLayout>
+    )
+  ) : location.pathname.includes("operator") ? (
+    user ? (
+      <OperatorAuthLayout>
+        <PrivateRouteWrapper key={location.pathname} />
+      </OperatorAuthLayout>
+    ) : (
+      <OperatorNonAuthLayout>
+        <PublicRouteWrapper key={location.pathname} />
+      </OperatorNonAuthLayout>
     )
   ) : user ? (
     <AuthLayout>

@@ -16,7 +16,6 @@ import ConfirmReserveModal from "../../../components/modals/ConfirmReserveModal"
 import {
   useGetCities,
   useGetLocations,
-  useGetStates,
 } from "../../../services/customer/query/locations";
 import { CiLocationOn } from "react-icons/ci";
 import { Calendar } from "react-calendar";
@@ -37,6 +36,7 @@ import useCustomToast from "../../../utils/notifications";
 import { useNavigate } from "react-router-dom";
 import { usePaystackPayment } from "react-paystack";
 import FundWalletDrawer from "../../../components/modals/FundWalletDrawer";
+import { allStates } from "../../../components/common/constants";
 
 const ReserveParking = () => {
   const [step, setStep] = useState(1);
@@ -113,16 +113,15 @@ const ReserveParking = () => {
     return null;
   };
 
-  const { data: states } = useGetStates();
   const { data: locations } = useGetLocations();
   const { data: vehicles } = useGetVehicles();
   const currentStateLocation = locations?.filter((dat) =>
     dat?.address?.includes(values?.city?.value)
   );
   const { mutate, data: cities } = useGetCities();
-  const stateOptions = states?.data?.map((state) => ({
-    value: state?.name?.replace(" State", "")?.replace(" (FCT)", ""),
-    label: state?.name?.replace(" State", "")?.replace(" (FCT)", ""),
+  const stateOptions = allStates?.map((state) => ({
+    value: state,
+    label: state,
   }));
   const cityOptions = cities?.data?.map((city) => ({
     value: city?.name,

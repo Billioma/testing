@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Box, Flex, Image, Td, Text, Tr } from "@chakra-ui/react";
 import TableFormat from "../../../common/TableFormat";
 import { FiMoreVertical } from "react-icons/fi";
@@ -23,6 +23,7 @@ import {
 import { formatDate, formatDateTime } from "../../../../utils/helpers";
 import ConfirmDeleteModal from "../../../modals/ConfirmDeleteModal";
 import useCustomToast from "../../../../utils/notifications";
+import { useEffect } from "react";
 import { FcCancel } from "react-icons/fc";
 
 const TableLayer = () => {
@@ -357,16 +358,19 @@ const TableLayer = () => {
                 <Td textAlign="center">{dat?.vehicle?.licensePlate}</Td>
                 <Td textAlign="center">{dat?.service?.name}</Td>
                 <Td>
-                  <Flex
-                    color={Object.values(Status[dat?.status])[0]}
-                    bg={Object.values(Status[dat?.status])[2]}
-                    py="5px"
-                    px="16px"
-                    justifyContent="center"
-                    borderRadius="4px"
-                    align="center"
-                  >
-                    {Object.values(Status[dat?.status])[1]}
+                  <Flex justifyContent="center" align="center" w="full">
+                    <Flex
+                      color={Object.values(Status[dat?.status])[0]}
+                      bg={Object.values(Status[dat?.status])[2]}
+                      py="5px"
+                      px="16px"
+                      w="fit-content"
+                      justifyContent="center"
+                      borderRadius="4px"
+                      align="center"
+                    >
+                      {Object.values(Status[dat?.status])[1]}
+                    </Flex>
                   </Flex>
                 </Td>
                 <Td textAlign="center">{formatDate(dat?.createdAt)}</Td>
@@ -442,16 +446,20 @@ const TableLayer = () => {
                 <Td textAlign="center">{formatDate(dat?.createdAt)}</Td>
 
                 <Td>
-                  <Flex
-                    color={Object.values(Status[dat?.status])[0]}
-                    bg={Object.values(Status[dat?.status])[2]}
-                    py="5px"
-                    px="16px"
-                    justifyContent="center"
-                    borderRadius="4px"
-                    align="center"
-                  >
-                    {Object.values(Status[dat?.status])[1]}
+                  {" "}
+                  <Flex justifyContent="center" align="center" w="full">
+                    <Flex
+                      color={Object.values(Status[dat?.status])[0]}
+                      bg={Object.values(Status[dat?.status])[2]}
+                      py="5px"
+                      px="16px"
+                      justifyContent="center"
+                      w="fit-content"
+                      borderRadius="4px"
+                      align="center"
+                    >
+                      {Object.values(Status[dat?.status])[1]}
+                    </Flex>
                   </Flex>
                 </Td>
                 <Td>
@@ -490,9 +498,9 @@ const TableLayer = () => {
                           fontSize="10px"
                           color="red"
                           lineHeight="100%"
-                          fontWeight={500}
                           gap="12px"
                           w="full"
+                          fontWeight={500}
                         >
                           <FcCancel size="15px" />
                           Cancel Reservation
@@ -578,16 +586,19 @@ const TableLayer = () => {
                 </Td>
                 <Td textAlign="center">{dat?.event?.name}</Td>
                 <Td>
-                  <Flex
-                    color={Object.values(Status[dat?.status])[0]}
-                    bg={Object.values(Status[dat?.status])[2]}
-                    py="5px"
-                    px="16px"
-                    justifyContent="center"
-                    borderRadius="4px"
-                    align="center"
-                  >
-                    {Object.values(Status[dat?.status])[1]}
+                  <Flex justifyContent="center" align="center" w="full">
+                    <Flex
+                      color={Object.values(Status[dat?.status])[0]}
+                      bg={Object.values(Status[dat?.status])[2]}
+                      py="5px"
+                      px="16px"
+                      w="fit-content"
+                      justifyContent="center"
+                      borderRadius="4px"
+                      align="center"
+                    >
+                      {Object.values(Status[dat?.status])[1]}
+                    </Flex>
                   </Flex>
                 </Td>
                 <Td textAlign="center">{formatDate(dat?.createdAt)}</Td>
@@ -670,17 +681,19 @@ const TableLayer = () => {
 
               <Td textAlign="center">{formatDate(dat?.createdAt)}</Td>
               <Td>
-                {" "}
-                <Flex
-                  color={Object.values(Status[dat?.status])[0]}
-                  bg={Object.values(Status[dat?.status])[2]}
-                  py="5px"
-                  px="16px"
-                  justifyContent="center"
-                  borderRadius="4px"
-                  align="center"
-                >
-                  {Object.values(Status[dat?.status])[1]}
+                <Flex justifyContent="center" align="center" w="full">
+                  <Flex
+                    color={Object.values(Status[dat?.status])[0]}
+                    bg={Object.values(Status[dat?.status])[2]}
+                    py="5px"
+                    w="fit-content"
+                    px="16px"
+                    justifyContent="center"
+                    borderRadius="4px"
+                    align="center"
+                  >
+                    {Object.values(Status[dat?.status])[1]}
+                  </Flex>
                 </Flex>
               </Td>
               <Td>
@@ -718,9 +731,9 @@ const TableLayer = () => {
                         cursor="pointer"
                         fontSize="10px"
                         color="red"
-                        lineHeight="100%"
-                        w="full"
                         gap="12px"
+                        w="full"
+                        lineHeight="100%"
                         fontWeight={500}
                       >
                         <FcCancel size="15px" />

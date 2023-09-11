@@ -361,16 +361,19 @@ const TableLayer = () => {
                 <Td textAlign="center">{dat?.vehicle?.licensePlate}</Td>
                 <Td textAlign="center">{dat?.service?.name}</Td>
                 <Td>
-                  <Flex
-                    color={Object.values(Status[dat?.status])[0]}
-                    bg={Object.values(Status[dat?.status])[2]}
-                    py="5px"
-                    px="16px"
-                    justifyContent="center"
-                    borderRadius="4px"
-                    align="center"
-                  >
-                    {Object.values(Status[dat?.status])[1]}
+                  <Flex justifyContent="center" align="center" w="full">
+                    <Flex
+                      color={Object.values(Status[dat?.status])[0]}
+                      bg={Object.values(Status[dat?.status])[2]}
+                      py="5px"
+                      px="16px"
+                      w="fit-content"
+                      justifyContent="center"
+                      borderRadius="4px"
+                      align="center"
+                    >
+                      {Object.values(Status[dat?.status])[1]}
+                    </Flex>
                   </Flex>
                 </Td>
                 <Td textAlign="center">{formatDate(dat?.createdAt)}</Td>
@@ -446,16 +449,20 @@ const TableLayer = () => {
                 <Td textAlign="center">{formatDate(dat?.createdAt)}</Td>
 
                 <Td>
-                  <Flex
-                    color={Object.values(Status[dat?.status])[0]}
-                    bg={Object.values(Status[dat?.status])[2]}
-                    py="5px"
-                    px="16px"
-                    justifyContent="center"
-                    borderRadius="4px"
-                    align="center"
-                  >
-                    {Object.values(Status[dat?.status])[1]}
+                  {" "}
+                  <Flex justifyContent="center" align="center" w="full">
+                    <Flex
+                      color={Object.values(Status[dat?.status])[0]}
+                      bg={Object.values(Status[dat?.status])[2]}
+                      py="5px"
+                      px="16px"
+                      justifyContent="center"
+                      w="fit-content"
+                      borderRadius="4px"
+                      align="center"
+                    >
+                      {Object.values(Status[dat?.status])[1]}
+                    </Flex>
                   </Flex>
                 </Td>
                 <Td>
@@ -582,16 +589,19 @@ const TableLayer = () => {
                 </Td>
                 <Td textAlign="center">{dat?.event?.name}</Td>
                 <Td>
-                  <Flex
-                    color={Object.values(Status[dat?.status])[0]}
-                    bg={Object.values(Status[dat?.status])[2]}
-                    py="5px"
-                    px="16px"
-                    justifyContent="center"
-                    borderRadius="4px"
-                    align="center"
-                  >
-                    {Object.values(Status[dat?.status])[1]}
+                  <Flex justifyContent="center" align="center" w="full">
+                    <Flex
+                      color={Object.values(Status[dat?.status])[0]}
+                      bg={Object.values(Status[dat?.status])[2]}
+                      py="5px"
+                      px="16px"
+                      w="fit-content"
+                      justifyContent="center"
+                      borderRadius="4px"
+                      align="center"
+                    >
+                      {Object.values(Status[dat?.status])[1]}
+                    </Flex>
                   </Flex>
                 </Td>
                 <Td textAlign="center">{formatDate(dat?.createdAt)}</Td>
@@ -674,17 +684,19 @@ const TableLayer = () => {
 
               <Td textAlign="center">{formatDate(dat?.createdAt)}</Td>
               <Td>
-                {" "}
-                <Flex
-                  color={Object.values(Status[dat?.status])[0]}
-                  bg={Object.values(Status[dat?.status])[2]}
-                  py="5px"
-                  px="16px"
-                  justifyContent="center"
-                  borderRadius="4px"
-                  align="center"
-                >
-                  {Object.values(Status[dat?.status])[1]}
+                <Flex justifyContent="center" align="center" w="full">
+                  <Flex
+                    color={Object.values(Status[dat?.status])[0]}
+                    bg={Object.values(Status[dat?.status])[2]}
+                    py="5px"
+                    w="fit-content"
+                    px="16px"
+                    justifyContent="center"
+                    borderRadius="4px"
+                    align="center"
+                  >
+                    {Object.values(Status[dat?.status])[1]}
+                  </Flex>
                 </Flex>
               </Td>
               <Td>

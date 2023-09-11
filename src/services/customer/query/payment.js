@@ -2,7 +2,7 @@ import { useQuery } from "react-query";
 import { getCards, getPaymentHistory } from "../api/payment";
 
 export const useGetPaymentHistory = (limit = "", page = "", options = {}) => {
-  const { mutate, isLoading, data } = useQuery(
+  const { isLoading, data } = useQuery(
     ["GET_PAYMENT_HISTORY", limit, page],
     getPaymentHistory,
     {
@@ -10,7 +10,7 @@ export const useGetPaymentHistory = (limit = "", page = "", options = {}) => {
     }
   );
 
-  return { mutate, isLoading, data };
+  return { isLoading, data };
 };
 
 export const useGetCards = (options = {}) => {

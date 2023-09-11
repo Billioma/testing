@@ -20,7 +20,7 @@ import useCustomToast from "../../../../utils/notifications";
 import EditVehicleModal from "../../../modals/EditVehicleModal";
 import ConfirmDeleteModal from "../../../modals/ConfirmDeleteModal";
 
-const VehicleCards = ({ states }) => {
+const VehicleCards = () => {
   const { data: vehicles, isLoading, refetch } = useGetVehicles();
   const [showDelete, setShowDelete] = useState(false);
   const [currentVehicle, setCurrentVehicle] = useState("");
@@ -224,7 +224,6 @@ const VehicleCards = ({ states }) => {
       </Grid>
 
       <AddVehicleModal
-        states={states}
         makes={makes}
         models={models}
         refetch={refetch}
@@ -233,7 +232,6 @@ const VehicleCards = ({ states }) => {
       />
 
       <EditVehicleModal
-        states={states}
         dataa={currentVehicle}
         makes={makes}
         models={models}

@@ -12,7 +12,7 @@ import {
 } from "@chakra-ui/react";
 import Select from "react-select";
 import CustomInput from "../common/CustomInput";
-import { colorTypes } from "../common/constants";
+import { allStates, colorTypes } from "../common/constants";
 import { useUpdateVehicles } from "../../services/customer/query/vehicles";
 import useCustomToast from "../../utils/notifications";
 
@@ -32,9 +32,9 @@ const EditVehicleModal = ({
     make: "",
     model: "",
   });
-  const stateOptions = states?.data?.map((state) => ({
-    value: state?.name?.replace(" State", "")?.replace(" (FCT)", ""),
-    label: state?.name?.replace(" State", "")?.replace(" (FCT)", ""),
+  const stateOptions = allStates?.map((state) => ({
+    value: state,
+    label: state,
   }));
   const colorOptions = colorTypes.map((color) => ({
     value: color.color,
@@ -67,16 +67,22 @@ const EditVehicleModal = ({
 
   useEffect(() => {
     const selectedStateOption = stateOptions?.find(
-      (option) => option?.label === dataa?.state
+      (option) =>
+        option?.label?.toLocaleLowerCase() === dataa?.state?.toLocaleLowerCase()
     );
     const selectedColorOption = colorOptions?.find(
-      (option) => option?.label === dataa?.color
+      (option) =>
+        option?.label?.toLocaleLowerCase() === dataa?.color?.toLocaleLowerCase()
     );
     const selectedMakeOption = makeOptions?.find(
-      (option) => option?.label === dataa?.model?.make?.name
+      (option) =>
+        option?.label?.toLocaleLowerCase() ===
+        dataa?.model?.make?.name?.toLocaleLowerCase()
     );
     const selectedModelOption = modelOptions?.find(
-      (option) => option?.label === dataa?.model?.name
+      (option) =>
+        option?.label?.toLocaleLowerCase() ===
+        dataa?.model?.name?.toLocaleLowerCase()
     );
 
     setValues({
@@ -139,7 +145,7 @@ const EditVehicleModal = ({
         licensePlate: values.plate,
         make: values.make?.value,
         model: values.model?.value,
-        color: values?.color?.value,
+        color: values?.color?.label,
         state: values.state?.value,
       },
     });

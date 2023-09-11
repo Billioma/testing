@@ -98,6 +98,7 @@ const CustomInput = ({
           fontSize="13px"
           _placeholder={{ fontSize: "13px", color: "#646668" }}
           placeholder={holder}
+          autoComplete="new-password"
         />
         {suffix ? (
           <InputRightElement cursor="pointer" h={opt ? "60px" : "44px"}>

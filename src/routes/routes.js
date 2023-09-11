@@ -73,6 +73,29 @@ const {
 
   // OPERATOR ROUTES
   OP_DASHBOARD,
+  OP_ADD_ATTENDANT,
+  OP_ATTENDANT,
+  OP_ATTENDANT_DETAILS,
+  OP_LOCATIONS,
+  OP_ADD_LOCATION,
+  OP_LOCATION_DETAILS,
+  OP_POLICIES,
+  OP_POLICY_DETAILS,
+  OP_RATES,
+  OP_ZONES,
+  OP_ZONE_DETAILS,
+  OP_ADD_ZONE,
+  OP_ADD_POLICY,
+  OP_VALETED,
+  OP_VALETED_DETAILS,
+  OP_PARKED,
+  OP_PARKED_DETAILS,
+  OP_SERVICED,
+  OP_SERVICED_DETAILS,
+  OP_REP_PAYMENTS,
+  OP_REP_LOCATIONS,
+  OP_REP_ZONES,
+  OP_REP_LOGS,
 
   ADMIN_CUSTOMERS,
   ADMIN_DASHBOARD,
@@ -260,6 +283,75 @@ const OperatorChangeSuccess = WithSuspense(
 const OpDashboard = WithSuspense(
   lazy(() => import("../pages/Operator/Dashboard/Dashboard"))
 );
+const OpAttendant = WithSuspense(
+  lazy(() => import("../pages/Operator/Users/Attendants"))
+);
+const OpAddAttendant = WithSuspense(
+  lazy(() => import("../pages/Operator/Users/AddAttendant"))
+);
+const OpAttendantDetails = WithSuspense(
+  lazy(() => import("../pages/Operator/Users/AttendantDetails"))
+);
+const OpLocation = WithSuspense(
+  lazy(() => import("../pages/Operator/Locations/Locations/Locations"))
+);
+const OpLocationDetails = WithSuspense(
+  lazy(() => import("../pages/Operator/Locations/Locations/LocationDetails"))
+);
+const OpAddLocation = WithSuspense(
+  lazy(() => import("../pages/Operator/Locations/Locations/AddLocation"))
+);
+const OpZone = WithSuspense(
+  lazy(() => import("../pages/Operator/Locations/Zones/Zones"))
+);
+const OpZoneDetails = WithSuspense(
+  lazy(() => import("../pages/Operator/Locations/Zones/ZoneDetails"))
+);
+const OpAddZone = WithSuspense(
+  lazy(() => import("../pages/Operator/Locations/Zones/AddZone"))
+);
+const OpRate = WithSuspense(
+  lazy(() => import("../pages/Operator/Locations/Rates/Rates"))
+);
+const OpPolicies = WithSuspense(
+  lazy(() => import("../pages/Operator/Locations/Policies/Policies"))
+);
+const OpAddPolicy = WithSuspense(
+  lazy(() => import("../pages/Operator/Locations/Policies/AddPolicy"))
+);
+const OpPolicyDetails = WithSuspense(
+  lazy(() => import("../pages/Operator/Locations/Policies/PolicyDetails"))
+);
+const OpValeted = WithSuspense(
+  lazy(() => import("../pages/Operator/Logs/Valet/Vehicles"))
+);
+const OpValetedDetails = WithSuspense(
+  lazy(() => import("../pages/Operator/Logs/Valet/Details"))
+);
+const OpParked = WithSuspense(
+  lazy(() => import("../pages/Operator/Logs/Parked/Vehicles"))
+);
+const OpParkedDetails = WithSuspense(
+  lazy(() => import("../pages/Operator/Logs/Parked/Details"))
+);
+const OpServiced = WithSuspense(
+  lazy(() => import("../pages/Operator/Logs/Serviced/Vehicles"))
+);
+const OpServicedDetails = WithSuspense(
+  lazy(() => import("../pages/Operator/Logs/Serviced/Details"))
+);
+const OpRepPayment = WithSuspense(
+  lazy(() => import("../pages/Operator/Reports/Payment"))
+);
+const OpRepLocation = WithSuspense(
+  lazy(() => import("../pages/Operator/Reports/Locations"))
+);
+const OpRepZone = WithSuspense(
+  lazy(() => import("../pages/Operator/Reports/Zones"))
+);
+const OpRepLog = WithSuspense(
+  lazy(() => import("../pages/Operator/Reports/Logs"))
+);
 
 // ADMIN PAGES
 const AdminDashboard = WithSuspense(
@@ -431,6 +523,29 @@ export const PRIVATE_ROUTES = [
 
   // OPERATOR ROUTES
   { path: OP_DASHBOARD, element: <OpDashboard /> },
+  { path: OP_ATTENDANT, element: <OpAttendant /> },
+  { path: OP_ADD_ATTENDANT, element: <OpAddAttendant /> },
+  { path: OP_ATTENDANT_DETAILS, element: <OpAttendantDetails /> },
+  { path: OP_LOCATIONS, element: <OpLocation /> },
+  { path: OP_LOCATION_DETAILS, element: <OpLocationDetails /> },
+  { path: OP_ADD_LOCATION, element: <OpAddLocation /> },
+  { path: OP_RATES, element: <OpRate /> },
+  { path: OP_ZONES, element: <OpZone /> },
+  { path: OP_ZONE_DETAILS, element: <OpZoneDetails /> },
+  { path: OP_ADD_ZONE, element: <OpAddZone /> },
+  { path: OP_POLICIES, element: <OpPolicies /> },
+  { path: OP_POLICY_DETAILS, element: <OpPolicyDetails /> },
+  { path: OP_ADD_POLICY, element: <OpAddPolicy /> },
+  { path: OP_VALETED, element: <OpValeted /> },
+  { path: OP_VALETED_DETAILS, element: <OpValetedDetails /> },
+  { path: OP_PARKED, element: <OpParked /> },
+  { path: OP_PARKED_DETAILS, element: <OpParkedDetails /> },
+  { path: OP_SERVICED, element: <OpServiced /> },
+  { path: OP_SERVICED_DETAILS, element: <OpServicedDetails /> },
+  { path: OP_REP_PAYMENTS, element: <OpRepPayment /> },
+  { path: OP_REP_LOCATIONS, element: <OpRepLocation /> },
+  { path: OP_REP_ZONES, element: <OpRepZone /> },
+  { path: OP_REP_LOGS, element: <OpRepLog /> },
 
   // ADMIN ROUTES
   { path: ADMIN_DASHBOARD, element: <AdminDashboard /> },
