@@ -8,52 +8,64 @@ import { IoIosArrowDown } from "react-icons/io";
 import useCustomToast from "../../../../utils/notifications";
 import ConfirmDeleteModal from "../../../../components/modals/ConfirmDeleteModal";
 import {
-  useDeleteZone,
-  useGetAmenities,
+  useDeleteRate,
   useGetOpLocation,
-  useGetZone,
-  useUpdateZone,
+  useGetRate,
+  useUpdateRate,
 } from "../../../../services/operator/query/locations";
 import { useGetServices } from "../../../../services/customer/query/locations";
+import {
+  DurationTypes,
+  RateTypes,
+} from "../../../../components/common/constants";
 
-const ZoneDetails = () => {
+const RateDetails = () => {
   const navigate = useNavigate();
   const [values, setValues] = useState({
     name: "",
-    description: "",
-    capacity: "",
-    reservable: 0,
-    reservableSpace: 0,
-    geoLocation: "",
-    minimumDuration: "",
     status: 1,
     service: "",
-    amenities: "",
+    durationType: "",
+    durationStart: "",
+    durationLimit: "",
+    noLimit: "",
+    rateType: "",
+    amount: "",
+    zones: "",
   });
   const isEdit = sessionStorage.getItem("edit");
   const { id } = useParams();
-  const { mutate, data, isLoading } = useGetZone();
-  const { data: amenities } = useGetAmenities();
-  const { data: locations } = useGetOpLocation();
+  const { mutate, data, isLoading } = useGetRate();
 
   useEffect(() => {
     mutate({ id: id });
   }, []);
 
   const { data: services } = useGetServices();
+  const { data: locations } = useGetOpLocation();
+
   const serviceOptions = services?.map((service) => ({
     value: service?.id,
     label: service?.name,
   }));
 
-  const locationOptions = locations?.data?.map((location) => ({
-    value: location?.id,
-    label: location?.name,
+  const durationOptions = DurationTypes?.map((duration) => ({
+    value: duration,
+    label: duration,
   }));
 
-  const amenitiesOptions = amenities?.map((amenity) => ({
-    value: amenity?.id,
-    label: amenity?.name,
+  const zoneOptions = locations?.data?.reduce((acc, location) => {
+    const zones =
+      location?.zones?.map((zone) => ({
+        value: zone?.id,
+        label: zone?.name,
+      })) || [];
+    return acc.concat(zones);
+  }, []);
+
+  const rateOptions = RateTypes?.map((rate, i) => ({
+    value: i,
+    label: rate,
   }));
 
   const customStyles = {
@@ -80,7 +92,7 @@ const ZoneDetails = () => {
     }),
   };
 
-  const [reservable, setReservable] = useState(false);
+  const [limit, setLimit] = useState(false);
 
   const handleSelectChange = (selectedOption, { name }) => {
     setValues({
@@ -95,40 +107,36 @@ const ZoneDetails = () => {
     const selectedServiceOption = serviceOptions?.find(
       (option) => option.label === data?.service?.name
     );
-    const selectedLocationOption = locationOptions?.find(
-      (option) => option.label === data?.location?.name
+    const selectedDurationOption = durationOptions?.find(
+      (option) => option.label === data?.durationType
     );
-
-    const selectedAmenitiesOption = data?.amenities?.map((item) => ({
-      value: item?.id,
-      label: item?.name,
-    }));
+    const selectedRateOption = rateOptions?.find(
+      (option, i) => i === data?.rateType
+    );
+    const selectedZoneOption = zoneOptions?.filter((option) =>
+      data?.zones?.some((target) => target?.id === option.value)
+    );
 
     setValues({
       ...values,
       name: data?.name,
-      description: data?.description,
-      capacity: data?.capacity,
-      geoLocation: data?.geoLocation,
-      reservable:
-        data?.reservable === 0 ? false : data?.reservable === 1 && true,
-      reservableSpace: data?.reservableSpace,
       service: selectedServiceOption,
-      location: selectedLocationOption,
-      amenities: selectedAmenitiesOption,
-      minimumDuration: data?.minimumDuration,
+      rateType: selectedRateOption,
+      amount: data?.amount,
+      durationStart: data?.durationStart,
+      durationType: selectedDurationOption,
+      durationLimit: data?.durationLimit,
+      zones: selectedZoneOption,
     });
-    setReservable(
-      data?.reservable === 0 ? false : data?.reservable === 1 && true
-    );
+    setLimit(data?.noLimit === 0 ? false : data?.noLimit === 1 && true);
   }, [data, edit]);
 
   const { errorToast, successToast } = useCustomToast();
 
-  const { mutate: updateMutate, isLoading: isUpdating } = useUpdateZone({
+  const { mutate: updateMutate, isLoading: isUpdating } = useUpdateRate({
     onSuccess: (res) => {
       successToast(res?.message);
-      navigate("/operator/locations/zones");
+      navigate("/operator/locations/rates");
       sessionStorage.removeItem("edit");
     },
     onError: (err) => {
@@ -138,10 +146,10 @@ const ZoneDetails = () => {
     },
   });
   const [showDelete, setShowDelete] = useState(false);
-  const { mutate: deleteMutate, isLoading: isDeleting } = useDeleteZone({
+  const { mutate: deleteMutate, isLoading: isDeleting } = useDeleteRate({
     onSuccess: (res) => {
       successToast(res?.message);
-      navigate("/operator/locations/zones");
+      navigate("/operator/locations/rates");
       setShowDelete(false);
       sessionStorage.removeItem("edit");
     },
@@ -157,36 +165,32 @@ const ZoneDetails = () => {
   };
 
   const handleUpdate = () => {
-    reservable
+    limit
       ? updateMutate({
           query: id,
           body: {
             name: values.name,
-            description: values?.description,
-            capacity: values.capacity,
-            geoLocation: values.geoLocation,
-            location: values.location?.value,
-            minimumDuration: values.minimumDuration,
-            service: values.service?.value,
-            amenities: values.amenities?.map((item) => item?.value),
+            zones: values?.zones?.map((item) => Number(item?.value)),
+            service: Number(values?.service?.value),
+            rateType: Number(values?.rateType?.value),
+            amount: Number(values.amount),
+            durationLimit: Number(values.durationLimit),
+            durationStart: Number(values.durationStart),
+            durationType: values.durationType?.value,
             status: 1,
-            reservable: 1,
-            reservableSpace: values?.reservableSpace,
+            noLimit: 1,
           },
         })
       : updateMutate({
           query: id,
           body: {
             name: values.name,
-            description: values?.description,
-            capacity: values.capacity,
-            geoLocation: values.geoLocation,
-            location: values.location?.value,
-            minimumDuration: values.minimumDuration,
-            service: values.service?.value,
-            amenities: values.amenities?.map((item) => item?.value),
+            zones: values?.zones?.map((item) => Number(item?.value)),
+            service: Number(values?.service?.value),
+            rateType: Number(values?.rateType?.value),
+            amount: Number(values.amount),
             status: 1,
-            reservable: 0,
+            noLimit: 0,
           },
         });
   };
@@ -249,7 +253,7 @@ const ZoneDetails = () => {
                       mb="8px"
                       lineHeight="100%"
                     >
-                      Zone Name
+                      Name
                     </Text>
                     <CustomInput
                       auth
@@ -273,138 +277,7 @@ const ZoneDetails = () => {
                       mb="8px"
                       lineHeight="100%"
                     >
-                      Zone Description
-                    </Text>
-                    <CustomInput
-                      auth
-                      mb
-                      isDisabled={edit ? false : true}
-                      value={values.description}
-                      onChange={(e) =>
-                        setValues({
-                          ...values,
-                          description: e.target.value,
-                        })
-                      }
-                    />
-                  </Box>
-
-                  <Box>
-                    <Text
-                      color="#444648"
-                      fontSize="10px"
-                      fontWeight={500}
-                      mb="8px"
-                      lineHeight="100%"
-                    >
-                      Zone Capacity
-                    </Text>
-                    <CustomInput
-                      auth
-                      mb
-                      isDisabled={edit ? false : true}
-                      value={values.capacity}
-                      type="number"
-                      onChange={(e) =>
-                        setValues({
-                          ...values,
-                          capacity: e.target.value,
-                        })
-                      }
-                    />
-                  </Box>
-
-                  <Box my="16px">
-                    <Text
-                      color="#444648"
-                      fontSize="10px"
-                      fontWeight={500}
-                      mb="8px"
-                      lineHeight="100%"
-                    >
-                      Geolocation
-                    </Text>
-                    <CustomInput
-                      auth
-                      mb
-                      isDisabled={edit ? false : true}
-                      value={values.geoLocation}
-                      onChange={(e) =>
-                        setValues({
-                          ...values,
-                          geoLocation: e.target.value,
-                        })
-                      }
-                    />
-                  </Box>
-
-                  <Box>
-                    <Text
-                      color="#444648"
-                      fontSize="10px"
-                      fontWeight={500}
-                      mb="8px"
-                      lineHeight="100%"
-                    >
-                      Select Location
-                    </Text>
-                    <Select
-                      styles={customStyles}
-                      isDisabled={edit ? false : true}
-                      value={values.location}
-                      options={locationOptions}
-                      components={{
-                        IndicatorSeparator: () => (
-                          <div style={{ display: "none" }}></div>
-                        ),
-                        DropdownIndicator: () => (
-                          <div>
-                            <IoIosArrowDown size="15px" color="#646668" />
-                          </div>
-                        ),
-                      }}
-                      onChange={(selectedOption) =>
-                        handleSelectChange(selectedOption, {
-                          name: "location",
-                        })
-                      }
-                    />
-                  </Box>
-
-                  <Box my="16px">
-                    <Text
-                      color="#444648"
-                      fontSize="10px"
-                      fontWeight={500}
-                      mb="8px"
-                      lineHeight="100%"
-                    >
-                      Minimum Duration In Minutes
-                    </Text>
-                    <CustomInput
-                      auth
-                      mb
-                      isDisabled={edit ? false : true}
-                      value={values.minimumDuration}
-                      type="number"
-                      onChange={(e) =>
-                        setValues({
-                          ...values,
-                          minimumDuration: e.target.value,
-                        })
-                      }
-                    />
-                  </Box>
-
-                  <Box>
-                    <Text
-                      color="#444648"
-                      fontSize="10px"
-                      fontWeight={500}
-                      mb="8px"
-                      lineHeight="100%"
-                    >
-                      Service
+                      Select Service
                     </Text>
                     <Select
                       styles={customStyles}
@@ -430,7 +303,7 @@ const ZoneDetails = () => {
                     />
                   </Box>
 
-                  <Box my="16px">
+                  <Box>
                     <Text
                       color="#444648"
                       fontSize="10px"
@@ -438,14 +311,14 @@ const ZoneDetails = () => {
                       mb="8px"
                       lineHeight="100%"
                     >
-                      Amenities
+                      Select Rate Type
                     </Text>
                     <Select
                       styles={customStyles}
                       isDisabled={edit ? false : true}
-                      isMulti
-                      value={values.amenities}
-                      options={amenitiesOptions}
+                      options={rateOptions}
+                      value={values.rateType}
+                      defaultValue={values.rateType}
                       components={{
                         IndicatorSeparator: () => (
                           <div style={{ display: "none" }}></div>
@@ -458,7 +331,32 @@ const ZoneDetails = () => {
                       }}
                       onChange={(selectedOption) =>
                         handleSelectChange(selectedOption, {
-                          name: "amenities",
+                          name: "rateType",
+                        })
+                      }
+                    />
+                  </Box>
+
+                  <Box my="16px">
+                    <Text
+                      color="#444648"
+                      fontSize="10px"
+                      fontWeight={500}
+                      mb="8px"
+                      lineHeight="100%"
+                    >
+                      Enter Amount
+                    </Text>
+                    <CustomInput
+                      auth
+                      mb
+                      type="number"
+                      isDisabled={edit ? false : true}
+                      value={values.amount}
+                      onChange={(e) =>
+                        setValues({
+                          ...values,
+                          amount: e.target.value,
                         })
                       }
                     />
@@ -466,42 +364,137 @@ const ZoneDetails = () => {
 
                   <Flex align="center" justifyContent="space-between" w="full">
                     <Text fontSize="12px" color="#646668" lineHeight="100%">
-                      Add Reservable Space
+                      Add Limit
                     </Text>
 
                     <Switch
                       size="sm"
-                      isChecked={reservable ? true : false}
-                      value={reservable}
-                      onChange={() => setReservable((prev) => !prev)}
+                      isChecked={limit ? true : false}
+                      value={limit}
+                      onChange={() => setLimit((prev) => !prev)}
                     />
                   </Flex>
 
-                  {reservable && (
-                    <Box mt="16px">
-                      <Text
-                        color="#444648"
-                        fontSize="10px"
-                        fontWeight={500}
-                        mb="8px"
-                        lineHeight="100%"
-                      >
-                        Reservable Space
-                      </Text>
-                      <CustomInput
-                        auth
-                        mb
-                        isDisabled={edit ? false : true}
-                        value={values.reservableSpace}
-                        onChange={(e) =>
-                          setValues({
-                            ...values,
-                            reservableSpace: e.target.value,
-                          })
-                        }
-                      />
+                  {limit && (
+                    <Box>
+                      <Box my="16px">
+                        <Text
+                          color="#444648"
+                          fontSize="10px"
+                          fontWeight={500}
+                          mb="8px"
+                          lineHeight="100%"
+                        >
+                          Select Duration Type
+                        </Text>
+                        <Select
+                          styles={customStyles}
+                          isDisabled={edit ? false : true}
+                          options={durationOptions}
+                          value={values.durationType}
+                          defaultValue={values.durationType}
+                          components={{
+                            IndicatorSeparator: () => (
+                              <div style={{ display: "none" }}></div>
+                            ),
+                            DropdownIndicator: () => (
+                              <div>
+                                <IoIosArrowDown size="15px" color="#646668" />
+                              </div>
+                            ),
+                          }}
+                          onChange={(selectedOption) =>
+                            handleSelectChange(selectedOption, {
+                              name: "durationType",
+                            })
+                          }
+                        />
+                      </Box>
+                      <Flex align="center" gap="16px">
+                        <Box>
+                          <Text
+                            color="#444648"
+                            fontSize="10px"
+                            fontWeight={500}
+                            mb="8px"
+                            lineHeight="100%"
+                          >
+                            Duration Start (Minutes)
+                          </Text>
+                          <CustomInput
+                            auth
+                            mb
+                            isDisabled={edit ? false : true}
+                            value={values.durationStart}
+                            onChange={(e) =>
+                              setValues({
+                                ...values,
+                                durationStart: e.target.value,
+                              })
+                            }
+                          />
+                        </Box>
+
+                        <Box>
+                          <Text
+                            color="#444648"
+                            fontSize="10px"
+                            fontWeight={500}
+                            mb="8px"
+                            lineHeight="100%"
+                          >
+                            Duration Limit (Minutes)
+                          </Text>
+                          <CustomInput
+                            auth
+                            mb
+                            isDisabled={edit ? false : true}
+                            value={values.durationLimit}
+                            onChange={(e) =>
+                              setValues({
+                                ...values,
+                                durationLimit: e.target.value,
+                              })
+                            }
+                          />
+                        </Box>
+                      </Flex>
                     </Box>
                   )}
+
+                  <Box mt="16px">
+                    <Text
+                      color="#444648"
+                      fontSize="10px"
+                      fontWeight={500}
+                      mb="8px"
+                      lineHeight="100%"
+                    >
+                      Zones
+                    </Text>
+                    <Select
+                      styles={customStyles}
+                      isDisabled={edit ? false : true}
+                      isMulti
+                      value={values.zones}
+                      options={zoneOptions}
+                      components={{
+                        IndicatorSeparator: () => (
+                          <div style={{ display: "none" }}></div>
+                        ),
+                        DropdownIndicator: () => (
+                          <div>
+                            <IoIosArrowDown size="15px" color="#646668" />
+                          </div>
+                        ),
+                      }}
+                      onChange={(selectedOption) =>
+                        handleSelectChange(selectedOption, {
+                          name: "zones",
+                        })
+                      }
+                    />
+                  </Box>
                 </Box>
 
                 <Flex mt="24px" align="center" w="full" gap="24px">
@@ -545,7 +538,7 @@ const ZoneDetails = () => {
       </Flex>
 
       <ConfirmDeleteModal
-        title="Zone"
+        title="Rate"
         action={handleDelete}
         isLoading={isDeleting}
         isOpen={showDelete}
@@ -555,4 +548,4 @@ const ZoneDetails = () => {
   );
 };
 
-export default ZoneDetails;
+export default RateDetails;

@@ -29,6 +29,7 @@ import {
 import { FcCancel } from "react-icons/fc";
 import { BsTrash } from "react-icons/bs";
 import { AiOutlineEdit } from "react-icons/ai";
+import { TbListDetails } from "react-icons/tb";
 
 export const sidebarItems = [
   {
@@ -847,6 +848,8 @@ export const carServiceDesc = [
   "Car Tow",
 ];
 
+export const DurationTypes = ["MINUTE", "HOUR", "DAY", "MONTH", "YEAR"];
+
 export const RateTypes = ["ADHOC", "COMPLEMENTARY", "SUBSCRIPTION", "EVENT"];
 
 export const BillingTypes = ["ADHOC", "COMPLEMENTARY", "SUBSCRIPTION", "EVENT"];
@@ -924,6 +927,36 @@ export const eventOption = [
   },
   {
     name: "Delete Event",
+    icon: BsTrash,
+  },
+];
+
+export const rateOption = [
+  {
+    name: "View Rate",
+    icon: TbListDetails,
+  },
+  {
+    name: "Edit Rate",
+    icon: AiOutlineEdit,
+  },
+  {
+    name: "Delete Rate",
+    icon: BsTrash,
+  },
+];
+
+export const zoneOption = [
+  {
+    name: "View Zone",
+    icon: TbListDetails,
+  },
+  {
+    name: "Edit Zone",
+    icon: AiOutlineEdit,
+  },
+  {
+    name: "Delete Zone",
     icon: BsTrash,
   },
 ];
@@ -1007,9 +1040,9 @@ export const operatorDahboard = [
 export const clientDahboard = [
   {
     title: "Subscriptions",
-    opt: "In Service",
+    opt: "Inactive",
     color: "#EE383A",
-    secOpt: "Completed",
+    secOpt: "Active",
     img: "/assets/subs.jpg",
   },
   {

@@ -129,22 +129,24 @@ const AddLocation = () => {
   return (
     <Box minH="75vh">
       <Flex align="flex-start">
-        <Flex
-          onClick={() => navigate(-1)}
-          color="#242628"
-          align="center"
-          cursor="pointer"
-          mb="23px"
-          w="fit-content"
-          pos="sticky"
-          top="7rem"
-          gap="8px"
-        >
-          <HiOutlineArrowNarrowLeft size="24px" color="#242628" />
-          <Text fontSize="14px" fontWeight={500} lineHeight="100%">
-            Back
-          </Text>
-        </Flex>
+        <Box w="full">
+          <Flex
+            onClick={() => navigate(-1)}
+            color="#242628"
+            align="center"
+            cursor="pointer"
+            mb="23px"
+            w="fit-content"
+            pos="sticky"
+            top="7rem"
+            gap="8px"
+          >
+            <HiOutlineArrowNarrowLeft size="24px" color="#242628" />
+            <Text fontSize="14px" fontWeight={500} lineHeight="100%">
+              Back
+            </Text>
+          </Flex>
+        </Box>
 
         <Flex justifyContent="center" align="center" w="full" flexDir="column">
           <Flex
@@ -453,6 +455,7 @@ const AddLocation = () => {
             </Box>
           </Flex>
         </Flex>
+        <Box w="full"></Box>
       </Flex>
     </Box>
   );

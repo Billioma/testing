@@ -77,7 +77,7 @@ export const formatDateTime = (date, fallback = "") => {
 const generateTimeArray = () => {
   const times = [];
   for (let hour = 0; hour < 24; hour++) {
-    for (let minute = 0; minute < 60; minute += 30) {
+    for (let minute = 0; minute < 60; minute += 15) {
       const isPM = hour >= 12;
       const hourFormatted = (hour % 12 || 12).toString().padStart(2, "0");
       const minuteFormatted = minute.toString().padStart(2, "0");

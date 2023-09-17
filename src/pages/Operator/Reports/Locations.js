@@ -12,9 +12,11 @@ import {
 import LocationTableLayer from "../../../components/data/Operator/Reports/LocationTableLayer";
 import { PiExportLight } from "react-icons/pi";
 import { useGetRepLocation } from "../../../services/operator/query/reports";
+import { useExpLoc } from "../../../services/operator/query/exports";
 
 const Locations = () => {
   const { mutate, data, isLoading } = useGetRepLocation();
+  const { mutate: exportMutate, isLoading: isExport } = useExpLoc();
 
   const [page, setPage] = useState(0);
   const limit = 10;
@@ -83,10 +85,11 @@ const Locations = () => {
 
           <Flex align="center" gap="24px">
             <Button
-              // onClick={() => navigate("/operator/locations/all/create")}
+              onClick={exportMutate}
               display="flex"
               bg="#000"
               _hover={{ bg: "#000" }}
+              isLoading={isExport}
               borderRadius="8px"
               _active={{ bg: "#000" }}
               _focus={{ bg: "#000" }}
@@ -94,7 +97,9 @@ const Locations = () => {
               fontSize=""
             >
               <PiExportLight size="20px" />
-              <Text fontSize="12px">Export Data</Text>
+              <Text fontSize="12px">
+                {isExport ? "Exporting" : "Export"} Data
+              </Text>
             </Button>
             <Flex
               justifyContent="center"

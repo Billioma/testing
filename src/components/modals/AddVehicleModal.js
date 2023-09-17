@@ -17,14 +17,7 @@ import { useCreateVehicles } from "../../services/customer/query/vehicles";
 import useCustomToast from "../../utils/notifications";
 import ConfirmVehicleModal from "./ConfirmVehicleModal";
 
-const AddVehicleModal = ({
-  isOpen,
-  refetch,
-  states,
-  makes,
-  models,
-  onClose,
-}) => {
+const AddVehicleModal = ({ isOpen, refetch, makes, models, onClose }) => {
   const [values, setValues] = useState({
     state: "",
     plate: "",

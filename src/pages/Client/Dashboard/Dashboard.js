@@ -9,10 +9,16 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { clientDahboard } from "../../../components/common/constants";
-import { useGetUserCount } from "../../../services/client/query/dashboard";
+import {
+  useGetUserCount,
+  useGetSubCount,
+  useGetEventCount,
+} from "../../../services/client/query/dashboard";
 
 const Dashboard = () => {
   const { data: usersCount, isLoading: isUser } = useGetUserCount();
+  const { data: subCount, isLoading: isSub } = useGetSubCount();
+  const { data: eventCount, isLoading: isEvent } = useGetEventCount();
 
   return (
     <Box minH="75vh">
@@ -27,7 +33,12 @@ const Dashboard = () => {
       >
         {clientDahboard?.map((dat, i) => (
           <GridItem key={i}>
-            <Skeleton isLoaded={!isUser} h="12rem">
+            <Skeleton
+              isLoaded={
+                i === 0 ? !isUser : i === 1 ? !isSub : i === 2 && !isEvent
+              }
+              h="12rem"
+            >
               <Box
                 borderRadius="8px"
                 bg="#F4F6F8"
@@ -69,7 +80,11 @@ const Dashboard = () => {
                         color="#646668"
                         fontWeight={500}
                       >
-                        {i === 1 ? usersCount?.total : 4678}
+                        {i === 0
+                          ? subCount?.total
+                          : i === 1
+                          ? usersCount?.total
+                          : i === 2 && eventCount?.total}
                       </Text>
                     </Box>
 
@@ -93,7 +108,11 @@ const Dashboard = () => {
                           lineHeight="100%"
                           fontWeight={500}
                         >
-                          {i === 1 ? usersCount?.inactive : 0}
+                          {i === 0
+                            ? subCount?.inactive
+                            : i === 1
+                            ? usersCount?.inactive
+                            : i === 2 && eventCount?.active}
                         </Text>
                       </Flex>
 
@@ -111,7 +130,11 @@ const Dashboard = () => {
                           lineHeight="100%"
                           fontWeight={500}
                         >
-                          {i === 1 ? usersCount?.active : 0}
+                          {i === 0
+                            ? subCount?.active
+                            : i === 1
+                            ? usersCount?.active
+                            : i === 2 && eventCount?.inactive}
                         </Text>
                       </Flex>
                     </Flex>

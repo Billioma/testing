@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
-  Button,
   Flex,
+  Icon,
   Table,
   TableContainer,
   Tbody,
@@ -13,7 +13,7 @@ import {
   Tr,
 } from "@chakra-ui/react";
 import TableLoader from "../../../../loaders/TableLoader";
-import { operatorRatesHeader } from "../../../../common/constants";
+import { operatorRatesHeader, rateOption } from "../../../../common/constants";
 import NoData from "../../../../common/NoData";
 import { formatDateTimes } from "../../../../../utils/helpers";
 import {
@@ -24,9 +24,7 @@ import {
 import ConfirmDeleteModal from "../../../../modals/ConfirmDeleteModal";
 import useCustomToast from "../../../../../utils/notifications";
 import { useNavigate } from "react-router-dom";
-import { AiOutlineEdit } from "react-icons/ai";
-import { BsTrash } from "react-icons/bs";
-import { useDeleteLocation } from "../../../../../services/operator/query/locations";
+import { useDeleteRate } from "../../../../../services/operator/query/locations";
 
 const TableLayer = ({
   isLoading,
@@ -36,22 +34,38 @@ const TableLayer = ({
   page,
   locationMutate,
 }) => {
+  const [show, setShow] = useState(false);
   const [showDelete, setShowDelete] = useState(false);
   const [currentLocation, setCurrentLocation] = useState("");
 
   const open = (item) => {
-    setShowDelete(true);
+    setShow(true);
     setCurrentLocation(item);
+  };
+
+  useEffect(() => {
+    if (showDelete) {
+      setShow(false);
+    }
+  }, [showDelete]);
+
+  const openOption = (i) => {
+    i === 0
+      ? navigate(`/operator/locations/rates/${currentLocation?.id}`)
+      : i === 1
+      ? (navigate(`/operator/locations/rates/${currentLocation?.id}`),
+        sessionStorage.setItem("edit", "edit"))
+      : i === 2 && setShowDelete(true);
   };
 
   const { errorToast, successToast } = useCustomToast();
   const navigate = useNavigate();
 
-  const { mutate: deleteMutate, isLoading: isDeleting } = useDeleteLocation({
+  const { mutate: deleteMutate, isLoading: isDeleting } = useDeleteRate({
     onSuccess: (res) => {
       locationMutate({ limit: 10, page: 1 });
       successToast(res?.message);
-      navigate("/operator/locations/all");
+      navigate("/operator/locations/rates");
       setShowDelete(false);
       sessionStorage.removeItem("edit");
     },
@@ -66,6 +80,19 @@ const TableLayer = ({
     deleteMutate(currentLocation?.id);
   };
 
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (event.target.closest(".box") === null) {
+        setShow(false);
+      }
+    };
+
+    document.addEventListener("click", handleClickOutside);
+    return () => {
+      document.removeEventListener("click", handleClickOutside);
+    };
+  }, []);
+
   return (
     <Box mt="16px">
       <TableContainer maxH="60vh" minH="40vh" overflowY="scroll">
@@ -77,20 +104,16 @@ const TableLayer = ({
               <Tr>
                 {operatorRatesHeader?.map((data, i) => (
                   <Th
-                    textAlign={
-                      i === 2 || i === 3 || i === 4 || i === 5 || i === 6
-                        ? "center"
-                        : "start"
-                    }
+                    textAlign={i === 0 || i === 1 ? "start" : "center"}
                     key={i}
+                    whiteSpace="pre-wrap"
                     pos="sticky"
                     top="0"
-                    whiteSpace="pre-wrap"
                     bg="#F4F6F8"
                     fontFamily="Sailec"
                     zIndex="2"
                     color="#949698"
-                    lineHeight="130%"
+                    lineHeight="100%"
                     fontWeight={500}
                   >
                     {data}
@@ -103,7 +126,7 @@ const TableLayer = ({
                 data?.data?.map((item, i) => (
                   <Tr fontSize="12px" fontWeight={500} color="#646668" key={i}>
                     <Td>{item?.name}</Td>
-                    <Td textAlign="center">{item?.durationType}</Td>
+                    <Td>{item?.durationType}</Td>
                     <Td textAlign="center">{item?.durationStart}</Td>
                     <Td textAlign="center">{item?.durationLimit}</Td>
                     <Td textAlign="center">
@@ -118,69 +141,52 @@ const TableLayer = ({
 
                     <Td>
                       <Flex
-                        align="center"
+                        onClick={() => open(item)}
                         justifyContent="center"
+                        pos="relative"
                         cursor="pointer"
+                        className="box"
+                        align="center"
                       >
                         <IoIosArrowDown />
+                        {show && currentLocation === item && (
+                          <Box
+                            border="1px solid #F4F6F8"
+                            p="10px"
+                            bg="#fff"
+                            borderRadius="4px"
+                            pos="absolute"
+                            top={i < 3 ? "20px" : "unset"}
+                            bottom={i > 3 ? "0" : "unset"}
+                            right="0"
+                            zIndex={5555555}
+                            boxShadow="0px 8px 16px 0px rgba(0, 0, 0, 0.08)"
+                          >
+                            {rateOption.map((item, i) => (
+                              <Flex
+                                key={i}
+                                mb="8px"
+                                py="6px"
+                                px="8px"
+                                w="full"
+                                borderRadius="2px"
+                                align="center"
+                                onClick={() => openOption(i)}
+                                _hover={{ bg: "#F4F6F8" }}
+                                cursor="pointer"
+                                fontSize="10px"
+                                color={i !== 2 ? "#646668" : "#A11212"}
+                                lineHeight="100%"
+                                gap="12px"
+                                fontWeight={500}
+                              >
+                                <Icon as={item.icon} w="16px" h="16px" />
+                                {item?.name}
+                              </Flex>
+                            ))}
+                          </Box>
+                        )}
                       </Flex>
-                      {/* <Flex gap="20px" align="center" justifyContent="center">
-                        <Text
-                          textDecor="underline"
-                          color="#646668"
-                          fontWeight={500}
-                          lineHeight="100%"
-                          fontSize="12px"
-                          onClick={() =>
-                            navigate(`/operator/zone-details/${item?.id}`)
-                          }
-                          cursor="pointer"
-                        >
-                          View
-                        </Text>
-                        <Button
-                          bg="transparent"
-                          border="1px solid #848688"
-                          color="#848688"
-                          fontWeight={500}
-                          lineHeight="100%"
-                          fontSize="12px"
-                          _hover={{ bg: "transparent" }}
-                          _active={{ bg: "transparent" }}
-                          _focus={{ bg: "transparent" }}
-                          display="flex"
-                          onClick={() => (
-                            navigate(`/operator/locations/all/${item?.id}`),
-                            sessionStorage.setItem("edit", "edit")
-                          )}
-                          px="16px"
-                          py="8px"
-                          align="center"
-                          gap="8px"
-                        >
-                          <AiOutlineEdit size="16px" color="#848688" />
-                          Edit
-                        </Button>
-                        <Button
-                          bg="#A11212"
-                          _hover={{ bg: "#A11212" }}
-                          _active={{ bg: "#A11212" }}
-                          _focus={{ bg: "#A11212" }}
-                          color="#fff"
-                          fontWeight={500}
-                          onClick={() => open(item)}
-                          lineHeight="100%"
-                          px="16px"
-                          py="8px"
-                          fontSize="12px"
-                          display="flex"
-                          align="center"
-                          gap="8px"
-                        >
-                          <BsTrash size="16px" color="#fff" />
-                          Delete
-                        </Button>
-                      </Flex> */}
                     </Td>
                   </Tr>
                 ))
@@ -275,7 +281,7 @@ const TableLayer = ({
       </Flex>
 
       <ConfirmDeleteModal
-        title="Location"
+        title="rate"
         action={handleDelete}
         isLoading={isDeleting}
         isOpen={showDelete}

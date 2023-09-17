@@ -61,8 +61,8 @@ export const PRIVATE_PATHS = {
   CLIENT_LOGS_VALET_DETAILS: "/client/logs/valet-park/details",
   CLIENT_TRAN: "/client/transactions",
   CLIENT_TRAN_DETAILS: "/client/transaction-details",
-  CLIENT_ADD_EVENT: "/client/add-event",
-  CLIENT_EDIT_EVENT: "/client/edit-event/:id",
+  CLIENT_ADD_EVENT: "/client/events/create",
+  CLIENT_EDIT_EVENT: "/client/events/:id",
   CLIENT_ADD_SUB: "/client/add-subscription",
   CLIENT_VIEW_SUB: "/client/view-subscriptions",
 
@@ -75,10 +75,12 @@ export const PRIVATE_PATHS = {
   OP_LOCATION_DETAILS: "/operator/locations/all/:id",
   OP_ADD_LOCATION: "/operator/locations/all/create",
   OP_ZONES: "/operator/locations/zones",
-  OP_ZONE_DETAILS: "/operator/zone-details/:id",
-  OP_ADD_ZONE: "/operator/zones/create",
+  OP_ZONE_DETAILS: "/operator/locations/zones/:id",
+  OP_ADD_ZONE: "/operator/locations/zones/create",
   OP_ADD_POLICY: "/operator/locations/policies/create",
   OP_RATES: "/operator/locations/rates",
+  OP_ADD_RATE: "/operator/locations/rates/create",
+  OP_RATE_DETAILS: "/operator/locations/rates/:id",
   OP_POLICIES: "/operator/locations/policies",
   OP_POLICY_DETAILS: "/operator/locations/policies/:id",
   OP_VALETED: "/operator/logs/valeted-vehicles",
@@ -91,6 +93,7 @@ export const PRIVATE_PATHS = {
   OP_REP_LOCATIONS: "/operator/reports/locations",
   OP_REP_ZONES: "/operator/reports/zones",
   OP_REP_LOGS: "/operator/reports/logs",
+  OP_PROFILE: "/operator/profile",
 
   // ADMIN ROUTES
   ADMIN_DASHBOARD: "/admin/dashboard",

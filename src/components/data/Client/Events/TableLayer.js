@@ -61,7 +61,7 @@ const TableLayer = ({ isLoading, limit, data, setPage, page, eventMutate }) => {
 
   const openOption = (i) => {
     i === 0
-      ? navigate(`/client/edit-event/${currentEvent?.id}`)
+      ? navigate(`/client/events/${currentEvent?.id}`)
       : i === 1
       ? setShowDelete(true)
       : "";

@@ -36,7 +36,7 @@ const Zones = () => {
 
           <Flex align="center" gap="24px">
             <Button
-              // onClick={() => navigate("/operator/locations/all/create")}
+              onClick={() => navigate("/operator/locations/zones/create")}
               display="flex"
               bg="#000"
               _hover={{ bg: "#000" }}

@@ -1,5 +1,11 @@
 export const LOGIN = "auth/login";
 export const RESET_PASSWORD = "auth/password-reset";
+export const UPDATE_OPERATOR = "/operator/update-profile";
+export const UPDATE_PASS = "/operator/update-password";
+export const EXP_LOC = () => `operator/reports/locations/export/?&sort=id,DESC`;
+export const EXP_ZONE = () => `operator/reports/zones/export/?&sort=id,DESC`;
+export const EXP_LOG = () => `operator/reports/parking/export/?&sort=id,DESC`;
+export const EXP_PAY = () => `operator/reports/payments/export/?&sort=id,DESC`;
 export const CHANGE_PASSWORD = (id = "", hash = "") =>
   `auth/update-password/${id}/${hash}`;
 export const METRICS = "operator/dashboard/metrics";
@@ -38,6 +44,7 @@ export const UPDATE_ZONE = (id = "") => `operator/zones/${id}`;
 export const UPDATE_POLICY = (id = "") => `operator/policies/${id}`;
 export const UPDATE_RATE = (id = "") => `operator/rates/${id}`;
 export const GET_LOCATION = "operator/locations";
+export const GET_OP_LOCATION = "operator/locations";
 export const GET_ZONE = "operator/zones";
 export const GET_POLICY = "operator/policies";
 export const GET_RATE = "operator/rates";

@@ -30,6 +30,11 @@ export const getLocation = async (query) => {
   return res.data;
 };
 
+export const getOperatorLocation = async () => {
+  const res = await axiosInstance.get(API.GET_OP_LOCATION);
+  return res.data;
+};
+
 export const getZone = async (query) => {
   const res = await axiosInstance.get(API.UPDATE_ZONE(query.id));
   return res.data;

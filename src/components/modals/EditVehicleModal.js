@@ -19,7 +19,6 @@ import useCustomToast from "../../utils/notifications";
 const EditVehicleModal = ({
   isOpen,
   refetch,
-  states,
   dataa,
   makes,
   models,

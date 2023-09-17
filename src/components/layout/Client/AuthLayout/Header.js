@@ -28,10 +28,13 @@ const Header = () => {
       case locationRoute.includes("user"):
         return setTitle("Users");
 
+      case locationRoute.includes("profile"):
+        return setTitle("Profile");
+
       case locationRoute.includes("subscription"):
         return setTitle("Subscription");
 
-      case locationRoute.includes("event"):
+      case locationRoute.includes("events"):
         return setTitle("Events");
 
       case locationRoute.includes("logs"):
@@ -50,9 +53,6 @@ const Header = () => {
       case locationRoute.includes("add-sub"):
         return setSecTitle("Add Subscription");
 
-      case locationRoute.includes("edit-event"):
-        return setSecTitle("Edit Event");
-
       case locationRoute.includes("details"):
         return setFinTitle("Log Details");
 
@@ -65,8 +65,11 @@ const Header = () => {
       case locationRoute.includes("transaction"):
         return setSecTitle("Pay-To-Park");
 
-      case locationRoute.includes("add-event"):
+      case locationRoute.includes("events/create"):
         return setSecTitle("Add Event");
+
+      case locationRoute.includes("events/"):
+        return setSecTitle("Edit Event");
 
       case locationRoute.includes("add-user"):
         return setSecTitle("Add User");

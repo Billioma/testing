@@ -7,38 +7,50 @@ import CustomInput from "../../../../components/common/CustomInput";
 import { IoIosArrowDown } from "react-icons/io";
 import useCustomToast from "../../../../utils/notifications";
 import {
-  useGetAmenities,
-  useCreateZone,
+  useCreateRate,
   useGetOpLocation,
 } from "../../../../services/operator/query/locations";
 import { Form, Formik } from "formik";
 import {
-  initZoneValues,
-  validateZoneSchema,
-  validateZoneSpaceSchema,
+  initRateValues,
+  validateRateSchema,
+  validateRateLimitSchema,
 } from "../../../../utils/validation";
 import { useGetServices } from "../../../../services/customer/query/locations";
+import {
+  DurationTypes,
+  RateTypes,
+} from "../../../../components/common/constants";
 
-const AddZone = () => {
+const AddRate = () => {
   const navigate = useNavigate();
-  const { data: amenities } = useGetAmenities();
   const { data: locations } = useGetOpLocation();
   const { data: services } = useGetServices();
 
   const serviceOptions = services?.map((service) => ({
-    value: service?.id,
+    value: service?.serviceType,
     label: service?.name,
+    id: service?.id,
   }));
 
-  const locationOptions = locations?.data?.map((location) => ({
-    value: location?.id,
-    label: location?.name,
+  const durationOptions = DurationTypes?.map((duration) => ({
+    value: duration,
+    label: duration,
   }));
 
-  const amenitiesOptions = amenities?.map((amenity) => ({
-    value: amenity?.id,
-    label: amenity?.name,
+  const rateOptions = RateTypes?.map((rate, i) => ({
+    value: i,
+    label: rate,
   }));
+
+  const zoneOptions = locations?.data?.reduce((acc, location) => {
+    const zones =
+      location?.zones?.map((zone) => ({
+        value: zone?.id,
+        label: zone?.name,
+      })) || [];
+    return acc.concat(zones);
+  }, []);
 
   const customStyles = {
     control: (provided) => ({
@@ -66,10 +78,10 @@ const AddZone = () => {
 
   const { errorToast, successToast } = useCustomToast();
 
-  const { mutate: createMutate, isLoading: isCreating } = useCreateZone({
+  const { mutate: createMutate, isLoading: isCreating } = useCreateRate({
     onSuccess: (res) => {
       successToast(res?.message);
-      navigate("/operator/locations/zones");
+      navigate("/operator/locations/rates");
       sessionStorage.removeItem("edit");
     },
     onError: (err) => {
@@ -80,26 +92,38 @@ const AddZone = () => {
   });
 
   const handleSubmit = (values = "") => {
-    const { location, service, amenities, reservableSpace, ...rest } = values;
-    reservable
+    const {
+      rateType,
+      durationStart,
+      durationLimit,
+      durationType,
+      serviceType,
+      zones,
+      ...rest
+    } = values;
+    limit
       ? createMutate({
           ...rest,
-          amenities: amenities?.map((dat) => Number(dat?.value)),
-          service: Number(service?.value),
-          location: Number(location?.value),
-          reservable: reservable ? 1 : 0,
-          reservableSpace: reservableSpace,
+          zones: zones?.map((dat) => Number(dat?.value)),
+          serviceType: serviceType?.value,
+          durationType: durationType?.value,
+          rateType: Number(rateType?.value),
+          noLimit: 1,
+          durationLimit: durationLimit,
+          durationStart: durationStart,
+          service: Number(serviceType?.id),
         })
       : createMutate({
           ...rest,
-          amenities: amenities?.map((dat) => Number(dat?.value)),
-          service: Number(service?.value),
-          location: Number(location?.value),
-          reservable: reservable ? 1 : 0,
+          zones: zones?.map((dat) => Number(dat?.value)),
+          serviceType: serviceType?.value,
+          rateType: Number(rateType?.value),
+          service: Number(serviceType?.id),
+          noLimit: 0,
         });
   };
 
-  const [reservable, setReservable] = useState(false);
+  const [limit, setLimit] = useState(false);
 
   return (
     <Box minH="75vh">
@@ -138,9 +162,9 @@ const AddZone = () => {
             <Box mt="24px" w="full">
               <Formik
                 onSubmit={handleSubmit}
-                initialValues={initZoneValues}
+                initialValues={initRateValues}
                 validationSchema={
-                  reservable ? validateZoneSpaceSchema : validateZoneSchema
+                  limit ? validateRateLimitSchema : validateRateSchema
                 }
               >
                 {({
@@ -163,7 +187,7 @@ const AddZone = () => {
                         mb="8px"
                         lineHeight="100%"
                       >
-                        Zone Name
+                        Name
                       </Text>
                       <CustomInput
                         name="name"
@@ -171,144 +195,11 @@ const AddZone = () => {
                         onChange={handleChange}
                         onBlur={handleBlur}
                         error={errors?.name && touched?.name && errors?.name}
-                        holder="Enter Zone Name"
+                        holder="Enter Name"
                       />
                     </Box>
 
                     <Box my="16px">
-                      <Text
-                        color="#444648"
-                        fontSize="10px"
-                        fontWeight={500}
-                        mb="8px"
-                        lineHeight="100%"
-                      >
-                        Zone Description
-                      </Text>
-                      <CustomInput
-                        name="description"
-                        value={values?.description}
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        error={
-                          errors?.description &&
-                          touched?.description &&
-                          errors?.description
-                        }
-                        holder="Zone Description"
-                      />
-                    </Box>
-
-                    <Box>
-                      <Text
-                        color="#444648"
-                        fontSize="10px"
-                        fontWeight={500}
-                        mb="8px"
-                        lineHeight="100%"
-                      >
-                        Zone Capacity
-                      </Text>
-                      <CustomInput
-                        name="capacity"
-                        value={values?.capacity}
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        type="number"
-                        error={
-                          errors?.capacity &&
-                          touched?.capacity &&
-                          errors?.capacity
-                        }
-                        holder="Enter a number"
-                      />
-                    </Box>
-
-                    <Box my="16px">
-                      <Text
-                        color="#444648"
-                        fontSize="10px"
-                        fontWeight={500}
-                        mb="8px"
-                        lineHeight="100%"
-                      >
-                        GeoLocation
-                      </Text>
-                      <CustomInput
-                        name="geoLocation"
-                        value={values?.geoLocation}
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        error={
-                          errors?.geoLocation &&
-                          touched?.geoLocation &&
-                          errors?.geoLocation
-                        }
-                        holder="Enter Geolocation"
-                      />
-                    </Box>
-
-                    <Box>
-                      <Text
-                        color="#444648"
-                        fontSize="10px"
-                        fontWeight={500}
-                        mb="8px"
-                        lineHeight="100%"
-                      >
-                        Select Location
-                      </Text>
-                      <Select
-                        styles={customStyles}
-                        value={values.location}
-                        options={locationOptions}
-                        components={{
-                          IndicatorSeparator: () => (
-                            <div style={{ display: "none" }}></div>
-                          ),
-                          DropdownIndicator: () => (
-                            <div>
-                              <IoIosArrowDown size="15px" color="#646668" />
-                            </div>
-                          ),
-                        }}
-                        name="location"
-                        onChange={(selectedOption) =>
-                          setValues({
-                            ...values,
-                            location: selectedOption,
-                          })
-                        }
-                        onBlur={handleBlur}
-                      />
-                    </Box>
-
-                    <Box my="16px">
-                      <Text
-                        color="#444648"
-                        fontSize="10px"
-                        fontWeight={500}
-                        mb="8px"
-                        lineHeight="100%"
-                      >
-                        Minimum Duration (In Minutes)
-                      </Text>
-                      <CustomInput
-                        name="minimumDuration"
-                        value={values?.minimumDuration}
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        type="number"
-                        error={
-                          errors?.minimumDuration &&
-                          touched?.minimumDuration &&
-                          errors?.minimumDuration
-                        }
-                        holder="Enter a number"
-                      />
-                    </Box>
-
-                    <Box>
                       <Text
                         color="#444648"
                         fontSize="10px"
@@ -320,9 +211,8 @@ const AddZone = () => {
                       </Text>
                       <Select
                         styles={customStyles}
+                        value={values.serviceType}
                         options={serviceOptions}
-                        value={values.service}
-                        defaultValue={values.service}
                         components={{
                           IndicatorSeparator: () => (
                             <div style={{ display: "none" }}></div>
@@ -333,11 +223,46 @@ const AddZone = () => {
                             </div>
                           ),
                         }}
-                        name="service"
+                        name="serviceType"
                         onChange={(selectedOption) =>
                           setValues({
                             ...values,
-                            service: selectedOption,
+                            serviceType: selectedOption,
+                          })
+                        }
+                        onBlur={handleBlur}
+                      />
+                    </Box>
+
+                    <Box>
+                      <Text
+                        color="#444648"
+                        fontSize="10px"
+                        fontWeight={500}
+                        mb="8px"
+                        lineHeight="100%"
+                      >
+                        Select Rate Type
+                      </Text>
+                      <Select
+                        styles={customStyles}
+                        value={values.rateType}
+                        options={rateOptions}
+                        components={{
+                          IndicatorSeparator: () => (
+                            <div style={{ display: "none" }}></div>
+                          ),
+                          DropdownIndicator: () => (
+                            <div>
+                              <IoIosArrowDown size="15px" color="#646668" />
+                            </div>
+                          ),
+                        }}
+                        name="rateType"
+                        onChange={(selectedOption) =>
+                          setValues({
+                            ...values,
+                            rateType: selectedOption,
                           })
                         }
                         onBlur={handleBlur}
@@ -352,31 +277,18 @@ const AddZone = () => {
                         mb="8px"
                         lineHeight="100%"
                       >
-                        Assign Amenities
+                        Enter Amount
                       </Text>
-                      <Select
-                        styles={customStyles}
-                        isMulti
-                        value={values.amenities}
-                        options={amenitiesOptions}
-                        components={{
-                          IndicatorSeparator: () => (
-                            <div style={{ display: "none" }}></div>
-                          ),
-                          DropdownIndicator: () => (
-                            <div>
-                              <IoIosArrowDown size="15px" color="#646668" />
-                            </div>
-                          ),
-                        }}
-                        name="amenities"
-                        onChange={(selectedOption) =>
-                          setValues({
-                            ...values,
-                            amenities: selectedOption,
-                          })
-                        }
+                      <CustomInput
+                        name="amount"
+                        value={values?.amount}
+                        onChange={handleChange}
+                        type="number"
                         onBlur={handleBlur}
+                        error={
+                          errors?.amount && touched?.amount && errors?.amount
+                        }
+                        holder="Enter Amount"
                       />
                     </Box>
 
@@ -391,40 +303,142 @@ const AddZone = () => {
                         mb="8px"
                         lineHeight="100%"
                       >
-                        Add Reservable Space
+                        Add Limit
                       </Text>
                       <Switch
                         size="sm"
-                        value={reservable}
-                        onChange={() => setReservable((prev) => !prev)}
+                        value={limit}
+                        onChange={() => setLimit((prev) => !prev)}
                       />
                     </Flex>
 
-                    {reservable && (
-                      <Box my="16px">
-                        <Text
-                          color="#444648"
-                          fontSize="10px"
-                          fontWeight={500}
-                          mb="8px"
-                          lineHeight="100%"
-                        >
-                          Enter Reservable Space
-                        </Text>
-                        <CustomInput
-                          name="reservableSpace"
-                          value={values?.reservableSpace}
-                          onChange={handleChange}
-                          onBlur={handleBlur}
-                          error={
-                            errors?.reservableSpace &&
-                            touched?.reservableSpace &&
-                            errors?.reservableSpace
-                          }
-                          holder="Enter a number"
-                        />
+                    {limit && (
+                      <Box>
+                        <Box my="16px">
+                          <Text
+                            color="#444648"
+                            fontSize="10px"
+                            fontWeight={500}
+                            mb="8px"
+                            lineHeight="100%"
+                          >
+                            Select Duration Type
+                          </Text>
+                          <Select
+                            styles={customStyles}
+                            value={values.durationType}
+                            options={durationOptions}
+                            components={{
+                              IndicatorSeparator: () => (
+                                <div style={{ display: "none" }}></div>
+                              ),
+                              DropdownIndicator: () => (
+                                <div>
+                                  <IoIosArrowDown size="15px" color="#646668" />
+                                </div>
+                              ),
+                            }}
+                            name="durationType"
+                            onChange={(selectedOption) =>
+                              setValues({
+                                ...values,
+                                durationType: selectedOption,
+                              })
+                            }
+                            onBlur={handleBlur}
+                          />
+                        </Box>
+
+                        <Flex align="center" gap="16px">
+                          <Box>
+                            <Text
+                              color="#444648"
+                              fontSize="10px"
+                              fontWeight={500}
+                              mb="8px"
+                              lineHeight="100%"
+                            >
+                              Duration Start (Minutes)
+                            </Text>
+                            <CustomInput
+                              name="durationStart"
+                              type="number"
+                              value={values?.durationStart}
+                              onChange={handleChange}
+                              onBlur={handleBlur}
+                              error={
+                                errors?.durationStart &&
+                                touched?.durationStart &&
+                                errors?.durationStart
+                              }
+                              holder="Enter a number"
+                            />
+                          </Box>
+
+                          <Box>
+                            <Text
+                              color="#444648"
+                              fontSize="10px"
+                              fontWeight={500}
+                              mb="8px"
+                              lineHeight="100%"
+                            >
+                              Duration Limit (Minutes)
+                            </Text>
+                            <CustomInput
+                              name="durationLimit"
+                              type="number"
+                              value={values?.durationLimit}
+                              onChange={handleChange}
+                              onBlur={handleBlur}
+                              error={
+                                errors?.durationLimit &&
+                                touched?.durationLimit &&
+                                errors?.durationLimit
+                              }
+                              holder="Enter a number"
+                            />
+                          </Box>
+                        </Flex>
                       </Box>
                     )}
+
+                    <Box mt="16px">
+                      <Text
+                        color="#444648"
+                        fontSize="10px"
+                        fontWeight={500}
+                        mb="8px"
+                        lineHeight="100%"
+                      >
+                        Assign Zones
+                      </Text>
+                      <Select
+                        styles={customStyles}
+                        isMulti
+                        value={values.zones}
+                        options={zoneOptions}
+                        components={{
+                          IndicatorSeparator: () => (
+                            <div style={{ display: "none" }}></div>
+                          ),
+                          DropdownIndicator: () => (
+                            <div>
+                              <IoIosArrowDown size="15px" color="#646668" />
+                            </div>
+                          ),
+                        }}
+                        name="zones"
+                        onChange={(selectedOption) =>
+                          setValues({
+                            ...values,
+                            zones: selectedOption,
+                          })
+                        }
+                        onBlur={handleBlur}
+                      />
+                    </Box>
+
                     <Flex mt="24px" align="center" w="full" gap="24px">
                       <Button
                         bg="transparent"
@@ -448,9 +462,7 @@ const AddZone = () => {
                         lineHeight="100%"
                         isLoading={isCreating}
                         w="full"
-                        isDisabled={
-                          !isValid || !dirty || !values.amenities.length
-                        }
+                        isDisabled={!isValid || !dirty || !values.zones.length}
                         fontSize="12px"
                         type="submit"
                         px="26px"
@@ -471,4 +483,4 @@ const AddZone = () => {
   );
 };
 
-export default AddZone;
+export default AddRate;

@@ -32,6 +32,9 @@ const Header = () => {
       case locationRoute.includes("user"):
         return setTitle("Users");
 
+      case locationRoute.includes("profile"):
+        return setTitle("Profile");
+
       case locationRoute.includes("reports"):
         return setTitle("Reports");
 
@@ -201,7 +204,7 @@ const Header = () => {
                 bg="#fff"
                 className="box"
                 border="1px solid #E4E6E8"
-                onClick={() => navigate("/client/profile")}
+                onClick={() => navigate("/operator/profile")}
                 w="full"
                 borderRadius="8px"
                 align="center"

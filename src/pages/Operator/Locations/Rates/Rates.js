@@ -36,7 +36,7 @@ const Rates = () => {
 
           <Flex align="center" gap="24px">
             <Button
-              // onClick={() => navigate("/operator/locations/all/create")}
+              onClick={() => navigate("/operator/locations/rates/create")}
               display="flex"
               bg="#000"
               _hover={{ bg: "#000" }}

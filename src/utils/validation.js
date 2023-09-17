@@ -2,6 +2,12 @@ import * as Yup from "yup";
 
 export const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{8,})/;
 
+export const initOpPassValues = {
+  currentPassword: "",
+  password: "",
+  passwordConfirmation: "",
+};
+
 export const initValues = {
   username: "",
   password: "",
@@ -24,6 +30,32 @@ export const initLocationValues = {
   status: 1,
 };
 
+export const initZoneValues = {
+  location: "",
+  name: "",
+  description: "",
+  capacity: "",
+  reservable: "",
+  reservableSpace: "",
+  geoLocation: "",
+  minimumDuration: "",
+  status: 1,
+  service: "",
+  amenities: "",
+};
+
+export const initRateValues = {
+  name: "",
+  status: 1,
+  serviceType: "",
+  durationType: "",
+  durationStart: "",
+  durationLimit: "",
+  rateType: "",
+  amount: "",
+  zones: "",
+};
+
 export const validatePolicychema = Yup.object().shape({
   body: Yup.string().required("Body is required"),
   location: Yup.object().required("Location is required"),
@@ -37,6 +69,48 @@ export const validateLocationSchema = Yup.object().shape({
   geoLocation: Yup.string().required("Geo Location is required"),
   locationType: Yup.object().required("Location Type is required"),
   state: Yup.object().required("State is required"),
+});
+
+export const validateZoneSchema = Yup.object().shape({
+  location: Yup.object().required("Zone Location is required"),
+  name: Yup.string().required("Zone Name is required"),
+  description: Yup.string().required("Zone Description is required"),
+  capacity: Yup.string().required("Zone Capacity is required"),
+  geoLocation: Yup.string().required("Geo Location is required"),
+  minimumDuration: Yup.string().required("Minimum Duration is required"),
+  service: Yup.object().required("Service is required"),
+  amenities: Yup.array().required("Amenities is required"),
+});
+
+export const validateRateLimitSchema = Yup.object().shape({
+  name: Yup.string().required("Zone Name is required"),
+  serviceType: Yup.object().required("Service is required"),
+  durationType: Yup.object().required("Duration Type is required"),
+  durationStart: Yup.string().required("Duration Start is required"),
+  durationLimit: Yup.string().required("Duration Limit is required"),
+  rateType: Yup.object().required("Zone Description is required"),
+  amount: Yup.string().required("Zone Capacity is required"),
+  zones: Yup.array().required("Amenities is required"),
+});
+
+export const validateRateSchema = Yup.object().shape({
+  name: Yup.string().required("Zone Name is required"),
+  serviceType: Yup.object().required("Service is required"),
+  rateType: Yup.object().required("Zone Description is required"),
+  amount: Yup.string().required("Zone Capacity is required"),
+  zones: Yup.array().required("Amenities is required"),
+});
+
+export const validateZoneSpaceSchema = Yup.object().shape({
+  location: Yup.object().required("Zone Location is required"),
+  name: Yup.string().required("Zone Name is required"),
+  description: Yup.string().required("Zone Description is required"),
+  capacity: Yup.string().required("Zone Capacity is required"),
+  reservableSpace: Yup.string().required("Reservable Space is required"),
+  geoLocation: Yup.string().required("Geo Location is required"),
+  minimumDuration: Yup.string().required("Minimum Duration is required"),
+  service: Yup.object().required("Service is required"),
+  amenities: Yup.array().required("Amenities is required"),
 });
 
 export const initAttendantValues = {
@@ -106,6 +180,24 @@ export const validateSchema = Yup.object().shape({
       passwordRegex,
       "Minimum of 8 characters, and must contain at least one uppercase, one lowercase and one number"
     ),
+});
+
+export const opPassSchema = Yup.object().shape({
+  currentPassword: Yup.string()
+    .required("Old Password is required")
+    .matches(
+      passwordRegex,
+      "Minimum of 8 characters, and must contain at least one uppercase, one lowercase and one number"
+    ),
+  password: Yup.string()
+    .required("Password is required")
+    .matches(
+      passwordRegex,
+      "Minimum of 8 characters, and must contain at least one uppercase, one lowercase and one number"
+    ),
+  passwordConfirmation: Yup.string()
+    .required("Confirm password is required")
+    .oneOf([Yup.ref("password")], "Passwords do not match"),
 });
 
 export const passSchema = Yup.object().shape({

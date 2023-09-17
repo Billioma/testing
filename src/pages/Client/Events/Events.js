@@ -32,7 +32,7 @@ const Events = () => {
 
           <Flex align="center" gap="24px">
             <Button
-              onClick={() => navigate("/client/add-event")}
+              onClick={() => navigate("/client/events/create")}
               display="flex"
               gap="8px"
               fontSize=""

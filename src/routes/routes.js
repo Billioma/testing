@@ -96,6 +96,9 @@ const {
   OP_REP_LOCATIONS,
   OP_REP_ZONES,
   OP_REP_LOGS,
+  OP_RATE_DETAILS,
+  OP_ADD_RATE,
+  OP_PROFILE,
 
   ADMIN_CUSTOMERS,
   ADMIN_DASHBOARD,
@@ -313,6 +316,12 @@ const OpAddZone = WithSuspense(
 const OpRate = WithSuspense(
   lazy(() => import("../pages/Operator/Locations/Rates/Rates"))
 );
+const OpRateDetails = WithSuspense(
+  lazy(() => import("../pages/Operator/Locations/Rates/RateDetails"))
+);
+const OpAddRate = WithSuspense(
+  lazy(() => import("../pages/Operator/Locations/Rates/AddRate"))
+);
 const OpPolicies = WithSuspense(
   lazy(() => import("../pages/Operator/Locations/Policies/Policies"))
 );
@@ -351,6 +360,9 @@ const OpRepZone = WithSuspense(
 );
 const OpRepLog = WithSuspense(
   lazy(() => import("../pages/Operator/Reports/Logs"))
+);
+const OpProfile = WithSuspense(
+  lazy(() => import("../pages/Operator/Account/Profile"))
 );
 
 // ADMIN PAGES
@@ -530,6 +542,8 @@ export const PRIVATE_ROUTES = [
   { path: OP_LOCATION_DETAILS, element: <OpLocationDetails /> },
   { path: OP_ADD_LOCATION, element: <OpAddLocation /> },
   { path: OP_RATES, element: <OpRate /> },
+  { path: OP_ADD_RATE, element: <OpAddRate /> },
+  { path: OP_RATE_DETAILS, element: <OpRateDetails /> },
   { path: OP_ZONES, element: <OpZone /> },
   { path: OP_ZONE_DETAILS, element: <OpZoneDetails /> },
   { path: OP_ADD_ZONE, element: <OpAddZone /> },
@@ -546,6 +560,7 @@ export const PRIVATE_ROUTES = [
   { path: OP_REP_LOCATIONS, element: <OpRepLocation /> },
   { path: OP_REP_ZONES, element: <OpRepZone /> },
   { path: OP_REP_LOGS, element: <OpRepLog /> },
+  { path: OP_PROFILE, element: <OpProfile /> },
 
   // ADMIN ROUTES
   { path: ADMIN_DASHBOARD, element: <AdminDashboard /> },
