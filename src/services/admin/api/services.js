@@ -3,7 +3,7 @@ import * as API from "../url";
 
 export const getServices = async (page, limit) => {
   const response = await axiosInstance.get(
-    API.GET_SERVICES + `?page=${page}&limit=${limit}`
+    API.GET_SERVICES + `?page=${page}&limit=${limit}&sort=id,DESC`
   );
   return response.data;
 };

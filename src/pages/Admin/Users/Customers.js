@@ -66,7 +66,7 @@ export default function () {
         setPage={setPage}
         startRow={startRow}
         endRow={endRow || 25}
-        refetch
+        refetch={refetch}
       />
     </Box>
   );

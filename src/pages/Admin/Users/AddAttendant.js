@@ -37,7 +37,7 @@ export default function AddAttendants() {
     },
     onError: (error) => {
       errorToast(
-        error?.response?.data?.message || error?.message || "An Error occured"
+        error?.response?.data?.message || error?.message || "An Error occurred"
       );
     },
   });
@@ -257,7 +257,7 @@ export default function AddAttendants() {
               Cancel
             </Button>
             <Button
-              variant="adminAlt"
+              variant="adminPrimary"
               w="55%"
               isDisabled={isDisabled}
               isLoading={isLoading}

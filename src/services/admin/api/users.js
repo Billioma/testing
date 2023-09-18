@@ -3,28 +3,28 @@ import * as API from "../url";
 
 export const getAttendants = async (page, limit) => {
   const response = await axiosInstance.get(
-    API.ADMIN_ATTENDANTS + `?page=${page}&limit=${limit}`
+    API.ADMIN_ATTENDANTS + `?page=${page}&limit=${limit}&sort=id,DESC`
   );
   return response.data;
 };
 
 export const getCustomers = async (page, limit) => {
   const response = await axiosInstance.get(
-    API.ADMIN_CUSTOMERS + `?page=${page}&limit=${limit}`
+    API.ADMIN_CUSTOMERS + `?page=${page}&limit=${limit}&sort=id,DESC`
   );
   return response.data;
 };
 
 export const getOperators = async (page, limit) => {
   const response = await axiosInstance.get(
-    API.ADMIN_OPERATORS + `?page=${page}&limit=${limit}`
+    API.ADMIN_OPERATORS + `?page=${page}&limit=${limit}&sort=id,DESC`
   );
   return response.data;
 };
 
 export const getAdministrators = async (page, limit) => {
   const response = await axiosInstance.get(
-    API.ADMIN_ADMINISTRATORS + `?page=${page}&limit=${limit}`
+    API.ADMIN_ADMINISTRATORS + `?page=${page}&limit=${limit}&sort=id,DESC`
   );
   return response.data;
 };

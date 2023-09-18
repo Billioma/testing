@@ -23,7 +23,7 @@ const Vehicles = () => {
             lineHeight="100%"
             color="#242628"
           >
-            All Valeted Vehicles
+            All Serviced Vehicles
           </Text>
 
           <Flex align="center" gap="24px">
@@ -33,7 +33,7 @@ const Vehicles = () => {
               cursor="pointer"
               transition=".3s ease-in-out"
               _hover={{ bg: "#F4F6F8" }}
-              onClick={mutate}
+              onClick={() => mutate({ limit, page: page + 1 })}
               borderRadius="8px"
               border="1px solid #848688"
               p="10px"

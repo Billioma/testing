@@ -37,7 +37,7 @@ const FundWalletDrawer = ({ isOpen, cards, refetchUser, onClose, action }) => {
     },
     onError: (err) => {
       errorToast(
-        err?.response?.data?.message || err?.message || "An Error occured"
+        err?.response?.data?.message || err?.message || "An Error occurred"
       );
     },
   });

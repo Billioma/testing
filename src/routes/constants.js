@@ -116,4 +116,75 @@ export const PRIVATE_PATHS = {
   ADMIN_VEHICLES: "/admin/vehicles",
   ADMIN_VIEW_VEHICLE: "/admin/vehicles/details/:id",
   ADMIN_ADD_VEHICLE: "/admin/vehicles/new",
+
+  ADMIN_MEMBERSHIP_PLANS: "/admin/memberships/plans",
+  ADMIN_ADD_MEMBERSHIP_PLAN: "/admin/memberships/plans/new",
+  ADMIN_VIEW_MEMBERSHIP_PLAN: "/admin/memberships/plans/details/:id",
+
+  ADMIN_MEMBERSHIP_FEATURES: "/admin/memberships/features",
+  ADMIN_ADD_MEMBERSHIP_FEATURE: "/admin/memberships/features/new",
+  ADMIN_VIEW_MEMBERSHIP_FEATURE: "/admin/memberships/features/details/:id",
+
+  ADMIN_CUSTOMER_SUBSCRIPTIONS: "/admin/memberships/customer-subscriptions",
+  ADMIN_ADD_CUSTOMER_SUBSCRIPTION:
+    "/admin/memberships/customer-subscriptions/new",
+  ADMIN_VIEW_CUSTOMER_SUBSCRIPTION:
+    "/admin/memberships/customer-subscriptions/details/:id",
+
+  ADMIN_CORPORATE_SUBSCRIPTIONS: "/admin/memberships/corporate-subscriptions",
+  ADMIN_ADD_CORPORATE_SUBSCRIPTION:
+    "/admin/memberships/corporate-subscriptions/new",
+  ADMIN_VIEW_CORPORATE_SUBSCRIPTION:
+    "/admin/memberships/corporate-subscriptions/details/:id",
+
+  ADMIN_PAYTOPARK: "/admin/transactions/pay-to-park",
+  ADMIN_VIEW_PAYTOPARK: "/admin/transactions/pay-to-park/:id",
+  ADMIN_RESERVED_PARKING: "/admin/transactions/reserved-parking",
+  ADMIN_VIEW_RESERVED_PARKING:
+    "/admin/transactions/reserved-parking/details/:id",
+  ADMIN_ADD_RESERVED_PARKING: "/admin/transactions/reserved-parking/new",
+
+  ADMIN_CAR_SERVICES: "/admin/transactions/car-services",
+
+  ADMIN_CLIENTS: "/admin/clients/list",
+  ADMIN_ADD_CLIENT: "/admin/clients/list/new",
+  ADMIN_VIEW_CLIENT: "/admin/clients/list/details/:id",
+  
+  ADMIN_CLIENTS_INVOICES: "/admin/clients/invoices",
+  ADMIN_VIEW_CLIENT_INVOICE: "/admin/clients/invoices/details/:id",
+  ADMIN_ADD_CLIENT_INVOICE: "/admin/clients/invoices/new",
+  
+  ADMIN_EVENTS: "/admin/clients/events",
+  ADMIN_ADD_EVENT: "/admin/clients/events/new",
+  ADMIN_VIEW_EVENT: "/admin/clients/events/details/:id",
+  
+  ADMIN_LOCATIONS: "/admin/locations/locations",
+  ADMIN_ADD_LOCATION: "/admin/locations/locations/new",
+  ADMIN_VIEW_LOCATION: "/admin/locations/locations/details/:id",
+
+  ADMIN_ZONES: "/admin/locations/zones",
+  ADMIN_VIEW_ZONE: "/admin/locations/zones/details/:id",
+  ADMIN_ADD_ZONE: "/admin/locations/zones/new",
+  
+  ADMIN_RATES: "/admin/locations/rates",
+  ADMIN_VIEW_RATE: "/admin/locations/rates/details/:id",
+  ADMIN_ADD_RATE: "/admin/locations/rates/new",
+  
+  ADMIN_AMENITIES: "/admin/locations/amenities",
+  ADMIN_VIEW_AMENITY: "/admin/locations/amenities/details/:id",
+  ADMIN_ADD_AMENITY: "/admin/locations/amenities/new",
+  
+  ADMIN_POLICIES: "/admin/locations/policies",
+  ADMIN_VIEW_POLICY: "/admin/locations/policies/details/:id",
+  ADMIN_ADD_POLICY: "/admin/locations/policies/new",
+
+  ADMIN_REP_PAYMENTS: "/admin/reports/payments",
+  ADMIN_REP_LOCATIONS: "/admin/reports/locations",
+  ADMIN_REP_ZONES: "/admin/reports/zones",
+  ADMIN_REP_VEHICLES: "/admin/reports/vehicles",
+  ADMIN_REP_CUSTOMERS: "/admin/reports/customers",
+  ADMIN_REP_INVOICES: "/admin/reports/invoices",
+  ADMIN_REP_SUBS: "/admin/reports/subscrptions",
+  ADMIN_REP_LOGS: "/admin/reports/logs",
+  ADMIN_REP_HISTORY: "/admin/reports/transactions",
 };

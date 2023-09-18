@@ -1,6 +1,5 @@
 import { useMutation, useQuery } from "react-query";
 import {
-  getCities,
   getEvents,
   getLocations,
   getPlans,
@@ -47,14 +46,6 @@ export const useGetPlans = (options = {}) => {
   });
 
   return { data, isLoading, refetch };
-};
-
-export const useGetCities = (options = {}) => {
-  const { mutate, isLoading, data } = useMutation(getCities, {
-    mutationKey: "GET_CITIES",
-    ...options,
-  });
-  return { mutate, isLoading, data };
 };
 
 export const useGetZone = (options = {}) => {

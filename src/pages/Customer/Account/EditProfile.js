@@ -33,7 +33,7 @@ const EditProfile = () => {
     },
     onError: (err) => {
       errorToast(
-        err?.response?.data?.message || err?.message || "An Error occured"
+        err?.response?.data?.message || err?.message || "An Error occurred"
       );
     },
   });
@@ -44,7 +44,7 @@ const EditProfile = () => {
   } = useCustomerUploadPic({
     onError: (err) => {
       errorToast(
-        err?.response?.data?.message || err?.message || "An Error occured"
+        err?.response?.data?.message || err?.message || "An Error occurred"
       );
     },
   });

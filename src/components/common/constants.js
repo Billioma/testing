@@ -29,6 +29,7 @@ import {
 import { FcCancel } from "react-icons/fc";
 import { BsTrash } from "react-icons/bs";
 import { AiOutlineEdit } from "react-icons/ai";
+import { PRIVATE_PATHS } from "../../routes/constants";
 import { TbListDetails } from "react-icons/tb";
 
 export const sidebarItems = [
@@ -49,15 +50,15 @@ export const sidebarItems = [
     subItems: [
       {
         title: "Client Lists",
-        path: "/admin/client-lists",
+        path: PRIVATE_PATHS.ADMIN_CLIENTS,
       },
       {
         title: "Client Invoices",
-        path: "/admin/client-invoices",
+        path: PRIVATE_PATHS.ADMIN_CLIENTS_INVOICES,
       },
       {
-        title: "Event",
-        path: "/admin/event",
+        title: "Events",
+        path: PRIVATE_PATHS.ADMIN_EVENTS,
       },
     ],
   },
@@ -97,15 +98,15 @@ export const sidebarItems = [
     subItems: [
       {
         title: "Locations",
-        path: "/admin/locations",
+        path: PRIVATE_PATHS.ADMIN_LOCATIONS,
       },
       {
         title: "Zones",
-        path: "/admin/zones",
+        path: PRIVATE_PATHS.ADMIN_ZONES,
       },
       {
         title: "Rates",
-        path: "/admin/rates",
+        path: PRIVATE_PATHS.ADMIN_RATES,
       },
       {
         title: "Amenities",
@@ -143,19 +144,19 @@ export const sidebarItems = [
     subItems: [
       {
         title: "Membership Plans",
-        path: "/admin/membership-plans",
+        path: "/admin/memberships/plans",
       },
       {
         title: "Membership Features",
-        path: "/admin/membership-features",
+        path: "/admin/memberships/features",
       },
       {
         title: "Customer Subscriptions",
-        path: "/admin/customer-subscriptions",
+        path: "/admin/memberships/customer-subscriptions",
       },
       {
         title: "Corporate Subscriptions",
-        path: "/admin/corporate-subscriptions",
+        path: "/admin/memberships/corporate-subscriptions",
       },
     ],
   },
@@ -169,19 +170,16 @@ export const sidebarItems = [
     subItems: [
       {
         title: "Pay-To-Park",
-        path: "/admin/pay-to-pack",
+        path: "/admin/transactions/pay-to-park",
       },
       {
         title: "Reserved Parking",
-        path: "/admin/reserved-parking",
+        path: "/admin/transactions/reserved-parking",
       },
-      {
-        title: "Vallet Parking",
-        path: "/admin/vallet",
-      },
+
       {
         title: "Car Services",
-        path: "/admin/car-services",
+        path: "/admin/transactions/car-services",
       },
     ],
   },
@@ -218,6 +216,44 @@ export const sidebarItems = [
     path: "/admin/reports",
     icon: <ReportsIcon />,
     hover: <ReportsIcon fill="#fff" stroke="black" />,
+    subItems: [
+      {
+        title: "Payments",
+        path: PRIVATE_PATHS.ADMIN_REP_PAYMENTS,
+      },
+      {
+        title: "Locations",
+        path: PRIVATE_PATHS.ADMIN_REP_LOCATIONS,
+      },
+      {
+        title: "Zones",
+        path: PRIVATE_PATHS.ADMIN_REP_ZONES,
+      },
+      {
+        title: "Vehicles",
+        path: PRIVATE_PATHS.ADMIN_REP_VEHICLES,
+      },
+      {
+        title: "Customers",
+        path: PRIVATE_PATHS.ADMIN_REP_CUSTOMERS,
+      },
+      {
+        title: "Invoices",
+        path: PRIVATE_PATHS.ADMIN_REP_INVOICES,
+      },
+      {
+        title: "Subscription",
+        path: PRIVATE_PATHS.ADMIN_REP_SUBS,
+      },
+      {
+        title: "Logs",
+        path: PRIVATE_PATHS.ADMIN_REP_LOGS,
+      },
+      {
+        title: "Payment History",
+        path: PRIVATE_PATHS.ADMIN_REP_HISTORY,
+      },
+    ],
   },
   {
     id: 11,
@@ -315,10 +351,79 @@ export const operatorRepZoneHeader = [
   "DATE CREATED",
 ];
 
+export const adminRepVehicleHeader = [
+  "CUSTOMER",
+  "LICENSE PLATE",
+  "MAKE",
+  "MODEL",
+  "COLOR",
+  "STATE",
+  "DATE CREATED",
+];
+
+export const adminRepInvoiceeHeader = [
+  "CLIENT",
+  "CREATED BY",
+  "CONFIRMED BY",
+  "TAX (%)",
+  "AMOUNT PAYABLE",
+  "AMOUNT PAID",
+  "DATE PAID",
+  "STATUS",
+  "DATE CREATED",
+];
+
+export const adminRepTranHeader = [
+  "TRANSACTION ID",
+  "AMOUNT",
+  "PAYMENT METHOD",
+  "TRANSACTION TYPE",
+  "CUSTOMER EMAIL",
+  "DATE",
+  "STATUS",
+  "ACTIONS",
+];
+
+export const adminRepCustomerHeader = [
+  "FIRST NAME",
+  "LAST NAME",
+  "EMAIL",
+  "PHONE",
+  "DATE CREATED",
+];
+
+export const adminRepSubHeader = [
+  "CUSTOMER",
+  "PLAN",
+  "START DATE",
+  "NEXT RENEWAL",
+  "AUTORENEW",
+  "CANCELLED",
+  "DATE CREATED",
+];
+
 export const operatorPayGrid = [
   "Total Amount Due",
   "Total Amount Received",
   "Total Payments",
+];
+
+export const adminInvoiceGrid = [
+  "Total Invoices",
+  "Total Amount Payable",
+  "Total Amount Paid",
+];
+
+export const adminRepPaymentHeader = [
+  "LOCATION",
+  "ZONE",
+  "ATTENDANT",
+  "AMOUNT",
+  "AMOUNT PAID",
+  "CUSTOMER",
+  "SERVICE",
+  "PAYMENT METHOD",
+  "DATE CREATED",
 ];
 
 export const operatorRepPaymentHeader = [
@@ -328,6 +433,19 @@ export const operatorRepPaymentHeader = [
   "AMOUNT",
   "AMOUNT PAID",
   "SERVICE",
+  "DATE CREATED",
+];
+
+export const adminRepLogHeader = [
+  "TICKET NO",
+  "CUSTOMER",
+  "VEHICLE",
+  "SERVICE",
+  "BILLING TYPE",
+  "AMOUNT",
+  "AMOUNT PAID",
+  "LOCATION",
+  "STATUS",
   "DATE CREATED",
 ];
 
@@ -381,45 +499,48 @@ export const LocationTypes = [
   "GARAGE_PARKING_LOT",
 ];
 
+export const cities = ["Ikoyi", "VI", "Ikeja", "Lekki", "Wuse", "Maitama"];
+
 export const allStates = [
-  "Abia",
-  "Adamawa",
-  "Akwa Ibom",
-  "Anambra",
-  "Bauchi",
-  "Bayelsa",
-  "Benue",
-  "Borno",
-  "Cross River",
-  "Delta",
-  "Ebonyi",
-  "Edo",
-  "Ekiti",
-  "Enugu",
+  // "Abia",
+  // "Adamawa",
+  // "Akwa Ibom",
+  // "Anambra",
+  // "Bauchi",
+  // "Bayelsa",
+  // "Benue",
+  // "Borno",
+  // "Cross River",
+  // "Delta",
+  // "Ebonyi",
+  // "Edo",
+  // "Ekiti",
+  // "Enugu",
   "FCT",
-  "Gombe",
-  "Imo",
-  "Jigawa",
-  "Kaduna",
-  "Kano",
-  "Katsina",
-  "Kebbi",
-  "Kogi",
-  "Kwara",
+  // "Gombe",
+  // "Imo",
+  // "Jigawa",
+  // "Kaduna",
+  // "Kano",
+  // "Katsina",
+  // "Kebbi",
+  // "Kogi",
+  // "Kwara",
   "Lagos",
-  "Nasarawa",
-  "Niger",
-  "Ogun",
-  "Ondo",
-  "Osun",
-  "Oyo",
-  "Plateau",
-  "Rivers",
-  "Sokoto",
-  "Taraba",
-  "Yobe",
-  "Zamfara",
+  // "Nasarawa",
+  // "Niger",
+  // "Ogun",
+  // "Ondo",
+  // "Osun",
+  // "Oyo",
+  // "Plateau",
+  // "Rivers",
+  // "Sokoto",
+  // "Taraba",
+  // "Yobe",
+  // "Zamfara",
 ];
+
 export const clientEventHeader = [
   "Name",
   "Website",

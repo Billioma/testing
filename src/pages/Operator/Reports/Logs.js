@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import {
   Box,
-  Button,
   Flex,
   Grid,
   GridItem,
@@ -10,8 +9,8 @@ import {
   Text,
 } from "@chakra-ui/react";
 import LogsTableLayer from "../../../components/data/Operator/Reports/LogsTableLayer";
-import { PiExportLight } from "react-icons/pi";
 import { useGetRepLogs } from "../../../services/operator/query/reports";
+import LogExport from "../../../components/data/Operator/Reports/LogsExport";
 
 const Logs = () => {
   const { mutate, data, isLoading } = useGetRepLogs();
@@ -43,7 +42,7 @@ const Logs = () => {
                   fontWeight={700}
                   color="#242628"
                 >
-                  Total Zones
+                  Total Logs
                 </Text>
 
                 <Flex
@@ -82,27 +81,14 @@ const Logs = () => {
           </Text>
 
           <Flex align="center" gap="24px">
-            <Button
-              // onClick={() => navigate("/operator/locations/all/create")}
-              display="flex"
-              bg="#000"
-              _hover={{ bg: "#000" }}
-              borderRadius="8px"
-              _active={{ bg: "#000" }}
-              _focus={{ bg: "#000" }}
-              gap="8px"
-              fontSize=""
-            >
-              <PiExportLight size="20px" />
-              <Text fontSize="12px">Export Data</Text>
-            </Button>
+            <LogExport data={data?.data} />
             <Flex
               justifyContent="center"
               align="center"
               cursor="pointer"
               transition=".3s ease-in-out"
               _hover={{ bg: "#F4F6F8" }}
-              onClick={mutate}
+              onClick={() => mutate({ limit, page: page + 1 })}
               borderRadius="8px"
               border="1px solid #848688"
               p="10px"

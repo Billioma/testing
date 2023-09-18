@@ -40,21 +40,21 @@ const TableLayer = ({
     "ACTIONS",
   ];
   const { errorToast, successToast } = useCustomToast();
+  const navigate = useNavigate();
+  const [selectedRow, setSelectedRow] = useState({ isOpen: false, id: null });
 
   const { mutate, isLoading: isDeleting } = useDeleteAttendant({
     onSuccess: (res) => {
       successToast(res?.message);
       refetch();
+      setSelectedRow({ isOpen: false, id: null });
     },
     onError: (err) => {
       errorToast(
-        err?.response?.data?.message || err?.message || "An Error occured"
+        err?.response?.data?.message || err?.message || "An Error occurred"
       );
     },
   });
-
-  const navigate = useNavigate();
-  const [selectedRow, setSelectedRow] = useState({ isOpen: false, id: null });
 
   const handleSubmit = (e) => {
     e.preventDefault();

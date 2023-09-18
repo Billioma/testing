@@ -27,11 +27,6 @@ export const getServices = async () => {
   return res.data;
 };
 
-export const getCities = async (query) => {
-  const res = await axios.get(API.GET_CITIES(query));
-  return res.data;
-};
-
 export const getZone = async (query) => {
   const res = await axiosInstance.get(API.GET_ZONE(query));
   return res.data;

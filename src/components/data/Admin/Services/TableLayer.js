@@ -11,9 +11,10 @@ import {
   MenuItem,
 } from "@chakra-ui/react";
 import TableFormat from "../../../common/TableFormat";
-import { FiMoreVertical, FiEdit, FiTrash2 } from "react-icons/fi";
+import { FiEdit, FiTrash2 } from "react-icons/fi";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import NoData from "../../../common/NoData";
+import { BsChevronDown } from "react-icons/bs";
 import { formatDate } from "../../../../utils/helpers";
 
 const TableLayer = ({ data, isLoading, page, setPage, limit, handleEdit }) => {
@@ -126,7 +127,7 @@ const TableLayer = ({ data, isLoading, page, setPage, limit, handleEdit }) => {
                 <Flex justifyContent="center" align="center">
                   <Menu>
                     <MenuButton as={Text} cursor="pointer">
-                      <FiMoreVertical />
+                      <BsChevronDown />
                     </MenuButton>
                     <MenuList>
                       <MenuItem

@@ -38,10 +38,6 @@ const Attendants = () => {
             <Button
               onClick={() => navigate("/operator/users/attendants/create")}
               display="flex"
-              bg="#000"
-              _hover={{ bg: "#000" }}
-              _active={{ bg: "#000" }}
-              _focus={{ bg: "#000" }}
               gap="8px"
               fontSize=""
             >
@@ -55,7 +51,7 @@ const Attendants = () => {
               cursor="pointer"
               transition=".3s ease-in-out"
               _hover={{ bg: "#F4F6F8" }}
-              onClick={mutate}
+              onClick={() => mutate({ limit, page: page + 1 })}
               borderRadius="8px"
               border="1px solid #848688"
               p="10px"

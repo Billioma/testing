@@ -24,7 +24,7 @@ const Signup = () => {
     },
     onError: (err) => {
       errorToast(
-        err?.response?.data?.message || err?.message || "An Error occured"
+        err?.response?.data?.message || err?.message || "An Error occurred"
       );
     },
   });

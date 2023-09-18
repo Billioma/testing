@@ -117,6 +117,31 @@ const {
   ADMIN_ADD_VEHICLE,
   ADMIN_VEHICLES,
   ADMIN_VIEW_VEHICLE,
+
+  ADMIN_MEMBERSHIP_PLANS,
+  ADMIN_ADD_MEMBERSHIP_PLAN,
+  ADMIN_VIEW_MEMBERSHIP_PLAN,
+
+  ADMIN_MEMBERSHIP_FEATURES,
+  ADMIN_VIEW_MEMBERSHIP_FEATURE,
+  ADMIN_ADD_MEMBERSHIP_FEATURE,
+
+  ADMIN_CORPORATE_SUBSCRIPTIONS,
+  // ADMIN_VIEW_CORPORATE_SUBSCRIPTION,
+  ADMIN_ADD_CORPORATE_SUBSCRIPTION,
+
+  ADMIN_CUSTOMER_SUBSCRIPTIONS,
+  ADMIN_ADD_CUSTOMER_SUBSCRIPTION,
+  ADMIN_VIEW_CUSTOMER_SUBSCRIPTION,
+  ADMIN_PAYTOPARK,
+  ADMIN_VIEW_PAYTOPARK,
+  ADMIN_RESERVED_PARKING,
+  ADMIN_VIEW_RESERVED_PARKING,
+  ADMIN_ADD_RESERVED_PARKING,
+  ADMIN_CAR_SERVICES,
+  ADMIN_CLIENTS,
+  ADMIN_ADD_CLIENT,
+  ADMIN_VIEW_CLIENT,
 } = PRIVATE_PATHS;
 
 //CUSTOMER PAGES
@@ -445,6 +470,181 @@ const AdminViewVehicle = WithSuspense(
   lazy(() => import("../pages/Admin/Vehicles/ViewVehicle"))
 );
 
+const AdminMembershipPlans = WithSuspense(
+  lazy(() => import("../pages/Admin/Memberships/MembershipPlans"))
+);
+
+const AdminAddMembershipPlan = WithSuspense(
+  lazy(() => import("../pages/Admin/Memberships/AddMembershipPlan"))
+);
+
+const AdminViewMembershipPlan = WithSuspense(
+  lazy(() => import("../pages/Admin/Memberships/ViewMembershipPlan"))
+);
+
+const AdminMembershipFeatures = WithSuspense(
+  lazy(() => import("../pages/Admin/Memberships/MembershipFeatures"))
+);
+
+const AdminAddMembershipFeature = WithSuspense(
+  lazy(() => import("../pages/Admin/Memberships/AddMembershipFeature"))
+);
+
+const AdminViewMembershipFeature = WithSuspense(
+  lazy(() => import("../pages/Admin/Memberships/ViewMembershipFeature"))
+);
+
+const AdminCustomerSubscriptions = WithSuspense(
+  lazy(() => import("../pages/Admin/Memberships/CustomerSubscriptions"))
+);
+
+const AdminAddCustomerSubscription = WithSuspense(
+  lazy(() => import("../pages/Admin/Memberships/AddCustomerSubscription"))
+);
+
+const AdminViewCustomerSubscription = WithSuspense(
+  lazy(() => import("../pages/Admin/Memberships/ViewCustomerSubscription"))
+);
+
+const AdminCorporateSubscriptions = WithSuspense(
+  lazy(() => import("../pages/Admin/Memberships/CorporateSubscriptions"))
+);
+
+const AdminAddCorporateSubscription = WithSuspense(
+  lazy(() => import("../pages/Admin/Memberships/AddCorporateSubscription"))
+);
+
+const AdminPayToPark = WithSuspense(
+  lazy(() => import("../pages/Admin/Transactions/PayToPark"))
+);
+
+const AdminViewPayToPark = WithSuspense(
+  lazy(() => import("../pages/Admin/Transactions/ViewPayToPark"))
+);
+
+const AdminReservedParking = WithSuspense(
+  lazy(() => import("../pages/Admin/Transactions/ReservedParking"))
+);
+
+const AdminViewReservedParking = WithSuspense(
+  lazy(() => import("../pages/Admin/Transactions/ViewReservedParking"))
+);
+
+const AdminAddReservedParking = WithSuspense(
+  lazy(() => import("../pages/Admin/Transactions/AddReservedParking"))
+);
+
+const AdminCarServices = WithSuspense(
+  lazy(() => import("../pages/Admin/Transactions/CarServices"))
+);
+
+const AdminClients = WithSuspense(
+  lazy(() => import("../pages/Admin/Clients/ClientList"))
+);
+
+const AdminAddClient = WithSuspense(
+  lazy(() => import("../pages/Admin/Clients/AddClient"))
+);
+
+const AdminViewClient = WithSuspense(
+  lazy(() => import("../pages/Admin/Clients/ViewClient"))
+);
+
+const AdminClientsInvoices = WithSuspense(
+  lazy(() => import("../pages/Admin/Clients/ClientsInvoices"))
+);
+
+const AdminAddClientInvoice = WithSuspense(
+  lazy(() => import("../pages/Admin/Clients/AddClientInvoice"))
+);
+
+const AdminViewClientInvoice = WithSuspense(
+  lazy(() => import("../pages/Admin/Clients/ViewClientInvoice"))
+);
+
+const AdminClientsEvents = WithSuspense(
+  lazy(() => import("../pages/Admin/Clients/Events"))
+);
+
+const AdminViewClientsEvent = WithSuspense(
+  lazy(() => import("../pages/Admin/Clients/ViewEvent"))
+);
+
+const AdminAddClientsEvent = WithSuspense(
+  lazy(() => import("../pages/Admin/Clients/AddEvent"))
+);
+
+const AdminLocations = WithSuspense(
+  lazy(() => import("../pages/Admin/Locations/Locations"))
+);
+
+const AdminAddLocation = WithSuspense(
+  lazy(() => import("../pages/Admin/Locations/AddLocation"))
+);
+
+const AdminViewLocation = WithSuspense(
+  lazy(() => import("../pages/Admin/Locations/ViewLocation"))
+);
+
+const AdminZones = WithSuspense(
+  lazy(() => import("../pages/Admin/Locations/Zones"))
+);
+
+const AdminAddZone = WithSuspense(
+  lazy(() => import("../pages/Admin/Locations/AddZone"))
+);
+
+const AdminRepCustomer = WithSuspense(
+  lazy(() => import("../pages/Admin/Reports/Customers"))
+);
+
+const AdminRepHistory = WithSuspense(
+  lazy(() => import("../pages/Admin/Reports/History"))
+);
+
+const AdminRepInvoice = WithSuspense(
+  lazy(() => import("../pages/Admin/Reports/Invoices"))
+);
+
+const AdminRepLocation = WithSuspense(
+  lazy(() => import("../pages/Admin/Reports/Locations"))
+);
+
+const AdminRepLog = WithSuspense(
+  lazy(() => import("../pages/Admin/Reports/Logs"))
+);
+
+const AdminRepPayment = WithSuspense(
+  lazy(() => import("../pages/Admin/Reports/Payments"))
+);
+
+const AdminRepSubs = WithSuspense(
+  lazy(() => import("../pages/Admin/Reports/Subs"))
+);
+
+const AdminRepVehicle = WithSuspense(
+  lazy(() => import("../pages/Admin/Reports/Vehicles"))
+);
+
+const AdminRepZones = WithSuspense(
+  lazy(() => import("../pages/Admin/Reports/Zones"))
+);
+const AdminViewZone = WithSuspense(
+  lazy(() => import("../pages/Admin/Locations/ViewZone"))
+);
+
+const AdminRates = WithSuspense(
+  lazy(() => import("../pages/Admin/Locations/Rates"))
+);
+
+const AdminAddRate = WithSuspense(
+  lazy(() => import("../pages/Admin/Locations/AddRate"))
+);
+
+const AdminViewRate = WithSuspense(
+  lazy(() => import("../pages/Admin/Locations/ViewRate"))
+);
+
 export const PUBLIC_ROUTES = [
   //CUSTOMER ROUTES
   { path: CUST_LOGIN, element: <CustLogin /> },
@@ -580,6 +780,198 @@ export const PRIVATE_ROUTES = [
   { path: ADMIN_VEHICLES, element: <AdminVehicles /> },
   { path: ADMIN_ADD_VEHICLE, element: <AdminAddVehicle /> },
   { path: ADMIN_VIEW_VEHICLE, element: <AdminViewVehicle /> },
+  { path: ADMIN_MEMBERSHIP_PLANS, element: <AdminMembershipPlans /> },
+  { path: ADMIN_ADD_MEMBERSHIP_PLAN, element: <AdminAddMembershipPlan /> },
+  { path: ADMIN_VIEW_MEMBERSHIP_PLAN, element: <AdminViewMembershipPlan /> },
+  { path: ADMIN_MEMBERSHIP_FEATURES, element: <AdminMembershipFeatures /> },
+  {
+    path: ADMIN_ADD_MEMBERSHIP_FEATURE,
+    element: <AdminAddMembershipFeature />,
+  },
+  {
+    path: ADMIN_VIEW_MEMBERSHIP_FEATURE,
+    element: <AdminViewMembershipFeature />,
+  },
+
+  {
+    path: ADMIN_CUSTOMER_SUBSCRIPTIONS,
+    element: <AdminCustomerSubscriptions />,
+  },
+
+  {
+    path: ADMIN_ADD_CUSTOMER_SUBSCRIPTION,
+    element: <AdminAddCustomerSubscription />,
+  },
+
+  {
+    path: ADMIN_VIEW_CUSTOMER_SUBSCRIPTION,
+    element: <AdminViewCustomerSubscription />,
+  },
+
+  {
+    path: ADMIN_CORPORATE_SUBSCRIPTIONS,
+    element: <AdminCorporateSubscriptions />,
+  },
+
+  {
+    path: ADMIN_ADD_CORPORATE_SUBSCRIPTION,
+    element: <AdminAddCorporateSubscription />,
+  },
+
+  {
+    path: ADMIN_PAYTOPARK,
+    element: <AdminPayToPark />,
+  },
+
+  {
+    path: ADMIN_VIEW_PAYTOPARK,
+    element: <AdminViewPayToPark />,
+  },
+
+  {
+    path: ADMIN_RESERVED_PARKING,
+    element: <AdminReservedParking />,
+  },
+  {
+    path: ADMIN_VIEW_RESERVED_PARKING,
+    element: <AdminViewReservedParking />,
+  },
+
+  {
+    path: ADMIN_ADD_RESERVED_PARKING,
+    element: <AdminAddReservedParking />,
+  },
+
+  {
+    path: ADMIN_CAR_SERVICES,
+    element: <AdminCarServices />,
+  },
+
+  {
+    path: ADMIN_CLIENTS,
+    element: <AdminClients />,
+  },
+
+  {
+    path: ADMIN_ADD_CLIENT,
+    element: <AdminAddClient />,
+  },
+
+  {
+    path: ADMIN_VIEW_CLIENT,
+    element: <AdminViewClient />,
+  },
+
+  {
+    path: PRIVATE_PATHS.ADMIN_CLIENTS_INVOICES,
+    element: <AdminClientsInvoices />,
+  },
+
+  {
+    path: PRIVATE_PATHS.ADMIN_ADD_CLIENT_INVOICE,
+    element: <AdminAddClientInvoice />,
+  },
+
+  {
+    path: PRIVATE_PATHS.ADMIN_VIEW_CLIENT_INVOICE,
+    element: <AdminViewClientInvoice />,
+  },
+
+  {
+    path: PRIVATE_PATHS.ADMIN_EVENTS,
+    element: <AdminClientsEvents />,
+  },
+
+  {
+    path: PRIVATE_PATHS.ADMIN_VIEW_EVENT,
+    element: <AdminViewClientsEvent />,
+  },
+
+  {
+    path: PRIVATE_PATHS.ADMIN_ADD_EVENT,
+    element: <AdminAddClientsEvent />,
+  },
+
+  {
+    path: PRIVATE_PATHS.ADMIN_LOCATIONS,
+    element: <AdminLocations />,
+  },
+
+  {
+    path: PRIVATE_PATHS.ADMIN_ADD_LOCATION,
+    element: <AdminAddLocation />,
+  },
+
+  {
+    path: PRIVATE_PATHS.ADMIN_VIEW_LOCATION,
+    element: <AdminViewLocation />,
+  },
+
+  {
+    path: PRIVATE_PATHS.ADMIN_ZONES,
+    element: <AdminZones />,
+  },
+
+  {
+    path: PRIVATE_PATHS.ADMIN_ADD_ZONE,
+    element: <AdminAddZone />,
+  },
+  {
+    path: PRIVATE_PATHS.ADMIN_REP_CUSTOMERS,
+    element: <AdminRepCustomer />,
+  },
+  {
+    path: PRIVATE_PATHS.ADMIN_REP_HISTORY,
+    element: <AdminRepHistory />,
+  },
+  {
+    path: PRIVATE_PATHS.ADMIN_REP_INVOICES,
+    element: <AdminRepInvoice />,
+  },
+  {
+    path: PRIVATE_PATHS.ADMIN_REP_LOCATIONS,
+    element: <AdminRepLocation />,
+  },
+  {
+    path: PRIVATE_PATHS.ADMIN_REP_LOGS,
+    element: <AdminRepLog />,
+  },
+  {
+    path: PRIVATE_PATHS.ADMIN_REP_PAYMENTS,
+    element: <AdminRepPayment />,
+  },
+  {
+    path: PRIVATE_PATHS.ADMIN_REP_SUBS,
+    element: <AdminRepSubs />,
+  },
+  {
+    path: PRIVATE_PATHS.ADMIN_REP_VEHICLES,
+    element: <AdminRepVehicle />,
+  },
+  {
+    path: PRIVATE_PATHS.ADMIN_REP_ZONES,
+    element: <AdminRepZones />,
+  },
+
+  {
+    path: PRIVATE_PATHS.ADMIN_VIEW_ZONE,
+    element: <AdminViewZone />,
+  },
+
+  {
+    path: PRIVATE_PATHS.ADMIN_RATES,
+    element: <AdminRates />,
+  },
+
+  {
+    path: PRIVATE_PATHS.ADMIN_VIEW_RATE,
+    element: <AdminViewRate />,
+  },
+
+  {
+    path: PRIVATE_PATHS.ADMIN_ADD_RATE,
+    element: <AdminAddRate />,
+  },
 
   {
     path: "*",

@@ -4,6 +4,7 @@ import { IoIosArrowDown } from "react-icons/io";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useGetProfile } from "../../../services/admin/query/auth";
 import { FaGreaterThan } from "react-icons/fa";
+import { useLogOut } from "../../../utils/helpers";
 
 export default function AdminHeader() {
   const { pathname } = useLocation();
@@ -12,6 +13,7 @@ export default function AdminHeader() {
   const [isMobile] = useMediaQuery("(max-width: 991px)");
   const { data: userData } = useGetProfile();
   const navigate = useNavigate();
+  const logout = useLogOut();
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -29,7 +31,7 @@ export default function AdminHeader() {
   const action = () => {
     setIsLoading(true);
     setTimeout(() => {
-      //   logout();
+      logout();
       setIsLoading(false);
     }, 1000);
   };
@@ -38,6 +40,39 @@ export default function AdminHeader() {
     switch (true) {
       case pathname.includes("services"):
         return setTitle({ header: "Services", sub: "" });
+
+      case pathname.includes("reports"):
+        switch (true) {
+          case pathname.includes("payments"):
+            return setTitle({ header: "Reports", sub: "Payments" });
+
+          case pathname.includes("locations"):
+            return setTitle({ header: "Reports", sub: "Locations" });
+
+          case pathname.includes("zones"):
+            return setTitle({ header: "Reports", sub: "Zones" });
+
+          case pathname.includes("invoices"):
+            return setTitle({ header: "Reports", sub: "Invoices" });
+
+          case pathname.includes("logs"):
+            return setTitle({ header: "Reports", sub: "logs" });
+
+          case pathname.includes("transactions"):
+            return setTitle({ header: "Reports", sub: "Transactions" });
+
+          case pathname.includes("subscrptions"):
+            return setTitle({ header: "Reports", sub: "Subscriptions" });
+
+          case pathname.includes("customers"):
+            return setTitle({ header: "Reports", sub: "Customers" });
+
+          case pathname.includes("admin/reports/vehicles"):
+            return setTitle({ header: "Reports", sub: "Vehicles" });
+
+          default:
+            return setTitle({ header: "Reports", sub: "" });
+        }
 
       case pathname.includes("vehicle"):
         switch (true) {
@@ -179,7 +214,7 @@ export default function AdminHeader() {
                   lineHeight="100%"
                   py="10px"
                   onClick={() =>
-                    i === 3 ? action() : (navigate(data?.link), setShow(false))
+                    i === 1 ? action() : (navigate(data?.link), setShow(false))
                   }
                   px="20px"
                   fontWeight={500}

@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import {
   Box,
-  Button,
   Flex,
   Grid,
   GridItem,
@@ -10,7 +9,7 @@ import {
   Text,
 } from "@chakra-ui/react";
 import ZoneTableLayer from "../../../components/data/Operator/Reports/ZoneTableLayer";
-import { PiExportLight } from "react-icons/pi";
+import ZoneExport from "../../../components/data/Operator/Reports/ZoneExport";
 import { useGetRepZone } from "../../../services/operator/query/reports";
 
 const Zones = () => {
@@ -82,27 +81,14 @@ const Zones = () => {
           </Text>
 
           <Flex align="center" gap="24px">
-            <Button
-              // onClick={() => navigate("/operator/locations/all/create")}
-              display="flex"
-              bg="#000"
-              _hover={{ bg: "#000" }}
-              borderRadius="8px"
-              _active={{ bg: "#000" }}
-              _focus={{ bg: "#000" }}
-              gap="8px"
-              fontSize=""
-            >
-              <PiExportLight size="20px" />
-              <Text fontSize="12px">Export Data</Text>
-            </Button>
+            <ZoneExport data={data?.data} />
             <Flex
               justifyContent="center"
               align="center"
               cursor="pointer"
               transition=".3s ease-in-out"
               _hover={{ bg: "#F4F6F8" }}
-              onClick={mutate}
+              onClick={() => mutate({ limit, page: page + 1 })}
               borderRadius="8px"
               border="1px solid #848688"
               p="10px"

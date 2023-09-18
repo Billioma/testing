@@ -25,7 +25,7 @@ export default function ViewCustomer() {
     },
     onError: (error) => {
       errorToast(
-        error?.response?.data?.message || error?.message || "An Error occured"
+        error?.response?.data?.message || error?.message || "An Error occurred"
       );
     },
   });
@@ -59,13 +59,13 @@ export default function ViewCustomer() {
 
   return (
     <Box minH="75vh">
+      <GoBackTab />
       <Flex
         justifyContent="center"
         w="full"
         flexDir={{ md: "row", base: "column" }}
         gap={5}
       >
-        <GoBackTab />
         <Flex
           bg="#fff"
           borderRadius="16px"

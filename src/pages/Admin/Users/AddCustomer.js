@@ -33,7 +33,7 @@ export default function AddCustomer() {
     },
     onError: (error) => {
       errorToast(
-        error?.response?.data?.message || error?.message || "An Error occured"
+        error?.response?.data?.message || error?.message || "An Error occurred"
       );
     },
   });
@@ -242,7 +242,7 @@ export default function AddCustomer() {
               Cancel
             </Button>
             <Button
-              variant="adminAlt"
+              variant="adminPrimary"
               w="55%"
               isDisabled={isDisabled}
               isLoading={isLoading}

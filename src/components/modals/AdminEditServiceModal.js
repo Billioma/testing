@@ -65,7 +65,7 @@ const AdminEditServiceModal = ({ isOpen, refetch, onClose, service }) => {
     },
     onError: (err) => {
       errorToast(
-        err?.response?.data?.message || err?.message || "An Error occured"
+        err?.response?.data?.message || err?.message || "An Error occurred"
       );
     },
   });

@@ -135,7 +135,7 @@ const AdminAttendantChangePassword = ({
               lineHeight="100%"
               w="55%"
               py="17px"
-              variant="adminAlt"
+              variant="adminPrimary"
             >
               Save
             </Button>

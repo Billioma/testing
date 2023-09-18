@@ -3,7 +3,6 @@ import { Box, Flex, Text, Button, Image, Switch } from "@chakra-ui/react";
 import CustomInput from "../../../components/common/CustomInput";
 import { AiOutlineCamera } from "react-icons/ai";
 import Select from "react-select";
-import { useGetAllOperators } from "../../../services/admin/query/operators";
 import { useNavigate, useLocation } from "react-router-dom";
 import { PRIVATE_PATHS } from "../../../routes/constants";
 import { useEditAdministrator } from "../../../services/admin/query/users";
@@ -37,7 +36,7 @@ export default function AddAttendants() {
     },
     onError: (error) => {
       errorToast(
-        error?.response?.data?.message || error?.message || "An Error occured"
+        error?.response?.data?.message || error?.message || "An Error occurred"
       );
     },
   });
@@ -50,13 +49,13 @@ export default function AddAttendants() {
       value: parseInt(role.id),
     })) || [];
 
-  const { mutate: uploadMedia, isLoading: uploadingImage } = useUploadMedia({
+  const { mutate: uploadMedia } = useUploadMedia({
     onSuccess: (data) => {
       mutate({ ...state, avatar: data.path });
     },
     onError: (err) => {
       errorToast(
-        err?.response?.data?.message || err?.message || "An Error occured"
+        err?.response?.data?.message || err?.message || "An Error occurred"
       );
     },
   });
@@ -277,7 +276,7 @@ export default function AddAttendants() {
               w="55%"
               isDisabled={isEdit && isDisabled}
               isLoading={!isOpen && isLoading}
-              onClick={(e) => (!isEdit ? setIsEdit(!isEdit) : handleSubmit())}
+              onClick={() => (!isEdit ? setIsEdit(!isEdit) : handleSubmit())}
             >
               {!isEdit ? "Edit" : "Save"}
             </Button>

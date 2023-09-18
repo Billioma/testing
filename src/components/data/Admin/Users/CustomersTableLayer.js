@@ -49,10 +49,11 @@ const TableLayer = ({
     onSuccess: (res) => {
       successToast(res?.message);
       refetch();
+      setSelectedRow({ isOpen: false, id: null });
     },
     onError: (err) => {
       errorToast(
-        err?.response?.data?.message || err?.message || "An Error occured"
+        err?.response?.data?.message || err?.message || "An Error occurred"
       );
     },
   });
@@ -153,7 +154,7 @@ const TableLayer = ({
             >
               <Td>{customer?.profile?.firstName}</Td>
               <Td>{customer?.profile?.lastName}</Td>
-              <Td>{customer?.profile?.phone}</Td>
+              <Td>0{customer?.profile?.phone}</Td>
               <Td>{customer?.profile?.companyName || "N/A"}</Td>
               <Td>{customer?.email}</Td>
               <Td>

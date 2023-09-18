@@ -19,9 +19,9 @@ import { useNavigate } from "react-router-dom";
 import { HiOutlineInformationCircle } from "react-icons/hi";
 import AdminDeleteModal from "../../../modals/AdminDeleteModal";
 import useCustomToast from "../../../../utils/notifications";
-import { useDeleteOperator } from "../../../../services/admin/query/users";
 import { PRIVATE_PATHS } from "../../../../routes/constants";
 import { BsChevronDown } from "react-icons/bs";
+import { useDeleteVehicle } from "../../../../services/admin/query/vehicles";
 
 const TableLayer = ({
   data,
@@ -43,21 +43,21 @@ const TableLayer = ({
     "ACTIONS",
   ];
   const { errorToast, successToast } = useCustomToast();
+  const navigate = useNavigate();
+  const [selectedRow, setSelectedRow] = useState({ isOpen: false, id: null });
 
-  const { mutate, isLoading: isDeleting } = useDeleteOperator({
+  const { mutate, isLoading: isDeleting } = useDeleteVehicle({
     onSuccess: (res) => {
       successToast(res?.message);
       refetch();
+      setSelectedRow({ isOpen: false, id: null });
     },
     onError: (err) => {
       errorToast(
-        err?.response?.data?.message || err?.message || "An Error occured"
+        err?.response?.data?.message || err?.message || "An Error occurred"
       );
     },
   });
-
-  const navigate = useNavigate();
-  const [selectedRow, setSelectedRow] = useState({ isOpen: false, id: null });
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -240,8 +240,8 @@ const TableLayer = ({
       <AdminDeleteModal
         isOpen={selectedRow.isOpen}
         onClose={() => setSelectedRow({ ...selectedRow, isOpen: false })}
-        title="Delete Operator"
-        subTitle="Are you sure you want to delete this operator?"
+        title="Delete Vehicle"
+        subTitle="Are you sure you want to delete this vehicle?"
         handleSubmit={handleSubmit}
         isLoading={isDeleting}
       />

@@ -13,10 +13,7 @@ import { HiOutlineArrowNarrowLeft } from "react-icons/hi";
 import { BsCheckCircle } from "react-icons/bs";
 import Select from "react-select";
 import ConfirmReserveModal from "../../../components/modals/ConfirmReserveModal";
-import {
-  useGetCities,
-  useGetLocations,
-} from "../../../services/customer/query/locations";
+import { useGetLocations } from "../../../services/customer/query/locations";
 import { CiLocationOn } from "react-icons/ci";
 import { Calendar } from "react-calendar";
 import {
@@ -36,7 +33,7 @@ import useCustomToast from "../../../utils/notifications";
 import { useNavigate } from "react-router-dom";
 import { usePaystackPayment } from "react-paystack";
 import FundWalletDrawer from "../../../components/modals/FundWalletDrawer";
-import { allStates } from "../../../components/common/constants";
+import { allStates, cities } from "../../../components/common/constants";
 
 const ReserveParking = () => {
   const [step, setStep] = useState(1);
@@ -118,14 +115,16 @@ const ReserveParking = () => {
   const currentStateLocation = locations?.filter((dat) =>
     dat?.address?.includes(values?.city?.value)
   );
-  const { mutate, data: cities } = useGetCities();
+
   const stateOptions = allStates?.map((state) => ({
     value: state,
     label: state,
   }));
-  const cityOptions = cities?.data?.map((city) => ({
-    value: city?.name,
-    label: city?.name,
+  const cityOptions = (
+    values.state.value === "Lagos" ? cities.slice(0, 4) : cities.slice(4, 6)
+  )?.map((city) => ({
+    value: city,
+    label: city,
   }));
   const locationOptions = currentStateLocation?.map((city) => ({
     value: city?.name,
@@ -149,7 +148,9 @@ const ReserveParking = () => {
       [name]: selectedOption,
     });
     if (name === "state") {
-      mutate(selectedOption?.value?.toLowerCase()?.replace(" ", "_"));
+      setValues({ ...values, state: selectedOption, city: "", locations: "" });
+    } else if (name === "city") {
+      setValues({ ...values, city: selectedOption, locations: "" });
     }
   };
 
@@ -198,7 +199,7 @@ const ReserveParking = () => {
       },
       onError: (err) => {
         errorToast(
-          err?.response?.data?.message || err?.message || "An Error occured"
+          err?.response?.data?.message || err?.message || "An Error occurred"
         );
       },
     });
@@ -362,9 +363,9 @@ const ReserveParking = () => {
                   options={stateOptions}
                   value={values.state}
                   defaultValue={values.state}
-                  onChange={(selectedOption) =>
-                    handleSelectChange(selectedOption, { name: "state" })
-                  }
+                  onChange={(selectedOption) => {
+                    handleSelectChange(selectedOption, { name: "state" });
+                  }}
                   components={{
                     IndicatorSeparator: () => (
                       <div style={{ display: "none" }}></div>
@@ -377,6 +378,7 @@ const ReserveParking = () => {
                   styles={customStyles}
                   placeholder="Select City"
                   options={cityOptions}
+                  isDisabled={!values.state}
                   value={values.city}
                   defaultValue={values.city}
                   onChange={(selectedOption) =>
@@ -395,6 +397,7 @@ const ReserveParking = () => {
                   placeholder="Select Location"
                   options={locationOptions}
                   value={values.locations}
+                  isDisabled={!values.state || !values.city}
                   defaultValue={values.locations}
                   onChange={(selectedOption) =>
                     handleSelectChange(selectedOption, { name: "locations" })

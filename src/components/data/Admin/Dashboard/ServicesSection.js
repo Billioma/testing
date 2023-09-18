@@ -23,7 +23,7 @@ export default function ServicesSection() {
   const cardsData = [
     {
       id: 1,
-      title: "Vallet Parking",
+      title: "Valet Parking",
       description: "This is Card 1 description.",
       buttonText: "Button 1",
       subTitle: "Total",

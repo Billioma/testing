@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import OperatorsTableLayer from "../../../components/data/Admin/Users/OperatorsTableLayer";
 import { Box, Button, Flex, Text } from "@chakra-ui/react";
 import { FiPlus } from "react-icons/fi";
 import { VscDebugRestart } from "react-icons/vsc";
@@ -64,6 +63,7 @@ export default function () {
         setPage={setPage}
         startRow={startRow}
         endRow={endRow || 25}
+        refetch={refetch}
       />
     </Box>
   );

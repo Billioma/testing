@@ -37,7 +37,7 @@ export default function AddOperator() {
     },
     onError: (error) => {
       errorToast(
-        error?.response?.data?.message || error?.message || "An Error occured"
+        error?.response?.data?.message || error?.message || "An Error occurred"
       );
     },
   });

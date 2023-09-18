@@ -38,8 +38,6 @@ export const BOOKING_RATES = "service-bookings/rates";
 export const GET_ZONE = (zone = "") => `public/zone?term=${zone}`;
 export const GET_SERVICES = "public/services";
 export const GET_STATES = "https://locus.fkkas.com/api/states";
-export const GET_CITIES = (state = "") =>
-  `https://locus.fkkas.com/api/regions/${state}`;
 export const SEND_MAIL = "support-email/send-message";
 export const GET_PREFERENCE = "preferences";
 export const UPDATE_PREFERENCE = "preferences/update";

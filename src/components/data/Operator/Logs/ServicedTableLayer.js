@@ -3,6 +3,7 @@ import {
   Box,
   Button,
   Flex,
+  Image,
   Table,
   TableContainer,
   Tbody,
@@ -14,7 +15,6 @@ import {
 } from "@chakra-ui/react";
 import TableLoader from "../../../loaders/TableLoader";
 import { operatorLogHeader } from "../../../common/constants";
-import NoData from "../../../common/NoData";
 import { formatDateTimes } from "../../../../utils/helpers";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
@@ -25,6 +25,8 @@ const ServicedTableLayer = ({ isLoading, limit, data, setPage, page }) => {
 
   return (
     <Box mt="16px">
+    {data?.data?.length ? (
+      <>
       <TableContainer maxH="60vh" minH="40vh" overflowY="scroll">
         {isLoading ? (
           <TableLoader />
@@ -51,7 +53,7 @@ const ServicedTableLayer = ({ isLoading, limit, data, setPage, page }) => {
               </Tr>
             </Thead>
             <Tbody>
-              {data?.data?.length ? (
+              {
                 data?.data?.map((item, i) => (
                   <Tr fontSize="12px" fontWeight={500} color="#646668" key={i}>
                     <Td>{item?.ticketNumber}</Td>
@@ -91,16 +93,7 @@ const ServicedTableLayer = ({ isLoading, limit, data, setPage, page }) => {
                     </Td>
                   </Tr>
                 ))
-              ) : (
-                <Tr>
-                  <Td colSpan={7} rowSpan={2}>
-                    <NoData
-                      title="No Event"
-                      desc="No event has been added to your account"
-                    />
-                  </Td>
-                </Tr>
-              )}
+             }
             </Tbody>
           </Table>
         )}
@@ -180,6 +173,26 @@ const ServicedTableLayer = ({ isLoading, limit, data, setPage, page }) => {
           </Flex>
         </Flex>
       </Flex>
+      </>
+      ) : (
+        <Flex
+          gap="16px"
+          justifyContent="center"
+          align="center"
+          my="38px"
+          flexDir="column"
+        >
+          <Image src="/assets/no-serv.jpg" w="64px" h="64px" />
+          <Text
+            color="#848688"
+            fontSize="12px"
+            lineHeight="100%"
+            fontWeight={500}
+          >
+            No Serviced Vehicles yet
+          </Text>
+        </Flex>
+      )}
     </Box>
   );
 };

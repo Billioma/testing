@@ -19,7 +19,7 @@ import { useNavigate } from "react-router-dom";
 import { HiOutlineInformationCircle } from "react-icons/hi";
 import AdminDeleteModal from "../../../modals/AdminDeleteModal";
 import useCustomToast from "../../../../utils/notifications";
-import { useDeleteAttendant } from "../../../../services/admin/query/users";
+import { useDeleteAdministrator } from "../../../../services/admin/query/users";
 import { BsChevronDown } from "react-icons/bs";
 
 const TableLayer = ({
@@ -41,20 +41,21 @@ const TableLayer = ({
   ];
   const { errorToast, successToast } = useCustomToast();
 
-  const { mutate, isLoading: isDeleting } = useDeleteAttendant({
+  const navigate = useNavigate();
+  const [selectedRow, setSelectedRow] = useState({ isOpen: false, id: null });
+
+  const { mutate, isLoading: isDeleting } = useDeleteAdministrator({
     onSuccess: (res) => {
       successToast(res?.message);
       refetch();
+      setSelectedRow({ isOpen: false, id: null });
     },
     onError: (err) => {
       errorToast(
-        err?.response?.data?.message || err?.message || "An Error occured"
+        err?.response?.data?.message || err?.message || "An Error occurred"
       );
     },
   });
-
-  const navigate = useNavigate();
-  const [selectedRow, setSelectedRow] = useState({ isOpen: false, id: null });
 
   const handleSubmit = (e) => {
     e.preventDefault();

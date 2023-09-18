@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Box, Flex, Image, Text } from "@chakra-ui/react";
-import ParkedTableLayer from "../../../../components/data/Operator/Logs/ParkedTableLayer";
+import ValetTableLayer from "../../../../components/data/Operator/Logs/ValetTableLayer";
 import { useGetValeted } from "../../../../services/operator/query/logs";
 
 const Vehicles = () => {
@@ -33,7 +33,7 @@ const Vehicles = () => {
               cursor="pointer"
               transition=".3s ease-in-out"
               _hover={{ bg: "#F4F6F8" }}
-              onClick={mutate}
+              onClick={() => mutate({ limit, page: page + 1 })}
               borderRadius="8px"
               border="1px solid #848688"
               p="10px"
@@ -48,7 +48,7 @@ const Vehicles = () => {
           </Flex>
         </Flex>
 
-        <ParkedTableLayer
+        <ValetTableLayer
           page={page}
           setPage={setPage}
           data={data}

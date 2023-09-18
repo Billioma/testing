@@ -17,7 +17,7 @@ export const trim = (str) => {
   return str?.length > 20 ? str.substring(0, 20) + "..." : str;
 };
 
-export const formatDate = (date, fallback = "") => {
+export const formatDate = (date, fallback = "", withTime = false) => {
   if (!date) return fallback;
 
   const formattedDate = new Date(date);
@@ -26,7 +26,11 @@ export const formatDate = (date, fallback = "") => {
   const month = (formattedDate.getMonth() + 1).toString().padStart(2, "0");
   const day = formattedDate.getDate().toString().padStart(2, "0");
 
-  return `${month}-${day}-${year}`;
+  const hours = formattedDate.getHours().toString().padStart(2, "0");
+  const minutes = formattedDate.getMinutes().toString().padStart(2, "0");
+  // const seconds = formattedDate.getSeconds().toString().padStart(2, "0");
+
+  return `${month}-${day}-${year} ${withTime ? `${hours}:${minutes}` : ""}`;
 };
 
 export const formatDateHour = (date, fallback = "") => {

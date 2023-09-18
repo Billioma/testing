@@ -5,6 +5,7 @@ import {
   editVehicle,
   getMakes,
   getModel,
+  deleteVehicle
 } from "../api/vehicles";
 
 export const useCreateVehicle = (options = {}) => {
@@ -19,6 +20,15 @@ export const useCreateVehicle = (options = {}) => {
 export const useEditVehicle = (options = {}) => {
   const { isLoading, data, mutate } = useMutation(editVehicle, {
     mutationKey: ["EDIT_VEHICLE"],
+    ...options,
+  });
+
+  return { isLoading, data, mutate };
+};
+
+export const useDeleteVehicle = (options = {}) => {
+  const { isLoading, data, mutate } = useMutation(deleteVehicle, {
+    mutationKey: ["DELETE_VEHICLE"],
     ...options,
   });
 

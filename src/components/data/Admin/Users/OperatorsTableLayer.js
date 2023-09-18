@@ -48,10 +48,11 @@ const TableLayer = ({
     onSuccess: (res) => {
       successToast(res?.message);
       refetch();
+      setSelectedRow({ isOpen: false, id: null });
     },
     onError: (err) => {
       errorToast(
-        err?.response?.data?.message || err?.message || "An Error occured"
+        err?.response?.data?.message || err?.message || "An Error occurred"
       );
     },
   });

@@ -40,7 +40,7 @@ export default function AddOperator() {
     },
     onError: (error) => {
       errorToast(
-        error?.response?.data?.message || error?.message || "An Error occured"
+        error?.response?.data?.message || error?.message || "An Error occurred"
       );
     },
   });
@@ -238,7 +238,7 @@ export default function AddOperator() {
               Cancel
             </Button>
             <Button
-              variant="adminAlt"
+              variant="adminPrimary"
               w="55%"
               isDisabled={isDisabled}
               isLoading={isLoading}
