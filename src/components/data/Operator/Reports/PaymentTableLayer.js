@@ -20,67 +20,60 @@ import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 const PaymentTableLayer = ({ isLoading, limit, data, setPage, page }) => {
   return (
     <Box mt="16px">
-      {data?.data?.length ? (
+      {isLoading ? (
+        <TableLoader />
+      ) : data?.data?.length ? (
         <>
           <TableContainer maxH="60vh" minH="40vh" overflowY="scroll">
-            {isLoading ? (
-              <TableLoader />
-            ) : (
-              <Table>
-                <Thead bg="#F4F6F8">
-                  <Tr>
-                    {operatorRepPaymentHeader?.map((data, i) => (
-                      <Th
-                        textAlign={
-                          i === 3 || i === 4 || i === 6 ? "center" : "start"
-                        }
-                        key={i}
-                        pos="sticky"
-                        top="0"
-                        bg="#F4F6F8"
-                        fontFamily="Sailec"
-                        zIndex="2"
-                        color="#949698"
-                        lineHeight="100%"
-                        fontWeight={500}
-                      >
-                        {data}
-                      </Th>
-                    ))}
-                  </Tr>
-                </Thead>
-                <Tbody>
-                  {data?.data?.map((item, i) => (
-                    <Tr
-                      fontSize="12px"
-                      fontWeight={500}
-                      color="#646668"
+            <Table>
+              <Thead bg="#F4F6F8">
+                <Tr>
+                  {operatorRepPaymentHeader?.map((data, i) => (
+                    <Th
+                      textAlign={
+                        i === 3 || i === 4 || i === 6 ? "center" : "start"
+                      }
                       key={i}
+                      pos="sticky"
+                      top="0"
+                      bg="#F4F6F8"
+                      fontFamily="Sailec"
+                      zIndex="2"
+                      color="#949698"
+                      lineHeight="100%"
+                      fontWeight={500}
                     >
-                      <Td>{item?.location}</Td>
-                      <Td>{item?.zone}</Td>
-                      <Td>{item?.attendant}</Td>
-                      <Td textAlign="center">
-                        ₦{" "}
-                        {item?.amount?.toLocaleString(undefined, {
-                          maximumFractionDigits: 2,
-                        })}
-                      </Td>
-                      <Td textAlign="center">
-                        ₦{" "}
-                        {item?.amountPaid?.toLocaleString(undefined, {
-                          maximumFractionDigits: 2,
-                        })}
-                      </Td>
-                      <Td>{item?.serviceType}</Td>
-                      <Td textAlign="center">
-                        {formatDateTimes(item?.createdAt)}
-                      </Td>
-                    </Tr>
+                      {data}
+                    </Th>
                   ))}
-                </Tbody>
-              </Table>
-            )}
+                </Tr>
+              </Thead>
+              <Tbody>
+                {data?.data?.map((item, i) => (
+                  <Tr fontSize="12px" fontWeight={500} color="#646668" key={i}>
+                    <Td>{item?.location}</Td>
+                    <Td>{item?.zone}</Td>
+                    <Td>{item?.attendant}</Td>
+                    <Td textAlign="center">
+                      ₦{" "}
+                      {item?.amount?.toLocaleString(undefined, {
+                        maximumFractionDigits: 2,
+                      })}
+                    </Td>
+                    <Td textAlign="center">
+                      ₦{" "}
+                      {item?.amountPaid?.toLocaleString(undefined, {
+                        maximumFractionDigits: 2,
+                      })}
+                    </Td>
+                    <Td>{item?.serviceType}</Td>
+                    <Td textAlign="center">
+                      {formatDateTimes(item?.createdAt)}
+                    </Td>
+                  </Tr>
+                ))}
+              </Tbody>
+            </Table>
           </TableContainer>
 
           <Flex

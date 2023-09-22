@@ -25,81 +25,74 @@ const ParkedTableLayer = ({ isLoading, limit, data, setPage, page }) => {
 
   return (
     <Box mt="16px">
-      {data?.data?.length ? (
+      {isLoading ? (
+        <TableLoader />
+      ) : data?.data?.length ? (
         <>
           <TableContainer maxH="60vh" minH="40vh" overflowY="scroll">
-            {isLoading ? (
-              <TableLoader />
-            ) : (
-              <Table>
-                <Thead bg="#F4F6F8">
-                  <Tr>
-                    {operatorLogHeader?.map((data, i) => (
-                      <Th
-                        textAlign={i === 0 ? "start" : "center"}
-                        key={i}
-                        pos="sticky"
-                        top="0"
-                        bg="#F4F6F8"
-                        fontFamily="Sailec"
-                        zIndex="2"
-                        color="#949698"
-                        lineHeight="100%"
-                        fontWeight={500}
-                      >
-                        {data}
-                      </Th>
-                    ))}
-                  </Tr>
-                </Thead>
-                <Tbody>
-                  {data?.data?.map((item, i) => (
-                    <Tr
-                      fontSize="12px"
-                      fontWeight={500}
-                      color="#646668"
+            <Table>
+              <Thead bg="#F4F6F8">
+                <Tr>
+                  {operatorLogHeader?.map((data, i) => (
+                    <Th
+                      textAlign={i === 0 ? "start" : "center"}
                       key={i}
+                      pos="sticky"
+                      top="0"
+                      bg="#F4F6F8"
+                      fontFamily="Sailec"
+                      zIndex="2"
+                      color="#949698"
+                      lineHeight="100%"
+                      fontWeight={500}
                     >
-                      <Td>{item?.ticketNumber}</Td>
-                      <Td textAlign="center">{item?.location?.name}</Td>
-                      <Td textAlign="center">{item?.zone?.name}</Td>
-                      <Td textAlign="center">{item?.attendant?.name}</Td>
-                      <Td textAlign="center">
-                        {formatDateTimes(item?.createdAt)}
-                      </Td>
-
-                      <Td>
-                        <Flex align="center" justifyContent="center">
-                          <Button
-                            bg="#A11212"
-                            _hover={{ bg: "#A11212" }}
-                            _active={{ bg: "#A11212" }}
-                            _focus={{ bg: "#A11212" }}
-                            color="#fff"
-                            fontWeight={500}
-                            onClick={() =>
-                              navigate(
-                                `/operator/logs/parked-vehicles/${item?.id}`
-                              )
-                            }
-                            lineHeight="100%"
-                            px="16px"
-                            py="8px"
-                            fontSize="12px"
-                            display="flex"
-                            align="center"
-                            gap="8px"
-                          >
-                            <AiOutlineEye size="16px" color="#fff" />
-                            View
-                          </Button>
-                        </Flex>
-                      </Td>
-                    </Tr>
+                      {data}
+                    </Th>
                   ))}
-                </Tbody>
-              </Table>
-            )}
+                </Tr>
+              </Thead>
+              <Tbody>
+                {data?.data?.map((item, i) => (
+                  <Tr fontSize="12px" fontWeight={500} color="#646668" key={i}>
+                    <Td>{item?.ticketNumber}</Td>
+                    <Td textAlign="center">{item?.location?.name}</Td>
+                    <Td textAlign="center">{item?.zone?.name}</Td>
+                    <Td textAlign="center">{item?.attendant?.name}</Td>
+                    <Td textAlign="center">
+                      {formatDateTimes(item?.createdAt)}
+                    </Td>
+
+                    <Td>
+                      <Flex align="center" justifyContent="center">
+                        <Button
+                          bg="#A11212"
+                          _hover={{ bg: "#A11212" }}
+                          _active={{ bg: "#A11212" }}
+                          _focus={{ bg: "#A11212" }}
+                          color="#fff"
+                          fontWeight={500}
+                          onClick={() =>
+                            navigate(
+                              `/operator/logs/parked-vehicles/${item?.id}`
+                            )
+                          }
+                          lineHeight="100%"
+                          px="16px"
+                          py="8px"
+                          fontSize="12px"
+                          display="flex"
+                          align="center"
+                          gap="8px"
+                        >
+                          <AiOutlineEye size="16px" color="#fff" />
+                          View
+                        </Button>
+                      </Flex>
+                    </Td>
+                  </Tr>
+                ))}
+              </Tbody>
+            </Table>
           </TableContainer>
 
           <Flex

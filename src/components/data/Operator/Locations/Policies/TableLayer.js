@@ -65,115 +65,106 @@ const TableLayer = ({
 
   return (
     <Box mt="16px">
-      {!data?.data?.length ? (
+      {isLoading ? (
+        <TableLoader />
+      ) : data?.data?.length ? (
         <>
           <TableContainer maxH="60vh" minH="40vh" overflowY="scroll">
-            {isLoading ? (
-              <TableLoader />
-            ) : (
-              <Table>
-                <Thead bg="#F4F6F8">
-                  <Tr>
-                    {operatorPoliciesHeader?.map((data, i) => (
-                      <Th
-                        textAlign={i === 2 || i === 3 ? "center" : "start"}
-                        key={i}
-                        pos="sticky"
-                        top="0"
-                        bg="#F4F6F8"
-                        fontFamily="Sailec"
-                        zIndex="2"
-                        color="#949698"
-                        lineHeight="100%"
-                        fontWeight={500}
-                      >
-                        {data}
-                      </Th>
-                    ))}
-                  </Tr>
-                </Thead>
-                <Tbody>
-                  {data?.data?.map((item, i) => (
-                    <Tr
-                      fontSize="12px"
-                      fontWeight={500}
-                      color="#646668"
+            <Table>
+              <Thead bg="#F4F6F8">
+                <Tr>
+                  {operatorPoliciesHeader?.map((data, i) => (
+                    <Th
+                      textAlign={i === 2 || i === 3 ? "center" : "start"}
                       key={i}
+                      pos="sticky"
+                      top="0"
+                      bg="#F4F6F8"
+                      fontFamily="Sailec"
+                      zIndex="2"
+                      color="#949698"
+                      lineHeight="100%"
+                      fontWeight={500}
                     >
-                      <Td>{item?.title}</Td>
-                      <Td>{item?.location?.name}</Td>
-                      <Td textAlign="center">
-                        {formatDateTimes(item?.createdAt)}
-                      </Td>
-
-                      <Td>
-                        <Flex gap="20px" align="center" justifyContent="center">
-                          <Text
-                            textDecor="underline"
-                            color="#646668"
-                            fontWeight={500}
-                            lineHeight="100%"
-                            fontSize="12px"
-                            onClick={() =>
-                              navigate(
-                                `/operator/locations/policies/${item?.id}`
-                              )
-                            }
-                            cursor="pointer"
-                          >
-                            View
-                          </Text>
-                          <Button
-                            bg="transparent"
-                            border="1px solid #848688"
-                            color="#848688"
-                            fontWeight={500}
-                            lineHeight="100%"
-                            fontSize="12px"
-                            _hover={{ bg: "transparent" }}
-                            _active={{ bg: "transparent" }}
-                            _focus={{ bg: "transparent" }}
-                            display="flex"
-                            onClick={() => (
-                              navigate(
-                                `/operator/locations/policies/${item?.id}`
-                              ),
-                              sessionStorage.setItem("edit", "edit")
-                            )}
-                            px="16px"
-                            py="8px"
-                            align="center"
-                            gap="8px"
-                          >
-                            <AiOutlineEdit size="16px" color="#848688" />
-                            Edit
-                          </Button>
-                          <Button
-                            bg="#A11212"
-                            _hover={{ bg: "#A11212" }}
-                            _active={{ bg: "#A11212" }}
-                            _focus={{ bg: "#A11212" }}
-                            color="#fff"
-                            fontWeight={500}
-                            onClick={() => open(item)}
-                            lineHeight="100%"
-                            px="16px"
-                            py="8px"
-                            fontSize="12px"
-                            display="flex"
-                            align="center"
-                            gap="8px"
-                          >
-                            <BsTrash size="16px" color="#fff" />
-                            Delete
-                          </Button>
-                        </Flex>
-                      </Td>
-                    </Tr>
+                      {data}
+                    </Th>
                   ))}
-                </Tbody>
-              </Table>
-            )}
+                </Tr>
+              </Thead>
+              <Tbody>
+                {data?.data?.map((item, i) => (
+                  <Tr fontSize="12px" fontWeight={500} color="#646668" key={i}>
+                    <Td>{item?.title}</Td>
+                    <Td>{item?.location?.name || "N/A"}</Td>
+                    <Td textAlign="center">
+                      {formatDateTimes(item?.createdAt)}
+                    </Td>
+
+                    <Td>
+                      <Flex gap="20px" align="center" justifyContent="center">
+                        <Text
+                          textDecor="underline"
+                          color="#646668"
+                          fontWeight={500}
+                          lineHeight="100%"
+                          fontSize="12px"
+                          onClick={() =>
+                            navigate(`/operator/locations/policies/${item?.id}`)
+                          }
+                          cursor="pointer"
+                        >
+                          View
+                        </Text>
+                        <Button
+                          bg="transparent"
+                          border="1px solid #848688"
+                          color="#848688"
+                          fontWeight={500}
+                          lineHeight="100%"
+                          fontSize="12px"
+                          _hover={{ bg: "transparent" }}
+                          _active={{ bg: "transparent" }}
+                          _focus={{ bg: "transparent" }}
+                          display="flex"
+                          onClick={() => (
+                            navigate(
+                              `/operator/locations/policies/${item?.id}`
+                            ),
+                            sessionStorage.setItem("edit", "edit")
+                          )}
+                          px="16px"
+                          py="8px"
+                          align="center"
+                          gap="8px"
+                        >
+                          <AiOutlineEdit size="16px" color="#848688" />
+                          Edit
+                        </Button>
+                        <Button
+                          bg="#A11212"
+                          _hover={{ bg: "#A11212" }}
+                          _active={{ bg: "#A11212" }}
+                          _focus={{ bg: "#A11212" }}
+                          color="#fff"
+                          fontWeight={500}
+                          onClick={() => open(item)}
+                          lineHeight="100%"
+                          px="16px"
+                          py="8px"
+                          fontSize="12px"
+                          display="flex"
+                          align="center"
+                          gap="8px"
+                        >
+                          <BsTrash size="16px" color="#fff" />
+                          Delete
+                        </Button>
+                      </Flex>
+                    </Td>
+                  </Tr>
+                ))}
+              </Tbody>
+            </Table>
           </TableContainer>
 
           <Flex
