@@ -67,11 +67,9 @@ const Attendants = () => {
         </Flex>
 
         <TableLayer
-          eventMutate={mutate}
           page={page}
           setPage={setPage}
           data={data}
-          attendantMutate={mutate}
           limit={limit}
           isLoading={isLoading}
         />

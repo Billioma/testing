@@ -13,6 +13,7 @@ import {
   initPolicyValues,
   validatePolicychema,
 } from "../../../../utils/validation";
+import { statusType } from "../../../../components/common/constants";
 
 const AddPolicy = () => {
   const navigate = useNavigate();
@@ -22,6 +23,11 @@ const AddPolicy = () => {
   const locationOptions = allLocations?.map((state) => ({
     value: state?.id,
     label: state?.name,
+  }));
+
+  const statusOptions = statusType?.map((status, i) => ({
+    value: i,
+    label: status,
   }));
 
   const customStyles = {
@@ -64,10 +70,11 @@ const AddPolicy = () => {
   });
 
   const handleSubmit = (values = "") => {
-    const { location, ...rest } = values;
+    const { location, status, ...rest } = values;
     createMutate({
       ...rest,
       location: Number(location?.value),
+      status: status?.value,
     });
   };
 
@@ -198,6 +205,40 @@ const AddPolicy = () => {
                       />
                     </Box>
 
+                    <Box mt="16px">
+                      <Text
+                        color="#444648"
+                        fontSize="10px"
+                        fontWeight={500}
+                        mb="8px"
+                        lineHeight="100%"
+                      >
+                        Status
+                      </Text>
+                      <Select
+                        styles={customStyles}
+                        value={values.status}
+                        options={statusOptions}
+                        components={{
+                          IndicatorSeparator: () => (
+                            <div style={{ display: "none" }}></div>
+                          ),
+                          DropdownIndicator: () => (
+                            <div>
+                              <IoIosArrowDown size="15px" color="#646668" />
+                            </div>
+                          ),
+                        }}
+                        name="status"
+                        onChange={(selectedOption) =>
+                          setValues({
+                            ...values,
+                            status: selectedOption,
+                          })
+                        }
+                        onBlur={handleBlur}
+                      />
+                    </Box>
                     <Flex mt="24px" align="center" w="full" gap="24px">
                       <Button
                         bg="transparent"

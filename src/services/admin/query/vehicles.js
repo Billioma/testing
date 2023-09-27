@@ -5,7 +5,7 @@ import {
   editVehicle,
   getMakes,
   getModel,
-  deleteVehicle
+  deleteVehicle,
 } from "../api/vehicles";
 
 export const useCreateVehicle = (options = {}) => {

@@ -18,6 +18,7 @@ import {
   validateZoneSpaceSchema,
 } from "../../../../utils/validation";
 import { useGetServices } from "../../../../services/customer/query/locations";
+import { statusType } from "../../../../components/common/constants";
 
 const AddZone = () => {
   const navigate = useNavigate();
@@ -38,6 +39,11 @@ const AddZone = () => {
   const amenitiesOptions = amenities?.map((amenity) => ({
     value: amenity?.id,
     label: amenity?.name,
+  }));
+
+  const statusOptions = statusType?.map((status, i) => ({
+    value: i,
+    label: status,
   }));
 
   const customStyles = {
@@ -80,7 +86,8 @@ const AddZone = () => {
   });
 
   const handleSubmit = (values = "") => {
-    const { location, service, amenities, reservableSpace, ...rest } = values;
+    const { location, service, status, amenities, reservableSpace, ...rest } =
+      values;
     reservable
       ? createMutate({
           ...rest,
@@ -89,6 +96,7 @@ const AddZone = () => {
           location: Number(location?.value),
           reservable: reservable ? 1 : 0,
           reservableSpace: reservableSpace,
+          status: status?.value,
         })
       : createMutate({
           ...rest,
@@ -96,6 +104,7 @@ const AddZone = () => {
           service: Number(service?.value),
           location: Number(location?.value),
           reservable: reservable ? 1 : 0,
+          status: status?.value,
         });
   };
 
@@ -425,6 +434,41 @@ const AddZone = () => {
                         />
                       </Box>
                     )}
+
+                    <Box mt="16px">
+                      <Text
+                        color="#444648"
+                        fontSize="10px"
+                        fontWeight={500}
+                        mb="8px"
+                        lineHeight="100%"
+                      >
+                        Status
+                      </Text>
+                      <Select
+                        styles={customStyles}
+                        value={values.status}
+                        options={statusOptions}
+                        components={{
+                          IndicatorSeparator: () => (
+                            <div style={{ display: "none" }}></div>
+                          ),
+                          DropdownIndicator: () => (
+                            <div>
+                              <IoIosArrowDown size="15px" color="#646668" />
+                            </div>
+                          ),
+                        }}
+                        name="status"
+                        onChange={(selectedOption) =>
+                          setValues({
+                            ...values,
+                            status: selectedOption,
+                          })
+                        }
+                        onBlur={handleBlur}
+                      />
+                    </Box>
                     <Flex mt="24px" align="center" w="full" gap="24px">
                       <Button
                         bg="transparent"

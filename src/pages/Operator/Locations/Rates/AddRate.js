@@ -20,6 +20,7 @@ import { useGetServices } from "../../../../services/customer/query/locations";
 import {
   DurationTypes,
   RateTypes,
+  statusType,
 } from "../../../../components/common/constants";
 
 const AddRate = () => {
@@ -41,6 +42,11 @@ const AddRate = () => {
   const rateOptions = RateTypes?.map((rate, i) => ({
     value: i,
     label: rate,
+  }));
+
+  const statusOptions = statusType?.map((status, i) => ({
+    value: i,
+    label: status,
   }));
 
   const zoneOptions = locations?.data?.reduce((acc, location) => {
@@ -99,6 +105,7 @@ const AddRate = () => {
       durationType,
       serviceType,
       zones,
+      status,
       ...rest
     } = values;
     limit
@@ -111,6 +118,7 @@ const AddRate = () => {
           noLimit: 1,
           durationLimit: durationLimit,
           durationStart: durationStart,
+          status: status?.value,
           service: Number(serviceType?.id),
         })
       : createMutate({
@@ -119,6 +127,7 @@ const AddRate = () => {
           serviceType: serviceType?.value,
           rateType: Number(rateType?.value),
           service: Number(serviceType?.id),
+          status: status?.value,
           noLimit: 0,
         });
   };
@@ -433,6 +442,41 @@ const AddRate = () => {
                           setValues({
                             ...values,
                             zones: selectedOption,
+                          })
+                        }
+                        onBlur={handleBlur}
+                      />
+                    </Box>
+
+                    <Box mt="16px">
+                      <Text
+                        color="#444648"
+                        fontSize="10px"
+                        fontWeight={500}
+                        mb="8px"
+                        lineHeight="100%"
+                      >
+                        Status
+                      </Text>
+                      <Select
+                        styles={customStyles}
+                        value={values.status}
+                        options={statusOptions}
+                        components={{
+                          IndicatorSeparator: () => (
+                            <div style={{ display: "none" }}></div>
+                          ),
+                          DropdownIndicator: () => (
+                            <div>
+                              <IoIosArrowDown size="15px" color="#646668" />
+                            </div>
+                          ),
+                        }}
+                        name="status"
+                        onChange={(selectedOption) =>
+                          setValues({
+                            ...values,
+                            status: selectedOption,
                           })
                         }
                         onBlur={handleBlur}

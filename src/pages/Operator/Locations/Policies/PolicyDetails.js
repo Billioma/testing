@@ -6,19 +6,19 @@ import Select from "react-select";
 import CustomInput from "../../../../components/common/CustomInput";
 import { IoIosArrowDown } from "react-icons/io";
 import useCustomToast from "../../../../utils/notifications";
-import ConfirmDeleteModal from "../../../../components/modals/ConfirmDeleteModal";
 import {
-  useDeletePolicy,
   useGetPolicy,
   useUpdatePolicy,
 } from "../../../../services/operator/query/locations";
 import { useGetLocations } from "../../../../services/customer/query/locations";
+import { statusType } from "../../../../components/common/constants";
 
 const PolicyDetails = () => {
   const navigate = useNavigate();
   const [values, setValues] = useState({
     title: "",
     body: "",
+    status: "",
   });
   const isEdit = sessionStorage.getItem("edit");
   const { id } = useParams();
@@ -32,6 +32,10 @@ const PolicyDetails = () => {
   const locationOptions = allLocations?.map((state) => ({
     value: state?.id,
     label: state?.name,
+  }));
+  const statusOptions = statusType?.map((status, i) => ({
+    value: i,
+    label: status,
   }));
 
   const customStyles = {
@@ -72,11 +76,16 @@ const PolicyDetails = () => {
       (option) => option.value === data?.location?.id
     );
 
+    const selectedStatusOption = statusOptions?.find(
+      (option) => option.value === data?.status
+    );
+
     setValues({
       ...values,
       title: data?.title,
       body: data?.body,
       location: selectedLocationOption,
+      status: selectedStatusOption,
     });
   }, [data, edit]);
 
@@ -94,24 +103,6 @@ const PolicyDetails = () => {
       );
     },
   });
-  const [showDelete, setShowDelete] = useState(false);
-  const { mutate: deleteMutate, isLoading: isDeleting } = useDeletePolicy({
-    onSuccess: (res) => {
-      successToast(res?.message);
-      navigate("/operator/locations/policies");
-      setShowDelete(false);
-      sessionStorage.removeItem("edit");
-    },
-    onError: (err) => {
-      errorToast(
-        err?.response?.data?.message || err?.message || "An Error occurred"
-      );
-    },
-  });
-
-  const handleDelete = () => {
-    deleteMutate(id);
-  };
 
   const handleUpdate = () => {
     updateMutate({
@@ -120,7 +111,7 @@ const PolicyDetails = () => {
         title: values.title,
         body: values.body,
         location: values?.location?.value,
-        status: 1,
+        status: values?.status?.value,
       },
     });
   };
@@ -188,7 +179,7 @@ const PolicyDetails = () => {
                     <CustomInput
                       auth
                       mb
-                      isDisabled={edit ? false : true}
+                      dis={edit ? false : true}
                       value={values.title}
                       onChange={(e) =>
                         setValues({
@@ -212,7 +203,7 @@ const PolicyDetails = () => {
                     <CustomInput
                       auth
                       mb
-                      isDisabled={edit ? false : true}
+                      dis={edit ? false : true}
                       value={values.body}
                       onChange={(e) =>
                         setValues({
@@ -255,28 +246,61 @@ const PolicyDetails = () => {
                       }
                     />
                   </Box>
+
+                  <Box mt="16px">
+                    <Text
+                      color="#444648"
+                      fontSize="10px"
+                      fontWeight={500}
+                      mb="8px"
+                      lineHeight="100%"
+                    >
+                      Status
+                    </Text>
+                    <Select
+                      styles={customStyles}
+                      isDisabled={edit ? false : true}
+                      value={values?.status}
+                      options={statusOptions}
+                      components={{
+                        IndicatorSeparator: () => (
+                          <div style={{ display: "none" }}></div>
+                        ),
+                        DropdownIndicator: () => (
+                          <div>
+                            <IoIosArrowDown size="15px" color="#646668" />
+                          </div>
+                        ),
+                      }}
+                      onChange={(selectedOption) =>
+                        handleSelectChange(selectedOption, {
+                          name: "status",
+                        })
+                      }
+                    />
+                  </Box>
                 </Box>
 
                 <Flex mt="24px" align="center" w="full" gap="24px">
-                  <Button
-                    bg="transparent"
-                    w="70%"
-                    border="1px solid #646668"
-                    color="#646668"
-                    fontWeight={500}
-                    lineHeight="100%"
-                    fontSize="14px"
-                    onClick={() =>
-                      edit ? setEdit(false) : setShowDelete(true)
-                    }
-                    _hover={{ bg: "transparent" }}
-                    _active={{ bg: "transparent" }}
-                    _focus={{ bg: "transparent" }}
-                    px="26px"
-                    py="17px"
-                  >
-                    {edit ? "Cancel" : "Delete"}
-                  </Button>
+                  {edit && (
+                    <Button
+                      bg="transparent"
+                      w="70%"
+                      border="1px solid #646668"
+                      color="#646668"
+                      fontWeight={500}
+                      lineHeight="100%"
+                      fontSize="14px"
+                      onClick={() => setEdit(false)}
+                      _hover={{ bg: "transparent" }}
+                      _active={{ bg: "transparent" }}
+                      _focus={{ bg: "transparent" }}
+                      px="26px"
+                      py="17px"
+                    >
+                      Cancel
+                    </Button>
+                  )}
                   <Button
                     color="#fff"
                     fontWeight={500}
@@ -296,14 +320,6 @@ const PolicyDetails = () => {
           </>
         )}
       </Flex>
-
-      <ConfirmDeleteModal
-        title="Policy"
-        action={handleDelete}
-        isLoading={isDeleting}
-        isOpen={showDelete}
-        onClose={() => setShowDelete(false)}
-      />
     </Box>
   );
 };

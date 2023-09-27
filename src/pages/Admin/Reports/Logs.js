@@ -19,7 +19,7 @@ const Logs = () => {
   const limit = 10;
 
   useEffect(() => {
-    mutate({type: "parking", limit, page: page + 1 });
+    mutate({ type: "parking", limit, page: page + 1 });
   }, [page]);
 
   return (
@@ -88,7 +88,7 @@ const Logs = () => {
               cursor="pointer"
               transition=".3s ease-in-out"
               _hover={{ bg: "#F4F6F8" }}
-              onClick={() => mutate({type: "parking", limit, page: page + 1 })}
+              onClick={() => mutate({ type: "parking", limit, page: page + 1 })}
               borderRadius="8px"
               border="1px solid #848688"
               p="10px"

@@ -13,7 +13,7 @@ import { HiOutlineArrowNarrowLeft } from "react-icons/hi";
 import { useNavigate } from "react-router-dom";
 import Select from "react-select";
 import CustomInput from "../../../components/common/CustomInput";
-import { accountType } from "../../../components/common/constants";
+import { accountType, statusType } from "../../../components/common/constants";
 import { IoIosArrowDown } from "react-icons/io";
 import { useCreateAttendant } from "../../../services/operator/query/attendants";
 import { useGetOperatorLocation } from "../../../services/operator/query/user";
@@ -37,6 +37,11 @@ const AddAttendant = () => {
   const locationOptions = location?.data?.map((location) => ({
     value: location?.id,
     label: location?.name,
+  }));
+
+  const statusOptions = statusType?.map((status, i) => ({
+    value: i,
+    label: status,
   }));
 
   const customStyles = {
@@ -110,12 +115,13 @@ const AddAttendant = () => {
   const [show, setShow] = useState(false);
 
   const handleSubmit = (values = "") => {
-    const { accountType, location, ...rest } = values;
+    const { accountType, status, location, ...rest } = values;
     createMutate({
       ...rest,
       accountType: accountType?.value,
       locations: location?.map((dat) => dat?.value),
       avatar: profilePicData?.path,
+      status: status?.value,
     });
   };
 
@@ -342,7 +348,7 @@ const AddAttendant = () => {
                       />
                     </Box>
 
-                    <Box mt="16px">
+                    <Box my="16px">
                       <Text
                         color="#444648"
                         fontSize="10px"
@@ -371,6 +377,41 @@ const AddAttendant = () => {
                         name="location"
                         onChange={(selectedOption) =>
                           setValues({ ...values, location: selectedOption })
+                        }
+                        onBlur={handleBlur}
+                      />
+                    </Box>
+
+                    <Box>
+                      <Text
+                        color="#444648"
+                        fontSize="10px"
+                        fontWeight={500}
+                        mb="8px"
+                        lineHeight="100%"
+                      >
+                        Status
+                      </Text>
+                      <Select
+                        styles={customStyles}
+                        value={values.status}
+                        options={statusOptions}
+                        components={{
+                          IndicatorSeparator: () => (
+                            <div style={{ display: "none" }}></div>
+                          ),
+                          DropdownIndicator: () => (
+                            <div>
+                              <IoIosArrowDown size="15px" color="#646668" />
+                            </div>
+                          ),
+                        }}
+                        name="status"
+                        onChange={(selectedOption) =>
+                          setValues({
+                            ...values,
+                            status: selectedOption,
+                          })
                         }
                         onBlur={handleBlur}
                       />

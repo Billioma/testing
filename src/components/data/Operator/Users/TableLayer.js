@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   Box,
   Button,
@@ -14,54 +14,16 @@ import {
   Tr,
 } from "@chakra-ui/react";
 import TableLoader from "../../../loaders/TableLoader";
-import { operatorUsersHeader } from "../../../common/constants";
+import { SecStatus, operatorUsersHeader } from "../../../common/constants";
 import { formatDateTimes } from "../../../../utils/helpers";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
-import ConfirmDeleteModal from "../../../modals/ConfirmDeleteModal";
-import useCustomToast from "../../../../utils/notifications";
 import { useNavigate } from "react-router-dom";
 import { AiOutlineEdit } from "react-icons/ai";
-import { BsTrash } from "react-icons/bs";
-import { useDeleteAttendant } from "../../../../services/operator/query/attendants";
 import { Add } from "../../../common/images";
+import { BsEye } from "react-icons/bs";
 
-const TableLayer = ({
-  isLoading,
-  limit,
-  data,
-  setPage,
-  page,
-  attendantMutate,
-}) => {
-  const [showDelete, setShowDelete] = useState(false);
-  const [currentAttendant, setCurrentAttendant] = useState("");
-
-  const open = (item) => {
-    setShowDelete(true);
-    setCurrentAttendant(item);
-  };
-
-  const { errorToast, successToast } = useCustomToast();
+const TableLayer = ({ isLoading, limit, data, setPage, page }) => {
   const navigate = useNavigate();
-
-  const { mutate: deleteMutate, isLoading: isDeleting } = useDeleteAttendant({
-    onSuccess: (res) => {
-      attendantMutate({ limit: 10, page: 1 });
-      successToast(res?.message);
-      navigate("/operator/users/attendants");
-      setShowDelete(false);
-      sessionStorage.removeItem("edit");
-    },
-    onError: (err) => {
-      errorToast(
-        err?.response?.data?.message || err?.message || "An Error occurred"
-      );
-    },
-  });
-
-  const handleDelete = () => {
-    deleteMutate(currentAttendant?.id);
-  };
 
   return (
     <Box mt="16px">
@@ -97,25 +59,28 @@ const TableLayer = ({
                     <Td>{item?.name}</Td>
                     <Td textAlign="center">{item?.userId}</Td>
                     <Td textAlign="center">{item?.accountType}</Td>
+                    <Td>
+                      <Flex align="center" w="full" justifyContent="center">
+                        <Flex
+                          color={Object?.values(SecStatus[item?.status])[0]}
+                          bg={Object?.values(SecStatus[item?.status])[2]}
+                          py="5px"
+                          px="16px"
+                          justifyContent="center"
+                          borderRadius="4px"
+                          align="center"
+                        >
+                          {Object?.values(SecStatus[item?.status])[1]}
+                        </Flex>
+                      </Flex>
+                    </Td>
+
                     <Td textAlign="center">
                       {formatDateTimes(item?.createdAt)}
                     </Td>
 
                     <Td>
                       <Flex gap="20px" align="center" justifyContent="center">
-                        <Text
-                          textDecor="underline"
-                          color="#646668"
-                          fontWeight={500}
-                          lineHeight="100%"
-                          fontSize="12px"
-                          onClick={() =>
-                            navigate(`/operator/users/attendants/${item?.id}`)
-                          }
-                          cursor="pointer"
-                        >
-                          View
-                        </Text>
                         <Button
                           bg="transparent"
                           border="1px solid #848688"
@@ -146,7 +111,9 @@ const TableLayer = ({
                           _focus={{ bg: "#A11212" }}
                           color="#fff"
                           fontWeight={500}
-                          onClick={() => open(item)}
+                          onClick={() =>
+                            navigate(`/operator/users/attendants/${item?.id}`)
+                          }
                           lineHeight="100%"
                           px="16px"
                           py="8px"
@@ -155,8 +122,8 @@ const TableLayer = ({
                           align="center"
                           gap="8px"
                         >
-                          <BsTrash size="16px" color="#fff" />
-                          Delete
+                          <BsEye size="16px" color="#fff" />
+                          View
                         </Button>
                       </Flex>
                     </Td>
@@ -270,13 +237,6 @@ const TableLayer = ({
           </Button>
         </Flex>
       )}
-      <ConfirmDeleteModal
-        title="Attendant"
-        action={handleDelete}
-        isLoading={isDeleting}
-        isOpen={showDelete}
-        onClose={() => setShowDelete(false)}
-      />
     </Box>
   );
 };

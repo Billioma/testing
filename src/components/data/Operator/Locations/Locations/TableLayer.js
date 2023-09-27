@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   Box,
   Button,
@@ -14,54 +14,19 @@ import {
   Tr,
 } from "@chakra-ui/react";
 import TableLoader from "../../../../loaders/TableLoader";
-import { operatorLocationsHeader } from "../../../../common/constants";
+import {
+  SecStatus,
+  operatorLocationsHeader,
+} from "../../../../common/constants";
 import { formatDateTimes } from "../../../../../utils/helpers";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
-import ConfirmDeleteModal from "../../../../modals/ConfirmDeleteModal";
-import useCustomToast from "../../../../../utils/notifications";
 import { useNavigate } from "react-router-dom";
 import { AiOutlineEdit } from "react-icons/ai";
-import { BsTrash } from "react-icons/bs";
-import { useDeleteLocation } from "../../../../../services/operator/query/locations";
 import { Add } from "../../../../common/images";
+import { BsEye } from "react-icons/bs";
 
-const TableLayer = ({
-  isLoading,
-  limit,
-  data,
-  setPage,
-  page,
-  locationMutate,
-}) => {
-  const [showDelete, setShowDelete] = useState(false);
-  const [currentLocation, setCurrentLocation] = useState("");
-
-  const open = (item) => {
-    setShowDelete(true);
-    setCurrentLocation(item);
-  };
-
-  const { errorToast, successToast } = useCustomToast();
+const TableLayer = ({ isLoading, limit, data, setPage, page }) => {
   const navigate = useNavigate();
-
-  const { mutate: deleteMutate, isLoading: isDeleting } = useDeleteLocation({
-    onSuccess: (res) => {
-      locationMutate({ limit: 10, page: 1 });
-      successToast(res?.message);
-      navigate("/operator/locations/all");
-      setShowDelete(false);
-      sessionStorage.removeItem("edit");
-    },
-    onError: (err) => {
-      errorToast(
-        err?.response?.data?.message || err?.message || "An Error occurred"
-      );
-    },
-  });
-
-  const handleDelete = () => {
-    deleteMutate(currentLocation?.id);
-  };
 
   return (
     <Box mt="16px">
@@ -75,7 +40,7 @@ const TableLayer = ({
                 <Tr>
                   {operatorLocationsHeader?.map((data, i) => (
                     <Th
-                      textAlign={i !== 4 ? "start" : "center"}
+                      textAlign={i === 3 || i === 5 ? "center" : "start"}
                       key={i}
                       pos="sticky"
                       top="0"
@@ -97,23 +62,25 @@ const TableLayer = ({
                     <Td>{item?.name}</Td>
                     <Td>{item?.operator?.name}</Td>
                     <Td>{item?.state}</Td>
+                    <Td>
+                      <Flex align="center" w="full" justifyContent="center">
+                        <Flex
+                          color={Object?.values(SecStatus[item?.status])[0]}
+                          bg={Object?.values(SecStatus[item?.status])[2]}
+                          py="5px"
+                          px="16px"
+                          justifyContent="center"
+                          borderRadius="4px"
+                          align="center"
+                        >
+                          {Object?.values(SecStatus[item?.status])[1]}
+                        </Flex>
+                      </Flex>
+                    </Td>
                     <Td>{formatDateTimes(item?.createdAt)}</Td>
 
                     <Td>
                       <Flex gap="20px" align="center" justifyContent="center">
-                        <Text
-                          textDecor="underline"
-                          color="#646668"
-                          fontWeight={500}
-                          lineHeight="100%"
-                          fontSize="12px"
-                          onClick={() =>
-                            navigate(`/operator/locations/all/${item?.id}`)
-                          }
-                          cursor="pointer"
-                        >
-                          View
-                        </Text>
                         <Button
                           bg="transparent"
                           border="1px solid #848688"
@@ -144,7 +111,9 @@ const TableLayer = ({
                           _focus={{ bg: "#A11212" }}
                           color="#fff"
                           fontWeight={500}
-                          onClick={() => open(item)}
+                          onClick={() =>
+                            navigate(`/operator/locations/all/${item?.id}`)
+                          }
                           lineHeight="100%"
                           px="16px"
                           py="8px"
@@ -153,8 +122,8 @@ const TableLayer = ({
                           align="center"
                           gap="8px"
                         >
-                          <BsTrash size="16px" color="#fff" />
-                          Delete
+                          <BsEye size="16px" color="#fff" />
+                          View
                         </Button>
                       </Flex>
                     </Td>
@@ -268,13 +237,6 @@ const TableLayer = ({
           </Button>
         </Flex>
       )}
-      <ConfirmDeleteModal
-        title="Location"
-        action={handleDelete}
-        isLoading={isDeleting}
-        isOpen={showDelete}
-        onClose={() => setShowDelete(false)}
-      />
     </Box>
   );
 };

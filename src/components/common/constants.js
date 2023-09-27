@@ -313,6 +313,7 @@ export const operatorUsersHeader = [
   "NAME",
   "USER ID",
   "ACCOUNT TYPE",
+  "STATUS",
   "DATE CREATED",
   "ACTIONS",
 ];
@@ -320,6 +321,7 @@ export const operatorUsersHeader = [
 export const operatorPoliciesHeader = [
   "TITLE",
   "LOCATION",
+  "STATUS",
   "DATE CREATED",
   "ACTIONS",
 ];
@@ -463,6 +465,7 @@ export const operatorLocationsHeader = [
   "NAME",
   "OPERATOR",
   "STATE",
+  "STATUS",
   "DATE CREATED",
   "ACTIONS",
 ];
@@ -473,6 +476,7 @@ export const operatorRatesHeader = [
   "DURATION START",
   "DURATION LIMIT",
   "AMOUNT",
+  "STATUS",
   "DATE CREATED",
   "ACTIONS",
 ];
@@ -483,6 +487,7 @@ export const operatorZonesHeader = [
   "CAPACITY",
   "MIN DURATION",
   "DURATION TYPE",
+  "STATUS",
   "DATE CREATED",
   "ACTIONS",
 ];
@@ -1006,9 +1011,9 @@ export const cardImg = [
 ];
 
 export const SecStatus = [
-  { color: "#F9A11E", name: "Pending", bg: "#FDF6E7" },
-  { color: "#008000", name: "Active", bg: "#E5FFE5" },
   { color: "#E81313", name: "Inactive", bg: "#F9D0CD" },
+  { color: "#008000", name: "Active", bg: "#E5FFE5" },
+  { color: "#F9A11E", name: "Pending", bg: "#FDF6E7" },
 ];
 
 export const Status = [
@@ -1061,10 +1066,6 @@ export const rateOption = [
     name: "Edit Rate",
     icon: AiOutlineEdit,
   },
-  {
-    name: "Delete Rate",
-    icon: BsTrash,
-  },
 ];
 
 export const zoneOption = [
@@ -1076,13 +1077,10 @@ export const zoneOption = [
     name: "Edit Zone",
     icon: AiOutlineEdit,
   },
-  {
-    name: "Delete Zone",
-    icon: BsTrash,
-  },
 ];
 
 export const accountType = ["VALET", "PARKING", "GENERAL", "SERVICE"];
+export const statusType = ["Inactive", "Active"];
 
 export const eventOptions = ["Edit Event", "Delete Event"];
 

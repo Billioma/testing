@@ -88,7 +88,9 @@ const Customers = () => {
               cursor="pointer"
               transition=".3s ease-in-out"
               _hover={{ bg: "#F4F6F8" }}
-              onClick={() => mutate({ type: "customers", limit, page: page + 1 })}
+              onClick={() =>
+                mutate({ type: "customers", limit, page: page + 1 })
+              }
               borderRadius="8px"
               border="1px solid #848688"
               p="10px"

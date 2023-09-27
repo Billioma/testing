@@ -51,9 +51,7 @@ const LogsTableLayer = ({ isLoading, limit, data, setPage, page }) => {
                   <Tr fontSize="12px" fontWeight={500} color="#646668" key={i}>
                     <Td textAlign="center">{item?.ticketNumber}</Td>
                     <Td textAlign="center">{item?.customer}</Td>
-                    <Td whiteSpace="pre-wrap">
-                      {item?.vehicle}
-                    </Td>
+                    <Td whiteSpace="pre-wrap">{item?.vehicle}</Td>
                     <Td textAlign="center">{item?.serviceType}</Td>
                     <Td textAlign="center">{item?.billingType}</Td>
                     <Td textAlign="center">

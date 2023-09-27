@@ -15,29 +15,22 @@ import {
   Tr,
 } from "@chakra-ui/react";
 import TableLoader from "../../../../loaders/TableLoader";
-import { operatorRatesHeader, rateOption } from "../../../../common/constants";
+import {
+  SecStatus,
+  operatorRatesHeader,
+  rateOption,
+} from "../../../../common/constants";
 import { formatDateTimes } from "../../../../../utils/helpers";
 import {
   IoIosArrowBack,
   IoIosArrowDown,
   IoIosArrowForward,
 } from "react-icons/io";
-import ConfirmDeleteModal from "../../../../modals/ConfirmDeleteModal";
-import useCustomToast from "../../../../../utils/notifications";
 import { useNavigate } from "react-router-dom";
-import { useDeleteRate } from "../../../../../services/operator/query/locations";
 import { Add } from "../../../../common/images";
 
-const TableLayer = ({
-  isLoading,
-  limit,
-  data,
-  setPage,
-  page,
-  locationMutate,
-}) => {
+const TableLayer = ({ isLoading, limit, data, setPage, page }) => {
   const [show, setShow] = useState(false);
-  const [showDelete, setShowDelete] = useState(false);
   const [currentLocation, setCurrentLocation] = useState("");
 
   const open = (item) => {
@@ -45,42 +38,14 @@ const TableLayer = ({
     setCurrentLocation(item);
   };
 
-  useEffect(() => {
-    if (showDelete) {
-      setShow(false);
-    }
-  }, [showDelete]);
-
   const openOption = (i) => {
     i === 0
       ? navigate(`/operator/locations/rates/${currentLocation?.id}`)
-      : i === 1
-      ? (navigate(`/operator/locations/rates/${currentLocation?.id}`),
-        sessionStorage.setItem("edit", "edit"))
-      : i === 2 && setShowDelete(true);
+      : i === 1 &&
+        (navigate(`/operator/locations/rates/${currentLocation?.id}`),
+        sessionStorage.setItem("edit", "edit"));
   };
-
-  const { errorToast, successToast } = useCustomToast();
   const navigate = useNavigate();
-
-  const { mutate: deleteMutate, isLoading: isDeleting } = useDeleteRate({
-    onSuccess: (res) => {
-      locationMutate({ limit: 10, page: 1 });
-      successToast(res?.message);
-      navigate("/operator/locations/rates");
-      setShowDelete(false);
-      sessionStorage.removeItem("edit");
-    },
-    onError: (err) => {
-      errorToast(
-        err?.response?.data?.message || err?.message || "An Error occurred"
-      );
-    },
-  });
-
-  const handleDelete = () => {
-    deleteMutate(currentLocation?.id);
-  };
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -107,7 +72,7 @@ const TableLayer = ({
                 <Tr>
                   {operatorRatesHeader?.map((data, i) => (
                     <Th
-                      textAlign={i === 0 || i === 1 ? "start" : "center"}
+                      textAlign={i < 2 ? "start" : "center"}
                       key={i}
                       whiteSpace="pre-wrap"
                       pos="sticky"
@@ -136,6 +101,21 @@ const TableLayer = ({
                       {item?.amount?.toLocaleString(undefined, {
                         maximumFractionDigits: 2,
                       })}
+                    </Td>
+                    <Td>
+                      <Flex align="center" w="full" justifyContent="center">
+                        <Flex
+                          color={Object?.values(SecStatus[item?.status])[0]}
+                          bg={Object?.values(SecStatus[item?.status])[2]}
+                          py="5px"
+                          px="16px"
+                          justifyContent="center"
+                          borderRadius="4px"
+                          align="center"
+                        >
+                          {Object?.values(SecStatus[item?.status])[1]}
+                        </Flex>
+                      </Flex>
                     </Td>
                     <Td textAlign="center">
                       {formatDateTimes(item?.createdAt)}
@@ -300,14 +280,6 @@ const TableLayer = ({
           </Button>
         </Flex>
       )}
-
-      <ConfirmDeleteModal
-        title="rate"
-        action={handleDelete}
-        isLoading={isDeleting}
-        isOpen={showDelete}
-        onClose={() => setShowDelete(false)}
-      />
     </Box>
   );
 };

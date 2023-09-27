@@ -6,15 +6,14 @@ import Select from "react-select";
 import CustomInput from "../../../../components/common/CustomInput";
 import { IoIosArrowDown } from "react-icons/io";
 import useCustomToast from "../../../../utils/notifications";
-import ConfirmDeleteModal from "../../../../components/modals/ConfirmDeleteModal";
 import {
-  useDeleteZone,
   useGetAmenities,
   useGetOpLocation,
   useGetZone,
   useUpdateZone,
 } from "../../../../services/operator/query/locations";
 import { useGetServices } from "../../../../services/customer/query/locations";
+import { statusType } from "../../../../components/common/constants";
 
 const ZoneDetails = () => {
   const navigate = useNavigate();
@@ -26,7 +25,7 @@ const ZoneDetails = () => {
     reservableSpace: 0,
     geoLocation: "",
     minimumDuration: "",
-    status: 1,
+    status: "",
     service: "",
     amenities: "",
   });
@@ -54,6 +53,11 @@ const ZoneDetails = () => {
   const amenitiesOptions = amenities?.map((amenity) => ({
     value: amenity?.id,
     label: amenity?.name,
+  }));
+
+  const statusOptions = statusType?.map((status, i) => ({
+    value: i,
+    label: status,
   }));
 
   const customStyles = {
@@ -104,6 +108,10 @@ const ZoneDetails = () => {
       label: item?.name,
     }));
 
+    const selectedStatusOption = statusOptions?.find(
+      (option) => option.value === data?.status
+    );
+
     setValues({
       ...values,
       name: data?.name,
@@ -116,6 +124,7 @@ const ZoneDetails = () => {
       service: selectedServiceOption,
       location: selectedLocationOption,
       amenities: selectedAmenitiesOption,
+      status: selectedStatusOption,
       minimumDuration: data?.minimumDuration,
     });
     setReservable(
@@ -137,25 +146,6 @@ const ZoneDetails = () => {
       );
     },
   });
-  const [showDelete, setShowDelete] = useState(false);
-  const { mutate: deleteMutate, isLoading: isDeleting } = useDeleteZone({
-    onSuccess: (res) => {
-      successToast(res?.message);
-      navigate("/operator/locations/zones");
-      setShowDelete(false);
-      sessionStorage.removeItem("edit");
-    },
-    onError: (err) => {
-      errorToast(
-        err?.response?.data?.message || err?.message || "An Error occurred"
-      );
-    },
-  });
-
-  const handleDelete = () => {
-    deleteMutate(id);
-  };
-
   const handleUpdate = () => {
     reservable
       ? updateMutate({
@@ -169,7 +159,7 @@ const ZoneDetails = () => {
             minimumDuration: values.minimumDuration,
             service: values.service?.value,
             amenities: values.amenities?.map((item) => item?.value),
-            status: 1,
+            status: values?.status?.value,
             reservable: 1,
             reservableSpace: values?.reservableSpace,
           },
@@ -185,7 +175,7 @@ const ZoneDetails = () => {
             minimumDuration: values.minimumDuration,
             service: values.service?.value,
             amenities: values.amenities?.map((item) => item?.value),
-            status: 1,
+            status: values?.status?.value,
             reservable: 0,
           },
         });
@@ -254,7 +244,7 @@ const ZoneDetails = () => {
                     <CustomInput
                       auth
                       mb
-                      isDisabled={edit ? false : true}
+                      dis={edit ? false : true}
                       value={values.name}
                       onChange={(e) =>
                         setValues({
@@ -278,7 +268,7 @@ const ZoneDetails = () => {
                     <CustomInput
                       auth
                       mb
-                      isDisabled={edit ? false : true}
+                      dis={edit ? false : true}
                       value={values.description}
                       onChange={(e) =>
                         setValues({
@@ -302,7 +292,7 @@ const ZoneDetails = () => {
                     <CustomInput
                       auth
                       mb
-                      isDisabled={edit ? false : true}
+                      dis={edit ? false : true}
                       value={values.capacity}
                       type="number"
                       onChange={(e) =>
@@ -327,7 +317,7 @@ const ZoneDetails = () => {
                     <CustomInput
                       auth
                       mb
-                      isDisabled={edit ? false : true}
+                      dis={edit ? false : true}
                       value={values.geoLocation}
                       onChange={(e) =>
                         setValues({
@@ -384,7 +374,7 @@ const ZoneDetails = () => {
                     <CustomInput
                       auth
                       mb
-                      isDisabled={edit ? false : true}
+                      dis={edit ? false : true}
                       value={values.minimumDuration}
                       type="number"
                       onChange={(e) =>
@@ -473,6 +463,7 @@ const ZoneDetails = () => {
                       size="sm"
                       isChecked={reservable ? true : false}
                       value={reservable}
+                      isDisabled={edit ? false : true}
                       onChange={() => setReservable((prev) => !prev)}
                     />
                   </Flex>
@@ -491,7 +482,7 @@ const ZoneDetails = () => {
                       <CustomInput
                         auth
                         mb
-                        isDisabled={edit ? false : true}
+                        dis={edit ? false : true}
                         value={values.reservableSpace}
                         onChange={(e) =>
                           setValues({
@@ -502,28 +493,61 @@ const ZoneDetails = () => {
                       />
                     </Box>
                   )}
+
+                  <Box mt="16px">
+                    <Text
+                      color="#444648"
+                      fontSize="10px"
+                      fontWeight={500}
+                      mb="8px"
+                      lineHeight="100%"
+                    >
+                      Status
+                    </Text>
+                    <Select
+                      styles={customStyles}
+                      isDisabled={edit ? false : true}
+                      value={values?.status}
+                      options={statusOptions}
+                      components={{
+                        IndicatorSeparator: () => (
+                          <div style={{ display: "none" }}></div>
+                        ),
+                        DropdownIndicator: () => (
+                          <div>
+                            <IoIosArrowDown size="15px" color="#646668" />
+                          </div>
+                        ),
+                      }}
+                      onChange={(selectedOption) =>
+                        handleSelectChange(selectedOption, {
+                          name: "status",
+                        })
+                      }
+                    />
+                  </Box>
                 </Box>
 
                 <Flex mt="24px" align="center" w="full" gap="24px">
-                  <Button
-                    bg="transparent"
-                    w="70%"
-                    border="1px solid #646668"
-                    color="#646668"
-                    fontWeight={500}
-                    lineHeight="100%"
-                    fontSize="14px"
-                    onClick={() =>
-                      edit ? setEdit(false) : setShowDelete(true)
-                    }
-                    _hover={{ bg: "transparent" }}
-                    _active={{ bg: "transparent" }}
-                    _focus={{ bg: "transparent" }}
-                    px="26px"
-                    py="17px"
-                  >
-                    {edit ? "Cancel" : "Delete"}
-                  </Button>
+                  {edit && (
+                    <Button
+                      bg="transparent"
+                      w="70%"
+                      border="1px solid #646668"
+                      color="#646668"
+                      fontWeight={500}
+                      lineHeight="100%"
+                      fontSize="14px"
+                      onClick={() => setEdit(false)}
+                      _hover={{ bg: "transparent" }}
+                      _active={{ bg: "transparent" }}
+                      _focus={{ bg: "transparent" }}
+                      px="26px"
+                      py="17px"
+                    >
+                      Cancel
+                    </Button>
+                  )}
                   <Button
                     color="#fff"
                     fontWeight={500}
@@ -543,14 +567,6 @@ const ZoneDetails = () => {
           </>
         )}
       </Flex>
-
-      <ConfirmDeleteModal
-        title="Zone"
-        action={handleDelete}
-        isLoading={isDeleting}
-        isOpen={showDelete}
-        onClose={() => setShowDelete(false)}
-      />
     </Box>
   );
 };

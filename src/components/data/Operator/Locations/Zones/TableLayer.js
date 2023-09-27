@@ -15,29 +15,22 @@ import {
   Tr,
 } from "@chakra-ui/react";
 import TableLoader from "../../../../loaders/TableLoader";
-import { operatorZonesHeader, zoneOption } from "../../../../common/constants";
+import {
+  SecStatus,
+  operatorZonesHeader,
+  zoneOption,
+} from "../../../../common/constants";
 import { formatDateTimes } from "../../../../../utils/helpers";
 import {
   IoIosArrowBack,
   IoIosArrowDown,
   IoIosArrowForward,
 } from "react-icons/io";
-import ConfirmDeleteModal from "../../../../modals/ConfirmDeleteModal";
-import useCustomToast from "../../../../../utils/notifications";
 import { useNavigate } from "react-router-dom";
-import { useDeleteZone } from "../../../../../services/operator/query/locations";
 import { Add } from "../../../../common/images";
 
-const TableLayer = ({
-  isLoading,
-  limit,
-  data,
-  setPage,
-  page,
-  locationMutate,
-}) => {
+const TableLayer = ({ isLoading, limit, data, setPage, page }) => {
   const [show, setShow] = useState(false);
-  const [showDelete, setShowDelete] = useState(false);
   const [currentLocation, setCurrentLocation] = useState("");
 
   const open = (item) => {
@@ -45,42 +38,15 @@ const TableLayer = ({
     setCurrentLocation(item);
   };
 
-  useEffect(() => {
-    if (showDelete) {
-      setShow(false);
-    }
-  }, [showDelete]);
-
   const openOption = (i) => {
     i === 0
       ? navigate(`/operator/locations/zones/${currentLocation?.id}`)
-      : i === 1
-      ? (navigate(`/operator/locations/zones/${currentLocation?.id}`),
-        sessionStorage.setItem("edit", "edit"))
-      : i === 2 && setShowDelete(true);
+      : i === 1 &&
+        (navigate(`/operator/locations/zones/${currentLocation?.id}`),
+        sessionStorage.setItem("edit", "edit"));
   };
 
-  const { errorToast, successToast } = useCustomToast();
   const navigate = useNavigate();
-
-  const { mutate: deleteMutate, isLoading: isDeleting } = useDeleteZone({
-    onSuccess: (res) => {
-      locationMutate({ limit: 10, page: 1 });
-      successToast(res?.message);
-      navigate("/operator/locations/zones");
-      setShowDelete(false);
-      sessionStorage.removeItem("edit");
-    },
-    onError: (err) => {
-      errorToast(
-        err?.response?.data?.message || err?.message || "An Error occurred"
-      );
-    },
-  });
-
-  const handleDelete = () => {
-    deleteMutate(currentLocation?.id);
-  };
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -108,11 +74,7 @@ const TableLayer = ({
                 <Tr>
                   {operatorZonesHeader?.map((data, i) => (
                     <Th
-                      textAlign={
-                        i === 3 || i === 4 || i === 5 || i === 6 || i === 7
-                          ? "center"
-                          : "start"
-                      }
+                      textAlign={i > 2 ? "center" : "start"}
                       key={i}
                       whiteSpace="pre-wrap"
                       pos="sticky"
@@ -133,10 +95,25 @@ const TableLayer = ({
                 {data?.data?.map((item, i) => (
                   <Tr fontSize="12px" fontWeight={500} color="#646668" key={i}>
                     <Td>{item?.name}</Td>
-                    <Td textAlign="center">{item?.location?.name}</Td>
+                    <Td>{item?.location?.name}</Td>
                     <Td textAlign="center">{item?.capacity}</Td>
                     <Td textAlign="center">{item?.minimumDuration}</Td>
                     <Td textAlign="center">{item?.durationType}</Td>
+                    <Td>
+                      <Flex align="center" w="full" justifyContent="center">
+                        <Flex
+                          color={Object?.values(SecStatus[item?.status])[0]}
+                          bg={Object?.values(SecStatus[item?.status])[2]}
+                          py="5px"
+                          px="16px"
+                          justifyContent="center"
+                          borderRadius="4px"
+                          align="center"
+                        >
+                          {Object?.values(SecStatus[item?.status])[1]}
+                        </Flex>
+                      </Flex>
+                    </Td>
                     <Td textAlign="center">
                       {formatDateTimes(item?.createdAt)}
                     </Td>
@@ -300,13 +277,6 @@ const TableLayer = ({
           </Button>
         </Flex>
       )}
-      <ConfirmDeleteModal
-        title="Zone"
-        action={handleDelete}
-        isLoading={isDeleting}
-        isOpen={showDelete}
-        onClose={() => setShowDelete(false)}
-      />
     </Box>
   );
 };

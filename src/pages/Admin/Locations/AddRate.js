@@ -8,7 +8,10 @@ import { PRIVATE_PATHS } from "../../../routes/constants";
 import useCustomToast from "../../../utils/notifications";
 import GoBackTab from "../../../components/data/Admin/GoBackTab";
 import { useGetOperators } from "../../../services/admin/query/users";
-import { useAddRate, useGetZones } from "../../../services/admin/query/locations";
+import {
+  useAddRate,
+  useGetZones,
+} from "../../../services/admin/query/locations";
 import { useGetServices } from "../../../services/admin/query/services";
 
 export default function AddZone() {

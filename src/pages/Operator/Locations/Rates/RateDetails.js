@@ -17,13 +17,14 @@ import { useGetServices } from "../../../../services/customer/query/locations";
 import {
   DurationTypes,
   RateTypes,
+  statusType,
 } from "../../../../components/common/constants";
 
 const RateDetails = () => {
   const navigate = useNavigate();
   const [values, setValues] = useState({
     name: "",
-    status: 1,
+    status: "",
     service: "",
     durationType: "",
     durationStart: "",
@@ -66,6 +67,10 @@ const RateDetails = () => {
   const rateOptions = RateTypes?.map((rate, i) => ({
     value: i,
     label: rate,
+  }));
+  const statusOptions = statusType?.map((status, i) => ({
+    value: i,
+    label: status,
   }));
 
   const customStyles = {
@@ -117,6 +122,9 @@ const RateDetails = () => {
       data?.zones?.some((target) => target?.id === option.value)
     );
 
+    const selectedStatusOption = statusOptions?.find(
+      (option) => option.value === data?.status
+    );
     setValues({
       ...values,
       name: data?.name,
@@ -127,6 +135,7 @@ const RateDetails = () => {
       durationType: selectedDurationOption,
       durationLimit: data?.durationLimit,
       zones: selectedZoneOption,
+      status: selectedStatusOption,
     });
     setLimit(data?.noLimit === 0 ? false : data?.noLimit === 1 && true);
   }, [data, edit]);
@@ -177,7 +186,6 @@ const RateDetails = () => {
             durationLimit: Number(values.durationLimit),
             durationStart: Number(values.durationStart),
             durationType: values.durationType?.value,
-            status: 1,
             noLimit: 1,
           },
         })
@@ -189,7 +197,7 @@ const RateDetails = () => {
             service: Number(values?.service?.value),
             rateType: Number(values?.rateType?.value),
             amount: Number(values.amount),
-            status: 1,
+            status: values?.status?.value,
             noLimit: 0,
           },
         });
@@ -258,7 +266,7 @@ const RateDetails = () => {
                     <CustomInput
                       auth
                       mb
-                      isDisabled={edit ? false : true}
+                      dis={edit ? false : true}
                       value={values.name}
                       onChange={(e) =>
                         setValues({
@@ -351,7 +359,7 @@ const RateDetails = () => {
                       auth
                       mb
                       type="number"
-                      isDisabled={edit ? false : true}
+                      dis={edit ? false : true}
                       value={values.amount}
                       onChange={(e) =>
                         setValues({
@@ -370,6 +378,7 @@ const RateDetails = () => {
                     <Switch
                       size="sm"
                       isChecked={limit ? true : false}
+                      isDisabled={edit ? false : true}
                       value={limit}
                       onChange={() => setLimit((prev) => !prev)}
                     />
@@ -424,7 +433,7 @@ const RateDetails = () => {
                           <CustomInput
                             auth
                             mb
-                            isDisabled={edit ? false : true}
+                            dis={edit ? false : true}
                             value={values.durationStart}
                             onChange={(e) =>
                               setValues({
@@ -448,7 +457,7 @@ const RateDetails = () => {
                           <CustomInput
                             auth
                             mb
-                            isDisabled={edit ? false : true}
+                            dis={edit ? false : true}
                             value={values.durationLimit}
                             onChange={(e) =>
                               setValues({
@@ -462,7 +471,7 @@ const RateDetails = () => {
                     </Box>
                   )}
 
-                  <Box mt="16px">
+                  <Box my="16px">
                     <Text
                       color="#444648"
                       fontSize="10px"
@@ -491,6 +500,39 @@ const RateDetails = () => {
                       onChange={(selectedOption) =>
                         handleSelectChange(selectedOption, {
                           name: "zones",
+                        })
+                      }
+                    />
+                  </Box>
+
+                  <Box>
+                    <Text
+                      color="#444648"
+                      fontSize="10px"
+                      fontWeight={500}
+                      mb="8px"
+                      lineHeight="100%"
+                    >
+                      Status
+                    </Text>
+                    <Select
+                      styles={customStyles}
+                      isDisabled={edit ? false : true}
+                      value={values?.status}
+                      options={statusOptions}
+                      components={{
+                        IndicatorSeparator: () => (
+                          <div style={{ display: "none" }}></div>
+                        ),
+                        DropdownIndicator: () => (
+                          <div>
+                            <IoIosArrowDown size="15px" color="#646668" />
+                          </div>
+                        ),
+                      }}
+                      onChange={(selectedOption) =>
+                        handleSelectChange(selectedOption, {
+                          name: "status",
                         })
                       }
                     />

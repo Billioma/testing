@@ -15,6 +15,7 @@ import CustomInput from "../../../../components/common/CustomInput";
 import {
   LocationTypes,
   allStates,
+  statusType,
 } from "../../../../components/common/constants";
 import { IoIosArrowDown } from "react-icons/io";
 import { useCustomerUploadPic } from "../../../../services/customer/query/user";
@@ -46,6 +47,11 @@ const AddLocation = () => {
   const amenitiesOptions = amenities?.map((amenity) => ({
     value: amenity?.id,
     label: amenity?.name,
+  }));
+
+  const statusOptions = statusType?.map((status, i) => ({
+    value: i,
+    label: status,
   }));
 
   const customStyles = {
@@ -98,13 +104,14 @@ const AddLocation = () => {
   });
 
   const handleSubmit = (values = "") => {
-    const { locationType, state, amenities, ...rest } = values;
+    const { locationType, status, state, amenities, ...rest } = values;
     createMutate({
       ...rest,
       amenities: amenities?.map((dat) => dat?.value),
       state: state?.value,
       locationType: locationType?.value,
       picture: profilePicData?.path,
+      status: status?.value,
     });
   };
 
@@ -409,6 +416,41 @@ const AddLocation = () => {
                           setValues({
                             ...values,
                             amenities: selectedOption,
+                          })
+                        }
+                        onBlur={handleBlur}
+                      />
+                    </Box>
+
+                    <Box mt="16px">
+                      <Text
+                        color="#444648"
+                        fontSize="10px"
+                        fontWeight={500}
+                        mb="8px"
+                        lineHeight="100%"
+                      >
+                        Status
+                      </Text>
+                      <Select
+                        styles={customStyles}
+                        value={values.status}
+                        options={statusOptions}
+                        components={{
+                          IndicatorSeparator: () => (
+                            <div style={{ display: "none" }}></div>
+                          ),
+                          DropdownIndicator: () => (
+                            <div>
+                              <IoIosArrowDown size="15px" color="#646668" />
+                            </div>
+                          ),
+                        }}
+                        name="status"
+                        onChange={(selectedOption) =>
+                          setValues({
+                            ...values,
+                            status: selectedOption,
                           })
                         }
                         onBlur={handleBlur}

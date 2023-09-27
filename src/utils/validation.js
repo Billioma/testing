@@ -17,7 +17,7 @@ export const initPolicyValues = {
   body: "",
   location: "",
   title: "",
-  status: 1,
+  status: "",
 };
 
 export const initLocationValues = {
@@ -27,7 +27,7 @@ export const initLocationValues = {
   geoLocation: "",
   locationType: "",
   state: "",
-  status: 1,
+  status: "",
 };
 
 export const initZoneValues = {
@@ -39,14 +39,14 @@ export const initZoneValues = {
   reservableSpace: "",
   geoLocation: "",
   minimumDuration: "",
-  status: 1,
+  status: "",
   service: "",
   amenities: "",
 };
 
 export const initRateValues = {
   name: "",
-  status: 1,
+  status: "",
   serviceType: "",
   durationType: "",
   durationStart: "",
@@ -59,6 +59,7 @@ export const initRateValues = {
 export const validatePolicychema = Yup.object().shape({
   body: Yup.string().required("Body is required"),
   location: Yup.object().required("Location is required"),
+  status: Yup.object().required("Status is required"),
   title: Yup.string().required("Title is required"),
 });
 
@@ -67,11 +68,13 @@ export const validateLocationSchema = Yup.object().shape({
   amenities: Yup.array().required("Amenities is required"),
   description: Yup.string().required("Description is required"),
   locationType: Yup.object().required("Location Type is required"),
+  status: Yup.object().required("Status is required"),
   state: Yup.object().required("State is required"),
 });
 
 export const validateZoneSchema = Yup.object().shape({
   location: Yup.object().required("Zone Location is required"),
+  status: Yup.object().required("Status is required"),
   name: Yup.string().required("Zone Name is required"),
   description: Yup.string().required("Zone Description is required"),
   capacity: Yup.string().required("Zone Capacity is required"),
@@ -81,26 +84,29 @@ export const validateZoneSchema = Yup.object().shape({
 });
 
 export const validateRateLimitSchema = Yup.object().shape({
-  name: Yup.string().required("Zone Name is required"),
-  serviceType: Yup.object().required("Service is required"),
+  name: Yup.string().required("Rate Name is required"),
+  status: Yup.object().required("Status is required"),
+  servicXeType: Yup.object().required("Service is required"),
   durationType: Yup.object().required("Duration Type is required"),
   durationStart: Yup.string().required("Duration Start is required"),
   durationLimit: Yup.string().required("Duration Limit is required"),
-  rateType: Yup.object().required("Zone Description is required"),
-  amount: Yup.string().required("Zone Capacity is required"),
-  zones: Yup.array().required("Amenities is required"),
+  rateType: Yup.object().required("Rate Type is required"),
+  amount: Yup.string().required("Amount is required"),
+  zones: Yup.array().required("Zone is required"),
 });
 
 export const validateRateSchema = Yup.object().shape({
-  name: Yup.string().required("Zone Name is required"),
+  name: Yup.string().required("Rate Name is required"),
   serviceType: Yup.object().required("Service is required"),
-  rateType: Yup.object().required("Zone Description is required"),
-  amount: Yup.string().required("Zone Capacity is required"),
-  zones: Yup.array().required("Amenities is required"),
+  rateType: Yup.object().required("Rate Type is required"),
+  status: Yup.object().required("Status is required"),
+  amount: Yup.string().required("Amount is required"),
+  zones: Yup.array().required("Zone is required"),
 });
 
 export const validateZoneSpaceSchema = Yup.object().shape({
   location: Yup.object().required("Zone Location is required"),
+  status: Yup.object().required("Status is required"),
   name: Yup.string().required("Zone Name is required"),
   description: Yup.string().required("Zone Description is required"),
   capacity: Yup.string().required("Zone Capacity is required"),
@@ -116,7 +122,7 @@ export const initAttendantValues = {
   name: "",
   password: "",
   passwordConfirmation: "",
-  status: 1,
+  status: "",
   userId: "",
 };
 
@@ -155,6 +161,7 @@ export const opSignValues = {
 
 export const validateAttendantSchema = Yup.object().shape({
   accountType: Yup.object().required("Account Type is required"),
+  status: Yup.object().required("Status is required"),
   location: Yup.array().required("Location is required"),
   name: Yup.string().required("Full Name is required"),
   password: Yup.string()

@@ -47,5 +47,5 @@ export const GET_ADMIN_REPORTS = (type = "", limit = "", page = "") =>
 
 export const GET_ADMIN_TRAN = (limit = "", page = "") =>
   `admin/transactions/?limit=${limit}&page=${page}&sort=id,DESC`;
-  
+
 export const ADMIN_RATES = "admin/rates";

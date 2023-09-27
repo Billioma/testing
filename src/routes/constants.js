@@ -149,15 +149,15 @@ export const PRIVATE_PATHS = {
   ADMIN_CLIENTS: "/admin/clients/list",
   ADMIN_ADD_CLIENT: "/admin/clients/list/new",
   ADMIN_VIEW_CLIENT: "/admin/clients/list/details/:id",
-  
+
   ADMIN_CLIENTS_INVOICES: "/admin/clients/invoices",
   ADMIN_VIEW_CLIENT_INVOICE: "/admin/clients/invoices/details/:id",
   ADMIN_ADD_CLIENT_INVOICE: "/admin/clients/invoices/new",
-  
+
   ADMIN_EVENTS: "/admin/clients/events",
   ADMIN_ADD_EVENT: "/admin/clients/events/new",
   ADMIN_VIEW_EVENT: "/admin/clients/events/details/:id",
-  
+
   ADMIN_LOCATIONS: "/admin/locations/locations",
   ADMIN_ADD_LOCATION: "/admin/locations/locations/new",
   ADMIN_VIEW_LOCATION: "/admin/locations/locations/details/:id",
@@ -165,15 +165,15 @@ export const PRIVATE_PATHS = {
   ADMIN_ZONES: "/admin/locations/zones",
   ADMIN_VIEW_ZONE: "/admin/locations/zones/details/:id",
   ADMIN_ADD_ZONE: "/admin/locations/zones/new",
-  
+
   ADMIN_RATES: "/admin/locations/rates",
   ADMIN_VIEW_RATE: "/admin/locations/rates/details/:id",
   ADMIN_ADD_RATE: "/admin/locations/rates/new",
-  
+
   ADMIN_AMENITIES: "/admin/locations/amenities",
   ADMIN_VIEW_AMENITY: "/admin/locations/amenities/details/:id",
   ADMIN_ADD_AMENITY: "/admin/locations/amenities/new",
-  
+
   ADMIN_POLICIES: "/admin/locations/policies",
   ADMIN_VIEW_POLICY: "/admin/locations/policies/details/:id",
   ADMIN_ADD_POLICY: "/admin/locations/policies/new",

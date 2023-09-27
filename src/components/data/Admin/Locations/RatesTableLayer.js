@@ -20,10 +20,7 @@ import { useNavigate } from "react-router-dom";
 import AdminDeleteModal from "../../../modals/AdminDeleteModal";
 import useCustomToast from "../../../../utils/notifications";
 import { BsChevronDown } from "react-icons/bs";
-import {
-  
-  useDeleteRate,
-} from "../../../../services/admin/query/locations";
+import { useDeleteRate } from "../../../../services/admin/query/locations";
 
 const TableLayer = ({
   data,

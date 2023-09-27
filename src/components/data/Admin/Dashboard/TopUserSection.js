@@ -12,13 +12,16 @@ import {
   Button,
 } from "@chakra-ui/react";
 import { HiOutlineChevronDown } from "react-icons/hi";
-import { useGetActivitiesMetrics, useGetAdminDashboardData } from "../../../../services/admin/query/general";
+import {
+  useGetActivitiesMetrics,
+  useGetAdminDashboardData,
+} from "../../../../services/admin/query/general";
 
 export default function TopUserSection() {
   const [selectedOption, setSelectedOption] = useState("Today");
 
   const { data } = useGetAdminDashboardData();
-  const {data: temp} = useGetActivitiesMetrics()
+  const { data: temp } = useGetActivitiesMetrics();
 
   const handleOptionSelect = (option) => {
     setSelectedOption(option);
