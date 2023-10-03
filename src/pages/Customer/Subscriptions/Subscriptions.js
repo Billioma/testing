@@ -21,7 +21,7 @@ const Subscriptions = () => {
           </Text>
 
           <Button
-            onClick={() => navigate("/customer/add-subscriptions")}
+            onClick={() => navigate("/customer/subscriptions/create")}
             display="flex"
             gap="8px"
             fontSize="12px"

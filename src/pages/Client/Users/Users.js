@@ -7,13 +7,13 @@ import { useNavigate } from "react-router-dom";
 
 const Users = () => {
   const { mutate, data, isLoading } = useGetUsers();
-  const [page, setPage] = useState(0);
+  const [page, setPage] = useState(1);
   const limit = 10;
 
   const navigate = useNavigate();
 
   useEffect(() => {
-    mutate({ limit, page: page + 1 });
+    mutate({ limit, page: page  });
   }, [page]);
 
   return (
@@ -31,7 +31,7 @@ const Users = () => {
 
           <Flex align="center " gap="24px">
             <Button
-              onClick={() => navigate("/client/add-user")}
+              onClick={() => navigate("/client/users/create")}
               display="flex"
               gap="8px"
               fontSize=""

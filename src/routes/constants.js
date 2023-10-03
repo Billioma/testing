@@ -38,7 +38,7 @@ export const PRIVATE_PATHS = {
   CUST_SERVICES_EVENT_PARK: "/customer/services/event-parking",
   CUST_SERVICES_CAR_SERVICE: "/customer/services/car-service",
   CUST_SUBSCRIPTION: "/customer/subscriptions",
-  CUST_ADD_SUBSCRIPTION: "/customer/add-subscriptions",
+  CUST_ADD_SUBSCRIPTION: "/customer/subscriptions/create",
   CUST_HISTORY: "/customer/history",
   CUST_HELP_CENTER: "/customer/help-center",
   CUST_HELP_CENTER_MAIL: "/customer/help-center/contact-us",
@@ -53,7 +53,7 @@ export const PRIVATE_PATHS = {
   CLIENT_DASHBOARD: "/client/dashboard",
   CLIENT_USERS: "/client/users",
   CLIENT_PROFILE: "/client/profile",
-  CLIENT_ADD_USER: "/client/add-user",
+  CLIENT_ADD_USER: "/client/users/create",
   CLIENT_EVENTS: "/client/events",
   CLIENT_LOGS: "/client/logs/pay-to-park",
   CLIENT_LOGS_DETAILS: "/client/logs/pay-to-park/details",
@@ -63,8 +63,8 @@ export const PRIVATE_PATHS = {
   CLIENT_TRAN_DETAILS: "/client/transaction-details",
   CLIENT_ADD_EVENT: "/client/events/create",
   CLIENT_EDIT_EVENT: "/client/events/:id",
-  CLIENT_ADD_SUB: "/client/add-subscription",
-  CLIENT_VIEW_SUB: "/client/view-subscriptions",
+  CLIENT_ADD_SUB: "/client/subscriptions/create",
+  CLIENT_VIEW_SUB: "/client/subscriptions",
 
   //OPERATOR ROUTES
   OP_DASHBOARD: "/operator/dashboard",

@@ -6,6 +6,11 @@ export const getUsers = async (query) => {
   return res.data;
 };
 
+export const getClientUsers = async () => {
+  const res = await axiosInstance.get(API.GET_CLIENT_USERS);
+  return res.data;
+};
+
 export const lookupUser = async (query) => {
   const res = await axiosInstance.get(API.LOOKUP_USER(query));
   return res.data;

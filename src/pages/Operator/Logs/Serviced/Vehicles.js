@@ -6,11 +6,11 @@ import { useGetServiced } from "../../../../services/operator/query/logs";
 const Vehicles = () => {
   const { mutate, data, isLoading } = useGetServiced();
 
-  const [page, setPage] = useState(0);
+  const [page, setPage] = useState(1);
   const limit = 10;
 
   useEffect(() => {
-    mutate({ limit, page: page + 1 });
+    mutate({ limit, page: page });
   }, [page]);
 
   return (
@@ -33,7 +33,7 @@ const Vehicles = () => {
               cursor="pointer"
               transition=".3s ease-in-out"
               _hover={{ bg: "#F4F6F8" }}
-              onClick={() => mutate({ limit, page: page + 1 })}
+              onClick={() => mutate({ limit, page: page})}
               borderRadius="8px"
               border="1px solid #848688"
               p="10px"

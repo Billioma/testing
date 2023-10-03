@@ -54,12 +54,14 @@ const SideBar = () => {
             return (
               <Box
                 key={i}
-                className={location.pathname !== item.path && "parent_nav"}
+                className={
+                  !location.pathname.includes(item?.path) && "parent_nav"
+                }
               >
                 <NavLink
                   to={item.path}
                   style={({ isActive }) =>
-                    isActive
+                    isActive || isActivePath
                       ? { ...activeStyle }
                       : {
                           ...activeStyle,
@@ -82,7 +84,9 @@ const SideBar = () => {
                       </Box>
 
                       <Box w="16px" h="16px" className="initial_image">
-                        {location.pathname === item.path ? item.sec : item.icon}
+                        {location.pathname === item.path || isActivePath
+                          ? item.sec
+                          : item.icon}
                       </Box>
 
                       {item.name}

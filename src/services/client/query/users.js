@@ -1,5 +1,11 @@
-import { useMutation } from "react-query";
-import { attachUser, detachUser, getUsers, lookupUser } from "../api/users";
+import { useMutation, useQuery } from "react-query";
+import {
+  attachUser,
+  detachUser,
+  getClientUsers,
+  getUsers,
+  lookupUser,
+} from "../api/users";
 
 export const useGetUsers = (options = {}) => {
   const { mutate, isLoading, data } = useMutation(getUsers, {
@@ -7,6 +13,18 @@ export const useGetUsers = (options = {}) => {
     ...options,
   });
   return { mutate, isLoading, data };
+};
+
+export const useGetClientusers = (options = {}) => {
+  const { data, isLoading, refetch } = useQuery(
+    "GET_CLIENT_USERS",
+    getClientUsers,
+    {
+      ...options,
+    }
+  );
+
+  return { data, isLoading, refetch };
 };
 
 export const useLookupUser = (options = {}) => {

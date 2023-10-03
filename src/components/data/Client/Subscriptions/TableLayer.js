@@ -14,7 +14,11 @@ import {
   Tr,
 } from "@chakra-ui/react";
 import TableLoader from "../../../loaders/TableLoader";
-import { SecStatus, clientUserHeader } from "../../../common/constants";
+import {
+  SecStatus,
+  clientSubHeader,
+  intervals,
+} from "../../../common/constants";
 import { formatDate } from "../../../../utils/helpers";
 import { FiMoreVertical } from "react-icons/fi";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
@@ -84,7 +88,7 @@ const TableLayer = ({ isLoading, data, page, setPage, userMutate, limit }) => {
             <Table>
               <Thead bg="#F4F6F8">
                 <Tr>
-                  {clientUserHeader?.map((data, i) => (
+                  {clientSubHeader?.map((data, i) => (
                     <Th
                       textAlign={i === 0 ? "start" : "center"}
                       key={i}
@@ -105,15 +109,24 @@ const TableLayer = ({ isLoading, data, page, setPage, userMutate, limit }) => {
               <Tbody>
                 {data?.data?.map((item, i) => (
                   <Tr fontSize="12px" fontWeight={500} color="#646668" key={i}>
-                    <Td>
-                      {item?.profile?.firstName} {item?.profile?.lastName}
-                    </Td>
+                    <Td>{item?.membershipPlan?.name}</Td>
 
-                    <Td textAlign="center">{item?.profile?.phone}</Td>
                     <Td textAlign="center">
-                      {item?.profile?.companyName || "N/A"}
+                      ₦{" "}
+                      {item?.membershipPlan?.amount?.toLocaleString(undefined, {
+                        maximumFractionDigits: 2,
+                      }) || "0.00"}
                     </Td>
-                    <Td textAlign="center">{item?.email}</Td>
+                    <Td textAlign="center">
+                      {
+                        Object?.values(
+                          intervals[item?.membershipPlan?.interval]
+                        )[0]
+                      }
+                    </Td>
+                    <Td textAlign="center">
+                      {formatDate(item?.nextPaymentDate)}
+                    </Td>
                     <Td>
                       <Flex
                         color={Object.values(SecStatus[item?.status])[0]}
@@ -246,23 +259,23 @@ const TableLayer = ({ isLoading, data, page, setPage, userMutate, limit }) => {
           my="38px"
           flexDir="column"
         >
-          <Image src="/assets/no-user.jpg" w="64px" h="64px" />
+          <Image src="/assets/no-sub.jpg" w="64px" h="64px" />
           <Text
             color="#848688"
             fontSize="12px"
             lineHeight="100%"
             fontWeight={500}
           >
-            No User Data
+            No Subscription Data
           </Text>
 
           <Button
-            onClick={() => navigate("/client/users/create")}
+            onClick={() => navigate("/client/subscriptions/create")}
             display="flex"
             gap="8px"
             fontSize="12px"
           >
-            <Text>Add a User</Text>
+            <Text>Add a Subscription</Text>
             <Add fill="#fff" />
           </Button>
         </Flex>

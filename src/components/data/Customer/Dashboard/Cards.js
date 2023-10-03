@@ -445,7 +445,7 @@ const Cards = () => {
                     You are yet to make a subscription
                   </Text>
                   <Button
-                    onClick={() => navigate("/customer/add-subscriptions")}
+                    onClick={() => navigate("/customer/subscriptions/create")}
                     borderRadius="8px"
                     w="full"
                   >

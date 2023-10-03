@@ -172,10 +172,41 @@ const TableLayer = () => {
               align="center"
             >
               <Text fontSize="12px" color="#242628" lineHeight="100%">
-                Showing rows 1 to {limit} of {payToPark?.total}
+                Showing rows {page === 1 ? 1 : (page - 1) * limit + 1} to{" "}
+                {tab === "Pay-To-Park"
+                  ? payToPark?.pageCount === page
+                    ? page * limit > payToPark?.total
+                      ? payToPark?.total
+                      : page * limit
+                    : page * limit
+                  : tab === "Reserve Parking"
+                  ? reserveParking?.pageCount === page
+                    ? page * limit > reserveParking?.total
+                      ? reserveParking?.total
+                      : page * limit
+                    : page * limit
+                  : tab === "Event Parking"
+                  ? eventParking?.pageCount === page
+                    ? page * limit > eventParking?.total
+                      ? eventParking?.total
+                      : page * limit
+                    : page * limit
+                  : tab === "Car Services" && carService?.pageCount === page
+                  ? page * limit > carService?.total
+                    ? carService?.total
+                    : page * limit
+                  : page * limit}{" "}
+                of{" "}
+                {tab === "Pay-To-Park"
+                  ? payToPark?.total
+                  : tab === "Reserve Parking"
+                  ? reserveParking?.total
+                  : tab === "Event Parking"
+                  ? eventParking?.total
+                  : tab === "Car Services" && carService?.total}
               </Text>
 
-              <Flex gap="16px" align="center">
+              <Flex gap="16px" align="center" fontSize="12px">
                 <Flex
                   opacity={
                     tab === "Pay-To-Park"
@@ -231,52 +262,21 @@ const TableLayer = () => {
                   align="center"
                   gap="2px"
                   color="#A4A6A8"
-                  fontSize="12px"
                 >
                   <IoIosArrowBack />
                   <Text lineHeight="100%">Previous</Text>
                 </Flex>
 
-                <Flex align="center" gap="5px" color="#A4A6A8" fontSize="12px">
-                  <Flex
-                    bg="tranparent"
-                    py="6px"
-                    px="8px"
-                    color="#242628"
-                    fontSize="12px"
-                    lineHeight="100%"
-                  >
-                    <Text>
-                      {tab === "Pay-To-Park"
-                        ? payToPark?.page
-                        : tab === "Reserve Parking"
-                        ? reserveParking?.page
-                        : tab === "Event Parking"
-                        ? eventParking?.page
-                        : tab === "Car Services" && carService?.page}
-                    </Text>
-                  </Flex>
-                  <Text fontWeight={500} fontSize="12px">
-                    -{" "}
+                <Flex color="#242628" lineHeight="100%">
+                  <Text>
+                    {tab === "Pay-To-Park"
+                      ? payToPark?.page
+                      : tab === "Reserve Parking"
+                      ? reserveParking?.page
+                      : tab === "Event Parking"
+                      ? eventParking?.page
+                      : tab === "Car Services" && carService?.page}
                   </Text>
-                  <Flex
-                    bg="#242628"
-                    py="6px"
-                    px="8px"
-                    color="#fff"
-                    fontSize="12px"
-                    lineHeight="100%"
-                  >
-                    <Text>
-                      {tab === "Pay-To-Park"
-                        ? payToPark?.pageCount
-                        : tab === "Reserve Parking"
-                        ? reserveParking?.pageCount
-                        : tab === "Event Parking"
-                        ? eventParking?.pageCount
-                        : tab === "Car Services" && carService?.pageCount}
-                    </Text>
-                  </Flex>
                 </Flex>
 
                 <Flex
@@ -337,7 +337,6 @@ const TableLayer = () => {
                   align="center"
                   gap="2px"
                   color="#A4A6A8"
-                  fontSize="12px"
                 >
                   <IoIosArrowForward />
                   <Text lineHeight="100%">Next</Text>

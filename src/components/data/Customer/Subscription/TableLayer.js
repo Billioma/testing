@@ -184,11 +184,16 @@ const TableLayer = () => {
                 align="center"
               >
                 <Text fontSize="12px" color="#242628" lineHeight="100%">
-                  Showing rows 1 to {subs?.total < limit ? subs?.total : limit}{" "}
+                  Showing rows {page === 1 ? 1 : (page - 1) * limit + 1} to{" "}
+                  {subs?.pageCount === page
+                    ? page * limit > subs?.total
+                      ? subs?.total
+                      : page * limit
+                    : page * limit}{" "}
                   of {subs?.total}
                 </Text>
 
-                <Flex gap="16px" align="center">
+                <Flex gap="16px" align="center" fontSize="12px">
                   <Flex
                     opacity={subs?.page === 1 ? 0.5 : 1}
                     onClick={() => (subs?.page !== 1 ? setPage(page - 1) : "")}
@@ -196,41 +201,13 @@ const TableLayer = () => {
                     align="center"
                     gap="2px"
                     color="#A4A6A8"
-                    fontSize="12px"
                   >
                     <IoIosArrowBack />
                     <Text lineHeight="100%">Previous</Text>
                   </Flex>
 
-                  <Flex
-                    align="center"
-                    gap="5px"
-                    color="#A4A6A8"
-                    fontSize="12px"
-                  >
-                    <Flex
-                      bg="tranparent"
-                      py="6px"
-                      px="8px"
-                      color="#242628"
-                      fontSize="12px"
-                      lineHeight="100%"
-                    >
-                      <Text>{subs?.page}</Text>
-                    </Flex>
-                    <Text fontWeight={500} fontSize="12px">
-                      -{" "}
-                    </Text>
-                    <Flex
-                      bg="#242628"
-                      py="6px"
-                      px="8px"
-                      color="#fff"
-                      fontSize="12px"
-                      lineHeight="100%"
-                    >
-                      <Text>{subs?.pageCount}</Text>
-                    </Flex>
+                  <Flex color="#242628" lineHeight="100%">
+                    <Text>{subs?.page}</Text>
                   </Flex>
 
                   <Flex
@@ -242,7 +219,6 @@ const TableLayer = () => {
                     align="center"
                     gap="2px"
                     color="#A4A6A8"
-                    fontSize="12px"
                   >
                     <IoIosArrowForward />
                     <Text lineHeight="100%">Next</Text>
@@ -381,7 +357,7 @@ const TableLayer = () => {
           </Text>
 
           <Button
-            onClick={() => navigate("/customer/add-subscriptions")}
+            onClick={() => navigate("/customer/subscriptions/create")}
             display="flex"
             gap="8px"
             fontSize="12px"

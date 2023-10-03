@@ -8,13 +8,13 @@ import TableLayer from "../../../../components/data/Operator/Locations/Rates/Tab
 const Rates = () => {
   const { mutate, data, isLoading } = useGetRates();
 
-  const [page, setPage] = useState(0);
+  const [page, setPage] = useState(1);
   const limit = 10;
 
   const navigate = useNavigate();
 
   useEffect(() => {
-    mutate({ limit, page: page + 1 });
+    mutate({ limit, page: page });
   }, [page]);
 
   useEffect(() => {
@@ -51,7 +51,7 @@ const Rates = () => {
               cursor="pointer"
               transition=".3s ease-in-out"
               _hover={{ bg: "#F4F6F8" }}
-              onClick={() => mutate({ limit, page: page + 1 })}
+              onClick={() => mutate({ limit, page: page })}
               borderRadius="8px"
               border="1px solid #848688"
               p="10px"

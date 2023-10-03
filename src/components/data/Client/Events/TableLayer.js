@@ -88,127 +88,116 @@ const TableLayer = ({ isLoading, limit, data, setPage, page, eventMutate }) => {
 
   return (
     <Box mt="16px">
-      {data?.data?.length ? (
+      {isLoading ? (
+        <TableLoader />
+      ) : data?.data?.length ? (
         <>
           <TableContainer maxH="60vh" minH="40vh" overflowY="scroll">
-            {isLoading ? (
-              <TableLoader />
-            ) : (
-              <Table>
-                <Thead bg="#F4F6F8">
-                  <Tr>
-                    {clientEventHeader?.map((data, i) => (
-                      <Th
-                        textAlign="center"
-                        key={i}
-                        pos="sticky"
-                        top="0"
-                        bg="#F4F6F8"
-                        fontFamily="Sailec"
-                        zIndex="2"
-                        color="#949698"
-                        lineHeight="100%"
-                        fontWeight={500}
-                      >
-                        {data}
-                      </Th>
-                    ))}
-                  </Tr>
-                </Thead>
-                <Tbody>
-                  {data?.data?.map((item, i) => (
-                    <Tr
-                      fontSize="12px"
-                      fontWeight={500}
-                      color="#646668"
+            <Table>
+              <Thead bg="#F4F6F8">
+                <Tr>
+                  {clientEventHeader?.map((data, i) => (
+                    <Th
+                      textAlign="center"
                       key={i}
+                      pos="sticky"
+                      top="0"
+                      bg="#F4F6F8"
+                      fontFamily="Sailec"
+                      zIndex="2"
+                      color="#949698"
+                      lineHeight="100%"
+                      fontWeight={500}
                     >
-                      <Td textAlign="center">{item?.name}</Td>
-
-                      <Td textAlign="center">
-                        <a
-                          href={item?.website}
-                          target="_blank"
-                          rel="noreferrer"
-                        >
-                          {trim(item?.website)}
-                        </a>
-                      </Td>
-                      <Td textAlign="center">
-                        {formatDateTimes(item?.eventStartDateTime)}
-                      </Td>
-                      <Td textAlign="center">
-                        {formatDateTimes(item?.eventEndDateTime)}
-                      </Td>
-                      <Td>
-                        <Flex
-                          color={Object.values(SecStatus[item?.status])[0]}
-                          bg={Object.values(SecStatus[item?.status])[2]}
-                          py="5px"
-                          px="16px"
-                          justifyContent="center"
-                          borderRadius="4px"
-                          align="center"
-                        >
-                          {Object.values(SecStatus[item?.status])[1]}
-                        </Flex>
-                      </Td>
-                      <Td textAlign="center">{formatDate(item?.createdAt)}</Td>
-                      <Td>
-                        <Flex
-                          onClick={() => open(item)}
-                          justifyContent="center"
-                          pos="relative"
-                          cursor="pointer"
-                          className="box"
-                          align="center"
-                        >
-                          <FiMoreVertical />
-                          {show && currentEvent === item && (
-                            <Box
-                              border="1px solid #F4F6F8"
-                              px="4px"
-                              py="8px"
-                              bg="#fff"
-                              borderRadius="4px"
-                              pos="absolute"
-                              top={i < 3 ? "20px" : "unset"}
-                              bottom={i > 3 ? "0" : "unset"}
-                              right="0"
-                              zIndex={5555555}
-                              boxShadow="0px 8px 16px 0px rgba(0, 0, 0, 0.08)"
-                            >
-                              {eventOption.map((item, i) => (
-                                <Flex
-                                  key={i}
-                                  mb="8px"
-                                  py="6px"
-                                  px="8px"
-                                  w="full"
-                                  borderRadius="2px"
-                                  align="center"
-                                  onClick={() => openOption(i)}
-                                  _hover={{ bg: "#F4F6F8" }}
-                                  cursor="pointer"
-                                  fontSize="10px"
-                                  color={i !== 2 ? "#646668" : "#A11212"}
-                                  lineHeight="100%"
-                                  gap="12px"
-                                  fontWeight={500}
-                                >
-                                  <Icon as={item.icon} w="16px" h="16px" />
-                                  {item?.name}
-                                </Flex>
-                              ))}
-                            </Box>
-                          )}
-                        </Flex>
-                      </Td>
-                    </Tr>
+                      {data}
+                    </Th>
                   ))}
-                </Tbody>
-              </Table>
-            )}
+                </Tr>
+              </Thead>
+              <Tbody>
+                {data?.data?.map((item, i) => (
+                  <Tr fontSize="12px" fontWeight={500} color="#646668" key={i}>
+                    <Td textAlign="center">{item?.name}</Td>
+
+                    <Td textAlign="center">
+                      <a href={item?.website} target="_blank" rel="noreferrer">
+                        {trim(item?.website)}
+                      </a>
+                    </Td>
+                    <Td textAlign="center">
+                      {formatDateTimes(item?.eventStartDateTime)}
+                    </Td>
+                    <Td textAlign="center">
+                      {formatDateTimes(item?.eventEndDateTime)}
+                    </Td>
+                    <Td>
+                      <Flex
+                        color={Object.values(SecStatus[item?.status])[0]}
+                        bg={Object.values(SecStatus[item?.status])[2]}
+                        py="5px"
+                        px="16px"
+                        justifyContent="center"
+                        borderRadius="4px"
+                        align="center"
+                      >
+                        {Object.values(SecStatus[item?.status])[1]}
+                      </Flex>
+                    </Td>
+                    <Td textAlign="center">{formatDate(item?.createdAt)}</Td>
+                    <Td>
+                      <Flex
+                        onClick={() => open(item)}
+                        justifyContent="center"
+                        pos="relative"
+                        cursor="pointer"
+                        className="box"
+                        align="center"
+                      >
+                        <FiMoreVertical />
+                        {show && currentEvent === item && (
+                          <Box
+                            border="1px solid #F4F6F8"
+                            px="4px"
+                            py="8px"
+                            bg="#fff"
+                            borderRadius="4px"
+                            pos="absolute"
+                            top={i < 3 ? "20px" : "unset"}
+                            bottom={i > 3 ? "0" : "unset"}
+                            right="0"
+                            zIndex={5555555}
+                            boxShadow="0px 8px 16px 0px rgba(0, 0, 0, 0.08)"
+                          >
+                            {eventOption.map((item, i) => (
+                              <Flex
+                                key={i}
+                                mb="8px"
+                                py="6px"
+                                px="8px"
+                                w="full"
+                                borderRadius="2px"
+                                align="center"
+                                onClick={() => openOption(i)}
+                                _hover={{ bg: "#F4F6F8" }}
+                                cursor="pointer"
+                                fontSize="10px"
+                                color={i !== 2 ? "#646668" : "#A11212"}
+                                lineHeight="100%"
+                                gap="12px"
+                                fontWeight={500}
+                              >
+                                <Icon as={item.icon} w="16px" h="16px" />
+                                {item?.name}
+                              </Flex>
+                            ))}
+                          </Box>
+                        )}
+                      </Flex>
+                    </Td>
+                  </Tr>
+                ))}
+              </Tbody>
+            </Table>
           </TableContainer>
 
           <Flex
@@ -225,10 +214,16 @@ const TableLayer = ({ isLoading, limit, data, setPage, page, eventMutate }) => {
               align="center"
             >
               <Text fontSize="12px" color="#242628" lineHeight="100%">
-                Showing rows 1 to {limit} of {data?.total}
+                Showing rows {page === 1 ? 1 : (page - 1) * limit + 1} to{" "}
+                {data?.pageCount === page
+                  ? page * limit > data?.total
+                    ? data?.total
+                    : page * limit
+                  : page * limit}{" "}
+                of {data?.total}
               </Text>
 
-              <Flex gap="16px" align="center">
+              <Flex gap="16px" align="center" fontSize="12px">
                 <Flex
                   opacity={data?.page === 1 ? 0.5 : 1}
                   onClick={() => (data?.page === 1 ? "" : setPage(page - 1))}
@@ -236,36 +231,13 @@ const TableLayer = ({ isLoading, limit, data, setPage, page, eventMutate }) => {
                   align="center"
                   gap="2px"
                   color="#A4A6A8"
-                  fontSize="12px"
                 >
                   <IoIosArrowBack />
                   <Text lineHeight="100%">Previous</Text>
                 </Flex>
 
-                <Flex align="center" gap="5px" color="#A4A6A8" fontSize="12px">
-                  <Flex
-                    bg="tranparent"
-                    py="6px"
-                    px="8px"
-                    color="#242628"
-                    fontSize="12px"
-                    lineHeight="100%"
-                  >
-                    <Text>{data?.page}</Text>
-                  </Flex>
-                  <Text fontWeight={500} fontSize="12px">
-                    -{" "}
-                  </Text>
-                  <Flex
-                    bg="#242628"
-                    py="6px"
-                    px="8px"
-                    color="#fff"
-                    fontSize="12px"
-                    lineHeight="100%"
-                  >
-                    <Text>{data?.pageCount}</Text>
-                  </Flex>
+                <Flex color="#242628" lineHeight="100%">
+                  <Text>{data?.page}</Text>
                 </Flex>
 
                 <Flex
@@ -277,7 +249,6 @@ const TableLayer = ({ isLoading, limit, data, setPage, page, eventMutate }) => {
                   align="center"
                   gap="2px"
                   color="#A4A6A8"
-                  fontSize="12px"
                 >
                   <IoIosArrowForward />
                   <Text lineHeight="100%">Next</Text>

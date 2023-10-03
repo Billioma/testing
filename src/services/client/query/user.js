@@ -1,5 +1,5 @@
 import { useQuery } from "react-query";
-import { getClientDetails } from "../api/user";
+import { getCards, getClientDetails } from "../api/user";
 
 export const useGetClientDetails = (options = {}) => {
   const { data, isLoading, refetch } = useQuery(
@@ -9,6 +9,14 @@ export const useGetClientDetails = (options = {}) => {
       ...options,
     }
   );
+
+  return { data, isLoading, refetch };
+};
+
+export const useGetClientCards = (options = {}) => {
+  const { data, isLoading, refetch } = useQuery("GET_CARDS", getCards, {
+    ...options,
+  });
 
   return { data, isLoading, refetch };
 };

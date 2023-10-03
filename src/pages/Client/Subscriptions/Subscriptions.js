@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { Box, Button, Flex, Image, Text } from "@chakra-ui/react";
 import { MdAdd } from "react-icons/md";
+import TableLayer from "../../../components/data/Client/Subscriptions/TableLayer";
 import { useNavigate } from "react-router-dom";
-import { useGetLocations } from "../../../../services/operator/query/locations";
-import TableLayer from "../../../../components/data/Operator/Locations/Locations/TableLayer";
+import { useGetClientSubs } from "../../../services/client/query/subscription";
 
-const Locations = () => {
-  const { mutate, data, isLoading } = useGetLocations();
-
+const Users = () => {
+  const { mutate, data, isLoading } = useGetClientSubs();
   const [page, setPage] = useState(1);
   const limit = 10;
 
@@ -17,12 +16,8 @@ const Locations = () => {
     mutate({ limit, page: page });
   }, [page]);
 
-  useEffect(() => {
-    sessionStorage.removeItem("edit");
-  }, []);
-
   return (
-    <Box minH="75vh">
+    <Box>
       <Box borderRadius="8px" border="1px solid #d4d6d8" p="16px 23px 24px">
         <Flex align="center" justifyContent="space-between" w="full">
           <Text
@@ -31,17 +26,17 @@ const Locations = () => {
             lineHeight="100%"
             color="#242628"
           >
-            All Locations
+            All Subscriptions
           </Text>
 
-          <Flex align="center" gap="24px">
+          <Flex align="center " gap="24px">
             <Button
-              onClick={() => navigate("/operator/locations/all/create")}
+              onClick={() => navigate("/client/subscriptions/create")}
               display="flex"
               gap="8px"
               fontSize=""
             >
-              <Text fontSize="12px">Add a Location</Text>
+              <Text fontSize="12px">Add a Subscription</Text>
               <MdAdd size="20px" />
             </Button>
 
@@ -51,7 +46,7 @@ const Locations = () => {
               cursor="pointer"
               transition=".3s ease-in-out"
               _hover={{ bg: "#F4F6F8" }}
-              onClick={() => mutate({ limit, page: page })}
+              onClick={mutate}
               borderRadius="8px"
               border="1px solid #848688"
               p="10px"
@@ -67,12 +62,11 @@ const Locations = () => {
         </Flex>
 
         <TableLayer
-          locationMutate={mutate}
-          page={page}
           setPage={setPage}
-          data={data}
-          attendantMutate={mutate}
+          page={page}
+          userMutate={mutate}
           limit={limit}
+          data={data}
           isLoading={isLoading}
         />
       </Box>
@@ -80,4 +74,4 @@ const Locations = () => {
   );
 };
 
-export default Locations;
+export default Users;

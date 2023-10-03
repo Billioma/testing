@@ -79,7 +79,7 @@ const SideBar = () => {
                 className={
                   item.path.includes("client/logs")
                     ? ""
-                    : location.pathname !== item.path && "parent_nav"
+                    : !location.pathname.includes(item.path) && "parent_nav"
                 }
               >
                 <NavLink
@@ -112,7 +112,9 @@ const SideBar = () => {
                       </Box>
 
                       <Box w="16px" h="16px" className="initial_image">
-                        {location.pathname === item.path ? item.sec : item.icon}
+                        {location.pathname === item.path || isActivePath
+                          ? item.sec
+                          : item.icon}
                       </Box>
 
                       {item.name}

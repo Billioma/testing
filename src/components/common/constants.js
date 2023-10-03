@@ -566,6 +566,16 @@ export const clientUserHeader = [
   "Actions",
 ];
 
+export const clientSubHeader = [
+  "Plan",
+  "Amount",
+  "Duration",
+  "Next Payment Date",
+  "Status",
+  "Date Created",
+  "Actions",
+];
+
 export const operatorDashboardFilter = ["All Time", "Year", "Month", "Week"];
 
 export const businessSidebar = [

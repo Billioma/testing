@@ -254,7 +254,7 @@ const ClientAddSub = WithSuspense(
   lazy(() => import("../pages/Client/Subscriptions/AddSub"))
 );
 const ClientViewSub = WithSuspense(
-  lazy(() => import("../pages/Client/Subscriptions/ViewSub"))
+  lazy(() => import("../pages/Client/Subscriptions/Subscriptions"))
 );
 const ClientEvents = WithSuspense(
   lazy(() => import("../pages/Client/Events/Events"))

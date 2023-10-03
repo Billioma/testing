@@ -49,10 +49,16 @@ const TableLayer = () => {
               align="center"
             >
               <Text fontSize="12px" color="#242628" lineHeight="100%">
-                Showing rows 1 to {limit} of {paymentHistory?.total}
+                Showing rows {page === 1 ? 1 : (page - 1) * limit + 1} to{" "}
+                {paymentHistory?.pageCount === page
+                  ? page * limit > paymentHistory?.total
+                    ? paymentHistory?.total
+                    : page * limit
+                  : page * limit}{" "}
+                of {paymentHistory?.total}
               </Text>
 
-              <Flex gap="16px" align="center">
+              <Flex gap="16px" fontSize="12px" align="center">
                 <Flex
                   opacity={paymentHistory?.page === 1 ? 0.5 : 1}
                   onClick={() =>
@@ -62,36 +68,12 @@ const TableLayer = () => {
                   align="center"
                   gap="2px"
                   color="#A4A6A8"
-                  fontSize="12px"
                 >
                   <IoIosArrowBack />
                   <Text lineHeight="100%">Previous</Text>
                 </Flex>
-
-                <Flex align="center" gap="5px" color="#A4A6A8" fontSize="12px">
-                  <Flex
-                    bg="tranparent"
-                    py="6px"
-                    px="8px"
-                    color="#242628"
-                    fontSize="12px"
-                    lineHeight="100%"
-                  >
-                    <Text>{paymentHistory?.page}</Text>
-                  </Flex>
-                  <Text fontWeight={500} fontSize="12px">
-                    -{" "}
-                  </Text>
-                  <Flex
-                    bg="#242628"
-                    py="6px"
-                    px="8px"
-                    color="#fff"
-                    fontSize="12px"
-                    lineHeight="100%"
-                  >
-                    <Text>{paymentHistory?.pageCount}</Text>
-                  </Flex>
+                <Flex color="#242628" lineHeight="100%">
+                  <Text>{paymentHistory?.page}</Text>
                 </Flex>
 
                 <Flex
@@ -111,7 +93,6 @@ const TableLayer = () => {
                   align="center"
                   gap="2px"
                   color="#A4A6A8"
-                  fontSize="12px"
                 >
                   <IoIosArrowForward />
                   <Text lineHeight="100%">Next</Text>
@@ -144,32 +125,38 @@ const TableLayer = () => {
               </Td>
 
               <Td textAlign="center">
-                <Flex
-                  flexDir="column"
-                  bg="#F4F6F8"
-                  borderRadius="4px"
-                  px="16px"
-                  py="8px"
-                >
-                  {TransactionTypes?.find(
-                    (item, i) => i === dat?.transactionType
-                  )
-                    ?.replace("_", " ")
-                    ?.replace("_", " ")}
+                <Flex justifyContent="center" align="center" w="full">
+                  <Flex
+                    flexDir="column"
+                    bg="#F4F6F8"
+                    w="fit-content"
+                    borderRadius="4px"
+                    px="16px"
+                    py="8px"
+                  >
+                    {TransactionTypes?.find(
+                      (item, i) => i === dat?.transactionType
+                    )
+                      ?.replace("_", " ")
+                      ?.replace("_", " ")}
+                  </Flex>
                 </Flex>
               </Td>
 
               <Td>
-                <Flex
-                  color={Object.values(Status[dat?.status])[0]}
-                  bg={Object.values(Status[dat?.status])[2]}
-                  py="5px"
-                  px="16px"
-                  justifyContent="center"
-                  borderRadius="4px"
-                  align="center"
-                >
-                  {Object.values(Status[dat?.status])[1]}
+                <Flex justifyContent="center" align="center" w="full">
+                  <Flex
+                    color={Object.values(Status[dat?.status])[0]}
+                    bg={Object.values(Status[dat?.status])[2]}
+                    py="5px"
+                    px="16px"
+                    justifyContent="center"
+                    w="fit-content"
+                    borderRadius="4px"
+                    align="center"
+                  >
+                    {Object.values(Status[dat?.status])[1]}
+                  </Flex>
                 </Flex>
               </Td>
               <Td textAlign="center">{formatDate(dat?.createdAt)}</Td>

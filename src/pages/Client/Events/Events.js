@@ -8,13 +8,13 @@ import { useNavigate } from "react-router-dom";
 const Events = () => {
   const { mutate, data, isLoading } = useGetEvents();
 
-  const [page, setPage] = useState(0);
+  const [page, setPage] = useState(1);
   const limit = 10;
 
   const navigate = useNavigate();
 
   useEffect(() => {
-    mutate({ limit, page: page + 1 });
+    mutate({ limit, page: page });
   }, [page]);
 
   return (

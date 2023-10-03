@@ -226,16 +226,6 @@ const AddSubscription = () => {
           }}
           flexDir="column"
         >
-          {/* {step !== 1 && (
-            <Box mb="32px">
-              <HiOutlineArrowNarrowLeft
-                cursor="pointer"
-                onClick={() => setStep(step - 1)}
-                size="24px"
-                color="#242628"
-              />
-            </Box>
-          )} */}
 
           {step !== 1 && (
             <Flex
@@ -286,8 +276,8 @@ const AddSubscription = () => {
                         mb={step === 1 ? "32px" : "24px"}
                         p="12px"
                         borderRadius="8px"
-                        minW={{ base: "full", md: "26rem" }}
                         border="1px solid #D4D6D8"
+                        minW={{ base: "full", md: "26rem" }}
                       >
                         <Flex
                           align="flex-start"
