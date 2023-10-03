@@ -100,7 +100,7 @@ const TableLayer = ({ isLoading, limit, data, setPage, page }) => {
                       ₦{" "}
                       {item?.amount?.toLocaleString(undefined, {
                         maximumFractionDigits: 2,
-                      })}
+                      }) || "0.00"}
                     </Td>
                     <Td>
                       <Flex align="center" w="full" justifyContent="center">

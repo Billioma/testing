@@ -14,8 +14,16 @@ import CustomInput from "../common/CustomInput";
 import { BsCheckCircle } from "react-icons/bs";
 import { useCustomerFundWallet } from "../../services/customer/query/user";
 import useCustomToast from "../../utils/notifications";
+import { useClientFundWallet } from "../../services/client/query/user";
 
-const FundWalletDrawer = ({ isOpen, cards, refetchUser, onClose, action }) => {
+const FundWalletDrawer = ({
+  client,
+  isOpen,
+  cards,
+  refetchUser,
+  onClose,
+  action,
+}) => {
   const [values, setValues] = useState({
     cardId: "",
     amount: "",
@@ -29,6 +37,18 @@ const FundWalletDrawer = ({ isOpen, cards, refetchUser, onClose, action }) => {
     });
   };
   const { successToast, errorToast } = useCustomToast();
+  const { mutate: clientMutate, isLoading: isClient } = useClientFundWallet({
+    onSuccess: (res) => {
+      close();
+      successToast(res?.message);
+      refetchUser();
+    },
+    onError: (err) => {
+      errorToast(
+        err?.response?.data?.message || err?.message || "An Error occurred"
+      );
+    },
+  });
   const { mutate, isLoading } = useCustomerFundWallet({
     onSuccess: (res) => {
       close();
@@ -43,10 +63,15 @@ const FundWalletDrawer = ({ isOpen, cards, refetchUser, onClose, action }) => {
   });
 
   const handleSubmit = () => {
-    mutate({
-      amount: Number(values?.amount),
-      cardId: Number(values?.cardId),
-    });
+    client
+      ? clientMutate({
+          amount: Number(values?.amount),
+          cardId: Number(values?.cardId),
+        })
+      : mutate({
+          amount: Number(values?.amount),
+          cardId: Number(values?.cardId),
+        });
   };
 
   return (
@@ -193,7 +218,7 @@ const FundWalletDrawer = ({ isOpen, cards, refetchUser, onClose, action }) => {
                 fontSize="12px"
                 isDisabled={!values.cardId || !values.amount}
                 onClick={handleSubmit}
-                isLoading={isLoading}
+                isLoading={isLoading || isClient}
               >
                 Fund Wallet
               </Button>

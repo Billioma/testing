@@ -57,7 +57,7 @@ const LogsTableLayer = ({ isLoading, limit, data, setPage, page }) => {
                       ₦{" "}
                       {item?.amountPaid?.toLocaleString(undefined, {
                         maximumFractionDigits: 2,
-                      })}
+                      }) || "0.00"}
                     </Td>
 
                     <Td textAlign="center">{item?.status}</Td>

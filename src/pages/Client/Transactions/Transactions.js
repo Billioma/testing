@@ -83,7 +83,7 @@ const Transactions = () => {
                       ₦{" "}
                       {item?.amount?.toLocaleString(undefined, {
                         maximumFractionDigits: 2,
-                      })}
+                      }) || "0.00"}
                     </Td>
                     <Td>{item?.zone}</Td>
                     <Td>{item?.plate}</Td>

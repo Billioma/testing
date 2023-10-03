@@ -173,7 +173,7 @@ const Park = () => {
         Price: ₦{" "}
         {data?.amount?.toLocaleString(undefined, {
           maximumFractionDigits: 2,
-        })}
+        }) || "0.00"}
       </Text>
     </Flex>
   );
@@ -487,7 +487,7 @@ const Park = () => {
                               minimumFractionDigits: 2,
                               maximumFractionDigits: 2,
                             }
-                          )}
+                          ) || "0.00"}
                         </Text>
                       </Box>
 

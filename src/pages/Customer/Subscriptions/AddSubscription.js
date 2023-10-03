@@ -358,7 +358,7 @@ const AddSubscription = () => {
                               ₦{" "}
                               {dat?.amount?.toLocaleString(undefined, {
                                 maximumFractionDigits: 2,
-                              })}
+                              }) || "0.00"}
                             </Text>
                           </Box>
 
@@ -486,7 +486,7 @@ const AddSubscription = () => {
                       ₦{" "}
                       {currentSub?.amount?.toLocaleString(undefined, {
                         maximumFractionDigits: 2,
-                      })}
+                      }) || "0.00"}
                     </Text>
                   </Box>
 
@@ -641,7 +641,7 @@ const AddSubscription = () => {
                         {userData?.wallet?.balance?.toLocaleString(undefined, {
                           minimumFractionDigits: 2,
                           maximumFractionDigits: 2,
-                        })}
+                        }) || "0.00"}
                       </Text>
                     </Box>
 

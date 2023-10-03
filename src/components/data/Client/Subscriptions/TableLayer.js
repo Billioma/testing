@@ -20,7 +20,6 @@ import {
   intervals,
 } from "../../../common/constants";
 import { formatDate } from "../../../../utils/helpers";
-import { FiMoreVertical } from "react-icons/fi";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import ConfirmDeleteModal from "../../../modals/ConfirmDeleteModal";
 import useCustomToast from "../../../../utils/notifications";
@@ -141,53 +140,6 @@ const TableLayer = ({ isLoading, data, page, setPage, userMutate, limit }) => {
                       </Flex>
                     </Td>
                     <Td textAlign="center">{formatDate(item?.createdAt)}</Td>
-                    <Td>
-                      <Flex
-                        onClick={() => open(item)}
-                        justifyContent="center"
-                        pos="relative"
-                        cursor="pointer"
-                        className="box"
-                        align="center"
-                      >
-                        <FiMoreVertical />
-                        {show && currentUser === item && (
-                          <Box
-                            border="1px solid #F4F6F8"
-                            px="4px"
-                            py="8px"
-                            bg="#fff"
-                            borderRadius="4px"
-                            pos="absolute"
-                            top={i < 3 ? "20px" : "unset"}
-                            bottom={i > 3 ? "0" : "unset"}
-                            right="0"
-                            zIndex={5555555}
-                            boxShadow="0px 8px 16px 0px rgba(0, 0, 0, 0.08)"
-                          >
-                            <Flex
-                              py="6px"
-                              px="8px"
-                              borderRadius="2px"
-                              justifyContent="center"
-                              align="center"
-                              onClick={() => setShowDelete(true)}
-                              _hover={{ bg: "#F4F6F8" }}
-                              cursor="pointer"
-                              fontSize="10px"
-                              color="red"
-                              w="full"
-                              lineHeight="100%"
-                              fontWeight={500}
-                              gap="12px"
-                            >
-                              <BsTrash size="15px" />
-                              Remove User
-                            </Flex>
-                          </Box>
-                        )}
-                      </Flex>
-                    </Td>
                   </Tr>
                 ))}
               </Tbody>

@@ -433,7 +433,7 @@ const TableLayer = () => {
                   ₦{" "}
                   {dat?.amount?.toLocaleString(undefined, {
                     maximumFractionDigits: 2,
-                  })}
+                  }) || "0.00"}
                 </Td>
                 <Td textAlign="center">{dat?.vehicle?.licensePlate}</Td>
                 <Td textAlign="center">
@@ -569,7 +569,7 @@ const TableLayer = () => {
                   ₦{" "}
                   {dat?.amount?.toLocaleString(undefined, {
                     maximumFractionDigits: 2,
-                  })}
+                  }) || "0.00"}
                 </Td>
                 <Td textAlign="center">{dat?.vehicle?.licensePlate}</Td>
                 <Td textAlign="center">
@@ -662,7 +662,7 @@ const TableLayer = () => {
                 ₦{" "}
                 {dat?.amount?.toLocaleString(undefined, {
                   maximumFractionDigits: 2,
-                })}
+                }) || "0.00"}
               </Td>
               <Td textAlign="center">
                 <Flex

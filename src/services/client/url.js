@@ -9,6 +9,7 @@ export const GET_USERS = (limit = "", page = "") =>
   `client/users?limit=${limit}&page=${page}&sort=id,DESC`;
 export const GET_CLIENT_USERS = "client/users/?";
 export const GET_USERS_COUNT = "client/dashboard/users";
+export const FUND_WALLET = "cards/fund-wallet";
 export const GET_SUB_COUNT = "client/dashboard/subscriptions";
 export const GET_MEM_PLAN = "public/membership-plans?corporate=1";
 export const GET_EVENT_COUNT = "client/dashboard/events";

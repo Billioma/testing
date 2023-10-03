@@ -206,7 +206,7 @@ const Cards = () => {
                 {userData?.wallet?.balance?.toLocaleString(undefined, {
                   minimumFractionDigits: 2,
                   maximumFractionDigits: 2,
-                })}
+                }) || "0.00"}
               </Text>
 
               <Button
@@ -386,7 +386,7 @@ const Cards = () => {
                             {
                               maximumFractionDigits: 2,
                             }
-                          )}
+                          ) || "0.00"}
                         </Text>
                       </Box>
                       <Box w="full">

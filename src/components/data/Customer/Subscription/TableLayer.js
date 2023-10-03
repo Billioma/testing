@@ -249,7 +249,7 @@ const TableLayer = () => {
                   ₦{" "}
                   {dat?.membershipPlan?.amount?.toLocaleString(undefined, {
                     maximumFractionDigits: 2,
-                  })}
+                  }) || "0.00"}
                 </Td>
                 <Td textAlign="center">
                   {Object.values(intervals[dat?.membershipPlan?.interval])[0]}

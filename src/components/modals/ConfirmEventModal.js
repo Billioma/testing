@@ -199,7 +199,7 @@ const ConfirmEventModal = ({
                   ₦{" "}
                   {event?.price?.toLocaleString(undefined, {
                     maximumFractionDigits: 2,
-                  })}
+                  }) || "0.00"}
                 </Text>
               </Flex>
             </Box>

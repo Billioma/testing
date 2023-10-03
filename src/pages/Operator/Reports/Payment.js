@@ -89,18 +89,18 @@ const Payment = () => {
                               {
                                 maximumFractionDigits: 2,
                               }
-                            )
+                            ) || "0.00"
                           : i === 1
                           ? data?.aggregate?.totalAmountPaid?.toLocaleString(
                               undefined,
                               {
                                 maximumFractionDigits: 2,
                               }
-                            )
+                            ) || "0.00"
                           : i === 2 &&
-                            data?.count?.toLocaleString(undefined, {
+                            data?.total?.toLocaleString(undefined, {
                               maximumFractionDigits: 2,
-                            })}
+                            }) || "0.00"}
                       </Text>
                     </Box>
                   </Flex>

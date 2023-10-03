@@ -41,7 +41,7 @@ const ConfirmPaySubModal = ({ isOpen, dataa, onClose, isLoading, action }) => {
             You will be charged ₦{" "}
             {dataa?.amount?.toLocaleString(undefined, {
               maximumFractionDigits: 2,
-            })}{" "}
+            }) || "0.00"}{" "}
             from your wallet to complete payment
           </Text>
 

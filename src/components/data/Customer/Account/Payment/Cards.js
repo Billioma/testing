@@ -141,7 +141,7 @@ const Cards = () => {
                 ₦{" "}
                 {userData?.wallet?.balance?.toLocaleString(undefined, {
                   maximumFractionDigits: 2,
-                })}
+                }) || "0.00"}
               </Text>
 
               <Button

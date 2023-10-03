@@ -561,7 +561,7 @@ const EventParking = () => {
                       ₦{" "}
                       {event?.price?.toLocaleString(undefined, {
                         maximumFractionDigits: 2,
-                      })}
+                      }) || "0.00"}
                     </Text>
                   </Flex>
                 </Flex>
@@ -708,7 +708,7 @@ const EventParking = () => {
                               minimumFractionDigits: 2,
                               maximumFractionDigits: 2,
                             }
-                          )}
+                          ) || "0.00"}
                         </Text>
                       </Box>
 

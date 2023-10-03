@@ -573,7 +573,6 @@ export const clientSubHeader = [
   "Next Payment Date",
   "Status",
   "Date Created",
-  "Actions",
 ];
 
 export const operatorDashboardFilter = ["All Time", "Year", "Month", "Week"];

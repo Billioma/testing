@@ -784,7 +784,7 @@ const CarServices = () => {
                     ₦{" "}
                     {values?.billingRate?.amount?.toLocaleString(undefined, {
                       maximumFractionDigits: 2,
-                    })}
+                    }) || "0.00"}
                   </Text>
                 </Flex>
               </Box>
@@ -841,7 +841,7 @@ const CarServices = () => {
                         {userData?.wallet?.balance?.toLocaleString(undefined, {
                           minimumFractionDigits: 2,
                           maximumFractionDigits: 2,
-                        })}
+                        }) || "0.00"}
                       </Text>
                     </Box>
 

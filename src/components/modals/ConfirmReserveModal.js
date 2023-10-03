@@ -177,7 +177,7 @@ const ConfirmReserveModal = ({
                   ₦{" "}
                   {amount?.toLocaleString(undefined, {
                     maximumFractionDigits: 2,
-                  })}
+                  }) || "0.00"}
                 </Text>
               </Flex>
             </Box>

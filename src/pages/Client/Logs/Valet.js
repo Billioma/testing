@@ -86,7 +86,7 @@ const Valet = () => {
                       ₦{" "}
                       {item?.amount?.toLocaleString(undefined, {
                         maximumFractionDigits: 2,
-                      })}
+                      }) || "0.00"}
                     </Td>
                     <Td>
                       <Flex

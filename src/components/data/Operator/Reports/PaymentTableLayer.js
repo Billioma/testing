@@ -58,13 +58,13 @@ const PaymentTableLayer = ({ isLoading, limit, data, setPage, page }) => {
                       ₦{" "}
                       {item?.amount?.toLocaleString(undefined, {
                         maximumFractionDigits: 2,
-                      })}
+                      }) || "0.00"}
                     </Td>
                     <Td textAlign="center">
                       ₦{" "}
                       {item?.amountPaid?.toLocaleString(undefined, {
                         maximumFractionDigits: 2,
-                      })}
+                      }) || "0.00"}
                     </Td>
                     <Td>{item?.serviceType}</Td>
                     <Td textAlign="center">

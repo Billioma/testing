@@ -83,7 +83,7 @@ const Details = () => {
                 ₦ ${
                   data?.amount?.toLocaleString(undefined, {
                     maximumFractionDigits: 2,
-                  }) || ""
+                  }) || "0.00"
                 }`}
               />
               <Layout
@@ -122,7 +122,7 @@ const Details = () => {
                 ₦ ${
                   data?.finalAmount?.toLocaleString(undefined, {
                     maximumFractionDigits: 2,
-                  }) || ""
+                  }) || "0.00"
                 }`}
               />
               <Layout

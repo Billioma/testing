@@ -265,7 +265,7 @@ const Dashboard = () => {
                           : i === 2 && mainData?.data?.carWash?.totalAmount
                         )?.toLocaleString(undefined, {
                           maximumFractionDigits: 2,
-                        })}
+                        }) || "0.00"}
                       </Text>
                     </Box>
 

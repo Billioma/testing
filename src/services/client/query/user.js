@@ -1,5 +1,5 @@
-import { useQuery } from "react-query";
-import { getCards, getClientDetails } from "../api/user";
+import { useMutation, useQuery } from "react-query";
+import { clientFundWallet, getCards, getClientDetails } from "../api/user";
 
 export const useGetClientDetails = (options = {}) => {
   const { data, isLoading, refetch } = useQuery(
@@ -19,4 +19,12 @@ export const useGetClientCards = (options = {}) => {
   });
 
   return { data, isLoading, refetch };
+};
+
+export const useClientFundWallet = (options = {}) => {
+  const { mutate, isLoading } = useMutation(clientFundWallet, {
+    mutationKey: "FUND_WALLET",
+    ...options,
+  });
+  return { mutate, isLoading };
 };

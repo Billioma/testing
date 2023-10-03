@@ -175,7 +175,7 @@ const ConfirmParkModal = ({
                   ₦{" "}
                   {values?.serviceType?.amount?.toLocaleString(undefined, {
                     maximumFractionDigits: 2,
-                  })}
+                  }) || "0.00"}
                 </Text>
               </Flex>
             </Box>

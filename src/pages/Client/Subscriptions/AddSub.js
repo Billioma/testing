@@ -166,13 +166,13 @@ const AddUser = () => {
 
   useEffect(() => {
     setStep(1);
-  setCurrentSub({})
-  setUsers([]);
-  setValues({
-    paymentMethod: "",
-    cardId: "",
-    autoRenew: false,
-  });
+    setCurrentSub({});
+    setUsers([]);
+    setValues({
+      paymentMethod: "",
+      cardId: "",
+      autoRenew: false,
+    });
   }, []);
 
   return (
@@ -260,7 +260,7 @@ const AddUser = () => {
                             ₦{" "}
                             {dat?.amount?.toLocaleString(undefined, {
                               maximumFractionDigits: 2,
-                            })}
+                            }) || "0.00"}
                           </Text>
                         </Flex>
 
@@ -409,7 +409,7 @@ const AddUser = () => {
                       ₦{" "}
                       {currentSub?.amount?.toLocaleString(undefined, {
                         maximumFractionDigits: 2,
-                      })}
+                      }) || "0.00"}
                     </Text>
                   </Flex>
 
@@ -435,87 +435,92 @@ const AddUser = () => {
                 </Flex>
               </Box>
 
-              <Box borderRadius="8px" p="16px" border="1px solid #e4e6e8">
-                <Text
-                  color="#646668"
-                  fontSize="12px"
-                  fontWeight={500}
-                  lineHeight="100%"
-                >
-                  Select up to{" "}
-                  {currentSub?.features && currentSub?.features[0]?.value} User
-                  {currentSub?.features &&
-                  Number(currentSub?.features[0]?.value) === 1
-                    ? ""
-                    : "s"}
-                </Text>
+              {currentSub?.features?.length ? (
+                <Box borderRadius="8px" p="16px" border="1px solid #e4e6e8">
+                  <Text
+                    color="#646668"
+                    fontSize="12px"
+                    fontWeight={500}
+                    lineHeight="100%"
+                  >
+                    Select up to{" "}
+                    {currentSub?.features && currentSub?.features[0]?.value}{" "}
+                    User
+                    {currentSub?.features &&
+                    Number(currentSub?.features[0]?.value) === 1
+                      ? ""
+                      : "s"}
+                  </Text>
 
-                <Flex
-                  flexDir="column"
-                  gap="24px"
-                  borderTop="1px solid #d4d6d8"
-                  mt="16px"
-                  pt="16px"
-                >
-                  {clientUsers?.data?.length
-                    ? clientUsers?.data?.map((user, i) => (
-                        <Flex
-                          align="center"
-                          key={i}
-                          justifyContent="space-between"
-                          w="full"
-                        >
-                          <Box w="full">
-                            <Text
-                              color="#646668"
-                              fontSize="14px"
-                              lineHeight="100%"
-                            >
-                              {user?.profile?.firstName}{" "}
-                              {user?.profile?.lastName}
-                            </Text>
-                            <Text
-                              mt="8px"
-                              color="#444648"
-                              fontSize="14px"
-                              fontWeight={500}
-                              lineHeight="100%"
-                            >
-                              {user?.email}
-                            </Text>
-                          </Box>
+                  <Flex
+                    flexDir="column"
+                    gap="24px"
+                    borderTop="1px solid #d4d6d8"
+                    mt="16px"
+                    pt="16px"
+                  >
+                    {clientUsers?.data?.length
+                      ? clientUsers?.data?.map((user, i) => (
                           <Flex
-                            justifyContent="center"
                             align="center"
-                            p="10px"
-                            opacity={
-                              users?.length ===
-                                Number(currentSub?.features[0]?.value) &&
-                              !isUserSelected(user)
-                                ? 0.5
-                                : 1
-                            }
-                            cursor="pointer"
-                            onClick={() => handleUserClick(user)}
-                            bg={
-                              users?.some((u) => u?.id === user?.id)
-                                ? "#0b841d"
-                                : "#EE383A"
-                            }
-                            borderRadius="8px"
-                            border="1px solid #e4e6e8"
+                            key={i}
+                            justifyContent="space-between"
+                            w="full"
                           >
-                            {users.some((u) => u?.id === user?.id) ? (
-                              <BsCheckLg size="20px" color="#fff" />
-                            ) : (
-                              <BsPlus size="20px" color="#fff" />
-                            )}
+                            <Box w="full">
+                              <Text
+                                color="#646668"
+                                fontSize="14px"
+                                lineHeight="100%"
+                              >
+                                {user?.profile?.firstName}{" "}
+                                {user?.profile?.lastName}
+                              </Text>
+                              <Text
+                                mt="8px"
+                                color="#444648"
+                                fontSize="14px"
+                                fontWeight={500}
+                                lineHeight="100%"
+                              >
+                                {user?.email}
+                              </Text>
+                            </Box>
+                            <Flex
+                              justifyContent="center"
+                              align="center"
+                              p="10px"
+                              opacity={
+                                users?.length ===
+                                  Number(currentSub?.features[0]?.value) &&
+                                !isUserSelected(user)
+                                  ? 0.5
+                                  : 1
+                              }
+                              cursor="pointer"
+                              onClick={() => handleUserClick(user)}
+                              bg={
+                                users?.some((u) => u?.id === user?.id)
+                                  ? "#0b841d"
+                                  : "#EE383A"
+                              }
+                              borderRadius="8px"
+                              border="1px solid #e4e6e8"
+                            >
+                              {users.some((u) => u?.id === user?.id) ? (
+                                <BsCheckLg size="20px" color="#fff" />
+                              ) : (
+                                <BsPlus size="20px" color="#fff" />
+                              )}
+                            </Flex>
                           </Flex>
-                        </Flex>
-                      ))
-                    : ""}
-                </Flex>
-              </Box>
+                        ))
+                      : ""}
+                  </Flex>
+                </Box>
+              ) : (
+                ""
+              )}
 
               <Flex align="center" mt="32px" w="100%" gap="24px">
                 <Button
@@ -528,6 +533,16 @@ const AddUser = () => {
                   color="#444648"
                   py="17px"
                   px="26px"
+                  onClick={() => {
+                    setCurrentSub({});
+                    setValues({
+                      paymentMethod: "",
+                      cardId: "",
+                      autoRenew: false,
+                    });
+                    setUsers([]);
+                    setStep(1);
+                  }}
                   w="full"
                 >
                   Cancel
@@ -538,7 +553,7 @@ const AddUser = () => {
                   py="17px"
                   px="26px"
                   fontSize="12px"
-                  isDisabled={!users?.length}
+                  isDisabled={currentSub?.features?.length && !users?.length}
                 >
                   Save
                 </Button>
@@ -620,7 +635,7 @@ const AddUser = () => {
                       ₦{" "}
                       {currentSub?.amount?.toLocaleString(undefined, {
                         maximumFractionDigits: 2,
-                      })}
+                      }) || "0.00"}
                     </Text>
                   </Flex>
 
@@ -646,36 +661,40 @@ const AddUser = () => {
                 </Flex>
               </Box>
 
-              <Flex
-                my="24px"
-                align="center"
-                justifyContent="space-between"
-                w="full"
-                borderRadius="4px"
-                py="12px"
-                px="16px"
-                border="1px solid #d4d6d8"
-              >
-                <Text color="#646668" fontSize="12px" lineHeight="100%">
-                  {users?.length} user{users?.length > 1 ? "s" : ""} selected
-                </Text>
-
-                <Button
-                  py="6px"
-                  px="16px"
-                  size="sm"
-                  fontSize="10px"
-                  display="flex"
-                  onClick={() => setStep(step - 1)}
+              {currentSub?.features?.length ? (
+                <Flex
+                  mt="24px"
                   align="center"
-                  gap="8px"
+                  justifyContent="space-between"
+                  w="full"
+                  borderRadius="4px"
+                  py="12px"
+                  px="16px"
+                  border="1px solid #d4d6d8"
                 >
-                  <Text>Change</Text>
-                  <AiOutlineEdit size="15px" />
-                </Button>
-              </Flex>
+                  <Text color="#646668" fontSize="12px" lineHeight="100%">
+                    {users?.length} user{users?.length > 1 ? "s" : ""} selected
+                  </Text>
 
-              <Box>
+                  <Button
+                    py="6px"
+                    px="16px"
+                    size="sm"
+                    fontSize="10px"
+                    display="flex"
+                    onClick={() => setStep(step - 1)}
+                    align="center"
+                    gap="8px"
+                  >
+                    <Text>Change</Text>
+                    <AiOutlineEdit size="15px" />
+                  </Button>
+                </Flex>
+              ) : (
+                ""
+              )}
+
+              <Box mt="24px">
                 <Text color="#444648" fontSize="10px" lineHeight="100%">
                   Client Payment Method
                 </Text>
@@ -736,7 +755,7 @@ const AddUser = () => {
                         {userData?.wallet?.balance?.toLocaleString(undefined, {
                           minimumFractionDigits: 2,
                           maximumFractionDigits: 2,
-                        })}
+                        }) || "0.00"}
                       </Text>
                     </Box>
 
@@ -881,6 +900,16 @@ const AddUser = () => {
                   fontSize="12px"
                   color="#444648"
                   py="17px"
+                  onClick={() => {
+                    setCurrentSub({});
+                    setValues({
+                      paymentMethod: "",
+                      cardId: "",
+                      autoRenew: false,
+                    });
+                    setUsers([]);
+                    setStep(1);
+                  }}
                   px="26px"
                   w="40%"
                 >
@@ -911,6 +940,7 @@ const AddUser = () => {
         refetchUser={refetch}
         isOpen={showFunds}
         cards={cards}
+        client
         action={() => {
           initializePayment(onSuccess, onCloses);
         }}
@@ -920,6 +950,7 @@ const AddUser = () => {
         isLoading={isCreating}
         action={handleCreateSub}
         dataa={currentSub}
+        refetchUser={refetch}
         isOpen={showConfirm}
         onClose={() => setShowConfirm(false)}
       />
