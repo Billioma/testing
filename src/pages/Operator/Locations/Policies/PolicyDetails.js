@@ -9,8 +9,8 @@ import useCustomToast from "../../../../utils/notifications";
 import {
   useGetPolicy,
   useUpdatePolicy,
+  useGetOpLocation
 } from "../../../../services/operator/query/locations";
-import { useGetLocations } from "../../../../services/customer/query/locations";
 import { statusType } from "../../../../components/common/constants";
 
 const PolicyDetails = () => {
@@ -23,13 +23,13 @@ const PolicyDetails = () => {
   const isEdit = sessionStorage.getItem("edit");
   const { id } = useParams();
   const { mutate, data, isLoading } = useGetPolicy();
-  const { data: allLocations } = useGetLocations();
+  const { data: allLocations } = useGetOpLocation();
 
   useEffect(() => {
     mutate({ id: id });
   }, []);
 
-  const locationOptions = allLocations?.map((state) => ({
+  const locationOptions = allLocations?.data?.map((state) => ({
     value: state?.id,
     label: state?.name,
   }));

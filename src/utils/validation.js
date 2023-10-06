@@ -122,7 +122,7 @@ export const initAttendantValues = {
   name: "",
   password: "",
   passwordConfirmation: "",
-  status: "",
+  status: 0,
   userId: "",
 };
 
@@ -161,7 +161,6 @@ export const opSignValues = {
 
 export const validateAttendantSchema = Yup.object().shape({
   accountType: Yup.object().required("Account Type is required"),
-  status: Yup.object().required("Status is required"),
   location: Yup.array().required("Location is required"),
   name: Yup.string().required("Full Name is required"),
   password: Yup.string()

@@ -6,8 +6,10 @@ import Select from "react-select";
 import CustomInput from "../../../../components/common/CustomInput";
 import { IoIosArrowDown } from "react-icons/io";
 import useCustomToast from "../../../../utils/notifications";
-import { useCreatePolicy } from "../../../../services/operator/query/locations";
-import { useGetLocations } from "../../../../services/customer/query/locations";
+import {
+  useCreatePolicy,
+  useGetOpLocation,
+} from "../../../../services/operator/query/locations";
 import { Form, Formik } from "formik";
 import {
   initPolicyValues,
@@ -18,9 +20,9 @@ import { statusType } from "../../../../components/common/constants";
 const AddPolicy = () => {
   const navigate = useNavigate();
 
-  const { data: allLocations } = useGetLocations();
+  const { data: allLocations } = useGetOpLocation();
 
-  const locationOptions = allLocations?.map((state) => ({
+  const locationOptions = allLocations?.data?.map((state) => ({
     value: state?.id,
     label: state?.name,
   }));
