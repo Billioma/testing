@@ -5,7 +5,10 @@ import { AiOutlineCamera } from "react-icons/ai";
 import Select from "react-select";
 import { useNavigate, useLocation } from "react-router-dom";
 import { PRIVATE_PATHS } from "../../../routes/constants";
-import { useEditAdministrator } from "../../../services/admin/query/users";
+import {
+  useEditAdministrator,
+  useGetAdministrators,
+} from "../../../services/admin/query/users";
 import useCustomToast from "../../../utils/notifications";
 import AdminChangePassword from "../../../components/modals/AdminChangePasswordModal";
 import { useGetAllRoles } from "../../../services/admin/query/roles";
@@ -29,9 +32,11 @@ export default function AddAttendants() {
   const navigate = useNavigate();
   const [isDisabled, setIsDisabled] = useState(true);
   const { errorToast, successToast } = useCustomToast();
+  const { refetch } = useGetAdministrators();
   const { mutate, isLoading } = useEditAdministrator({
     onSuccess: () => {
       successToast("Administrator updated successfully!");
+      refetch();
       navigate(PRIVATE_PATHS.ADMIN_ADMINISTRATORS);
     },
     onError: (error) => {

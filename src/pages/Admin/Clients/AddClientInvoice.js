@@ -19,7 +19,6 @@ import { useGetServices } from "../../../services/admin/query/services";
 export default function AddClientInvoice() {
   const [state, setState] = useState({
     invoiceItems: [{}],
-    status: 1,
   });
 
   const navigate = useNavigate();
@@ -48,7 +47,7 @@ export default function AddClientInvoice() {
 
   const serviceOptions = services?.data?.map((service) => ({
     label: service.name,
-    value: service.id,
+    value: parseInt(service.id),
   }));
 
   const isFormValid = () => {
@@ -87,6 +86,8 @@ export default function AddClientInvoice() {
     "Traffic Management Package",
     "Equipment & Set up fee ",
   ].map((description) => ({ label: description, value: description }));
+
+  console.log(state);
 
   return (
     <Box minH="75vh">
@@ -143,6 +144,7 @@ export default function AddClientInvoice() {
             <DateTimePicker
               selectedDate={state.invoiceDate}
               onChange={(date) => setState({ ...state, invoiceDate: date })}
+              hasTime
             />
           </Box>
 
@@ -153,6 +155,7 @@ export default function AddClientInvoice() {
             <DateTimePicker
               selectedDate={state.dueDate}
               onChange={(date) => setState({ ...state, dueDate: date })}
+              hasTime
             />
           </Box>
         </Flex>
@@ -217,7 +220,7 @@ export default function AddClientInvoice() {
                     placeholder="Select service"
                     options={serviceOptions}
                     onChange={({ value }) =>
-                      handleInvoiceChange(index, value, "service")
+                      handleInvoiceChange(index, value, "serviceType")
                     }
                     value={serviceOptions?.find(
                       (service) => service.value === item?.service
@@ -253,9 +256,9 @@ export default function AddClientInvoice() {
                   auth
                   type={"number"}
                   mb
-                  holder="Enter rate"
-                  onChange={({ value }) =>
-                    handleInvoiceChange(index, value, "unit")
+                  holder="Enter unit"
+                  onChange={({ target }) =>
+                    handleInvoiceChange(index, parseInt(target.value), "unit")
                   }
                   value={item?.unit}
                 />
@@ -270,9 +273,9 @@ export default function AddClientInvoice() {
                   auth
                   mb
                   holder="Enter price"
-                  value={item?.price}
-                  onChange={({ value }) =>
-                    handleInvoiceChange(index, value, "price")
+                  value={item?.rate}
+                  onChange={({ target }) =>
+                    handleInvoiceChange(index, parseInt(target.value), "rate")
                   }
                 />
               </Box>

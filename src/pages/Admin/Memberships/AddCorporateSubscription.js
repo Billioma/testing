@@ -9,6 +9,7 @@ import useCustomToast from "../../../utils/notifications";
 import GoBackTab from "../../../components/data/Admin/GoBackTab";
 
 import {
+  useCreateCorporateSubscription,
   useCreateMembershipFeature,
   useGetMembershipPlans,
 } from "../../../services/admin/query/memberships";
@@ -42,10 +43,10 @@ export default function AddCorporateSubscription() {
   const [isDisabled, setIsDisabled] = useState(true);
   const { errorToast, successToast } = useCustomToast();
 
-  const { mutate, isLoading } = useCreateMembershipFeature({
+  const { mutate, isLoading } = useCreateCorporateSubscription({
     onSuccess: () => {
       successToast("Membership feature added successfully!");
-      navigate(PRIVATE_PATHS.ADMIN_MEMBERSHIP_FEATURES);
+      navigate(PRIVATE_PATHS.ADMIN_CORPORATE_SUBSCRIPTIONS);
     },
     onError: (error) => {
       errorToast(
@@ -86,7 +87,7 @@ export default function AddCorporateSubscription() {
     );
   };
 
-  const { data: plans } = useGetMembershipPlans({}, 1, 100000, true);
+  const { data: plans } = useGetMembershipPlans({}, 1, 100000, true, true);
 
   useEffect(() => {
     setIsDisabled(isFormValid);
@@ -182,7 +183,7 @@ export default function AddCorporateSubscription() {
                   handleSelectChange(value, { name: "users" })
                 }
                 options={userOptions}
-                multi
+                isMulti
                 placeholder="Select users"
               />
             </Box>
@@ -233,7 +234,7 @@ export default function AddCorporateSubscription() {
                 isLoading={isLoading}
                 onClick={(e) => (step === 1 ? setStep(2) : handleSubmit(e))}
               >
-                {step === 1 ? "Next" : "Add Subscrption"}
+                {step === 1 ? "Next" : "Add Subscription"}
               </Button>
             </Flex>
           </Flex>

@@ -67,8 +67,8 @@ const ZoneTableLayer = ({ isLoading, limit, data, setPage, page }) => {
                 <Tr>
                   <Td colSpan={7} rowSpan={2}>
                     <NoData
-                      title="No Event"
-                      desc="No event has been added to your account"
+                      title="No Zone report"
+                      desc="No zone has been added"
                     />
                   </Td>
                 </Tr>
@@ -111,7 +111,7 @@ const ZoneTableLayer = ({ isLoading, limit, data, setPage, page }) => {
 
             <Flex align="center" gap="5px" color="#A4A6A8" fontSize="12px">
               <Flex
-                bg="tranparent"
+                bg="transparent"
                 py="6px"
                 px="8px"
                 color="#242628"

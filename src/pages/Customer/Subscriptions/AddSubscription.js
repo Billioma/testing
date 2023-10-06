@@ -31,6 +31,7 @@ import { useNavigate } from "react-router-dom";
 import { useGetCards } from "../../../services/customer/query/payment";
 import { usePaystackPayment } from "react-paystack";
 import FundWalletDrawer from "../../../components/modals/FundWalletDrawer";
+import { AiOutlineEdit } from "react-icons/ai";
 
 const AddSubscription = () => {
   const { data: plans } = useGetPlans();
@@ -226,7 +227,6 @@ const AddSubscription = () => {
           }}
           flexDir="column"
         >
-
           {step !== 1 && (
             <Flex
               align="center"
@@ -517,13 +517,26 @@ const AddSubscription = () => {
 
                   <Flex justifyContent="flex-end" w="30%">
                     <Button
-                      // onClick={() => (step === 1 ? move(dat) : "")}
+                      onClick={() => {
+                        setStep(1);
+                        setCurrentSub({});
+                        setValues({
+                          vehicle: "",
+                          location: "",
+                          autoRenew: false,
+                          paymentMethod: "",
+                        });
+                      }}
                       w="full"
-                      py="17px"
-                      px="26px"
+                      py="6px"
+                      px="16px"
+                      display="flex"
+                      align="center"
+                      gap="8px"
                       fontSize="12px"
                     >
-                      Select
+                    <Text>Change</Text>
+                    <AiOutlineEdit size="15px" />
                     </Button>
                   </Flex>
                 </Flex>

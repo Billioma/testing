@@ -85,8 +85,7 @@ export default function ViewLocation() {
       !state.description ||
       !state.managers?.length ||
       !state.amenities?.length ||
-      !state.state ||
-      !state.locationType
+      !state.state
     );
   };
 
@@ -104,7 +103,7 @@ export default function ViewLocation() {
   };
 
   const locationTypeOptions = [
-    "RESTUARANT CAFE",
+    "RESTAURANT CAFE",
     "BAR LOUNGE NIGHTCLUB",
     "OFFICE BUILDING",
     "EVENT CENTER",
@@ -126,6 +125,8 @@ export default function ViewLocation() {
     });
     setIsEdit(location.state.isEdit);
   }, [location.state]);
+
+  console.log(state);
 
   return (
     <Box minH="75vh">

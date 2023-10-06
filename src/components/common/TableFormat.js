@@ -20,6 +20,7 @@ const TableFormat = ({
   alignSecondHeader,
   alignThirdHeader,
   alignForthHeader,
+  alignFifthHeader,
 }) => {
   return (
     <Box
@@ -76,7 +77,8 @@ const TableFormat = ({
                           (alignFirstHeader && i === 0) ||
                           (alignSecondHeader && i === 1) ||
                           (alignThirdHeader && i === 2) ||
-                          (alignForthHeader && i === 3)
+                          (alignForthHeader && i === 3) ||
+                          (alignFifthHeader && i === 4)
                         ? "start"
                         : "center"
                     }

@@ -61,7 +61,7 @@ export default function AdminHeader() {
           case pathname.includes("transactions"):
             return setTitle({ header: "Reports", sub: "Transactions" });
 
-          case pathname.includes("subscrptions"):
+          case pathname.includes("subscriptions"):
             return setTitle({ header: "Reports", sub: "Subscriptions" });
 
           case pathname.includes("customers"):

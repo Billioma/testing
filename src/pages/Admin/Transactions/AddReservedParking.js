@@ -53,7 +53,7 @@ export default function AddReservedParking() {
   const { data: zones } = useGetZones({}, 1, 10000);
 
   const zoneOptions = zones?.data?.map((zone) => ({
-    label: `${zone.name} - ${zone.location.name}`,
+    label: `${zone.name} - ${zone?.location?.name}`,
     value: zone.id,
   }));
 
@@ -119,7 +119,7 @@ export default function AddReservedParking() {
                 align="center"
                 justifyContent="space-between"
                 w="full"
-                bg={state.arrival ? "#F4F6F8" : "tranparent"}
+                bg={state.arrival ? "#F4F6F8" : "transparent"}
                 // color={start ? "#000" : ""}
                 h="44px"
                 cursor="pointer"
@@ -159,7 +159,7 @@ export default function AddReservedParking() {
                 align="center"
                 justifyContent="space-between"
                 w="full"
-                bg={state.departure ? "#F4F6F8" : "tranparent"}
+                bg={state.departure ? "#F4F6F8" : "transparent"}
                 // color={start ? "#000" : ""}
                 h="44px"
                 cursor="pointer"

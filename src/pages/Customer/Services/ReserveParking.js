@@ -494,7 +494,7 @@ const ReserveParking = () => {
                       align="center"
                       justifyContent="space-between"
                       w="full"
-                      bg={start ? "#F4F6F8" : "tranparent"}
+                      bg={start ? "#F4F6F8" : "transparent"}
                       color={start ? "#000" : ""}
                       h="44px"
                       cursor="pointer"
@@ -577,7 +577,7 @@ const ReserveParking = () => {
                       h="44px"
                       cursor="pointer"
                       borderRadius="4px"
-                      bg={end ? "#F4F6F8" : "tranparent"}
+                      bg={end ? "#F4F6F8" : "transparent"}
                       color={end ? "#000" : ""}
                       border="1px solid #D4D6D8"
                       py="12px"

@@ -4,16 +4,13 @@ import {
   getLocations,
   getPlans,
   getServices,
-  getStates,
   getZone,
 } from "../api/locations";
+import { allStates } from "../../../components/common/constants";
 
-export const useGetStates = (options = {}) => {
-  const { data, isLoading, refetch } = useQuery("GET_STATES", getStates, {
-    ...options,
-  });
-
-  return { data, isLoading, refetch };
+export const useGetStates = () => {
+  const data = { data: allStates };
+  return { data, isLoading: false, refetch: () => data };
 };
 
 export const useGetLocations = (options = {}) => {

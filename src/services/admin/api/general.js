@@ -9,17 +9,17 @@ export const getDashboardData = async () => {
 
 export const getUsersMetrics = async () => {
   const response = await axiosInstance.get(API.GET_USERS_METRICS);
-  return response.data.data;
+  return response.data;
 };
 
 export const getServicesMetrics = async () => {
   const response = await axiosInstance.get(API.GET_SERVICES_METRICS);
-  return response.data.data;
+  return response.data;
 };
 
 export const getActivitiesMetrics = async () => {
   const response = await axiosInstance.get(API.GET_ACTIVITIES_METRICS);
-  return response.data.data;
+  return response.data;
 };
 
 export const uploadMedia = async (data) => {

@@ -88,7 +88,7 @@ const HistoryTableLayer = ({ isLoading, limit, data, setPage, page }) => {
                         </Flex>
                       </Flex>
                     </Td>
-                    <Td textAlign="center">{item?.customer || "N/A"}</Td>
+                    <Td textAlign="center">{item?.customer?.email || "N/A"}</Td>
                     <Td textAlign="center">
                       {formatDateTimes(item?.createdAt)}
                     </Td>
@@ -106,6 +106,7 @@ const HistoryTableLayer = ({ isLoading, limit, data, setPage, page }) => {
                         </Flex>
                       </Flex>
                     </Td>
+
                     <Td textAlign="center">
                       <Text textDecor="underline">View</Text>
                     </Td>
@@ -159,7 +160,7 @@ const HistoryTableLayer = ({ isLoading, limit, data, setPage, page }) => {
 
             <Flex align="center" gap="5px" color="#A4A6A8" fontSize="12px">
               <Flex
-                bg="tranparent"
+                bg="transparent"
                 py="6px"
                 px="8px"
                 color="#242628"

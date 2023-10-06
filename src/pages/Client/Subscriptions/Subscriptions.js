@@ -46,7 +46,7 @@ const Users = () => {
               cursor="pointer"
               transition=".3s ease-in-out"
               _hover={{ bg: "#F4F6F8" }}
-              onClick={mutate}
+              onClick={() => mutate({ limit, page: page })}
               borderRadius="8px"
               border="1px solid #848688"
               p="10px"
@@ -64,7 +64,6 @@ const Users = () => {
         <TableLayer
           setPage={setPage}
           page={page}
-          userMutate={mutate}
           limit={limit}
           data={data}
           isLoading={isLoading}

@@ -645,6 +645,118 @@ const AdminViewRate = WithSuspense(
   lazy(() => import("../pages/Admin/Locations/ViewRate"))
 );
 
+const AdminAmenities = WithSuspense(
+  lazy(() => import("../pages/Admin/Locations/Amenities"))
+);
+
+const AdminAddAmenity = WithSuspense(
+  lazy(() => import("../pages/Admin/Locations/AddAmenity"))
+);
+
+const AdminViewAmenity = WithSuspense(
+  lazy(() => import("../pages/Admin/Locations/ViewAmenity"))
+);
+
+const AdminPolicies = WithSuspense(
+  lazy(() => import("../pages/Admin/Locations/Policies"))
+);
+
+const AdminAddPolicy = WithSuspense(
+  lazy(() => import("../pages/Admin/Locations/AddPolicy"))
+);
+
+const AdminViewPolicy = WithSuspense(
+  lazy(() => import("../pages/Admin/Locations/ViewPolicy"))
+);
+
+const AdminValetedVehicles = WithSuspense(
+  lazy(() => import("../pages/Admin/Logs/ValetedVehicles"))
+);
+
+const AdminViewValetedVehicle = WithSuspense(
+  lazy(() => import("../pages/Admin/Logs/ViewValetedVehicle"))
+);
+
+const AdminServicedVehicles = WithSuspense(
+  lazy(() => import("../pages/Admin/Logs/ServicedVehicles"))
+);
+
+const AdminViewServicedVehicle = WithSuspense(
+  lazy(() => import("../pages/Admin/Logs/ViewServicedVehicle"))
+);
+
+const AdminParkedVehicles = WithSuspense(
+  lazy(() => import("../pages/Admin/Logs/ParkedVehicles"))
+);
+
+const AdminViewParkedVehicle = WithSuspense(
+  lazy(() => import("../pages/Admin/Logs/ViewParkedVehicle"))
+);
+
+const AdminConfigRoles = WithSuspense(
+  lazy(() => import("../pages/Admin/Configurations/Roles"))
+);
+
+const AdminConfigViewRole = WithSuspense(
+  lazy(() => import("../pages/Admin/Configurations/ViewRole"))
+);
+
+const AdminConfigAddRole = WithSuspense(
+  lazy(() => import("../pages/Admin/Configurations/AddRole"))
+);
+
+const AdminConfigVehicleMakes = WithSuspense(
+  lazy(() => import("../pages/Admin/Configurations/VehicleMakes"))
+);
+
+const AdminConfigViewVehicleMake = WithSuspense(
+  lazy(() => import("../pages/Admin/Configurations/ViewVehicleMake"))
+);
+
+const AdminConfigAddVehicleMake = WithSuspense(
+  lazy(() => import("../pages/Admin/Configurations/AddVehicleMake"))
+);
+
+const AdminConfigVehicleModels = WithSuspense(
+  lazy(() => import("../pages/Admin/Configurations/VehicleModels"))
+);
+
+const AdminConfigViewVehicleModel = WithSuspense(
+  lazy(() => import("../pages/Admin/Configurations/ViewVehicleModel"))
+);
+
+const AdminConfigAddVehicleModel = WithSuspense(
+  lazy(() => import("../pages/Admin/Configurations/AddVehicleModel"))
+);
+
+const AdminConfigBankDetails = WithSuspense(
+  lazy(() => import("../pages/Admin/Configurations/BankDetails"))
+);
+
+const AdminConfigViewBankDetail = WithSuspense(
+  lazy(() => import("../pages/Admin/Configurations/ViewBankDetail"))
+);
+
+const AdminConfigAddBankDetail = WithSuspense(
+  lazy(() => import("../pages/Admin/Configurations/AddBankDetail"))
+);
+
+const AdminConfigFaqs = WithSuspense(
+  lazy(() => import("../pages/Admin/Configurations/Faqs"))
+);
+
+const AdminConfigViewFaq = WithSuspense(
+  lazy(() => import("../pages/Admin/Configurations/ViewFaq"))
+);
+
+const AdminConfigAddFaq = WithSuspense(
+  lazy(() => import("../pages/Admin/Configurations/AddFaq"))
+);
+
+const AdminConfigQrCode = WithSuspense(
+  lazy(() => import("../pages/Admin/Configurations/QrCode"))
+);
+
 export const PUBLIC_ROUTES = [
   //CUSTOMER ROUTES
   { path: CUST_LOGIN, element: <CustLogin /> },
@@ -971,6 +1083,146 @@ export const PRIVATE_ROUTES = [
   {
     path: PRIVATE_PATHS.ADMIN_ADD_RATE,
     element: <AdminAddRate />,
+  },
+
+  {
+    path: PRIVATE_PATHS.ADMIN_AMENITIES,
+    element: <AdminAmenities />,
+  },
+
+  {
+    path: PRIVATE_PATHS.ADMIN_ADD_AMENITY,
+    element: <AdminAddAmenity />,
+  },
+
+  {
+    path: PRIVATE_PATHS.ADMIN_VIEW_AMENITY,
+    element: <AdminViewAmenity />,
+  },
+
+  {
+    path: PRIVATE_PATHS.ADMIN_POLICIES,
+    element: <AdminPolicies />,
+  },
+
+  {
+    path: PRIVATE_PATHS.ADMIN_VIEW_POLICY,
+    element: <AdminViewPolicy />,
+  },
+
+  {
+    path: PRIVATE_PATHS.ADMIN_ADD_POLICY,
+    element: <AdminAddPolicy />,
+  },
+
+  {
+    path: PRIVATE_PATHS.ADMIN_VALETED_VEHICLES,
+    element: <AdminValetedVehicles />,
+  },
+
+  {
+    path: PRIVATE_PATHS.ADMIN_VIEW_VALETED_VEHICLE,
+    element: <AdminViewValetedVehicle />,
+  },
+
+  {
+    path: PRIVATE_PATHS.ADMIN_PARKED_VEHICLES,
+    element: <AdminParkedVehicles />,
+  },
+
+  {
+    path: PRIVATE_PATHS.ADMIN_VIEW_PARKED_VEHICLE,
+    element: <AdminViewParkedVehicle />,
+  },
+
+  {
+    path: PRIVATE_PATHS.ADMIN_SERVICED_VEHICLES,
+    element: <AdminServicedVehicles />,
+  },
+
+  {
+    path: PRIVATE_PATHS.ADMIN_VIEW_SERVICED_VEHICLE,
+    element: <AdminViewServicedVehicle />,
+  },
+
+  {
+    path: PRIVATE_PATHS.ADMIN_CONFIG_ROLES,
+    element: <AdminConfigRoles />,
+  },
+
+  {
+    path: PRIVATE_PATHS.ADMIN_CONFIG_ADD_ROLE,
+    element: <AdminConfigAddRole />,
+  },
+
+  {
+    path: PRIVATE_PATHS.ADMIN_CONFIG_VIEW_ROLE,
+    element: <AdminConfigViewRole />,
+  },
+
+  {
+    path: PRIVATE_PATHS.ADMIN_CONFIG_VEHICLE_MAKES,
+    element: <AdminConfigVehicleMakes />,
+  },
+
+  {
+    path: PRIVATE_PATHS.ADMIN_CONFIG_ADD_VEHICLE_MAKE,
+    element: <AdminConfigAddVehicleMake />,
+  },
+
+  {
+    path: PRIVATE_PATHS.ADMIN_CONFIG_VIEW_VEHICLE_MAKE,
+    element: <AdminConfigViewVehicleMake />,
+  },
+
+  {
+    path: PRIVATE_PATHS.ADMIN_CONFIG_VEHICLE_MODELS,
+    element: <AdminConfigVehicleModels />,
+  },
+
+  {
+    path: PRIVATE_PATHS.ADMIN_CONFIG_ADD_VEHICLE_MODEL,
+    element: <AdminConfigAddVehicleModel />,
+  },
+
+  {
+    path: PRIVATE_PATHS.ADMIN_CONFIG_VIEW_VEHICLE_MODEL,
+    element: <AdminConfigViewVehicleModel />,
+  },
+
+  {
+    path: PRIVATE_PATHS.ADMIN_CONFIG_BANK_DETAILS,
+    element: <AdminConfigBankDetails />,
+  },
+
+  {
+    path: PRIVATE_PATHS.ADMIN_CONFIG_ADD_BANK_DETAIL,
+    element: <AdminConfigAddBankDetail />,
+  },
+
+  {
+    path: PRIVATE_PATHS.ADMIN_CONFIG_VIEW_BANK_DETAIL,
+    element: <AdminConfigViewBankDetail />,
+  },
+
+  {
+    path: PRIVATE_PATHS.ADMIN_CONFIG_FAQS,
+    element: <AdminConfigFaqs />,
+  },
+
+  {
+    path: PRIVATE_PATHS.ADMIN_CONFIG_ADD_FAQ,
+    element: <AdminConfigAddFaq />,
+  },
+
+  {
+    path: PRIVATE_PATHS.ADMIN_CONFIG_VIEW_FAQ,
+    element: <AdminConfigViewFaq />,
+  },
+
+  {
+    path: PRIVATE_PATHS.ADMIN_CONFIG_QR_CODE,
+    element: <AdminConfigQrCode />,
   },
 
   {

@@ -272,7 +272,7 @@ export default function ViewOperator() {
               </Text>
               <DateTimePicker
                 selectedDate={state.paidAt}
-                onChange={(date) => handleInvoiceChange(index, date, "paidAt")}
+                onChange={(date) => setState({ ...state, paidAt: date })}
               />
             </Box>
 

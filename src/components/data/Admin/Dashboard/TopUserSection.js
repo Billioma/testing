@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import StatCard from "./StatCard";
 import {
   Text,
@@ -12,55 +12,44 @@ import {
   Button,
 } from "@chakra-ui/react";
 import { HiOutlineChevronDown } from "react-icons/hi";
-import {
-  useGetActivitiesMetrics,
-  useGetAdminDashboardData,
-} from "../../../../services/admin/query/general";
+import { useGetUsersMetrics } from "../../../../services/admin/query/general";
 
 export default function TopUserSection() {
   const [selectedOption, setSelectedOption] = useState("Today");
+  const { data: usersMetrics } = useGetUsersMetrics();
+  const [state, setState] = useState([]);
 
-  const { data } = useGetAdminDashboardData();
-  const { data: temp } = useGetActivitiesMetrics();
+  const transformData = () => {
+    const transformedData = [];
+    const dataKeys = Object.keys(usersMetrics);
+
+    dataKeys.forEach((key, index) => {
+      const title = key.charAt(0).toUpperCase() + key.slice(1);
+      const id = index + 1;
+
+      const card = {
+        id,
+        title,
+        subTitle: "Total",
+        value: usersMetrics[key].total,
+        active: usersMetrics[key].active,
+        inactive: usersMetrics[key].inactive,
+      };
+
+      transformedData.push(card);
+    });
+
+    setState(transformedData);
+  };
+
+  useEffect(() => {
+    usersMetrics && transformData();
+  }, [usersMetrics]);
 
   const handleOptionSelect = (option) => {
     setSelectedOption(option);
   };
 
-  const cardsData = [
-    {
-      id: 1,
-      title: "Customers",
-      subTitle: "Total",
-      value: data?.customers?.total,
-      active: data?.customers?.active,
-      inactive: data?.customers?.inactive,
-    },
-    {
-      id: 2,
-      title: "Attendants",
-      subTitle: "Total",
-      value: data?.attendants?.total,
-      active: data?.attendants?.active,
-      inactive: data?.attendants?.inactive,
-    },
-    {
-      id: 3,
-      title: "Clients",
-      subTitle: "Total",
-      value: data?.clients?.total,
-      active: data?.clients?.active,
-      inactive: data?.clients?.inactive,
-    },
-    {
-      id: 4,
-      title: "Operators",
-      subTitle: "Total",
-      value: data?.operators?.total,
-      active: data?.operators?.active,
-      inactive: data?.operators?.inactive,
-    },
-  ];
   return (
     <Box>
       <Flex justifyContent="space-between" alignItems={"center"} mb={3}>
@@ -93,7 +82,7 @@ export default function TopUserSection() {
       </Flex>
 
       <SimpleGrid columns={{ base: 1, md: 2, lg: 4 }} spacing="4">
-        {cardsData.map((card) => (
+        {state.map((card) => (
           <StatCard
             key={card.id}
             title={card.title}

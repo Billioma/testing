@@ -27,6 +27,8 @@ export const CANCEL_RESERVE = (id = "") => `reserve-parking/cancel/${id}`;
 export const CANCEL_BOOKING = (id = "") => `service-bookings/cancel/${id}`;
 export const CANCEL_SUBSCRIPTIONS = (id = "") =>
   `membership-subscriptions/cancel/${id}`;
+export const GET_SUBS = (filterString = "", limit, page) =>
+  `membership-subscriptions?${filterString}&limit=${limit}&page=${page}&sort=id,DESC`;
 export const RENEW_SUBSCRIPTIONS = (id = "") =>
   `membership-subscriptions/renew/${id}`;
 export const GET_LOCATIONS = "public/locations";

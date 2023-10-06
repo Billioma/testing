@@ -86,7 +86,7 @@ export default function AddLocation() {
   };
 
   const locationTypeOptions = [
-    "RESTUARANT CAFE",
+    "RESTAURANT CAFE",
     "BAR LOUNGE NIGHTCLUB",
     "OFFICE BUILDING",
     "EVENT CENTER",
@@ -285,7 +285,7 @@ export default function AddLocation() {
             <Button
               variant="adminPrimary"
               w="55%"
-              isDisabled={isDisabled}
+              isDisabled={false}
               isLoading={isLoading}
               onClick={handleSubmit}
             >

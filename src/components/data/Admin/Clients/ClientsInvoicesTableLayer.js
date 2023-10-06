@@ -9,6 +9,7 @@ import {
   MenuButton,
   MenuList,
   MenuItem,
+  Select,
 } from "@chakra-ui/react";
 import TableFormat from "../../../common/TableFormat";
 import { FiEdit, FiTrash2 } from "react-icons/fi";
@@ -30,6 +31,8 @@ const TableLayer = ({
   refetch,
   startRow,
   endRow,
+  setLimit,
+  limit,
 }) => {
   const headers = [
     "CLIENT",
@@ -78,7 +81,7 @@ const TableLayer = ({
             flexDir="column"
             w="full"
           >
-            <Flex justifyContent="center" gap="32px" align="center">
+            <Flex justifyContent="center" gap="32px" align="center" pb={5}>
               <Text fontSize="12px" color="#242628" lineHeight="100%">
                 Showing rows {startRow} to {endRow} of {data?.total}
               </Text>
@@ -99,7 +102,7 @@ const TableLayer = ({
 
                 <Flex align="center" gap="5px" color="#A4A6A8" fontSize="12px">
                   <Flex
-                    bg="tranparent"
+                    bg="transparent"
                     py="6px"
                     px="8px"
                     color="#242628"
@@ -138,6 +141,21 @@ const TableLayer = ({
                   <Text lineHeight="100%">Next</Text>
                 </Flex>
               </Flex>
+
+              <Select
+                defaultValue={limit}
+                w="fit-content"
+                size="sm"
+                bg="transparent"
+                fontSize={12}
+                borderRadius={8}
+                borderWidth={1}
+                onChange={(e) => setLimit(e.target.value)}
+              >
+                <option value={25}>25</option>
+                <option value={50}>50</option>
+                <option value={100}>100</option>
+              </Select>
             </Flex>
           </Flex>
         }

@@ -257,7 +257,7 @@ export default function ViewPayToPark() {
                 align="center"
                 justifyContent="space-between"
                 w="full"
-                bg={state.arrival ? "#F4F6F8" : "tranparent"}
+                bg={state.arrival ? "#F4F6F8" : "transparent"}
                 // color={start ? "#000" : ""}
                 h="44px"
                 cursor="pointer"
@@ -297,7 +297,7 @@ export default function ViewPayToPark() {
                 align="center"
                 justifyContent="space-between"
                 w="full"
-                bg={state.departure ? "#F4F6F8" : "tranparent"}
+                bg={state.departure ? "#F4F6F8" : "transparent"}
                 // color={start ? "#000" : ""}
                 h="44px"
                 cursor="pointer"

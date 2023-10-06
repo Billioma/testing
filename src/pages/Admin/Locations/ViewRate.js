@@ -369,8 +369,8 @@ export default function AddZone() {
       <AdminDeleteModal
         isOpen={isOpen}
         onClose={() => setIsOpen(false)}
-        title="Delete Zone"
-        subTitle="Are you sure you want to delete this zone?"
+        title="Delete Rate"
+        subTitle="Are you sure you want to delete this rate?"
         handleSubmit={() => deleteRate(state.id)}
         isLoading={isDeleting}
       />

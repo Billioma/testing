@@ -133,7 +133,7 @@ const ServicedTableLayer = ({ isLoading, limit, data, setPage, page }) => {
                 </Flex>
 
                 <Flex
-                  bg="tranparent"
+                  bg="transparent"
                   py="6px"
                   px="8px"
                   color="#242628"

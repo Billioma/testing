@@ -12,6 +12,10 @@ import {
   deleteRate,
   addRate,
   editRate,
+  getPolicies,
+  editPolicy,
+  addPolicy,
+  deletePolicy,
 } from "../api/locations";
 
 export const useGetAllLocations = (options = {}) => {
@@ -137,6 +141,45 @@ export const useAddRate = (options = {}) => {
 export const useEditRate = (options = {}) => {
   const { isLoading, data, mutate } = useMutation(editRate, {
     mutationKey: ["ADMIN_EDIT_RATE"],
+    ...options,
+  });
+
+  return { isLoading, data, mutate };
+};
+
+export const useGetPolicies = (options = {}, page = 1, limit = 25) => {
+  const { data, isLoading, refetch } = useQuery(
+    ["GET_POLICIES"],
+    () => getPolicies(page, limit),
+    {
+      ...options,
+    }
+  );
+
+  return { isLoading, data, refetch };
+};
+
+export const useDeletePolicy = (options = {}) => {
+  const { isLoading, mutate } = useMutation(deletePolicy, {
+    mutationKey: ["DELETE_POLICY"],
+    ...options,
+  });
+
+  return { isLoading, mutate };
+};
+
+export const useAddPolicy = (options = {}) => {
+  const { isLoading, data, mutate } = useMutation(addPolicy, {
+    mutationKey: ["ADMIN_ADD_POLICY"],
+    ...options,
+  });
+
+  return { isLoading, data, mutate };
+};
+
+export const useEditPolicy = (options = {}) => {
+  const { isLoading, data, mutate } = useMutation(editPolicy, {
+    mutationKey: ["ADMIN_EDIT_POLICY"],
     ...options,
   });
 

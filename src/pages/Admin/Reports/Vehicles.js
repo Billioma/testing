@@ -59,7 +59,7 @@ const Vehicles = () => {
                       color="#646668"
                       fontWeight={500}
                     >
-                      {data?.total}
+                      {data?.total?.toLocaleString()}
                     </Text>
                   </Box>
                 </Flex>

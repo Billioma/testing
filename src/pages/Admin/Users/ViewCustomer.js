@@ -4,7 +4,10 @@ import CustomInput from "../../../components/common/CustomInput";
 import { AiOutlineCamera } from "react-icons/ai";
 import { useNavigate, useLocation } from "react-router-dom";
 import { PRIVATE_PATHS } from "../../../routes/constants";
-import { useEditCustomer } from "../../../services/admin/query/users";
+import {
+  useEditCustomer,
+  useGetCustomers,
+} from "../../../services/admin/query/users";
 import useCustomToast from "../../../utils/notifications";
 import Select from "react-select";
 import AdminChangePassword from "../../../components/modals/AdminChangePasswordModal";
@@ -18,9 +21,11 @@ export default function ViewCustomer() {
   const navigate = useNavigate();
   const [isDisabled, setIsDisabled] = useState(true);
   const { errorToast, successToast } = useCustomToast();
+  const { refetch } = useGetCustomers();
   const { mutate, isLoading } = useEditCustomer({
     onSuccess: () => {
       successToast("Customer updated successfully!");
+      refetch();
       navigate(PRIVATE_PATHS.ADMIN_CUSTOMERS);
     },
     onError: (error) => {

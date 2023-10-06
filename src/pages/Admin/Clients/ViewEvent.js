@@ -59,7 +59,11 @@ export default function ViewEvent() {
   };
 
   useEffect(() => {
-    setState({ ...location.state, client: parseInt(location.state.client.id) });
+    setState({
+      ...location.state,
+      client: parseInt(location.state.client.id),
+      zones: location.state.zones?.map((zone) => parseInt(zone.id)),
+    });
     setIsEdit(location.state.isEdit);
   }, [location.state]);
 

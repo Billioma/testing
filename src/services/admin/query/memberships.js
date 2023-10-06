@@ -16,6 +16,8 @@ import {
   deleteCustomerSubscription,
   deleteMembershipFeature,
   deleteMembershipPlan,
+  cancelCustomerSubscription,
+  renewCustomerSubscription,
 } from "../api/memberships";
 
 export const useCreateMembershipPlan = (options = {}) => {
@@ -121,6 +123,24 @@ export const useEditCustomerSubscription = (options = {}) => {
   });
 
   return { isLoading, data, mutate };
+};
+
+export const useCancelCustomerSubscription = (options = {}) => {
+  const { isLoading, mutate } = useMutation(cancelCustomerSubscription, {
+    mutationKey: ["CANCEL_CUSTOMER_SUB"],
+    ...options,
+  });
+
+  return { isLoading, mutate };
+};
+
+export const useRenewCustomerSubscription = (options = {}) => {
+  const { isLoading, mutate } = useMutation(renewCustomerSubscription, {
+    mutationKey: ["RENEW_CUSTOMER_SUB"],
+    ...options,
+  });
+
+  return { isLoading, mutate };
 };
 
 export const useGetCustomerSubscriptions = (

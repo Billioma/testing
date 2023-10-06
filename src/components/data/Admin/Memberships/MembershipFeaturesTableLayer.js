@@ -104,7 +104,7 @@ const TableLayer = ({
 
                 <Flex align="center" gap="5px" color="#A4A6A8" fontSize="12px">
                   <Flex
-                    bg="tranparent"
+                    bg="transparent"
                     py="6px"
                     px="8px"
                     color="#242628"
@@ -157,13 +157,15 @@ const TableLayer = ({
               lineHeight="100%"
             >
               <Td>{plan?.name}</Td>
-              <Td>{plan?.membershipPlan?.name}</Td>
+              <Td>{plan?.membershipPlan?.name || "N/A"}</Td>
 
-              <Td>
+              <Td textAlign={"center"}>
                 {!plan.featureType ? (
-                  "N/A"
+                  <Box p={3} w="200px">
+                    N/A
+                  </Box>
                 ) : (
-                  <Box bg="#F4F6F8" borderRadius={"4px"} p={3} w="fit-content">
+                  <Box bg="#F4F6F8" borderRadius={"4px"} p={3} w="200px">
                     {
                       featureTypes?.find(
                         (feature) => feature.value == plan.featureType

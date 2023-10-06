@@ -7,3 +7,22 @@ export const getAmenities = async (page, limit) => {
   );
   return response.data;
 };
+
+export const addAmenity = async (data) => {
+  const response = await axiosInstance.post(API.ADMIN_AMENITIES, data);
+  return response.data;
+};
+
+export const editAmenity = async (data) => {
+  const response = await axiosInstance.patch(
+    `${API.ADMIN_AMENITIES}/${data.id}`,
+    data
+  );
+
+  return response.data;
+};
+
+export const deleteAmenity = async (id) => {
+  const response = await axiosInstance.delete(`${API.ADMIN_AMENITIES}/${id}`);
+  return response.data;
+};

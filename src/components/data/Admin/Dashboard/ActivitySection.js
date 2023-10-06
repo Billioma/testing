@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import StatCard from "./StatCard";
 import {
   Text,
@@ -12,66 +12,44 @@ import {
   Button,
 } from "@chakra-ui/react";
 import { HiOutlineChevronDown } from "react-icons/hi";
-import { useGetAdminDashboardData } from "../../../../services/admin/query/general";
+import { useGetActivitiesMetrics } from "../../../../services/admin/query/general";
 
 export default function ActivitySection() {
   const [selectedOption, setSelectedOption] = useState("Today");
-  const { data } = useGetAdminDashboardData();
+  const { data: activityMetrics } = useGetActivitiesMetrics();
+  const [state, setState] = useState([]);
 
   const handleOptionSelect = (option) => {
     setSelectedOption(option);
   };
 
-  const cardsData = [
-    {
-      id: 1,
-      title: "Vehicles",
-      subTitle: "Total",
-      value: data?.vehicles?.total,
-    },
-    {
-      id: 2,
-      title: "Events",
-      subTitle: "Total",
-      value: 4678,
-      upcoming: 0,
-      past: 0,
-    },
-    {
-      id: 3,
-      title: "Locations",
-      subTitle: "Total",
-      value: 4678,
-      active: 0,
-      inactive: 0,
-    },
+  const transformData = () => {
+    const transformedData = [];
+    const dataKeys = Object.keys(activityMetrics);
 
-    {
-      id: 4,
-      title: "Invoices",
-      subTitle: "Total",
-      value: 4678,
-      paid: 0,
-      pastDue: 0,
-    },
-    {
-      id: 5,
-      title: "Corporate Subscriptions",
+    dataKeys.forEach((key, index) => {
+      const title = key.charAt(0).toUpperCase() + key.slice(1);
+      const id = index + 1;
 
-      subTitle: "Total",
-      value: 4678,
-      active: 0,
-      expired: 0,
-    },
-    {
-      id: 6,
-      title: "Customer Subscriptions",
-      subTitle: "Total",
-      value: 4678,
-      active: 0,
-      expired: 0,
-    },
-  ];
+      const card = {
+        id,
+        title,
+        subTitle: "Total",
+        value: activityMetrics[key].total,
+        active: activityMetrics[key].active,
+        inactive: activityMetrics[key].inactive,
+      };
+
+      transformedData.push(card);
+    });
+
+    setState(transformedData);
+  };
+
+  useEffect(() => {
+    activityMetrics && transformData();
+  }, [activityMetrics]);
+
   return (
     <Box mt={"24px"}>
       <Flex justifyContent="space-between" alignItems={"center"} mb={3}>
@@ -104,7 +82,7 @@ export default function ActivitySection() {
       </Flex>
 
       <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing="4">
-        {cardsData.map((card) => (
+        {state.map((card) => (
           <StatCard
             key={card.id}
             title={card.title}
@@ -112,9 +90,9 @@ export default function ActivitySection() {
             value={card.value}
             completed={card.completed}
             inService={card.inService}
-            active={card.active}
+            active={card.active?.toLocaleString() || 0}
             expired={card.expired}
-            inactive={card.inactive}
+            inactive={card.inactive || 0}
             upcoming={card.upcoming}
             past={card.past}
             paid={card.paid}

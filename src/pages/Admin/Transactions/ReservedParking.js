@@ -1,9 +1,7 @@
 import React, { useState } from "react";
 import { Box, Button, Flex, Text } from "@chakra-ui/react";
-import { FiPlus } from "react-icons/fi";
 import { VscDebugRestart } from "react-icons/vsc";
 import { useNavigate } from "react-router-dom";
-import { PRIVATE_PATHS } from "../../../routes/constants";
 import TableLayer from "../../../components/data/Admin/Transactions/ReservedParkingTableLayer";
 import { useGetReservedParking } from "../../../services/admin/query/transactions";
 

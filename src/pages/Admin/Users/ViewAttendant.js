@@ -6,7 +6,10 @@ import Select from "react-select";
 import { useGetAllOperators } from "../../../services/admin/query/operators";
 import { useNavigate, useLocation } from "react-router-dom";
 import { PRIVATE_PATHS } from "../../../routes/constants";
-import { useEditAttendant } from "../../../services/admin/query/users";
+import {
+  useEditAttendant,
+  useGetAttendants,
+} from "../../../services/admin/query/users";
 import useCustomToast from "../../../utils/notifications";
 import { useGetAllLocations } from "../../../services/admin/query/locations";
 import AdminChangePassword from "../../../components/modals/AdminChangePasswordModal";
@@ -29,9 +32,11 @@ export default function AddAttendants() {
   const { data } = useGetAllOperators();
   const [isDisabled, setIsDisabled] = useState(true);
   const { errorToast, successToast } = useCustomToast();
+  const { refetch } = useGetAttendants();
   const { mutate, isLoading } = useEditAttendant({
     onSuccess: () => {
       successToast("Attendant updated successfully!");
+      refetch();
       navigate(PRIVATE_PATHS.ADMIN_ATTENDANTS);
     },
     onError: (error) => {

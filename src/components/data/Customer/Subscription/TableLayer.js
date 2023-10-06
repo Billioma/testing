@@ -12,7 +12,6 @@ import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import {
   useCancelSub,
   useGetUser,
-  useGetUserSub,
   useRenewSub,
 } from "../../../../services/customer/query/user";
 import { formatDate } from "../../../../utils/helpers";
@@ -25,16 +24,12 @@ import RenewSubModal from "../../../modals/RenewSubModal";
 import { useGetCards } from "../../../../services/customer/query/payment";
 import { usePaystackPayment } from "react-paystack";
 
-const TableLayer = () => {
+const TableLayer = ({ sub, page, setPage, limit, subMutate, isLoading }) => {
   const navigate = useNavigate();
   const [showRenew, setShowRenew] = useState(false);
-  const [page, setPage] = useState(1);
   const [show, setShow] = useState(false);
-  const limit = 10;
   const { data: userData, refetch: refetchUser } = useGetUser();
   const [showCancel, setShowCancel] = useState(false);
-  const { isLoading, data: subs, refetch } = useGetUserSub(limit, page);
-
   const [values, setValues] = useState({
     cardId: "",
     paymentMethod: "",
@@ -48,10 +43,10 @@ const TableLayer = () => {
     setCurrentSub(dat);
   };
 
-  const openOption = (dat, i) => {
-    i === 0
+  const openOption = (dat, i, item) => {
+    item.name.includes("Renew")
       ? (setShowRenew(true), setCurrentSub(dat))
-      : i === 1
+      : item.name.includes("Cancel")
       ? (setShowCancel(true), setCurrentSub(dat))
       : "";
   };
@@ -94,7 +89,7 @@ const TableLayer = () => {
     onSuccess: (res) => {
       setShowCancel(false);
       successToast(res?.message);
-      refetch();
+      subMutate({ limit: limit, page: page });
     },
     onError: (err) => {
       errorToast(
@@ -105,7 +100,7 @@ const TableLayer = () => {
 
   const { mutate: renewMutate, isLoading: isRenew } = useRenewSub({
     onSuccess: (res) => {
-      refetch();
+      subMutate({ limit: limit, page: page });
       refetchUser();
       setShowRenew(false);
       setValues({ cardId: "", paymentMethod: "", amount: "" });
@@ -164,7 +159,7 @@ const TableLayer = () => {
     <Box mt="16px">
       {isLoading ? (
         <TableLoader />
-      ) : subs?.data?.length ? (
+      ) : sub?.data?.length ? (
         <TableFormat
           maxH={"50vh"}
           opt
@@ -185,19 +180,19 @@ const TableLayer = () => {
               >
                 <Text fontSize="12px" color="#242628" lineHeight="100%">
                   Showing rows {page === 1 ? 1 : (page - 1) * limit + 1} to{" "}
-                  {subs?.pageCount === page
-                    ? page * limit > subs?.total
-                      ? subs?.total
+                  {sub?.pageCount === page
+                    ? page * limit > sub?.total
+                      ? sub?.total
                       : page * limit
                     : page * limit}{" "}
-                  of {subs?.total}
+                  of {sub?.total}
                 </Text>
 
                 <Flex gap="16px" align="center" fontSize="12px">
                   <Flex
-                    opacity={subs?.page === 1 ? 0.5 : 1}
-                    onClick={() => (subs?.page !== 1 ? setPage(page - 1) : "")}
-                    cursor={subs?.page === 1 ? "" : "pointer"}
+                    opacity={sub?.page === 1 ? 0.5 : 1}
+                    onClick={() => (sub?.page !== 1 ? setPage(page - 1) : "")}
+                    cursor={sub?.page === 1 ? "" : "pointer"}
                     align="center"
                     gap="2px"
                     color="#A4A6A8"
@@ -207,15 +202,15 @@ const TableLayer = () => {
                   </Flex>
 
                   <Flex color="#242628" lineHeight="100%">
-                    <Text>{subs?.page}</Text>
+                    <Text>{sub?.page}</Text>
                   </Flex>
 
                   <Flex
-                    opacity={subs?.page === subs?.pageCount ? 0.5 : 1}
+                    opacity={sub?.page === sub?.pageCount ? 0.5 : 1}
                     onClick={() =>
-                      subs?.page !== subs?.pageCount ? setPage(page + 1) : ""
+                      sub?.page !== sub?.pageCount ? setPage(page + 1) : ""
                     }
-                    cursor={subs?.page === subs?.pageCount ? "" : "pointer"}
+                    cursor={sub?.page === sub?.pageCount ? "" : "pointer"}
                     align="center"
                     gap="2px"
                     color="#A4A6A8"
@@ -228,7 +223,7 @@ const TableLayer = () => {
             </Flex>
           }
         >
-          {subs?.data?.map((dat, i) => {
+          {sub?.data?.map((dat, i) => {
             const nextPaymentDate = new Date(dat?.nextPaymentDate);
 
             const timeDifference = nextPaymentDate - today;
@@ -303,7 +298,9 @@ const TableLayer = () => {
                         top="20px"
                         boxShadow="0px 8px 16px 0px rgba(0, 0, 0, 0.08)"
                       >
-                        {(daysDifference >= 5
+                        {(dat?.cancelled === 1
+                          ? subOption?.slice(0, 1)
+                          : daysDifference >= 5
                           ? subOption?.slice(1, 2)
                           : subOption
                         ).map((item, i) => (
@@ -315,7 +312,7 @@ const TableLayer = () => {
                             borderRadius="2px"
                             justifyContent="center"
                             align="center"
-                            onClick={() => openOption(dat, i)}
+                            onClick={() => openOption(dat, i, item)}
                             _hover={{ bg: "#F4F6F8" }}
                             cursor="pointer"
                             fontSize="10px"

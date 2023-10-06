@@ -16,6 +16,8 @@ const AdminDeleteModal = ({
   title,
   subTitle,
   isLoading,
+  btnColor = "",
+  headerColor = "#242628",
 }) => {
   return (
     <Modal isCentered trapFocus={false} isOpen={isOpen} onClose={onClose}>
@@ -32,7 +34,7 @@ const AdminDeleteModal = ({
           <Flex justifyContent="center" align="center" flexDir="column">
             <Text
               mb="14px"
-              color="#242628"
+              color={headerColor}
               fontWeight={700}
               fontSize="24px"
               lineHeight="100%"
@@ -67,6 +69,7 @@ const AdminDeleteModal = ({
               w="55%"
               py="17px"
               variant="adminPrimary"
+              bg={btnColor}
             >
               Yes
             </Button>

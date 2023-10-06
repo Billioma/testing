@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import {
   Box,
   Button,
@@ -21,61 +21,11 @@ import {
 } from "../../../common/constants";
 import { formatDate } from "../../../../utils/helpers";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
-import ConfirmDeleteModal from "../../../modals/ConfirmDeleteModal";
-import useCustomToast from "../../../../utils/notifications";
-import { useDetachUser } from "../../../../services/client/query/users";
-import { BsTrash } from "react-icons/bs";
 import { Add } from "../../../common/images";
 import { useNavigate } from "react-router-dom";
 
-const TableLayer = ({ isLoading, data, page, setPage, userMutate, limit }) => {
-  const [show, setShow] = useState(false);
-  const [showDelete, setShowDelete] = useState(false);
-  const [currentUser, setCurrentUser] = useState("");
-
-  const open = (item) => {
-    setShow(true);
-    setCurrentUser(item);
-  };
-
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (event.target.closest(".box") === null) {
-        setShow(false);
-      }
-    };
-
-    document.addEventListener("click", handleClickOutside);
-    return () => {
-      document.removeEventListener("click", handleClickOutside);
-    };
-  }, []);
-
-  useEffect(() => {
-    if (showDelete) {
-      setShow(false);
-    }
-  }, [showDelete]);
-
+const TableLayer = ({ isLoading, data, page, setPage, limit }) => {
   const navigate = useNavigate();
-  const { errorToast, successToast } = useCustomToast();
-
-  const { mutate: detachMutate, isLoading: isDelete } = useDetachUser({
-    onSuccess: () => {
-      successToast("User has been removed");
-      userMutate({ limit: 10, page: 1 });
-      setShowDelete(false);
-    },
-    onError: (err) => {
-      errorToast(
-        err?.response?.data?.message || err?.message || "An Error occurred"
-      );
-    },
-  });
-
-  const handleDelete = () => {
-    detachMutate(currentUser?.email);
-  };
 
   return (
     <Box mt="16px">
@@ -232,15 +182,6 @@ const TableLayer = ({ isLoading, data, page, setPage, userMutate, limit }) => {
           </Button>
         </Flex>
       )}
-
-      <ConfirmDeleteModal
-        user
-        title="User"
-        action={handleDelete}
-        isLoading={isDelete}
-        isOpen={showDelete}
-        onClose={() => setShowDelete(false)}
-      />
     </Box>
   );
 };

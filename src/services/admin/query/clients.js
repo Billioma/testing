@@ -66,7 +66,7 @@ export const useEditClient = (options = {}) => {
 
 export const useGetClientsInvoices = (options = {}, page = 1, limit = 25) => {
   const { data, isLoading, refetch } = useQuery(
-    ["GET_CLIENTS_INVOICES"],
+    ["GET_CLIENTS_INVOICES", limit],
     () => getClientsInvoices(page, limit),
     {
       ...options,

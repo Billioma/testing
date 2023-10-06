@@ -54,7 +54,10 @@ const ContactUs = () => {
   const { mutate, isLoading } = useSendMail({
     onSuccess: (res) => {
       successToast(res?.message);
-      setValues({ message: "" });
+      setValues({
+        message: "",
+        phone: userData?.profile?.phone?.replace("+234", ""),
+      });
     },
     onError: (err) => {
       errorToast(

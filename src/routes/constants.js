@@ -178,13 +178,47 @@ export const PRIVATE_PATHS = {
   ADMIN_VIEW_POLICY: "/admin/locations/policies/details/:id",
   ADMIN_ADD_POLICY: "/admin/locations/policies/new",
 
+  ADMIN_VALETED_VEHICLES: "/admin/logs/valeted-vehicles",
+  ADMIN_VIEW_VALETED_VEHICLE: "/admin/logs/valeted-vehicles/details/:id",
+
+  ADMIN_PARKED_VEHICLES: "/admin/logs/parked-vehicles",
+  ADMIN_VIEW_PARKED_VEHICLE: "/admin/logs/parked-vehicles/details/:id",
+
+  ADMIN_SERVICED_VEHICLES: "/admin/logs/serviced-vehicles",
+  ADMIN_VIEW_SERVICED_VEHICLE: "/admin/logs/serviced-vehicles/details/:id",
+
+  ADMIN_CONFIG_ROLES: "/admin/configurations/roles",
+  ADMIN_CONFIG_ADD_ROLE: "/admin/configurations/roles/new",
+  ADMIN_CONFIG_VIEW_ROLE: "/admin/configurations/roles/details/:id",
+
+  ADMIN_CONFIG_VEHICLE_MAKES: "/admin/configurations/vehicle-makes",
+  ADMIN_CONFIG_ADD_VEHICLE_MAKE: "/admin/configurations/vehicle-makes/new",
+  ADMIN_CONFIG_VIEW_VEHICLE_MAKE:
+    "/admin/configurations/vehicle-makes/details/:id",
+
+  ADMIN_CONFIG_VEHICLE_MODELS: "/admin/configurations/vehicle-models",
+  ADMIN_CONFIG_ADD_VEHICLE_MODEL: "/admin/configurations/vehicle-models/new",
+  ADMIN_CONFIG_VIEW_VEHICLE_MODEL:
+    "/admin/configurations/vehicle-models/details/:id",
+
+  ADMIN_CONFIG_FAQS: "/admin/configurations/faqs",
+  ADMIN_CONFIG_ADD_FAQ: "/admin/configurations/faqs/new",
+  ADMIN_CONFIG_VIEW_FAQ: "/admin/configurations/faqs/details/:id",
+
+  ADMIN_CONFIG_BANK_DETAILS: "/admin/configurations/bank-details",
+  ADMIN_CONFIG_ADD_BANK_DETAIL: "/admin/configurations/bank-details/new",
+  ADMIN_CONFIG_VIEW_BANK_DETAIL:
+    "/admin/configurations/bank-details/details/:id",
+
+  ADMIN_CONFIG_QR_CODE: "/admin/configurations/qr-code",
+
   ADMIN_REP_PAYMENTS: "/admin/reports/payments",
-  ADMIN_REP_LOCATIONS: "/admin/reports/locations",
+  ADMIN_REP_LOCATIONS: "/admin/reports/location",
   ADMIN_REP_ZONES: "/admin/reports/zones",
   ADMIN_REP_VEHICLES: "/admin/reports/vehicles",
   ADMIN_REP_CUSTOMERS: "/admin/reports/customers",
   ADMIN_REP_INVOICES: "/admin/reports/invoices",
-  ADMIN_REP_SUBS: "/admin/reports/subscrptions",
+  ADMIN_REP_SUBS: "/admin/reports/subscriptions",
   ADMIN_REP_LOGS: "/admin/reports/logs",
-  ADMIN_REP_HISTORY: "/admin/reports/transactions",
+  ADMIN_REP_HISTORY: "/admin/reports/payment-history",
 };

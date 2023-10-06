@@ -58,8 +58,8 @@ export default function ViewOperator() {
   }, [state]);
 
   const stateOptions = states?.data?.map((state) => ({
-    value: state?.name?.replace(" State", "")?.replace(" (FCT)", ""),
-    label: state?.name?.replace(" State", "")?.replace(" (FCT)", ""),
+    value: state,
+    label: state,
   }));
 
   const handleSubmit = (data = state) => {

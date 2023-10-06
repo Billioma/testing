@@ -36,7 +36,7 @@ const TableLayer = ({
     "CODE",
     "LOCATION",
     "DESCRIPTION",
-    "CAPICITY",
+    "CAPACITY",
     "STATUS",
     "DATE CREATED",
     "ACTIONS",
@@ -103,7 +103,7 @@ const TableLayer = ({
 
                 <Flex align="center" gap="5px" color="#A4A6A8" fontSize="12px">
                   <Flex
-                    bg="tranparent"
+                    bg="transparent"
                     py="6px"
                     px="8px"
                     color="#242628"
@@ -157,10 +157,10 @@ const TableLayer = ({
             >
               <Td>{zone?.name}</Td>
               <Td>{zone?.code}</Td>
-              <Td>{zone.location.name}</Td>
+              <Td>{zone?.location?.name || "N/A"}</Td>
               <Td>
                 <Text w="250px" wordBreak={"break-word"} whiteSpace={"normal"}>
-                  {zone.location.description}
+                  {zone?.location?.description || "N/A"}
                 </Text>
               </Td>
               <Td textAlign={"center"}>{zone.capacity}</Td>

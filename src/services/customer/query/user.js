@@ -12,6 +12,7 @@ import {
   getPreference,
   getUser,
   getUserSub,
+  getUserSubs,
   getUserSubscriptions,
   renewSub,
   sendMail,
@@ -65,6 +66,14 @@ export const useCustomerUpdateUser = (options = {}) => {
   return { mutate, isLoading };
 };
 
+export const useGetUserSubs = (options = {}) => {
+  const { mutate, isLoading, data } = useMutation(getUserSubs, {
+    mutationKey: "GET_USER_SUBS",
+    ...options,
+  });
+  return { mutate, isLoading, data };
+};
+
 export const useCustomerUpdatePreference = (options = {}) => {
   const { mutate, isLoading } = useMutation(customerUpdatePreference, {
     mutationKey: "CUSTOMER_UPDATE_PREFERENCE",
@@ -73,9 +82,14 @@ export const useCustomerUpdatePreference = (options = {}) => {
   return { mutate, isLoading };
 };
 
-export const useGetUserSub = (limit = "", page = "", options = {}) => {
+export const useGetUserSub = (
+  limit = "",
+  page = "",
+  filters = [],
+  options = {}
+) => {
   const { isLoading, data, refetch } = useQuery(
-    ["GET_SUBSCRIPTIONS", limit, page],
+    ["GET_SUBSCRIPTIONS", limit, page, filters], // Include filters in the query key
     getUserSub,
     {
       ...options,
@@ -84,6 +98,18 @@ export const useGetUserSub = (limit = "", page = "", options = {}) => {
 
   return { isLoading, data, refetch };
 };
+
+// export const useGetUserSub = (limit = "", page = "", options = {}) => {
+//   const { isLoading, data, refetch } = useQuery(
+//     ["GET_SUBSCRIPTIONS", limit, page],
+//     getUserSub,
+//     {
+//       ...options,
+//     }
+//   );
+
+//   return { isLoading, data, refetch };
+// };
 
 export const useCancelSub = (options = {}) => {
   const { mutate, isLoading, data } = useMutation(cancelSub, {

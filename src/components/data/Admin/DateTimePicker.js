@@ -22,7 +22,7 @@ const DateTimePicker = ({
     <Flex align="center">
       <DatePicker
         selected={new Date(selectedDate)}
-        isDisabled={isDisabled}
+        disabled={isDisabled}
         onChange={handleDateChange}
         showTimeSelect={hasTime}
         timeFormat="HH:mm"

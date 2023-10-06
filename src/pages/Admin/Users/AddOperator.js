@@ -6,7 +6,10 @@ import Select from "react-select";
 import { customStyles } from "../../../components/common/constants";
 import { useNavigate } from "react-router-dom";
 import { PRIVATE_PATHS } from "../../../routes/constants";
-import { useCreateOperator } from "../../../services/admin/query/users";
+import {
+  useCreateOperator,
+  useGetOperators,
+} from "../../../services/admin/query/users";
 import useCustomToast from "../../../utils/notifications";
 import GoBackTab from "../../../components/data/Admin/GoBackTab";
 import { useGetStates } from "../../../services/customer/query/locations";
@@ -15,7 +18,6 @@ export default function AddOperator() {
   const [state, setState] = useState({
     name: "",
     password: "",
-
     email: "",
     passwordConfirmation: "",
     phone: "",
@@ -30,9 +32,11 @@ export default function AddOperator() {
   const [isDisabled, setIsDisabled] = useState(true);
   const { errorToast, successToast } = useCustomToast();
   const { data: states } = useGetStates();
+  const { refetch } = useGetOperators();
   const { mutate, isLoading } = useCreateOperator({
     onSuccess: () => {
       successToast("Operator added successfully!");
+      refetch();
       navigate(PRIVATE_PATHS.ADMIN_OPERATORS);
     },
     onError: (error) => {
@@ -43,8 +47,8 @@ export default function AddOperator() {
   });
 
   const stateOptions = states?.data?.map((state) => ({
-    value: state?.name?.replace(" State", "")?.replace(" (FCT)", ""),
-    label: state?.name?.replace(" State", "")?.replace(" (FCT)", ""),
+    value: state,
+    label: state,
   }));
 
   const isFormValid = () => {
@@ -245,7 +249,7 @@ export default function AddOperator() {
               Cancel
             </Button>
             <Button
-              variant="adminAlt"
+              variant="adminPrimary"
               w="55%"
               isDisabled={isDisabled}
               isLoading={isLoading}

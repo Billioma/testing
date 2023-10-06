@@ -21,11 +21,27 @@ export const getFaq = async () => {
   return res.data;
 };
 
+// export const getUserSub = async ({ queryKey }) => {
+//   const [, limit, page] = queryKey;
+//   const res = await axiosInstance.get(
+//     "customer/" +
+//       `${API.GET_SUBSCRIPTIONS}?limit=${limit}&page=${page}&sort=id,DESC`
+//   );
+//   return res.data;
+// };
+
 export const getUserSub = async ({ queryKey }) => {
-  const [, limit, page] = queryKey;
+  const [, limit, page, filters] = queryKey;
+  const filterString = filters.join("&");
+  const apiUrl = `customer/${API.GET_SUBSCRIPTIONS}?${filterString}&limit=${limit}&page=${page}&sort=id,DESC`;
+
+  const res = await axiosInstance.get(apiUrl);
+  return res.data;
+};
+
+export const getUserSubs = async (query) => {
   const res = await axiosInstance.get(
-    "customer/" +
-      `${API.GET_SUBSCRIPTIONS}?limit=${limit}&page=${page}&sort=id,DESC`
+    "customer/" + API.GET_SUBS(query.filterString, query.limit, query.page)
   );
   return res.data;
 };

@@ -78,3 +78,29 @@ export const deleteRate = async (id) => {
   const response = await axiosInstance.delete(`${API.ADMIN_RATES}/${id}`);
   return response.data;
 };
+
+export const deletePolicy = async (id) => {
+  const response = await axiosInstance.delete(`${API.ADMIN_POLICIES}/${id}`);
+  return response.data;
+};
+
+export const addPolicy = async (data) => {
+  const response = await axiosInstance.post(API.ADMIN_POLICIES, data);
+  return response.data;
+};
+
+export const editPolicy = async (data) => {
+  const response = await axiosInstance.patch(
+    `${API.ADMIN_POLICIES}/${data.id}`,
+    data
+  );
+
+  return response.data;
+};
+
+export const getPolicies = async (page, limit) => {
+  const response = await axiosInstance.get(
+    API.ADMIN_POLICIES + `?page=${page}&limit=${limit}&sort=id,DESC`
+  );
+  return response.data;
+};

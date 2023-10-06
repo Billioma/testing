@@ -98,7 +98,7 @@ const TableLayer = ({
 
                 <Flex align="center" gap="5px" color="#A4A6A8" fontSize="12px">
                   <Flex
-                    bg="tranparent"
+                    bg="transparent"
                     py="6px"
                     px="8px"
                     color="#242628"

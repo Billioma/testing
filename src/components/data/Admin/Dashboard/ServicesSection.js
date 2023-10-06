@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import StatCard from "./StatCard";
 import {
   Text,
@@ -12,77 +12,46 @@ import {
   Button,
 } from "@chakra-ui/react";
 import { HiOutlineChevronDown } from "react-icons/hi";
+import { useGetServicesMetrics } from "../../../../services/admin/query/general";
 
 export default function ServicesSection() {
   const [selectedOption, setSelectedOption] = useState("Today");
+  const { data: servicesMetrics } = useGetServicesMetrics();
+  const [state, setState] = useState([]);
+
+  const transformData = () => {
+    const transformedData = [];
+    const dataKeys = Object.keys(servicesMetrics);
+
+    dataKeys.forEach((key, index) => {
+      const title = key.charAt(0).toUpperCase() + key.slice(1);
+      const id = index + 1;
+
+      const card = {
+        id,
+        title,
+        subTitle: "Total",
+        value: servicesMetrics[key].total,
+        active: servicesMetrics[key].active,
+        inactive: servicesMetrics[key].inactive,
+      };
+
+      transformedData.push(card);
+    });
+
+    setState(transformedData);
+  };
+
+  console.log(servicesMetrics);
+
+  useEffect(() => {
+    servicesMetrics && transformData();
+  }, [servicesMetrics]);
 
   const handleOptionSelect = (option) => {
     setSelectedOption(option);
   };
 
-  const cardsData = [
-    {
-      id: 1,
-      title: "Valet Parking",
-      description: "This is Card 1 description.",
-      buttonText: "Button 1",
-      subTitle: "Total",
-      value: 4678,
-      completed: 0,
-      inService: 0,
-    },
-    {
-      id: 2,
-      title: "Park-To-Park (Customer)",
-      description: "This is Card 2 description.",
-      buttonText: "Button 2",
-      subTitle: "Total",
-      value: 4678,
-      completed: 0,
-      inService: 0,
-    },
-    {
-      id: 3,
-      title: "Park-To-Park (Attendant)",
-      description: "This is Card 3 description.",
-      buttonText: "Button 3",
-      subTitle: "Total",
-      value: 4678,
-      completed: 0,
-      inService: 0,
-    },
-
-    {
-      id: 4,
-      title: "Reserved Parking",
-      description: "This is Card 1 description.",
-      buttonText: "Button 1",
-      subTitle: "Total",
-      value: 4678,
-      completed: 0,
-      reserved: 0,
-    },
-    {
-      id: 5,
-      title: "Event Parking",
-      description: "This is Card 2 description.",
-      buttonText: "Button 2",
-      subTitle: "Total",
-      value: 4678,
-      completed: 0,
-      reserved: 0,
-    },
-    {
-      id: 6,
-      title: "Car Services",
-      description: "This is Card 3 description.",
-      buttonText: "Button 3",
-      subTitle: "Total",
-      value: 4678,
-      completed: 0,
-      pending: 0,
-    },
-  ];
   return (
     <Box mt={"24px"}>
       <Flex justifyContent="space-between" alignItems={"center"} mb={3}>
@@ -115,15 +84,15 @@ export default function ServicesSection() {
       </Flex>
 
       <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing="4">
-        {cardsData.map((card) => (
+        {state.map((card) => (
           <StatCard
             key={card.id}
             title={card.title}
             subTitle={card.subTitle}
             value={card.value}
-            completed={card.completed}
+            completed={card.completed || 0}
             inService={card.inService}
-            pending={card.pending}
+            pending={card.pending || 0}
             reserved={card.reserved}
             large
             bg="#fff"

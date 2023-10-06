@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { Box, Flex, Text, Button, SimpleGrid, Switch } from "@chakra-ui/react";
-
 import Select from "react-select";
 import { customStyles } from "../../../components/common/constants";
 import { useNavigate } from "react-router-dom";
@@ -9,7 +8,8 @@ import useCustomToast from "../../../utils/notifications";
 import GoBackTab from "../../../components/data/Admin/GoBackTab";
 
 import {
-  useCreateMembershipFeature,
+  useCreateCustomerSubscription,
+  useGetCustomerSubscriptions,
   useGetMembershipPlans,
 } from "../../../services/admin/query/memberships";
 import { useGetAllCustomers } from "../../../services/admin/query/customers";
@@ -23,27 +23,28 @@ export default function AddCustomerSubscription() {
     subscriptionOptions: [
       {
         planFeature: 0,
-        data: "string",
+        data: [],
       },
     ],
     startDate: "2023-08-17T22:23:13.028Z",
     nextPaymentDate: "2023-08-17T22:23:13.028Z",
     autoRenewal: 0,
-    status: 1,
-    paymentMethod: "0",
-    cardId: 0,
-    notifyCustomer: 0,
+    paymentMethod: 2,
   });
+
+  const [featureTypes, setFeatureTypes] = useState([]);
 
   const navigate = useNavigate();
   const [isDisabled, setIsDisabled] = useState(true);
   const { errorToast, successToast } = useCustomToast();
   const { data: vehicles } = useGetVehicles({}, 1, 100000);
+  const { refetch } = useGetCustomerSubscriptions();
 
-  const { mutate, isLoading } = useCreateMembershipFeature({
+  const { mutate, isLoading } = useCreateCustomerSubscription({
     onSuccess: () => {
+      refetch();
       successToast("Customer subscription added successfully!");
-      navigate(PRIVATE_PATHS.ADMIN_MEMBERSHIP_FEATURES);
+      navigate(PRIVATE_PATHS.ADMIN_CUSTOMER_SUBSCRIPTIONS);
     },
     onError: (error) => {
       errorToast(
@@ -62,7 +63,7 @@ export default function AddCustomerSubscription() {
 
   const locationOptions = locations?.data?.map((location) => ({
     label: location.name,
-    value: location.id,
+    value: parseInt(location.id),
   }));
 
   const intervalOptions = [
@@ -75,12 +76,6 @@ export default function AddCustomerSubscription() {
     "Annually",
   ];
 
-  // const isFormValid = () => {
-  //   return (
-  //     !state.name || !state.value || !state.membershipPlan || !state.featureType
-  //   );
-  // };
-
   const { data: plans } = useGetMembershipPlans({}, 1, 100000);
 
   useEffect(() => {
@@ -88,15 +83,76 @@ export default function AddCustomerSubscription() {
   }, [state]);
 
   const handleSelectChange = (selectedOption, { name }) => {
-    setState({
-      ...state,
-      [name]: selectedOption,
-    });
+    if (name === "customer") {
+      setState({
+        ...state,
+        [name]: selectedOption,
+      });
+      return;
+    }
+
+    let temp = state.subscriptionOptions;
+    let tempType;
+    if (name === "vehicle") {
+      tempType = temp.find((feature) => feature.type === "vehicle");
+      tempType.data = [selectedOption];
+    }
+
+    if (name === "location") {
+      tempType = temp.find((feature) => feature.type === "location");
+      tempType.data = [selectedOption];
+    }
+
+    const index = temp.findIndex((el) => el.type === name);
+    temp.splice(index, 1);
+    temp.push(tempType);
+
+    setState({ ...state, subscriptionOptions: temp });
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     mutate({ ...state });
+  };
+
+  const handlePlanSelection = (plan) => {
+    const tempFeatureTypes = [];
+    const temp = plan.features.map((feature) => {
+      tempFeatureTypes.push(getFeatureType(feature.featureType, feature.value));
+      setFeatureTypes(tempFeatureTypes);
+      return {
+        planFeature: feature.id,
+        data: [],
+        type:
+          feature.featureType === 0
+            ? "vehicle"
+            : feature.featureType === 3
+            ? "location"
+            : null,
+      };
+    });
+
+    setState({
+      ...state,
+      membershipPlan: plan.id,
+      subscriptionOptions: temp,
+    });
+  };
+
+  const getFeatureType = (type, limit) => {
+    switch (type) {
+      case 0:
+        return { vehicle: parseInt(limit) };
+
+      case 3:
+        return { location: parseInt(limit) };
+
+      case 6:
+        return { users: parseInt(limit) };
+
+      default:
+        break;
+    }
   };
 
   return (
@@ -162,44 +218,59 @@ export default function AddCustomerSubscription() {
                   handleSelectChange(value, { name: "customer" })
                 }
                 options={customerOptions}
-                placeholder="Select customer "
+                placeholder="Select customer"
               />
             </Box>
 
-            <Box w="full" mb={4}>
-              <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
-                Select up to 2 vehicles
-              </Text>
-              <Select
-                styles={customStyles}
-                onChange={({ value }) =>
-                  handleSelectChange(value, { name: "vehicles" })
-                }
-                isMulti
-                options={vehicles?.data
-                  ?.filter((vehicle) => vehicle.customer?.id == state.customer)
-                  ?.map((vehicle) => ({
-                    label: `${vehicle.color} - ${vehicle.make.name} - ${vehicle.model.name}`,
-                    value: vehicle.id,
-                  }))}
-                multi
-                placeholder="Select vehicles"
-              />
-            </Box>
+            {featureTypes.find((type) => type["vehicle"]) && (
+              <Box w="full" mb={4}>
+                <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
+                  {featureTypes.find((type) => type["vehicle"]).limit > 1
+                    ? `Select up to ${limit} vehicles`
+                    : "Select a vehicle"}
+                </Text>
+                <Select
+                  styles={customStyles}
+                  onChange={({ value }) =>
+                    handleSelectChange(value, { name: "vehicle" })
+                  }
+                  isMulti={
+                    featureTypes.find((type) => type["vehicle"]).limit > 1
+                  }
+                  options={vehicles?.data
+                    ?.filter(
+                      (vehicle) => vehicle.customer?.id == state.customer
+                    )
+                    ?.map((vehicle) => ({
+                      label: `${vehicle.color} - ${vehicle.make.name} - ${vehicle.model.name}`,
+                      value: parseInt(vehicle.id),
+                    }))}
+                  multi
+                  placeholder="Select vehicles"
+                />
+              </Box>
+            )}
 
-            <Box w="full" mb={4}>
-              <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
-                Select a location
-              </Text>
-              <Select
-                styles={customStyles}
-                onChange={({ value }) =>
-                  handleSelectChange(value, { name: "location" })
-                }
-                options={locationOptions}
-                placeholder="Select location"
-              />
-            </Box>
+            {featureTypes.find((type) => type["location"]) && (
+              <Box w="full" mb={4}>
+                <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
+                  {featureTypes.find((type) => type["location"]).limit > 1
+                    ? `Select up to ${limit} locations`
+                    : " Select a location"}
+                </Text>
+                <Select
+                  styles={customStyles}
+                  onChange={({ value }) =>
+                    handleSelectChange(value, { name: "location" })
+                  }
+                  isMulti={
+                    featureTypes.find((type) => type["location"]).limit > 1
+                  }
+                  options={locationOptions}
+                  placeholder="Select location"
+                />
+              </Box>
+            )}
 
             <Flex
               align="center"
@@ -214,7 +285,7 @@ export default function AddCustomerSubscription() {
                 onChange={() =>
                   setState({
                     ...state,
-                    isUpgradable: state.isUpgradable ? 0 : 1,
+                    autoRenewal: state.autoRenewal ? 0 : 1,
                   })
                 }
                 size="sm"
@@ -280,9 +351,7 @@ export default function AddCustomerSubscription() {
                   </Box>
                   <Button
                     variant="adminPrimary"
-                    onClick={() =>
-                      setState({ ...state, membershipPlan: plan.id })
-                    }
+                    onClick={() => handlePlanSelection(plan)}
                   >
                     Select
                   </Button>

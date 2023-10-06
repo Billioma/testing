@@ -86,7 +86,7 @@ export const validateZoneSchema = Yup.object().shape({
 export const validateRateLimitSchema = Yup.object().shape({
   name: Yup.string().required("Rate Name is required"),
   status: Yup.object().required("Status is required"),
-  servicXeType: Yup.object().required("Service is required"),
+  serviceType: Yup.object().required("Service is required"),
   durationType: Yup.object().required("Duration Type is required"),
   durationStart: Yup.string().required("Duration Start is required"),
   durationLimit: Yup.string().required("Duration Limit is required"),

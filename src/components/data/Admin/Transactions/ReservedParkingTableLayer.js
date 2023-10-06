@@ -104,7 +104,7 @@ const TableLayer = ({
 
                 <Flex align="center" gap="5px" color="#A4A6A8" fontSize="12px">
                   <Flex
-                    bg="tranparent"
+                    bg="transparent"
                     py="6px"
                     px="8px"
                     color="#242628"
@@ -241,8 +241,8 @@ const TableLayer = ({
           <Tr>
             <Td colSpan={7} rowSpan={2}>
               <NoData
-                title="No Membership Plan"
-                desc="You have not added an membership plan"
+                title="No Transaction"
+                desc="You have not added a transaction"
               />
             </Td>
           </Tr>
@@ -252,7 +252,7 @@ const TableLayer = ({
       <AdminDeleteModal
         isOpen={selectedRow.isOpen}
         onClose={() => setSelectedRow({ ...selectedRow, isOpen: false })}
-        title="Delete Plan"
+        title="Delete Transaction"
         subTitle="Are you sure you want to delete this transaction?"
         handleSubmit={handleSubmit}
         isLoading={isDeleting}

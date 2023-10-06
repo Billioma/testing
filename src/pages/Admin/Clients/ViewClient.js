@@ -9,7 +9,6 @@ import {
 } from "../../../services/admin/query/clients";
 import useCustomToast from "../../../utils/notifications";
 import Select from "react-select";
-import { useGetStates } from "../../../services/customer/query/locations";
 import GoBackTab from "../../../components/data/Admin/GoBackTab";
 import { AiOutlineFolderOpen } from "react-icons/ai";
 import { useGetAdministrators } from "../../../services/admin/query/users";
@@ -50,11 +49,6 @@ export default function ViewCustomer() {
     {},
     state.id
   );
-
-  // const stateOptions = states?.data?.map((state) => ({
-  //   value: state?.name?.replace(" State", "")?.replace(" (FCT)", ""),
-  //   label: state?.name?.replace(" State", "")?.replace(" (FCT)", ""),
-  // }));
 
   const isFormValid = () => {
     return (

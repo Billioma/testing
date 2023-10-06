@@ -14,6 +14,7 @@ export const useGetProfile = (options = {}) => {
   const { data, isLoading, refetch } = useQuery({
     queryKey: ["GET_PROFILE"],
     queryFn: getProfile,
+    options,
   });
 
   return { data, isLoading, refetch };

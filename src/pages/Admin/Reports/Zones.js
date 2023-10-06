@@ -8,7 +8,7 @@ import {
   Skeleton,
   Text,
 } from "@chakra-ui/react";
-import ZoneTableLayer from "../../../components/data/Operator/Reports/ZoneTableLayer";
+import ZoneTableLayer from "../../../components/data/Admin/Reports/ZoneTableLayer";
 import { useGetAdminReport } from "../../../services/admin/query/reports";
 import ZoneExport from "../../../components/data/Admin/Reports/ZoneExport";
 

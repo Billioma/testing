@@ -534,7 +534,7 @@ const CarServices = () => {
                       align="center"
                       justifyContent="space-between"
                       w="full"
-                      bg={start ? "#F4F6F8" : "tranparent"}
+                      bg={start ? "#F4F6F8" : "transparent"}
                       color={start ? "#000" : ""}
                       h="44px"
                       cursor="pointer"

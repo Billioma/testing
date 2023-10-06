@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Box,
   Flex,
@@ -16,6 +16,12 @@ import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import NoData from "../../../common/NoData";
 import { BsChevronDown } from "react-icons/bs";
 import { formatDate } from "../../../../utils/helpers";
+import AdminDeleteModal from "../../../modals/AdminDeleteModal";
+import useCustomToast from "../../../../utils/notifications";
+import {
+  useDeleteService,
+  useGetServices,
+} from "../../../../services/admin/query/services";
 
 const TableLayer = ({ data, isLoading, page, setPage, limit, handleEdit }) => {
   const headers = [
@@ -25,6 +31,27 @@ const TableLayer = ({ data, isLoading, page, setPage, limit, handleEdit }) => {
     "DATE CREATED",
     "ACTIONS",
   ];
+  const [selectedRow, setSelectedRow] = useState({ isOpen: false, id: null });
+  const { refetch } = useGetServices();
+  const { errorToast, successToast } = useCustomToast();
+
+  const { mutate, isLoading: isDeleting } = useDeleteService({
+    onSuccess: (res) => {
+      successToast(res?.message);
+      refetch();
+      setSelectedRow({ isOpen: false, id: null });
+    },
+    onError: (err) => {
+      errorToast(
+        err?.response?.data?.message || err?.message || "An Error occurred"
+      );
+    },
+  });
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    mutate(selectedRow.id);
+  };
 
   return (
     <Box>
@@ -65,7 +92,7 @@ const TableLayer = ({ data, isLoading, page, setPage, limit, handleEdit }) => {
 
                 <Flex align="center" gap="5px" color="#A4A6A8" fontSize="12px">
                   <Flex
-                    bg="tranparent"
+                    bg="transparent"
                     py="6px"
                     px="8px"
                     color="#242628"
@@ -144,6 +171,9 @@ const TableLayer = ({ data, isLoading, page, setPage, limit, handleEdit }) => {
                         alignItems="center"
                         fontWeight="500"
                         color="red"
+                        onClick={() =>
+                          setSelectedRow({ isOpen: true, id: service.id })
+                        }
                       >
                         <FiTrash2 />
                         Delete
@@ -162,6 +192,15 @@ const TableLayer = ({ data, isLoading, page, setPage, limit, handleEdit }) => {
           </Tr>
         )}
       </TableFormat>
+
+      <AdminDeleteModal
+        isOpen={selectedRow.isOpen}
+        onClose={() => setSelectedRow({ ...selectedRow, isOpen: false })}
+        title="Delete Service"
+        subTitle="Are you sure you want to delete this service?"
+        handleSubmit={handleSubmit}
+        isLoading={isDeleting}
+      />
     </Box>
   );
 };

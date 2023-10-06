@@ -681,8 +681,8 @@ const AddUser = () => {
                     px="16px"
                     size="sm"
                     fontSize="10px"
-                    display="flex"
                     onClick={() => setStep(step - 1)}
+                    display="flex"
                     align="center"
                     gap="8px"
                   >

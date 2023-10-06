@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Box, Flex, Text, Button } from "@chakra-ui/react";
+import { Box, Flex, Text, Button, Image } from "@chakra-ui/react";
 import CustomInput from "../../../components/common/CustomInput";
 import { useNavigate } from "react-router-dom";
 import { PRIVATE_PATHS } from "../../../routes/constants";
@@ -9,6 +9,7 @@ import Select from "react-select";
 import { useGetStates } from "../../../services/customer/query/locations";
 import GoBackTab from "../../../components/data/Admin/GoBackTab";
 import { useGetAdministrators } from "../../../services/admin/query/users";
+import { useUploadMedia } from "../../../services/admin/query/general";
 import {
   AiOutlineEye,
   AiOutlineEyeInvisible,
@@ -47,9 +48,30 @@ export default function ViewCustomer() {
   );
 
   const stateOptions = states?.data?.map((state) => ({
-    value: state?.name?.replace(" State", "")?.replace(" (FCT)", ""),
-    label: state?.name?.replace(" State", "")?.replace(" (FCT)", ""),
+    value: state,
+    label: state,
   }));
+
+  const { mutate: uploadMedia, isLoading: uploadingImage } = useUploadMedia({
+    onSuccess: (data) => {
+      mutate({ ...state, logo: data.path });
+    },
+    onError: (err) => {
+      errorToast(
+        err?.response?.data?.message || err?.message || "An Error occurred"
+      );
+    },
+  });
+
+  const handleLogoImageChange = (e) => {
+    const selectedImage = e.target.files[0];
+    if (selectedImage) {
+      setState({
+        ...state,
+        logo: selectedImage,
+      });
+    }
+  };
 
   const isFormValid = () => {
     return (
@@ -65,12 +87,25 @@ export default function ViewCustomer() {
     );
   };
 
+  console.log(state);
+
   useEffect(() => {
     setIsDisabled(isFormValid);
   }, [state]);
 
-  const handleSubmit = () => {
-    mutate(state);
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (state.logo) {
+      const formData = new FormData();
+      formData.append("logo", state.logo);
+      uploadMedia({
+        fileType: "logo",
+        entityType: "admin",
+        file: formData.get("logo"),
+      });
+    } else {
+      mutate(state);
+    }
   };
 
   return (
@@ -102,20 +137,41 @@ export default function ViewCustomer() {
             >
               Logo
             </Text>
-            <Box
-              w="100%"
-              h="120px"
-              justifyContent="center"
-              alignItems="center"
-              border="4px solid #0D0718"
-              borderRadius="12px"
-              display="flex"
-              flexDir={"column"}
-              cursor="pointer"
-            >
-              <AiOutlineFolderOpen size={32} />
-              <Text fontSize={13}>Add Logo</Text>
-            </Box>
+            <label htmlFor="avatarInput">
+              <Flex
+                w="full"
+                h="120px"
+                justifyContent="center"
+                alignItems="center"
+                border="4px solid #0D0718"
+                borderRadius="12px"
+                display="flex"
+                cursor="pointer"
+                overflow={"hidden"}
+                flexDir={"column"}
+              >
+                {state.logo ? (
+                  <Image
+                    src={URL.createObjectURL(state.logo)}
+                    alt="Logo"
+                    boxSize="100%"
+                    objectFit="cover"
+                  />
+                ) : (
+                  <>
+                    <AiOutlineFolderOpen size={32} />
+                    <Text fontSize={13}>Add Logo</Text>
+                  </>
+                )}
+              </Flex>
+            </label>
+            <input
+              type="file"
+              id="avatarInput"
+              accept="image/*"
+              style={{ display: "none" }}
+              onChange={handleLogoImageChange}
+            />
           </Box>
           <Box w="full" mb={4}>
             <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
@@ -206,12 +262,13 @@ export default function ViewCustomer() {
             <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
               State
             </Text>
-            <CustomInput
-              auth
-              value={state.state}
-              mb
-              holder="Enter state"
-              onChange={(e) => setState({ ...state, state: e.target.value })}
+            <Select
+              styles={customStyles}
+              placeholder="Select state"
+              options={stateOptions}
+              onChange={(selectedOption) =>
+                setState({ ...state, state: selectedOption.label })
+              }
             />
           </Box>
           <Box w="full" mb={4} position="relative">
@@ -244,7 +301,7 @@ export default function ViewCustomer() {
           </Box>
           <Box position="relative" mb={4}>
             <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
-              Comfirm Password
+              Confirm Password
             </Text>
             <CustomInput
               auth
@@ -317,7 +374,7 @@ export default function ViewCustomer() {
             <Button
               variant="adminPrimary"
               w="55%"
-              // isDisabled={isDisabled}
+              isDisabled={isDisabled}
               isLoading={isLoading}
               onClick={handleSubmit}
             >

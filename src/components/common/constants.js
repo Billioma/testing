@@ -30,7 +30,7 @@ import { FcCancel } from "react-icons/fc";
 import { BsTrash } from "react-icons/bs";
 import { AiOutlineEdit } from "react-icons/ai";
 import { PRIVATE_PATHS } from "../../routes/constants";
-import { TbListDetails } from "react-icons/tb";
+import { TbListDetails, TbCalendarEvent } from "react-icons/tb";
 
 export const sidebarItems = [
   {
@@ -56,10 +56,10 @@ export const sidebarItems = [
         title: "Client Invoices",
         path: PRIVATE_PATHS.ADMIN_CLIENTS_INVOICES,
       },
-      {
-        title: "Events",
-        path: PRIVATE_PATHS.ADMIN_EVENTS,
-      },
+      // {
+      //   title: "Events",
+      //   path: PRIVATE_PATHS.ADMIN_EVENTS,
+      // },
     ],
   },
 
@@ -90,6 +90,14 @@ export const sidebarItems = [
   },
 
   {
+    id: 3,
+    title: "Events",
+    icon: <TbCalendarEvent />,
+    hover: <TbCalendarEvent fill="#fff" stroke="black" />,
+    path: PRIVATE_PATHS.ADMIN_EVENTS,
+  },
+
+  {
     id: 5,
     title: "Locations",
     path: "/locations",
@@ -110,11 +118,11 @@ export const sidebarItems = [
       },
       {
         title: "Amenities",
-        path: "/admin/amenities",
+        path: PRIVATE_PATHS.ADMIN_AMENITIES,
       },
       {
         title: "Policies",
-        path: "/admin/policies",
+        path: PRIVATE_PATHS.ADMIN_POLICIES,
       },
     ],
   },
@@ -181,6 +189,11 @@ export const sidebarItems = [
         title: "Car Services",
         path: "/admin/transactions/car-services",
       },
+
+      {
+        title: "Events Parking",
+        path: "/admin/transactions/car-services",
+      },
     ],
   },
 
@@ -198,15 +211,15 @@ export const sidebarItems = [
     subItems: [
       {
         title: "Valeted Vehicles",
-        path: "/admin/valeted-vehicles",
+        path: PRIVATE_PATHS.ADMIN_VALETED_VEHICLES,
       },
       {
         title: "Parked Vehicles",
-        path: "/admin/parked-vehicles",
+        path: PRIVATE_PATHS.ADMIN_PARKED_VEHICLES,
       },
       {
         title: "Serviced Vehicles",
-        path: "/admin/serviced-vehicles",
+        path: PRIVATE_PATHS.ADMIN_SERVICED_VEHICLES,
       },
     ],
   },
@@ -261,6 +274,32 @@ export const sidebarItems = [
     path: "/admin/configurations",
     icon: <ConfigIcon />,
     hover: <ConfigIcon fill="#fff" stroke="black" />,
+    subItems: [
+      {
+        title: "Roles",
+        path: PRIVATE_PATHS.ADMIN_CONFIG_ROLES,
+      },
+      {
+        title: "Vehicle Makes",
+        path: PRIVATE_PATHS.ADMIN_CONFIG_VEHICLE_MAKES,
+      },
+      {
+        title: "Vehicle Models",
+        path: PRIVATE_PATHS.ADMIN_CONFIG_VEHICLE_MODELS,
+      },
+      {
+        title: "FAQs",
+        path: PRIVATE_PATHS.ADMIN_CONFIG_FAQS,
+      },
+      {
+        title: "Bank Details",
+        path: PRIVATE_PATHS.ADMIN_CONFIG_BANK_DETAILS,
+      },
+      {
+        title: "Create QR Code",
+        path: PRIVATE_PATHS.ADMIN_CONFIG_QR_CODE,
+      },
+    ],
   },
 ];
 
@@ -1232,14 +1271,27 @@ export const carHeader = [
   "ACTIONS",
 ];
 
+export const searchOption = [
+  { label: "Contains", value: "cont" },
+  { label: "Equals to", value: "eq" },
+];
+
+export const subFieldOption = [
+  { label: "Plan", value: "membershipPlan.name" },
+  { label: "Amount", value: "membershipPlan.amount" },
+  { label: "Duration", value: "membershipPlan.interval" },
+  { label: "Status", value: "status" },
+  { label: "Date Created", value: "createdAt" },
+];
+
 export const subHeader = [
-  "PLAN",
-  "AMOUNT",
-  "DURATION",
-  "NEXT PAYMENT DATE",
-  "STATUS",
-  "DATE CREATED",
-  "ACTIONS",
+  "Plan",
+  "Amount",
+  "Duration",
+  "Next Payment Date",
+  "Status",
+  "Date Created",
+  "Actions",
 ];
 
 export const paymentHeader = [

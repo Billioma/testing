@@ -9,6 +9,7 @@ import {
 import { Text, Flex } from "@chakra-ui/layout";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { BsSearch } from "react-icons/bs";
+import { MdAdd } from "react-icons/md";
 
 const CustomInput = ({
   value,
@@ -33,6 +34,8 @@ const CustomInput = ({
   type,
   bg,
   search,
+  add,
+  onAdd,
   border,
 }) => {
   const [isTyping, setIsTyping] = useState(false);
@@ -107,6 +110,10 @@ const CustomInput = ({
         ) : search ? (
           <InputRightElement cursor="pointer" h={opt ? "60px" : "44px"}>
             <BsSearch />
+          </InputRightElement>
+        ) : add ? (
+          <InputRightElement cursor="pointer" h={opt ? "60px" : "44px"}>
+            <MdAdd onClick={onAdd} />
           </InputRightElement>
         ) : (
           <InputRightElement

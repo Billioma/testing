@@ -9,7 +9,7 @@ import { useGetClientsInvoices } from "../../../services/admin/query/clients";
 
 export default function () {
   const [page, setPage] = useState(1);
-  const [limit] = useState(25);
+  const [limit, setLimit] = useState(25);
   const [startRow, setStartRow] = useState(1);
   const [endRow, setEndRow] = useState(0);
   const navigate = useNavigate();
@@ -20,7 +20,6 @@ export default function () {
         const nextStartRow = endRow + 1;
         const nextEndRow = Math.min(endRow + limit, data?.total);
 
-        // Update the state with the new row numbers
         setStartRow(nextStartRow);
         setEndRow(nextEndRow);
       },
@@ -28,6 +27,10 @@ export default function () {
     page,
     limit
   );
+
+  useEffect(() => {
+    setPage(1);
+  }, [limit]);
 
   return (
     <Box w="full" border={"1px solid #E4E6E8"} borderRadius={"12px"}>
@@ -63,9 +66,10 @@ export default function () {
         isLoading={isLoading}
         page={page}
         limit={limit}
+        setLimit={setLimit}
         setPage={setPage}
         startRow={startRow}
-        endRow={endRow || 25}
+        endRow={endRow || limit}
         refetch={refetch}
       />
     </Box>

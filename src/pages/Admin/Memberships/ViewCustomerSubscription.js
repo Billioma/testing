@@ -2,20 +2,25 @@ import React, { useState, useEffect } from "react";
 import { Box, Flex, Text, Button, Switch } from "@chakra-ui/react";
 import CustomInput from "../../../components/common/CustomInput";
 import Select from "react-select";
-import { customStyles } from "../../../components/common/constants";
+import { customStyles, intervals } from "../../../components/common/constants";
 import { useNavigate, useLocation } from "react-router-dom";
 import { PRIVATE_PATHS } from "../../../routes/constants";
 import useCustomToast from "../../../utils/notifications";
 import GoBackTab from "../../../components/data/Admin/GoBackTab";
-
+import { IoMdRefresh, IoMdClose } from "react-icons/io";
 import {
-  useCreateMembershipFeature,
+  useCancelCustomerSubscription,
+  useDeleteCustomerSubscription,
+  useEditCustomerSubscription,
+  useGetCustomerSubscriptions,
   useGetMembershipPlans,
+  useRenewCustomerSubscription,
 } from "../../../services/admin/query/memberships";
-import { useGetAllCustomers } from "../../../services/admin/query/customers";
 import { useGetAllLocations } from "../../../services/admin/query/locations";
+import DateTimePicker from "../../../components/data/Admin/DateTimePicker";
+import AdminActionModal from "../../../components/modals/AdminDeleteModal";
 
-export default function AddOperator() {
+export default function ViewMembershipSubscription() {
   const [state, setState] = useState({
     customer: 0,
     membershipPlan: "",
@@ -34,16 +39,20 @@ export default function AddOperator() {
     notifyCustomer: 0,
   });
 
-  const [isDisabled, setIsDisabled] = useState(true);
+  const [isCancelModalOpen, setIsCancelModalOpen] = useState(false);
+  const [isRenewModalOpen, setIsRenewModalOpen] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const { errorToast, successToast } = useCustomToast();
   const [isEdit, setIsEdit] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
+  const { refetch } = useGetCustomerSubscriptions();
 
-  const { mutate, isLoading } = useCreateMembershipFeature({
+  const { mutate, isLoading } = useEditCustomerSubscription({
     onSuccess: () => {
+      refetch();
       successToast("Membership feature added successfully!");
-      navigate(PRIVATE_PATHS.ADMIN_MEMBERSHIP_FEATURES);
+      navigate(PRIVATE_PATHS.ADMIN_CUSTOMER_SUBSCRIPTIONS);
     },
     onError: (error) => {
       errorToast(
@@ -52,14 +61,53 @@ export default function AddOperator() {
     },
   });
 
-  const { data: membershipPlans } = useGetMembershipPlans({}, 1, 100000);
-  const { data: customers } = useGetAllCustomers();
-  const { data: locations } = useGetAllLocations();
+  const { mutate: deleteCustomerSub, isLoading: isDeleting } =
+    useDeleteCustomerSubscription({
+      onSuccess: (res) => {
+        successToast(res?.message);
+        setIsDeleteModalOpen(false);
+        refetch();
+        navigate(PRIVATE_PATHS.ADMIN_CUSTOMER_SUBSCRIPTIONS);
+      },
+      onError: (err) => {
+        errorToast(
+          err?.response?.data?.message || err?.message || "An Error occurred"
+        );
+      },
+    });
 
-  const customerOptions = customers?.data?.map((customer) => ({
-    label: `${customer.profile?.firstName} ${customer.profile?.lastName}`,
-    value: customer.id,
-  }));
+  const { mutate: renewCustomerSub, isLoading: isRenewing } =
+    useRenewCustomerSubscription({
+      onSuccess: (res) => {
+        successToast(res?.message);
+        setIsRenewModalOpen(false);
+        refetch();
+        navigate(PRIVATE_PATHS.ADMIN_CUSTOMER_SUBSCRIPTIONS);
+      },
+      onError: (err) => {
+        errorToast(
+          err?.response?.data?.message || err?.message || "An Error occurred"
+        );
+      },
+    });
+
+  const { mutate: cancelCustomerSub, isLoading: isCanceling } =
+    useCancelCustomerSubscription({
+      onSuccess: (res) => {
+        successToast(res?.message);
+        setIsCancelModalOpen(false);
+        refetch();
+        navigate(PRIVATE_PATHS.ADMIN_CUSTOMER_SUBSCRIPTIONS);
+      },
+      onError: (err) => {
+        errorToast(
+          err?.response?.data?.message || err?.message || "An Error occurred"
+        );
+      },
+    });
+
+  const { data: membershipPlans } = useGetMembershipPlans({}, 1, 100000);
+  const { data: locations } = useGetAllLocations();
 
   const membershipPlanOptions = membershipPlans?.data?.map((plan) => ({
     label: plan.name,
@@ -71,16 +119,6 @@ export default function AddOperator() {
     value: location.id,
   }));
 
-  const isFormValid = () => {
-    return (
-      !state.name || !state.value || !state.membershipPlan || !state.featureType
-    );
-  };
-
-  useEffect(() => {
-    setIsDisabled(isFormValid);
-  }, [state]);
-
   const handleSelectChange = (selectedOption, { name }) => {
     setState({
       ...state,
@@ -90,7 +128,10 @@ export default function AddOperator() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    mutate({ ...state });
+
+    const { autoRenewal, nextPaymentDate, startDate, status, id } = state;
+
+    mutate({ autoRenewal, nextPaymentDate, startDate, status, id });
   };
 
   useEffect(() => {
@@ -100,10 +141,16 @@ export default function AddOperator() {
       membershipPlan: parseInt(location.state.membershipPlan.id),
       customer: location.state.customer.id,
       amount: location.state.membershipPlan.amount,
+      interval: membershipPlans?.data?.find(
+        (plan) => plan.id === location.state.membershipPlan.id
+      )?.interval,
+      locations: location.state?.subscriptionOptions?.find(
+        (option) => option?.planFeature?.featureType == 3
+      ),
     });
 
     setIsEdit(location?.state?.isEdit);
-  }, [location.state]);
+  }, [location.state, membershipPlans]);
 
   return (
     <Box minH="75vh">
@@ -134,7 +181,7 @@ export default function AddOperator() {
               value={membershipPlanOptions?.find(
                 (plan) => plan.value === state.membershipPlan
               )}
-              isDisabled={!isEdit}
+              isDisabled
             />
           </Box>
 
@@ -144,107 +191,196 @@ export default function AddOperator() {
             </Text>
             <CustomInput
               auth
-              value={state.amount}
-              type="number"
+              value={`₦${state.amount}`}
               mb
               holder="Enter amount"
-              onChange={(e) => setState({ ...state, amount: e.target.value })}
-              isDisabled={!isEdit}
+              isDisabled
             />
           </Box>
 
           <Box w="full" mb={4}>
             <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
-              Select a customer
+              Duration
             </Text>
-            <Select
-              styles={customStyles}
-              onChange={({ value }) =>
-                handleSelectChange(value, { name: "customer" })
+            <CustomInput
+              auth
+              value={
+                intervals[state?.interval]
+                  ? intervals[state?.interval][state?.interval]
+                  : ""
               }
-              options={customerOptions}
-              value={customerOptions?.find(
-                (customer) => customer.value === state.customer
-              )}
-              placeholder="Select customer"
-              isDisabled={!isEdit}
+              mb
+              holder="Enter amount"
+              isDisabled
             />
           </Box>
+
+          <Flex justify={"space-between"} gap={4} flexDir={["column", "row"]}>
+            <Box mb={4} w={["100%", "50%"]}>
+              <Text mb="8px" fontWeight={500} color="#444648" fontSize="10px">
+                Start Date
+              </Text>
+              <DateTimePicker
+                selectedDate={state.startDate}
+                onChange={(date) => setState({ ...state, startDate: date })}
+                isDisabled={!isEdit}
+              />
+            </Box>
+
+            <Box mb={4} w={["100%", "50%"]}>
+              <Text mb="8px" fontWeight={500} color="#444648" fontSize="10px">
+                Next Payment Date
+              </Text>
+              <DateTimePicker
+                selectedDate={state.nextPaymentDate}
+                onChange={(date) =>
+                  setState({ ...state, nextPaymentDate: date })
+                }
+                isDisabled={true}
+              />
+            </Box>
+          </Flex>
 
           <Box w="full" mb={4}>
             <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
-              Select up to 2 vehicles
+              Status
             </Text>
             <Select
               styles={customStyles}
-              onChange={({ value }) =>
-                handleSelectChange(value, { name: "vehicles" })
+              placeholder="Status"
+              options={[
+                { label: "Active", value: 1 },
+                { label: "Inactive", value: 0 },
+                { label: "Canceled", value: 2 },
+              ]}
+              onChange={(selectedOption) =>
+                setState({ ...state, status: selectedOption.value })
               }
-              // options={featureTypes}
-              multi
-              placeholder="Select vehicles"
+              value={[
+                { label: "Active", value: 1 },
+                { label: "Inactive", value: 0 },
+                { label: "Canceled", value: 2 },
+              ]?.find((status) => status.value === state.status)}
               isDisabled={!isEdit}
             />
           </Box>
 
-          <Box w="full" mb={4}>
-            <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
-              Select a location
-            </Text>
-            <Select
-              styles={customStyles}
-              onChange={({ value }) =>
-                handleSelectChange(value, { name: "location" })
-              }
-              options={locationOptions}
-              placeholder="Select location"
-              isDisabled={!isEdit}
-            />
-          </Box>
+          {state.locations?.data ? (
+            <Box w="full" mb={4}>
+              <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
+                Select a location
+              </Text>
+              <Select
+                styles={customStyles}
+                isMulti={typeof location === "object"}
+                options={locationOptions}
+                value={locationOptions?.find(
+                  (option) => option.value == state.locations?.data
+                )}
+                isDisabled
+              />
+            </Box>
+          ) : null}
 
-          <Flex
-            align="center"
-            justifyContent={"space-between"}
-            gap="15px"
-            mb="16px"
-          >
-            <Text fontSize="12px" fontWeight={500} color="#444648">
-              Renew Automatically
-            </Text>
-            <Switch
-              onChange={() =>
-                setState({
-                  ...state,
-                  isUpgradable: state.isUpgradable ? 0 : 1,
-                })
-              }
-              size="sm"
-              variant="adminPrimary"
-            />
+          <Flex wrap={"wrap"} gap={4} mt={2}>
+            <Flex
+              fontSize="12px"
+              fontWeight={500}
+              color="#A11212"
+              align={"center"}
+              gap={2}
+              onClick={() => setIsCancelModalOpen(true)}
+            >
+              <IoMdClose />
+              <Text>Cancel Subscription</Text>
+            </Flex>
+            <Flex
+              cursor={"pointer"}
+              fontSize="12px"
+              fontWeight={500}
+              color="#0B841D"
+              align={"center"}
+              gap={2}
+              onClick={() => setIsRenewModalOpen(true)}
+            >
+              <IoMdRefresh />
+              <Text>Renew Subscription</Text>
+            </Flex>
+            <Flex
+              align="center"
+              justifyContent={"space-between"}
+              gap="15px"
+              mb="16px"
+            >
+              <Text fontSize="12px" fontWeight={500} color="#444648">
+                Renew Automatically
+              </Text>
+              <Switch
+                onChange={() =>
+                  setState({
+                    ...state,
+                    autoRenewal: state.autoRenewal ? 0 : 1,
+                  })
+                }
+                isChecked={state.autoRenewal}
+                size="sm"
+                variant="adminPrimary"
+              />
+            </Flex>
           </Flex>
 
           <Flex gap={4} mt={4}>
             <Button
-              variant="adminSecondary"
+              variant={!isEdit ? "adminDanger" : "adminSecondary"}
               w="45%"
               onClick={() =>
-                navigate(PRIVATE_PATHS.ADMIN_CUSTOMER_SUBSCRIPTIONS)
+                !isEdit
+                  ? setIsDeleteModalOpen(true)
+                  : navigate(PRIVATE_PATHS.ADMIN_CUSTOMER_SUBSCRIPTIONS)
               }
             >
-              Cancel
+              {!isEdit ? "Delete" : "Cancel"}
             </Button>
             <Button
               variant="adminPrimary"
               w="55%"
-              isDisabled={isDisabled}
               isLoading={isLoading}
-              onClick={handleSubmit}
+              onClick={(e) => (!isEdit ? setIsEdit(!isEdit) : handleSubmit(e))}
             >
-              Save
+              {!isEdit ? "Edit" : "Save"}
             </Button>
           </Flex>
         </Flex>
       </Flex>
+
+      <AdminActionModal
+        isOpen={isCancelModalOpen}
+        onClose={() => setIsCancelModalOpen(false)}
+        title="Cancel Subscription"
+        subTitle="Are you sure you want to cancel this subscription?"
+        handleSubmit={() => cancelCustomerSub(state.id)}
+        isLoading={isCanceling}
+        headerColor="#A11212"
+        btnColor="#A11212"
+      />
+
+      <AdminActionModal
+        isOpen={isRenewModalOpen}
+        onClose={() => setIsRenewModalOpen(false)}
+        title="Renew Subscription"
+        subTitle="Are you sure you want to renew this subscription?"
+        handleSubmit={() => renewCustomerSub(state.id)}
+        isLoading={isRenewing}
+      />
+
+      <AdminActionModal
+        isOpen={isDeleteModalOpen}
+        onClose={() => setIsDeleteModalOpen(false)}
+        title="Delete Subscription"
+        subTitle="Are you sure you want to delete this subscription?"
+        handleSubmit={() => deleteCustomerSub(state.id)}
+        isLoading={isDeleting}
+      />
     </Box>
   );
 }

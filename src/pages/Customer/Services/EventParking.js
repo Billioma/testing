@@ -101,9 +101,11 @@ const EventParking = () => {
   const { data: events, isLoading: isEVent } = useGetEvents();
   const { data: services } = useGetServices();
   const { data: vehicles } = useGetVehicles();
-
-  const filteredEvent = events?.filter((item) =>
-    item?.name?.toLowerCase().includes(values?.event?.toLowerCase())
+  const today = new Date();
+  const filteredEvent = events?.filter(
+    (item) =>
+      item?.name?.toLowerCase().includes(values?.event?.toLowerCase()) &&
+      new Date(item?.eventStartDateTime) > today
   );
 
   const startDateRange = new Date(event?.eventStartDateTime);
@@ -579,7 +581,7 @@ const EventParking = () => {
                     align="center"
                     justifyContent="space-between"
                     w="full"
-                    bg={start ? "#F4F6F8" : "tranparent"}
+                    bg={start ? "#F4F6F8" : "transparent"}
                     color={start ? "#000" : ""}
                     h="44px"
                     cursor="pointer"
