@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import ServicedVehiclesTableLayer from "../../../components/data/Admin/Logs/ServicedVehiclesTableLayer";
 import { Box, Button, Flex, Text } from "@chakra-ui/react";
 import { VscDebugRestart } from "react-icons/vsc";
@@ -6,24 +6,37 @@ import { useGetParkedVehicles } from "../../../services/admin/query/logs";
 
 export default function () {
   const [page, setPage] = useState(1);
-  const [limit] = useState(25);
+  const [limit, setLimit] = useState(25);
   const [startRow, setStartRow] = useState(1);
   const [endRow, setEndRow] = useState(0);
 
   const { data, isLoading, refetch } = useGetParkedVehicles(
     {
       refetchOnWindowFocus: true,
-      onSuccess: (data) => {
-        const nextStartRow = endRow + 1;
-        const nextEndRow = Math.min(endRow + limit, data?.total);
-
-        setStartRow(nextStartRow);
-        setEndRow(nextEndRow);
-      },
     },
     page,
     limit
   );
+
+  useEffect(() => {
+    setPage(1);
+  }, [limit]);
+
+  useEffect(() => {
+    if (!data) {
+      return;
+    }
+
+    const currentPage = page;
+    const itemsPerPage = limit;
+    const totalItems = data.total;
+
+    const currentStartRow = (currentPage - 1) * itemsPerPage + 1;
+    const currentEndRow = Math.min(currentPage * itemsPerPage, totalItems);
+
+    setStartRow(currentStartRow);
+    setEndRow(currentEndRow);
+  }, [data, page, limit]);
 
   return (
     <Box w="full" border={"1px solid #E4E6E8"} borderRadius={"12px"}>
@@ -52,6 +65,7 @@ export default function () {
         startRow={startRow}
         endRow={endRow || 25}
         refetch={refetch}
+        setLimit={setLimit}
       />
     </Box>
   );

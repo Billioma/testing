@@ -3,7 +3,7 @@ import axiosInstance from "../../axiosInstance";
 
 export const getAttendants = async (query) => {
   const res = await axiosInstance.get(
-    API.GET_ATTENDANTS(query.limit, query.page)
+    API.GET_ATTENDANTS(query.filterString, query.limit, query.page)
   );
   return res.data;
 };

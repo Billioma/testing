@@ -7,7 +7,9 @@ export const getMemPlan = async () => {
 };
 
 export const getClientSubs = async (query) => {
-  const res = await axiosInstance.get(API.GET_SUBS(query.limit, query.page));
+  const res = await axiosInstance.get(
+    API.GET_SUBS(query.filterString, query.limit, query.page)
+  );
   return res.data;
 };
 

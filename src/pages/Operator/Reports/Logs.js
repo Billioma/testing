@@ -11,6 +11,8 @@ import {
 import LogsTableLayer from "../../../components/data/Operator/Reports/LogsTableLayer";
 import { useGetRepLogs } from "../../../services/operator/query/reports";
 import LogExport from "../../../components/data/Operator/Reports/LogsExport";
+import Filter from "../../../components/common/Filter";
+import { opRepLogFieldOption } from "../../../components/common/constants";
 
 const Logs = () => {
   const { mutate, data, isLoading } = useGetRepLogs();
@@ -18,9 +20,17 @@ const Logs = () => {
   const [page, setPage] = useState(1);
   const limit = 10;
 
+  const [filtArray, setFiltArray] = useState([]);
+  const convertedFilters = filtArray?.map((filterObj) => {
+    return `filter=${filterObj?.title}||${filterObj?.type || "cont"}||"${
+      filterObj?.filter
+    }"`;
+  });
+  const query = convertedFilters?.join("&");
+
   useEffect(() => {
-    mutate({ limit, page: page });
-  }, [page]);
+    mutate({ filterString: query, limit, page: page });
+  }, [page, query]);
 
   return (
     <Box minH="75vh">
@@ -70,38 +80,51 @@ const Logs = () => {
       </Grid>
 
       <Box borderRadius="8px" border="1px solid #d4d6d8" p="16px 23px 24px">
-        <Flex align="center" justifyContent="space-between" w="full">
-          <Text
-            fontSize="14px"
-            fontWeight={500}
-            lineHeight="100%"
-            color="#242628"
-          >
-            All Logs
-          </Text>
-
-          <Flex align="center" gap="24px">
-            <LogExport data={data?.data} />
-            <Flex
-              justifyContent="center"
-              align="center"
-              cursor="pointer"
-              transition=".3s ease-in-out"
-              _hover={{ bg: "#F4F6F8" }}
-              onClick={() => mutate({ limit, page: page})}
-              borderRadius="8px"
-              border="1px solid #848688"
-              p="10px"
+        <Filter
+          gap
+          setFiltArray={setFiltArray}
+          filtArray={filtArray}
+          handleSearch={() =>
+            mutate({ filterString: query, limit: limit, page: page })
+          }
+          fieldToCompare={opRepLogFieldOption}
+          title={
+            <Text
+              fontSize="14px"
+              fontWeight={500}
+              lineHeight="100%"
+              color="#242628"
             >
-              <Image
-                src="/assets/refresh.svg"
-                className={isLoading && "mirrored-icon"}
-                w="20px"
-                h="20px"
-              />
-            </Flex>
-          </Flex>
-        </Flex>
+              All Logs
+            </Text>
+          }
+          main={
+            <>
+              {" "}
+              <LogExport data={data?.data} />
+              <Flex
+                justifyContent="center"
+                align="center"
+                cursor="pointer"
+                transition=".3s ease-in-out"
+                _hover={{ bg: "#F4F6F8" }}
+                onClick={() =>
+                  mutate({ filterString: query, limit, page: page })
+                }
+                borderRadius="8px"
+                border="1px solid #848688"
+                p="10px"
+              >
+                <Image
+                  src="/assets/refresh.svg"
+                  className={isLoading && "mirrored-icon"}
+                  w="20px"
+                  h="20px"
+                />
+              </Flex>
+            </>
+          }
+        />
 
         <LogsTableLayer
           page={page}

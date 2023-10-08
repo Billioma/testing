@@ -1,11 +1,10 @@
 import * as API from "../url";
 import axiosInstance from "../../axiosInstance";
 
-export const getPaymentHistory = async ({ queryKey }) => {
-  const [, limit, page] = queryKey;
+export const getPaymentHistory = async (query) => {
   const res = await axiosInstance.get(
     "customer/" +
-      `${API.GET_PAYMENT_HISTORY}?limit=${limit}&page=${page}&sort=id,DESC`
+      API.GET_PAYMENT_HISTORY(query.filterString, query.limit, query.page)
   );
   return res.data;
 };

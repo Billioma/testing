@@ -1280,8 +1280,97 @@ export const subFieldOption = [
   { label: "Plan", value: "membershipPlan.name" },
   { label: "Amount", value: "membershipPlan.amount" },
   { label: "Duration", value: "membershipPlan.interval" },
-  { label: "Status", value: "status" },
-  { label: "Date Created", value: "createdAt" },
+];
+
+export const clientUserFieldOption = [
+  { label: "First Name", value: "profile.name" },
+  { label: "Last Name", value: "profile.lastName" },
+  { label: "Email", value: "email" },
+  { label: "Company", value: "profile.companyName" },
+];
+
+export const opUserFieldOption = [
+  { label: "Full Name", value: "name" },
+  { label: "User ID", value: "userId" },
+  { label: "Account Type", value: "accountType" },
+];
+
+export const opLocFieldOption = [
+  { label: "Name", value: "name" },
+  { label: "Operator", value: "operator.name" },
+  { label: "State", value: "state" },
+];
+
+export const opLogServiceFieldOption = [
+  { label: "Ticket", value: "ticketNumber" },
+  { label: "Location", value: "location.name" },
+  { label: "Zone", value: "zone.name" },
+  { label: "Attendant", value: "attendant.name" },
+];
+
+export const opRepPayFieldOption = [
+  { label: "Location", value: "serviceLog.location.name" },
+  { label: "Zone", value: "serviceLog.zone.name" },
+  { label: "Attendant", value: "attendant.name" },
+  { label: "Amount", value: "amount" },
+  { label: "Amount Paid", value: "amountPaid" },
+  { label: "Service", value: "serviceLog.service.name" },
+];
+
+export const opRepLocFieldOption = [
+  { label: "Name", value: "name" },
+  { label: "State", value: "state" },
+  { label: "Zones", value: "zones" },
+  { label: "Location Type", value: "locationType" },
+];
+
+export const opRepZoneFieldOption = [
+  { label: "Name", value: "name" },
+  { label: "Location", value: "location" },
+  { label: "Capacity", value: "capacity" },
+  { label: "Reservable", value: "reservable" },
+  { label: "Reservable Space", value: "reservableSpace" },
+  { label: "Service", value: "service.name" },
+];
+
+export const opRepLogFieldOption = [
+  { label: "Ticket", value: "ticketNumber" },
+  { label: "Service", value: "service.name" },
+  { label: "Location", value: "location.name" },
+  { label: "Zone", value: "zone.name" },
+];
+
+export const opZoneFieldOption = [
+  { label: "Name", value: "name" },
+  { label: "Location", value: "location.name" },
+  { label: "Capacity", value: "capacity" },
+  { label: "Minimum Duration", value: "minimumDuration" },
+  { label: "Duration Type", value: "durationType" },
+];
+
+export const opRateFieldOption = [
+  { label: "Name", value: "name" },
+  { label: "Duration Type", value: "durationType" },
+  { label: "Duration Start", value: "durationStart" },
+  { label: "Duration Limit", value: "durationLimit" },
+  { label: "Amount", value: "amount" },
+];
+
+export const opPolicyFieldOption = [
+  { label: "Title", value: "title" },
+  { label: "Location", value: "location.name" },
+];
+
+export const clientEventFieldOption = [
+  { label: "Name", value: "name" },
+  { label: "Website", value: "website" },
+];
+
+export const custPayFieldOption = [
+  { label: "Transaction ID", value: "transactionId" },
+  { label: "Amount", value: "amount" },
+  { label: "Payment Type", value: "paymentMethod" },
+  { label: "Transaction Type", value: "transactionType" },
 ];
 
 export const subHeader = [
@@ -1301,6 +1390,16 @@ export const paymentHeader = [
   "TRANSACTION TYPE",
   "STATUS",
   "DATE",
+];
+
+export const IntervalType = [
+  "Hourly",
+  "Daily",
+  "Weekly",
+  "Monthly",
+  "Quarterly",
+  "Biannually",
+  "Annually",
 ];
 
 export const intervals = [

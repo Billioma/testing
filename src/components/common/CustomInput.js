@@ -112,8 +112,8 @@ const CustomInput = ({
             <BsSearch />
           </InputRightElement>
         ) : add ? (
-          <InputRightElement cursor="pointer" h={opt ? "60px" : "44px"}>
-            <MdAdd onClick={onAdd} />
+          <InputRightElement  onClick={onAdd} cursor="pointer" h={opt ? "60px" : "44px"}>
+            <MdAdd />
           </InputRightElement>
         ) : (
           <InputRightElement

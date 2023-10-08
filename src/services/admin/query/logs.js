@@ -13,7 +13,7 @@ import {
 
 export const useGetValetedVehicles = (options = {}, page = 1, limit = 25) => {
   const { data, isLoading, refetch } = useQuery(
-    ["GET_VALETED_VEHICLES"],
+    ["GET_VALETED_VEHICLES", page, limit],
     () => getValetedVehicles(page, limit),
     {
       ...options,
@@ -43,7 +43,7 @@ export const useDeleteValetedVehicle = (options = {}) => {
 
 export const useGetParkedVehicles = (options = {}, page = 1, limit = 25) => {
   const { data, isLoading, refetch } = useQuery(
-    ["GET_PARKED_VEHICLES"],
+    ["GET_PARKED_VEHICLES", page, limit],
     () => getParkedVehicles(page, limit),
     {
       ...options,
@@ -73,7 +73,7 @@ export const useDeleteParkedVehicle = (options = {}) => {
 
 export const useGetServicedVehicles = (options = {}, page = 1, limit = 25) => {
   const { data, isLoading, refetch } = useQuery(
-    ["GET_SERVICED_VEHICLES"],
+    ["GET_SERVICED_VEHICLES", page, limit],
     () => getServicedVehicles(page, limit),
     {
       ...options,

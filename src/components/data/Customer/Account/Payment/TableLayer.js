@@ -1,28 +1,48 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Box, Flex, Image, Td, Text, Tr } from "@chakra-ui/react";
 import TableFormat from "../../../../common/TableFormat";
 import {
   PaymentMethods,
   Status,
   TransactionTypes,
+  custPayFieldOption,
   paymentHeader,
 } from "../../../../common/constants";
 import { formatDate } from "../../../../../utils/helpers";
 import { useGetPaymentHistory } from "../../../../../services/customer/query/payment";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
+import Filter from "../../../../common/Filter";
 
 const TableLayer = () => {
+  const [filtArray, setFiltArray] = useState([]);
+
   const [page, setPage] = useState(1);
   const limit = 10;
-  const { isLoading, data: paymentHistory } = useGetPaymentHistory(limit, page);
+  const convertedFilters = filtArray?.map((filterObj) => {
+    return `filter=${filterObj?.title}||${filterObj?.type || "cont"}||"${
+      filterObj?.filter
+    }"`;
+  });
+  const query = convertedFilters?.join("&");
+  const {
+    mutate: payMutate,
+    data: paymentHistory,
+    isLoading,
+  } = useGetPaymentHistory();
+
+  useEffect(() => {
+    payMutate({ filterString: query, limit: limit, page: page });
+  }, [query, page]);
 
   return (
-    <Box mt="32px">
-      <TableFormat
-        maxH={"45vh"}
-        isLoading={isLoading}
-        minH="20vh"
-        header={paymentHeader}
+    <Box bg="#fff" w="full" px="23px" py="24px" borderRadius="8px" mt="32px">
+      <Filter
+        setFiltArray={setFiltArray}
+        fieldToCompare={custPayFieldOption}
+        filtArray={filtArray}
+        handleSearch={() =>
+          payMutate({ filterString: query, limit: limit, page: page })
+        }
         title={
           <Flex>
             <Text
@@ -35,6 +55,13 @@ const TableLayer = () => {
             </Text>
           </Flex>
         }
+      />
+      <TableFormat
+        opt
+        maxH={"45vh"}
+        isLoading={isLoading}
+        minH="20vh"
+        header={paymentHeader}
         paginate={
           <Flex
             justifyContent="center"

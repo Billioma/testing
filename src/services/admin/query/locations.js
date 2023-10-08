@@ -32,7 +32,7 @@ export const useGetAllLocations = (options = {}) => {
 
 export const useGetLocations = (options = {}, page = 1, limit = 25) => {
   const { data, isLoading, refetch } = useQuery(
-    ["GET_LOCATIONS"],
+    ["GET_LOCATIONS", page, limit],
     () => getLocations(page, limit),
     {
       ...options,
@@ -110,7 +110,7 @@ export const useDeleteZone = (options = {}) => {
 
 export const useGetRates = (options = {}, page = 1, limit = 25) => {
   const { data, isLoading, refetch } = useQuery(
-    ["GET_RATES"],
+    ["GET_RATES", page, limit],
     () => getRates(page, limit),
     {
       ...options,
@@ -149,7 +149,7 @@ export const useEditRate = (options = {}) => {
 
 export const useGetPolicies = (options = {}, page = 1, limit = 25) => {
   const { data, isLoading, refetch } = useQuery(
-    ["GET_POLICIES"],
+    ["GET_POLICIES", page, limit],
     () => getPolicies(page, limit),
     {
       ...options,

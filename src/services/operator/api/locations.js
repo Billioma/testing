@@ -3,24 +3,28 @@ import axiosInstance from "../../axiosInstance";
 
 export const getLocations = async (query) => {
   const res = await axiosInstance.get(
-    API.GET_LOCATIONS(query.limit, query.page)
+    API.GET_LOCATIONS(query.filterString, query.limit, query.page)
   );
   return res.data;
 };
 
 export const getZones = async (query) => {
-  const res = await axiosInstance.get(API.GET_ZONES(query.limit, query.page));
+  const res = await axiosInstance.get(
+    API.GET_ZONES(query.filterString, query.limit, query.page)
+  );
   return res.data;
 };
 
 export const getRates = async (query) => {
-  const res = await axiosInstance.get(API.GET_RATES(query.limit, query.page));
+  const res = await axiosInstance.get(
+    API.GET_RATES(query.filterString, query.limit, query.page)
+  );
   return res.data;
 };
 
 export const getPolicies = async (query) => {
   const res = await axiosInstance.get(
-    API.GET_POLICIES(query.limit, query.page)
+    API.GET_POLICIES(query.filterString, query.limit, query.page)
   );
   return res.data;
 };

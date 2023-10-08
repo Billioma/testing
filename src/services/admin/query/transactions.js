@@ -11,7 +11,7 @@ import {
 
 export const useGetPayToPark = (options = {}, page = 1, limit = 25) => {
   const { data, isLoading, refetch } = useQuery(
-    ["GET_PAYTOPARK", page, limit],
+    ["GET_PAY_TO_PARK", page, limit],
     () => getPayToPark(page, limit),
     {
       ...options,

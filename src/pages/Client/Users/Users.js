@@ -4,62 +4,84 @@ import { MdAdd } from "react-icons/md";
 import TableLayer from "../../../components/data/Client/Users/TableLayer";
 import { useGetUsers } from "../../../services/client/query/users";
 import { useNavigate } from "react-router-dom";
+import Filter from "../../../components/common/Filter";
+import { clientUserFieldOption } from "../../../components/common/constants";
 
 const Users = () => {
   const { mutate, data, isLoading } = useGetUsers();
   const [page, setPage] = useState(1);
   const limit = 10;
 
+  const [filtArray, setFiltArray] = useState([]);
+  const convertedFilters = filtArray?.map((filterObj) => {
+    return `filter=${filterObj?.title}||${filterObj?.type || "cont"}||"${
+      filterObj?.filter
+    }"`;
+  });
+  const query = convertedFilters?.join("&");
+
   const navigate = useNavigate();
 
   useEffect(() => {
-    mutate({ limit, page: page  });
-  }, [page]);
+    mutate({ filterString: query, limit, page: page });
+  }, [page, query]);
 
   return (
     <Box>
       <Box borderRadius="8px" border="1px solid #d4d6d8" p="16px 23px 24px">
-        <Flex align="center" justifyContent="space-between" w="full">
-          <Text
-            fontSize="14px"
-            fontWeight={500}
-            lineHeight="100%"
-            color="#242628"
-          >
-            All Users
-          </Text>
-
-          <Flex align="center " gap="24px">
-            <Button
-              onClick={() => navigate("/client/users/create")}
-              display="flex"
-              gap="8px"
-              fontSize=""
+        <Filter
+          setFiltArray={setFiltArray}
+          filtArray={filtArray}
+          fieldToCompare={clientUserFieldOption}
+          handleSearch={() =>
+            mutate({ filterString: query, limit: limit, page: page })
+          }
+          title={
+            <Text
+              fontSize="14px"
+              fontWeight={500}
+              lineHeight="100%"
+              color="#242628"
             >
-              <Text fontSize="12px">Add a User</Text>
-              <MdAdd size="20px" />
-            </Button>
+              All Users
+            </Text>
+          }
+          gap
+          main={
+            <>
+              <Button
+                onClick={() => navigate("/client/users/create")}
+                display="flex"
+                gap="8px"
+                fontSize=""
+              >
+                <Text fontSize="12px">Add a User</Text>
+                <MdAdd size="20px" />
+              </Button>
 
-            <Flex
-              justifyContent="center"
-              align="center"
-              cursor="pointer"
-              transition=".3s ease-in-out"
-              _hover={{ bg: "#F4F6F8" }}
-              onClick={mutate}
-              borderRadius="8px"
-              border="1px solid #848688"
-              p="10px"
-            >
-              <Image
-                src="/assets/refresh.svg"
-                className={isLoading && "mirrored-icon"}
-                w="20px"
-                h="20px"
-              />
-            </Flex>
-          </Flex>
-        </Flex>
+              <Flex
+                justifyContent="center"
+                align="center"
+                cursor="pointer"
+                transition=".3s ease-in-out"
+                _hover={{ bg: "#F4F6F8" }}
+                onClick={() =>
+                  mutate({ filterString: query, limit, page: page })
+                }
+                borderRadius="8px"
+                border="1px solid #848688"
+                p="10px"
+              >
+                <Image
+                  src="/assets/refresh.svg"
+                  className={isLoading && "mirrored-icon"}
+                  w="20px"
+                  h="20px"
+                />
+              </Flex>
+            </>
+          }
+        />
 
         <TableLayer
           setPage={setPage}

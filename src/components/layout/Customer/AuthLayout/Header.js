@@ -73,7 +73,7 @@ const Header = () => {
       case locationRoute.includes("account/profile"):
         return setSecTitle("Profile");
 
-      case locationRoute.includes("add-subscriptions"):
+      case locationRoute.includes("subscriptions/create"):
         return setSecTitle("Add a Subscription");
 
       case locationRoute.includes("account/settings"):

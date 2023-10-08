@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import MakesTableLayer from "../../../components/data/Admin/Config/MakesTableLayer";
 import { Box, Button, Flex, Text } from "@chakra-ui/react";
 import { FiPlus } from "react-icons/fi";
@@ -9,24 +9,37 @@ import { useGetMakes } from "../../../services/admin/query/configurations";
 
 export default function () {
   const [page, setPage] = useState(1);
-  const [limit] = useState(25);
+  const [limit, setLimit] = useState(25);
   const [startRow, setStartRow] = useState(1);
   const [endRow, setEndRow] = useState(0);
   const navigate = useNavigate();
   const { data, isLoading, refetch } = useGetMakes(
     {
       refetchOnWindowFocus: true,
-      onSuccess: (data) => {
-        const nextStartRow = endRow + 1;
-        const nextEndRow = Math.min(endRow + limit, data?.total);
-
-        setStartRow(nextStartRow);
-        setEndRow(nextEndRow);
-      },
     },
     page,
     limit
   );
+
+  useEffect(() => {
+    setPage(1);
+  }, [limit]);
+
+  useEffect(() => {
+    if (!data) {
+      return;
+    }
+
+    const currentPage = page;
+    const itemsPerPage = limit;
+    const totalItems = data.total;
+
+    const currentStartRow = (currentPage - 1) * itemsPerPage + 1;
+    const currentEndRow = Math.min(currentPage * itemsPerPage, totalItems);
+
+    setStartRow(currentStartRow);
+    setEndRow(currentEndRow);
+  }, [data, page, limit]);
 
   return (
     <Box w="full" border={"1px solid #E4E6E8"} borderRadius={"12px"}>
@@ -66,6 +79,7 @@ export default function () {
         startRow={startRow}
         endRow={endRow || 25}
         refetch={refetch}
+        setLimit={setLimit}
       />
     </Box>
   );

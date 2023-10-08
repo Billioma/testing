@@ -9,7 +9,7 @@ import { useGetZones } from "../../../services/admin/query/locations";
 
 export default function () {
   const [page, setPage] = useState(1);
-  const [limit] = useState(25);
+  const [limit, setLimit] = useState(25);
   const [startRow, setStartRow] = useState(1);
   const [endRow, setEndRow] = useState(0);
   const navigate = useNavigate();
@@ -64,6 +64,7 @@ export default function () {
         startRow={startRow}
         endRow={endRow || 25}
         refetch={refetch}
+        setLimit={setLimit}
       />
     </Box>
   );

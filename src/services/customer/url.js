@@ -13,7 +13,8 @@ export const GET_CARDS = "cards";
 export const GET_MODEL = "vehicles/get-models";
 export const GET_USER = "auth/profile";
 export const GET_FAQ = "public/faqs";
-export const GET_PAYMENT_HISTORY = "transactions";
+export const GET_PAYMENT_HISTORY = (filterString = "", limit, page) =>
+  `transactions?${filterString}&limit=${limit}&page=${page}&sort=id,DESC`;
 export const UPLOAD_PIC = "system/media-upload";
 export const PAY_TO_PARK = "pay-to-park";
 export const RESERVE_PARKING = "reserve-parking";

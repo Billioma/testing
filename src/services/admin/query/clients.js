@@ -18,7 +18,7 @@ import {
 
 export const useGetClients = (options = {}, page = 1, limit = 25) => {
   const { data, isLoading, refetch } = useQuery(
-    ["GET_CLIENTS"],
+    ["GET_CLIENTS", limit, page],
     () => getClients(page, limit),
     {
       ...options,
@@ -66,7 +66,7 @@ export const useEditClient = (options = {}) => {
 
 export const useGetClientsInvoices = (options = {}, page = 1, limit = 25) => {
   const { data, isLoading, refetch } = useQuery(
-    ["GET_CLIENTS_INVOICES", limit],
+    ["GET_CLIENTS_INVOICES", limit, page],
     () => getClientsInvoices(page, limit),
     {
       ...options,
@@ -114,7 +114,7 @@ export const useUpdateClientInvoice = (options = {}) => {
 
 export const useGetClientsEvents = (options = {}, page = 1, limit = 25) => {
   const { data, isLoading, refetch } = useQuery(
-    ["GET_CLIENTS_EVENTS"],
+    ["GET_CLIENTS_EVENTS", limit, page],
     () => getClientsEvents(page, limit),
     {
       ...options,

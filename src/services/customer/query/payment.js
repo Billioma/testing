@@ -1,16 +1,12 @@
-import { useQuery } from "react-query";
+import { useMutation, useQuery } from "react-query";
 import { getCards, getPaymentHistory } from "../api/payment";
 
-export const useGetPaymentHistory = (limit = "", page = "", options = {}) => {
-  const { isLoading, data } = useQuery(
-    ["GET_PAYMENT_HISTORY", limit, page],
-    getPaymentHistory,
-    {
-      ...options,
-    }
-  );
-
-  return { isLoading, data };
+export const useGetPaymentHistory = (options = {}) => {
+  const { mutate, isLoading, data } = useMutation(getPaymentHistory, {
+    mutationKey: "GET_PAYMENT_HISTORY",
+    ...options,
+  });
+  return { mutate, isLoading, data };
 };
 
 export const useGetCards = (options = {}) => {

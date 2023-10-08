@@ -13,7 +13,7 @@ export const getParked = async (query) => {
 
 export const getServiced = async (query) => {
   const res = await axiosInstance.get(
-    API.GET_SERVICED(query.limit, query.page)
+    API.GET_SERVICED(query.filterString, query.limit, query.page)
   );
   return res.data;
 };

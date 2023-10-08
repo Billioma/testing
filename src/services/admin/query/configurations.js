@@ -23,7 +23,7 @@ import {
 
 export const useGetRoles = (options = {}, page = 1, limit = 25) => {
   const { data, isLoading, refetch } = useQuery(
-    ["ADMIN_GET_CONFIG_ROLES"],
+    ["ADMIN_GET_CONFIG_ROLES", page, limit],
     () => getRoles(page, limit),
     {
       ...options,
@@ -62,7 +62,7 @@ export const useAddModel = (options = {}) => {
 
 export const useGetModels = (options = {}, page = 1, limit = 25) => {
   const { data, isLoading, refetch } = useQuery(
-    ["ADMIN_GET_CONFIG_MODELS"],
+    ["ADMIN_GET_CONFIG_MODELS", page, limit],
     () => getModels(page, limit),
     {
       ...options,
@@ -101,7 +101,7 @@ export const useAddMake = (options = {}) => {
 
 export const useGetMakes = (options = {}, page = 1, limit = 25) => {
   const { data, isLoading, refetch } = useQuery(
-    ["ADMIN_GET_CONFIG_MAKES"],
+    ["ADMIN_GET_CONFIG_MAKES", page, limit],
     () => getMakes(page, limit),
     {
       ...options,
@@ -140,7 +140,7 @@ export const useAddBankDetail = (options = {}) => {
 
 export const useGetBankDetails = (options = {}, page = 1, limit = 25) => {
   const { data, isLoading, refetch } = useQuery(
-    ["ADMIN_GET_CONFIG_BANK_DETAILS"],
+    ["ADMIN_GET_CONFIG_BANK_DETAILS", page, limit],
     () => getBankDetails(page, limit),
     {
       ...options,
@@ -179,7 +179,7 @@ export const useAddFaq = (options = {}) => {
 
 export const useGetFaqs = (options = {}, page = 1, limit = 25) => {
   const { data, isLoading, refetch } = useQuery(
-    ["ADMIN_GET_CONFIG_FAQS"],
+    ["ADMIN_GET_CONFIG_FAQS", page, limit],
     () => getFaqs(page, limit),
     {
       ...options,

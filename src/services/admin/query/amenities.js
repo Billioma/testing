@@ -8,7 +8,7 @@ import {
 
 export const useGetAmenities = (options = {}, page = 1, limit = 25) => {
   const { data, isLoading, refetch } = useQuery(
-    ["GET_AMENITIES"],
+    ["GET_AMENITIES", page, limit],
     () => getAmenities(page, limit),
     {
       ...options,

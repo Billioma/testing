@@ -5,43 +5,37 @@ import TableLayer from "../../../components/data/Customer/Subscription/TableLaye
 import { useNavigate } from "react-router-dom";
 import Filter from "../../../components/common/Filter";
 import { useGetUserSubs } from "../../../services/customer/query/user";
+import { subFieldOption } from "../../../components/common/constants";
 
 const Subscriptions = () => {
   const navigate = useNavigate();
-  const [show, setShow] = useState(false);
-  const [filt, setFilt] = useState({
-    title: "",
-    type: "",
-    filter: "",
-  });
+
   const [filtArray, setFiltArray] = useState([]);
 
   const [page, setPage] = useState(1);
   const limit = 10;
-  const filters = [`filter=${filt?.title}||${filt?.type}||"${filt?.filter}"`];
-  const convertedFilters = filtArray.map((filterObj) => {
-    return `filter=${filterObj.title}||${filterObj.type}||"${filterObj.filter}"`;
+  const convertedFilters = filtArray?.map((filterObj) => {
+    return `filter=${filterObj?.title}||${filterObj?.type || "cont"}||"${
+      filterObj?.filter
+    }"`;
   });
-  const query = convertedFilters.join("&");
-  console.log(convertedFilters);
+  const query = convertedFilters?.join("&");
   const { mutate: subMutate, data: sub, isLoading } = useGetUserSubs();
 
   useEffect(() => {
     subMutate({ filterString: query, limit: limit, page: page });
-  }, []);
+  }, [query, page]);
+
   return (
     <Box minH="75vh">
       <Box bg="#fff" w="full" px="23px" py="24px" borderRadius="8px">
         <Filter
           setFiltArray={setFiltArray}
-          setShow={setShow}
           filtArray={filtArray}
-          values={filt}
+          fieldToCompare={subFieldOption}
           handleSearch={() =>
             subMutate({ filterString: query, limit: limit, page: page })
           }
-          setValues={setFilt}
-          show={show}
           title={
             <Text color="#242628" fontWeight={500} lineHeight="100%">
               Subscriptions
@@ -68,8 +62,6 @@ const Subscriptions = () => {
           sub={sub}
           limit={limit}
           subMutate={subMutate}
-          filtArray={filtArray}
-          filt={filt}
         />
       </Box>
     </Box>

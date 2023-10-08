@@ -154,9 +154,9 @@ export const PRIVATE_PATHS = {
   ADMIN_VIEW_CLIENT_INVOICE: "/admin/clients/invoices/details/:id",
   ADMIN_ADD_CLIENT_INVOICE: "/admin/clients/invoices/new",
 
-  ADMIN_EVENTS: "/admin/clients/events",
-  ADMIN_ADD_EVENT: "/admin/clients/events/new",
-  ADMIN_VIEW_EVENT: "/admin/clients/events/details/:id",
+  ADMIN_EVENTS: "/admin/events",
+  ADMIN_ADD_EVENT: "/admin/events/new",
+  ADMIN_VIEW_EVENT: "/admin/events/details/:id",
 
   ADMIN_LOCATIONS: "/admin/locations/locations",
   ADMIN_ADD_LOCATION: "/admin/locations/locations/new",

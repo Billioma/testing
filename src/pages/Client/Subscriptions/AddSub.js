@@ -121,7 +121,7 @@ const AddUser = () => {
           variable_name: "tokenization_type",
           value: "CLIENT",
         },
-      ],
+      ], 
     },
     channels: ["card"],
   };

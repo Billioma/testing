@@ -1,12 +1,15 @@
 import React from "react";
 import { Table, TableContainer, Tbody, Th, Thead, Tr } from "@chakra-ui/table";
 import TableLoader from "../loaders/TableLoader";
-import { Box, Flex, Text } from "@chakra-ui/react";
+import { Box, Flex, Text, Select } from "@chakra-ui/react";
+import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 
 const TableFormat = ({
   children,
   isLoading,
   paginate,
+  useDefaultPagination = false,
+  paginationValues,
   header,
   tab,
   act,
@@ -102,9 +105,103 @@ const TableFormat = ({
         )}
       </TableContainer>
 
-      <Box mt="20px">{paginate}</Box>
+      <Box mt="20px">
+        {useDefaultPagination ? (
+          <DefaultPagination
+            total={paginationValues.total}
+            startRow={paginationValues.startRow}
+            endRow={paginationValues.endRow}
+            page={paginationValues.page}
+            pageCount={paginationValues.pageCount}
+            setLimit={paginationValues.setLimit}
+            limit={paginationValues.limit}
+            onNext={paginationValues.onNext}
+            onPrevious={paginationValues.onPrevious}
+          />
+        ) : (
+          paginate
+        )}
+      </Box>
     </Box>
   );
 };
 
 export default TableFormat;
+
+const DefaultPagination = ({
+  total,
+  startRow,
+  endRow,
+  page,
+  pageCount,
+  limit,
+  setLimit,
+  onNext,
+  onPrevious,
+}) => {
+  return (
+    <Flex justifyContent="center" align="center" flexDir="column" w="full">
+      <Flex justifyContent="center" gap="32px" align="center" pb={5}>
+        <Text fontSize="12px" color="#242628" lineHeight="100%">
+          Showing rows {startRow} to {endRow} of {total}
+        </Text>
+
+        <Flex gap="16px" align="center">
+          <Flex
+            opacity={page === 1 ? 0.5 : 1}
+            onClick={onPrevious}
+            cursor={page === 1 ? "" : "pointer"}
+            align="center"
+            gap="2px"
+            color="#A4A6A8"
+            fontSize="12px"
+          >
+            <IoIosArrowBack />
+            <Text lineHeight="100%">Previous</Text>
+          </Flex>
+
+          <Flex align="center" gap="5px" color="#A4A6A8" fontSize="12px">
+            <Flex
+              bg="transparent"
+              py="6px"
+              px="8px"
+              color="#242628"
+              fontSize="12px"
+              lineHeight="100%"
+            >
+              <Text>{page}</Text>
+            </Flex>
+          </Flex>
+
+          <Flex
+            opacity={page === pageCount ? 0.5 : 1}
+            onClick={onNext}
+            cursor={page === pageCount ? "" : "pointer"}
+            align="center"
+            gap="2px"
+            color="#A4A6A8"
+            fontSize="12px"
+          >
+            <IoIosArrowForward />
+            <Text lineHeight="100%">Next</Text>
+          </Flex>
+        </Flex>
+
+        <Select
+          defaultValue={limit}
+          w="fit-content"
+          size="sm"
+          bg="transparent"
+          fontSize={12}
+          borderRadius={8}
+          borderWidth={1}
+          onChange={(e) => setLimit(e.target.value)}
+        >
+          <option value={25}>25</option>
+          <option value={50}>50</option>
+          <option value={100}>100</option>
+        </Select>
+      </Flex>
+    </Flex>
+  );
+};
