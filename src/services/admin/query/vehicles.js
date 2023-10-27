@@ -35,10 +35,10 @@ export const useDeleteVehicle = (options = {}) => {
   return { isLoading, data, mutate };
 };
 
-export const useGetVehicles = (options = {}, page = 1, limit = 25) => {
+export const useGetVehicles = (options = {}, page = 1, limit = 25, query) => {
   const { data, isLoading, refetch } = useQuery(
-    ["GET_VEHICLES", page, limit],
-    () => getVehicles(page, limit),
+    ["GET_VEHICLES", page, limit, query],
+    () => getVehicles(page, limit, query),
     {
       ...options,
     }

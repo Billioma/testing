@@ -6,6 +6,8 @@ import { VscDebugRestart } from "react-icons/vsc";
 import { useNavigate } from "react-router-dom";
 import { PRIVATE_PATHS } from "../../../routes/constants";
 import { useGetLocations } from "../../../services/admin/query/locations";
+import Filter from "../../../components/common/Filter";
+import { locationsOptions } from "../../../components/common/constants";
 
 export default function () {
   const [page, setPage] = useState(1);
@@ -13,12 +15,23 @@ export default function () {
   const [startRow, setStartRow] = useState(1);
   const [endRow, setEndRow] = useState(0);
   const navigate = useNavigate();
+  const [filtArray, setFiltArray] = useState([]);
+
+  const convertedFilters = filtArray?.map((filterObj) => {
+    return `filter=${filterObj?.title}||${filterObj?.type || "cont"}||"${
+      filterObj?.filter
+    }"`;
+  });
+
+  const query = convertedFilters?.join("&");
+
   const { data, isLoading, refetch } = useGetLocations(
     {
       refetchOnWindowFocus: true,
     },
     page,
-    limit
+    limit,
+    query
   );
 
   useEffect(() => {
@@ -43,32 +56,39 @@ export default function () {
 
   return (
     <Box w="full" border={"1px solid #E4E6E8"} borderRadius={"12px"}>
-      <Flex justifyContent={"space-between"} alignItems="center" py={3} px={5}>
-        <Text fontWeight="500">All Locations</Text>
-        <Flex gap="6px">
-          <Button
-            variant="adminPrimary"
-            gap={2}
-            fontSize={"12px"}
-            onClick={() => navigate(PRIVATE_PATHS.ADMIN_ADD_LOCATION)}
-          >
-            <Text display={{ base: "none", md: "inline-flex" }}>
-              Add location
-            </Text>
-            <FiPlus size={18} />
-          </Button>
-          <Button
-            bg="white"
-            py={3}
-            h="43px"
-            border="1px solid #000"
-            color="#000"
-            onClick={() => refetch()}
-          >
-            <VscDebugRestart size={20} />
-          </Button>
-        </Flex>
-      </Flex>
+      <Filter
+        setFiltArray={setFiltArray}
+        filtArray={filtArray}
+        fieldToCompare={locationsOptions}
+        handleSearch={refetch}
+        title={<Text fontWeight="500">All Locations</Text>}
+        main={
+          <Flex gap="6px">
+            <Button
+              variant="adminPrimary"
+              gap={2}
+              fontSize={"12px"}
+              onClick={() => navigate(PRIVATE_PATHS.ADMIN_ADD_LOCATION)}
+            >
+              <Text display={{ base: "none", md: "inline-flex" }}>
+                Add location
+              </Text>
+              <FiPlus size={18} />
+            </Button>
+            <Button
+              bg="white"
+              py={3}
+              h="43px"
+              border="1px solid #000"
+              color="#000"
+              onClick={() => refetch()}
+            >
+              <VscDebugRestart size={20} />
+            </Button>
+          </Flex>
+        }
+      />
+
       <hr />
       <LocationsTableLayer
         data={data}
@@ -77,7 +97,7 @@ export default function () {
         limit={limit}
         setPage={setPage}
         startRow={startRow}
-        endRow={endRow || 25}
+        endRow={endRow}
         refetch={refetch}
         setLimit={setLimit}
       />

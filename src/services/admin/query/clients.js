@@ -16,10 +16,10 @@ import {
   deleteClientEvent,
 } from "../api/clients";
 
-export const useGetClients = (options = {}, page = 1, limit = 25) => {
+export const useGetClients = (options = {}, page = 1, limit = 25, query) => {
   const { data, isLoading, refetch } = useQuery(
-    ["GET_CLIENTS", limit, page],
-    () => getClients(page, limit),
+    ["GET_CLIENTS", limit, page, query],
+    () => getClients(page, limit, query),
     {
       ...options,
     }
@@ -64,10 +64,15 @@ export const useEditClient = (options = {}) => {
   return { isLoading, mutate };
 };
 
-export const useGetClientsInvoices = (options = {}, page = 1, limit = 25) => {
+export const useGetClientsInvoices = (
+  options = {},
+  page = 1,
+  limit = 25,
+  query
+) => {
   const { data, isLoading, refetch } = useQuery(
-    ["GET_CLIENTS_INVOICES", limit, page],
-    () => getClientsInvoices(page, limit),
+    ["GET_CLIENTS_INVOICES", limit, page, query],
+    () => getClientsInvoices(page, limit, query),
     {
       ...options,
     }
@@ -112,10 +117,15 @@ export const useUpdateClientInvoice = (options = {}) => {
   return { isLoading, data, mutate };
 };
 
-export const useGetClientsEvents = (options = {}, page = 1, limit = 25) => {
+export const useGetClientsEvents = (
+  options = {},
+  page = 1,
+  limit = 25,
+  query
+) => {
   const { data, isLoading, refetch } = useQuery(
-    ["GET_CLIENTS_EVENTS", limit, page],
-    () => getClientsEvents(page, limit),
+    ["GET_CLIENTS_EVENTS", limit, page, query],
+    () => getClientsEvents(page, limit, query),
     {
       ...options,
     }

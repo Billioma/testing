@@ -1,16 +1,20 @@
 import axiosInstance from "../../axiosInstance";
 import * as API from "../url";
 
-export const getPayToPark = async (page, limit) => {
+export const getPayToPark = async (page, limit, query) => {
   const response = await axiosInstance.get(
-    `${API.ADMIN_PAY_TO_PARK}?page=${page}&limit=${limit}&sort=id,DESC`
+    `${API.ADMIN_PAY_TO_PARK}?page=${page}&limit=${limit}&sort=id,DESC&${
+      query || ""
+    }`
   );
   return response.data;
 };
 
-export const getCarServices = async (page, limit) => {
+export const getCarServices = async (page, limit, query) => {
   const response = await axiosInstance.get(
-    `${API.ADMIN_CAR_SERVICES}?page=${page}&limit=${limit}&sort=id,DESC`
+    `${API.ADMIN_CAR_SERVICES}?page=${page}&limit=${limit}&sort=id,DESC&${
+      query || ""
+    }`
   );
   return response.data;
 };
@@ -20,9 +24,11 @@ export const deletePayToPark = async (id) => {
   return response.data;
 };
 
-export const getReservedParking = async (page, limit) => {
+export const getReservedParking = async (page, limit, query) => {
   const response = await axiosInstance.get(
-    `${API.ADMIN_RESERVED_PARKING}?page=${page}&limit=${limit}&sort=id,DESC`
+    `${API.ADMIN_RESERVED_PARKING}?page=${page}&limit=${limit}&sort=id,DESC&${
+      query || ""
+    }`
   );
   return response.data;
 };
@@ -49,5 +55,12 @@ export const addReservedParking = async (data) => {
     data
   );
 
+  return response.data;
+};
+
+export const deleteCarService = async (id) => {
+  const response = await axiosInstance.delete(
+    `${API.ADMIN_CAR_SERVICES}/${id}`
+  );
   return response.data;
 };

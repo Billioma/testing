@@ -4,6 +4,8 @@ import { VscDebugRestart } from "react-icons/vsc";
 import { useNavigate } from "react-router-dom";
 import TableLayer from "../../../components/data/Admin/Transactions/CarServicesTableLayer";
 import { useGetCarServices } from "../../../services/admin/query/transactions";
+import { FiPlus } from "react-icons/fi";
+import { PRIVATE_PATHS } from "../../../routes/constants";
 
 export default function () {
   const [page, setPage] = useState(1);
@@ -11,13 +13,23 @@ export default function () {
   const [startRow, setStartRow] = useState(1);
   const [endRow, setEndRow] = useState(25);
   const navigate = useNavigate();
+  const [filtArray, setFiltArray] = useState([]);
+
+  const convertedFilters = filtArray?.map((filterObj) => {
+    return `filter=${filterObj?.title}||${filterObj?.type || "cont"}||"${
+      filterObj?.filter
+    }"`;
+  });
+
+  const query = convertedFilters?.join("&");
 
   const { data, isLoading, refetch } = useGetCarServices(
     {
       refetchOnWindowFocus: true,
     },
     page,
-    limit
+    limit,
+    query
   );
 
   useEffect(() => {
@@ -45,6 +57,14 @@ export default function () {
       <Flex justifyContent={"space-between"} alignItems="center" py={3} px={5}>
         <Text fontWeight="500">Car Services</Text>
         <Flex gap="6px">
+          <Button
+            variant="adminPrimary"
+            gap={2}
+            fontSize={"12px"}
+            onClick={() => navigate(PRIVATE_PATHS.ADMIN_ADD_CAR_SERVICE)}
+          >
+            Add Car Service <FiPlus size={18} />
+          </Button>
           <Button
             bg="white"
             py={3}

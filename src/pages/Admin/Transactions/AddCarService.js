@@ -17,7 +17,7 @@ import { customStyles } from "../../../components/common/constants";
 import { useAddReservedParking } from "../../../services/admin/query/transactions";
 import DateTimePicker from "../../../components/data/Admin/DateTimePicker";
 
-export default function AddReservedParking() {
+export default function AddCarService() {
   const [state, setState] = useState({
     service: "3",
   });

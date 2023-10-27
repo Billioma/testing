@@ -26,6 +26,7 @@ export const ADMIN_VEHICLES = "admin/vehicles";
 export const ADMIN_VEHICLE_MAKES = "admin/vehicle-makes";
 export const ADMIN_VEHICLE_MODELS = "admin/vehicle-models";
 
+export const ADMIN_CORPORATE_PLANS = "public/membership-plans";
 export const ADMIN_MEMBERSHIP_PLANS = "admin/membership-plans";
 export const ADMIN_MEMBERSHIP_FEATURES = "admin/membership-plan-features";
 export const ADMIN_CUSTOMER_SUBSCRIPTIONS = "admin/membership-subscriptions";
@@ -38,17 +39,21 @@ export const ADMIN_PAY_TO_PARK = "admin/pay-to-park";
 
 export const ADMIN_RESERVED_PARKING = "admin/reservations";
 
-export const ADMIN_CAR_SERVICES = "admin/car-services";
+export const ADMIN_CAR_SERVICES = "admin/service-bookings";
 
 export const ADMIN_AMENITIES = "admin/amenities";
 
 export const ADMIN_SERVICE_LOGS = "admin/service-logs";
 
-export const GET_ADMIN_REPORTS = (type = "", limit = "", page = "") =>
-  `admin/reports/${type}/?limit=${limit}&page=${page}&sort=id,DESC`;
+export const GET_ADMIN_REPORTS = (
+  type = "",
+  page = "",
+  limit = "",
+  query = ""
+) => `admin/reports/${type}/?limit=${limit}&page=${page}&sort=id,DESC&${query}`;
 
-export const GET_ADMIN_TRAN = (limit = "", page = "") =>
-  `admin/transactions/?limit=${limit}&page=${page}&sort=id,DESC`;
+export const GET_ADMIN_TRAN = (page = "", limit = "", query = "") =>
+  `admin/transactions/?limit=${limit}&page=${page}&sort=id,DESC&${query}`;
 
 export const ADMIN_RATES = "admin/rates";
 export const ADMIN_POLICIES = "admin/policies";

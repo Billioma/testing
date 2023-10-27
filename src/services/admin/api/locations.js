@@ -1,23 +1,24 @@
 import axiosInstance from "../../axiosInstance";
 import * as API from "../url";
 
-export const getLocations = async (page, limit) => {
+export const getLocations = async (page, limit, query) => {
   const response = await axiosInstance.get(
-    API.ADMIN_LOCATIONS + `?page=${page}&limit=${limit}&sort=id,DESC`
+    API.ADMIN_LOCATIONS +
+      `?page=${page}&limit=${limit}&sort=id,DESC&${query || ""}`
   );
   return response.data;
 };
 
-export const getZones = async (page, limit) => {
+export const getZones = async (page, limit, query) => {
   const response = await axiosInstance.get(
-    API.ADMIN_ZONES + `?page=${page}&limit=${limit}&sort=id,DESC`
+    API.ADMIN_ZONES + `?page=${page}&limit=${limit}&sort=id,DESC&${query || ""}`
   );
   return response.data;
 };
 
-export const getRates = async (page, limit) => {
+export const getRates = async (page, limit, query) => {
   const response = await axiosInstance.get(
-    API.ADMIN_RATES + `?page=${page}&limit=${limit}&sort=id,DESC`
+    API.ADMIN_RATES + `?page=${page}&limit=${limit}&sort=id,DESC&${query || ""}`
   );
   return response.data;
 };
@@ -98,9 +99,10 @@ export const editPolicy = async (data) => {
   return response.data;
 };
 
-export const getPolicies = async (page, limit) => {
+export const getPolicies = async (page, limit, query) => {
   const response = await axiosInstance.get(
-    API.ADMIN_POLICIES + `?page=${page}&limit=${limit}&sort=id,DESC`
+    API.ADMIN_POLICIES +
+      `?page=${page}&limit=${limit}&sort=id,DESC&${query || ""}`
   );
   return response.data;
 };

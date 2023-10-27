@@ -1,9 +1,11 @@
 import axiosInstance from "../../axiosInstance";
 import * as API from "../url";
 
-export const getAmenities = async (page, limit) => {
+export const getAmenities = async (page, limit, query) => {
   const response = await axiosInstance.get(
-    `${API.ADMIN_AMENITIES}?page=${page}&limit=${limit}&sort=id,DESC`
+    `${API.ADMIN_AMENITIES}?page=${page}&limit=${limit}&sort=id,DESC&${
+      query || ""
+    }`
   );
   return response.data;
 };

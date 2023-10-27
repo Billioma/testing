@@ -6,6 +6,11 @@ import { VscDebugRestart } from "react-icons/vsc";
 import { useNavigate } from "react-router-dom";
 import { PRIVATE_PATHS } from "../../../routes/constants";
 import { useGetMakes } from "../../../services/admin/query/configurations";
+import Filter from "../../../components/common/Filter";
+import {
+  makesOptions,
+  rolesOptions,
+} from "../../../components/common/constants";
 
 export default function () {
   const [page, setPage] = useState(1);
@@ -13,12 +18,23 @@ export default function () {
   const [startRow, setStartRow] = useState(1);
   const [endRow, setEndRow] = useState(0);
   const navigate = useNavigate();
+  const [filtArray, setFiltArray] = useState([]);
+
+  const convertedFilters = filtArray?.map((filterObj) => {
+    return `filter=${filterObj?.title}||${filterObj?.type || "cont"}||"${
+      filterObj?.filter
+    }"`;
+  });
+
+  const query = convertedFilters?.join("&");
+
   const { data, isLoading, refetch } = useGetMakes(
     {
       refetchOnWindowFocus: true,
     },
     page,
-    limit
+    limit,
+    query
   );
 
   useEffect(() => {
@@ -43,32 +59,40 @@ export default function () {
 
   return (
     <Box w="full" border={"1px solid #E4E6E8"} borderRadius={"12px"}>
-      <Flex justifyContent={"space-between"} alignItems="center" py={3} px={5}>
-        <Text fontWeight="500">All Vehicle Makes</Text>
-        <Flex gap="6px">
-          <Button
-            variant="adminPrimary"
-            gap={2}
-            fontSize={"12px"}
-            onClick={() =>
-              navigate(PRIVATE_PATHS.ADMIN_CONFIG_ADD_VEHICLE_MAKE)
-            }
-          >
-            <Text display={{ base: "none", md: "inline-flex" }}>Add make</Text>
-            <FiPlus size={18} />
-          </Button>
-          <Button
-            bg="white"
-            py={3}
-            h="43px"
-            border="1px solid #000"
-            color="#000"
-            onClick={() => refetch()}
-          >
-            <VscDebugRestart size={20} />
-          </Button>
-        </Flex>
-      </Flex>
+      <Filter
+        setFiltArray={setFiltArray}
+        filtArray={filtArray}
+        fieldToCompare={makesOptions}
+        handleSearch={refetch}
+        title={<Text fontWeight="500">All Vehicle Makes</Text>}
+        main={
+          <Flex gap="6px">
+            <Button
+              variant="adminPrimary"
+              gap={2}
+              fontSize={"12px"}
+              onClick={() =>
+                navigate(PRIVATE_PATHS.ADMIN_CONFIG_ADD_VEHICLE_MAKE)
+              }
+            >
+              <Text display={{ base: "none", md: "inline-flex" }}>
+                Add make
+              </Text>
+              <FiPlus size={18} />
+            </Button>
+            <Button
+              bg="white"
+              py={3}
+              h="43px"
+              border="1px solid #000"
+              color="#000"
+              onClick={() => refetch()}
+            >
+              <VscDebugRestart size={20} />
+            </Button>
+          </Flex>
+        }
+      />
       <hr />
       <MakesTableLayer
         data={data}

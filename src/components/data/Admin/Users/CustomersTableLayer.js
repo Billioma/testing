@@ -177,8 +177,8 @@ const TableLayer = ({
           <Tr>
             <Td colSpan={7} rowSpan={2}>
               <NoData
-                title="No Attendants"
-                desc="You have not added an attendants"
+                title="No Customer"
+                desc="You have not added a customer"
               />
             </Td>
           </Tr>

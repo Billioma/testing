@@ -19,7 +19,7 @@ import { useNavigate } from "react-router-dom";
 import AdminDeleteModal from "../../../modals/AdminDeleteModal";
 import useCustomToast from "../../../../utils/notifications";
 import { BsChevronDown } from "react-icons/bs";
-import { useDeleteMake } from "../../../../services/admin/query/configurations";
+import { useDeleteBankDetail, useDeleteMake } from "../../../../services/admin/query/configurations";
 
 const TableLayer = ({
   data,
@@ -45,7 +45,7 @@ const TableLayer = ({
   const navigate = useNavigate();
   const { errorToast, successToast } = useCustomToast();
 
-  const { mutate, isLoading: isDeleting } = useDeleteMake({
+  const { mutate, isLoading: isDeleting } = useDeleteBankDetail({
     onSuccess: (res) => {
       successToast(res?.message);
       refetch();
@@ -165,7 +165,10 @@ const TableLayer = ({
         ) : (
           <Tr>
             <Td colSpan={7} rowSpan={2}>
-              <NoData title="No make" desc="You have not added a make" />
+              <NoData
+                title="No bank detail"
+                desc="You have not added a bank detail"
+              />
             </Td>
           </Tr>
         )}
@@ -174,8 +177,8 @@ const TableLayer = ({
       <AdminDeleteModal
         isOpen={selectedRow.isOpen}
         onClose={() => setSelectedRow({ ...selectedRow, isOpen: false })}
-        title="Delete Make"
-        subTitle="Are you sure you want to delete this make?"
+        title="Delete Bank detail"
+        subTitle="Are you sure you want to delete this bank detail?"
         handleSubmit={handleSubmit}
         isLoading={isDeleting}
       />

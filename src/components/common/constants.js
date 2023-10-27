@@ -37,16 +37,16 @@ export const sidebarItems = [
     id: 1,
     title: "Dashboard",
     path: "/admin/dashboard",
-    icon: <AdminDashboardIcon />,
-    hover: <AdminDashboardIcon fill="#fff" stroke="black" />,
+    icon: <AdminDashboardIcon fill={"#fff"} stroke="#000" />,
+    hover: <AdminDashboardIcon fill="#EE383A" stroke="#fff" />,
   },
 
   {
     id: 7,
     title: "Clients",
     path: "/admin/clients",
-    icon: <ClientsIcon />,
-    hover: <ClientsIcon fill="#fff" stroke="black" />,
+    icon: <ClientsIcon fill={"#fff"} stroke="#000" />,
+    hover: <ClientsIcon fill="#EE383A" stroke="#fff" />,
     subItems: [
       {
         title: "Client Lists",
@@ -66,8 +66,8 @@ export const sidebarItems = [
   {
     id: 3,
     title: "Users",
-    icon: <UserIcon />,
-    hover: <UserIcon fill="#fff" stroke="black" />,
+    icon: <UserIcon fill={"#fff"} stroke="#000" />,
+    hover: <UserIcon fill="#EE383A" stroke="#fff" />,
     path: "users",
     subItems: [
       {
@@ -92,8 +92,8 @@ export const sidebarItems = [
   {
     id: 3,
     title: "Events",
-    icon: <TbCalendarEvent />,
-    hover: <TbCalendarEvent fill="#fff" stroke="black" />,
+    icon: <TbCalendarEvent fill={"#fff"} stroke="#000" />,
+    hover: <TbCalendarEvent fill="#000" stroke="#fff" />,
     path: PRIVATE_PATHS.ADMIN_EVENTS,
   },
 
@@ -101,8 +101,8 @@ export const sidebarItems = [
     id: 5,
     title: "Locations",
     path: "/locations",
-    icon: <LocationIcon />,
-    hover: <LocationIcon fill="#fff" stroke="black" />,
+    icon: <LocationIcon fill={"#fff"} stroke="#000" />,
+    hover: <LocationIcon fill="#EE383A" stroke="#fff" />,
     subItems: [
       {
         title: "Locations",
@@ -131,24 +131,24 @@ export const sidebarItems = [
     id: 2,
     title: "Services",
     path: "/admin/services",
-    icon: <ServicesIcon />,
-    hover: <ServicesIcon fill="#fff" stroke="black" />,
+    icon: <ServicesIcon fill={"#fff"} stroke="#000" />,
+    hover: <ServicesIcon fill="#EE383A" stroke="#fff" />,
   },
 
   {
     id: 6,
     title: "Vehicles",
     path: "/admin/vehicles",
-    icon: <AdminVehicleIcon />,
-    hover: <AdminVehicleIcon fill="#fff" stroke="black" />,
+    icon: <AdminVehicleIcon fill={"#fff"} stroke="#000" />,
+    hover: <AdminVehicleIcon fill="#EE383A" stroke="#fff" />,
   },
 
   {
     id: 8,
     title: "Memberships",
     path: "/admin/memberships",
-    icon: <MembershipsIcon />,
-    hover: <MembershipsIcon fill="#fff" stroke="black" />,
+    icon: <MembershipsIcon fill={"#fff"} stroke="#000" />,
+    hover: <MembershipsIcon fill="#EE383A" stroke="#fff" />,
     subItems: [
       {
         title: "Membership Plans",
@@ -173,8 +173,8 @@ export const sidebarItems = [
     id: 4,
     title: "Transactions",
     path: "/transactions",
-    icon: <CustomerIcon />,
-    hover: <CustomerIcon fill="#fff" stroke="black" />,
+    icon: <CustomerIcon fill={"#fff"} stroke="#000" />,
+    hover: <CustomerIcon fill="#EE383A" stroke="#fff" />,
     subItems: [
       {
         title: "Pay-To-Park",
@@ -192,7 +192,7 @@ export const sidebarItems = [
 
       {
         title: "Events Parking",
-        path: "/admin/transactions/car-services",
+        path: "/admin/transactions/events-parking",
       },
     ],
   },
@@ -206,8 +206,8 @@ export const sidebarItems = [
     id: 9,
     title: "Logs",
     path: "/admin/logs",
-    icon: <LogsIcon />,
-    hover: <LogsIcon fill="#fff" stroke="black" />,
+    icon: <LogsIcon fill={"#fff"} stroke="#000" />,
+    hover: <LogsIcon fill="#EE383A" stroke="#fff" />,
     subItems: [
       {
         title: "Valeted Vehicles",
@@ -227,8 +227,8 @@ export const sidebarItems = [
     id: 10,
     title: "Reports",
     path: "/admin/reports",
-    icon: <ReportsIcon />,
-    hover: <ReportsIcon fill="#fff" stroke="black" />,
+    icon: <ReportsIcon fill={"#fff"} stroke="#000" />,
+    hover: <ReportsIcon fill="#EE383A" stroke="#fff" />,
     subItems: [
       {
         title: "Payments",
@@ -272,8 +272,8 @@ export const sidebarItems = [
     id: 11,
     title: "Configurations",
     path: "/admin/configurations",
-    icon: <ConfigIcon />,
-    hover: <ConfigIcon fill="#fff" stroke="black" />,
+    icon: <ConfigIcon fill={"#fff"} stroke="#000" />,
+    hover: <ConfigIcon fill="#EE383A" stroke="#fff" />,
     subItems: [
       {
         title: "Roles",
@@ -389,6 +389,7 @@ export const operatorRepZoneHeader = [
   "RESERVABLE",
   "RESERVABLE SPACE",
   "SERVICE",
+  "STATUS",
   "DATE CREATED",
 ];
 
@@ -1432,3 +1433,305 @@ export const customStyles = {
     background: "unset",
   }),
 };
+
+export const clientListOptions = [
+  { label: "Name", value: "name" },
+  { label: "Contact Person", value: "contactPerson" },
+  { label: "Phone", value: "phone" },
+  { label: "State", value: "state" },
+  { label: "Account Type", value: "accountType" },
+  { label: "Status", value: "status" },
+  { label: "Created At", value: "createdAt" },
+];
+
+export const clientInvoiceOptions = [
+  { label: "Client", value: "client.name" },
+  { label: "Amount Payable", value: "amount" },
+  { label: "Created By", value: "createdBy" },
+  { label: "Paid At", value: "paidAt" },
+  { label: "Payment Status", value: "paymentStatus" },
+  { label: "Created At", value: "createdAt" },
+];
+
+export const customersOptions = [
+  { label: "First Name", value: "profile.firstName" },
+  { label: "Last Name", value: "profile.lastName" },
+  { label: "Phone", value: "profile.phone" },
+  { label: "Company Name", value: "profile.companyName" },
+  { label: "Email", value: "email" },
+  { label: "Status", value: "status" },
+  { label: "Created At", value: "createdAt" },
+];
+
+export const attendantsOptions = [
+  { label: "Name", value: "name" },
+  { label: "User ID", value: "userId" },
+  { label: "Account Type", value: "accountType" },
+  { label: "Status", value: "status" },
+  { label: "Created At", value: "createdAt" },
+];
+
+export const administratorsOptions = [
+  { label: "Name", value: "name" },
+  { label: "Email", value: "email" },
+  { label: "Role", value: "role.displayName" },
+  { label: "Status", value: "status" },
+  { label: "Created At", value: "createdAt" },
+];
+
+export const operatorOptions = [
+  { label: "Name", value: "name" },
+  { label: "Email", value: "email" },
+  { label: "Contact Person", value: "contactPerson" },
+  { label: "Phone", value: "phone" },
+  { label: "State", value: "state" },
+  { label: "Status", value: "status" },
+  { label: "Created At", value: "createdAt" },
+];
+
+export const eventsOptions = [
+  { label: "Name", value: "name" },
+  { label: "Client", value: "client.name" },
+  { label: "Website", value: "website" },
+  { label: "Start Date", value: "eventStartDateTime" },
+  { label: "End Date", value: "eventEndDateTime" },
+  { label: "Status", value: "status" },
+  { label: "Created At", value: "createdAt" },
+];
+
+export const locationsOptions = [
+  { label: "Name", value: "name" },
+  { label: "Operator", value: "operator.name" },
+  { label: "State", value: "state" },
+  { label: "Status", value: "status" },
+  { label: "Created At", value: "createdAt" },
+];
+
+export const zonesOptions = [
+  { label: "Name", value: "name" },
+  { label: "Code", value: "code" },
+  { label: "Location", value: "location.name" },
+  { label: "Description", value: "location.description" },
+  { label: "Capacity", value: "capacity" },
+  { label: "Status", value: "status" },
+  { label: "Created At", value: "createdAt" },
+];
+
+export const ratesOptions = [
+  { label: "Name", value: "name" },
+  { label: "Duration Type", value: "durationType" },
+  { label: "Duration Start", value: "durationStart" },
+  { label: "Duration Limit", value: "durationLimit" },
+  { label: "Amount", value: "amount" },
+  { label: "Status", value: "status" },
+  { label: "Created At", value: "createdAt" },
+];
+
+export const amenitiesOptions = [
+  { label: "Name", value: "name" },
+  { label: "Description", value: "description" },
+  { label: "Created At", value: "createdAt" },
+];
+
+export const policiesOptions = [
+  { label: "Title", value: "title" },
+  { label: "Location", value: "location.name" },
+  { label: "Created At", value: "createdAt" },
+];
+
+export const servicesOptions = [
+  { label: "Name", value: "name" },
+  { label: "Description", value: "description" },
+  { label: "Service Type", value: "serviceType" },
+  { label: "Created At", value: "createdAt" },
+];
+
+export const vehiclesOptions = [
+  { label: "Customer Name", value: "customerName" },
+  { label: "License Plate", value: "licensePlate" },
+  { label: "Color", value: "color" },
+  { label: "Make", value: "make.name" },
+  { label: "Model", value: "model.name" },
+  { label: "Created By", value: "createdBy" },
+  { label: "Created At", value: "createdAt" },
+];
+
+export const membershipPlansOptions = [
+  { label: "Name", value: "name" },
+  { label: "Amount (₦)", value: "amount" },
+  { label: "Interval", value: "interval" },
+  { label: "Corporate", value: "isCorporate" },
+  { label: "Upgradeable", value: "isUpgradable" },
+  { label: "Status", value: "status" },
+  { label: "Created At", value: "createdAt" },
+];
+
+export const membershipFeaturesOptions = [
+  { label: "Name", value: "name" },
+  { label: "Plan", value: "membershipPlan.name" },
+  { label: "Feature Type", value: "featureType" },
+  { label: "Created At", value: "createdAt" },
+];
+
+export const customerSubOptions = [
+  { label: "Customer First Name", value: "customer.profile.firstName" },
+  { label: "Customer Last Name", value: "customer.profile.lastName" },
+  { label: "Plan", value: "membershipPlan.name" },
+  { label: "Amount (₦)", value: "amount" },
+  { label: "Duration", value: "membershipPlan.interval" },
+  { label: "Start Date", value: "startDate" },
+  { label: "Next Payment Date", value: "nextPaymentDate" },
+  { label: "Status", value: "status" },
+  { label: "Created At", value: "createdAt" },
+];
+
+export const corporateSubOptions = [
+  { label: "Client", value: "client.name" },
+  { label: "Plan", value: "membershipPlan.name" },
+  { label: "Amount (₦)", value: "amount" },
+  { label: "Duration", value: "membershipPlan.interval" },
+  { label: "Start Date", value: "startDate" },
+  { label: "Next Payment Date", value: "nextPaymentDate" },
+  { label: "Status", value: "status" },
+  { label: "Created At", value: "createdAt" },
+];
+
+export const payToParkOptions = [
+  { label: "Ticket Number", value: "ticketNumber" },
+  { label: "Amount (₦)", value: "amount" },
+  { label: "Zone", value: "zone.code" },
+  { label: "Vehicle", value: "vehicle.licensePlate" },
+  { label: "Customer First Name", value: "customer.profile.firstName" },
+  { label: "Customer Last Name", value: "customer.profile.lastName" },
+  { label: "Status", value: "status" },
+  { label: "Created At", value: "createdAt" },
+];
+
+export const reservedParkingOptions = [
+  { label: "Reservation ID", value: "reservationId" },
+  { label: "Amount (₦)", value: "amount" },
+  { label: "Zone", value: "zone.code" },
+  { label: "Vehicle", value: "vehicle.licensePlate" },
+  { label: "Arrival", value: "arrival" },
+  { label: "Customer First Name", value: "customer.profile.firstName" },
+  { label: "Customer Last Name", value: "customer.profile.lastName" },
+  { label: "Status", value: "status" },
+  { label: "Created At", value: "createdAt" },
+];
+
+export const rolesOptions = [
+  { label: "Name", value: "name" },
+  { label: "Display Name", value: "displayName" },
+  { label: "Created At", value: "createdAt" },
+];
+
+export const makesOptions = [
+  { label: "Name", value: "name" },
+  { label: "Created At", value: "createdAt" },
+];
+
+export const modelsOptions = [
+  { label: "Name", value: "name" },
+  { label: "Make", value: "make.name" },
+  { label: "Created At", value: "createdAt" },
+];
+
+export const faqsOptions = [
+  { label: "Title", value: "title" },
+  { label: "Status", value: "status" },
+  { label: "Created At", value: "createdAt" },
+];
+
+export const bankDetailsOptions = [
+  { label: "Bank Name", value: "bankName" },
+  { label: "Account Name", value: "accountName" },
+  { label: "Account Number", value: "accountNumber" },
+  { label: "Sort Code", value: "sortCode" },
+  { label: "Service", value: "service.name" },
+  { label: "Created At", value: "createdAt" },
+];
+
+export const paymentsOptions = [
+  { label: "Location", value: "location.name" },
+  { label: "Zone", value: "zone.name" },
+  { label: "Attendant", value: "attendant.name" },
+  { label: "Amount", value: "amount" },
+  { label: "Amount Paid", value: "amountPaid" },
+  { label: "Customer", value: "customer.name" },
+  { label: "Service", value: "service" },
+  { label: "Payment Method", value: "paymentMethod" },
+  { label: "Created At", value: "createdAt" },
+];
+
+export const locationsReportOptions = [
+  { label: "Name", value: "name" },
+  { label: "State", value: "state" },
+  { label: "Zone", value: "zone.name" },
+  { label: "State", value: "state" },
+  { label: "Location Type", value: "locationType" },
+  { label: "Created At", value: "createdAt" },
+];
+
+export const zonesReportOptions = [
+  { label: "Name", value: "name" },
+  { label: "Location", value: "location.name" },
+  { label: "Service", value: "service" },
+  { label: "Status", value: "status" },
+  { label: "Created At", value: "createdAt" },
+];
+
+export const vehiclesReportOptions = [
+  { label: "Customer", value: "customer" },
+  { label: "License Plate", value: "licensePlate" },
+  { label: "Make", value: "make.name" },
+  { label: "Model", value: "model.name" },
+  { label: "Color", value: "color" },
+  { label: "State", value: "state" },
+  { label: "Created At", value: "createdAt" },
+];
+
+export const customersReportOptions = [
+  { label: "First Name", value: "profile.firstName" },
+  { label: "Last Name", value: "profile.lastName" },
+  { label: "Email", value: "email" },
+  { label: "Phone", value: "phone" },
+  { label: "Status", value: "status" },
+  { label: "Created At", value: "createdAt" },
+];
+
+export const invoicesReportOptions = [
+  { label: "Client", value: "client" },
+  { label: "Created By", value: "createdBy" },
+  { label: "Confirmed By", value: "confirmedBy" },
+  { label: "Status", value: "status" },
+  { label: "Created At", value: "createdAt" },
+];
+
+export const subsReportOptions = [
+  { label: "Customer", value: "customer" },
+  { label: "Plan", value: "membershipPlan" },
+  { label: "Start Date", value: "startDate" },
+  { label: "Next Renewal", value: "nextRenewal" },
+  { label: "Status", value: "status" },
+  { label: "Created At", value: "createdAt" },
+];
+
+export const logsReportOptions = [
+  { label: "Ticket Number", value: "ticketNumber" },
+  { label: "Customer", value: "customer" },
+  { label: "Vehicle", value: "vehicle" },
+  { label: "Service", value: "service" },
+  { label: "Location", value: "location" },
+  { label: "Status", value: "status" },
+  { label: "Created At", value: "createdAt" },
+];
+
+export const paymentHistoryReportOptions = [
+  { label: "Transaction ID", value: "transactionId" },
+  { label: "Amount (₦)", value: "amount" },
+  { label: "Payment Method", value: "paymentMethod" },
+  { label: "Transaction Type", value: "transactionType" },
+  { label: "Customer Email", value: "customer.email" },
+  { label: "Status", value: "status" },
+  { label: "Created At", value: "createdAt" },
+];

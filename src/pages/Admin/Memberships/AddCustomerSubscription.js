@@ -26,8 +26,6 @@ export default function AddCustomerSubscription() {
         data: [],
       },
     ],
-    startDate: "2023-08-17T22:23:13.028Z",
-    nextPaymentDate: "2023-08-17T22:23:13.028Z",
     autoRenewal: 0,
     paymentMethod: 2,
   });
@@ -245,7 +243,6 @@ export default function AddCustomerSubscription() {
                       label: `${vehicle.color} - ${vehicle.make.name} - ${vehicle.model.name}`,
                       value: parseInt(vehicle.id),
                     }))}
-                  multi
                   placeholder="Select vehicles"
                 />
               </Box>

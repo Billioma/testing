@@ -106,9 +106,7 @@ const TableLayer = ({
                 {transaction?.customer?.profile?.lastName}
               </Td>
               <Td>₦{transaction?.amount?.toLocaleString()}</Td>
-              <Td textAlign="center">
-                {transaction?.zone?.location?.name || "N/A"}
-              </Td>
+              <Td textAlign="center">{transaction?.zone?.code || "N/A"}</Td>
               <Td textAlign="center">{transaction?.vehicle?.licensePlate}</Td>
               <Td textAlign="center">{transaction?.service?.name}</Td>
 

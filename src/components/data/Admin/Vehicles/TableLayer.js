@@ -103,18 +103,7 @@ const TableLayer = ({
               <Td textAlign="center">{vehicle?.color}</Td>
               <Td textAlign="center">{vehicle?.make?.name}</Td>
               <Td textAlign="center">{vehicle?.model?.name}</Td>
-              <Td textAlign="center">
-                <Flex
-                  bg={vehicle?.status ? "#E5FFE5" : "#FEF1F1"}
-                  color={vehicle?.status ? "#0B841D" : "#EE383A"}
-                  justifyContent={"center"}
-                  alignItems="center"
-                  padding="7px 10px"
-                  borderRadius="4px"
-                >
-                  {vehicle?.status ? "Active" : "Inactive"}
-                </Flex>
-              </Td>
+              <Td textAlign="center">{vehicle?.createdBy}</Td>
               <Td textAlign="center">{formatDate(vehicle?.createdAt)}</Td>
               <Td textAlign="center">
                 <Flex justifyContent="center" align="center">
@@ -172,10 +161,7 @@ const TableLayer = ({
         ) : (
           <Tr>
             <Td colSpan={7} rowSpan={2}>
-              <NoData
-                title="No Attendants"
-                desc="You have not added an attendants"
-              />
+              <NoData title="No Vehicle" desc="You have not added a vehicle" />
             </Td>
           </Tr>
         )}

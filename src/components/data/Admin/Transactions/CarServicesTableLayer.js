@@ -20,7 +20,7 @@ import AdminDeleteModal from "../../../modals/AdminDeleteModal";
 import useCustomToast from "../../../../utils/notifications";
 import { PRIVATE_PATHS } from "../../../../routes/constants";
 import { BsChevronDown } from "react-icons/bs";
-import { useDeletePayToPark } from "../../../../services/admin/query/transactions";
+import { useDeleteCarService } from "../../../../services/admin/query/transactions";
 
 const TableLayer = ({
   data,
@@ -40,9 +40,9 @@ const TableLayer = ({
     "BOOKING TYPE",
     "SERVICE TYPE",
     "SLOT",
-    "DATE",
+    "APP. DATE",
     "STATUS",
-    "CREATED",
+    "CR. DATE",
     "ACTIONS",
   ];
   const { errorToast, successToast } = useCustomToast();
@@ -50,7 +50,18 @@ const TableLayer = ({
   const navigate = useNavigate();
   const [selectedRow, setSelectedRow] = useState({ isOpen: false, id: null });
 
-  const { mutate, isLoading: isDeleting } = useDeletePayToPark({
+  const bookingSlots = [
+    "7:00 - 8:30",
+    "8:30 - 10:00",
+    "10:00 - 11:30",
+    "11:30 - 13:00",
+    "13:00 - 14:30",
+    "14:30 - 16:00",
+    "16:00 - 17:30",
+    "17:30 - 19:00",
+  ];
+
+  const { mutate, isLoading: isDeleting } = useDeleteCarService({
     onSuccess: (res) => {
       successToast(res?.message);
       refetch();
@@ -101,15 +112,19 @@ const TableLayer = ({
               fontSize="12px"
               lineHeight="100%"
             >
-              <Td>{transaction?.ticketNumber}</Td>
+              <Td>{transaction?.bookingId}</Td>
               <Td>
                 {transaction?.customer?.profile?.firstName}{" "}
                 {transaction?.customer?.profile?.lastName}
               </Td>
               <Td>₦{transaction?.amount?.toLocaleString()}</Td>
-              <Td textAlign="center">{transaction?.zone?.location?.name}</Td>
-              <Td textAlign="center">{transaction?.vehicle?.licensePlate}</Td>
-              <Td textAlign="center">{transaction?.service?.name}</Td>
+              <Td>{transaction?.bookingType}</Td>
+
+              <Td textAlign="center">{transaction?.serviceType}</Td>
+              <Td textAlign="center">
+                {bookingSlots[transaction?.appointmentSlot]}
+              </Td>
+              <Td textAlign="center">{transaction?.appointmentDate}</Td>
 
               <Td textAlign="center">
                 <Flex
@@ -138,7 +153,7 @@ const TableLayer = ({
                         fontWeight="500"
                         onClick={() =>
                           navigate(
-                            `${PRIVATE_PATHS.ADMIN_PAYTOPARK}/${transaction.id}`,
+                            `${PRIVATE_PATHS.ADMIN_CAR_SERVICES}/${transaction.id}`,
                             { state: { ...transaction, isEdit: false } }
                           )
                         }
@@ -180,8 +195,8 @@ const TableLayer = ({
       <AdminDeleteModal
         isOpen={selectedRow.isOpen}
         onClose={() => setSelectedRow({ ...selectedRow, isOpen: false })}
-        title="Delete Plan"
-        subTitle="Are you sure you want to delete this plan?"
+        title="Delete Transaction"
+        subTitle="Are you sure you want to delete this transaction?"
         handleSubmit={handleSubmit}
         isLoading={isDeleting}
       />

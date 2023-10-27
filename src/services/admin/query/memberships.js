@@ -18,6 +18,9 @@ import {
   deleteMembershipPlan,
   cancelCustomerSubscription,
   renewCustomerSubscription,
+  getCorporatePlans,
+  renewCorporateSubscription,
+  cancelCorporateSubscription,
 } from "../api/memberships";
 
 export const useCreateMembershipPlan = (options = {}) => {
@@ -42,17 +45,27 @@ export const useGetMembershipPlans = (
   options = {},
   page = 1,
   limit = 25,
-  corporate = false
+  query
 ) => {
   const { data, isLoading, refetch } = useQuery(
-    ["GET_MEMBERSHIP_PLANS", page, limit],
-    () => getMembershipPlans(page, limit, corporate),
+    ["GET_MEMBERSHIP_PLANS", page, limit, query],
+    () => getMembershipPlans(page, limit, query),
     {
       ...options,
     }
   );
 
   return { isLoading, data, refetch };
+};
+
+export const useGetCorporatePlans = (options = {}) => {
+  const { data, isLoading, refetch } = useQuery(
+    ["GET_CORPORATE_PLANS"],
+    () => getCorporatePlans(),
+    { ...options }
+  );
+
+  return { data, isLoading };
 };
 
 export const useDeleteMembershipPlan = (options = {}) => {
@@ -85,11 +98,12 @@ export const useEditMembershipFeature = (options = {}) => {
 export const useGetMembershipFeatures = (
   options = {},
   page = 1,
-  limit = 25
+  limit = 25,
+  query
 ) => {
   const { data, isLoading, refetch } = useQuery(
-    ["GET_MEMBERSHIP_FEATURES", page, limit],
-    () => getMembershipFeatures(page, limit),
+    ["GET_MEMBERSHIP_FEATURES", page, limit, query],
+    () => getMembershipFeatures(page, limit, query),
     {
       ...options,
     }
@@ -146,11 +160,12 @@ export const useRenewCustomerSubscription = (options = {}) => {
 export const useGetCustomerSubscriptions = (
   options = {},
   page = 1,
-  limit = 25
+  limit = 25,
+  query
 ) => {
   const { data, isLoading, refetch } = useQuery(
-    ["GET_CUSTOMER_SUBS", page, limit],
-    () => getCustomerSubscriptions(page, limit),
+    ["GET_CUSTOMER_SUBS", page, limit, query],
+    () => getCustomerSubscriptions(page, limit, query),
     {
       ...options,
     }
@@ -189,11 +204,12 @@ export const useEditCorporateSubscription = (options = {}) => {
 export const useGetCorporateSubscriptions = (
   options = {},
   page = 1,
-  limit = 25
+  limit = 25,
+  query
 ) => {
   const { data, isLoading, refetch } = useQuery(
-    ["GET_CORPORATE_SUBS", page, limit],
-    () => getCorporateSubscriptions(page, limit),
+    ["GET_CORPORATE_SUBS", page, limit, query],
+    () => getCorporateSubscriptions(page, limit, query),
     {
       ...options,
     }
@@ -205,6 +221,24 @@ export const useGetCorporateSubscriptions = (
 export const useDeleteCorporateSubscription = (options = {}) => {
   const { isLoading, mutate } = useMutation(deleteCorporateSubscription, {
     mutationKey: ["DELETE_CORPORATE_SUB"],
+    ...options,
+  });
+
+  return { isLoading, mutate };
+};
+
+export const useRenewCorporateSubscription = (options = {}) => {
+  const { isLoading, mutate } = useMutation(renewCorporateSubscription, {
+    mutationKey: ["RENEW_CORPORATE_SUB"],
+    ...options,
+  });
+
+  return { isLoading, mutate };
+};
+
+export const useCancelCorporateSubscription = (options = {}) => {
+  const { isLoading, mutate } = useMutation(cancelCorporateSubscription, {
+    mutationKey: ["CANCEL_CORPORATE_SUB"],
     ...options,
   });
 

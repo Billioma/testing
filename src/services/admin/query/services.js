@@ -24,10 +24,10 @@ export const useEditService = (options = {}) => {
   return { isLoading, data, mutate };
 };
 
-export const useGetServices = (options = {}, page = 1, limit = 25) => {
+export const useGetServices = (options = {}, page = 1, limit = 25, query) => {
   const { data, isLoading, refetch } = useQuery(
-    ["GET_SERVICES", page, limit],
-    () => getServices(page, limit),
+    ["GET_SERVICES", page, limit, query],
+    () => getServices(page, limit, query),
     {
       ...options,
     }

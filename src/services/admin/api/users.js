@@ -1,30 +1,34 @@
 import axiosInstance from "../../axiosInstance";
 import * as API from "../url";
 
-export const getAttendants = async (page, limit) => {
+export const getAttendants = async (page, limit, query) => {
   const response = await axiosInstance.get(
-    API.ADMIN_ATTENDANTS + `?page=${page}&limit=${limit}&sort=id,DESC`
+    API.ADMIN_ATTENDANTS +
+      `?page=${page}&limit=${limit}&sort=id,DESC&${query || ""}`
   );
   return response.data;
 };
 
-export const getCustomers = async (page, limit) => {
+export const getCustomers = async (page, limit, query) => {
   const response = await axiosInstance.get(
-    API.ADMIN_CUSTOMERS + `?page=${page}&limit=${limit}&sort=id,DESC`
+    API.ADMIN_CUSTOMERS +
+      `?page=${page}&limit=${limit}&sort=id,DESC&${query || ""}`
   );
   return response.data;
 };
 
-export const getOperators = async (page, limit) => {
+export const getOperators = async (page, limit, query) => {
   const response = await axiosInstance.get(
-    API.ADMIN_OPERATORS + `?page=${page}&limit=${limit}&sort=id,DESC`
+    API.ADMIN_OPERATORS +
+      `?page=${page}&limit=${limit}&sort=id,DESC&${query || ""}`
   );
   return response.data;
 };
 
-export const getAdministrators = async (page, limit) => {
+export const getAdministrators = async (page, limit, query) => {
   const response = await axiosInstance.get(
-    API.ADMIN_ADMINISTRATORS + `?page=${page}&limit=${limit}&sort=id,DESC`
+    API.ADMIN_ADMINISTRATORS +
+      `?page=${page}&limit=${limit}&sort=id,DESC&${query || ""}`
   );
   return response.data;
 };

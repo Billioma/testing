@@ -145,6 +145,8 @@ export const PRIVATE_PATHS = {
   ADMIN_ADD_RESERVED_PARKING: "/admin/transactions/reserved-parking/new",
 
   ADMIN_CAR_SERVICES: "/admin/transactions/car-services",
+  ADMIN_VIEW_CAR_SERVICE: "/admin/transactions/car-services/details/:id",
+  ADMIN_ADD_CAR_SERVICE: "/admin/transactions/car-services/new",
 
   ADMIN_CLIENTS: "/admin/clients/list",
   ADMIN_ADD_CLIENT: "/admin/clients/list/new",
@@ -213,7 +215,7 @@ export const PRIVATE_PATHS = {
   ADMIN_CONFIG_QR_CODE: "/admin/configurations/qr-code",
 
   ADMIN_REP_PAYMENTS: "/admin/reports/payments",
-  ADMIN_REP_LOCATIONS: "/admin/reports/location",
+  ADMIN_REP_LOCATIONS: "/admin/reports/locations",
   ADMIN_REP_ZONES: "/admin/reports/zones",
   ADMIN_REP_VEHICLES: "/admin/reports/vehicles",
   ADMIN_REP_CUSTOMERS: "/admin/reports/customers",

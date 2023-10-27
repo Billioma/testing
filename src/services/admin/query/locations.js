@@ -30,10 +30,10 @@ export const useGetAllLocations = (options = {}) => {
   return { isLoading, data, refetch };
 };
 
-export const useGetLocations = (options = {}, page = 1, limit = 25) => {
+export const useGetLocations = (options = {}, page = 1, limit = 25, query) => {
   const { data, isLoading, refetch } = useQuery(
-    ["GET_LOCATIONS", page, limit],
-    () => getLocations(page, limit),
+    ["GET_LOCATIONS", page, limit, query],
+    () => getLocations(page, limit, query),
     {
       ...options,
     }
@@ -60,10 +60,10 @@ export const useEditLocation = (options = {}) => {
   return { isLoading, data, mutate };
 };
 
-export const useGetZones = (options = {}, page = 1, limit = 25) => {
+export const useGetZones = (options = {}, page = 1, limit = 25, query) => {
   const { data, isLoading, refetch } = useQuery(
-    ["GET_ZONES", page, limit],
-    () => getZones(page, limit),
+    ["GET_ZONES", page, limit, query],
+    () => getZones(page, limit, query),
     {
       ...options,
     }
@@ -108,10 +108,10 @@ export const useDeleteZone = (options = {}) => {
   return { isLoading, mutate };
 };
 
-export const useGetRates = (options = {}, page = 1, limit = 25) => {
+export const useGetRates = (options = {}, page = 1, limit = 25, query) => {
   const { data, isLoading, refetch } = useQuery(
-    ["GET_RATES", page, limit],
-    () => getRates(page, limit),
+    ["GET_RATES", page, limit, query],
+    () => getRates(page, limit, query),
     {
       ...options,
     }
@@ -147,10 +147,10 @@ export const useEditRate = (options = {}) => {
   return { isLoading, data, mutate };
 };
 
-export const useGetPolicies = (options = {}, page = 1, limit = 25) => {
+export const useGetPolicies = (options = {}, page = 1, limit = 25, query) => {
   const { data, isLoading, refetch } = useQuery(
-    ["GET_POLICIES", page, limit],
-    () => getPolicies(page, limit),
+    ["GET_POLICIES", page, limit, query],
+    () => getPolicies(page, limit, query),
     {
       ...options,
     }

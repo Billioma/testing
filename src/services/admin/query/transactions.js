@@ -4,15 +4,16 @@ import {
   deletePayToPark,
   getReservedParking,
   deleteReservedParking,
+  deleteCarService,
   editReservedParking,
   addReservedParking,
   getCarServices,
 } from "../api/transactions";
 
-export const useGetPayToPark = (options = {}, page = 1, limit = 25) => {
+export const useGetPayToPark = (options = {}, page = 1, limit = 25, query) => {
   const { data, isLoading, refetch } = useQuery(
-    ["GET_PAY_TO_PARK", page, limit],
-    () => getPayToPark(page, limit),
+    ["GET_PAY_TO_PARK", page, limit, query],
+    () => getPayToPark(page, limit, query),
     {
       ...options,
     }
@@ -57,10 +58,15 @@ export const useAddReservedParking = (options = {}) => {
   return { isLoading, mutate };
 };
 
-export const useGetReservedParking = (options = {}, page = 1, limit = 25) => {
+export const useGetReservedParking = (
+  options = {},
+  page = 1,
+  limit = 25,
+  query
+) => {
   const { data, isLoading, refetch } = useQuery(
-    ["GET_RESERVED_PARKING", page, limit],
-    () => getReservedParking(page, limit),
+    ["GET_RESERVED_PARKING", page, limit, query],
+    () => getReservedParking(page, limit, query),
     {
       ...options,
     }
@@ -69,14 +75,28 @@ export const useGetReservedParking = (options = {}, page = 1, limit = 25) => {
   return { isLoading, data, refetch };
 };
 
-export const useGetCarServices = (options = {}, page = 1, limit = 25) => {
+export const useGetCarServices = (
+  options = {},
+  page = 1,
+  limit = 25,
+  query
+) => {
   const { data, isLoading, refetch } = useQuery(
-    ["GET_CAR_SERVICES", page, limit],
-    () => getCarServices(page, limit),
+    ["GET_CAR_SERVICES", page, limit, query],
+    () => getCarServices(page, limit, query),
     {
       ...options,
     }
   );
 
   return { isLoading, data, refetch };
+};
+
+export const useDeleteCarService = (options = {}) => {
+  const { isLoading, mutate } = useMutation(deleteCarService, {
+    mutationKey: ["DELETE_CAR_SERVICE"],
+    ...options,
+  });
+
+  return { isLoading, mutate };
 };

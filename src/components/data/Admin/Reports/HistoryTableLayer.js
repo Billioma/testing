@@ -31,7 +31,7 @@ const HistoryTableLayer = ({ isLoading, limit, data, setPage, page }) => {
         ) : (
           <Table>
             <Thead bg="#F4F6F8">
-              <Tr>
+              <Tr display={"flex"}>
                 {adminRepTranHeader?.map((data, i) => (
                   <Th
                     textAlign={"center"}
@@ -44,19 +44,30 @@ const HistoryTableLayer = ({ isLoading, limit, data, setPage, page }) => {
                     color="#949698"
                     lineHeight="100%"
                     fontWeight={500}
+                    minW="130px"
                   >
                     {data}
                   </Th>
                 ))}
               </Tr>
             </Thead>
-            <Tbody>
+            <Tbody display={"block"}>
               {data?.data?.length ? (
                 data?.data?.map((item, i) => (
-                  <Tr fontSize="12px" fontWeight={500} color="#646668" key={i}>
-                    <Td textAlign="center">{item?.transactionId}</Td>
-                    <Td textAlign="center">{item?.amount}</Td>
-                    <Td>
+                  <Tr
+                    fontSize="12px"
+                    fontWeight={500}
+                    color="#646668"
+                    key={i}
+                    display={"flex"}
+                  >
+                    <Td textAlign="center" minW="150px">
+                      {item?.transactionId}
+                    </Td>
+                    <Td textAlign="center" w="150px">
+                      {item?.amount}
+                    </Td>
+                    <Td minW="160px">
                       <Flex align="center" w="full" justifyContent="center">
                         <Flex
                           bg="#F4F6F8"
@@ -72,7 +83,7 @@ const HistoryTableLayer = ({ isLoading, limit, data, setPage, page }) => {
                         </Flex>
                       </Flex>
                     </Td>
-                    <Td textAlign="center">
+                    <Td textAlign="center" w="210px">
                       <Flex align="center" w="full" justifyContent="center">
                         <Flex
                           bg="#F4F6F8"
@@ -81,18 +92,24 @@ const HistoryTableLayer = ({ isLoading, limit, data, setPage, page }) => {
                           py="6px"
                           px="15px"
                           borderRadius="4px"
+                          fontSize={12}
+                          w="full"
                         >
-                          {TransactionTypes?.find(
-                            (dat, i) => i === item?.transactionType
-                          )}
+                          <Text whiteSpace={"pre-wrap"} w="full">
+                            {TransactionTypes?.find(
+                              (dat, i) => i === item?.transactionType
+                            )}
+                          </Text>
                         </Flex>
                       </Flex>
                     </Td>
-                    <Td textAlign="center">{item?.customer?.email || "N/A"}</Td>
-                    <Td textAlign="center">
+                    <Td w="190px" whiteSpace={"pre-wrap"}>
+                      <Text>{item?.customer?.email || "N/A"}</Text>
+                    </Td>
+                    <Td w="130px" whiteSpace={"pre-wrap"}>
                       {formatDateTimes(item?.createdAt)}
                     </Td>
-                    <Td>
+                    <Td w="100px">
                       <Flex align="center" w="full" justifyContent="center">
                         <Flex
                           bg="#F4F6F8"
@@ -102,12 +119,12 @@ const HistoryTableLayer = ({ isLoading, limit, data, setPage, page }) => {
                           px="15px"
                           borderRadius="4px"
                         >
-                          {Object.values(SecStatus[item?.status])[1]}
+                          {item?.status ? "Successful" : "Failed"}
                         </Flex>
                       </Flex>
                     </Td>
 
-                    <Td textAlign="center">
+                    <Td textAlign="center" minW="140px">
                       <Text textDecor="underline">View</Text>
                     </Td>
                   </Tr>
@@ -116,8 +133,8 @@ const HistoryTableLayer = ({ isLoading, limit, data, setPage, page }) => {
                 <Tr>
                   <Td colSpan={7} rowSpan={2}>
                     <NoData
-                      title="No Event"
-                      desc="No event has been added to your account"
+                      title="No Payment History Report"
+                      desc="No payment history report available at the moment"
                     />
                   </Td>
                 </Tr>

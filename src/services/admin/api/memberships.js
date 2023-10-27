@@ -1,12 +1,17 @@
 import axiosInstance from "../../axiosInstance";
 import * as API from "../url";
 
-export const getMembershipPlans = async (page, limit, corporate) => {
+export const getMembershipPlans = async (page, limit, query) => {
   const response = await axiosInstance.get(
     API.ADMIN_MEMBERSHIP_PLANS +
-      `?page=${page}&limit=${limit}${
-        corporate ? "&corporate=1" : ""
-      }&sort=id,DESC`
+      `?page=${page}&limit=${limit}&sort=id,DESC&${query || ""}`
+  );
+  return response.data;
+};
+
+export const getCorporatePlans = async () => {
+  const response = await axiosInstance.get(
+    API.ADMIN_CORPORATE_PLANS + `?corporate=1`
   );
   return response.data;
 };
@@ -25,9 +30,10 @@ export const createMembershipPlan = async (data) => {
   return response.data;
 };
 
-export const getMembershipFeatures = async (page, limit) => {
+export const getMembershipFeatures = async (page, limit, query) => {
   const response = await axiosInstance.get(
-    API.ADMIN_MEMBERSHIP_FEATURES + `?page=${page}&limit=${limit}&sort=id,DESC`
+    API.ADMIN_MEMBERSHIP_FEATURES +
+      `?page=${page}&limit=${limit}&sort=id,DESC&${query || ""}`
   );
   return response.data;
 };
@@ -49,10 +55,10 @@ export const createMembershipFeature = async (data) => {
   return response.data;
 };
 
-export const getCustomerSubscriptions = async (page, limit) => {
+export const getCustomerSubscriptions = async (page, limit, query) => {
   const response = await axiosInstance.get(
     API.ADMIN_CUSTOMER_SUBSCRIPTIONS +
-      `?page=${page}&limit=${limit}&sort=id,DESC`
+      `?page=${page}&limit=${limit}&sort=id,DESC&${query || ""}`
   );
   return response.data;
 };
@@ -68,16 +74,16 @@ export const editCustomerSubscription = async (data) => {
 
 export const createCorporateSubscription = async (data) => {
   const response = await axiosInstance.post(
-    API.ADMIN_CUSTOMER_SUBSCRIPTIONS,
+    API.ADMIN_CORPORATE_SUBSCRIPTIONS,
     data
   );
   return response.data;
 };
 
-export const getCorporateSubscriptions = async (page, limit) => {
+export const getCorporateSubscriptions = async (page, limit, query) => {
   const response = await axiosInstance.get(
     API.ADMIN_CORPORATE_SUBSCRIPTIONS +
-      `?page=${page}&limit=${limit}&sort=id,DESC`
+      `?page=${page}&limit=${limit}&sort=id,DESC&${query || ""}`
   );
   return response.data;
 };
@@ -140,6 +146,22 @@ export const renewCustomerSubscription = async (id) => {
 export const cancelCustomerSubscription = async (id) => {
   const response = await axiosInstance.get(
     `${API.ADMIN_CUSTOMER_SUBSCRIPTIONS}/cancel/${id}`
+  );
+
+  return response.data;
+};
+
+export const renewCorporateSubscription = async (id) => {
+  const response = await axiosInstance.get(
+    `${API.ADMIN_CORPORATE_SUBSCRIPTIONS}/renew/${id}`
+  );
+
+  return response.data;
+};
+
+export const cancelCorporateSubscription = async (id) => {
+  const response = await axiosInstance.get(
+    `${API.ADMIN_CORPORATE_SUBSCRIPTIONS}/cancel/${id}`
   );
 
   return response.data;

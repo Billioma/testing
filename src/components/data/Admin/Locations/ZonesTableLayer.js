@@ -182,10 +182,7 @@ const TableLayer = ({
         ) : (
           <Tr>
             <Td colSpan={7} rowSpan={2}>
-              <NoData
-                title="No Location"
-                desc="You have not added a location"
-              />
+              <NoData title="No Zone" desc="You have not added a zone" />
             </Td>
           </Tr>
         )}

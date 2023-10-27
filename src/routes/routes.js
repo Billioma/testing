@@ -127,7 +127,7 @@ const {
   ADMIN_ADD_MEMBERSHIP_FEATURE,
 
   ADMIN_CORPORATE_SUBSCRIPTIONS,
-  // ADMIN_VIEW_CORPORATE_SUBSCRIPTION,
+  ADMIN_VIEW_CORPORATE_SUBSCRIPTION,
   ADMIN_ADD_CORPORATE_SUBSCRIPTION,
 
   ADMIN_CUSTOMER_SUBSCRIPTIONS,
@@ -139,6 +139,8 @@ const {
   ADMIN_VIEW_RESERVED_PARKING,
   ADMIN_ADD_RESERVED_PARKING,
   ADMIN_CAR_SERVICES,
+  ADMIN_ADD_CAR_SERVICE,
+  ADMIN_VIEW_CAR_SERVICE,
   ADMIN_CLIENTS,
   ADMIN_ADD_CLIENT,
   ADMIN_VIEW_CLIENT,
@@ -514,6 +516,10 @@ const AdminAddCorporateSubscription = WithSuspense(
   lazy(() => import("../pages/Admin/Memberships/AddCorporateSubscription"))
 );
 
+const AdminViewCorporateSubscription = WithSuspense(
+  lazy(() => import("../pages/Admin/Memberships/ViewCorporateSubscription"))
+);
+
 const AdminPayToPark = WithSuspense(
   lazy(() => import("../pages/Admin/Transactions/PayToPark"))
 );
@@ -536,6 +542,14 @@ const AdminAddReservedParking = WithSuspense(
 
 const AdminCarServices = WithSuspense(
   lazy(() => import("../pages/Admin/Transactions/CarServices"))
+);
+
+const AdminViewCarService = WithSuspense(
+  lazy(() => import("../pages/Admin/Transactions/ViewCarService"))
+);
+
+const AdminAddCarService = WithSuspense(
+  lazy(() => import("../pages/Admin/Transactions/AddCarService"))
 );
 
 const AdminClients = WithSuspense(
@@ -931,6 +945,11 @@ export const PRIVATE_ROUTES = [
   },
 
   {
+    path: ADMIN_VIEW_CORPORATE_SUBSCRIPTION,
+    element: <AdminViewCorporateSubscription />,
+  },
+
+  {
     path: ADMIN_PAYTOPARK,
     element: <AdminPayToPark />,
   },
@@ -957,6 +976,16 @@ export const PRIVATE_ROUTES = [
   {
     path: ADMIN_CAR_SERVICES,
     element: <AdminCarServices />,
+  },
+
+  {
+    path: ADMIN_ADD_CAR_SERVICE,
+    element: <AdminAddCarService />,
+  },
+
+  {
+    path: ADMIN_VIEW_CAR_SERVICE,
+    element: <AdminViewCarService />,
   },
 
   {

@@ -105,7 +105,7 @@ const TableLayer = ({
                         fontWeight="500"
                         onClick={() =>
                           navigate(
-                            "/admin/locations/policies/details/" + role.id,
+                            "/admin/configurations/roles/details/" + role.id,
                             {
                               state: { ...role, isEdit: false },
                             }
@@ -121,7 +121,7 @@ const TableLayer = ({
                         fontWeight="500"
                         onClick={() =>
                           navigate(
-                            "/admin/locations/policies/details/" + role.id,
+                            "/admin/configurations/roles/details/" + role.id,
                             {
                               state: { ...role, isEdit: true },
                             }

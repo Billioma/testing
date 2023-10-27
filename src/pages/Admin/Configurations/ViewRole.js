@@ -17,13 +17,17 @@ import { PRIVATE_PATHS } from "../../../routes/constants";
 import useCustomToast from "../../../utils/notifications";
 import GoBackTab from "../../../components/data/Admin/GoBackTab";
 import {
-  useAddMake,
-  useGetMakes,
+  useDeleteRole,
+  useEditRole,
+  useGetRoles,
 } from "../../../services/admin/query/configurations";
+import AdminDeleteModal from "../../../components/modals/AdminDeleteModal";
 
 export default function ViewRole() {
   const [state, setState] = useState({
-    status: 1,
+    name: "",
+    displayName: "",
+    permissions: [],
   });
   const [isEdit, setIsEdit] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
@@ -31,8 +35,8 @@ export default function ViewRole() {
   const navigate = useNavigate();
   const [isDisabled, setIsDisabled] = useState(true);
   const { errorToast, successToast } = useCustomToast();
-  const { refetch } = useGetMakes();
-  const { mutate, isLoading } = useAddMake({
+  const { refetch } = useGetRoles();
+  const { mutate, isLoading } = useEditRole({
     onSuccess: () => {
       successToast("Role updated successfully!");
       refetch();
@@ -41,6 +45,20 @@ export default function ViewRole() {
     onError: (error) => {
       errorToast(
         error?.response?.data?.message || error?.message || "An Error occurred"
+      );
+    },
+  });
+
+  const { mutate: deleteRole, isLoading: isDeleting } = useDeleteRole({
+    onSuccess: (res) => {
+      successToast(res?.message);
+      setIsOpen(false);
+      refetch();
+      navigate(PRIVATE_PATHS.ADMIN_CONFIG_BANK_DETAILS);
+    },
+    onError: (err) => {
+      errorToast(
+        err?.response?.data?.message || err?.message || "An Error occurred"
       );
     },
   });
@@ -57,11 +75,51 @@ export default function ViewRole() {
     mutate(state);
   };
 
+  const generateAccordionItems = (
+    title,
+    startNumber = 0,
+    extras = [],
+    custom = false
+  ) => {
+    const items = [];
+
+    if (!custom) {
+      items.push(
+        { label: `Browse ${title}`, id: startNumber },
+        { label: `Read ${title}`, id: startNumber + 1 },
+        { label: `Edit ${title}`, id: startNumber + 2 },
+        { label: `Add ${title}`, id: startNumber + 3 },
+        { label: `Delete ${title}`, id: startNumber + 4 }
+      );
+    }
+
+    if (extras)
+      extras.map((extra, index) =>
+        items.push({
+          label: `${extra} ${title}`,
+          id: startNumber + index + (custom ? 0 : 5),
+        })
+      );
+
+    return (
+      <CustomAccordionItem
+        title={title}
+        items={items}
+        setState={setState}
+        state={state}
+        isEdit={isEdit}
+      />
+    );
+  };
+
   useEffect(() => {
+    const { id, name, displayName, permissions } = location.state;
     setState({
-      ...location.state,
+      id,
+      name,
+      displayName,
+      permissions: permissions.map((permission) => parseInt(permission.id)),
     });
-    setIsEdit(location?.state?.isEdit);
   }, [location.state]);
 
   return (
@@ -91,6 +149,7 @@ export default function ViewRole() {
                 mb
                 holder="Enter role name"
                 onChange={(e) => setState({ ...state, name: e.target.value })}
+                isDisabled={!isEdit}
               />
             </Box>
 
@@ -107,6 +166,7 @@ export default function ViewRole() {
                 onChange={(e) =>
                   setState({ ...state, displayName: e.target.value })
                 }
+                isDisabled={!isEdit}
               />
             </Box>
 
@@ -117,7 +177,7 @@ export default function ViewRole() {
                 onClick={() =>
                   !isEdit
                     ? setIsOpen(true)
-                    : navigate(PRIVATE_PATHS.ADMIN_CONFIG_FAQS)
+                    : navigate(PRIVATE_PATHS.ADMIN_CONFIG_ROLES)
                 }
               >
                 {!isEdit ? "Delete" : "Cancel"}
@@ -144,242 +204,169 @@ export default function ViewRole() {
             border="1px solid #E4E6E8"
           >
             <Accordion p={0} allowToggle>
-              <CustomAccordionItem
-                title="Permissions"
-                items={[
-                  "Browse Permissions",
-                  "Read Permissions",
-                  "Edit Permissions",
-                  "Add Permissions",
-                  "Delete Permissions",
-                  "Generate Permissions",
-                ]}
-              />
-              <CustomAccordionItem
-                title="Roles"
-                items={[
-                  "Browse Roles",
-                  "Read Roles",
-                  "Edit Roles",
-                  "Add Roles",
-                  "Delete Roles",
-                ]}
-              />
-              <CustomAccordionItem
-                title="Users"
-                items={[
-                  "Browse Users",
-                  "Read Users",
-                  "Edit Users",
-                  "Add Users",
-                  "Delete Users",
-                ]}
-              />
+              {generateAccordionItems("Permissions", 0, ["Generate"])}
+              {generateAccordionItems("Roles", 6)}
+              {generateAccordionItems("Users", 11)}
+              {generateAccordionItems("Operators", 16)}
+              {generateAccordionItems("Clients", 21, [
+                "Fund",
+                "Export",
+                "View_user",
+                "Attach_user",
+                "Detach_user",
+              ])}
+              {generateAccordionItems("Attendants", 31)}
+              {generateAccordionItems("Customers", 36, ["Fund", "Export"])}
+              {generateAccordionItems("Vehicle-Makes", 43)}
+              {generateAccordionItems("Vehicle-Models", 48)}
+              {generateAccordionItems("Vehicles", 53, ["Export"])}
+              {generateAccordionItems("Zones", 59, ["Export"])}
+              {generateAccordionItems("Locations", 65, ["Export"])}
+              {generateAccordionItems(
+                "Payments",
+                71,
+                ["Browse", "Export"],
+                true
+              )}
+              {generateAccordionItems("Amenities", 73)}
+              {generateAccordionItems("Bank Details", 78)}
+              {generateAccordionItems("Client-Invoices", 83, [
+                "Update_payment",
+                "Send",
+                "Export",
+              ])}
+              {generateAccordionItems("Stats", 91, ["Browse"], true)}
+              {generateAccordionItems("Event Parkings", 92, ["Cancel"])}
+              {generateAccordionItems("Events", 98, ["Cancel"])}
+              {generateAccordionItems("Faqs", 104)}
+              {generateAccordionItems("Membership Plans", 109, ["Restore"])}
+              {generateAccordionItems("Membership Plans Features", 115)}
+              {generateAccordionItems("Membership Subscriptions", 120, [
+                "Cancel",
+                "Renew",
+                "Export",
+              ])}
+              {generateAccordionItems("Pay-to-Park", 128)}
+              {generateAccordionItems("Policies", 133)}
+              {generateAccordionItems("Rates", 135)}
+              {generateAccordionItems("Reservations", 140, [
+                "Cancel",
+                "Request",
+              ])}
 
-              <CustomAccordionItem
-                title="Operators"
-                items={[
-                  "Browse Operators",
-                  "Read Operators",
-                  "Edit Operators",
-                  "Add Operators",
-                  "Delete Operators",
-                ]}
-              />
+              {generateAccordionItems("Service Bookings", 147, [
+                "Cancel",
+                "Operations",
+              ])}
 
-              <CustomAccordionItem
-                title="Clients"
-                items={[
-                  "Browse Clients",
-                  "Read Clients",
-                  "Edit Clients",
-                  "Add Clients",
-                  "Delete Clients",
-                ]}
-              />
+              {generateAccordionItems("Service Log", 154, [
+                "Export",
+                "Retrieve",
+              ])}
 
-              <CustomAccordionItem
-                title="Attendants"
-                items={[
-                  "Browse Attendants",
-                  "Read Attendants",
-                  "Edit Attendants",
-                  "Add Attendants",
-                  "Delete Attendants",
-                ]}
-              />
+              {generateAccordionItems("Services", 166)}
+              {generateAccordionItems(
+                "Transactions",
+                91,
+                ["Browse", "Read", "Refund"],
+                true
+              )}
 
-              <CustomAccordionItem
-                title="Customers"
-                items={[
-                  "Browse Customers",
-                  "Read Customers",
-                  "Edit Customers",
-                  "Add Customers",
-                  "Delete Customers",
-                ]}
-              />
-
-              <CustomAccordionItem
-                title="Vehicle-Makes"
-                items={[
-                  "Browse Vehicle-Makes",
-                  "Read Vehicle-Makes",
-                  "Edit Vehicle-Makes",
-                  "Add Vehicle-Makes",
-                  "Delete Vehicle-Makes",
-                ]}
-              />
-
-              <CustomAccordionItem
-                title="Vehicle-Models"
-                items={[
-                  "Browse Vehicle-Models",
-                  "Read Vehicle-Models",
-                  "Edit Vehicle-Models",
-                  "Add Vehicle-Models",
-                  "Delete Vehicle-Models",
-                ]}
-              />
-
-              <CustomAccordionItem
-                title="Vehicles"
-                items={[
-                  "Browse Vehicles",
-                  "Read Vehicles",
-                  "Edit Vehicles",
-                  "Add Vehicles",
-                  "Delete Vehicles",
-                ]}
-              />
-
-              <CustomAccordionItem
-                title="Zones"
-                items={[
-                  "Browse Zones",
-                  "Read Zones",
-                  "Edit Zones",
-                  "Add Zones",
-                  "Delete Zones",
-                ]}
-              />
-
-              <CustomAccordionItem
-                title="Locations"
-                items={[
-                  "Browse Locations",
-                  "Read Locations",
-                  "Edit Locations",
-                  "Add Locations",
-                  "Delete Locations",
-                ]}
-              />
-
-              <CustomAccordionItem
-                title="Payments"
-                items={[
-                  "Browse Payments",
-                  "Read Payments",
-                  "Edit Payments",
-                  "Add Payments",
-                  "Delete Payments",
-                ]}
-              />
-
-              <CustomAccordionItem
-                title="Amenities"
-                items={[
-                  "Browse Amenities",
-                  "Read Amenities",
-                  "Edit Amenities",
-                  "Add Amenities",
-                  "Delete Amenities",
-                ]}
-              />
-
-              <CustomAccordionItem
-                title="Bank Details"
-                items={[
-                  "Browse Bank Details",
-                  "Read Bank Details",
-                  "Edit Bank Details",
-                  "Add Bank Details",
-                  "Delete Bank Details",
-                ]}
-              />
-
-              <CustomAccordionItem
-                title="Client-Invoices"
-                items={[
-                  "Browse Client-Invoices",
-                  "Read Client-Invoices",
-                  "Edit Client-Invoices",
-                  "Add Client-Invoices",
-                  "Delete Client-Invoices",
-                ]}
-              />
-
-              <CustomAccordionItem
-                title="Event-Parkings"
-                items={[
-                  "Browse Event-Parkings",
-                  "Read Event-Parkings",
-                  "Edit Event-Parkings",
-                  "Add Event-Parkings",
-                  "Delete Event-Parkings",
-                ]}
-              />
-
-              <CustomAccordionItem
-                title="Events"
-                items={[
-                  "Browse Events",
-                  "Read Events",
-                  "Edit Events",
-                  "Add Events",
-                  "Delete Events",
-                ]}
-              />
-
-              <CustomAccordionItem
-                title="FAQs"
-                items={[
-                  "Browse FAQs",
-                  "Read FAQs",
-                  "Edit FAQs",
-                  "Add FAQs",
-                  "Delete FAQs",
-                ]}
-              />
+              {generateAccordionItems("Corporate Subscription", 169, [
+                "Cancel",
+                "Renew",
+                "Export",
+                "Attach User",
+                "Detach User",
+              ])}
             </Accordion>
           </Flex>
         </Flex>
       </Flex>
+
+      <AdminDeleteModal
+        isOpen={isOpen}
+        onClose={() => setIsOpen(false)}
+        title="Delete Role"
+        subTitle="Are you sure you want to delete this role?"
+        handleSubmit={() => deleteRole(state.id)}
+        isLoading={isDeleting}
+      />
     </Box>
   );
 }
 
-const CustomAccordionItem = ({ title, items }) => {
+const CustomAccordionItem = ({ title, items, setState, state, isEdit }) => {
+  const [selectAll, setSelectAll] = useState(false);
+
+  const handleSelectAllChange = (e) => {
+    const isChecked = e.target.checked;
+    setSelectAll(isChecked);
+
+    if (isChecked) {
+      let tempPermission = state.permissions;
+
+      items.map((item) => tempPermission.push(item.id));
+
+      tempPermission = [...new Set(tempPermission)];
+
+      setState({ ...state, permissions: tempPermission });
+    }
+  };
+
+  const handleChange = (id, isChecked) => {
+    const temp = [...state.permissions];
+    if (isChecked) {
+      temp.push(id);
+    } else {
+      setSelectAll(false);
+      const index = temp.findIndex((el) => el === id);
+      temp.splice(index, 1);
+    }
+
+    setState({ ...state, permissions: temp });
+  };
+
   return (
     <AccordionItem border={0} mt={4}>
-      <AccordionButton _hover={{ bg: "transparent" }} p={0}>
-        <Box as="span" flex="1" textAlign="left">
+      <Flex align={"center"} p={0}>
+        <AccordionButton
+          as="span"
+          flex="1"
+          textAlign="left"
+          cursor="pointer"
+          _hover={{ bg: "transparent" }}
+        >
           <Text fontSize={12} fontWeight={500}>
             {title}
           </Text>
-        </Box>
+        </AccordionButton>
         <Flex gap={2}>
-          <Checkbox colorScheme="orange" defaultChecked />
-          <AccordionIcon />
+          <Checkbox
+            colorScheme="orange"
+            onChange={handleSelectAllChange}
+            isChecked={selectAll}
+            isDisabled={!isEdit}
+          />
+          <AccordionButton w="fit-content" p={0} _hover={{ bg: "transparent" }}>
+            <AccordionIcon />
+          </AccordionButton>
         </Flex>
-      </AccordionButton>
+      </Flex>
 
       <AccordionPanel pb={4} pl={3} gap={3} display={"flex"} flexDir={"column"}>
         {items.map((item, index) => (
           <Flex key={index} gap={3}>
-            <Checkbox colorScheme="orange" defaultChecked />
+            <Checkbox
+              colorScheme="orange"
+              isChecked={state.permissions?.includes(item.id) || selectAll}
+              isDisabled={!isEdit}
+              onChange={(e) => {
+                handleChange(item.id, e.target.checked);
+              }}
+            />
             <Text fontSize={12} color="#646668">
-              {item}
+              {item?.label}
             </Text>
           </Flex>
         ))}

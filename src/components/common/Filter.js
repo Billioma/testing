@@ -38,9 +38,9 @@ const Filter = ({
     value: duration,
     label: duration,
   }));
-  const locationOptions = LocationTypes.map((lcoation, i) => ({
+  const locationOptions = LocationTypes.map((location, i) => ({
     value: i,
-    label: lcoation,
+    label: location,
   }));
   const intervalOptions = IntervalType.map((time, i) => ({
     value: i,
@@ -70,6 +70,30 @@ const Filter = ({
     label: opt,
   }));
 
+  const booleanOptions = ["FALSE", "TRUE"].map((opt, i) => ({
+    value: i,
+    label: opt,
+  }));
+
+  const statusOptions = ["Inactive", "Active"].map((opt, i) => ({
+    value: i,
+    label: opt,
+  }));
+
+  const servicesOptions = ["VALET", "PARKING", "SERVICE", "OTHERS"].map(
+    (opt, i) => ({ value: opt, label: opt })
+  );
+
+  const featureTypesOptions = [
+    "Vehicle Limit",
+    "Parking Limit",
+    "Valet Limit",
+    "Location Limit",
+    "Car Service Limit",
+    "Applicable Locations",
+    "User Limit",
+  ].map((opt, i) => ({ value: i, label: opt }));
+
   const [show, setShow] = useState(false);
 
   const fieldOptions = fieldToCompare?.map((field) => ({
@@ -93,7 +117,7 @@ const Filter = ({
       width: "100%",
       minHeight: "44px",
       color: "#646668",
-      fontSize: "14px",
+      fontSize: "12px",
       cursor: "pointer",
       borderRadius: "4px",
       border: "1px solid #D4D6D8",
@@ -158,7 +182,7 @@ const Filter = ({
   };
 
   return (
-    <Box pos="relative" zIndex="3">
+    <Box pos="relative" zIndex="3" py={3} px={5}>
       <Flex
         align={{ base: "flex-start", md: "center" }}
         gap={{ base: "20px", md: "unset" }}
@@ -275,6 +299,9 @@ const Filter = ({
                 {values?.dropFilter?.includes("Type") ||
                 values?.dropFilter === "Duration" ||
                 values?.dropFilter === "Reservable" ||
+                values?.dropFilter === "Corporate" ||
+                values?.dropFilter === "Upgradeable" ||
+                values?.dropFilter === "Status" ||
                 values?.dropFilter?.includes("State") ||
                 values?.dropFilter?.includes("Duration Type") ||
                 values?.dropFilter?.includes("Account Type") ? (
@@ -313,6 +340,15 @@ const Filter = ({
                             ? durationOptions
                             : values.dropFilter === "Location Type"
                             ? locationOptions
+                            : values.dropFilter === "Service Type"
+                            ? servicesOptions
+                            : values.dropFilter === "Feature Type"
+                            ? featureTypesOptions
+                            : values.dropFilter === "Corporate" ||
+                              values.dropFilter === "Upgradeable"
+                            ? booleanOptions
+                            : values.dropFilter === "Status"
+                            ? statusOptions
                             : searchOptions
                         }
                         value={selectedFilter}

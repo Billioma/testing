@@ -115,7 +115,7 @@ const TableLayer = ({
                 </Flex>
               </Td>
 
-              <Td>{formatDate(event?.createdAt)}</Td>
+              <Td textAlign={"center"}>{formatDate(event?.createdAt)}</Td>
               <Td>
                 <Flex justifyContent="center" align="center">
                   <Menu>
@@ -170,7 +170,7 @@ const TableLayer = ({
         ) : (
           <Tr>
             <Td colSpan={7} rowSpan={2}>
-              <NoData title="No Client" desc="You have not added a client" />
+              <NoData title="No Event" desc="You have not added an event" />
             </Td>
           </Tr>
         )}

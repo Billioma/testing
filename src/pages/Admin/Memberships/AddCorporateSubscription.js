@@ -11,6 +11,8 @@ import GoBackTab from "../../../components/data/Admin/GoBackTab";
 import {
   useCreateCorporateSubscription,
   useCreateMembershipFeature,
+  useGetCorporatePlans,
+  useGetCorporateSubscriptions,
   useGetMembershipPlans,
 } from "../../../services/admin/query/memberships";
 import {
@@ -19,33 +21,28 @@ import {
 } from "../../../services/admin/query/clients";
 
 export default function AddCorporateSubscription() {
-  const [step, setStep] = useState(1);
-
+  const [featureTypes, setFeatureTypes] = useState([]);
   const [state, setState] = useState({
-    customer: 0,
     membershipPlan: "",
     subscriptionOptions: [
       {
         planFeature: 0,
-        data: "string",
+        data: "",
       },
     ],
-    startDate: "2023-08-17T22:23:13.028Z",
-    nextPaymentDate: "2023-08-17T22:23:13.028Z",
     autoRenewal: 0,
-    status: 1,
-    paymentMethod: "0",
-    cardId: 0,
-    notifyCustomer: 0,
+    paymentMethod: 2,
   });
 
   const navigate = useNavigate();
   const [isDisabled, setIsDisabled] = useState(true);
   const { errorToast, successToast } = useCustomToast();
+  const { refetch } = useGetCorporateSubscriptions();
 
   const { mutate, isLoading } = useCreateCorporateSubscription({
     onSuccess: () => {
-      successToast("Membership feature added successfully!");
+      refetch();
+      successToast("Corporate subscription created successfully!");
       navigate(PRIVATE_PATHS.ADMIN_CORPORATE_SUBSCRIPTIONS);
     },
     onError: (error) => {
@@ -59,8 +56,6 @@ export default function AddCorporateSubscription() {
 
   const { data: clientUsers, mutate: getClientUsers } = useGetClientUsers();
 
-  console.log(clientUsers);
-
   const userOptions = clientUsers?.map((user) => ({
     label: `${user?.profile?.firstName} ${user?.profile?.lastName}`,
     value: user.id,
@@ -69,6 +64,7 @@ export default function AddCorporateSubscription() {
   const clientOptions = clients?.data?.map((client) => ({
     label: client.name,
     value: client.id,
+    wallet: client?.wallet?.balance || 0,
   }));
 
   const intervalOptions = [
@@ -82,28 +78,70 @@ export default function AddCorporateSubscription() {
   ];
 
   const isFormValid = () => {
-    return (
-      !state.name || !state.value || !state.membershipPlan || !state.featureType
-    );
+    return !state.client || !state.subscriptionOptions[0]?.data?.length;
   };
 
-  const { data: plans } = useGetMembershipPlans({}, 1, 100000, true, true);
+  const { data: plans } = useGetCorporatePlans({});
 
   useEffect(() => {
     setIsDisabled(isFormValid);
   }, [state]);
 
-  const handleSelectChange = (selectedOption, { name }) => {
+  const handlePlanSelection = (plan) => {
+    const tempFeatureTypes = [];
+    const temp = plan.features.map((feature) => {
+      tempFeatureTypes.push(getFeatureType(feature.featureType, feature.value));
+      setFeatureTypes(tempFeatureTypes);
+      return {
+        planFeature: feature.id,
+        data: [],
+        limit: feature.value,
+        type:
+          feature.featureType === 0
+            ? "vehicle"
+            : feature.featureType === 3
+            ? "location"
+            : null,
+      };
+    });
+
     setState({
       ...state,
-      [name]: selectedOption,
+      membershipPlan: plan.id,
+      subscriptionOptions: temp,
     });
+  };
+
+  const getFeatureType = (type, limit) => {
+    switch (type) {
+      case 0:
+        return { vehicle: parseInt(limit) };
+
+      case 3:
+        return { location: parseInt(limit) };
+
+      case 6:
+        return { users: parseInt(limit) };
+
+      default:
+        break;
+    }
+  };
+
+  const handleUsersSelect = (data) => {
+    const temp = state.subscriptionOptions;
+
+    temp[0].data = data.map((data) => data.value);
+
+    setState({ ...state, subscriptionOptions: temp });
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     mutate({ ...state });
   };
+
+  console.log(state);
 
   return (
     <Box minH="75vh">
@@ -123,10 +161,7 @@ export default function AddCorporateSubscription() {
           >
             <Box bg="#0D0718" borderRadius="8px" p={4} mb={4}>
               <Text color="#fff" fontSize="14px" fontWeight={500}>
-                {
-                  plans?.data?.find((plan) => plan.id === state.membershipPlan)
-                    ?.name
-                }
+                {plans?.find((plan) => plan.id === state.membershipPlan)?.name}
               </Text>
 
               <Flex justifyContent="space-between" mt={3}>
@@ -136,7 +171,7 @@ export default function AddCorporateSubscription() {
                   </Text>
                   <Text fontSize="12px" color="#848688" fontWeight={500}>
                     ₦
-                    {plans?.data
+                    {plans
                       ?.find((plan) => plan.id === state.membershipPlan)
                       ?.amount?.toLocaleString()}
                   </Text>
@@ -148,9 +183,8 @@ export default function AddCorporateSubscription() {
                   <Text fontSize="12px" color="#848688" fontWeight={500}>
                     {
                       intervalOptions[
-                        plans?.data?.find(
-                          (plan) => plan.id === state.membershipPlan
-                        )?.interval
+                        plans?.find((plan) => plan.id === state.membershipPlan)
+                          ?.interval
                       ]
                     }
                   </Text>
@@ -164,8 +198,8 @@ export default function AddCorporateSubscription() {
               </Text>
               <Select
                 styles={customStyles}
-                onChange={({ value }) => {
-                  handleSelectChange(value, { name: "client" });
+                onChange={({ value, wallet }) => {
+                  setState({ ...state, client: value, wallet });
                   getClientUsers(value);
                 }}
                 options={clientOptions}
@@ -179,50 +213,63 @@ export default function AddCorporateSubscription() {
               </Text>
               <Select
                 styles={customStyles}
-                onChange={({ value }) =>
-                  handleSelectChange(value, { name: "users" })
-                }
+                onChange={handleUsersSelect}
                 options={userOptions}
-                isMulti
+                isMulti={state.subscriptionOptions[0]?.limit > 1}
                 placeholder="Select users"
               />
             </Box>
 
-            {step !== 1 && (
-              <>
-                <Flex
-                  align="center"
-                  justifyContent={"space-between"}
-                  gap="15px"
-                  mb="16px"
-                >
-                  <Text fontSize="12px" fontWeight={500} color="#444648">
-                    Renew Automatically
-                  </Text>
-                  <Switch
-                    onChange={() =>
-                      setState({
-                        ...state,
-                        isUpgradable: state.isUpgradable ? 0 : 1,
-                      })
-                    }
-                    size="sm"
-                    variant="adminPrimary"
-                  />
-                </Flex>
+            <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
+              Corporate Payment Method
+            </Text>
 
-                <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
-                  Customer Payment Method
+            <Flex
+              bg="#fff"
+              borderRadius="16px"
+              py="15px"
+              px="15px"
+              justifyContent="between"
+              w="100%"
+              flexDir="column"
+              border="1px solid #E4E6E8"
+              mb={5}
+            >
+              <Flex flexDir={"column"}>
+                <Text fontSize={"12px"}>Wallet</Text>
+                <Text fontWeight={"500"} fontSize={12}>
+                  Balance: ₦{state.wallet?.toLocaleString() || 0}
                 </Text>
-              </>
-            )}
+              </Flex>
+            </Flex>
+
+            <Flex
+              align="center"
+              justifyContent={"space-between"}
+              gap="15px"
+              mb="16px"
+            >
+              <Text fontSize="12px" fontWeight={500} color="#444648">
+                Renew Automatically
+              </Text>
+              <Switch
+                onChange={() =>
+                  setState({
+                    ...state,
+                    autoRenewal: state.autoRenewal ? 0 : 1,
+                  })
+                }
+                size="sm"
+                variant="adminPrimary"
+              />
+            </Flex>
 
             <Flex gap={4} mt={4}>
               <Button
                 variant="adminSecondary"
                 w="45%"
                 onClick={() =>
-                  navigate(PRIVATE_PATHS.ADMIN_CUSTOMER_SUBSCRIPTIONS)
+                  navigate(PRIVATE_PATHS.ADMIN_CORPORATE_SUBSCRIPTIONS)
                 }
               >
                 Cancel
@@ -230,18 +277,18 @@ export default function AddCorporateSubscription() {
               <Button
                 variant="adminPrimary"
                 w="55%"
-                isDisabled={step !== 1 && isDisabled}
+                isDisabled={isDisabled}
                 isLoading={isLoading}
-                onClick={(e) => (step === 1 ? setStep(2) : handleSubmit(e))}
+                onClick={handleSubmit}
               >
-                {step === 1 ? "Next" : "Add Subscription"}
+                Add Subscription
               </Button>
             </Flex>
           </Flex>
         ) : (
           <Box border="1px solid #E4E6E8" w="full" p={5} borderRadius="8px">
             <SimpleGrid templateColumns="1fr 1fr 1fr" gap={4} w="full">
-              {plans?.data?.map((plan) => (
+              {plans?.map((plan) => (
                 <Flex
                   key={plan.id}
                   border="1px solid #E4E6E8"
@@ -275,9 +322,7 @@ export default function AddCorporateSubscription() {
                   </Box>
                   <Button
                     variant="adminPrimary"
-                    onClick={() =>
-                      setState({ ...state, membershipPlan: plan.id })
-                    }
+                    onClick={() => handlePlanSelection(plan)}
                   >
                     Select
                   </Button>

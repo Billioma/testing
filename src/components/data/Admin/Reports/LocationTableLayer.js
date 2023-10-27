@@ -79,8 +79,8 @@ const LocationTableLayer = ({ isLoading, limit, data, setPage, page }) => {
                 <Tr>
                   <Td colSpan={7} rowSpan={2}>
                     <NoData
-                      title="No Event"
-                      desc="No event has been added to your account"
+                      title="No Location Report"
+                      desc="No location report available at the moment"
                     />
                   </Td>
                 </Tr>

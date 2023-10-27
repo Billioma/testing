@@ -157,7 +157,10 @@ const TableLayer = ({
         ) : (
           <Tr>
             <Td colSpan={7} rowSpan={2}>
-              <NoData title="No make" desc="You have not added a make" />
+              <NoData
+                title="No Question"
+                desc="You have not added a question"
+              />
             </Td>
           </Tr>
         )}

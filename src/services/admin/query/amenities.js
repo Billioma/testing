@@ -6,10 +6,10 @@ import {
   deleteAmenity,
 } from "../api/amenities";
 
-export const useGetAmenities = (options = {}, page = 1, limit = 25) => {
+export const useGetAmenities = (options = {}, page = 1, limit = 25, query) => {
   const { data, isLoading, refetch } = useQuery(
-    ["GET_AMENITIES", page, limit],
-    () => getAmenities(page, limit),
+    ["GET_AMENITIES", page, limit, query],
+    () => getAmenities(page, limit, query),
     {
       ...options,
     }

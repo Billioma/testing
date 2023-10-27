@@ -111,10 +111,7 @@ const TableLayer = ({
               fontSize="12px"
               lineHeight="100%"
             >
-              <Td>
-                {subscription?.customer?.profile?.firstName}{" "}
-                {subscription?.customer?.profile?.lastName}
-              </Td>
+              <Td>{subscription?.client?.name} </Td>
               <Td>{subscription?.membershipPlan?.name}</Td>
               <Td>₦{subscription?.membershipPlan?.amount?.toLocaleString()}</Td>
               <Td>{intervalOptions[subscription?.membershipPlan?.interval]}</Td>
@@ -150,7 +147,7 @@ const TableLayer = ({
                         fontWeight="500"
                         onClick={() =>
                           navigate(
-                            `${PRIVATE_PATHS.ADMIN_CUSTOMER_SUBSCRIPTIONS}/details/${subscription.id}`,
+                            `${PRIVATE_PATHS.ADMIN_CORPORATE_SUBSCRIPTIONS}/details/${subscription.id}`,
                             { state: { ...subscription, isEdit: false } }
                           )
                         }
@@ -164,7 +161,7 @@ const TableLayer = ({
                         fontWeight="500"
                         onClick={() =>
                           navigate(
-                            `${PRIVATE_PATHS.ADMIN_CUSTOMER_SUBSCRIPTIONS}/details/${subscription.id}`,
+                            `${PRIVATE_PATHS.ADMIN_CORPORATE_SUBSCRIPTIONS}/details/${subscription.id}`,
                             { state: { ...subscription, isEdit: true } }
                           )
                         }

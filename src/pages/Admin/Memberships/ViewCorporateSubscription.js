@@ -9,32 +9,32 @@ import useCustomToast from "../../../utils/notifications";
 import GoBackTab from "../../../components/data/Admin/GoBackTab";
 import { IoMdRefresh, IoMdClose } from "react-icons/io";
 import {
-  useCancelCustomerSubscription,
-  useDeleteCustomerSubscription,
-  useEditCustomerSubscription,
-  useGetCustomerSubscriptions,
+  useCancelCorporateSubscription,
+  useDeleteCorporateSubscription,
+  useEditCorporateSubscription,
+  useGetCorporateSubscriptions,
   useGetMembershipPlans,
-  useRenewCustomerSubscription,
+  useRenewCorporateSubscription,
 } from "../../../services/admin/query/memberships";
 import { useGetAllLocations } from "../../../services/admin/query/locations";
 import DateTimePicker from "../../../components/data/Admin/DateTimePicker";
 import AdminActionModal from "../../../components/modals/AdminDeleteModal";
 
-export default function ViewMembershipSubscription() {
+export default function ViewCorporateSubscription() {
   const [state, setState] = useState({
     customer: 0,
     membershipPlan: "",
     subscriptionOptions: [
       {
         planFeature: 0,
-        data: "",
+        data: "string",
       },
     ],
     startDate: "",
     nextPaymentDate: "",
     autoRenewal: 0,
     status: 1,
-    paymentMethod: "",
+    paymentMethod: 2,
   });
 
   const [isCancelModalOpen, setIsCancelModalOpen] = useState(false);
@@ -44,12 +44,12 @@ export default function ViewMembershipSubscription() {
   const [isEdit, setIsEdit] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
-  const { refetch } = useGetCustomerSubscriptions();
+  const { refetch } = useGetCorporateSubscriptions();
 
-  const { mutate, isLoading } = useEditCustomerSubscription({
+  const { mutate, isLoading } = useEditCorporateSubscription({
     onSuccess: () => {
       refetch();
-      successToast("Customer subscription updated successfully!");
+      successToast("Corporate subscription updated successfully!");
       navigate(PRIVATE_PATHS.ADMIN_CUSTOMER_SUBSCRIPTIONS);
     },
     onError: (error) => {
@@ -59,13 +59,13 @@ export default function ViewMembershipSubscription() {
     },
   });
 
-  const { mutate: deleteCustomerSub, isLoading: isDeleting } =
-    useDeleteCustomerSubscription({
+  const { mutate: deleteCorporateSub, isLoading: isDeleting } =
+    useDeleteCorporateSubscription({
       onSuccess: (res) => {
         successToast(res?.message);
         setIsDeleteModalOpen(false);
         refetch();
-        navigate(PRIVATE_PATHS.ADMIN_CUSTOMER_SUBSCRIPTIONS);
+        navigate(PRIVATE_PATHS.ADMIN_CORPORATE_SUBSCRIPTIONS);
       },
       onError: (err) => {
         errorToast(
@@ -74,13 +74,13 @@ export default function ViewMembershipSubscription() {
       },
     });
 
-  const { mutate: renewCustomerSub, isLoading: isRenewing } =
-    useRenewCustomerSubscription({
+  const { mutate: renewCorporateSub, isLoading: isRenewing } =
+    useRenewCorporateSubscription({
       onSuccess: (res) => {
         successToast(res?.message);
         setIsRenewModalOpen(false);
         refetch();
-        navigate(PRIVATE_PATHS.ADMIN_CUSTOMER_SUBSCRIPTIONS);
+        navigate(PRIVATE_PATHS.ADMIN_CORPORATE_SUBSCRIPTIONS);
       },
       onError: (err) => {
         errorToast(
@@ -89,13 +89,13 @@ export default function ViewMembershipSubscription() {
       },
     });
 
-  const { mutate: cancelCustomerSub, isLoading: isCanceling } =
-    useCancelCustomerSubscription({
+  const { mutate: cancelCorporateSub, isLoading: isCanceling } =
+    useCancelCorporateSubscription({
       onSuccess: (res) => {
         successToast(res?.message);
         setIsCancelModalOpen(false);
         refetch();
-        navigate(PRIVATE_PATHS.ADMIN_CUSTOMER_SUBSCRIPTIONS);
+        navigate(PRIVATE_PATHS.ADMIN_CORPORATE_SUBSCRIPTIONS);
       },
       onError: (err) => {
         errorToast(
@@ -149,6 +149,8 @@ export default function ViewMembershipSubscription() {
 
     setIsEdit(location?.state?.isEdit);
   }, [location.state, membershipPlans]);
+
+  console.log(location.state);
 
   return (
     <Box minH="75vh">
@@ -334,7 +336,7 @@ export default function ViewMembershipSubscription() {
               onClick={() =>
                 !isEdit
                   ? setIsDeleteModalOpen(true)
-                  : navigate(PRIVATE_PATHS.ADMIN_CUSTOMER_SUBSCRIPTIONS)
+                  : navigate(PRIVATE_PATHS.ADMIN_CORPORATE_SUBSCRIPTIONS)
               }
             >
               {!isEdit ? "Delete" : "Cancel"}
@@ -356,7 +358,7 @@ export default function ViewMembershipSubscription() {
         onClose={() => setIsCancelModalOpen(false)}
         title="Cancel Subscription"
         subTitle="Are you sure you want to cancel this subscription?"
-        handleSubmit={() => cancelCustomerSub(state.id)}
+        handleSubmit={() => cancelCorporateSub(state.id)}
         isLoading={isCanceling}
         headerColor="#A11212"
         btnColor="#A11212"
@@ -367,7 +369,7 @@ export default function ViewMembershipSubscription() {
         onClose={() => setIsRenewModalOpen(false)}
         title="Renew Subscription"
         subTitle="Are you sure you want to renew this subscription?"
-        handleSubmit={() => renewCustomerSub(state.id)}
+        handleSubmit={() => renewCorporateSub(state.id)}
         isLoading={isRenewing}
       />
 
@@ -376,7 +378,7 @@ export default function ViewMembershipSubscription() {
         onClose={() => setIsDeleteModalOpen(false)}
         title="Delete Subscription"
         subTitle="Are you sure you want to delete this subscription?"
-        handleSubmit={() => deleteCustomerSub(state.id)}
+        handleSubmit={() => deleteCorporateSub(state.id)}
         isLoading={isDeleting}
       />
     </Box>

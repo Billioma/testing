@@ -11,17 +11,52 @@ import {
 import SubTableLayer from "../../../components/data/Admin/Reports/SubTableLayer";
 import { useGetAdminReport } from "../../../services/admin/query/reports";
 import CustomerExport from "../../../components/data/Admin/Reports/CustomerExport";
+import Filter from "../../../components/common/Filter";
+import { subsReportOptions } from "../../../components/common/constants";
 
 const Subs = () => {
-  const { mutate, data, isLoading } = useGetAdminReport();
+  const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState(50);
+  const [startRow, setStartRow] = useState(1);
+  const [endRow, setEndRow] = useState(0);
+  const [filtArray, setFiltArray] = useState([]);
 
-  const [page, setPage] = useState(0);
-  const limit = 10;
+  const convertedFilters = filtArray?.map((filterObj) => {
+    return `filter=${filterObj?.title}||${filterObj?.type || "cont"}||"${
+      filterObj?.filter
+    }"`;
+  });
+
+  const query = convertedFilters?.join("&");
+  const { refetch, data, isLoading } = useGetAdminReport(
+    "subscriptions",
+    {
+      refetchOnWindowFocus: true,
+    },
+    page,
+    limit,
+    query
+  );
 
   useEffect(() => {
-    mutate({ type: "subscriptions", limit, page: page + 1 });
-  }, [page]);
+    setPage(1);
+  }, [limit]);
 
+  useEffect(() => {
+    if (!data) {
+      return;
+    }
+
+    const currentPage = page;
+    const itemsPerPage = limit;
+    const totalItems = data.total;
+
+    const currentStartRow = (currentPage - 1) * itemsPerPage + 1;
+    const currentEndRow = Math.min(currentPage * itemsPerPage, totalItems);
+
+    setStartRow(currentStartRow);
+    setEndRow(currentEndRow);
+  }, [data, page, limit]);
   return (
     <Box minH="75vh">
       <Grid mb="24px" templateColumns={"repeat(3,1fr)"}>
@@ -70,47 +105,49 @@ const Subs = () => {
       </Grid>
 
       <Box borderRadius="8px" border="1px solid #d4d6d8" p="16px 23px 24px">
-        <Flex align="center" justifyContent="space-between" w="full">
-          <Text
-            fontSize="14px"
-            fontWeight={500}
-            lineHeight="100%"
-            color="#242628"
-          >
-            All Subscriptions
-          </Text>
-
-          <Flex align="center" gap="24px">
-            <CustomerExport data={data?.data} />
-            <Flex
-              justifyContent="center"
-              align="center"
-              cursor="pointer"
-              transition=".3s ease-in-out"
-              _hover={{ bg: "#F4F6F8" }}
-              onClick={() =>
-                mutate({ type: "subscriptions", limit, page: page + 1 })
-              }
-              borderRadius="8px"
-              border="1px solid #848688"
-              p="10px"
-            >
-              <Image
-                src="/assets/refresh.svg"
-                className={isLoading && "mirrored-icon"}
-                w="20px"
-                h="20px"
-              />
+        <Filter
+          setFiltArray={setFiltArray}
+          filtArray={filtArray}
+          fieldToCompare={subsReportOptions}
+          handleSearch={refetch}
+          title={<Text fontWeight="500">All Subscriptions</Text>}
+          main={
+            <Flex align="center" gap="24px">
+              <CustomerExport data={data?.data} />
+              <Flex
+                justifyContent="center"
+                align="center"
+                cursor="pointer"
+                transition=".3s ease-in-out"
+                _hover={{ bg: "#F4F6F8" }}
+                onClick={() =>
+                  mutate({ type: "subscriptions", limit, page: page + 1 })
+                }
+                borderRadius="8px"
+                border="1px solid #848688"
+                p="10px"
+              >
+                <Image
+                  src="/assets/refresh.svg"
+                  className={isLoading && "mirrored-icon"}
+                  w="20px"
+                  h="20px"
+                />
+              </Flex>
             </Flex>
-          </Flex>
-        </Flex>
+          }
+        />
 
         <SubTableLayer
-          page={page}
-          setPage={setPage}
           data={data}
-          limit={limit}
           isLoading={isLoading}
+          page={page}
+          limit={limit}
+          setPage={setPage}
+          startRow={startRow}
+          endRow={endRow}
+          refetch={refetch}
+          setLimit={setLimit}
         />
       </Box>
     </Box>

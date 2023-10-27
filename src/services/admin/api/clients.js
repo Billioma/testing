@@ -1,9 +1,11 @@
 import axiosInstance from "../../axiosInstance";
 import * as API from "../url";
 
-export const getClients = async (page, limit) => {
+export const getClients = async (page, limit, query) => {
   const response = await axiosInstance.get(
-    `${API.ADMIN_CLIENTS}?page=${page}&limit=${limit}&sort=id,DESC`
+    `${API.ADMIN_CLIENTS}?page=${page}&limit=${limit}&sort=id,DESC&${
+      query || ""
+    }`
   );
   return response.data;
 };
@@ -32,9 +34,11 @@ export const editClient = async (data) => {
   return response.data;
 };
 
-export const getClientsInvoices = async (page, limit) => {
+export const getClientsInvoices = async (page, limit, query) => {
   const response = await axiosInstance.get(
-    `${API.ADMIN_CLIENTS_INVOICES}?page=${page}&limit=${limit}&sort=id,DESC`
+    `${API.ADMIN_CLIENTS_INVOICES}?page=${page}&limit=${limit}&sort=id,DESC&${
+      query || ""
+    }`
   );
   return response.data;
 };
@@ -70,9 +74,11 @@ export const updateClientInvoice = async (data) => {
   return response.data;
 };
 
-export const getClientsEvents = async (page, limit) => {
+export const getClientsEvents = async (page, limit, query) => {
   const response = await axiosInstance.get(
-    `${API.ADMIN_EVENTS}?page=${page}&limit=${limit}&sort=id,DESC`
+    `${API.ADMIN_EVENTS}?page=${page}&limit=${limit}&sort=id,DESC&${
+      query || ""
+    }`
   );
   return response.data;
 };

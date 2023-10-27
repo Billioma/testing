@@ -19,7 +19,7 @@ const LogExport = ({ data }) => {
 
   return (
     <Box w="fit-content">
-      {data?.length && (
+      {data?.length ? (
         <CSVLink
           data={data}
           headers={columns.map((column) => ({
@@ -41,7 +41,7 @@ const LogExport = ({ data }) => {
             <Text>Export Data</Text>
           </Button>
         </CSVLink>
-      )}
+      ) : null}
     </Box>
   );
 };

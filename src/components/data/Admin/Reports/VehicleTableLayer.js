@@ -2,6 +2,7 @@ import React from "react";
 import {
   Box,
   Flex,
+  Select,
   Table,
   TableContainer,
   Tbody,
@@ -17,7 +18,16 @@ import NoData from "../../../common/NoData";
 import { formatDateTimes } from "../../../../utils/helpers";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 
-const VehicleTableLayer = ({ isLoading, limit, data, setPage, page }) => {
+const VehicleTableLayer = ({
+  data,
+  isLoading,
+  page,
+  setPage,
+  startRow,
+  endRow,
+  limit,
+  setLimit,
+}) => {
   return (
     <Box mt="16px">
       <TableContainer maxH="60vh" minH="40vh" overflowY="scroll">
@@ -51,7 +61,7 @@ const VehicleTableLayer = ({ isLoading, limit, data, setPage, page }) => {
                   <Tr fontSize="12px" fontWeight={500} color="#646668" key={i}>
                     <Td>{item?.customer}</Td>
                     <Td>{item?.licensePlate}</Td>
-                    <Td textAlign="center">{item?.make}</Td>
+                    <Td textAlign="">{item?.make}</Td>
                     <Td textAlign="center">{item?.model}</Td>
                     <Td textAlign="center">{item?.color}</Td>
                     <Td>{item?.state}</Td>
@@ -64,8 +74,8 @@ const VehicleTableLayer = ({ isLoading, limit, data, setPage, page }) => {
                 <Tr>
                   <Td colSpan={7} rowSpan={2}>
                     <NoData
-                      title="No Event"
-                      desc="No event has been added to your account"
+                      title="No vehicle report"
+                      desc="No vehicle report available at the moment"
                     />
                   </Td>
                 </Tr>
@@ -76,26 +86,21 @@ const VehicleTableLayer = ({ isLoading, limit, data, setPage, page }) => {
       </TableContainer>
 
       <Flex
-        mt="20px"
         justifyContent="center"
         align="center"
         flexDir="column"
         w="full"
+        pt={5}
       >
-        <Flex
-          flexDir={{ base: "column", md: "row" }}
-          justifyContent="center"
-          gap={{ base: "10px", md: "32px" }}
-          align="center"
-        >
+        <Flex justifyContent="center" gap="32px" align="center" pb={5}>
           <Text fontSize="12px" color="#242628" lineHeight="100%">
-            Showing rows 1 to {limit} of {data?.total}
+            Showing rows {startRow} to {endRow} of {data?.total}
           </Text>
 
           <Flex gap="16px" align="center">
             <Flex
               opacity={data?.page === 1 ? 0.5 : 1}
-              onClick={() => (data?.page === 1 ? "" : setPage(page - 1))}
+              onClick={() => (data?.page !== 1 ? setPage(page - 1) : null)}
               cursor={data?.page === 1 ? "" : "pointer"}
               align="center"
               gap="2px"
@@ -117,25 +122,12 @@ const VehicleTableLayer = ({ isLoading, limit, data, setPage, page }) => {
               >
                 <Text>{data?.page}</Text>
               </Flex>
-              <Text fontWeight={500} fontSize="12px">
-                -{" "}
-              </Text>
-              <Flex
-                bg="#242628"
-                py="6px"
-                px="8px"
-                color="#fff"
-                fontSize="12px"
-                lineHeight="100%"
-              >
-                <Text>{data?.pageCount}</Text>
-              </Flex>
             </Flex>
 
             <Flex
               opacity={data?.page === data?.pageCount ? 0.5 : 1}
               onClick={() =>
-                data?.page === data?.pageCount ? "" : setPage(page + 1)
+                data?.page !== data?.pageCount ? setPage(page + 1) : null
               }
               cursor={data?.page === data?.pageCount ? "" : "pointer"}
               align="center"
@@ -147,6 +139,21 @@ const VehicleTableLayer = ({ isLoading, limit, data, setPage, page }) => {
               <Text lineHeight="100%">Next</Text>
             </Flex>
           </Flex>
+
+          <Select
+            defaultValue={limit}
+            w="fit-content"
+            size="sm"
+            bg="transparent"
+            fontSize={12}
+            borderRadius={8}
+            borderWidth={1}
+            onChange={(e) => setLimit(e.target.value)}
+          >
+            <option value={25}>25</option>
+            <option value={50}>50</option>
+            <option value={100}>100</option>
+          </Select>
         </Flex>
       </Flex>
     </Box>

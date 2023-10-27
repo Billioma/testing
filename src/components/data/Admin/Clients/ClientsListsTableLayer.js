@@ -74,6 +74,7 @@ const TableLayer = ({
         header={headers}
         opt
         act
+        filter
         paginationValues={{
           startRow,
           endRow,
@@ -99,7 +100,7 @@ const TableLayer = ({
             >
               <Td>{client?.name}</Td>
               <Td>{client?.contactPerson}</Td>
-              <Td>0{client?.phone}</Td>
+              <Td>{client?.phone}</Td>
               <Td>{client?.state}</Td>
               <Td>
                 <Box

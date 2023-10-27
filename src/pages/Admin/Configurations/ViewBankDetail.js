@@ -46,7 +46,7 @@ export default function AddBankDetail() {
         successToast(res?.message);
         setIsOpen(false);
         refetch();
-        navigate(PRIVATE_PATHS.ADMIN_CONFIG_VEHICLE_MAKES);
+        navigate(PRIVATE_PATHS.ADMIN_CONFIG_BANK_DETAILS);
       },
       onError: (err) => {
         errorToast(
@@ -184,7 +184,7 @@ export default function AddBankDetail() {
               onClick={() =>
                 !isEdit
                   ? setIsOpen(true)
-                  : navigate(PRIVATE_PATHS.ADMIN_CONFIG_FAQS)
+                  : navigate(PRIVATE_PATHS.ADMIN_CONFIG_BANK_DETAILS)
               }
             >
               {!isEdit ? "Delete" : "Cancel"}
@@ -207,7 +207,7 @@ export default function AddBankDetail() {
         onClose={() => setIsOpen(false)}
         title="Delete Bank Detail"
         subTitle="Are you sure you want to delete this bank detail?"
-        handleSubmit={() => deleteFaq(state.id)}
+        handleSubmit={() => deleteBankDetail(state.id)}
         isLoading={isDeleting}
       />
     </Box>

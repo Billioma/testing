@@ -9,13 +9,23 @@ export default function () {
   const [limit, setLimit] = useState(25);
   const [startRow, setStartRow] = useState(1);
   const [endRow, setEndRow] = useState(0);
+  const [filtArray, setFiltArray] = useState([]);
+
+  const convertedFilters = filtArray?.map((filterObj) => {
+    return `filter=${filterObj?.title}||${filterObj?.type || "cont"}||"${
+      filterObj?.filter
+    }"`;
+  });
+
+  const query = convertedFilters?.join("&");
 
   const { data, isLoading, refetch } = useGetValetedVehicles(
     {
       refetchOnWindowFocus: true,
     },
     page,
-    limit
+    limit,
+    query
   );
 
   useEffect(() => {

@@ -39,6 +39,7 @@ const TableLayer = ({
     "AMOUNT",
     "ZONE",
     "VEHICLE",
+    "ARRIVAL",
     // "SERVICE TYPE",
     "STATUS",
     "DATE",
@@ -108,9 +109,9 @@ const TableLayer = ({
               <Td textAlign="center">
                 ₦{transaction?.amount?.toLocaleString()}
               </Td>
-              <Td textAlign="center">{transaction?.zone?.description}</Td>
+              <Td textAlign="center">{transaction?.zone?.code}</Td>
               <Td textAlign="center">{transaction?.vehicle?.licensePlate}</Td>
-              {/* <Td textAlign="center">{transaction?.service?.name}</Td> */}
+              <Td textAlign="center">{formatDate(transaction?.arrival)}</Td>
 
               <Td textAlign="center">
                 <Flex

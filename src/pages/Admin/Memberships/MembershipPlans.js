@@ -6,6 +6,8 @@ import { useNavigate } from "react-router-dom";
 import { PRIVATE_PATHS } from "../../../routes/constants";
 import TableLayer from "../../../components/data/Admin/Memberships/MembershipPlansTableLayer";
 import { useGetMembershipPlans } from "../../../services/admin/query/memberships";
+import Filter from "../../../components/common/Filter";
+import { membershipPlansOptions } from "../../../components/common/constants";
 
 export default function () {
   const [page, setPage] = useState(1);
@@ -13,13 +15,23 @@ export default function () {
   const [startRow, setStartRow] = useState(1);
   const [endRow, setEndRow] = useState(0);
   const navigate = useNavigate();
+  const [filtArray, setFiltArray] = useState([]);
+
+  const convertedFilters = filtArray?.map((filterObj) => {
+    return `filter=${filterObj?.title}||${filterObj?.type || "cont"}||"${
+      filterObj?.filter
+    }"`;
+  });
+
+  const query = convertedFilters?.join("&");
 
   const { data, isLoading, refetch } = useGetMembershipPlans(
     {
       refetchOnWindowFocus: true,
     },
     page,
-    limit
+    limit,
+    query
   );
 
   useEffect(() => {
@@ -44,29 +56,36 @@ export default function () {
 
   return (
     <Box w="full" border={"1px solid #E4E6E8"} borderRadius={"12px"}>
-      <Flex justifyContent={"space-between"} alignItems="center" py={3} px={5}>
-        <Text fontWeight="500">All Membership Plans</Text>
-        <Flex gap="6px">
-          <Button
-            variant="adminPrimary"
-            gap={2}
-            fontSize={"12px"}
-            onClick={() => navigate(PRIVATE_PATHS.ADMIN_ADD_MEMBERSHIP_PLAN)}
-          >
-            Add a Plan <FiPlus size={18} />
-          </Button>
-          <Button
-            bg="white"
-            py={3}
-            h="43px"
-            border="1px solid #000"
-            color="#000"
-            onClick={refetch}
-          >
-            <VscDebugRestart size={20} />
-          </Button>
-        </Flex>
-      </Flex>
+      <Filter
+        setFiltArray={setFiltArray}
+        filtArray={filtArray}
+        fieldToCompare={membershipPlansOptions}
+        handleSearch={refetch}
+        title={<Text fontWeight="500">All Membership Plans</Text>}
+        main={
+          <Flex gap="6px">
+            <Button
+              variant="adminPrimary"
+              gap={2}
+              fontSize={"12px"}
+              onClick={() => navigate(PRIVATE_PATHS.ADMIN_ADD_MEMBERSHIP_PLAN)}
+            >
+              Add a Plan <FiPlus size={18} />
+            </Button>
+            <Button
+              bg="white"
+              py={3}
+              h="43px"
+              border="1px solid #000"
+              color="#000"
+              onClick={refetch}
+            >
+              <VscDebugRestart size={20} />
+            </Button>
+          </Flex>
+        }
+      />
+
       <hr />
       <TableLayer
         data={data}

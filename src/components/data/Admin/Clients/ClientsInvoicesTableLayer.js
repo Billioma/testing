@@ -113,7 +113,7 @@ const TableLayer = ({
                 </Flex>
               </Td>
 
-              <Td>{formatDate(invoice?.createdAt)}</Td>
+              <Td textAlign={"center"}>{formatDate(invoice?.createdAt)}</Td>
               <Td>
                 <Flex justifyContent="center" align="center">
                   <Menu>

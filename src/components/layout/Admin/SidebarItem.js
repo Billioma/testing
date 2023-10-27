@@ -25,7 +25,7 @@ const SidebarItem = ({
         <Box>
           <Text
             textTransform={"uppercase"}
-            color="white"
+            color="#444648"
             fontSize="12px"
             fontWeight={500}
             p={2}
@@ -44,9 +44,19 @@ const SidebarItem = ({
             p={2}
             cursor="pointer"
             onClick={() => (subItems ? handleToggle() : navigate(path))}
-            bg={isOpen || pathname.includes(path) ? "white" : "inherit"}
-            color={pathname.includes(path) || isOpen ? "black" : "#fff"}
-            _hover={{ bg: "white", color: "inherit" }}
+            bg={
+              isOpen ||
+              (pathname.includes(path) && !pathname.includes("reports"))
+                ? "#EE383A"
+                : "inherit"
+            }
+            color={
+              (pathname.includes(path) && !pathname.includes("reports")) ||
+              isOpen
+                ? "#fff"
+                : "#444648"
+            }
+            _hover={{ bg: "#EE383A", color: "#fff" }}
             transition=".3s ease-in-out"
             borderTopRadius={4}
             borderBottomRadius={isOpen ? 0 : 4}
@@ -55,7 +65,7 @@ const SidebarItem = ({
             <Box className="hovered_image">{hoverIcon}</Box>
 
             <Box className="initial_image">
-              {pathname.includes(path) ? hoverIcon : isOpen ? hoverIcon : icon}
+              {pathname.includes(path) || isOpen ? hoverIcon : icon}
             </Box>
             <Box>
               <Text pt={1} color={"inherit"} fontSize="12px" ml={4} mb={0}>
@@ -71,7 +81,7 @@ const SidebarItem = ({
                 transform="translateY(-50%)"
                 w="3px"
                 h="25px"
-                bg="black"
+                bg="#fff"
                 borderRadius={4}
               />
             ) : (
@@ -80,7 +90,7 @@ const SidebarItem = ({
                   flex="1"
                   textAlign="right"
                   pt={1}
-                  color={isOpen ? "black" : "inherit"}
+                  color={isOpen ? "#000" : "inherit"}
                 >
                   {isOpen ? <ChevronDownIcon /> : <ChevronRightIcon />}
                 </Box>
@@ -107,7 +117,7 @@ const SidebarItem = ({
                       fontSize: "10px",
                       textDecoration: "none",
                       color: pathname.includes(subItem.path)
-                        ? "#fff"
+                        ? "#EE383A"
                         : "#848688",
                       fontWeight: pathname.includes(subItem.path)
                         ? "500"

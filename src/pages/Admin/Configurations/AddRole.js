@@ -17,8 +17,8 @@ import { PRIVATE_PATHS } from "../../../routes/constants";
 import useCustomToast from "../../../utils/notifications";
 import GoBackTab from "../../../components/data/Admin/GoBackTab";
 import {
-  useAddMake,
-  useGetMakes,
+  useAddRole,
+  useGetRoles,
 } from "../../../services/admin/query/configurations";
 
 export default function AddRole() {
@@ -31,12 +31,12 @@ export default function AddRole() {
   const navigate = useNavigate();
   const [isDisabled, setIsDisabled] = useState(true);
   const { errorToast, successToast } = useCustomToast();
-  const { refetch } = useGetMakes();
-  const { mutate, isLoading } = useAddMake({
+  const { refetch } = useGetRoles();
+  const { mutate, isLoading } = useAddRole({
     onSuccess: () => {
-      successToast("Make added successfully!");
+      successToast("Role added successfully!");
       refetch();
-      navigate(PRIVATE_PATHS.ADMIN_CONFIG_VEHICLE_MAKES);
+      navigate(PRIVATE_PATHS.ADMIN_CONFIG_ROLES);
     },
     onError: (error) => {
       errorToast(
@@ -256,25 +256,26 @@ const CustomAccordionItem = ({ title, items, setState, state }) => {
   const [selectAll, setSelectAll] = useState(false);
 
   const handleSelectAllChange = (e) => {
-    e.stopPropagation();
     const isChecked = e.target.checked;
     setSelectAll(isChecked);
 
-    // Update the checked state of all other checkboxes based on selectAll
-    const updatedItems = items.map((item) => ({
-      ...item,
-      isChecked: isChecked,
-    }));
+    if (isChecked) {
+      let tempPermission = state.permissions;
 
-    // Log the selected items
-    console.log(updatedItems);
+      items.map((item) => tempPermission.push(item.id));
+
+      tempPermission = [...new Set(tempPermission)];
+
+      setState({ ...state, permissions: tempPermission });
+    }
   };
 
-  const handleChange = (id, action) => {
+  const handleChange = (id, isChecked) => {
     const temp = [...state.permissions];
-    if (action) {
+    if (isChecked) {
       temp.push(id);
     } else {
+      setSelectAll(false);
       const index = temp.findIndex((el) => el === id);
       temp.splice(index, 1);
     }
@@ -282,19 +283,29 @@ const CustomAccordionItem = ({ title, items, setState, state }) => {
     setState({ ...state, permissions: temp });
   };
 
-  console.log(state);
-
   return (
     <AccordionItem border={0} mt={4}>
       <Flex align={"center"} p={0}>
-        <AccordionButton as="span" flex="1" textAlign="left">
+        <AccordionButton
+          as="span"
+          flex="1"
+          textAlign="left"
+          cursor="pointer"
+          _hover={{ bg: "transparent" }}
+        >
           <Text fontSize={12} fontWeight={500}>
             {title}
           </Text>
         </AccordionButton>
         <Flex gap={2}>
-          <Checkbox colorScheme="orange" onClick={handleSelectAllChange} />
-          <AccordionIcon onClick={(e) => e.stopPropagation()} />
+          <Checkbox
+            colorScheme="orange"
+            onChange={handleSelectAllChange}
+            isChecked={selectAll}
+          />
+          <AccordionButton w="fit-content" p={0} _hover={{ bg: "transparent" }}>
+            <AccordionIcon />
+          </AccordionButton>
         </Flex>
       </Flex>
 
@@ -305,7 +316,6 @@ const CustomAccordionItem = ({ title, items, setState, state }) => {
               colorScheme="orange"
               isChecked={state.permissions?.includes(item.id) || selectAll}
               onChange={(e) => {
-                console.log(e.target.checked, item.id);
                 handleChange(item.id, e.target.checked);
               }}
             />

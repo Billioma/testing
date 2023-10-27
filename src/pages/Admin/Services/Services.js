@@ -1,10 +1,13 @@
-import { Box, Button, Flex } from "@chakra-ui/react";
+import { Box, Button, Flex, Text } from "@chakra-ui/react";
 import React, { useState, useEffect } from "react";
 import { FiPlus } from "react-icons/fi";
 import TableLayer from "../../../components/data/Admin/Services/TableLayer";
 import AdminAddServiceModal from "../../../components/modals/AdminAddServiceModal";
 import { useGetServices } from "../../../services/admin/query/services";
 import AdminEditServiceModal from "../../../components/modals/AdminEditServiceModal";
+import Filter from "../../../components/common/Filter";
+import { VscDebugRestart } from "react-icons/vsc";
+import { servicesOptions } from "../../../components/common/constants";
 
 export default function Services() {
   const [isOpen, setIsOpen] = useState(false);
@@ -16,13 +19,23 @@ export default function Services() {
   const [limit, setLimit] = useState(25);
   const [startRow, setStartRow] = useState(1);
   const [endRow, setEndRow] = useState(25);
+  const [filtArray, setFiltArray] = useState([]);
+
+  const convertedFilters = filtArray?.map((filterObj) => {
+    return `filter=${filterObj?.title}||${filterObj?.type || "cont"}||"${
+      filterObj?.filter
+    }"`;
+  });
+
+  const query = convertedFilters?.join("&");
 
   const { data, isLoading, refetch } = useGetServices(
     {
       refetchOnWindowFocus: true,
     },
     page,
-    limit
+    limit,
+    query
   );
 
   useEffect(() => {
@@ -52,16 +65,36 @@ export default function Services() {
   return (
     <Box>
       <Box w="full" border={"1px solid #E4E6E8"} borderRadius={"12px"}>
-        <Flex justifyContent={"end"} py={3} px={5}>
-          <Button
-            variant="adminPrimary"
-            gap={2}
-            fontSize={"12px"}
-            onClick={() => setIsOpen(true)}
-          >
-            Add a Service <FiPlus size={18} />
-          </Button>
-        </Flex>
+        <Filter
+          setFiltArray={setFiltArray}
+          filtArray={filtArray}
+          fieldToCompare={servicesOptions}
+          handleSearch={refetch}
+          title={<Text fontWeight="500">All Services</Text>}
+          main={
+            <Flex gap="6px">
+              <Button
+                variant="adminPrimary"
+                gap={2}
+                fontSize={"12px"}
+                onClick={() => setIsOpen(true)}
+              >
+                Add a Service <FiPlus size={18} />
+              </Button>
+              <Button
+                bg="white"
+                py={3}
+                h="43px"
+                border="1px solid #000"
+                color="#000"
+                onClick={() => refetch()}
+              >
+                <VscDebugRestart size={20} />
+              </Button>
+            </Flex>
+          }
+        />
+
         <hr />
         <TableLayer
           data={data}

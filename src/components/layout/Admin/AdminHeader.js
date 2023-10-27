@@ -37,87 +37,24 @@ export default function AdminHeader() {
   };
 
   useEffect(() => {
-    switch (true) {
-      case pathname.includes("services"):
-        return setTitle({ header: "Services", sub: "" });
+    const pathSegments = pathname.split("/").filter(Boolean);
+    const header =
+      pathSegments.length === 2
+        ? pathSegments[1]
+        : pathSegments.length === 3 &&
+          (pathSegments[1] === "events" || pathSegments[1] === "vehicles")
+        ? pathSegments[1]
+        : pathSegments[2];
+    const sub = pathSegments.includes("new")
+      ? "New"
+      : pathSegments.includes("details")
+      ? "Details"
+      : "";
 
-      case pathname.includes("reports"):
-        switch (true) {
-          case pathname.includes("payments"):
-            return setTitle({ header: "Reports", sub: "Payments" });
-
-          case pathname.includes("locations"):
-            return setTitle({ header: "Reports", sub: "Locations" });
-
-          case pathname.includes("zones"):
-            return setTitle({ header: "Reports", sub: "Zones" });
-
-          case pathname.includes("invoices"):
-            return setTitle({ header: "Reports", sub: "Invoices" });
-
-          case pathname.includes("logs"):
-            return setTitle({ header: "Reports", sub: "logs" });
-
-          case pathname.includes("transactions"):
-            return setTitle({ header: "Reports", sub: "Transactions" });
-
-          case pathname.includes("subscriptions"):
-            return setTitle({ header: "Reports", sub: "Subscriptions" });
-
-          case pathname.includes("customers"):
-            return setTitle({ header: "Reports", sub: "Customers" });
-
-          case pathname.includes("admin/reports/vehicles"):
-            return setTitle({ header: "Reports", sub: "Vehicles" });
-
-          default:
-            return setTitle({ header: "Reports", sub: "" });
-        }
-
-      case pathname.includes("vehicle"):
-        switch (true) {
-          case pathname.includes("vehicles") && pathname.includes("details"):
-            return setTitle({ header: "Vehicles", sub: "Details" });
-
-          case pathname.includes("vehicles") && pathname.includes("new"):
-            return setTitle({ header: "Vehicles", sub: "Add Vehicle" });
-
-          default:
-            return setTitle({ header: "Vehicles", sub: "" });
-        }
-
-      case pathname.includes("users"):
-        switch (true) {
-          case pathname.includes("attendants") && pathname.includes("details"):
-            return setTitle({
-              header: "Users",
-              sub: "Attendants",
-              sub2: "Details",
-            });
-
-          case pathname.includes("attendants"):
-            return setTitle({
-              header: "Users",
-              sub: "Attendants",
-            });
-
-          case pathname.includes("customers") && pathname.includes("details"):
-            return setTitle({
-              header: "Users",
-              sub: "Customers",
-              sub2: "Details",
-            });
-
-          case pathname.includes("customers"):
-            return setTitle({ header: "Users", sub: "Customers" });
-
-          default:
-            return setTitle({ header: "Users", sub: "" });
-        }
-
-      default:
-        return setTitle({ header: "Dashboard", sub: "" });
-    }
+    setTitle({
+      header: header || "Dashboard",
+      sub: sub || "",
+    });
   }, [pathname]);
 
   return (
@@ -130,8 +67,11 @@ export default function AdminHeader() {
           display="flex"
           alignItems="end"
           gap="8px"
+          textTransform={"capitalize"}
         >
-          {title.header}{" "}
+          {pathname.includes("clients") && "Clients"}{" "}
+          {title.header === "operatrs" ? "Operators" : title.header}{" "}
+          {pathname.includes("reports") && "Reports"}
           {title.sub && (
             <Text
               display="flex"
@@ -141,18 +81,6 @@ export default function AdminHeader() {
               alignItems="center"
             >
               &gt; {title.sub}
-            </Text>
-          )}
-          {title.sub2 && (
-            <Text
-              display="flex"
-              fontSize="10px"
-              color="#646668"
-              gap="4px"
-              alignItems="center"
-            >
-              <FaGreaterThan size={8} color="#242628" />
-              {title.sub2}
             </Text>
           )}
         </Text>

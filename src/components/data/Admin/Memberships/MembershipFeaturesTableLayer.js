@@ -104,7 +104,7 @@ const TableLayer = ({
               <Td>{plan?.membershipPlan?.name || "N/A"}</Td>
 
               <Td textAlign={"center"}>
-                {!plan.featureType ? (
+                {plan.featureType === null ? (
                   <Box p={3} w="200px">
                     N/A
                   </Box>

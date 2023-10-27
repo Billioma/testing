@@ -19,12 +19,13 @@ import {
   addFaq,
   addMake,
   addModel,
+  addRole,
 } from "../api/configurations";
 
-export const useGetRoles = (options = {}, page = 1, limit = 25) => {
+export const useGetRoles = (options = {}, page = 1, limit = 25, query) => {
   const { data, isLoading, refetch } = useQuery(
-    ["ADMIN_GET_CONFIG_ROLES", page, limit],
-    () => getRoles(page, limit),
+    ["ADMIN_GET_CONFIG_ROLES", page, limit, query],
+    () => getRoles(page, limit, query),
     {
       ...options,
     }
@@ -51,6 +52,15 @@ export const useDeleteRole = (options = {}) => {
   return { isLoading, mutate };
 };
 
+export const useAddRole = (options = {}) => {
+  const { isLoading, data, mutate } = useMutation(addRole, {
+    mutationKey: ["ADMIN_CONFIG_ADD_ROLE"],
+    ...options,
+  });
+
+  return { isLoading, data, mutate };
+};
+
 export const useAddModel = (options = {}) => {
   const { isLoading, data, mutate } = useMutation(addModel, {
     mutationKey: ["ADMIN_CONFIG_ADD_MODEL"],
@@ -60,10 +70,10 @@ export const useAddModel = (options = {}) => {
   return { isLoading, data, mutate };
 };
 
-export const useGetModels = (options = {}, page = 1, limit = 25) => {
+export const useGetModels = (options = {}, page = 1, limit = 25, query) => {
   const { data, isLoading, refetch } = useQuery(
-    ["ADMIN_GET_CONFIG_MODELS", page, limit],
-    () => getModels(page, limit),
+    ["ADMIN_GET_CONFIG_MODELS", page, limit, query],
+    () => getModels(page, limit, query),
     {
       ...options,
     }
@@ -99,10 +109,10 @@ export const useAddMake = (options = {}) => {
   return { isLoading, data, mutate };
 };
 
-export const useGetMakes = (options = {}, page = 1, limit = 25) => {
+export const useGetMakes = (options = {}, page = 1, limit = 25, query) => {
   const { data, isLoading, refetch } = useQuery(
-    ["ADMIN_GET_CONFIG_MAKES", page, limit],
-    () => getMakes(page, limit),
+    ["ADMIN_GET_CONFIG_MAKES", page, limit, query],
+    () => getMakes(page, limit, query),
     {
       ...options,
     }
@@ -138,10 +148,15 @@ export const useAddBankDetail = (options = {}) => {
   return { isLoading, data, mutate };
 };
 
-export const useGetBankDetails = (options = {}, page = 1, limit = 25) => {
+export const useGetBankDetails = (
+  options = {},
+  page = 1,
+  limit = 25,
+  query
+) => {
   const { data, isLoading, refetch } = useQuery(
-    ["ADMIN_GET_CONFIG_BANK_DETAILS", page, limit],
-    () => getBankDetails(page, limit),
+    ["ADMIN_GET_CONFIG_BANK_DETAILS", page, limit, query],
+    () => getBankDetails(page, limit, query),
     {
       ...options,
     }
@@ -177,10 +192,10 @@ export const useAddFaq = (options = {}) => {
   return { isLoading, data, mutate };
 };
 
-export const useGetFaqs = (options = {}, page = 1, limit = 25) => {
+export const useGetFaqs = (options = {}, page = 1, limit = 25, query) => {
   const { data, isLoading, refetch } = useQuery(
-    ["ADMIN_GET_CONFIG_FAQS", page, limit],
-    () => getFaqs(page, limit),
+    ["ADMIN_GET_CONFIG_FAQS", page, limit, query],
+    () => getFaqs(page, limit, query),
     {
       ...options,
     }

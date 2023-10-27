@@ -18,10 +18,10 @@ import {
   editOperator,
 } from "../api/users";
 
-export const useGetAttendants = (options = {}, page, limit) => {
+export const useGetAttendants = (options = {}, page, limit, query) => {
   const { data, isLoading, refetch } = useQuery(
-    ["GET_ATTENDANTS", page, limit],
-    () => getAttendants(page, limit),
+    ["GET_ATTENDANTS", page, limit, query],
+    () => getAttendants(page, limit, query),
     {
       ...options,
     }
@@ -30,10 +30,10 @@ export const useGetAttendants = (options = {}, page, limit) => {
   return { isLoading, data, refetch };
 };
 
-export const useGetAdministrators = (options = {}, page, limit) => {
+export const useGetAdministrators = (options = {}, page, limit, query) => {
   const { data, isLoading, refetch } = useQuery(
-    ["GET_ADMINISTRATORS", page, limit],
-    () => getAdministrators(page, limit),
+    ["GET_ADMINISTRATORS", page, limit, query],
+    () => getAdministrators(page, limit, query),
     {
       ...options,
     }
@@ -69,10 +69,10 @@ export const useDeleteAdministrator = (options = {}) => {
   return { isLoading, data, mutate };
 };
 
-export const useGetOperators = (options = {}, page = 1, limit = 25) => {
+export const useGetOperators = (options = {}, page = 1, limit = 25, query) => {
   const { data, isLoading, refetch } = useQuery(
-    ["GET_OPERATORS", page, limit],
-    () => getOperators(page, limit),
+    ["GET_OPERATORS", page, limit, query],
+    () => getOperators(page, limit, query),
     {
       ...options,
     }
@@ -162,10 +162,10 @@ export const useDeleteCustomer = (options = {}) => {
   return { isLoading, data, mutate };
 };
 
-export const useGetCustomers = (options = {}, page, limit) => {
+export const useGetCustomers = (options = {}, page, limit, query) => {
   const { data, isLoading, refetch } = useQuery(
-    ["GET_CUSTOMERS", page, limit],
-    () => getCustomers(page, limit),
+    ["GET_CUSTOMERS", page, limit, query],
+    () => getCustomers(page, limit, query),
     {
       ...options,
     }

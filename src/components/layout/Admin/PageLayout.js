@@ -20,9 +20,9 @@ export const AuthLayout = ({ children }) => {
         newOpenSubItems[item] = false;
       });
 
-      const activeParentItem = sidebarItems.find((item) =>
-        pathname.includes(item.path)
-      )?.title;
+      const activeParentItem = pathname.includes("reports")
+        ? "Reports"
+        : sidebarItems.find((item) => pathname.includes(item.path))?.title;
 
       newOpenSubItems[activeParentItem] = true;
 
@@ -44,7 +44,7 @@ export const AuthLayout = ({ children }) => {
         <Box
           as="aside"
           w="280px"
-          bg="#1C0203"
+          bg="#fff"
           p={4}
           pt={8}
           h="100vh"
@@ -52,8 +52,11 @@ export const AuthLayout = ({ children }) => {
           boxShadow="4px 0px 24px 0px rgba(0, 0, 0, 0.25)"
           display={{ base: "none", lg: "block" }}
         >
-          <Image src="/assets/ParkinSpace.svg" m="0 auto 3px" />
-          <Text color="#fff" textAlign="center" fontSize="12px">
+          <Box w="80%" m="0 auto">
+            <Image src="/assets/logo.svg" m="0 auto 3px" />
+          </Box>
+
+          <Text color="#444648" textAlign="center" fontSize="12px">
             Admin
           </Text>
 

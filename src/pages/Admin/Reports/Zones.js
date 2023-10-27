@@ -11,16 +11,52 @@ import {
 import ZoneTableLayer from "../../../components/data/Admin/Reports/ZoneTableLayer";
 import { useGetAdminReport } from "../../../services/admin/query/reports";
 import ZoneExport from "../../../components/data/Admin/Reports/ZoneExport";
+import Filter from "../../../components/common/Filter";
+import { zonesReportOptions } from "../../../components/common/constants";
 
 const Zones = () => {
-  const { mutate, data, isLoading } = useGetAdminReport();
+  const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState(50);
+  const [startRow, setStartRow] = useState(1);
+  const [endRow, setEndRow] = useState(0);
+  const [filtArray, setFiltArray] = useState([]);
 
-  const [page, setPage] = useState(0);
-  const limit = 10;
+  const convertedFilters = filtArray?.map((filterObj) => {
+    return `filter=${filterObj?.title}||${filterObj?.type || "cont"}||"${
+      filterObj?.filter
+    }"`;
+  });
+
+  const query = convertedFilters?.join("&");
+  const { refetch, data, isLoading } = useGetAdminReport(
+    "zones",
+    {
+      refetchOnWindowFocus: true,
+    },
+    page,
+    limit,
+    query
+  );
 
   useEffect(() => {
-    mutate({ type: "zones", limit, page: page + 1 });
-  }, [page]);
+    setPage(1);
+  }, [limit]);
+
+  useEffect(() => {
+    if (!data) {
+      return;
+    }
+
+    const currentPage = page;
+    const itemsPerPage = limit;
+    const totalItems = data.total;
+
+    const currentStartRow = (currentPage - 1) * itemsPerPage + 1;
+    const currentEndRow = Math.min(currentPage * itemsPerPage, totalItems);
+
+    setStartRow(currentStartRow);
+    setEndRow(currentEndRow);
+  }, [data, page, limit]);
 
   return (
     <Box minH="75vh">
@@ -70,45 +106,47 @@ const Zones = () => {
       </Grid>
 
       <Box borderRadius="8px" border="1px solid #d4d6d8" p="16px 23px 24px">
-        <Flex align="center" justifyContent="space-between" w="full">
-          <Text
-            fontSize="14px"
-            fontWeight={500}
-            lineHeight="100%"
-            color="#242628"
-          >
-            All Zones
-          </Text>
-
-          <Flex align="center" gap="24px">
-            <ZoneExport data={data?.data} />
-            <Flex
-              justifyContent="center"
-              align="center"
-              cursor="pointer"
-              transition=".3s ease-in-out"
-              _hover={{ bg: "#F4F6F8" }}
-              onClick={() => mutate({ type: "zones", limit, page: page + 1 })}
-              borderRadius="8px"
-              border="1px solid #848688"
-              p="10px"
-            >
-              <Image
-                src="/assets/refresh.svg"
-                className={isLoading && "mirrored-icon"}
-                w="20px"
-                h="20px"
-              />
+        <Filter
+          setFiltArray={setFiltArray}
+          filtArray={filtArray}
+          fieldToCompare={zonesReportOptions}
+          handleSearch={refetch}
+          title={<Text fontWeight="500">All Zones</Text>}
+          main={
+            <Flex align="center" gap="24px">
+              <ZoneExport data={data?.data} />
+              <Flex
+                justifyContent="center"
+                align="center"
+                cursor="pointer"
+                transition=".3s ease-in-out"
+                _hover={{ bg: "#F4F6F8" }}
+                onClick={() => mutate({ type: "zones", limit, page: page + 1 })}
+                borderRadius="8px"
+                border="1px solid #848688"
+                p="10px"
+              >
+                <Image
+                  src="/assets/refresh.svg"
+                  className={isLoading && "mirrored-icon"}
+                  w="20px"
+                  h="20px"
+                />
+              </Flex>
             </Flex>
-          </Flex>
-        </Flex>
+          }
+        />
 
         <ZoneTableLayer
-          page={page}
-          setPage={setPage}
           data={data}
-          limit={limit}
           isLoading={isLoading}
+          page={page}
+          limit={limit}
+          setPage={setPage}
+          startRow={startRow}
+          endRow={endRow}
+          refetch={refetch}
+          setLimit={setLimit}
         />
       </Box>
     </Box>
