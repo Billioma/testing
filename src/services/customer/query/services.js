@@ -8,10 +8,15 @@ import {
   requestReserveParking,
   createReserveParking,
   getCarService,
+  getPayToParkDetails,
   getEventParking,
   createEventParking,
   cancelReserve,
   cancelBooking,
+  getTips,
+  createTips,
+  getReserveParkDetails,
+  getEventParkDetails,
 } from "../api/services";
 
 export const useGetPayToPark = (limit = "", page = "", options = {}) => {
@@ -22,6 +27,46 @@ export const useGetPayToPark = (limit = "", page = "", options = {}) => {
       ...options,
     }
   );
+  return { data, isLoading, refetch };
+};
+
+export const useGetPayToParkDetails = (id = "", options = {}) => {
+  const { data, isLoading, refetch } = useQuery(
+    ["GET_PAY_TO_PARK_DETAILS", id],
+    getPayToParkDetails,
+    {
+      ...options,
+    }
+  );
+  return { data, isLoading, refetch };
+};
+
+export const useGetReserveParkDetails = (id = "", options = {}) => {
+  const { data, isLoading, refetch } = useQuery(
+    ["GET_RESERVE_PARK_DETAILS", id],
+    getReserveParkDetails,
+    {
+      ...options,
+    }
+  );
+  return { data, isLoading, refetch };
+};
+
+export const useGetEventParkDetails = (id = "", options = {}) => {
+  const { data, isLoading, refetch } = useQuery(
+    ["GET_EVENT_PARK_DETAILS", id],
+    getEventParkDetails,
+    {
+      ...options,
+    }
+  );
+  return { data, isLoading, refetch };
+};
+
+export const useGetTips = (options = {}) => {
+  const { data, isLoading, refetch } = useQuery("GET_TIPS", getTips, {
+    ...options,
+  });
   return { data, isLoading, refetch };
 };
 
@@ -61,6 +106,14 @@ export const useGetCarService = (limit = "", page = "", options = {}) => {
 export const useCancelReserve = (options = {}) => {
   const { mutate, isLoading, data } = useMutation(cancelReserve, {
     mutationKey: "CANCEL_RESERVE",
+    ...options,
+  });
+  return { mutate, isLoading, data };
+};
+
+export const useCreateTips = (options = {}) => {
+  const { mutate, isLoading, data } = useMutation(createTips, {
+    mutationKey: "CREATE_TIPS",
     ...options,
   });
   return { mutate, isLoading, data };

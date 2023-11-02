@@ -207,8 +207,8 @@ const ReserveParking = () => {
   useEffect(() => {
     if (start && end && values?.locations && values?.vehicle) {
       reqeustReserve({
-        arrival: `${start} ${formatTimeToHHMMSS(values?.arrivalTime?.value)}`,
-        departure: `${end} ${formatTimeToHHMMSS(values?.departureTime?.value)}`,
+        arrival: `${start}${formatTimeToHHMMSS(values?.arrivalTime?.value)}`,
+        departure: `${end}${formatTimeToHHMMSS(values?.departureTime?.value)}`,
         location: Number(values?.locations?.id),
         service: "3",
         vehicle: values.vehicle?.id,
@@ -232,10 +232,10 @@ const ReserveParking = () => {
     Number(values?.paymentMethod) === 0
       ? reserveMutate({
           amount: requestData?.amount,
-          arrival: formattedDate,
+          arrival: `${start}${formatTimeToHHMMSS(values?.arrivalTime?.value)}`,
+          departure: `${end}${formatTimeToHHMMSS(values?.departureTime?.value)}`,
           cardId: values?.cardId,
           customer: userData?.id,
-          departure: formattedDeparture,
           paymentMethod: Number(values?.paymentMethod),
           rates: requestData?.rates?.map((dat) => dat?.id),
           service: "3",
@@ -244,9 +244,9 @@ const ReserveParking = () => {
         })
       : reserveMutate({
           amount: requestData?.amount,
-          arrival: formattedDate,
+          arrival: `${start}${formatTimeToHHMMSS(values?.arrivalTime?.value)}`,
+          departure: `${end}${formatTimeToHHMMSS(values?.departureTime?.value)}`,
           customer: userData?.id,
-          departure: formattedDeparture,
           paymentMethod: Number(values?.paymentMethod),
           rates: requestData?.rates?.map((dat) => dat?.id),
           service: "3",

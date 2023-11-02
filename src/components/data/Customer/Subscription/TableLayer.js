@@ -28,6 +28,7 @@ const TableLayer = ({ sub, page, setPage, limit, subMutate, isLoading }) => {
   const navigate = useNavigate();
   const [showRenew, setShowRenew] = useState(false);
   const [show, setShow] = useState(false);
+  const [currentSub, setCurrentSub] = useState("");
   const { data: userData, refetch: refetchUser } = useGetUser();
   const [showCancel, setShowCancel] = useState(false);
   const [values, setValues] = useState({
@@ -36,7 +37,6 @@ const TableLayer = ({ sub, page, setPage, limit, subMutate, isLoading }) => {
     amount: "",
   });
 
-  const [currentSub, setCurrentSub] = useState("");
 
   const open = (dat) => {
     setShow(true);

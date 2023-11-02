@@ -254,7 +254,7 @@ const EventParking = () => {
           w={{
             base: "full",
             sm: "30rem",
-            lg: "unset",
+            lg: !filteredEvent?.length ? "30rem" : "unset",
           }}
           flexDir="column"
         >
@@ -294,26 +294,34 @@ const EventParking = () => {
 
           {step === 1 && (
             <Box>
-              <Flex justifyContent="center" w="full" align="center">
-                <Flex
-                  justifyContent="center"
-                  w={{ base: "100%", lg: "40%" }}
-                  align="center"
-                >
-                  <CustomInput
-                    holder="Search Event"
-                    search
-                    auth
-                    value={values.event}
-                    onChange={(e) =>
-                      setValues({
-                        ...values,
-                        event: e.target.value,
-                      })
-                    }
-                  />
+              {filteredEvent?.length ? (
+                <Flex justifyContent="center" w="full" align="center">
+                  <Flex
+                    justifyContent="center"
+                    w={{ base: "100%", lg: "40%" }}
+                    align="center"
+                  >
+                    <CustomInput
+                      holder="Search Event"
+                      search
+                      auth
+                      value={values.event}
+                      onChange={(e) =>
+                        setValues({
+                          ...values,
+                          event: e.target.value,
+                        })
+                      }
+                    />
+                  </Flex>
                 </Flex>
-              </Flex>
+              ) : (
+                !isEVent && (
+                  <Flex justifyContent="center" align="center">
+                    <Text>No Upcoming Events at the moment</Text>
+                  </Flex>
+                )
+              )}
 
               <Box mt="20px">
                 <Skeleton
@@ -323,12 +331,16 @@ const EventParking = () => {
                 ></Skeleton>
                 <Grid
                   gap="24px"
-                  templateColumns={[
-                    "repeat(1,1fr)",
-                    "repeat(1,1fr)",
-                    "repeat(1,1fr)",
-                    "repeat(2,1fr)",
-                  ]}
+                  templateColumns={
+                    filteredEvent?.length === 1
+                      ? "repeat(1,1fr)"
+                      : [
+                          "repeat(1,1fr)",
+                          "repeat(1,1fr)",
+                          "repeat(1,1fr)",
+                          "repeat(2,1fr)",
+                        ]
+                  }
                 >
                   {events?.length
                     ? filteredEvent?.map((data, i) => (

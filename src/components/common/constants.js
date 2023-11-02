@@ -990,7 +990,7 @@ export const dashServices = [
   {
     img: "/assets/park.png",
     title: "Park Now",
-    link: "/customer/services/park",
+    link: "/customer/services/pay-to-park",
   },
   {
     img: "/assets/calendar.png",
@@ -1166,6 +1166,7 @@ export const payToParkHeader = [
   "SERVICE TYPE",
   "STATUS",
   "DATE",
+  ""
 ];
 
 export const operatorDashCards = [
@@ -1260,6 +1261,7 @@ export const eventHeader = [
   "EVENT",
   "STATUS",
   "DATE",
+  ""
 ];
 
 export const carHeader = [
@@ -1374,6 +1376,11 @@ export const custPayFieldOption = [
   { label: "Transaction Type", value: "transactionType" },
 ];
 
+export const custTipFieldOption = [
+  { label: "Transaction ID", value: "serviceLog.id" },
+  { label: "Amount", value: "amount" },
+];
+
 export const subHeader = [
   "Plan",
   "Amount",
@@ -1389,6 +1396,14 @@ export const paymentHeader = [
   "AMOUNT",
   "PAYMENT METHOD",
   "TRANSACTION TYPE",
+  "STATUS",
+  "DATE",
+];
+
+export const tipsHeader = [
+  "TRANSACTION ID",
+  "TIP AMOUNT",
+  "PAYMENT METHOD",
   "STATUS",
   "DATE",
 ];

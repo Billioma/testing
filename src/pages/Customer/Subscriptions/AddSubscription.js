@@ -8,6 +8,7 @@ import {
   Image,
   Radio,
   RadioGroup,
+  Skeleton,
   Switch,
   Text,
 } from "@chakra-ui/react";
@@ -34,7 +35,7 @@ import FundWalletDrawer from "../../../components/modals/FundWalletDrawer";
 import { AiOutlineEdit } from "react-icons/ai";
 
 const AddSubscription = () => {
-  const { data: plans } = useGetPlans();
+  const { data: plans, isLoading: isPlan } = useGetPlans();
   const [step, setStep] = useState(1);
   const [currentSub, setCurrentSub] = useState({});
   const { data: vehicles } = useGetVehicles();
@@ -223,7 +224,7 @@ const AddSubscription = () => {
           w={{
             base: "full",
             sm: "30rem",
-            lg: step === 2 ? "30rem" : "unset",
+            lg: step === 2 || !plans?.length ? "30rem" : "unset",
           }}
           flexDir="column"
         >
@@ -259,155 +260,166 @@ const AddSubscription = () => {
           </Text>
 
           {step === 1 && (
-            <Grid
-              gap="24px"
-              templateColumns={[
-                "repeat(1,1fr)",
-                "repeat(1,1fr)",
-                "repeat(1,1fr)",
-                "repeat(2,1fr)",
-              ]}
-            >
-              {plans?.length
-                ? plans?.map((dat, i) => (
-                    <GridItem key={i}>
-                      <Box
-                        key={i}
-                        mb={step === 1 ? "32px" : "24px"}
-                        p="12px"
-                        borderRadius="8px"
-                        border="1px solid #D4D6D8"
-                        minW={{ base: "full", md: "26rem" }}
-                      >
-                        <Flex
-                          align="flex-start"
-                          justifyContent="space-between"
-                          w="full"
+            <>
+              <Skeleton
+                display={isPlan ? "flex" : "none"}
+                isLoaded={!isPlan}
+                h="8rem"
+              ></Skeleton>
+              <Grid
+                gap="24px"
+                templateColumns={
+                  plans?.length === 1
+                    ? "repeat(1,1fr)"
+                    : [
+                        "repeat(1,1fr)",
+                        "repeat(1,1fr)",
+                        "repeat(1,1fr)",
+                        "repeat(2,1fr)",
+                      ]
+                }
+              >
+                {plans?.length
+                  ? plans?.map((dat, i) => (
+                      <GridItem key={i}>
+                        <Box
+                          key={i}
+                          mb={step === 1 ? "32px" : "24px"}
+                          p="12px"
+                          borderRadius="8px"
+                          border="1px solid #D4D6D8"
+                          minW={{ base: "full", md: "26rem" }}
                         >
-                          <Box w="full">
-                            <Text
-                              fontSize="10px"
-                              color="#242628"
-                              lineHeight="100%"
-                            >
-                              Subscription Name
-                            </Text>
-                            <Text
-                              mt="8px"
-                              color="#848688"
-                              fontSize="14px"
-                              fontWeight={500}
-                              lineHeight="100%"
-                            >
-                              {dat?.name}
-                            </Text>
-                          </Box>
+                          <Flex
+                            align="flex-start"
+                            justifyContent="space-between"
+                            w="full"
+                          >
+                            <Box w="full">
+                              <Text
+                                fontSize="10px"
+                                color="#242628"
+                                lineHeight="100%"
+                              >
+                                Subscription Name
+                              </Text>
+                              <Text
+                                mt="8px"
+                                color="#848688"
+                                fontSize="14px"
+                                fontWeight={500}
+                                lineHeight="100%"
+                              >
+                                {dat?.name}
+                              </Text>
+                            </Box>
 
-                          <Box w="90%">
-                            <Text
-                              fontSize="10px"
-                              color="#242628"
-                              lineHeight="100%"
-                            >
-                              Duration
-                            </Text>
-                            <Text
-                              mt="8px"
-                              color="#848688"
-                              fontSize="14px"
-                              fontWeight={500}
-                              lineHeight="100%"
-                            >
-                              {Object.values(intervals[dat?.interval])[0]}
-                            </Text>
-                          </Box>
+                            <Box w="90%">
+                              <Text
+                                fontSize="10px"
+                                color="#242628"
+                                lineHeight="100%"
+                              >
+                                Duration
+                              </Text>
+                              <Text
+                                mt="8px"
+                                color="#848688"
+                                fontSize="14px"
+                                fontWeight={500}
+                                lineHeight="100%"
+                              >
+                                {Object.values(intervals[dat?.interval])[0]}
+                              </Text>
+                            </Box>
 
-                          <Flex justifyContent="flex-end" w="30%">
-                            <Text
-                              fontSize="10px"
-                              color="#242628"
-                              lineHeight="100%"
-                              textDecor="underline"
-                            >
-                              Details
-                            </Text>
-                          </Flex>
-                        </Flex>
-
-                        <Flex
-                          mt="30px"
-                          align="center"
-                          justifyContent="space-between"
-                          w="full"
-                        >
-                          <Box w="full">
-                            <Text
-                              fontSize="10px"
-                              color="#242628"
-                              lineHeight="100%"
-                            >
-                              Price
-                            </Text>
-                            <Text
-                              mt="8px"
-                              color="#848688"
-                              fontSize="14px"
-                              fontWeight={500}
-                              lineHeight="100%"
-                            >
-                              ₦{" "}
-                              {dat?.amount?.toLocaleString(undefined, {
-                                maximumFractionDigits: 2,
-                              }) || "0.00"}
-                            </Text>
-                          </Box>
-
-                          <Box w="70%">
-                            <Text
-                              fontSize="10px"
-                              color="#242628"
-                              lineHeight="100%"
-                            >
-                              Features
-                            </Text>
-                            <Flex mt="8px" align="center" gap="16px">
-                              {dat?.features?.slice(0, 2)?.map((item, i) => (
-                                <Flex align="center" gap="4px">
-                                  {i === 0 ? (
-                                    <Image src="/assets/location.svg" />
-                                  ) : (
-                                    <CarIcon fill="#EE383A" />
-                                  )}
-                                  <Text
-                                    color="#838688"
-                                    fontSize="14px"
-                                    lineHeight="100%"
-                                    fontWeight={500}
-                                  >
-                                    {item?.value}
-                                  </Text>
-                                </Flex>
-                              ))}
+                            <Flex justifyContent="flex-end" w="30%">
+                              <Text
+                                fontSize="10px"
+                                color="#242628"
+                                lineHeight="100%"
+                                textDecor="underline"
+                              >
+                                Details
+                              </Text>
                             </Flex>
-                          </Box>
-
-                          <Flex justifyContent="flex-end" w="30%">
-                            <Button
-                              onClick={() => (step === 1 ? move(dat) : "")}
-                              w="full"
-                              py="17px"
-                              px="26px"
-                              fontSize="12px"
-                            >
-                              Select
-                            </Button>
                           </Flex>
-                        </Flex>
-                      </Box>
-                    </GridItem>
-                  ))
-                : ""}
-            </Grid>
+
+                          <Flex
+                            mt="30px"
+                            align="center"
+                            justifyContent="space-between"
+                            w="full"
+                          >
+                            <Box w="full">
+                              <Text
+                                fontSize="10px"
+                                color="#242628"
+                                lineHeight="100%"
+                              >
+                                Price
+                              </Text>
+                              <Text
+                                mt="8px"
+                                color="#848688"
+                                fontSize="14px"
+                                fontWeight={500}
+                                lineHeight="100%"
+                              >
+                                ₦{" "}
+                                {dat?.amount?.toLocaleString(undefined, {
+                                  maximumFractionDigits: 2,
+                                }) || "0.00"}
+                              </Text>
+                            </Box>
+
+                            <Box w="70%">
+                              <Text
+                                fontSize="10px"
+                                color="#242628"
+                                lineHeight="100%"
+                              >
+                                Features
+                              </Text>
+                              <Flex mt="8px" align="center" gap="16px">
+                                {dat?.features?.slice(0, 2)?.map((item, i) => (
+                                  <Flex align="center" gap="4px">
+                                    {i === 0 ? (
+                                      <Image src="/assets/location.svg" />
+                                    ) : (
+                                      <CarIcon fill="#EE383A" />
+                                    )}
+                                    <Text
+                                      color="#838688"
+                                      fontSize="14px"
+                                      lineHeight="100%"
+                                      fontWeight={500}
+                                    >
+                                      {item?.value}
+                                    </Text>
+                                  </Flex>
+                                ))}
+                              </Flex>
+                            </Box>
+
+                            <Flex justifyContent="flex-end" w="30%">
+                              <Button
+                                onClick={() => (step === 1 ? move(dat) : "")}
+                                w="full"
+                                py="17px"
+                                px="26px"
+                                fontSize="12px"
+                              >
+                                Select
+                              </Button>
+                            </Flex>
+                          </Flex>
+                        </Box>
+                      </GridItem>
+                    ))
+                  : ""}
+              </Grid>
+            </>
           )}
 
           {step === 2 && (
@@ -535,8 +547,8 @@ const AddSubscription = () => {
                       gap="8px"
                       fontSize="12px"
                     >
-                    <Text>Change</Text>
-                    <AiOutlineEdit size="15px" />
+                      <Text>Change</Text>
+                      <AiOutlineEdit size="15px" />
                     </Button>
                   </Flex>
                 </Flex>

@@ -55,11 +55,29 @@ const Header = () => {
 
   useEffect(() => {
     switch (true) {
-      case locationRoute.includes("services/park"):
+      case locationRoute.includes("services/pay-to-park/"):
+        return setSecTitle("Parking Details");
+
+      case locationRoute.includes("history/pay-to-park/"):
+        return setSecTitle("Parking Details");
+
+      case locationRoute.includes("services/pay-to-park"):
         return setSecTitle("Park");
+
+      case locationRoute.includes("services/reserve-parking/"):
+        return setSecTitle("Reservation Details");
+
+      case locationRoute.includes("history/reserve-parking/"):
+        return setSecTitle("Reservation Details");
 
       case locationRoute.includes("services/reserve"):
         return setSecTitle("Reserve Parking");
+
+      case locationRoute.includes("services/event-parking/"):
+        return setSecTitle("Event Details");
+
+      case locationRoute.includes("history/event-parking/"):
+        return setSecTitle("Event Details");
 
       case locationRoute.includes("services/event"):
         return setSecTitle("Event Parking");

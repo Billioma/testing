@@ -15,8 +15,12 @@ export const GET_USER = "auth/profile";
 export const GET_FAQ = "public/faqs";
 export const GET_PAYMENT_HISTORY = (filterString = "", limit, page) =>
   `transactions?${filterString}&limit=${limit}&page=${page}&sort=id,DESC`;
+export const GET_PAYMENT_TIPS = (filterString = "", limit, page) =>
+  `tips?${filterString}&limit=${limit}&page=${page}&sort=id,DESC`;
 export const UPLOAD_PIC = "system/media-upload";
 export const PAY_TO_PARK = "pay-to-park";
+export const TIPS = "customers/tips?sort=id,DESC";
+export const CREATE_TIPS = "customers/tips";
 export const RESERVE_PARKING = "reserve-parking";
 export const EVENT_PARKING = "event-parking";
 export const REQUEST_RESERVE_PARKING = "reserve-parking/request-reservation";

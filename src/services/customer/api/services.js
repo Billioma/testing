@@ -41,6 +41,40 @@ export const getPayToPark = async ({ queryKey }) => {
   return res.data;
 };
 
+export const getPayToParkDetails = async ({ queryKey }) => {
+  const [, id] = queryKey;
+  const res = await axiosInstance.get(
+    "customer/" + `${API.GET_PAY_TO_PARK}/${id}`
+  );
+  return res.data;
+};
+
+export const getReserveParkDetails = async ({ queryKey }) => {
+  const [, id] = queryKey;
+  const res = await axiosInstance.get(
+    "customer/" + `${API.RESERVE_PARKING}/${id}`
+  );
+  return res.data;
+};
+
+export const getEventParkDetails = async ({ queryKey }) => {
+  const [, id] = queryKey;
+  const res = await axiosInstance.get(
+    "customer/" + `${API.EVENT_PARKING}/${id}`
+  );
+  return res.data;
+};
+
+export const getTips = async () => {
+  const res = await axiosInstance.get(API.TIPS);
+  return res.data;
+};
+
+export const createTips = async (body) => {
+  const res = await axiosInstance.post(API.CREATE_TIPS, body);
+  return res.data;
+};
+
 export const getReserveParking = async ({ queryKey }) => {
   const [, limit, page] = queryKey;
   const res = await axiosInstance.get(

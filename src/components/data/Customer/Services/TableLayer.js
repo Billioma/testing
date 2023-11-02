@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Box, Flex, Image, Td, Text, Tr } from "@chakra-ui/react";
+import { Box, Flex, Icon, Image, Td, Text, Tr } from "@chakra-ui/react";
 import TableFormat from "../../../common/TableFormat";
 import { FiMoreVertical } from "react-icons/fi";
 import {
@@ -25,9 +25,12 @@ import ConfirmDeleteModal from "../../../modals/ConfirmDeleteModal";
 import useCustomToast from "../../../../utils/notifications";
 import { useEffect } from "react";
 import { FcCancel } from "react-icons/fc";
+import { TbListDetails } from "react-icons/tb";
+import { useNavigate } from "react-router-dom";
 
 const TableLayer = () => {
   const [page, setPage] = useState(1);
+  const navigate = useNavigate();
   const [tab, setTab] = useState("Pay-To-Park");
   const limit = 10;
   const { isLoading, data: payToPark } = useGetPayToPark(limit, page);
@@ -60,6 +63,7 @@ const TableLayer = () => {
     setShow(true);
     setCurrentItem(dat);
   };
+
   const { errorToast, successToast } = useCustomToast();
 
   const { mutate: bookCancel, isLoading: isCancelBook } = useCancelBooking({
@@ -376,6 +380,58 @@ const TableLayer = () => {
                   </Flex>
                 </Td>
                 <Td textAlign="center">{formatDate(dat?.createdAt)}</Td>
+                <Td>
+                  <Flex
+                    pos="relative"
+                    cursor="pointer"
+                    onClick={() => open(dat)}
+                    justifyContent="center"
+                    className="box"
+                    align="center"
+                  >
+                    <FiMoreVertical />
+
+                    {show && currentItem === dat && (
+                      <Box
+                        border="1px solid #F4F6F8"
+                        px="4px"
+                        py="8px"
+                        bg="#fff"
+                        borderRadius="4px"
+                        pos="absolute"
+                        right="0"
+                        zIndex={5555555}
+                        top="20px"
+                        boxShadow="0px 8px 16px 0px rgba(0, 0, 0, 0.08)"
+                      >
+                        <Flex
+                          mb="8px"
+                          py="6px"
+                          px="8px"
+                          borderRadius="2px"
+                          justifyContent="center"
+                          align="center"
+                          _hover={{ bg: "#F4F6F8" }}
+                          cursor="pointer"
+                          fontSize="10px"
+                          gap="12px"
+                          w="full"
+                          onClick={() =>
+                            navigate(
+                              `/customer/services/pay-to-park/${dat?.id}`
+                            )
+                          }
+                          color="#646668"
+                          lineHeight="100%"
+                          fontWeight={500}
+                        >
+                          <Icon as={TbListDetails} w="20px" h="20px" />
+                          View Details
+                        </Flex>
+                      </Box>
+                    )}
+                  </Flex>
+                </Td>
               </Tr>
             ))
           ) : (
@@ -488,25 +544,42 @@ const TableLayer = () => {
                         top="20px"
                         boxShadow="0px 8px 16px 0px rgba(0, 0, 0, 0.08)"
                       >
-                        <Flex
-                          py="6px"
-                          px="8px"
-                          borderRadius="2px"
-                          justifyContent="center"
-                          align="center"
-                          onClick={() => setShowCancel(true)}
-                          _hover={{ bg: "#F4F6F8" }}
-                          cursor="pointer"
-                          fontSize="10px"
-                          color="red"
-                          lineHeight="100%"
-                          gap="12px"
-                          w="full"
-                          fontWeight={500}
-                        >
-                          <FcCancel size="15px" />
-                          Cancel Reservation
-                        </Flex>
+                        {["View Details", "Cancel Reservation"].map(
+                          (item, i) => (
+                            <Flex
+                              key={i}
+                              w="full"
+                              px="8px"
+                              borderRadius="2px"
+                              mb="5px"
+                              py="9px"
+                              align="center"
+                              onClick={() =>
+                                i == 0
+                                  ? navigate(
+                                      `/customer/services/reserve-parking/${dat?.id}`
+                                    )
+                                  : setShowCancel(true)
+                              }
+                              _hover={{ bg: "#F4F6F8" }}
+                              cursor="pointer"
+                              fontSize="10px"
+                              color={i === 0 ? "" : "red"}
+                              lineHeight="100%"
+                              gap="12px"
+                              fontWeight={500}
+                            >
+                              <Box>
+                                {i === 0 ? (
+                                  <TbListDetails size="15px" />
+                                ) : (
+                                  <FcCancel size="15px" />
+                                )}
+                              </Box>
+                              <Box>{item}</Box>
+                            </Flex>
+                          )
+                        )}
                       </Box>
                     )}
                   </Flex>
@@ -604,6 +677,58 @@ const TableLayer = () => {
                   </Flex>
                 </Td>
                 <Td textAlign="center">{formatDate(dat?.createdAt)}</Td>
+                <Td>
+                  <Flex
+                    pos="relative"
+                    cursor="pointer"
+                    onClick={() => open(dat)}
+                    justifyContent="center"
+                    className="box"
+                    align="center"
+                  >
+                    <FiMoreVertical />
+
+                    {show && currentItem === dat && (
+                      <Box
+                        border="1px solid #F4F6F8"
+                        px="4px"
+                        py="8px"
+                        bg="#fff"
+                        borderRadius="4px"
+                        pos="absolute"
+                        right="0"
+                        zIndex={5555555}
+                        top="20px"
+                        boxShadow="0px 8px 16px 0px rgba(0, 0, 0, 0.08)"
+                      >
+                        <Flex
+                          mb="8px"
+                          py="6px"
+                          px="8px"
+                          borderRadius="2px"
+                          justifyContent="center"
+                          align="center"
+                          _hover={{ bg: "#F4F6F8" }}
+                          cursor="pointer"
+                          fontSize="10px"
+                          gap="12px"
+                          w="full"
+                          onClick={() =>
+                            navigate(
+                              `/customer/services/event-parking/${dat?.id}`
+                            )
+                          }
+                          color="#646668"
+                          lineHeight="100%"
+                          fontWeight={500}
+                        >
+                          <Icon as={TbListDetails} w="20px" h="20px" />
+                          View Details
+                        </Flex>
+                      </Box>
+                    )}
+                  </Flex>
+                </Td>
               </Tr>
             ))
           ) : (

@@ -39,8 +39,14 @@ const {
   CUST_DASHBOARD,
   CUST_SERVICES,
   CUST_SERVICES_PARK,
+  CUST_SERVICES_PARK_DETAILS,
+  CUST_HISTORY_PARK_DETAILS,
   CUST_SERVICES_RESERVE_PARK,
+  CUST_SERVICES_RESERVE_PARK_DETAILS,
+  CUST_HISTORY_RESERVE_PARK_DETAILS,
   CUST_SERVICES_EVENT_PARK,
+  CUST_SERVICES_EVENT_PARK_DETAILS,
+  CUST_HISTORY_EVENT_PARK_DETAILS,
   CUST_SUBSCRIPTION,
   CUST_ADD_SUBSCRIPTION,
   CUST_VEHICLES,
@@ -197,6 +203,17 @@ const CustServices = WithSuspense(
 );
 const CustServicesPark = WithSuspense(
   lazy(() => import("../pages/Customer/Services/Park"))
+);
+const CustServicesParkDetails = WithSuspense(
+  lazy(() => import("../components/data/Customer/Services/PaytoParkDetails"))
+);
+const CustServicesReserveParkDetails = WithSuspense(
+  lazy(() =>
+    import("../components/data/Customer/Services/ReserveParkingDetails")
+  )
+);
+const CustServicesEventParkDetails = WithSuspense(
+  lazy(() => import("../components/data/Customer/Services/EventParkingDetails"))
 );
 const CustServicesCar = WithSuspense(
   lazy(() => import("../pages/Customer/Services/CarServices"))
@@ -825,6 +842,24 @@ export const PRIVATE_ROUTES = [
   { path: CUST_DASHBOARD, element: <CustDashboard /> },
   { path: CUST_SERVICES, element: <CustServices /> },
   { path: CUST_SERVICES_PARK, element: <CustServicesPark /> },
+  { path: CUST_SERVICES_PARK_DETAILS, element: <CustServicesParkDetails /> },
+  { path: CUST_HISTORY_PARK_DETAILS, element: <CustServicesParkDetails /> },
+  {
+    path: CUST_SERVICES_RESERVE_PARK_DETAILS,
+    element: <CustServicesReserveParkDetails />,
+  },
+  {
+    path: CUST_HISTORY_RESERVE_PARK_DETAILS,
+    element: <CustServicesReserveParkDetails />,
+  },
+  {
+    path: CUST_SERVICES_EVENT_PARK_DETAILS,
+    element: <CustServicesEventParkDetails />,
+  },
+  {
+    path: CUST_HISTORY_EVENT_PARK_DETAILS,
+    element: <CustServicesEventParkDetails />,
+  },
   { path: CUST_SERVICES_RESERVE_PARK, element: <CustServicesReservePark /> },
   { path: CUST_SERVICES_EVENT_PARK, element: <CustServicesEventPark /> },
   { path: CUST_SUBSCRIPTION, element: <CustSubscriptions /> },
