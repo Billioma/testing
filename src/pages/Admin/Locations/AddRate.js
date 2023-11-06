@@ -10,6 +10,7 @@ import GoBackTab from "../../../components/data/Admin/GoBackTab";
 import { useGetOperators } from "../../../services/admin/query/users";
 import {
   useAddRate,
+  useGetRates,
   useGetZones,
 } from "../../../services/admin/query/locations";
 import { useGetServices } from "../../../services/admin/query/services";
@@ -25,7 +26,7 @@ export default function AddZone() {
   const navigate = useNavigate();
   const [isDisabled, setIsDisabled] = useState(true);
   const { errorToast, successToast } = useCustomToast();
-  const { refetch } = useGetZones();
+  const { refetch } = useGetRates();
   const { mutate, isLoading } = useAddRate({
     onSuccess: () => {
       successToast("Rate added successfully!");

@@ -301,7 +301,7 @@ export default function AddAttendants() {
             <Button
               variant="adminSecondary"
               w="45%"
-              onClick={() => navigate(PRIVATE_PATHS.ADMIN_ATTENDANTS)}
+              onClick={() => navigate(PRIVATE_PATHS.ADMIN_ADMINISTRATORS)}
             >
               Cancel
             </Button>

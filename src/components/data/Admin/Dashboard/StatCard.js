@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Flex, Text } from "@chakra-ui/react";
+import { Box, Flex, Text, useMediaQuery } from "@chakra-ui/react";
 
 const StatCard = ({
   title,
@@ -7,141 +7,159 @@ const StatCard = ({
   value,
   inactive,
   active,
-  inService,
+  inservice,
   completed,
+  unpaid,
   large = false,
   reserved,
   expired,
   pending,
   upcoming,
   paid,
-  past,
   bg,
-  pastDue,
 }) => {
+  const [isMobile] = useMediaQuery("(max-width: 1400px)");
   return (
     <Box
       w="100%"
-      borderRadius="lg"
-      overflow="hidden"
+      borderRadius="8px"
       bg={bg ? bg : "#F4F6F8"}
       border={large ? "0.50px #E4E6E8 solid" : ""}
     >
-      <Box p="4">
-        <Flex mb="4">
-          <Text fontSize="14px" color="#242628" fontWeight="600">
-            {title}
-          </Text>
-        </Flex>
+      <Box p={isMobile ? "15px" : "20px"}>
+        <Text mb="16px" fontSize="14px" color="#242628" fontWeight={700}>
+          {title}
+        </Text>
 
         <Flex
           flexDir={large ? "row" : "column"}
           justifyContent={"space-between"}
-          alignItems={large ? "end" : ""}
+          align={large ? "end" : ""}
         >
           <Box>
             <Text fontSize="12px" color="#242628" fontWeight="500">
               {subTitle}
             </Text>
-            <Text fontSize="32px" color="#646668" fontWeight="500">
+            <Text
+              fontSize={large && isMobile ? "20px" : "28px"}
+              color="#646668"
+              fontWeight="500"
+            >
               {value?.toLocaleString()}
             </Text>
           </Box>
 
-          <Flex justifyContent="space-between" gap="24px" alignItems="center">
+          <Flex justifyContent="space-between" gap="24px" align="center">
             {!large && inactive != null && inactive != undefined ? (
-              <Flex
-                gap="7px"
-                alignItems="center"
-                fontSize="16px"
-                fontWeight="500"
-              >
+              <Flex gap="8px" align="center" fontSize="16px" fontWeight="500">
                 <Text color={"#EE383A"} fontSize="12px">
                   Inactive
                 </Text>
-                {inactive}
+                <Text color="#242628">{inactive}</Text>
               </Flex>
             ) : (
               <Flex
-                gap="7px"
-                alignItems="center"
+                gap={large && isMobile ? "4px" : "7px"}
+                align="center"
                 fontSize="16px"
                 fontWeight="500"
               >
-                <Text color={"#0B841D"} fontSize="12px">
-                  {reserved != null && reserved != undefined
-                    ? "Reserved"
-                    : pending != null && pending != undefined
-                    ? "Pending"
-                    : inService != null && inService != undefined
+                <Text
+                  color={"#0B841D"}
+                  fontSize={large && isMobile ? "10px" : "12px"}
+                >
+                  {title.includes("Valet Parking") ||
+                  title.includes("Pay-To-Park")
                     ? "In Service"
+                    : title.includes("Reserved") || title === "Event Parking"
+                    ? "Reserved"
+                    : title.includes("Events")
+                    ? "Upcoming"
+                    : title.includes("Invoices")
+                    ? "Paid"
+                    : title.includes("Car Services")
+                    ? "Pending"
+                    : reserved != null && reserved != undefined
+                    ? "Reserved"
                     : large && active != null && active != undefined
                     ? "Active"
-                    : upcoming != null && upcoming != undefined
-                    ? "Upcoming"
-                    : paid != null && paid != undefined
-                    ? "Paid"
                     : null}
                 </Text>
-                {reserved != null || reserved != undefined
-                  ? reserved
-                  : pending != null && pending != undefined
-                  ? pending
-                  : inService != null && inService != undefined
-                  ? inService
-                  : large && active != null && active != undefined
-                  ? active
-                  : upcoming != null && upcoming != undefined
-                  ? upcoming
-                  : paid != null && paid != undefined
-                  ? paid
-                  : null}
+                <Text
+                  color="#242628"
+                  fontSize={large && isMobile ? "15px" : "16px"}
+                >
+                  {title.includes("Valet Parking") ||
+                  title.includes("Pay-To-Park")
+                    ? inservice?.toLocaleString()
+                    : title.includes("Reserved")
+                    ? pending?.toLocaleString()
+                    : title === "Event Parking"
+                    ? reserved?.toLocaleString()
+                    : title.includes("Invoices")
+                    ? paid?.toLocaleString()
+                    : title.includes("Service")
+                    ? pending?.toLocaleString()
+                    : title.includes("Events")
+                    ? upcoming
+                    : title.includes("Car Services")
+                    ? pending?.toLocaleString()
+                    : reserved != null || reserved != undefined
+                    ? reserved?.toLocaleString()
+                    : large && active != null && active != undefined
+                    ? active?.toLocaleString()
+                    : null}
+                </Text>
               </Flex>
             )}
 
             {!large && active != null && active != undefined ? (
-              <Flex
-                gap="7px"
-                alignItems="center"
-                fontSize="16px"
-                fontWeight="500"
-              >
+              <Flex gap="8px" align="center" fontSize="16px" fontWeight="500">
                 <Text color={"#0B841D"} fontSize="12px">
                   Active
                 </Text>
-                {active}
+
+                <Text color="#242628">{active}</Text>
               </Flex>
             ) : (
               <Flex
-                gap="7px"
-                alignItems="center"
+                gap={large && isMobile ? "4px" : "7px"}
+                align="center"
                 fontSize="16px"
                 fontWeight="500"
               >
-                <Text color={"#646668"} fontSize="12px">
-                  {completed != null && completed != undefined
+                <Text
+                  color={"#444648"}
+                  fontSize={large && isMobile ? "10px" : "12px"}
+                >
+                  {title.includes("Events")
+                    ? "Expired"
+                    : title.includes("Locations") || title.includes("Vehicles")
+                    ? "Inactive"
+                    : title.includes("Invoice")
+                    ? "Unpaid"
+                    : completed != null && completed != undefined
                     ? "Completed"
                     : expired != null && expired != undefined
                     ? "Expired"
-                    : large && inactive != null && inactive != undefined
-                    ? "Inactive"
-                    : past != null && past != undefined
-                    ? "Past"
-                    : pastDue != null && pastDue != undefined
-                    ? "Past Due"
                     : null}
                 </Text>
-                {completed != null && completed != undefined
-                  ? completed
-                  : expired != null && expired != undefined
-                  ? expired
-                  : large && inactive != null && inactive != undefined
-                  ? inactive
-                  : past != null && past != undefined
-                  ? past
-                  : pastDue != null && pastDue != undefined
-                  ? pastDue
-                  : null}
+                <Text
+                  color="#242628"
+                  fontSize={large && isMobile ? "15px" : "16px"}
+                >
+                  {title.includes("Events")
+                    ? expired?.toLocaleString()
+                    : title.includes("Locations") || title.includes("Vehicles")
+                    ? inactive?.toLocaleString()
+                    : title.includes("Invoice")
+                    ? unpaid?.toLocaleString()
+                    : completed != null && completed != undefined
+                    ? completed?.toLocaleString()
+                    : expired != null && expired != undefined
+                    ? expired?.toLocaleString()
+                    : null}
+                </Text>
               </Flex>
             )}
           </Flex>

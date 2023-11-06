@@ -153,13 +153,28 @@ const TableLayer = ({
                         fontWeight="500"
                         onClick={() =>
                           navigate(
-                            `${PRIVATE_PATHS.ADMIN_CAR_SERVICES}/${transaction.id}`,
+                            `${PRIVATE_PATHS.ADMIN_CAR_SERVICES}/details/${transaction.id}`,
                             { state: { ...transaction, isEdit: false } }
                           )
                         }
                       >
                         <HiOutlineInformationCircle size={14} />
                         View
+                      </MenuItem>
+
+                      <MenuItem
+                        gap="12px"
+                        alignItems="center"
+                        fontWeight="500"
+                        onClick={() =>
+                          navigate(
+                            `${PRIVATE_PATHS.ADMIN_CAR_SERVICES}/details/${transaction.id}`,
+                            { state: { ...transaction, isEdit: true } }
+                          )
+                        }
+                      >
+                        <HiOutlineInformationCircle size={14} />
+                        Edit
                       </MenuItem>
 
                       <MenuItem

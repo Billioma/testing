@@ -106,40 +106,40 @@ export const PRIVATE_PATHS = {
   ADMIN_SERVICES: "/admin/services",
   ADMIN_ATTENDANTS: "/admin/users/attendants",
   ADMIN_CUSTOMERS: "/admin/users/customers",
-  ADMIN_ADD_ATTENDANT: "/admin/users/attendants/new",
+  ADMIN_ADD_ATTENDANT: "/admin/users/attendants/create",
   ADMIN_VIEW_ATTENDANT: "/admin/users/attendants/details/:id",
-  ADMIN_ADD_CUSTOMER: "/admin/users/customers/new",
+  ADMIN_ADD_CUSTOMER: "/admin/users/customers/create",
   ADMIN_VIEW_CUSTOMER: "/admin/users/customers/details/:id",
 
   ADMIN_ADMINISTRATORS: "/admin/users/administrators",
-  ADMIN_ADD_ADMINISTRATOR: "/admin/users/administrators/new",
+  ADMIN_ADD_ADMINISTRATOR: "/admin/users/administrators/create",
   ADMIN_VIEW_ADMINISTRATOR: "/admin/users/administrators/details/:id",
 
-  ADMIN_OPERATORS: "/admin/users/operatrs",
-  ADMIN_ADD_OPERATOR: "/admin/users/operatrs/new",
-  ADMIN_VIEW_OPERATOR: "/admin/users/operatrs/details/:id",
+  ADMIN_OPERATORS: "/admin/users/operators",
+  ADMIN_ADD_OPERATOR: "/admin/users/operators/create",
+  ADMIN_VIEW_OPERATOR: "/admin/users/operators/details/:id",
 
   ADMIN_VEHICLES: "/admin/vehicles",
   ADMIN_VIEW_VEHICLE: "/admin/vehicles/details/:id",
-  ADMIN_ADD_VEHICLE: "/admin/vehicles/new",
+  ADMIN_ADD_VEHICLE: "/admin/vehicles/create",
 
   ADMIN_MEMBERSHIP_PLANS: "/admin/memberships/plans",
-  ADMIN_ADD_MEMBERSHIP_PLAN: "/admin/memberships/plans/new",
+  ADMIN_ADD_MEMBERSHIP_PLAN: "/admin/memberships/plans/create",
   ADMIN_VIEW_MEMBERSHIP_PLAN: "/admin/memberships/plans/details/:id",
 
   ADMIN_MEMBERSHIP_FEATURES: "/admin/memberships/features",
-  ADMIN_ADD_MEMBERSHIP_FEATURE: "/admin/memberships/features/new",
+  ADMIN_ADD_MEMBERSHIP_FEATURE: "/admin/memberships/features/create",
   ADMIN_VIEW_MEMBERSHIP_FEATURE: "/admin/memberships/features/details/:id",
 
   ADMIN_CUSTOMER_SUBSCRIPTIONS: "/admin/memberships/customer-subscriptions",
   ADMIN_ADD_CUSTOMER_SUBSCRIPTION:
-    "/admin/memberships/customer-subscriptions/new",
+    "/admin/memberships/customer-subscriptions/create",
   ADMIN_VIEW_CUSTOMER_SUBSCRIPTION:
     "/admin/memberships/customer-subscriptions/details/:id",
 
   ADMIN_CORPORATE_SUBSCRIPTIONS: "/admin/memberships/corporate-subscriptions",
   ADMIN_ADD_CORPORATE_SUBSCRIPTION:
-    "/admin/memberships/corporate-subscriptions/new",
+    "/admin/memberships/corporate-subscriptions/create",
   ADMIN_VIEW_CORPORATE_SUBSCRIPTION:
     "/admin/memberships/corporate-subscriptions/details/:id",
 
@@ -148,43 +148,43 @@ export const PRIVATE_PATHS = {
   ADMIN_RESERVED_PARKING: "/admin/transactions/reserved-parking",
   ADMIN_VIEW_RESERVED_PARKING:
     "/admin/transactions/reserved-parking/details/:id",
-  ADMIN_ADD_RESERVED_PARKING: "/admin/transactions/reserved-parking/new",
+  ADMIN_ADD_RESERVED_PARKING: "/admin/transactions/reserved-parking/create",
 
   ADMIN_CAR_SERVICES: "/admin/transactions/car-services",
   ADMIN_VIEW_CAR_SERVICE: "/admin/transactions/car-services/details/:id",
-  ADMIN_ADD_CAR_SERVICE: "/admin/transactions/car-services/new",
+  ADMIN_ADD_CAR_SERVICE: "/admin/transactions/car-services/create",
 
-  ADMIN_CLIENTS: "/admin/clients/list",
-  ADMIN_ADD_CLIENT: "/admin/clients/list/new",
-  ADMIN_VIEW_CLIENT: "/admin/clients/list/details/:id",
+  ADMIN_CLIENTS: "/admin/clients/all",
+  ADMIN_ADD_CLIENT: "/admin/clients/all/create",
+  ADMIN_VIEW_CLIENT: "/admin/clients/all/details/:id",
 
   ADMIN_CLIENTS_INVOICES: "/admin/clients/invoices",
   ADMIN_VIEW_CLIENT_INVOICE: "/admin/clients/invoices/details/:id",
-  ADMIN_ADD_CLIENT_INVOICE: "/admin/clients/invoices/new",
+  ADMIN_ADD_CLIENT_INVOICE: "/admin/clients/invoices/create",
 
   ADMIN_EVENTS: "/admin/events",
-  ADMIN_ADD_EVENT: "/admin/events/new",
+  ADMIN_ADD_EVENT: "/admin/events/create",
   ADMIN_VIEW_EVENT: "/admin/events/details/:id",
 
-  ADMIN_LOCATIONS: "/admin/locations/locations",
-  ADMIN_ADD_LOCATION: "/admin/locations/locations/new",
+  ADMIN_LOCATIONS: "/admin/locations/all",
+  ADMIN_ADD_LOCATION: "/admin/locations/locations/create",
   ADMIN_VIEW_LOCATION: "/admin/locations/locations/details/:id",
 
   ADMIN_ZONES: "/admin/locations/zones",
   ADMIN_VIEW_ZONE: "/admin/locations/zones/details/:id",
-  ADMIN_ADD_ZONE: "/admin/locations/zones/new",
+  ADMIN_ADD_ZONE: "/admin/locations/zones/create",
 
   ADMIN_RATES: "/admin/locations/rates",
   ADMIN_VIEW_RATE: "/admin/locations/rates/details/:id",
-  ADMIN_ADD_RATE: "/admin/locations/rates/new",
+  ADMIN_ADD_RATE: "/admin/locations/rates/create",
 
   ADMIN_AMENITIES: "/admin/locations/amenities",
   ADMIN_VIEW_AMENITY: "/admin/locations/amenities/details/:id",
-  ADMIN_ADD_AMENITY: "/admin/locations/amenities/new",
+  ADMIN_ADD_AMENITY: "/admin/locations/amenities/create",
 
   ADMIN_POLICIES: "/admin/locations/policies",
   ADMIN_VIEW_POLICY: "/admin/locations/policies/details/:id",
-  ADMIN_ADD_POLICY: "/admin/locations/policies/new",
+  ADMIN_ADD_POLICY: "/admin/locations/policies/create",
 
   ADMIN_VALETED_VEHICLES: "/admin/logs/valeted-vehicles",
   ADMIN_VIEW_VALETED_VEHICLE: "/admin/logs/valeted-vehicles/details/:id",
@@ -196,29 +196,29 @@ export const PRIVATE_PATHS = {
   ADMIN_VIEW_SERVICED_VEHICLE: "/admin/logs/serviced-vehicles/details/:id",
 
   ADMIN_CONFIG_ROLES: "/admin/configurations/roles",
-  ADMIN_CONFIG_ADD_ROLE: "/admin/configurations/roles/new",
+  ADMIN_CONFIG_ADD_ROLE: "/admin/configurations/roles/create",
   ADMIN_CONFIG_VIEW_ROLE: "/admin/configurations/roles/details/:id",
 
   ADMIN_CONFIG_VEHICLE_MAKES: "/admin/configurations/vehicle-makes",
-  ADMIN_CONFIG_ADD_VEHICLE_MAKE: "/admin/configurations/vehicle-makes/new",
+  ADMIN_CONFIG_ADD_VEHICLE_MAKE: "/admin/configurations/vehicle-makes/create",
   ADMIN_CONFIG_VIEW_VEHICLE_MAKE:
     "/admin/configurations/vehicle-makes/details/:id",
 
   ADMIN_CONFIG_VEHICLE_MODELS: "/admin/configurations/vehicle-models",
-  ADMIN_CONFIG_ADD_VEHICLE_MODEL: "/admin/configurations/vehicle-models/new",
+  ADMIN_CONFIG_ADD_VEHICLE_MODEL: "/admin/configurations/vehicle-models/create",
   ADMIN_CONFIG_VIEW_VEHICLE_MODEL:
     "/admin/configurations/vehicle-models/details/:id",
 
   ADMIN_CONFIG_FAQS: "/admin/configurations/faqs",
-  ADMIN_CONFIG_ADD_FAQ: "/admin/configurations/faqs/new",
+  ADMIN_CONFIG_ADD_FAQ: "/admin/configurations/faqs/create",
   ADMIN_CONFIG_VIEW_FAQ: "/admin/configurations/faqs/details/:id",
 
   ADMIN_CONFIG_BANK_DETAILS: "/admin/configurations/bank-details",
-  ADMIN_CONFIG_ADD_BANK_DETAIL: "/admin/configurations/bank-details/new",
+  ADMIN_CONFIG_ADD_BANK_DETAIL: "/admin/configurations/bank-details/create",
   ADMIN_CONFIG_VIEW_BANK_DETAIL:
     "/admin/configurations/bank-details/details/:id",
 
-  ADMIN_CONFIG_QR_CODE: "/admin/configurations/qr-code",
+  ADMIN_CONFIG_QR_CODE: "/admin/configurations/qr-code/create",
 
   ADMIN_REP_PAYMENTS: "/admin/reports/payments",
   ADMIN_REP_LOCATIONS: "/admin/reports/locations",

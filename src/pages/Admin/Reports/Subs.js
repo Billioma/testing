@@ -57,6 +57,10 @@ const Subs = () => {
     setStartRow(currentStartRow);
     setEndRow(currentEndRow);
   }, [data, page, limit]);
+
+  useEffect(() => {
+    refetch();
+  }, []);
   return (
     <Box minH="75vh">
       <Grid mb="24px" templateColumns={"repeat(3,1fr)"}>

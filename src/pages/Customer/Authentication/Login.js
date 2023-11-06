@@ -18,9 +18,7 @@ const Login = () => {
   const { mutate, isLoading } = useCustomerLogin({
     onSuccess: (res) => {
       sessionStorage.setItem("user", JSON.stringify(res));
-      setTimeout(() => {
-        navigate("/customer/dashboard");
-      }, 200);
+      navigate("/customer/dashboard");
     },
     onError: (err) => {
       errorToast(
@@ -28,6 +26,7 @@ const Login = () => {
       );
     },
   });
+  
   const handleSubmit = (values = "") => {
     mutate(values);
   };

@@ -1,13 +1,17 @@
 import React, { useState, useEffect } from "react";
 import ClientsTableLayer from "../../../components/data/Admin/Clients/ClientsListsTableLayer";
-import { Box, Button, Flex, Text } from "@chakra-ui/react";
+import { Box, Button, Flex, Image, Text } from "@chakra-ui/react";
 import { FiPlus } from "react-icons/fi";
 import { VscDebugRestart } from "react-icons/vsc";
 import { useNavigate } from "react-router-dom";
 import { PRIVATE_PATHS } from "../../../routes/constants";
-import { useGetClients } from "../../../services/admin/query/clients";
+import {
+  useGetAdminClients,
+  useGetClients,
+} from "../../../services/admin/query/clients";
 import Filter from "../../../components/common/Filter";
 import { clientListOptions } from "../../../components/common/constants";
+import { MdAdd } from "react-icons/md";
 
 export default function () {
   const [page, setPage] = useState(1);
@@ -25,14 +29,11 @@ export default function () {
 
   const query = convertedFilters?.join("&");
 
-  const { data, isLoading, refetch } = useGetClients(
-    {
-      refetchOnWindowFocus: true,
-    },
-    page,
-    limit,
-    query
-  );
+  const { mutate, data, isLoading } = useGetAdminClients();
+
+  useEffect(() => {
+    mutate({ filterString: query, limit, page: page });
+  }, [page, query]);
 
   useEffect(() => {
     setPage(1);
@@ -55,42 +56,58 @@ export default function () {
   }, [data, page, limit]);
 
   return (
-    <Box w="full" border={"1px solid #E4E6E8"} borderRadius={"12px"}>
+    <Box border="1px solid #d4d6d8" borderRadius="8px" p="16px 23px 24px">
       <Filter
         setFiltArray={setFiltArray}
         filtArray={filtArray}
         fieldToCompare={clientListOptions}
-        handleSearch={refetch}
-        title={<Text fontWeight="500">All Clients</Text>}
+        handleSearch={() =>
+          mutate({ filterString: query, limit: limit, page: page })
+        }
+        title={
+          <Text
+            fontSize="14px"
+            fontWeight={500}
+            lineHeight="100%"
+            color="#242628"
+          >
+            All Clients
+          </Text>
+        }
+        gap
         main={
-          <Flex gap="6px">
+          <>
             <Button
-              variant="adminPrimary"
-              gap={2}
-              fontSize={"12px"}
               onClick={() => navigate(PRIVATE_PATHS.ADMIN_ADD_CLIENT)}
+              display="flex"
+              bg="#000"
+              gap="8px"
             >
-              <Text display={{ base: "none", md: "inline-flex" }}>
-                Add a Client
-              </Text>
-              <FiPlus size={18} />
+              <Text fontSize="12px">Add a Client</Text>
+              <MdAdd size="20px" />
             </Button>
-
-            <Button
-              bg="white"
-              py={3}
-              h="43px"
-              border="1px solid #000"
-              color="#000"
-              onClick={() => refetch()}
+            <Flex
+              justifyContent="center"
+              align="center"
+              cursor="pointer"
+              transition=".3s ease-in-out"
+              _hover={{ bg: "#F4F6F8" }}
+              onClick={() => mutate({ filterString: query, limit, page: page })}
+              borderRadius="8px"
+              border="1px solid #848688"
+              p="10px"
             >
-              <VscDebugRestart size={20} />
-            </Button>
-          </Flex>
+              <Image
+                src="/assets/refresh.svg"
+                className={isLoading && "mirrored-icon"}
+                w="20px"
+                h="20px"
+              />
+            </Flex>
+          </>
         }
       />
 
-      <hr />
       <ClientsTableLayer
         data={data}
         isLoading={isLoading}
@@ -100,7 +117,7 @@ export default function () {
         setPage={setPage}
         startRow={startRow}
         endRow={endRow}
-        refetch={refetch}
+        refetch={() => mutate({ filterString: query, limit, page: page })}
       />
     </Box>
   );

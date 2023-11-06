@@ -105,7 +105,7 @@ export default function AddFaq() {
             <Button
               variant="adminSecondary"
               w="45%"
-              onClick={() => navigate(PRIVATE_PATHS.ADMIN_CONFIG_VEHICLE_MAKES)}
+              onClick={() => navigate(PRIVATE_PATHS.ADMIN_CONFIG_FAQS)}
             >
               Cancel
             </Button>

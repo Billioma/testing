@@ -8,10 +8,10 @@ import { PRIVATE_PATHS } from "../../../routes/constants";
 import { FiTrash2 } from "react-icons/fi";
 import useCustomToast from "../../../utils/notifications";
 import GoBackTab from "../../../components/data/Admin/GoBackTab";
-import { useGetOperators } from "../../../services/admin/query/users";
 import {
   useAddClientInvoice,
   useGetClients,
+  useGetClientsInvoices,
 } from "../../../services/admin/query/clients";
 import DateTimePicker from "../../../components/data/Admin/DateTimePicker";
 import { useGetServices } from "../../../services/admin/query/services";
@@ -24,7 +24,7 @@ export default function AddClientInvoice() {
   const navigate = useNavigate();
   const [isDisabled, setIsDisabled] = useState(true);
   const { errorToast, successToast } = useCustomToast();
-  const { refetch } = useGetOperators();
+  const { refetch } = useGetClientsInvoices();
   const { mutate, isLoading } = useAddClientInvoice({
     onSuccess: () => {
       successToast("Invoice added successfully!");
@@ -86,8 +86,6 @@ export default function AddClientInvoice() {
     "Traffic Management Package",
     "Equipment & Set up fee ",
   ].map((description) => ({ label: description, value: description }));
-
-  console.log(state);
 
   return (
     <Box minH="75vh">

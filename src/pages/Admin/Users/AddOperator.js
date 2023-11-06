@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Box, Flex, Text, Button } from "@chakra-ui/react";
+import { Box, Flex, Text, Button, Switch } from "@chakra-ui/react";
 import CustomInput from "../../../components/common/CustomInput";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import Select from "react-select";
@@ -25,6 +25,7 @@ export default function AddOperator() {
     contactPerson: "",
     state: "",
     status: 1,
+    enableTips: 0,
   });
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -210,7 +211,7 @@ export default function AddOperator() {
 
           <Box position="relative" mb={4}>
             <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
-              Comfirm Password
+              Confirm Password
             </Text>
             <CustomInput
               auth
@@ -240,11 +241,33 @@ export default function AddOperator() {
             </Box>
           </Box>
 
+          <Flex
+            align="center"
+            justifyContent={"space-between"}
+            gap="15px"
+            mb="16px"
+            mt={2}
+          >
+            <Text fontSize="12px" fontWeight={500} color="#444648">
+              Enable Tips
+            </Text>
+            <Switch
+              onChange={() =>
+                setState({
+                  ...state,
+                  enableTips: state.enableTips ? 0 : 1,
+                })
+              }
+              size="sm"
+              variant="adminPrimary"
+            />
+          </Flex>
+
           <Flex gap={4} mt={4}>
             <Button
               variant="adminSecondary"
               w="45%"
-              onClick={() => navigate(PRIVATE_PATHS.ADMIN_ATTENDANTS)}
+              onClick={() => navigate(PRIVATE_PATHS.ADMIN_OPERATORS)}
             >
               Cancel
             </Button>

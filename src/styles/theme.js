@@ -17,6 +17,16 @@ export const customTheme = extendTheme({
             },
           },
         },
+
+        admin: {
+          control: {
+            borderColor: "#0D0718",
+            _checked: {
+              borderColor: "#0D0718",
+              bg: "#0D0718",
+            },
+          },
+        },
       },
       defaultProps: {
         variant: "primary",

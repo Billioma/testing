@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Box, Flex, Text, Button } from "@chakra-ui/react";
+import { Box, Flex, Text, Button, Image } from "@chakra-ui/react";
 import CustomInput from "../../../components/common/CustomInput";
 import {
   AiOutlineEye,
@@ -13,6 +13,7 @@ import { PRIVATE_PATHS } from "../../../routes/constants";
 import { useCreateAttendant } from "../../../services/admin/query/users";
 import useCustomToast from "../../../utils/notifications";
 import GoBackTab from "../../../components/data/Admin/GoBackTab";
+import { useUploadMedia } from "../../../services/admin/query/general";
 
 export default function AddAttendants() {
   const [state, setState] = useState({
@@ -23,6 +24,7 @@ export default function AddAttendants() {
     accountType: "",
     userId: "",
     status: 1,
+    avatarImage: null,
   });
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -82,9 +84,40 @@ export default function AddAttendants() {
     { label: "OTHERS", value: "OTHERS" },
   ];
 
+  const { mutate: uploadMedia, isLoading: uploadingImage } = useUploadMedia({
+    onSuccess: (data) => {
+      mutate({ ...state, avatar: data.path });
+    },
+    onError: (err) => {
+      errorToast(
+        err?.response?.data?.message || err?.message || "An Error occurred"
+      );
+    },
+  });
+
+  const handleAvatarImageChange = (e) => {
+    const selectedImage = e.target.files[0];
+    if (selectedImage) {
+      setState({
+        ...state,
+        avatarImage: selectedImage,
+      });
+    }
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    mutate(state);
+    if (state.avatarImage) {
+      const formData = new FormData();
+      formData.append("profilePicture", state.avatarImage);
+      uploadMedia({
+        fileType: "avatar",
+        entityType: "admin",
+        file: formData.get("profilePicture"),
+      });
+    } else {
+      mutate(state);
+    }
   };
 
   return (
@@ -110,18 +143,37 @@ export default function AddAttendants() {
             >
               Avatar
             </Text>
-            <Box
-              w="120px"
-              h="120px"
-              justifyContent="center"
-              alignItems="center"
-              border="4px solid #0D0718"
-              borderRadius="12px"
-              display="flex"
-              cursor="pointer"
-            >
-              <AiOutlineCamera size={32} />
-            </Box>
+            <label htmlFor="avatarInput">
+              <Box
+                w="120px"
+                h="120px"
+                justifyContent="center"
+                alignItems="center"
+                border="4px solid #0D0718"
+                borderRadius="12px"
+                display="flex"
+                cursor="pointer"
+                overflow={"hidden"}
+              >
+                {state.avatarImage ? (
+                  <Image
+                    src={URL.createObjectURL(state.avatarImage)}
+                    alt="Avatar"
+                    boxSize="100%"
+                    objectFit="cover"
+                  />
+                ) : (
+                  <AiOutlineCamera size={32} />
+                )}
+              </Box>
+            </label>
+            <input
+              type="file"
+              id="avatarInput"
+              accept="image/*"
+              style={{ display: "none" }}
+              onChange={handleAvatarImageChange}
+            />
           </Box>
           <Box w="full" mb={4}>
             <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">

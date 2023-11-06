@@ -3,7 +3,10 @@ import { Box, Flex, Text, Button, Image } from "@chakra-ui/react";
 import CustomInput from "../../../components/common/CustomInput";
 import { useNavigate } from "react-router-dom";
 import { PRIVATE_PATHS } from "../../../routes/constants";
-import { useAddClient } from "../../../services/admin/query/clients";
+import {
+  useAddClient,
+  useGetClients,
+} from "../../../services/admin/query/clients";
 import useCustomToast from "../../../utils/notifications";
 import Select from "react-select";
 import { useGetStates } from "../../../services/customer/query/locations";
@@ -16,7 +19,7 @@ import {
   AiOutlineFolderOpen,
 } from "react-icons/ai";
 
-export default function ViewCustomer() {
+export default function AddClient() {
   const [state, setState] = useState({ managers: [], status: 1 });
   const navigate = useNavigate();
   const [isDisabled, setIsDisabled] = useState(true);
@@ -24,9 +27,11 @@ export default function ViewCustomer() {
   const { errorToast, successToast } = useCustomToast();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const { refetch } = useGetClients();
   const { mutate, isLoading } = useAddClient({
     onSuccess: () => {
       successToast("Client added successfully!");
+      refetch();
       navigate(PRIVATE_PATHS.ADMIN_CLIENTS);
     },
     onError: (error) => {
@@ -86,8 +91,6 @@ export default function ViewCustomer() {
       !state.state
     );
   };
-
-  console.log(state);
 
   useEffect(() => {
     setIsDisabled(isFormValid);

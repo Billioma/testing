@@ -7,10 +7,10 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { PRIVATE_PATHS } from "../../../routes/constants";
 import useCustomToast from "../../../utils/notifications";
 import GoBackTab from "../../../components/data/Admin/GoBackTab";
-import { useGetOperators } from "../../../services/admin/query/users";
 import { AiOutlineFolderOpen } from "react-icons/ai";
 import {
   useGetClients,
+  useGetClientsEvents,
   useUpdateClientEvent,
 } from "../../../services/admin/query/clients";
 import DateTimePicker from "../../../components/data/Admin/DateTimePicker";
@@ -25,7 +25,7 @@ export default function ViewEvent() {
   const navigate = useNavigate();
   const [isDisabled, setIsDisabled] = useState(true);
   const { errorToast, successToast } = useCustomToast();
-  const { refetch } = useGetOperators();
+  const { refetch } = useGetClientsEvents();
   const { mutate, isLoading } = useUpdateClientEvent({
     onSuccess: () => {
       successToast("Event updated successfully!");

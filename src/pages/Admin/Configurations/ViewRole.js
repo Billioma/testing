@@ -54,7 +54,7 @@ export default function ViewRole() {
       successToast(res?.message);
       setIsOpen(false);
       refetch();
-      navigate(PRIVATE_PATHS.ADMIN_CONFIG_BANK_DETAILS);
+      navigate(PRIVATE_PATHS.ADMIN_CONFIG_ROLES);
     },
     onError: (err) => {
       errorToast(
@@ -114,6 +114,7 @@ export default function ViewRole() {
 
   useEffect(() => {
     const { id, name, displayName, permissions } = location.state;
+
     setState({
       id,
       name,

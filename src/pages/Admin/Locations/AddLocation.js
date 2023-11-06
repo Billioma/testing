@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Box, Flex, Text, Button } from "@chakra-ui/react";
+import { Box, Flex, Text, Button, Switch, Image } from "@chakra-ui/react";
 import CustomInput from "../../../components/common/CustomInput";
 import { customStyles, allStates } from "../../../components/common/constants";
 import Select from "react-select";
@@ -17,10 +17,12 @@ import {
   useAddLocation,
   useGetLocations,
 } from "../../../services/admin/query/locations";
+import { useUploadMedia } from "../../../services/admin/query/general";
 
 export default function AddLocation() {
   const [state, setState] = useState({
     status: 1,
+    enableTips: 0,
   });
 
   const navigate = useNavigate();
@@ -81,8 +83,40 @@ export default function AddLocation() {
     setIsDisabled(isFormValid);
   }, [state]);
 
-  const handleSubmit = () => {
-    mutate(state);
+  const { mutate: uploadMedia, isLoading: uploadingImage } = useUploadMedia({
+    onSuccess: (data) => {
+      mutate({ ...state, picture: data.path });
+    },
+    onError: (err) => {
+      errorToast(
+        err?.response?.data?.message || err?.message || "An Error occurred"
+      );
+    },
+  });
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (state.picture) {
+      const formData = new FormData();
+      formData.append("picture", state.picture);
+      uploadMedia({
+        fileType: "avatar",
+        entityType: "admin",
+        file: formData.get("picture"),
+      });
+    } else {
+      mutate(state);
+    }
+  };
+
+  const handleImageChange = (e) => {
+    const selectedImage = e.target.files[0];
+    if (selectedImage) {
+      setState({
+        ...state,
+        picture: selectedImage,
+      });
+    }
   };
 
   const locationTypeOptions = [
@@ -111,27 +145,47 @@ export default function AddLocation() {
           border="1px solid #E4E6E8"
         >
           <Box alignSelf={"center"} w="full" mb={5}>
-            <Flex
-              w="100%"
-              h="120px"
-              justifyContent="center"
-              alignItems="center"
-              border="4px solid #0D0718"
-              borderRadius="12px"
-              display="flex"
-              cursor="pointer"
-              flexDir={"column"}
-            >
-              <AiOutlineFolderOpen size={32} />
-              <Text
-                fontSize="10px"
-                fontWeight={500}
-                color="#444648"
-                textAlign="center"
+            <label htmlFor="avatarInput">
+              <Box
+                w="full"
+                h="120px"
+                justifyContent="center"
+                alignItems="center"
+                border="3px solid #0D0718"
+                borderRadius="12px"
+                display="flex"
+                cursor="pointer"
+                overflow={"hidden"}
               >
-                Add location image
-              </Text>
-            </Flex>
+                {state.picture ? (
+                  <Image
+                    src={URL.createObjectURL(state.picture)}
+                    alt="Avatar"
+                    boxSize="100%"
+                    objectFit="cover"
+                  />
+                ) : (
+                  <Flex flexDir={"column"} align={"center"}>
+                    <AiOutlineFolderOpen size={32} />
+                    <Text
+                      fontSize="10px"
+                      fontWeight={500}
+                      color="#444648"
+                      textAlign="center"
+                    >
+                      Add Location image
+                    </Text>
+                  </Flex>
+                )}
+              </Box>
+            </label>
+            <input
+              type="file"
+              id="avatarInput"
+              accept="image/*"
+              style={{ display: "none" }}
+              onChange={handleImageChange}
+            />
           </Box>
           <Box w="full" mb={4}>
             <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
@@ -273,6 +327,28 @@ export default function AddLocation() {
               )}
             />
           </Box>
+
+          <Flex
+            align="center"
+            justifyContent={"space-between"}
+            gap="15px"
+            mb="16px"
+            mt={2}
+          >
+            <Text fontSize="12px" fontWeight={500} color="#444648">
+              Enable Tips
+            </Text>
+            <Switch
+              onChange={() =>
+                setState({
+                  ...state,
+                  enableTips: state.enableTips ? 0 : 1,
+                })
+              }
+              size="sm"
+              variant="adminPrimary"
+            />
+          </Flex>
 
           <Flex gap={4} mt={4}>
             <Button

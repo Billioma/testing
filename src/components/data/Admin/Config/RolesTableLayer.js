@@ -19,7 +19,7 @@ import { useNavigate } from "react-router-dom";
 import AdminDeleteModal from "../../../modals/AdminDeleteModal";
 import useCustomToast from "../../../../utils/notifications";
 import { BsChevronDown } from "react-icons/bs";
-import { useDeleteZone } from "../../../../services/admin/query/locations";
+import { useDeleteRole } from "../../../../services/admin/query/configurations";
 
 const TableLayer = ({
   data,
@@ -37,7 +37,7 @@ const TableLayer = ({
   const navigate = useNavigate();
   const { errorToast, successToast } = useCustomToast();
 
-  const { mutate, isLoading: isDeleting } = useDeleteZone({
+  const { mutate, isLoading: isDeleting } = useDeleteRole({
     onSuccess: (res) => {
       successToast(res?.message);
       refetch();

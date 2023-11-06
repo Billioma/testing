@@ -103,8 +103,6 @@ export default function AddZone() {
     setIsEdit(location.state.isEdit);
   }, [location.state]);
 
-  console.log(state);
-
   return (
     <Box minH="75vh">
       <Flex justifyContent="center" align="center" w="full" flexDir="column">

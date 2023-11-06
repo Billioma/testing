@@ -18,9 +18,7 @@ const Login = () => {
   const { mutate, isLoading } = useOperatorLogin({
     onSuccess: (res) => {
       sessionStorage.setItem("user", JSON.stringify(res));
-      setTimeout(() => {
-        navigate("/operator/dashboard");
-      }, 200);
+      navigate("/operator/dashboard");
     },
     onError: (err) => {
       errorToast(

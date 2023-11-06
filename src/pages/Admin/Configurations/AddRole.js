@@ -169,70 +169,70 @@ export default function AddRole() {
             border="1px solid #E4E6E8"
           >
             <Accordion p={0} allowToggle>
-              {generateAccordionItems("Permissions", 0, ["Generate"])}
-              {generateAccordionItems("Roles", 6)}
-              {generateAccordionItems("Users", 11)}
-              {generateAccordionItems("Operators", 16)}
-              {generateAccordionItems("Clients", 21, [
+              {generateAccordionItems("Permissions", 1, ["Generate"])}
+              {generateAccordionItems("Roles", 7)}
+              {generateAccordionItems("Users", 12)}
+              {generateAccordionItems("Operators", 17)}
+              {generateAccordionItems("Clients", 22, [
                 "Fund",
                 "Export",
                 "View_user",
                 "Attach_user",
                 "Detach_user",
               ])}
-              {generateAccordionItems("Attendants", 31)}
-              {generateAccordionItems("Customers", 36, ["Fund", "Export"])}
-              {generateAccordionItems("Vehicle-Makes", 43)}
-              {generateAccordionItems("Vehicle-Models", 48)}
-              {generateAccordionItems("Vehicles", 53, ["Export"])}
-              {generateAccordionItems("Zones", 59, ["Export"])}
-              {generateAccordionItems("Locations", 65, ["Export"])}
+              {generateAccordionItems("Attendants", 32)}
+              {generateAccordionItems("Customers", 37, ["Fund", "Export"])}
+              {generateAccordionItems("Vehicle-Makes", 44)}
+              {generateAccordionItems("Vehicle-Models", 49)}
+              {generateAccordionItems("Vehicles", 54, ["Export"])}
+              {generateAccordionItems("Zones", 60, ["Export"])}
+              {generateAccordionItems("Locations", 66, ["Export"])}
               {generateAccordionItems(
                 "Payments",
-                71,
+                72,
                 ["Browse", "Export"],
                 true
               )}
-              {generateAccordionItems("Amenities", 73)}
-              {generateAccordionItems("Bank Details", 78)}
-              {generateAccordionItems("Client-Invoices", 83, [
+              {generateAccordionItems("Amenities", 74)}
+              {generateAccordionItems("Bank Details", 79)}
+              {generateAccordionItems("Client-Invoices", 84, [
                 "Update_payment",
                 "Send",
                 "Export",
               ])}
-              {generateAccordionItems("Stats", 91, ["Browse"], true)}
-              {generateAccordionItems("Event Parkings", 92, ["Cancel"])}
-              {generateAccordionItems("Events", 98, ["Cancel"])}
-              {generateAccordionItems("Faqs", 104)}
-              {generateAccordionItems("Membership Plans", 109, ["Restore"])}
-              {generateAccordionItems("Membership Plans Features", 115)}
-              {generateAccordionItems("Membership Subscriptions", 120, [
+              {generateAccordionItems("Stats", 92, ["Browse"], true)}
+              {generateAccordionItems("Event Parkings", 93, ["Cancel"])}
+              {generateAccordionItems("Events", 99, ["Cancel"])}
+              {generateAccordionItems("Faqs", 105)}
+              {generateAccordionItems("Membership Plans", 110, ["Restore"])}
+              {generateAccordionItems("Membership Plans Features", 116)}
+              {generateAccordionItems("Membership Subscriptions", 121, [
                 "Cancel",
                 "Renew",
                 "Export",
               ])}
-              {generateAccordionItems("Pay-to-Park", 128)}
-              {generateAccordionItems("Policies", 133)}
-              {generateAccordionItems("Rates", 135)}
-              {generateAccordionItems("Reservations", 140, [
+              {generateAccordionItems("Pay-to-Park", 129)}
+              {generateAccordionItems("Policies", 134)}
+              {generateAccordionItems("Rates", 136)}
+              {generateAccordionItems("Reservations", 141, [
                 "Cancel",
                 "Request",
               ])}
 
-              {generateAccordionItems("Service Bookings", 147, [
+              {generateAccordionItems("Service Bookings", 148, [
                 "Cancel",
                 "Operations",
               ])}
 
-              {generateAccordionItems("Service Log", 154, [
+              {generateAccordionItems("Service Log", 155, [
                 "Export",
                 "Retrieve",
               ])}
 
-              {generateAccordionItems("Services", 166)}
+              {generateAccordionItems("Services", 159)}
               {generateAccordionItems(
                 "Transactions",
-                91,
+                165,
                 ["Browse", "Read", "Refund"],
                 true
               )}

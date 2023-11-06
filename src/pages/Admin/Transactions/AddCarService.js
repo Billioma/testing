@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Box, Flex, Text, Button } from "@chakra-ui/react";
+import { Box, Flex, Text, Button, RadioGroup, Radio } from "@chakra-ui/react";
 
 import { useNavigate } from "react-router-dom";
 import { PRIVATE_PATHS } from "../../../routes/constants";
@@ -13,9 +13,13 @@ import {
 } from "../../../services/admin/query/locations";
 import { useGetAllCustomers } from "../../../services/admin/query/customers";
 import Select from "react-select";
-import { customStyles } from "../../../components/common/constants";
+import {
+  BillingTypes,
+  customStyles,
+} from "../../../components/common/constants";
 import { useAddReservedParking } from "../../../services/admin/query/transactions";
 import DateTimePicker from "../../../components/data/Admin/DateTimePicker";
+import CustomInput from "../../../components/common/CustomInput";
 
 export default function AddCarService() {
   const [state, setState] = useState({
@@ -29,7 +33,7 @@ export default function AddCarService() {
   const { mutate, isLoading } = useAddReservedParking({
     onSuccess: () => {
       successToast("Transaction added successfully!");
-      navigate(PRIVATE_PATHS.ADMIN_RESERVED_PARKING);
+      navigate(PRIVATE_PATHS.ADMIN_CAR_SERVICES);
     },
     onError: (error) => {
       errorToast(
@@ -66,6 +70,27 @@ export default function AddCarService() {
     label: location.name,
     value: location.id,
   }));
+
+  const billingTypeOptions = BillingTypes.map((type, i) => ({
+    label: type,
+    value: i,
+  }));
+
+  const bookingTypeOptions = ["ONE-TYPE", "RE-OCCURRING"].map((type, i) => ({
+    label: type,
+    value: i,
+  }));
+
+  const bookingSlotOptions = [
+    "7:00 - 8:30",
+    "8:30 - 10:00",
+    "10:00 - 11:30",
+    "11:30 - 13:00",
+    "13:00 - 14:30",
+    "14:30 - 16:00",
+    "16:00 - 17:30",
+    "17:30 - 19:00",
+  ].map((slot, i) => ({ label: slot, value: i }));
 
   const handleSelectChange = (selectedOption, { name }) => {
     setState({
@@ -117,45 +142,18 @@ export default function AddCarService() {
           flexDir="column"
           border="1px solid #E4E6E8"
         >
-          <Box mb={4}>
+          <Box w="full" mb={4}>
             <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
-              Arrival
+              Booking Id
             </Text>
-
-            <Box pos="relative" w="full" className="box">
-              <DateTimePicker
-                selectedDate={state.arrival}
-                onChange={(date) => setState({ ...state, arrival: date })}
-                hasTime
-              />
-            </Box>
-          </Box>
-
-          <Box mb={4}>
-            <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
-              Departure
-            </Text>
-
-            <Box pos="relative" w="full" className="box">
-              <DateTimePicker
-                selectedDate={state.departure}
-                onChange={(date) => setState({ ...state, departure: date })}
-                hasTime
-              />
-            </Box>
-          </Box>
-          <Box mb={4}>
-            <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
-              Zone
-            </Text>
-            <Select
-              styles={customStyles}
-              onChange={({ value }) =>
-                handleSelectChange(value, { name: "zone" })
+            <CustomInput
+              auth
+              value={state.bookingId}
+              mb
+              holder="Enter booking ID"
+              onChange={(e) =>
+                setState({ ...state, bookingId: e.target.value })
               }
-              options={zoneOptions}
-              value={zoneOptions?.find((zone) => zone.value == state.zone)}
-              placeholder="Select zone "
             />
           </Box>
 
@@ -176,20 +174,139 @@ export default function AddCarService() {
             />
           </Box>
 
+          <Box w="full" mb={4}>
+            <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
+              Amount
+            </Text>
+            <CustomInput
+              auth
+              value={state.amount}
+              mb
+              type={"number"}
+              holder="Enter amount"
+              onChange={(e) => setState({ ...state, amount: e.target.value })}
+            />
+          </Box>
+
           <Box mb={4}>
             <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
-              Vehicle
+              Billing Type
             </Text>
             <Select
               styles={customStyles}
               onChange={({ value }) =>
-                handleSelectChange(value, { name: "vehicle" })
+                handleSelectChange(value, { name: "billingType" })
               }
-              options={vehicleOptions}
-              value={vehicleOptions?.find(
-                (vehicle) => vehicle.value == state.vehicle
+              options={billingTypeOptions}
+              value={billingTypeOptions?.find(
+                (type) => type.value == state.billingType
               )}
-              placeholder="Select vehicle "
+              placeholder="Select billing type"
+            />
+          </Box>
+
+          <Box mb={4}>
+            <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
+              Booking Type
+            </Text>
+            <Select
+              styles={customStyles}
+              onChange={({ value }) =>
+                handleSelectChange(value, { name: "bookingType" })
+              }
+              options={bookingTypeOptions}
+              value={bookingTypeOptions?.find(
+                (type) => type.value == state.bookingType
+              )}
+              placeholder="Select booking type"
+            />
+          </Box>
+
+          <Box mb={4}>
+            <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
+              Service Type
+            </Text>
+            <Flex my="16px" align="center">
+              <RadioGroup
+                value={state.serviceType}
+                onChange={(e) =>
+                  setState({
+                    ...state,
+                    serviceType: e,
+                  })
+                }
+                align="center"
+                display="flex"
+                gap="32px"
+              >
+                <Radio variant={"admin"} size="sm" value={"BASIC"}>
+                  <Text
+                    color={
+                      state.serviceType === "BASIC" ? "#0D0718" : "#646668"
+                    }
+                    fontWeight={state.serviceType === "BASIC" ? 500 : 400}
+                    fontSize="14px"
+                  >
+                    Basic
+                  </Text>
+                </Radio>
+                <Radio variant={"admin"} size="sm" value={"PREMIUM"}>
+                  <Text
+                    color={
+                      state.serviceType === "PREMIUM" ? "#0D0718" : "#646668"
+                    }
+                    fontWeight={state.serviceType === "PREMIUM" ? 500 : 400}
+                    fontSize="14px"
+                  >
+                    Premium
+                  </Text>
+                </Radio>
+              </RadioGroup>
+            </Flex>
+          </Box>
+
+          <Box mb={4}>
+            <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
+              Appointment Slot
+            </Text>
+            <Select
+              styles={customStyles}
+              onChange={({ value }) =>
+                handleSelectChange(value, { name: "appointmentSlot" })
+              }
+              options={bookingSlotOptions}
+              value={bookingSlotOptions?.find(
+                (slot) => slot.value == state.appointmentSlot
+              )}
+              placeholder="Select slot "
+            />
+          </Box>
+
+          <Box mb={4}>
+            <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
+              Appointment Date
+            </Text>
+
+            <Box pos="relative" w="full" className="box">
+              <DateTimePicker
+                selectedDate={state.arrival}
+                onChange={(date) =>
+                  setState({ ...state, appointmentDate: date })
+                }
+              />
+            </Box>
+          </Box>
+
+          <Box w="full" mb={4}>
+            <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
+              Address
+            </Text>
+            <CustomInput
+              auth
+              value={state.address}
+              mb
+              holder="Enter address"
+              onChange={(e) => setState({ ...state, address: e.target.value })}
             />
           </Box>
 

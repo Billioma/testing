@@ -29,277 +29,290 @@ import {
 import { FcCancel } from "react-icons/fc";
 import { BsTrash } from "react-icons/bs";
 import { AiOutlineEdit } from "react-icons/ai";
-import { PRIVATE_PATHS } from "../../routes/constants";
 import { TbListDetails, TbCalendarEvent } from "react-icons/tb";
+import { HiOutlineInformationCircle } from "react-icons/hi";
+import { FiEdit } from "react-icons/fi";
 
 export const sidebarItems = [
   {
-    id: 1,
-    title: "Dashboard",
+    id: 0,
+    name: "Dashboard",
     path: "/admin/dashboard",
     icon: <AdminDashboardIcon fill={"#fff"} stroke="#000" />,
-    hover: <AdminDashboardIcon fill="#EE383A" stroke="#fff" />,
+    hover: <AdminDashboardIcon fill="#fff" stroke="#EE383A" />,
+    sec: <AdminDashboardIcon fill="#EE383A" stroke="#fff" />,
   },
 
   {
-    id: 7,
-    title: "Clients",
+    id: 1,
+    name: "Clients",
     path: "/admin/clients",
     icon: <ClientsIcon fill={"#fff"} stroke="#000" />,
-    hover: <ClientsIcon fill="#EE383A" stroke="#fff" />,
+    hover: <ClientsIcon fill="#fff" stroke="#EE383A" />,
+    sec: <ClientsIcon fill="#EE383A" stroke="#fff" />,
     subItems: [
       {
-        title: "Client Lists",
-        path: PRIVATE_PATHS.ADMIN_CLIENTS,
+        name: "Client Lists",
+        path: "/admin/clients/all",
       },
       {
-        title: "Client Invoices",
-        path: PRIVATE_PATHS.ADMIN_CLIENTS_INVOICES,
+        name: "Client Invoices",
+        path: "/admin/clients/invoices",
       },
-      // {
-      //   title: "Events",
-      //   path: PRIVATE_PATHS.ADMIN_EVENTS,
-      // },
     ],
   },
-
   {
-    id: 3,
-    title: "Users",
+    id: 2,
+    name: "Users",
     icon: <UserIcon fill={"#fff"} stroke="#000" />,
-    hover: <UserIcon fill="#EE383A" stroke="#fff" />,
-    path: "users",
+    hover: <UserIcon fill="#fff" stroke="#EE383A" />,
+    sec: <UserIcon fill="#EE383A" stroke="#fff" />,
+    path: "/admin/users",
     subItems: [
       {
-        title: "Customers",
+        name: "Customers",
         path: "/admin/users/customers",
       },
       {
-        title: "Attendants",
+        name: "Attendants",
         path: "/admin/users/attendants",
       },
       {
-        title: "Administrators",
+        name: "Administrators",
         path: "/admin/users/administrators",
       },
       {
-        title: "Operators",
-        path: "/admin/users/operatrs",
+        name: "Operators",
+        path: "/admin/users/operators",
       },
     ],
   },
 
   {
     id: 3,
-    title: "Events",
+    name: "Events",
     icon: <TbCalendarEvent fill={"#fff"} stroke="#000" />,
-    hover: <TbCalendarEvent fill="#000" stroke="#fff" />,
-    path: PRIVATE_PATHS.ADMIN_EVENTS,
+    hover: <TbCalendarEvent fill="#fff" stroke="#EE383A" />,
+    sec: <TbCalendarEvent fill="#EE383A" stroke="#fff" />,
+    path: "/admin/events",
+  },
+
+  {
+    id: 4,
+    name: "Locations",
+    path: "/admin/locations",
+    icon: <LocationIcon fill={"#fff"} stroke="#000" />,
+    hover: <LocationIcon fill="#fff" stroke="#EE383A" />,
+    sec: <LocationIcon fill="#EE383A" stroke="#fff" />,
+    subItems: [
+      {
+        name: "Locations",
+        path: "admin/locations/all",
+      },
+      {
+        name: "Zones",
+        path: "admin/locations/zones",
+      },
+      {
+        name: "Rates",
+        path: "admin/locations/rates",
+      },
+      {
+        name: "Amenities",
+        path: "admin/locations/amenities",
+      },
+      {
+        name: "Policies",
+        path: "admin/locations/policies",
+      },
+    ],
   },
 
   {
     id: 5,
-    title: "Locations",
-    path: "/locations",
-    icon: <LocationIcon fill={"#fff"} stroke="#000" />,
-    hover: <LocationIcon fill="#EE383A" stroke="#fff" />,
-    subItems: [
-      {
-        title: "Locations",
-        path: PRIVATE_PATHS.ADMIN_LOCATIONS,
-      },
-      {
-        title: "Zones",
-        path: PRIVATE_PATHS.ADMIN_ZONES,
-      },
-      {
-        title: "Rates",
-        path: PRIVATE_PATHS.ADMIN_RATES,
-      },
-      {
-        title: "Amenities",
-        path: PRIVATE_PATHS.ADMIN_AMENITIES,
-      },
-      {
-        title: "Policies",
-        path: PRIVATE_PATHS.ADMIN_POLICIES,
-      },
-    ],
-  },
-
-  {
-    id: 2,
-    title: "Services",
+    name: "Services",
     path: "/admin/services",
     icon: <ServicesIcon fill={"#fff"} stroke="#000" />,
-    hover: <ServicesIcon fill="#EE383A" stroke="#fff" />,
+    hover: <ServicesIcon fill="#fff" stroke="#EE383A" />,
+    sec: <ServicesIcon fill="#EE383A" stroke="#fff" />,
   },
 
   {
     id: 6,
-    title: "Vehicles",
+    name: "Vehicles",
     path: "/admin/vehicles",
     icon: <AdminVehicleIcon fill={"#fff"} stroke="#000" />,
-    hover: <AdminVehicleIcon fill="#EE383A" stroke="#fff" />,
+    hover: <AdminVehicleIcon fill="#fff" stroke="#EE383A" />,
+    sec: <AdminVehicleIcon fill="#EE383A" stroke="#fff" />,
   },
 
   {
-    id: 8,
-    title: "Memberships",
+    id: 7,
+    name: "Memberships",
     path: "/admin/memberships",
     icon: <MembershipsIcon fill={"#fff"} stroke="#000" />,
-    hover: <MembershipsIcon fill="#EE383A" stroke="#fff" />,
+    hover: <MembershipsIcon fill="#fff" stroke="#EE383A" />,
+    sec: <MembershipsIcon fill="#EE383A" stroke="#fff" />,
     subItems: [
       {
-        title: "Membership Plans",
+        name: "Membership Plans",
         path: "/admin/memberships/plans",
       },
       {
-        title: "Membership Features",
+        name: "Membership Features",
         path: "/admin/memberships/features",
       },
       {
-        title: "Customer Subscriptions",
+        name: "Customer Subscriptions",
         path: "/admin/memberships/customer-subscriptions",
       },
       {
-        title: "Corporate Subscriptions",
+        name: "Corporate Subscriptions",
         path: "/admin/memberships/corporate-subscriptions",
       },
     ],
   },
 
   {
-    id: 4,
-    title: "Transactions",
-    path: "/transactions",
+    id: 8,
+    name: "Transactions",
+    path: "/admin/transactions",
     icon: <CustomerIcon fill={"#fff"} stroke="#000" />,
-    hover: <CustomerIcon fill="#EE383A" stroke="#fff" />,
+    hover: <CustomerIcon fill="#fff" stroke="#EE383A" />,
+    sec: <CustomerIcon fill="#EE383A" stroke="#fff" />,
     subItems: [
       {
-        title: "Pay-To-Park",
+        name: "Pay-To-Park",
         path: "/admin/transactions/pay-to-park",
       },
       {
-        title: "Reserved Parking",
+        name: "Reserved Parking",
         path: "/admin/transactions/reserved-parking",
       },
 
       {
-        title: "Car Services",
+        name: "Event Parking",
+        path: "/admin/transactions/event-parking",
+      },
+      {
+        name: "Car Services",
         path: "/admin/transactions/car-services",
       },
-
-      {
-        title: "Events Parking",
-        path: "/admin/transactions/events-parking",
-      },
     ],
   },
 
-  {
-    id: 12,
-    title: "Administrator",
-  },
-
-  {
-    id: 9,
-    title: "Logs",
-    path: "/admin/logs",
-    icon: <LogsIcon fill={"#fff"} stroke="#000" />,
-    hover: <LogsIcon fill="#EE383A" stroke="#fff" />,
-    subItems: [
-      {
-        title: "Valeted Vehicles",
-        path: PRIVATE_PATHS.ADMIN_VALETED_VEHICLES,
-      },
-      {
-        title: "Parked Vehicles",
-        path: PRIVATE_PATHS.ADMIN_PARKED_VEHICLES,
-      },
-      {
-        title: "Serviced Vehicles",
-        path: PRIVATE_PATHS.ADMIN_SERVICED_VEHICLES,
-      },
-    ],
-  },
   {
     id: 10,
-    title: "Reports",
-    path: "/admin/reports",
-    icon: <ReportsIcon fill={"#fff"} stroke="#000" />,
-    hover: <ReportsIcon fill="#EE383A" stroke="#fff" />,
+    name: "Logs",
+    path: "/admin/logs",
+    icon: <LogsIcon fill={"#fff"} stroke="#000" />,
+    hover: <LogsIcon fill="#fff" stroke="#EE383A" />,
+    sec: <LogsIcon fill="#EE383A" stroke="#fff" />,
     subItems: [
       {
-        title: "Payments",
-        path: PRIVATE_PATHS.ADMIN_REP_PAYMENTS,
+        name: "Valeted Vehicles",
+        path: "/admin/logs/valeted-vehicles",
       },
       {
-        title: "Locations",
-        path: PRIVATE_PATHS.ADMIN_REP_LOCATIONS,
+        name: "Parked Vehicles",
+        path: "/admin/logs/parked-vehicles",
       },
       {
-        title: "Zones",
-        path: PRIVATE_PATHS.ADMIN_REP_ZONES,
-      },
-      {
-        title: "Vehicles",
-        path: PRIVATE_PATHS.ADMIN_REP_VEHICLES,
-      },
-      {
-        title: "Customers",
-        path: PRIVATE_PATHS.ADMIN_REP_CUSTOMERS,
-      },
-      {
-        title: "Invoices",
-        path: PRIVATE_PATHS.ADMIN_REP_INVOICES,
-      },
-      {
-        title: "Subscription",
-        path: PRIVATE_PATHS.ADMIN_REP_SUBS,
-      },
-      {
-        title: "Logs",
-        path: PRIVATE_PATHS.ADMIN_REP_LOGS,
-      },
-      {
-        title: "Payment History",
-        path: PRIVATE_PATHS.ADMIN_REP_HISTORY,
+        name: "Serviced Vehicles",
+        path: "/admin/logs/serviced-vehicles",
       },
     ],
   },
   {
     id: 11,
-    title: "Configurations",
-    path: "/admin/configurations",
-    icon: <ConfigIcon fill={"#fff"} stroke="#000" />,
-    hover: <ConfigIcon fill="#EE383A" stroke="#fff" />,
+    name: "Reports",
+    path: "/admin/reports",
+    icon: <ReportsIcon fill={"#fff"} stroke="#000" />,
+    hover: <ReportsIcon fill="#fff" stroke="#EE383A" />,
+    sec: <ReportsIcon fill="#EE383A" stroke="#fff" />,
     subItems: [
       {
-        title: "Roles",
-        path: PRIVATE_PATHS.ADMIN_CONFIG_ROLES,
+        name: "Payments",
+        path: "/admin/reports/payments",
       },
       {
-        title: "Vehicle Makes",
-        path: PRIVATE_PATHS.ADMIN_CONFIG_VEHICLE_MAKES,
+        name: "Locations",
+        path: "/admin/reports/locations",
       },
       {
-        title: "Vehicle Models",
-        path: PRIVATE_PATHS.ADMIN_CONFIG_VEHICLE_MODELS,
+        name: "Zones",
+        path: "/admin/reports/zones",
       },
       {
-        title: "FAQs",
-        path: PRIVATE_PATHS.ADMIN_CONFIG_FAQS,
+        name: "Vehicles",
+        path: "/admin/reports/vehicles",
       },
       {
-        title: "Bank Details",
-        path: PRIVATE_PATHS.ADMIN_CONFIG_BANK_DETAILS,
+        name: "Customers",
+        path: "/admin/reports/customers",
       },
       {
-        title: "Create QR Code",
-        path: PRIVATE_PATHS.ADMIN_CONFIG_QR_CODE,
+        name: "Invoices",
+        path: "/admin/reports/invoices",
+      },
+      {
+        name: "Subscriptions",
+        path: "/admin/reports/subscriptions",
+      },
+      {
+        name: "Logs",
+        path: "/admin/reports/logs",
+      },
+      {
+        name: "Payment History",
+        path: "/admin/reports/payment-history",
       },
     ],
+  },
+  {
+    id: 12,
+    name: "Configurations",
+    path: "/admin/configurations",
+    icon: <ConfigIcon fill={"#fff"} stroke="#000" />,
+    hover: <ConfigIcon fill="#fff" stroke="#EE383A" />,
+    sec: <ConfigIcon fill="#EE383A" stroke="#fff" />,
+    subItems: [
+      {
+        name: "Roles",
+        path: "/admin/configurations/roles",
+      },
+      {
+        name: "Vehicle Makes",
+        path: "/admin/configurations/vehicle-makes",
+      },
+      {
+        name: "Vehicle Models",
+        path: "/admin/configurations/vehicle-models",
+      },
+      {
+        name: "FAQs",
+        path: "/admin/configurations/faqs",
+      },
+      {
+        name: "Bank Details",
+        path: "/admin/configurations/bank-details",
+      },
+      {
+        name: "Create QR Code",
+        path: "/admin/configurations/qr-code/create",
+      },
+    ],
+  },
+];
+
+export const adminHeaderOptions = [
+  {
+    name: "Profile",
+    link: "/admin/dashboard",
+  },
+
+  {
+    name: "Logout",
   },
 ];
 
@@ -967,7 +980,7 @@ export const clientStyle = {
   color: "#fff",
   fontWeight: 500,
   borderRadius: "4px",
-  fontSize: "12px",
+  fontSize: "14px",
   lineHeight: "100%",
   margin: "0 -20px 12px",
   padding: "5px 2px 5px 16px",
@@ -980,7 +993,7 @@ export const activeStyle = {
   color: "#EE383A",
   fontWeight: 500,
   borderRadius: "4px",
-  fontSize: "12px",
+  fontSize: "13px",
   lineHeight: "100%",
   margin: "0 -20px 12px",
   padding: "5px 2px 5px 16px",
@@ -1128,6 +1141,21 @@ export const zoneOption = [
   },
 ];
 
+export const clientListOption = [
+  {
+    name: "View",
+    icon: HiOutlineInformationCircle,
+  },
+  {
+    name: "Edit",
+    icon: FiEdit,
+  },
+  {
+    name: "Delete",
+    icon: BsTrash,
+  },
+];
+
 export const accountType = ["VALET", "PARKING", "GENERAL", "SERVICE"];
 export const statusType = ["Inactive", "Active"];
 
@@ -1166,7 +1194,7 @@ export const payToParkHeader = [
   "SERVICE TYPE",
   "STATUS",
   "DATE",
-  ""
+  "",
 ];
 
 export const operatorDashCards = [
@@ -1261,7 +1289,7 @@ export const eventHeader = [
   "EVENT",
   "STATUS",
   "DATE",
-  ""
+  "",
 ];
 
 export const carHeader = [

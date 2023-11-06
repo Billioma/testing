@@ -1,30 +1,54 @@
 import React, { useState, useEffect } from "react";
-import { Box, Flex, Text, Button, Image } from "@chakra-ui/react";
+import {
+  Box,
+  Flex,
+  Text,
+  Button,
+  Image,
+  Spinner,
+  Input,
+} from "@chakra-ui/react";
 import CustomInput from "../../../components/common/CustomInput";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { PRIVATE_PATHS } from "../../../routes/constants";
 import {
+  useDetachAdminClientUser,
   useEditClient,
-  useGetClientUsers,
+  useGetAdminClient,
+  useGetAdminClientUsers,
 } from "../../../services/admin/query/clients";
 import useCustomToast from "../../../utils/notifications";
 import Select from "react-select";
 import GoBackTab from "../../../components/data/Admin/GoBackTab";
-import { AiOutlineFolderOpen } from "react-icons/ai";
-import { useGetAdministrators } from "../../../services/admin/query/users";
+import { useGetManagers } from "../../../services/admin/query/users";
 import AdminChangePassword from "../../../components/modals/AdminChangePasswordModal";
+import {
+  allStates,
+  cardImg,
+  statusType,
+} from "../../../components/common/constants";
+import { IoIosArrowDown } from "react-icons/io";
+import { useCustomerUploadPic } from "../../../services/customer/query/user";
+import { MdClose } from "react-icons/md";
+import UpdateOperatorPasswordModal from "../../../components/modals/UpdateOperatorPasswordModal";
 
 export default function ViewCustomer() {
-  const [state, setState] = useState({ managers: [], status: 1 });
-  const [isEdit, setIsEdit] = useState(false);
-  const location = useLocation();
+  const isEdit = sessionStorage.getItem("edit");
+  const [edit, setEdit] = useState(false);
+
+  useEffect(() => {
+    if (isEdit !== null) {
+      setEdit(true);
+    }
+  }, [isEdit]);
+
   const navigate = useNavigate();
-  const [isDisabled, setIsDisabled] = useState(true);
   const { errorToast, successToast } = useCustomToast();
   const [isOpen, setIsOpen] = useState(false);
-  const { mutate, isLoading } = useEditClient({
+  const { mutate: updateMutate, isLoading: isUpdating } = useEditClient({
     onSuccess: () => {
       successToast("Client updated successfully!");
+      sessionStorage.removeItem("edit");
       navigate(PRIVATE_PATHS.ADMIN_CLIENTS);
     },
     onError: (error) => {
@@ -33,421 +57,748 @@ export default function ViewCustomer() {
       );
     },
   });
+  const { id } = useParams();
 
-  const { data: managers } = useGetAdministrators({}, 1, 1000);
+  const { mutate, data, isLoading } = useGetAdminClient();
+  const [currentuser, setCurrentuser] = useState("");
+  const {
+    mutate: usersMutate,
+    data: clientUsers,
+    isLoading: isUser,
+  } = useGetAdminClientUsers();
+  const { mutate: detachUser, isLoading: isDetaching } =
+    useDetachAdminClientUser({
+      onSuccess: () => {
+        usersMutate({ id: id });
+        setCurrentuser("");
+      },
+    });
+  const {
+    mutate: uploadMutate,
+    isLoading: isUploading,
+    data: profilePicData,
+  } = useCustomerUploadPic({
+    onError: (err) => {
+      errorToast(
+        err?.response?.data?.message || err?.message || "An Error occurred"
+      );
+    },
+  });
+  const handleDetach = (user) => {
+    setCurrentuser(user.id);
+    detachUser({
+      id: id,
+      email: user.email,
+    });
+  };
+  const [fileType, setFileType] = useState("");
 
-  const managerOptions = managers?.data?.map((manager) => ({
+  const handleUpload = (e) => {
+    const selectedFile = e.target.files[0];
+    if (!selectedFile) {
+      return;
+    }
+
+    setFileType(URL.createObjectURL(selectedFile));
+    const formData = new FormData();
+    formData.append("file", selectedFile);
+    uploadMutate({
+      fileType: "logo",
+      entityType: "admin",
+      file: formData.get("file"),
+    });
+  };
+
+  useEffect(() => {
+    mutate({ id: id });
+    usersMutate({ id: id });
+  }, []);
+
+  const [values, setValues] = useState({
+    logo: "",
+    name: "",
+    email: "",
+    billingEmail: "",
+    contactPerson: "",
+    phone: "",
+    address: "",
+    state: "",
+    accountType: "",
+    managers: "",
+    status: "",
+  });
+  const { data: managers } = useGetManagers();
+
+  const managerOptions = managers?.map((manager) => ({
     label: `${manager.firstName} ${manager.lastName}`,
     value: manager.id,
   }));
 
-  const accountTypes = ["BUSINESS", "EVENT PLANNER", "CORPORATE", "OTHERS"].map(
+  const stateOptions = allStates?.map((state) => ({
+    value: state,
+    label: state,
+  }));
+
+  const statusOptions = statusType?.map((status, i) => ({
+    value: i,
+    label: status,
+  }));
+
+  const accountTypes = ["BUSINESS", "EVENT_PLANNER", "CORPORATE", "OTHERS"].map(
     (type) => ({ label: type, value: type })
   );
 
-  const { data: clientUsers, mutate: getUsers } = useGetClientUsers(
-    {},
-    state.id
-  );
-
-  const isFormValid = () => {
-    return (
-      !state.name ||
-      !state.email ||
-      !state.billingEmail ||
-      !state.contactPerson ||
-      !state.phone ||
-      !state.address ||
-      !state.state
-    );
-  };
-
-  useEffect(() => {
-    setIsDisabled(isFormValid);
-  }, [state]);
-
-  const handleSubmit = (data = {}) => {
-    mutate({ ...state, ...data });
-  };
-
-  useEffect(() => {
-    setState({
-      ...location.state,
-      phone: location.state.phone?.substring(1),
-      managers: location.state.managers?.map((manager) => manager.id),
+  const handleSubmit = () => {
+    updateMutate({
+      query: id,
+      body: {
+        name: values?.name,
+        email: values?.email,
+        billingEmail: values?.billingEmail,
+        contactPerson: values?.contactPerson,
+        phone: values?.phone,
+        address: values?.address,
+        managers: values.managers?.map((item) => item?.value),
+        state: values?.state?.value,
+        accountType: values?.accountType?.value,
+        status: values?.status?.value,
+        logo: profilePicData?.path || values.pic,
+      },
     });
-    setIsEdit(location?.state?.isEdit);
+  };
 
-    getUsers(location.state.id);
-  }, [location.state]);
+  const handleSelectChange = (selectedOption, { name }) => {
+    setValues({
+      ...values,
+      [name]: selectedOption,
+    });
+  };
+
+  useEffect(() => {
+    const selectedStateOption = stateOptions?.find(
+      (option) => option.label === data?.state
+    );
+    const selectedAccountOption = accountTypes?.find(
+      (option) => option.label === data?.accountType
+    );
+    const selectedStatusOption = statusOptions?.find(
+      (option) => option.value === data?.status
+    );
+    const selectedManagersOption = data?.managers?.map((item) => ({
+      value: item?.id,
+      label: `${item?.firstName} ${item?.lastName}`,
+    }));
+    setValues({
+      ...values,
+      logo: data?.logo?.replace("https://staging-api.ezpark.ng/", ""),
+      name: data?.name,
+      email: data?.email,
+      billingEmail: data?.billingEmail,
+      contactPerson: data?.contactPerson,
+      phone: data?.phone,
+      address: data?.address,
+      state: selectedStateOption,
+      accountType: selectedAccountOption,
+      status: selectedStatusOption,
+      managers: selectedManagersOption,
+    });
+  }, [data]);
 
   return (
     <Box minH="75vh">
-      <GoBackTab />
       <Flex
-        justifyContent="center"
-        w="full"
+        align="flex-start"
         flexDir={{ md: "row", base: "column" }}
-        gap={10}
+        gap={{ base: "", md: "30px" }}
       >
-        <Flex
-          bg="#fff"
-          borderRadius="16px"
-          py="24px"
-          px="28px"
-          justifyContent="center"
-          w={{ lg: "30rem", base: "100%" }}
-          flexDir="column"
-          border="1px solid #E4E6E8"
-        >
-          <Flex
-            alignSelf={"center"}
-            flexDir={"column"}
-            alignItems={"center"}
-            w="full"
-            mb={5}
-          >
-            <Text
-              fontSize="10px"
-              fontWeight={500}
-              color="#444648"
-              textAlign="center"
-              mb={2}
-            >
-              Logo
-            </Text>
-            <Box
-              w="50%"
-              h="120px"
+        <Box w="fit-content">
+          <GoBackTab />
+        </Box>
+        {isLoading ? (
+          <Flex minH="60vh" w="full" justifyContent="center" align="center">
+            <Spinner />
+          </Flex>
+        ) : (
+          <>
+            <Flex
               justifyContent="center"
-              alignItems="center"
-              border="4px solid #0D0718"
-              borderRadius="12px"
-              display="flex"
-              flexDir={"column"}
-              cursor="pointer"
+              w="100%"
+              flexDir={{ md: "row", base: "column" }}
+              gap="30px"
             >
-              {state.avatarImage || state.logo ? (
-                <Image
-                  src={
-                    state.avatarImage
-                      ? URL?.createObjectURL(state.avatarImage)
-                      : process.env.REACT_APP_BASE_URL +
-                        state.logo?.substring(1)
-                  }
-                  alt="Avatar"
-                  boxSize="100%"
-                  objectFit="cover"
-                />
-              ) : (
-                <AiOutlineFolderOpen size={32} />
-              )}
-            </Box>
-          </Flex>
-          <Box w="full" mb={4}>
-            <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
-              Name
-            </Text>
-            <CustomInput
-              auth
-              value={state.name}
-              mb
-              holder="Enter client name"
-              onChange={(e) => setState({ ...state, name: e.target.value })}
-              isDisabled={!isEdit}
-            />
-          </Box>
-          <Box w="full" mb={4}>
-            <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
-              Email Address
-            </Text>
-            <CustomInput
-              auth
-              value={state.email}
-              mb
-              holder="Enter email address"
-              onChange={(e) => setState({ ...state, email: e.target.value })}
-              isDisabled={!isEdit}
-            />
-          </Box>
-          <Box w="full" mb={4}>
-            <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
-              Billing Email(s)
-            </Text>
-            <CustomInput
-              auth
-              value={state.billingEmail}
-              mb
-              holder="Enter billing email address"
-              onChange={(e) =>
-                setState({ ...state, billingEmail: e.target.value })
-              }
-              isDisabled={!isEdit}
-            />
-          </Box>
-          <Box w="full" mb={4}>
-            <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
-              Contact Person
-            </Text>
-            <CustomInput
-              auth
-              value={state.contactPerson}
-              mb
-              holder="Enter contact person"
-              onChange={(e) =>
-                setState({ ...state, contactPerson: e.target.value })
-              }
-              isDisabled={!isEdit}
-            />
-          </Box>
-          <Box mb={4}>
-            <Text mb="8px" fontWeight={500} color="#444648" fontSize="10px">
-              Phone Number
-            </Text>
-            <CustomInput
-              mb
-              ngn
-              name="phone"
-              value={`${state?.phone || ""}`}
-              onChange={(e) => {
-                const inputPhone = e.target.value
-                  .replace(/\D/g, "")
-                  .slice(0, 10);
-                setState({
-                  ...state,
-                  phone: inputPhone,
-                });
-              }}
-              holder="Enter Phone Number"
-              isDisabled={!isEdit}
-            />
-          </Box>
-          <Box w="full" mb={4}>
-            <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
-              Address
-            </Text>
-            <CustomInput
-              auth
-              value={state.address}
-              mb
-              holder="Enter address"
-              onChange={(e) => setState({ ...state, address: e.target.value })}
-            />
-          </Box>
-          <Box mb={4}>
-            <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
-              State
-            </Text>
-            <CustomInput
-              auth
-              value={state.state}
-              mb
-              holder="Enter state"
-              onChange={(e) => setState({ ...state, state: e.target.value })}
-            />
-          </Box>
-
-          <Box mb={4}>
-            <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
-              Account Type
-            </Text>
-            <Select
-              styles={customStyles}
-              placeholder="Select account type"
-              options={accountTypes}
-              onChange={(selectedOption) =>
-                setState({ ...state, accountType: selectedOption.label })
-              }
-              value={accountTypes.find(
-                (type) => type.value === state.accountType
-              )}
-            />
-          </Box>
-
-          <Box mb={4}>
-            <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
-              Managers
-            </Text>
-            <Select
-              isMulti
-              styles={customStyles}
-              placeholder="Select managers"
-              options={managerOptions}
-              onChange={(selectedOptions) =>
-                setState({
-                  ...state,
-                  managers: selectedOptions.map((option) => option.value),
-                })
-              }
-              value={managerOptions?.filter((option) =>
-                state.managers?.find((manager) => manager == option.value)
-              )}
-            />
-          </Box>
-
-          <Box mb={4}>
-            <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
-              Status
-            </Text>
-            <Select
-              styles={customStyles}
-              options={[
-                { label: "Active", value: 1 },
-                { label: "Inactive", value: 0 },
-              ]}
-              placeholder="Select an operator"
-              onChange={(selectedOption) =>
-                setState({
-                  ...state,
-                  status: selectedOption.value,
-                })
-              }
-              value={[
-                { label: "Active", value: 1 },
-                { label: "Inactive", value: 0 },
-              ].find((status) => status.value === state.status)}
-              isDisabled={!isEdit}
-            />
-          </Box>
-
-          <Flex justifyContent={"center"}>
-            <Button
-              variant="adminSecondary"
-              fontSize="12px"
-              mt={4}
-              h="32px"
-              onClick={() => setIsOpen(true)}
-            >
-              Change Password
-            </Button>
-          </Flex>
-
-          <Flex gap={4} mt={4}>
-            <Button
-              variant="adminSecondary"
-              w="45%"
-              onClick={() => navigate(PRIVATE_PATHS.ADMIN_CLIENTS)}
-            >
-              Cancel
-            </Button>
-            <Button
-              variant={"adminPrimary"}
-              w="55%"
-              isDisabled={isEdit && isDisabled}
-              isLoading={isLoading}
-              onClick={() => (!isEdit ? setIsEdit(!isEdit) : handleSubmit())}
-            >
-              {!isEdit ? "Edit" : "Save"}
-            </Button>
-          </Flex>
-        </Flex>
-
-        <Flex gap={5} flexDir={"column"} w={{ md: "30rem", base: "100%" }}>
-          <Flex
-            bg="#fff"
-            borderRadius="16px"
-            py="24px"
-            px="28px"
-            justifyContent="center"
-            flexDir="column"
-            border="1px solid #E4E6E8"
-            h="fit-content"
-          >
-            <Text
-              alignSelf={"center"}
-              color="#646668"
-              fontWeight={500}
-              fontSize={"14px"}
-            >
-              Payments
-            </Text>
-
-            <Flex gap={4} flexDir="column" mt={4}>
-              <Box p="16px" border="1px solid #D4D6D8" borderRadius={"4px"}>
-                <Text fontSize="12px" color="#646668">
-                  Wallet
-                </Text>
-                <Text fontSize="14px" color="#646668" mt={1}>
-                  Balance: ₦0
-                </Text>
-              </Box>
-
-              <Box p="16px" border="1px solid #D4D6D8" borderRadius={"4px"}>
-                <Text fontSize="12px" color="#646668">
-                  Card Details
-                </Text>
-                <Text fontSize="14px" color="#646668" mt={1}>
-                  No Card Added yet
-                </Text>
-              </Box>
-            </Flex>
-          </Flex>
-
-          <Flex
-            bg="#fff"
-            borderRadius="16px"
-            py="24px"
-            px="28px"
-            justifyContent="center"
-            flexDir="column"
-            border="1px solid #E4E6E8"
-            h="fit-content"
-          >
-            <Text
-              alignSelf={"center"}
-              color="#646668"
-              fontWeight={500}
-              fontSize={"14px"}
-            >
-              Client users
-            </Text>
-
-            <Flex gap={4} flexDir="column" mt={4}>
               <Flex
-                justifyContent={"space-between"}
-                p="16px"
-                border="1px solid #D4D6D8"
-                borderRadius={"4px"}
-                alignItems={"center"}
+                bg="#fff"
+                borderRadius="8px"
+                py="32px"
+                px="24px"
+                justifyContent="center"
+                w={{ base: "100%", md: "80%" }}
+                flexDir="column"
+                border="1px solid #E4E6E8"
               >
-                <Box>
-                  <Text fontSize="12px" color="#646668">
-                    Samuel Umoru
+                <Flex
+                  alignSelf={"center"}
+                  flexDir={"column"}
+                  align={"center"}
+                  w="full"
+                  mb={5}
+                >
+                  <Text
+                    fontSize="10px"
+                    fontWeight={500}
+                    color="#444648"
+                    textAlign="center"
+                    mb={2}
+                  >
+                    Logo
                   </Text>
-                  <Text fontSize="14px" fontWeight={500} color="#646668" mt={1}>
-                    sammyfish007@gmail.com
+                  <Input
+                    id="image_upload"
+                    isDisabled={edit ? false : true}
+                    onChange={handleUpload}
+                    type="file"
+                    display="none"
+                  />
+                  <label htmlFor="image_upload">
+                    <Flex
+                      flexDir="column"
+                      justifyContent="center"
+                      align="center"
+                      cursor={edit ? "pointer" : ""}
+                      w="full"
+                    >
+                      {isUploading ? (
+                        <Flex
+                          w="120px"
+                          border="4px solid #0D0718"
+                          justifyContent="center"
+                          align="center"
+                          h="120px"
+                          borderRadius="12px"
+                        >
+                          <Spinner />
+                        </Flex>
+                      ) : (
+                        <Image
+                          objectFit="cover"
+                          w="120px"
+                          border={
+                            data?.logo === null ? "none" : "4px solid #0D0718"
+                          }
+                          h="120px"
+                          borderRadius="12px"
+                          src={
+                            fileType
+                              ? fileType
+                              : data?.logo === null
+                              ? "/assets/prof-avatar.jpg"
+                              : process.env.REACT_APP_BASE_URL + data?.logo
+                          }
+                        />
+                      )}
+                    </Flex>
+                  </label>
+                </Flex>
+                <Box w="full" mb={4}>
+                  <Text
+                    mb="8px"
+                    fontSize="10px"
+                    fontWeight={500}
+                    color="#444648"
+                  >
+                    Name
                   </Text>
+                  <CustomInput
+                    auth
+                    mb
+                    holder="Enter client name"
+                    value={values.name}
+                    onChange={(e) =>
+                      setValues({
+                        ...values,
+                        name: e.target.value,
+                      })
+                    }
+                    dis={edit ? false : true}
+                  />
+                </Box>
+                <Box w="full" mb={4}>
+                  <Text
+                    mb="8px"
+                    fontSize="10px"
+                    fontWeight={500}
+                    color="#444648"
+                  >
+                    Email Address
+                  </Text>
+                  <CustomInput
+                    auth
+                    mb
+                    holder="Email Address"
+                    value={values.email}
+                    onChange={(e) =>
+                      setValues({
+                        ...values,
+                        email: e.target.value,
+                      })
+                    }
+                    dis={edit ? false : true}
+                  />
+                </Box>
+                <Box w="full" mb={4}>
+                  <Text
+                    mb="8px"
+                    fontSize="10px"
+                    fontWeight={500}
+                    color="#444648"
+                  >
+                    Billing Email(s)
+                  </Text>
+                  <CustomInput
+                    auth
+                    mb
+                    holder="Billing Email Address"
+                    value={values.billingEmail}
+                    onChange={(e) =>
+                      setValues({
+                        ...values,
+                        billingEmail: e.target.value,
+                      })
+                    }
+                    dis={edit ? false : true}
+                  />
+                </Box>
+                <Box w="full" mb={4}>
+                  <Text
+                    mb="8px"
+                    fontSize="10px"
+                    fontWeight={500}
+                    color="#444648"
+                  >
+                    Contact Person
+                  </Text>
+                  <CustomInput
+                    auth
+                    mb
+                    holder="Contact Person"
+                    value={values.contactPerson}
+                    onChange={(e) =>
+                      setValues({
+                        ...values,
+                        contactPerson: e.target.value,
+                      })
+                    }
+                    dis={edit ? false : true}
+                  />
+                </Box>
+                <Box mb={4}>
+                  <Text
+                    mb="8px"
+                    fontWeight={500}
+                    color="#444648"
+                    fontSize="10px"
+                  >
+                    Phone Number
+                  </Text>
+                  <CustomInput
+                    mb
+                    ngn
+                    name="phone"
+                    value={`${values?.phone || ""}`}
+                    onChange={(e) => {
+                      const inputPhone = e.target.value
+                        .replace(/\D/g, "")
+                        .slice(0, 10);
+                      setValues({
+                        ...values,
+                        phone: inputPhone,
+                      });
+                    }}
+                    holder="Phone Number"
+                    dis={edit ? false : true}
+                  />
+                </Box>
+                <Box w="full" mb={4}>
+                  <Text
+                    mb="8px"
+                    fontSize="10px"
+                    fontWeight={500}
+                    color="#444648"
+                  >
+                    Address
+                  </Text>
+                  <CustomInput
+                    auth
+                    mb
+                    holder="Enter address"
+                    value={values.address}
+                    onChange={(e) =>
+                      setValues({
+                        ...values,
+                        address: e.target.value,
+                      })
+                    }
+                    dis={edit ? false : true}
+                  />
+                </Box>
+                <Box mb={4}>
+                  <Text
+                    mb="8px"
+                    fontSize="10px"
+                    fontWeight={500}
+                    color="#444648"
+                  >
+                    State
+                  </Text>
+                  <Select
+                    styles={customStyles}
+                    options={stateOptions}
+                    components={{
+                      IndicatorSeparator: () => (
+                        <div style={{ display: "none" }}></div>
+                      ),
+                      DropdownIndicator: () => (
+                        <div>
+                          <IoIosArrowDown size="15px" color="#646668" />
+                        </div>
+                      ),
+                    }}
+                    name="state"
+                    isDisabled={edit ? false : true}
+                    value={values.state}
+                    onChange={(selectedOption) =>
+                      handleSelectChange(selectedOption, {
+                        name: "state",
+                      })
+                    }
+                  />
                 </Box>
 
+                <Box mb={4}>
+                  <Text
+                    mb="8px"
+                    fontSize="10px"
+                    fontWeight={500}
+                    color="#444648"
+                  >
+                    Account Type
+                  </Text>
+                  <Select
+                    styles={customStyles}
+                    placeholder="Select account type"
+                    options={accountTypes}
+                    value={values?.accountType}
+                    onChange={(selectedOption) =>
+                      handleSelectChange(selectedOption, {
+                        name: "accountType",
+                      })
+                    }
+                    components={{
+                      IndicatorSeparator: () => (
+                        <div style={{ display: "none" }}></div>
+                      ),
+                      DropdownIndicator: () => (
+                        <div>
+                          <IoIosArrowDown size="15px" color="#646668" />
+                        </div>
+                      ),
+                    }}
+                    isDisabled={edit ? false : true}
+                  />
+                </Box>
+
+                <Box mb={4}>
+                  <Text
+                    mb="8px"
+                    fontSize="10px"
+                    fontWeight={500}
+                    color="#444648"
+                  >
+                    Managers
+                  </Text>
+                  <Select
+                    isMulti
+                    styles={customStyles}
+                    placeholder="Select managers"
+                    options={managerOptions}
+                    value={values.managers}
+                    onChange={(selectedOption) =>
+                      handleSelectChange(selectedOption, {
+                        name: "managers",
+                      })
+                    }
+                    components={{
+                      IndicatorSeparator: () => (
+                        <div style={{ display: "none" }}></div>
+                      ),
+                      DropdownIndicator: () => (
+                        <div>
+                          <IoIosArrowDown size="15px" color="#646668" />
+                        </div>
+                      ),
+                    }}
+                    isDisabled={edit ? false : true}
+                  />
+                </Box>
+
+                <Box mb={4}>
+                  <Text
+                    mb="8px"
+                    fontSize="10px"
+                    fontWeight={500}
+                    color="#444648"
+                  >
+                    Status
+                  </Text>
+                  <Select
+                    styles={customStyles}
+                    options={statusOptions}
+                    components={{
+                      IndicatorSeparator: () => (
+                        <div style={{ display: "none" }}></div>
+                      ),
+                      DropdownIndicator: () => (
+                        <div>
+                          <IoIosArrowDown size="15px" color="#646668" />
+                        </div>
+                      ),
+                    }}
+                    placeholder="Select Status"
+                    onChange={(selectedOption) =>
+                      handleSelectChange(selectedOption, {
+                        name: "status",
+                      })
+                    }
+                    value={values.status}
+                    isDisabled={edit ? false : true}
+                  />
+                </Box>
+
+                <Flex justifyContent={"center"}>
+                  <Button
+                    variant="adminSecondary"
+                    fontSize="12px"
+                    mt={4}
+                    h="32px"
+                    onClick={() => setIsOpen(true)}
+                  >
+                    Change Password
+                  </Button>
+                </Flex>
+
+                <Flex gap={4} mt={4}>
+                  <Button
+                    variant="adminSecondary"
+                    w="45%"
+                    onClick={() => setEdit(false)}
+                  >
+                    Cancel
+                  </Button>
+                  <Button
+                    variant={"adminPrimary"}
+                    w="55%"
+                    isDisabled={isUpdating}
+                    isLoading={isUpdating}
+                    onClick={() => (!edit ? setEdit(true) : handleSubmit())}
+                  >
+                    {edit ? "Save" : "Edit"}
+                  </Button>
+                </Flex>
+              </Flex>
+
+              <Flex gap={5} flexDir={"column"} w="100%">
                 <Flex
-                  alignItems={"center"}
-                  justifyContent={"center"}
-                  h={10}
-                  w={10}
-                  bg="#E4E6E8"
-                  borderRadius={4}
-                  cursor={"pointer"}
+                  bg="#fff"
+                  borderRadius="8px"
+                  py="24px"
+                  px="28px"
+                  justifyContent="center"
+                  flexDir="column"
+                  border="1px solid #E4E6E8"
+                  h="fit-content"
                 >
-                  X
+                  <Text
+                    alignSelf={"center"}
+                    color="#646668"
+                    fontWeight={500}
+                    fontSize={"14px"}
+                  >
+                    Payments
+                  </Text>
+
+                  <Flex gap="24px" flexDir="column" mt="24px">
+                    <Box
+                      color="#646668"
+                      p="16px"
+                      border="1px solid #D4D6D8"
+                      borderRadius={"4px"}
+                    >
+                      <Text fontSize="12px">Wallet</Text>
+                      <Text fontWeight={500} fontSize="14px" mt="8px">
+                        Balance:
+                        <span>
+                          {" "}
+                          ₦{" "}
+                          {data?.wallet?.balance?.toLocaleString(undefined, {
+                            maximumFractionDigits: 2,
+                          }) || "0.00"}
+                        </span>
+                      </Text>
+                    </Box>
+
+                    <Flex
+                      w="full"
+                      flexDir="column"
+                      p="16px"
+                      border="1px solid #D4D6D8"
+                      borderRadius={"4px"}
+                    >
+                      <Text fontSize="12px" color="#646668">
+                        Card Details
+                      </Text>
+
+                      <Flex mt="10px">
+                        {data?.cards?.length ? (
+                          data?.cards?.map((item, i) => {
+                            const matchedCardImg = cardImg.find(
+                              (type) =>
+                                type?.name?.toLowerCase() ===
+                                item?.cardType?.trim().toLowerCase()
+                            );
+
+                            return (
+                              <Flex
+                                justifyContent="center"
+                                key={i}
+                                flexDir="column"
+                                w="full"
+                                align="center"
+                              >
+                                <Text fontWeight={500} color="#242628" mb="8px">
+                                  {item?.last4}
+                                </Text>
+                                <Image
+                                  objectFit="contain"
+                                  src={matchedCardImg?.img}
+                                  w="30px"
+                                  h="23px"
+                                />
+                              </Flex>
+                            );
+                          })
+                        ) : (
+                          <Text fontSize="14px" color="#646668" mt={1}>
+                            No Card Added yet
+                          </Text>
+                        )}
+                      </Flex>
+                    </Flex>
+                  </Flex>
+                </Flex>
+
+                <Flex
+                  bg="#fff"
+                  borderRadius="16px"
+                  py="24px"
+                  px="28px"
+                  justifyContent="center"
+                  flexDir="column"
+                  border="1px solid #E4E6E8"
+                  h="fit-content"
+                >
+                  <Text
+                    alignSelf={"center"}
+                    color="#646668"
+                    fontWeight={500}
+                    fontSize={"14px"}
+                  >
+                    Client users
+                  </Text>
+
+                  <Flex gap={4} flexDir="column" mt={4}>
+                    <Box
+                      p="16px"
+                      border="1px solid #D4D6D8"
+                      borderRadius={"4px"}
+                    >
+                      {isUser ? (
+                        <Flex justifyContent="center" align="center">
+                          <Spinner />
+                        </Flex>
+                      ) : clientUsers?.length ? (
+                        clientUsers?.map((user, i) => (
+                          <Flex
+                            justifyContent={"space-between"}
+                            align={"center"}
+                            key={i}
+                            mb="24px"
+                          >
+                            <Box>
+                              <Text fontSize="13px" color="#646668">
+                                {user?.profile?.firstName}{" "}
+                                {user?.profile?.lastName}
+                              </Text>
+                              <Text
+                                fontSize="14px"
+                                fontWeight={500}
+                                color="#444648"
+                                mt="8px"
+                              >
+                                {user?.email}
+                              </Text>
+                            </Box>
+
+                            <Flex
+                              align={"center"}
+                              justifyContent={"center"}
+                              h="32px"
+                              w="32px"
+                              opacity={edit ? 1 : 0.6}
+                              onClick={() => !edit ? "" : handleDetach(user)}
+                              border="1px solid #e4e6e8"
+                              bg="#E4E6E8"
+                              borderRadius="8px"
+                              cursor={!edit ? "" :"pointer"}
+                            >
+                              {isDetaching && currentuser === user.id ? (
+                                <Spinner size="xs" />
+                              ) : (
+                                <MdClose />
+                              )}
+                            </Flex>
+                          </Flex>
+                        ))
+                      ) : (
+                        <Text
+                          fontSize="14px"
+                          color="#646668"
+                          textAlign="center"
+                        >
+                          No user has been assigned to this client
+                        </Text>
+                      )}
+                    </Box>
+                  </Flex>
                 </Flex>
               </Flex>
             </Flex>
-          </Flex>
-        </Flex>
-      </Flex>
 
-      <AdminChangePassword
-        isOpen={isOpen}
-        onClose={() => setIsOpen(false)}
-        handleSubmit={handleSubmit}
-        isLoading={isLoading}
-      />
+            <UpdateOperatorPasswordModal
+              isOpen={isOpen}
+              id={id}
+              clientValues={values}
+              admin
+              onClose={() => setIsOpen(false)}
+            />
+          </>
+        )}
+      </Flex>
     </Box>
   );
 }
 
 const customStyles = {
-  control: (provided) => ({
+  control: (provided, state) => ({
     ...provided,
     width: "100%",
     minHeight: "44px",
@@ -455,11 +806,18 @@ const customStyles = {
     fontSize: "14px",
     cursor: "pointer",
     borderRadius: "4px",
-    border: "1px solid #D4D6D8",
-    background: "unset",
+    border: state.hasValue ? "none" : "1px solid #D4D6D8",
+    paddingRight: "16px",
+    background: state.hasValue ? "#f4f6f8" : "unset",
   }),
   menu: (provided) => ({
     ...provided,
     fontSize: "13px",
+    backgroundColor: "#f4f6f8",
+  }),
+  option: (provided, state) => ({
+    ...provided,
+    color: state.isFocused ? "" : "",
+    backgroundColor: state.isFocused ? "#d4d6d8" : "",
   }),
 };

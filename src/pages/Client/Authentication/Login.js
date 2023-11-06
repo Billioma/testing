@@ -18,9 +18,7 @@ const Login = () => {
   const { mutate, isLoading } = useClientLogin({
     onSuccess: (res) => {
       sessionStorage.setItem("user", JSON.stringify(res));
-      setTimeout(() => {
-        navigate("/client/dashboard");
-      }, 200);
+      navigate("/client/dashboard");
     },
     onError: (err) => {
       errorToast(

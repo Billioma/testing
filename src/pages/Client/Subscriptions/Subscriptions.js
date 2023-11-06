@@ -7,7 +7,7 @@ import { useGetClientSubs } from "../../../services/client/query/subscription";
 import Filter from "../../../components/common/Filter";
 import { subFieldOption } from "../../../components/common/constants";
 
-const Users = () => {
+const Subscriptions = () => {
   const { mutate, data, isLoading } = useGetClientSubs();
   const [page, setPage] = useState(1);
   const limit = 10;
@@ -95,4 +95,4 @@ const Users = () => {
   );
 };
 
-export default Users;
+export default Subscriptions;

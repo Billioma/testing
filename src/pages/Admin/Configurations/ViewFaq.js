@@ -8,8 +8,8 @@ import GoBackTab from "../../../components/data/Admin/GoBackTab";
 import { customStyles } from "../../../components/common/constants";
 import Select from "react-select";
 import {
-  useAddFaq,
   useDeleteFaq,
+  useEditFaq,
   useGetFaqs,
 } from "../../../services/admin/query/configurations";
 import AdminDeleteModal from "../../../components/modals/AdminDeleteModal";
@@ -23,7 +23,7 @@ export default function AddFaq() {
   const [isDisabled, setIsDisabled] = useState(true);
   const { errorToast, successToast } = useCustomToast();
   const { refetch } = useGetFaqs();
-  const { mutate, isLoading } = useAddFaq({
+  const { mutate, isLoading } = useEditFaq({
     onSuccess: () => {
       successToast("Faq updated successfully!");
       refetch();

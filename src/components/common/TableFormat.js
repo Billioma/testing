@@ -72,9 +72,9 @@ const TableFormat = ({
                 {header?.map((data, i) => (
                   <Th
                     textAlign={
-                      data.toLowerCase() === "status" ||
-                      data.toLowerCase() === "date" ||
-                      data.toLowerCase() === "action"
+                         data.toLowerCase() === "status" ||
+                          data.toLowerCase() === "date" ||
+                          data.toLowerCase() === "action"
                         ? "center"
                         : act ||
                           (alignFirstHeader && i === 0) ||
@@ -197,9 +197,11 @@ const DefaultPagination = ({
           borderWidth={1}
           onChange={(e) => setLimit(e.target.value)}
         >
-          <option value={25}>25</option>
-          <option value={50}>50</option>
-          <option value={100}>100</option>
+          {["25", "50", "100"].map((dat, i) => (
+            <option key={i} value={dat}>
+              {dat}
+            </option>
+          ))}
         </Select>
       </Flex>
     </Flex>

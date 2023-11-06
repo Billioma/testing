@@ -1,105 +1,258 @@
 import React, { useEffect, useState } from "react";
 import StatCard from "./StatCard";
+import { Text, Box, Flex, SimpleGrid, Skeleton } from "@chakra-ui/react";
 import {
-  Text,
-  Box,
-  Flex,
-  SimpleGrid,
-  Menu,
-  MenuButton,
-  MenuList,
-  MenuItem,
-  Button,
-} from "@chakra-ui/react";
-import { HiOutlineChevronDown } from "react-icons/hi";
-import { useGetActivitiesMetrics } from "../../../../services/admin/query/general";
+  useGetActivitiesMetrics,
+  useGetActivitiesMetricsFilter,
+} from "../../../../services/admin/query/general";
+import { operatorDashboardFilter } from "../../../common/constants";
+import Select from "react-select";
+import { IoIosArrowDown } from "react-icons/io";
 
 export default function ActivitySection() {
-  const [selectedOption, setSelectedOption] = useState("Today");
-  const { data: activityMetrics } = useGetActivitiesMetrics();
-  const [state, setState] = useState([]);
+  const { data: activityMetrics, isLoading } = useGetActivitiesMetrics();
 
-  const handleOptionSelect = (option) => {
-    setSelectedOption(option);
+  const {
+    mutate,
+    isLoading: isGetting,
+    data: metricFilter,
+  } = useGetActivitiesMetricsFilter();
+
+  const filterOptions = operatorDashboardFilter?.map((time) => ({
+    value: time,
+    label: time,
+  }));
+  const [values, setValues] = useState({
+    filter: "",
+  });
+
+  const handleSelectChange = (selectedOption, { name }) => {
+    setValues({
+      ...values,
+      [name]: selectedOption,
+    });
   };
 
+  const today = new Date();
+  const currentDay = today.getDay();
+
+  let from;
+  let to;
+
+  if (values.filter?.value === "Year") {
+    from = `${today.getFullYear()}-01-01`;
+    to = `${today.getFullYear()}-12-31`;
+  } else if (values.filter?.value === "Month") {
+    const currentMonth = today.getMonth() + 1;
+    const year = today.getFullYear();
+    from = `${year}-${currentMonth < 10 ? "0" : ""}${currentMonth}-01`;
+    to = `${year}-${currentMonth < 10 ? "0" : ""}${currentMonth}-${new Date(
+      year,
+      currentMonth,
+      0
+    ).getDate()}`;
+  } else if (values.filter?.value === "Week") {
+    const daysUntilMonday = (currentDay === 0 ? 7 : currentDay) - 1;
+    const daysUntilSunday = 6 - daysUntilMonday;
+
+    const fromStartDate = new Date(today);
+    fromStartDate.setDate(today.getDate() - daysUntilMonday);
+    const toEndDate = new Date(today);
+    toEndDate.setDate(today.getDate() + daysUntilSunday);
+
+    from = `${fromStartDate.getFullYear()}-${String(
+      fromStartDate.getMonth() + 1
+    ).padStart(2, "0")}-${String(fromStartDate.getDate()).padStart(2, "0")}`;
+    to = `${toEndDate.getFullYear()}-${String(
+      toEndDate.getMonth() + 1
+    ).padStart(2, "0")}-${String(toEndDate.getDate()).padStart(2, "0")}`;
+  } else {
+    from = "";
+    to = "";
+  }
+
+  useEffect(() => {
+    if (from && to) {
+      mutate({
+        query: { from, to },
+      });
+    }
+  }, [from, to]);
+
+  const customStyles = {
+    control: (provided) => ({
+      ...provided,
+      width: "100px",
+      color: "#646668",
+      fontWeight: 500,
+      fontSize: "10px",
+      cursor: "pointer",
+      borderRadius: "4px",
+      backgroundColor: "transparent",
+      border: "1px solid #646668",
+      padding: "2px 10px",
+    }),
+    menu: (provided) => ({
+      ...provided,
+      backgroundColor: "#f4f6f8",
+    }),
+    option: (provided, state) => ({
+      ...provided,
+      color: state.isFocused ? "" : "",
+      backgroundColor: state.isFocused ? "#d4d6d8" : "",
+    }),
+  };
+
+  const notLoading = from !== "" ? !isGetting : !isLoading;
+
+  const [state, setState] = useState([]);
+
   const transformData = () => {
-    const transformedData = [];
-    const dataKeys = Object.keys(activityMetrics);
+    if (from !== "" && metricFilter !== undefined) {
+      const transformedData = [];
+      const keyOrder = [
+        "vehicles",
+        "events",
+        "locations",
+        "invoices",
+        "corporateSubscriptions",
+        "customerSubscriptions",
+      ];
 
-    dataKeys.forEach((key, index) => {
-      const title = key.charAt(0).toUpperCase() + key.slice(1);
-      const id = index + 1;
+      keyOrder.forEach((key, index) => {
+        const titleMapping = {
+          vehicles: "Vehicles",
+          events: "Events",
+          locations: "Locations",
+          invoices: "Invoices",
+          corporateSubscriptions: "Corporate Subscriptions",
+          customereSubscriptions: "Customer Subscriptions",
+        };
 
-      const card = {
-        id,
-        title,
-        subTitle: "Total",
-        value: activityMetrics[key].total,
-        active: activityMetrics[key].active,
-        inactive: activityMetrics[key].inactive,
-      };
+        const title =
+          titleMapping[key] || key.charAt(0).toUpperCase() + key.slice(1);
+        const id = index + 1;
 
-      transformedData.push(card);
-    });
+        const card = {
+          id,
+          title,
+          subTitle: "Total",
+          value: metricFilter[key]?.total,
+          active: metricFilter[key]?.active,
+          inactive: metricFilter[key]?.inactive,
+          upcoming: metricFilter[key]?.upcoming,
+          expired: metricFilter[key]?.expired,
+          paid: metricFilter[key]?.paid,
+          unpaid: metricFilter[key]?.unpaid,
+        };
 
-    setState(transformedData);
+        transformedData.push(card);
+      });
+
+      setState(transformedData);
+    } else if (from === "" && to === "") {
+      const transformedData = [];
+      const keyOrder = [
+        "vehicles",
+        "events",
+        "locations",
+        "invoices",
+        "corporateSubscriptions",
+        "customerSubscriptions",
+      ];
+
+      keyOrder.forEach((key, index) => {
+        const titleMapping = {
+          vehicles: "Vehicles",
+          events: "Events",
+          locations: "Locations",
+          invoices: "Invoices",
+          corporateSubscriptions: "Corporate Subscriptions",
+          customereSubscriptions: "Customer Subscriptions",
+        };
+
+        const title =
+          titleMapping[key] || key.charAt(0).toUpperCase() + key.slice(1);
+        const id = index + 1;
+
+        const card = {
+          id,
+          title,
+          subTitle: "Total",
+          value: activityMetrics[key]?.total,
+          active: activityMetrics[key]?.active,
+          inactive: activityMetrics[key]?.inactive,
+          upcoming: activityMetrics[key]?.upcoming,
+          expired: activityMetrics[key]?.expired,
+          paid: activityMetrics[key]?.paid,
+          unpaid: activityMetrics[key]?.unpaid,
+        };
+
+        transformedData.push(card);
+      });
+
+      setState(transformedData);
+    }
   };
 
   useEffect(() => {
     activityMetrics && transformData();
-  }, [activityMetrics]);
+  }, [activityMetrics, metricFilter, from]);
 
   return (
-    <Box mt={"24px"}>
-      <Flex justifyContent="space-between" alignItems={"center"} mb={3}>
-        <Text fontSize="14px" fontWeight="600">
+    <Box mt="26px">
+      <Flex justifyContent="space-between" align="center" mb="12px">
+        <Text fontSize="14px" color="#242628" fontWeight="600">
           ACTIVITY
         </Text>
-        <Menu>
-          <MenuButton
-            as={Button}
-            variant="outline"
-            fontWeight="500"
-            fontSize="12px"
-          >
-            <Text gap="4px" display="flex" flexDir="row" alignItems={"center"}>
-              {selectedOption} <HiOutlineChevronDown />
-            </Text>
-          </MenuButton>
-          <MenuList>
-            <MenuItem onClick={() => handleOptionSelect("Today")}>
-              Option 1
-            </MenuItem>
-            <MenuItem onClick={() => handleOptionSelect("Yesterday")}>
-              Option 2
-            </MenuItem>
-            <MenuItem onClick={() => handleOptionSelect("Overall")}>
-              Option 3
-            </MenuItem>
-          </MenuList>
-        </Menu>
+        <Select
+          styles={customStyles}
+          options={filterOptions}
+          placeholder="All Time"
+          value={values.filter}
+          defaultValue={values.filter}
+          components={{
+            IndicatorSeparator: () => <div style={{ display: "none" }}></div>,
+            DropdownIndicator: () => (
+              <div>
+                <IoIosArrowDown size="15px" color="#646668" />
+              </div>
+            ),
+          }}
+          onChange={(selectedOption) =>
+            handleSelectChange(selectedOption, {
+              name: "filter",
+            })
+          }
+        />
       </Flex>
 
-      <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing="4">
-        {state.map((card) => (
-          <StatCard
-            key={card.id}
-            title={card.title}
-            subTitle={card.subTitle}
-            value={card.value}
-            completed={card.completed}
-            inService={card.inService}
-            active={card.active?.toLocaleString() || 0}
-            expired={card.expired}
-            inactive={card.inactive || 0}
-            upcoming={card.upcoming}
-            past={card.past}
-            paid={card.paid}
-            pastDue={card.pastDue}
-            large
-          />
-        ))}
+      <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing="24px">
+        {!notLoading
+          ? ["1", "2", "3", "4", "5", "6"].map((i) => (
+              <Skeleton
+                key={i}
+                h="20vh"
+                borderRadius="8px"
+                isLoaded={notLoading}
+              ></Skeleton>
+            ))
+          : state?.length &&
+            state?.map((card) => (
+              <StatCard
+                key={card.id}
+                title={card.title}
+                subTitle={card.subTitle}
+                value={card.value}
+                active={card.active?.toLocaleString() || 0}
+                expired={card.expired || 0}
+                inactive={card.inactive || 0}
+                upcoming={card.upcoming || 0}
+                unpaid={card.unpaid || 0}
+                paid={card.paid || 0}
+                large
+              />
+            ))}
       </SimpleGrid>
     </Box>
   );

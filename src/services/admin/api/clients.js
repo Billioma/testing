@@ -10,6 +10,30 @@ export const getClients = async (page, limit, query) => {
   return response.data;
 };
 
+export const getAdminClients = async (query) => {
+  const res = await axiosInstance.get(
+    API.ADMIN_CLIENTS_LIST(query.filterString, query.limit, query.page)
+  );
+  return res.data;
+};
+
+export const getAdminClient = async (query) => {
+  const res = await axiosInstance.get(API.ADMIN_CLIENT(query.id));
+  return res.data;
+};
+
+export const getAdminClientUsers = async (query) => {
+  const res = await axiosInstance.get(API.CLIENT_USERS(query.id));
+  return res.data;
+};
+
+export const detachAdminClientUser = async (query) => {
+  const res = await axiosInstance.get(
+    API.DETACH_CLIENT_USER(query.id, query.email)
+  );
+  return res.data;
+};
+
 export const getClientUsers = async (id) => {
   const response = await axiosInstance.get(`${API.ADMIN_CLIENTS}/users/${id}`);
   return response.data;
@@ -25,13 +49,9 @@ export const deleteClient = async (id) => {
   return response.data;
 };
 
-export const editClient = async (data) => {
-  const response = await axiosInstance.patch(
-    `${API.ADMIN_CLIENTS}/${data.id}`,
-    data
-  );
-
-  return response.data;
+export const editClient = async ({ query, body }) => {
+  const res = await axiosInstance.patch(API.ADMIN_CLIENT(query), body);
+  return res.data;
 };
 
 export const getClientsInvoices = async (page, limit, query) => {

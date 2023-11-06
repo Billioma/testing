@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Box, Flex, Text, Button } from "@chakra-ui/react";
+import { Box, Flex, Text, Button, Image } from "@chakra-ui/react";
 import CustomInput from "../../../components/common/CustomInput";
 import { AiOutlineCamera } from "react-icons/ai";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -12,6 +12,7 @@ import useCustomToast from "../../../utils/notifications";
 import Select from "react-select";
 import AdminChangePassword from "../../../components/modals/AdminChangePasswordModal";
 import GoBackTab from "../../../components/data/Admin/GoBackTab";
+import { useUploadMedia } from "../../../services/admin/query/general";
 
 export default function ViewCustomer() {
   const [isEdit, setIsEdit] = useState(false);
@@ -24,8 +25,8 @@ export default function ViewCustomer() {
   const { refetch } = useGetCustomers();
   const { mutate, isLoading } = useEditCustomer({
     onSuccess: () => {
-      successToast("Customer updated successfully!");
       refetch();
+      successToast("Customer updated successfully!");
       navigate(PRIVATE_PATHS.ADMIN_CUSTOMERS);
     },
     onError: (error) => {
@@ -43,12 +44,44 @@ export default function ViewCustomer() {
     setIsDisabled(isFormValid);
   }, [state]);
 
+  const { mutate: uploadMedia } = useUploadMedia({
+    onSuccess: (data) => {
+      mutate({ ...state, profilePicture: data.path });
+    },
+    onError: (err) => {
+      errorToast(
+        err?.response?.data?.message || err?.message || "An Error occurred"
+      );
+    },
+  });
+
   const handleSubmit = (data = state) => {
-    mutate({ ...data, id: state.id });
+    if (typeof state.profilePicture != "string" && state.profilePicture) {
+      const formData = new FormData();
+      formData.append("profilePicture", state.profilePicture);
+      uploadMedia({
+        fileType: "avatar",
+        entityType: "admin",
+        file: formData.get("profilePicture"),
+      });
+    } else {
+      mutate({ ...data, id: state.id });
+    }
+  };
+
+  const handleAvatarImageChange = (e) => {
+    const selectedImage = e.target.files[0];
+    if (selectedImage) {
+      setState({
+        ...state,
+        profilePicture: selectedImage,
+      });
+    }
   };
 
   useEffect(() => {
-    const { firstName, lastName, companyName, phone } = location.state.profile;
+    const { firstName, lastName, companyName, phone, profilePicture } =
+      location.state.profile;
     const { email, status, id } = location.state;
     setState({
       firstName,
@@ -58,6 +91,7 @@ export default function ViewCustomer() {
       companyName,
       status,
       id,
+      profilePicture,
     });
     setIsEdit(location?.state?.isEdit);
   }, [location.state]);
@@ -81,27 +115,57 @@ export default function ViewCustomer() {
           flexDir="column"
           border="1px solid #E4E6E8"
         >
-          <Box alignSelf={"center"} mb={5}>
+          <Box
+            alignSelf={"center"}
+            justifyContent={"center"}
+            mb={5}
+            display="flex"
+            flexDir="column"
+          >
             <Text
               fontSize="10px"
               fontWeight={500}
               color="#444648"
               textAlign="center"
             >
-              Avatar
+              Profile Picture
             </Text>
-            <Box
-              w="120px"
-              h="120px"
-              justifyContent="center"
-              alignItems="center"
-              border="4px solid #0D0718"
-              borderRadius="12px"
-              display="flex"
-              cursor="pointer"
-            >
-              <AiOutlineCamera size={32} />
-            </Box>
+            <label htmlFor="avatarInput" disabled={!isEdit}>
+              <Box
+                w="120px"
+                h="120px"
+                justifyContent="center"
+                alignItems="center"
+                border="4px solid #0D0718"
+                borderRadius="12px"
+                display="flex"
+                cursor="pointer"
+                overflow={"hidden"}
+              >
+                {state.profilePicture ? (
+                  <Image
+                    src={
+                      typeof state.profilePicture !== "string"
+                        ? URL?.createObjectURL(state.profilePicture)
+                        : process.env.REACT_APP_BASE_URL +
+                          state.profilePicture?.substring(1)
+                    }
+                    alt="Avatar"
+                    boxSize="100%"
+                    objectFit="cover"
+                  />
+                ) : (
+                  <AiOutlineCamera size={32} />
+                )}
+              </Box>
+            </label>
+            <input
+              type="file"
+              id="avatarInput"
+              accept="image/*"
+              style={{ display: "none" }}
+              onChange={handleAvatarImageChange}
+            />
           </Box>
           <Box w="full" mb={4}>
             <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">

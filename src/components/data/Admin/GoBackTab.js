@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Text } from "@chakra-ui/react";
+import { Box, Flex, Text } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import { HiOutlineArrowNarrowLeft } from "react-icons/hi";
 
@@ -8,6 +8,7 @@ const BackButtonBox = () => {
 
   const goBack = () => {
     navigate(-1);
+    sessionStorage.removeItem("edit");
   };
 
   return (
@@ -15,22 +16,23 @@ const BackButtonBox = () => {
       w="full"
       py={2}
       mb={3}
+      color="#242628"
       display="flex"
       alignItems="center"
       justifyContent="flex-start"
     >
-      <Text
+      <Flex
+        align="center"
         fontSize="14px"
         fontWeight="500"
+        lineHeight="100%"
         cursor="pointer"
-        gap={3}
+        gap="8px"
         onClick={goBack}
-        display="flex"
-        alignItems="center"
       >
         <HiOutlineArrowNarrowLeft size={20} />
         Back
-      </Text>
+      </Flex>
     </Box>
   );
 };

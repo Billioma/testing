@@ -52,19 +52,23 @@ export default function () {
     setEndRow(currentEndRow);
   }, [data, page, limit]);
 
+  useEffect(() => {
+    refetch();
+  }, []);
+
   return (
     <Box w="full" border={"1px solid #E4E6E8"} borderRadius={"12px"}>
       <Flex justifyContent={"space-between"} alignItems="center" py={3} px={5}>
         <Text fontWeight="500">Car Services</Text>
         <Flex gap="6px">
-          <Button
+          {/* <Button
             variant="adminPrimary"
             gap={2}
             fontSize={"12px"}
             onClick={() => navigate(PRIVATE_PATHS.ADMIN_ADD_CAR_SERVICE)}
           >
             Add Car Service <FiPlus size={18} />
-          </Button>
+          </Button> */}
           <Button
             bg="white"
             py={3}

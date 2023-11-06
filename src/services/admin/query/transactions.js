@@ -8,6 +8,7 @@ import {
   editReservedParking,
   addReservedParking,
   getCarServices,
+  editCarService,
 } from "../api/transactions";
 
 export const useGetPayToPark = (options = {}, page = 1, limit = 25, query) => {
@@ -95,6 +96,15 @@ export const useGetCarServices = (
 export const useDeleteCarService = (options = {}) => {
   const { isLoading, mutate } = useMutation(deleteCarService, {
     mutationKey: ["DELETE_CAR_SERVICE"],
+    ...options,
+  });
+
+  return { isLoading, mutate };
+};
+
+export const useEditCarService = (options = {}) => {
+  const { isLoading, mutate } = useMutation(editCarService, {
+    mutationKey: ["EDIT_CAR_SERVICE"],
     ...options,
   });
 

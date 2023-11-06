@@ -1,137 +1,63 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { Box, Flex, Text } from "@chakra-ui/layout";
-import { Image, VStack } from "@chakra-ui/react";
-import SidebarItem from "./SidebarItem";
-import { sidebarItems } from "../../common/constants";
-import AdminHeader from "./AdminHeader";
-import { useLocation } from "react-router-dom";
+import { Image, useMediaQuery } from "@chakra-ui/react";
+import Header from "./Header";
+import SideBar from "./SideBar";
 
 export const AuthLayout = ({ children }) => {
-  const [openSubItems, setOpenSubItems] = useState({});
-  const { pathname } = useLocation();
-
-  const handleToggleSubItem = (title) => {
-    setOpenSubItems((prevState) => {
-      // Create a new object to track the open state of sub-items
-      const newOpenSubItems = {};
-
-      // Close other sub-items
-      Object.keys(prevState).forEach((item) => {
-        newOpenSubItems[item] = false;
-      });
-
-      const activeParentItem = pathname.includes("reports")
-        ? "Reports"
-        : sidebarItems.find((item) => pathname.includes(item.path))?.title;
-
-      newOpenSubItems[activeParentItem] = true;
-
-      // Open the selected sub-item
-      if (title) newOpenSubItems[title] = !prevState[title];
-
-      return newOpenSubItems;
-    });
-  };
-
-  useEffect(() => {
-    handleToggleSubItem(null);
-  }, [pathname]);
+  const [isMobile] = useMediaQuery("(max-width: 991px)");
 
   return (
-    <Box fontFamily="Sailec">
-      <Flex minHeight="100vh">
-        {/* Sidebar */}
-        <Box
-          as="aside"
-          w="280px"
-          bg="#fff"
-          p={4}
-          pt={8}
-          h="100vh"
-          position="fixed"
-          boxShadow="4px 0px 24px 0px rgba(0, 0, 0, 0.25)"
-          display={{ base: "none", lg: "block" }}
-        >
-          <Box w="80%" m="0 auto">
-            <Image src="/assets/logo.svg" m="0 auto 3px" />
-          </Box>
-
-          <Text color="#444648" textAlign="center" fontSize="12px">
-            Admin
-          </Text>
-
-          <VStack
-            align="stretch"
-            spacing={2}
-            p={2}
-            mt="30px"
-            overflowY="scroll"
-            maxHeight="90vh"
-            pb={12}
-          >
-            {sidebarItems.map((item) => (
-              <SidebarItem
-                key={item.title}
-                title={item.title}
-                icon={item.icon}
-                subItems={item.subItems}
-                hoverIcon={item.hover}
-                path={item.path}
-                isOpen={openSubItems[item.title]}
-                onToggleSubItem={handleToggleSubItem}
-              />
-            ))}
-          </VStack>
+    <Box color="#000" fontFamily="Sailec" h="100vh">
+      <Box overflowX="hidden">
+        {!isMobile && <SideBar />}
+        <Box mt="32px" mx={!isMobile ? "310px" : "20px"}>
+          <Header />
         </Box>
-
-        {/* Content Section */}
-        <Box
-          flex="1"
-          p={5}
-          ml={{ base: "0", lg: "280px" }}
-          overflow="auto"
-          w="100vw"
-        >
-          {/* Topbar */}
-          <AdminHeader />
-
-          {/* Page Content */}
-
-          <Box mt={"20px"} minH="90vh" w="100%" borderRadius={8}>
+        <Box overflow="auto" className="no_scroller">
+          <Box
+            w="100%"
+            pt={isMobile ? "150px" : "110px"}
+            color="#828282"
+            maxHeight="92vh"
+            pl={!isMobile ? "310px" : "20px"}
+            pr={!isMobile ? "32px" : "20px"}
+            pb={10}
+          >
             {children}
           </Box>
         </Box>
-      </Flex>
+      </Box>
     </Box>
   );
 };
 
 export const NonAuthLayout = ({ children }) => {
   return (
-    <Box pos="relative" h="100vh">
+    <Flex flexDir="column" justifyContent="center" align="center" minH="100vh">
       <Flex
+        flexDir="column"
         justifyContent="center"
-        flexDirection={"column"}
         align="center"
-        w="full"
-        pb={5}
+        minH="90vh"
+        w={{ base: "full", lg: "1295px" }}
+        px="20px"
+        pb="10px"
       >
-        <Box w={{ base: "full", lg: "1295px" }} minH="90vh" px="20px">
-          {children}
-        </Box>
-        <Flex
-          mt="auto"
-          mb="20px"
-          flexDir="column"
-          justifyContent="center"
-          align="center"
-        >
-          <Text fontSize="12px" lineHeight="100%" mb="8px">
-            Powered by
-          </Text>
-          <Image src="/assets/ezlogo.png" />
-        </Flex>
+        {children}
       </Flex>
-    </Box>
+      <Flex
+        mt="auto"
+        mb="20px"
+        flexDir="column"
+        justifyContent="center"
+        align="center"
+      >
+        <Text fontSize="12px" lineHeight="100%" mb="8px">
+          Powered by
+        </Text>
+        <Image src="/assets/ezlogo.png" />
+      </Flex>
+    </Flex>
   );
 };

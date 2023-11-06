@@ -177,6 +177,7 @@ const Header = () => {
                 fontSize="10px"
                 display={isMobile ? "none" : "flex"}
                 color="#848688"
+                pb="3px"
                 fontWeight={500}
                 lineHeight="100%"
               >
@@ -189,6 +190,7 @@ const Header = () => {
                 fontSize="10px"
                 display={isMobile ? "none" : "flex"}
                 color="#848688"
+                pb="3px"
                 fontWeight={500}
                 lineHeight="100%"
               >

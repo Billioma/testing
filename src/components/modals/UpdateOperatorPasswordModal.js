@@ -13,10 +13,22 @@ import CustomInput from "../common/CustomInput";
 import { useUpdateOpPassword } from "../../services/operator/query/user";
 import useCustomToast from "../../utils/notifications";
 import { useLogOut } from "../../utils/helpers";
-import { initOpPassValues, opPassSchema } from "../../utils/validation";
+import {
+  clientPassSchema,
+  initClientPassValues,
+  initOpPassValues,
+  opPassSchema,
+} from "../../utils/validation";
 import { Form, Formik } from "formik";
+import { useEditClient } from "../../services/admin/query/clients";
 
-const UpdateOperatorPasswordModal = ({ isOpen, onClose }) => {
+const UpdateOperatorPasswordModal = ({
+  clientValues,
+  id,
+  isOpen,
+  onClose,
+  admin,
+}) => {
   const [show, setShow] = useState(false);
 
   const { errorToast, successToast } = useCustomToast();
@@ -33,9 +45,34 @@ const UpdateOperatorPasswordModal = ({ isOpen, onClose }) => {
       );
     },
   });
+  const { mutate: clientMutate, isLoading: isClient } = useEditClient({
+    onSuccess: (res) => {
+      successToast(res?.message);
+      onClose();
+    },
+    onError: (err) => {
+      errorToast(
+        err?.response?.data?.message || err?.message || "An Error occurred"
+      );
+    },
+  });
 
   const handleSubmit = (values = "") => {
-    mutate(values);
+    const { currentPassword, ...rest } = values;
+    const { accountType, status, state, managers, ...list } = clientValues;
+    admin
+      ? clientMutate({
+          query: id,
+          body: {
+            ...rest,
+            ...clientValues,
+            accountType: clientValues?.accountType?.value,
+            status: clientValues?.status?.value,
+            state: clientValues?.state?.value,
+            managers: clientValues.managers?.map((item) => item?.value),
+          },
+        })
+      : mutate(values);
   };
 
   return (
@@ -62,8 +99,8 @@ const UpdateOperatorPasswordModal = ({ isOpen, onClose }) => {
           </Text>
           <Formik
             onSubmit={handleSubmit}
-            initialValues={initOpPassValues}
-            validationSchema={opPassSchema}
+            initialValues={admin ? initClientPassValues : initOpPassValues}
+            validationSchema={admin ? clientPassSchema : opPassSchema}
           >
             {({
               values,
@@ -76,33 +113,37 @@ const UpdateOperatorPasswordModal = ({ isOpen, onClose }) => {
               dirty,
             }) => (
               <Form onSubmit={handleSubmit}>
-                <Box mb="24px">
-                  <Text
-                    color="#444648"
-                    lineHeight="100%"
-                    fontSize="10px"
-                    mb="8px"
-                    fontWeight={500}
-                  >
-                    Enter Old Password
-                  </Text>
-                  <CustomInput
-                    mb
-                    name="currentPassword"
-                    value={values?.currentPassword}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    error={
-                      errors?.currentPassword &&
-                      touched?.currentPassword &&
-                      errors?.currentPassword
-                    }
-                    onClick={() => setShow((prev) => !prev)}
-                    password={show ? false : true}
-                    show
-                    type={show ? "text" : "password"}
-                  />
-                </Box>
+                {admin ? (
+                  ""
+                ) : (
+                  <Box mb="24px">
+                    <Text
+                      color="#444648"
+                      lineHeight="100%"
+                      fontSize="10px"
+                      mb="8px"
+                      fontWeight={500}
+                    >
+                      Enter Old Password
+                    </Text>
+                    <CustomInput
+                      mb
+                      name="currentPassword"
+                      value={values?.currentPassword}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      error={
+                        errors?.currentPassword &&
+                        touched?.currentPassword &&
+                        errors?.currentPassword
+                      }
+                      onClick={() => setShow((prev) => !prev)}
+                      password={show ? false : true}
+                      show
+                      type={show ? "text" : "password"}
+                    />
+                  </Box>
+                )}
 
                 <Box mb="24px">
                   <Text
@@ -174,8 +215,9 @@ const UpdateOperatorPasswordModal = ({ isOpen, onClose }) => {
                   <Button
                     fontSize="14px"
                     fontWeight={500}
+                    bg={admin ? "#000" : "red"}
                     type="submit"
-                    isLoading={isLoading}
+                    isLoading={isLoading || isClient}
                     isDisabled={!isValid || !dirty}
                     lineHeight="100%"
                     w="full"

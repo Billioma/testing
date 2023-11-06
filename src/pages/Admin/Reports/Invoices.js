@@ -61,6 +61,10 @@ const Invoices = () => {
     setEndRow(currentEndRow);
   }, [data, page, limit]);
 
+  useEffect(() => {
+    refetch();
+  }, []);
+
   return (
     <Box minH="75vh">
       <Grid

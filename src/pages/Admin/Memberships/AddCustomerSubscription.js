@@ -92,16 +92,16 @@ export default function AddCustomerSubscription() {
     let temp = state.subscriptionOptions;
     let tempType;
     if (name === "vehicle") {
-      tempType = temp.find((feature) => feature.type === "vehicle");
+      tempType = temp?.find((feature) => feature.type === "vehicle");
       tempType.data = [selectedOption];
     }
 
     if (name === "location") {
-      tempType = temp.find((feature) => feature.type === "location");
+      tempType = temp?.find((feature) => feature.type === "location");
       tempType.data = [selectedOption];
     }
 
-    const index = temp.findIndex((el) => el.type === name);
+    const index = temp?.findIndex((el) => el.type === name);
     temp.splice(index, 1);
     temp.push(tempType);
 
@@ -115,9 +115,12 @@ export default function AddCustomerSubscription() {
 
   const handlePlanSelection = (plan) => {
     const tempFeatureTypes = [];
-    const temp = plan.features.map((feature) => {
-      tempFeatureTypes.push(getFeatureType(feature.featureType, feature.value));
-      setFeatureTypes(tempFeatureTypes);
+    const temp = plan?.features?.map((feature) => {
+      tempFeatureTypes?.push(
+        getFeatureType(feature.featureType, feature.value)
+      );
+
+      setFeatureTypes(tempFeatureTypes[0] ? tempFeatureTypes : []);
       return {
         planFeature: feature.id,
         data: [],
@@ -220,10 +223,10 @@ export default function AddCustomerSubscription() {
               />
             </Box>
 
-            {featureTypes.find((type) => type["vehicle"]) && (
+            {/* {featureTypes?.find((type) => type["vehicle"]) && (
               <Box w="full" mb={4}>
                 <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
-                  {featureTypes.find((type) => type["vehicle"]).limit > 1
+                  {featureTypes?.find((type) => type["vehicle"]).limit > 1
                     ? `Select up to ${limit} vehicles`
                     : "Select a vehicle"}
                 </Text>
@@ -233,25 +236,25 @@ export default function AddCustomerSubscription() {
                     handleSelectChange(value, { name: "vehicle" })
                   }
                   isMulti={
-                    featureTypes.find((type) => type["vehicle"]).limit > 1
+                    featureTypes?.find((type) => type["vehicle"]).limit > 1
                   }
                   options={vehicles?.data
                     ?.filter(
-                      (vehicle) => vehicle.customer?.id == state.customer
+                      (vehicle) => vehicle?.customer?.id == state.customer
                     )
                     ?.map((vehicle) => ({
-                      label: `${vehicle.color} - ${vehicle.make.name} - ${vehicle.model.name}`,
+                      label: `${vehicle.color} - ${vehicle?.make?.name} - ${vehicle?.model?.name}`,
                       value: parseInt(vehicle.id),
                     }))}
                   placeholder="Select vehicles"
                 />
               </Box>
-            )}
+            )} */}
 
-            {featureTypes.find((type) => type["location"]) && (
+            {featureTypes?.find((type) => type["location"]) && (
               <Box w="full" mb={4}>
                 <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
-                  {featureTypes.find((type) => type["location"]).limit > 1
+                  {featureTypes?.find((type) => type["location"]).limit > 1
                     ? `Select up to ${limit} locations`
                     : " Select a location"}
                 </Text>
@@ -261,7 +264,7 @@ export default function AddCustomerSubscription() {
                     handleSelectChange(value, { name: "location" })
                   }
                   isMulti={
-                    featureTypes.find((type) => type["location"]).limit > 1
+                    featureTypes?.find((type) => type["location"]).limit > 1
                   }
                   options={locationOptions}
                   placeholder="Select location"

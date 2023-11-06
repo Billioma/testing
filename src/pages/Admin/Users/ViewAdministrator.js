@@ -6,6 +6,7 @@ import Select from "react-select";
 import { useNavigate, useLocation } from "react-router-dom";
 import { PRIVATE_PATHS } from "../../../routes/constants";
 import {
+  useDeleteAdministrator,
   useEditAdministrator,
   useGetAdministrators,
 } from "../../../services/admin/query/users";
@@ -15,6 +16,7 @@ import { useGetAllRoles } from "../../../services/admin/query/roles";
 import GoBackTab from "../../../components/data/Admin/GoBackTab";
 import { useUploadMedia } from "../../../services/admin/query/general";
 import { customStyles } from "../../../components/common/constants";
+import AdminDeleteModal from "../../../components/modals/AdminDeleteModal";
 
 export default function AddAttendants() {
   const [state, setState] = useState({
@@ -27,7 +29,7 @@ export default function AddAttendants() {
   });
   const [isEdit, setIsEdit] = useState(false);
   const location = useLocation();
-
+  const [isDeleteOpen, setIsDeleteOpen] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
   const [isDisabled, setIsDisabled] = useState(true);
@@ -64,6 +66,22 @@ export default function AddAttendants() {
       );
     },
   });
+
+  const { mutate: deleteAdministrator, isLoading: isDeleting } =
+    useDeleteAdministrator({
+      onSuccess: (res) => {
+        refetch();
+        successToast(res?.message);
+        setIsOpen(false);
+        navigate(PRIVATE_PATHS.ADMIN_ADMINISTRATORS);
+      },
+      onError: (err) => {
+        errorToast(
+          err?.response?.data?.message || err?.message || "An Error occurred"
+        );
+      },
+    });
+
   const handleAvatarImageChange = (e) => {
     const selectedImage = e.target.files[0];
     if (selectedImage) {
@@ -272,9 +290,13 @@ export default function AddAttendants() {
             <Button
               variant="adminDanger"
               w="45%"
-              onClick={() => navigate(PRIVATE_PATHS.ADMIN_ATTENDANTS)}
+              onClick={() =>
+                !isEdit
+                  ? setIsDeleteOpen(true)
+                  : navigate(PRIVATE_PATHS.ADMIN_ADMINISTRATORS)
+              }
             >
-              Delete
+              {!isEdit ? "Delete" : "Cancel"}
             </Button>
             <Button
               variant="adminPrimary"
@@ -294,6 +316,15 @@ export default function AddAttendants() {
         onClose={() => setIsOpen(false)}
         handleSubmit={handleSubmit}
         isLoading={isLoading}
+      />
+
+      <AdminDeleteModal
+        isOpen={isDeleteOpen}
+        onClose={() => setIsDeleteOpen(false)}
+        title="Delete Administrator"
+        subTitle="Are you sure you want to delete this administrator?"
+        handleSubmit={() => deleteAdministrator(state.id)}
+        isLoading={isDeleting}
       />
     </Box>
   );

@@ -49,6 +49,10 @@ const History = () => {
     setEndRow(currentEndRow);
   }, [data, page, limit]);
 
+  useEffect(() => {
+    refetch();
+  }, []);
+
   return (
     <Box minH="75vh">
       <Box

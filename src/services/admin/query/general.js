@@ -5,6 +5,9 @@ import {
   getUsersMetrics,
   getServicesMetrics,
   getActivitiesMetrics,
+  getUsersMetricsFilter,
+  getServicesMetricsFilter,
+  getActivitiesMetricsFilter,
 } from "../api/general";
 
 export const useGetAdminDashboardData = () => {
@@ -14,6 +17,30 @@ export const useGetAdminDashboardData = () => {
   });
 
   return { data, isLoading, refetch };
+};
+
+export const useGetUsersMetricsFilter = (options = {}) => {
+  const { mutate, isLoading, data } = useMutation(getUsersMetricsFilter, {
+    mutationKey: "USER_METRIC_FILTER",
+    ...options,
+  });
+  return { mutate, isLoading, data };
+};
+
+export const useGetServiceMetricsFilter = (options = {}) => {
+  const { mutate, isLoading, data } = useMutation(getServicesMetricsFilter, {
+    mutationKey: "SERVICE_METRIC_FILTER",
+    ...options,
+  });
+  return { mutate, isLoading, data };
+};
+
+export const useGetActivitiesMetricsFilter = (options = {}) => {
+  const { mutate, isLoading, data } = useMutation(getActivitiesMetricsFilter, {
+    mutationKey: "ACTIVITIES_METRIC_FILTER",
+    ...options,
+  });
+  return { mutate, isLoading, data };
 };
 
 export const useGetUsersMetrics = () => {

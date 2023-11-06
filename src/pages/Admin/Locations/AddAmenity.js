@@ -6,7 +6,10 @@ import { PRIVATE_PATHS } from "../../../routes/constants";
 import useCustomToast from "../../../utils/notifications";
 import GoBackTab from "../../../components/data/Admin/GoBackTab";
 import { useGetLocations } from "../../../services/admin/query/locations";
-import { useAddAmenity } from "../../../services/admin/query/amenities";
+import {
+  useAddAmenity,
+  useGetAmenities,
+} from "../../../services/admin/query/amenities";
 
 export default function AddAmenity() {
   const [state, setState] = useState({
@@ -16,7 +19,7 @@ export default function AddAmenity() {
   const navigate = useNavigate();
   const [isDisabled, setIsDisabled] = useState(true);
   const { errorToast, successToast } = useCustomToast();
-  const { refetch } = useGetLocations();
+  const { refetch } = useGetAmenities();
   const { mutate, isLoading } = useAddAmenity({
     onSuccess: () => {
       successToast("Amenity added successfully!");

@@ -13,12 +13,11 @@ import useCustomToast from "../../../utils/notifications";
 const Login = () => {
   const [show, setShow] = useState(false);
   const navigate = useNavigate();
-  const { errorToast, successToast } = useCustomToast();
+  const { errorToast } = useCustomToast();
 
   const { mutate, isLoading } = useLogin({
     onSuccess: (data) => {
       sessionStorage.setItem("user", JSON.stringify(data));
-      successToast("Welcome back!");
       navigate("/admin/dashboard");
     },
 

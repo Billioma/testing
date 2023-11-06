@@ -91,7 +91,7 @@ export default function AddCorporateSubscription() {
     const tempFeatureTypes = [];
     const temp = plan.features.map((feature) => {
       tempFeatureTypes.push(getFeatureType(feature.featureType, feature.value));
-      setFeatureTypes(tempFeatureTypes);
+      setFeatureTypes(tempFeatureTypes[0] ? tempFeatureTypes : []);
       return {
         planFeature: feature.id,
         data: [],
@@ -129,9 +129,9 @@ export default function AddCorporateSubscription() {
   };
 
   const handleUsersSelect = (data) => {
-    const temp = state.subscriptionOptions;
+    const temp = state?.subscriptionOptions;
 
-    temp[0].data = data.map((data) => data.value);
+    temp[0].data = data?.map((data) => data.value);
 
     setState({ ...state, subscriptionOptions: temp });
   };
@@ -140,8 +140,6 @@ export default function AddCorporateSubscription() {
     e.preventDefault();
     mutate({ ...state });
   };
-
-  console.log(state);
 
   return (
     <Box minH="75vh">
@@ -215,7 +213,7 @@ export default function AddCorporateSubscription() {
                 styles={customStyles}
                 onChange={handleUsersSelect}
                 options={userOptions}
-                isMulti={state.subscriptionOptions[0]?.limit > 1}
+                isMulti={true}
                 placeholder="Select users"
               />
             </Box>

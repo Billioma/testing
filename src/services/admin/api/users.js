@@ -33,6 +33,11 @@ export const getAdministrators = async (page, limit, query) => {
   return response.data;
 };
 
+export const getManagers = async () => {
+  const response = await axiosInstance.get(API.MANAGERS);
+  return response.data;
+};
+
 export const createAdministrator = async (data) => {
   const response = await axiosInstance.post(API.ADMIN_ADMINISTRATORS, data);
   return response.data;

@@ -14,6 +14,10 @@ import {
   addClientEvent,
   updateClientEvent,
   deleteClientEvent,
+  getAdminClients,
+  getAdminClient,
+  getAdminClientUsers,
+  detachAdminClientUser,
 } from "../api/clients";
 
 export const useGetClients = (options = {}, page = 1, limit = 25, query) => {
@@ -28,9 +32,43 @@ export const useGetClients = (options = {}, page = 1, limit = 25, query) => {
   return { isLoading, data, refetch };
 };
 
+export const useGetAdminClients = (options = {}) => {
+  const { mutate, isLoading, data } = useMutation(getAdminClients, {
+    mutationKey: "GET_ADMIN_CLIENTS_LIST",
+    ...options,
+  });
+  return { mutate, isLoading, data };
+};
+
+export const useGetAdminClient = (options = {}) => {
+  const { mutate, isLoading, data } = useMutation(getAdminClient, {
+    mutationKey: "GET_ADMIN_CLIENT",
+    ...options,
+  });
+  return { mutate, isLoading, data };
+};
+
 export const useGetClientUsers = (options = {}, id) => {
   const { isLoading, data, mutate } = useMutation(getClientUsers, {
     mutationKey: ["GET_CLIENT_USERS", id],
+    ...options,
+  });
+
+  return { isLoading, data, mutate };
+};
+
+export const useGetAdminClientUsers = (options = {}) => {
+  const { isLoading, data, mutate } = useMutation(getAdminClientUsers, {
+    mutationKey: ["GET_ADMIN_CLIENT_USERS"],
+    ...options,
+  });
+
+  return { isLoading, data, mutate };
+};
+
+export const useDetachAdminClientUser = (options = {}) => {
+  const { isLoading, data, mutate } = useMutation(detachAdminClientUser, {
+    mutationKey: ["DETACH_ADMIN_CLIENT_USER"],
     ...options,
   });
 

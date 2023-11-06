@@ -16,6 +16,7 @@ import {
   getOperators,
   createOperator,
   editOperator,
+  getManagers,
 } from "../api/users";
 
 export const useGetAttendants = (options = {}, page, limit, query) => {
@@ -40,6 +41,14 @@ export const useGetAdministrators = (options = {}, page, limit, query) => {
   );
 
   return { isLoading, data, refetch };
+};
+
+export const useGetManagers = (options = {}) => {
+  const { data, isLoading, refetch } = useQuery("GET_MANAGERS", getManagers, {
+    ...options,
+  });
+
+  return { data, isLoading, refetch };
 };
 
 export const useCreateAdministrator = (options = {}) => {

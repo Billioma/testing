@@ -174,6 +174,7 @@ const Header = () => {
                 fontSize="14px"
                 display={isMobile ? "none" : "flex"}
                 color="#848688"
+                pb="3px"
                 fontWeight={500}
                 lineHeight="100%"
               >

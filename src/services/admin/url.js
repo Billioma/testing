@@ -6,6 +6,12 @@ export const GET_PROFILE = BASE_URL + "admin/auth/profile";
 export const GET_ADMIN_DASHBOARD_DATA = BASE_URL + "admin/dashboard/metrics";
 export const ADMIN_SERVICES = "admin/services";
 export const GET_USERS_METRICS = "admin/dashboard/user-metrics";
+export const GET_USERS_METRICS_FILTER = (from = "", to = "") =>
+  `admin/dashboard/user-metrics/?from=${from}&to=${to}`;
+export const GET_SERVICES_METRIC_FILTER = (from = "", to = "") =>
+  `admin/dashboard/services-metrics/?from=${from}&to=${to}`;
+export const GET_ACTIVITIES_METRICS_FILTER = (from = "", to = "") =>
+  `admin/dashboard/activities-metrics/?from=${from}&to=${to}`;
 export const GET_SERVICES_METRICS = "admin/dashboard/services-metrics";
 export const GET_ACTIVITIES_METRICS = "admin/dashboard/activities-metrics";
 
@@ -15,6 +21,10 @@ export const ADMIN_CUSTOMERS = "admin/customers";
 
 export const ADMIN_OPERATORS = "admin/operators";
 export const ADMIN_ADMINISTRATORS = "admin/users";
+export const CLIENT_USERS = (id = "") => `admin/clients/users/${id}`;
+export const DETACH_CLIENT_USER = (id = "", email = "") =>
+  `admin/clients/detach-user/${id}/?email=${email}`;
+export const MANAGERS = "admin/entity-selectors/users/?search=&manager=1";
 
 export const ADMIN_LOCATIONS = "admin/locations";
 export const ADMIN_ZONES = "admin/zones";
@@ -33,6 +43,9 @@ export const ADMIN_CUSTOMER_SUBSCRIPTIONS = "admin/membership-subscriptions";
 export const ADMIN_CORPORATE_SUBSCRIPTIONS = "admin/corporate-subscriptions";
 
 export const ADMIN_CLIENTS = "admin/clients";
+export const ADMIN_CLIENTS_LIST = (filterString = "", limit = "", page = "") =>
+  `admin/clients?${filterString}&limit=${limit}&page=${page}&sort=id,DESC`;
+export const ADMIN_CLIENT = (id = "") => `admin/clients/${id}`;
 export const ADMIN_EVENTS = "admin/events";
 export const ADMIN_CLIENTS_INVOICES = "admin/client-invoices";
 export const ADMIN_PAY_TO_PARK = "admin/pay-to-park";

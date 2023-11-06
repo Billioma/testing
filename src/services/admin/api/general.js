@@ -7,6 +7,27 @@ export const getDashboardData = async () => {
   return response.data.data;
 };
 
+export const getUsersMetricsFilter = async (query) => {
+  const response = await axiosInstance.get(
+    API.GET_USERS_METRICS_FILTER(query?.query?.from, query?.query?.to)
+  );
+  return response.data;
+};
+
+export const getServicesMetricsFilter = async (query) => {
+  const response = await axiosInstance.get(
+    API.GET_SERVICES_METRIC_FILTER(query?.query?.from, query?.query?.to)
+  );
+  return response.data;
+};
+
+export const getActivitiesMetricsFilter = async (query) => {
+  const response = await axiosInstance.get(
+    API.GET_ACTIVITIES_METRICS_FILTER(query?.query?.from, query?.query?.to)
+  );
+  return response.data;
+};
+
 export const getUsersMetrics = async () => {
   const response = await axiosInstance.get(API.GET_USERS_METRICS);
   return response.data;

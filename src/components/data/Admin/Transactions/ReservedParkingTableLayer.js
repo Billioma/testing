@@ -111,7 +111,9 @@ const TableLayer = ({
               </Td>
               <Td textAlign="center">{transaction?.zone?.code}</Td>
               <Td textAlign="center">{transaction?.vehicle?.licensePlate}</Td>
-              <Td textAlign="center">{formatDate(transaction?.arrival)}</Td>
+              <Td textAlign="center">
+                {formatDate(transaction?.arrival) || "N/A"}
+              </Td>
 
               <Td textAlign="center">
                 <Flex

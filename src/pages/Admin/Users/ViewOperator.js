@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Box, Flex, Text, Button } from "@chakra-ui/react";
+import { Box, Flex, Text, Button, Switch } from "@chakra-ui/react";
 import CustomInput from "../../../components/common/CustomInput";
 import { customStyles } from "../../../components/common/constants";
 import Select from "react-select";
@@ -212,6 +212,30 @@ export default function ViewOperator() {
             />
           </Box>
 
+          <Flex
+            align="center"
+            justifyContent={"space-between"}
+            gap="15px"
+            mb="16px"
+            mt={2}
+          >
+            <Text fontSize="12px" fontWeight={500} color="#444648">
+              Enable Tips
+            </Text>
+            <Switch
+              onChange={() =>
+                setState({
+                  ...state,
+                  enableTips: state.enableTips ? 0 : 1,
+                })
+              }
+              isChecked={state.enableTips}
+              size="sm"
+              variant="adminPrimary"
+              isDisabled={!isEdit}
+            />
+          </Flex>
+
           <Button
             variant="adminSecondary"
             fontSize="12px"
@@ -227,7 +251,7 @@ export default function ViewOperator() {
             <Button
               variant="adminSecondary"
               w="45%"
-              onClick={() => navigate(PRIVATE_PATHS.ADMIN_ATTENDANTS)}
+              onClick={() => navigate(PRIVATE_PATHS.ADMIN_OPERATORS)}
             >
               Cancel
             </Button>

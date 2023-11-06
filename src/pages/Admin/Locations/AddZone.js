@@ -16,6 +16,7 @@ import { useGetAmenities } from "../../../services/admin/query/amenities";
 import {
   useAddZone,
   useGetLocations,
+  useGetZones,
 } from "../../../services/admin/query/locations";
 import { useGetServices } from "../../../services/admin/query/services";
 
@@ -29,7 +30,7 @@ export default function AddZone() {
   const navigate = useNavigate();
   const [isDisabled, setIsDisabled] = useState(true);
   const { errorToast, successToast } = useCustomToast();
-  const { refetch } = useGetOperators();
+  const { refetch } = useGetZones();
   const { mutate, isLoading } = useAddZone({
     onSuccess: () => {
       successToast("Zone added successfully!");

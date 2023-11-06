@@ -8,9 +8,10 @@ import { PRIVATE_PATHS } from "../../../routes/constants";
 import { FiTrash2 } from "react-icons/fi";
 import useCustomToast from "../../../utils/notifications";
 import GoBackTab from "../../../components/data/Admin/GoBackTab";
-import { useGetOperators } from "../../../services/admin/query/users";
+
 import {
   useGetClients,
+  useGetClientsInvoices,
   useMakeClientPayment,
   useUpdateClientInvoice,
 } from "../../../services/admin/query/clients";
@@ -26,7 +27,7 @@ export default function ViewOperator() {
   const navigate = useNavigate();
   const [isDisabled, setIsDisabled] = useState(true);
   const { errorToast, successToast } = useCustomToast();
-  const { refetch } = useGetOperators();
+  const { refetch } = useGetClientsInvoices();
   const location = useLocation();
   const { mutate, isLoading } = useUpdateClientInvoice({
     onSuccess: () => {
@@ -75,7 +76,6 @@ export default function ViewOperator() {
       !state.invoiceItems ||
       !state.amount ||
       !state.taxRate ||
-      !state.amountPaid ||
       !state.invoiceDate ||
       !state.dueDate
     );
@@ -101,8 +101,6 @@ export default function ViewOperator() {
       ...location.state,
     });
   }, [location.state]);
-
-  useEffect(() => console.log(state), [state]);
 
   const periodOptions = ["Daily", "Weekly", "Monthly", "Yearly"].map(
     (period) => ({ label: period, value: period })
@@ -259,7 +257,7 @@ export default function ViewOperator() {
                 type={"number"}
                 value={state.amountPaid}
                 mb
-                holder="Enter tax rate"
+                holder="Enter amount paid"
                 onChange={(e) =>
                   setState({ ...state, amountPaid: parseFloat(e.target.value) })
                 }
@@ -271,7 +269,7 @@ export default function ViewOperator() {
                 Payment Date
               </Text>
               <DateTimePicker
-                selectedDate={state.paidAt}
+                selectedDate={state.paidAt || new Date()}
                 onChange={(date) => setState({ ...state, paidAt: date })}
               />
             </Box>
@@ -421,7 +419,6 @@ export default function ViewOperator() {
                     onClick={() => {
                       const temp = [...state.invoiceItems];
                       temp.splice(index, 1);
-                      console.log(temp);
                       setState({
                         ...state,
                         invoiceItems: [...temp],

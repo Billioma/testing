@@ -58,7 +58,6 @@ const Attendants = () => {
                 onClick={() => navigate("/operator/users/attendants/create")}
                 display="flex"
                 gap="8px"
-                fontSize=""
               >
                 <Text fontSize="12px">Add an Attendant</Text>
                 <MdAdd size="20px" />

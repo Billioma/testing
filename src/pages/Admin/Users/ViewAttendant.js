@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Box, Flex, Text, Button } from "@chakra-ui/react";
+import { Box, Flex, Text, Button, Image } from "@chakra-ui/react";
 import CustomInput from "../../../components/common/CustomInput";
 import { AiOutlineCamera } from "react-icons/ai";
 import Select from "react-select";
@@ -14,6 +14,7 @@ import useCustomToast from "../../../utils/notifications";
 import { useGetAllLocations } from "../../../services/admin/query/locations";
 import AdminChangePassword from "../../../components/modals/AdminChangePasswordModal";
 import GoBackTab from "../../../components/data/Admin/GoBackTab";
+import { useUploadMedia } from "../../../services/admin/query/general";
 
 export default function AddAttendants() {
   const [state, setState] = useState({
@@ -42,6 +43,17 @@ export default function AddAttendants() {
     onError: (error) => {
       errorToast(
         error?.response?.data?.message || error?.message || "An Error occurred"
+      );
+    },
+  });
+
+  const { mutate: uploadMedia } = useUploadMedia({
+    onSuccess: (data) => {
+      mutate({ ...state, avatar: data.path });
+    },
+    onError: (err) => {
+      errorToast(
+        err?.response?.data?.message || err?.message || "An Error occurred"
       );
     },
   });
@@ -88,8 +100,28 @@ export default function AddAttendants() {
     { label: "OTHERS", value: "OTHERS" },
   ];
 
+  const handleAvatarImageChange = (e) => {
+    const selectedImage = e.target.files[0];
+    if (selectedImage) {
+      setState({
+        ...state,
+        avatarImage: selectedImage,
+      });
+    }
+  };
+
   const handleSubmit = (data = state) => {
-    mutate({ ...data, id: state.id, locations: state.locations });
+    if (typeof state.avatarImage != "string" && state.avatarImage) {
+      const formData = new FormData();
+      formData.append("profilePicture", state.avatarImage);
+      uploadMedia({
+        fileType: "avatar",
+        entityType: "admin",
+        file: formData.get("profilePicture"),
+      });
+    } else {
+      mutate({ ...data, id: state.id, locations: state.locations });
+    }
   };
 
   useEffect(() => {
@@ -155,29 +187,42 @@ export default function AddAttendants() {
             >
               Avatar
             </Text>
-            <Box
-              w="120px"
-              h="120px"
-              justifyContent="center"
-              alignItems="center"
-              border="4px solid #0D0718"
-              borderRadius="12px"
-              display="flex"
-              cursor="pointer"
-              alignSelf={"center"}
-            >
-              <AiOutlineCamera size={32} />
-            </Box>
-
-            <Button
-              variant="adminSecondary"
-              fontSize="12px"
-              mt={4}
-              h="32px"
-              onClick={() => setIsOpen(true)}
-            >
-              Change Password
-            </Button>
+            <label htmlFor="avatarInput" disabled={!isEdit}>
+              <Box
+                w="120px"
+                h="120px"
+                justifyContent="center"
+                alignItems="center"
+                border="4px solid #0D0718"
+                borderRadius="12px"
+                display="flex"
+                cursor="pointer"
+                overflow={"hidden"}
+              >
+                {state.avatarImage || state.avatar ? (
+                  <Image
+                    src={
+                      state.avatarImage
+                        ? URL?.createObjectURL(state.avatarImage)
+                        : process.env.REACT_APP_BASE_URL +
+                          state.avatar?.substring(1)
+                    }
+                    alt="Avatar"
+                    boxSize="100%"
+                    objectFit="cover"
+                  />
+                ) : (
+                  <AiOutlineCamera size={32} />
+                )}
+              </Box>
+            </label>
+            <input
+              type="file"
+              id="avatarInput"
+              accept="image/*"
+              style={{ display: "none" }}
+              onChange={handleAvatarImageChange}
+            />
           </Box>
           <Box w="full" mb={4}>
             <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">

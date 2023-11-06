@@ -48,6 +48,10 @@ export default function () {
     setEndRow(currentEndRow);
   }, [data, page, limit]);
 
+  useEffect(() => {
+    refetch();
+  }, []);
+
   return (
     <Box w="full" border={"1px solid #E4E6E8"} borderRadius={"12px"}>
       <Flex justifyContent={"space-between"} alignItems="center" py={3} px={5}>

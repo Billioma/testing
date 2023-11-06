@@ -32,6 +32,7 @@ const TableLayer = ({
   setLimit,
   startRow,
   endRow,
+  refetch,
 }) => {
   const headers = [
     "NAME",
@@ -41,7 +42,6 @@ const TableLayer = ({
     "ACTIONS",
   ];
   const [selectedRow, setSelectedRow] = useState({ isOpen: false, id: null });
-  const { refetch } = useGetServices();
   const { errorToast, successToast } = useCustomToast();
 
   const { mutate, isLoading: isDeleting } = useDeleteService({

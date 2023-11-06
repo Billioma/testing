@@ -8,6 +8,11 @@ export const initOpPassValues = {
   passwordConfirmation: "",
 };
 
+export const initClientPassValues = {
+  password: "",
+  passwordConfirmation: "",
+};
+
 export const initValues = {
   username: "",
   password: "",
@@ -192,6 +197,18 @@ export const opPassSchema = Yup.object().shape({
       passwordRegex,
       "Minimum of 8 characters, and must contain at least one uppercase, one lowercase and one number"
     ),
+  password: Yup.string()
+    .required("Password is required")
+    .matches(
+      passwordRegex,
+      "Minimum of 8 characters, and must contain at least one uppercase, one lowercase and one number"
+    ),
+  passwordConfirmation: Yup.string()
+    .required("Confirm password is required")
+    .oneOf([Yup.ref("password")], "Passwords do not match"),
+});
+
+export const clientPassSchema = Yup.object().shape({
   password: Yup.string()
     .required("Password is required")
     .matches(

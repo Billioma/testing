@@ -17,7 +17,7 @@ export default function AddOperator() {
   const [state, setState] = useState({
     name: "",
     value: "",
-    featureType: "",
+    featureType: null,
     membershipPlan: "",
     status: 1,
   });
@@ -58,7 +58,10 @@ export default function AddOperator() {
 
   const isFormValid = () => {
     return (
-      !state.name || !state.value || !state.membershipPlan || !state.featureType
+      !state.name ||
+      !state.value ||
+      !state.membershipPlan ||
+      state.featureType === null
     );
   };
 

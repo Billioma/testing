@@ -64,3 +64,12 @@ export const deleteCarService = async (id) => {
   );
   return response.data;
 };
+
+export const editCarService = async (data) => {
+  const response = await axiosInstance.patch(
+    `${API.ADMIN_CAR_SERVICES}/${data.id}`,
+    data
+  );
+
+  return response.data;
+};

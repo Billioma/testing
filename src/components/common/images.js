@@ -322,29 +322,21 @@ export const AdminDashboardIcon = ({ fill, stroke = "white" }) => {
         d="M6 3H4C3.44772 3 3 3.44772 3 4V7C3 7.55228 3.44772 8 4 8H6C6.55228 8 7 7.55228 7 7V4C7 3.44772 6.55228 3 6 3Z"
         stroke={stroke}
         strokeWidth="1.2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
       />
       <path
         d="M12 3H10C9.44772 3 9 3.44772 9 4V5C9 5.55228 9.44772 6 10 6H12C12.5523 6 13 5.55228 13 5V4C13 3.44772 12.5523 3 12 3Z"
         stroke={stroke}
         strokeWidth="1.2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
       />
       <path
         d="M6 10H4C3.44772 10 3 10.4477 3 11V12C3 12.5523 3.44772 13 4 13H6C6.55228 13 7 12.5523 7 12V11C7 10.4477 6.55228 10 6 10Z"
         stroke={stroke}
         strokeWidth="1.2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
       />
       <path
         d="M12 8H10C9.44772 8 9 8.44772 9 9V12C9 12.5523 9.44772 13 10 13H12C12.5523 13 13 12.5523 13 12V9C13 8.44772 12.5523 8 12 8Z"
         stroke={stroke}
         strokeWidth="1.2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
       />
     </svg>
   );

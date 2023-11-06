@@ -50,7 +50,7 @@ export default function ViewCorporateSubscription() {
     onSuccess: () => {
       refetch();
       successToast("Corporate subscription updated successfully!");
-      navigate(PRIVATE_PATHS.ADMIN_CUSTOMER_SUBSCRIPTIONS);
+      navigate(PRIVATE_PATHS.ADMIN_CORPORATE_SUBSCRIPTIONS);
     },
     onError: (error) => {
       errorToast(
@@ -149,8 +149,6 @@ export default function ViewCorporateSubscription() {
 
     setIsEdit(location?.state?.isEdit);
   }, [location.state, membershipPlans]);
-
-  console.log(location.state);
 
   return (
     <Box minH="75vh">

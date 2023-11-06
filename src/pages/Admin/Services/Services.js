@@ -58,6 +58,10 @@ export default function Services() {
     setEndRow(currentEndRow);
   }, [data, page, limit]);
 
+  useEffect(() => {
+    refetch();
+  }, []);
+
   const handleEdit = (service) => {
     setIsEditOpen({ isOpen: true, selectedService: service });
   };
@@ -106,6 +110,7 @@ export default function Services() {
           setLimit={setLimit}
           startRow={startRow}
           endRow={endRow}
+          refetch={refetch}
         />
       </Box>
 

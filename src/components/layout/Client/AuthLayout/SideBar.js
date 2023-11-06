@@ -158,9 +158,19 @@ const SideBar = () => {
                             transition=".3s ease-in-out"
                             align="center"
                             w="full"
-                            gap="8px"
+                            pl={1.5}
+                            style={{
+                              textDecoration: "none",
+                              color: "#444648",
+                              fontWeight: location.pathname.includes(data.path)
+                                ? "700"
+                                : "400",
+                            }}
                           >
-                            {data.name}
+                            <Text color="#444648">•</Text>
+                            <Text fontSize="11px" ml={4} mb={0}>
+                              {data.name}
+                            </Text>
                           </Flex>{" "}
                           {isActivePath ? (
                             <Box

@@ -142,6 +142,7 @@ const Header = () => {
                 display={isMobile ? "none" : "flex"}
                 color="#848688"
                 fontWeight={500}
+                pb="3px"
                 lineHeight="100%"
               >
                 {">"} {secTitle}
@@ -154,6 +155,7 @@ const Header = () => {
                 display={isMobile ? "none" : "flex"}
                 color="#848688"
                 fontWeight={500}
+                pb="3px"
                 lineHeight="100%"
               >
                 {">"} {finTitle}
