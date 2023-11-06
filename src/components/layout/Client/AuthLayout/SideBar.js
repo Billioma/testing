@@ -167,8 +167,7 @@ const SideBar = () => {
                                 : "400",
                             }}
                           >
-                            <Text color="#444648">•</Text>
-                            <Text fontSize="11px" ml={4} mb={0}>
+                           <Text fontSize="11px" ml="18px" mb={0}>
                               {data.name}
                             </Text>
                           </Flex>{" "}
