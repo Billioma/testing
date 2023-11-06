@@ -184,8 +184,7 @@ const SideBar = () => {
                               : "400",
                           }}
                         >
-                          <Text color="#444648">•</Text>
-                          <Box fontSize="11px" ml={5} mb={0}>
+                        <Box fontSize="11px" ml="29px" mb={0}>
                             <Link key={subItem.name} to={subItem.path}>
                               {subItem.name}
                             </Link>

@@ -1464,7 +1464,7 @@ export const serviceTabs = [
 ];
 
 export const customStyles = {
-  control: (provided) => ({
+  control: (provided, state) => ({
     ...provided,
     width: "100%",
     minHeight: "44px",
@@ -1472,8 +1472,9 @@ export const customStyles = {
     fontSize: "14px",
     cursor: "pointer",
     borderRadius: "4px",
-    border: "1px solid #D4D6D8",
-    background: "unset",
+    border: state.hasValue ? "none" : "1px solid #D4D6D8",
+    paddingRight: "16px",
+    background: state.hasValue ? "#f4f6f8" : "unset",
   }),
 };
 
@@ -1483,17 +1484,12 @@ export const clientListOptions = [
   { label: "Phone", value: "phone" },
   { label: "State", value: "state" },
   { label: "Account Type", value: "accountType" },
-  { label: "Status", value: "status" },
-  { label: "Created At", value: "createdAt" },
 ];
 
 export const clientInvoiceOptions = [
   { label: "Client", value: "client.name" },
   { label: "Amount Payable", value: "amount" },
   { label: "Created By", value: "createdBy" },
-  { label: "Paid At", value: "paidAt" },
-  { label: "Payment Status", value: "paymentStatus" },
-  { label: "Created At", value: "createdAt" },
 ];
 
 export const customersOptions = [

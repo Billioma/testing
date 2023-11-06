@@ -1,14 +1,9 @@
 import React, { useState, useEffect } from "react";
 import ClientsTableLayer from "../../../components/data/Admin/Clients/ClientsListsTableLayer";
 import { Box, Button, Flex, Image, Text } from "@chakra-ui/react";
-import { FiPlus } from "react-icons/fi";
-import { VscDebugRestart } from "react-icons/vsc";
 import { useNavigate } from "react-router-dom";
 import { PRIVATE_PATHS } from "../../../routes/constants";
-import {
-  useGetAdminClients,
-  useGetClients,
-} from "../../../services/admin/query/clients";
+import { useGetAdminClients } from "../../../services/admin/query/clients";
 import Filter from "../../../components/common/Filter";
 import { clientListOptions } from "../../../components/common/constants";
 import { MdAdd } from "react-icons/md";
@@ -33,7 +28,7 @@ export default function () {
 
   useEffect(() => {
     mutate({ filterString: query, limit, page: page });
-  }, [page, query]);
+  }, [page, query, limit]);
 
   useEffect(() => {
     setPage(1);
@@ -58,6 +53,7 @@ export default function () {
   return (
     <Box border="1px solid #d4d6d8" borderRadius="8px" p="16px 23px 24px">
       <Filter
+        client
         setFiltArray={setFiltArray}
         filtArray={filtArray}
         fieldToCompare={clientListOptions}

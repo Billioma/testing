@@ -1,28 +1,41 @@
-import React, { useState, useEffect } from "react";
-import { Box, Flex, Text, Button } from "@chakra-ui/react";
+import React, { useEffect, useState } from "react";
+import { Box, Flex, Text, Button, Image } from "@chakra-ui/react";
 import CustomInput from "../../../components/common/CustomInput";
 import { customStyles } from "../../../components/common/constants";
 import Select from "react-select";
 import { useNavigate } from "react-router-dom";
 import { PRIVATE_PATHS } from "../../../routes/constants";
-import { FiTrash2 } from "react-icons/fi";
 import useCustomToast from "../../../utils/notifications";
 import GoBackTab from "../../../components/data/Admin/GoBackTab";
+import { Form, Formik } from "formik";
 import {
   useAddClientInvoice,
-  useGetClients,
+  useGetAdminClients,
   useGetClientsInvoices,
 } from "../../../services/admin/query/clients";
-import DateTimePicker from "../../../components/data/Admin/DateTimePicker";
 import { useGetServices } from "../../../services/admin/query/services";
+import { Add } from "../../../components/common/images";
+import { IoIosArrowDown } from "react-icons/io";
+import Calendar from "react-calendar";
+import {
+  initClientInvoiceValues,
+  validateClientInvoiceSchema,
+} from "../../../utils/validation";
+import { formatNewDate } from "../../../utils/helpers";
+import { BsTrash } from "react-icons/bs";
 
 export default function AddClientInvoice() {
-  const [state, setState] = useState({
-    invoiceItems: [{}],
+  const [fields, setFields] = useState({
+    invoiceItems: [],
   });
 
+  const [showInvoiceDate, setShowInvoiceDate] = useState(false);
+  const [showDueDate, setShowDueDate] = useState(false);
+  const [showServiceDateArray, setShowServiceDateArray] = useState(
+    new Array(fields?.invoiceItems?.length).fill(false)
+  );
+
   const navigate = useNavigate();
-  const [isDisabled, setIsDisabled] = useState(true);
   const { errorToast, successToast } = useCustomToast();
   const { refetch } = useGetClientsInvoices();
   const { mutate, isLoading } = useAddClientInvoice({
@@ -38,7 +51,14 @@ export default function AddClientInvoice() {
     },
   });
   const { data: services } = useGetServices(null, 1, 100);
-  const { data: clients } = useGetClients({}, 1, 10000);
+
+  const limit = 10000;
+  const page = 1;
+  const { mutate: clientMutate, data: clients } = useGetAdminClients();
+
+  useEffect(() => {
+    clientMutate({ limit, page });
+  }, []);
 
   const clientOptions = clients?.data?.map((client) => ({
     label: client.name,
@@ -50,30 +70,43 @@ export default function AddClientInvoice() {
     value: parseInt(service.id),
   }));
 
-  const isFormValid = () => {
-    return (
-      !state.client ||
-      !state.invoiceItems ||
-      !state.taxRate ||
-      !state.invoiceDate ||
-      !state.dueDate
-    );
+  const handleSubmit = (values = "") => {
+    mutate({
+      client: values?.client?.value,
+      dueDate: formatNewDate(values?.dueDate),
+      invoiceDate: formatNewDate(values?.invoiceDate),
+      taxRate: values?.taxRate,
+      invoiceItems: fields?.invoiceItems,
+    });
   };
 
   useEffect(() => {
-    setIsDisabled(isFormValid);
-  }, [state]);
+    const handleClickOutside = (event) => {
+      if (event.target.closest(".box") === null) {
+        setShowInvoiceDate(false);
+        setShowDueDate(false);
+        const updatedShowServiceDateArray = showServiceDateArray.map(
+          () => false
+        );
+        setShowServiceDateArray(updatedShowServiceDateArray);
+      }
+    };
 
-  const handleSubmit = () => {
-    mutate(state);
-  };
+    document.addEventListener("click", handleClickOutside);
+    return () => {
+      document.removeEventListener("click", handleClickOutside);
+    };
+  }, []);
 
   const handleInvoiceChange = (index, value, key) => {
-    const updatedItems = [...state.invoiceItems];
-    updatedItems[index][key] = value;
-    setState({ ...state, invoiceItems: updatedItems });
+    const updatedItems = [...fields.invoiceItems];
+    if (key === "date" && value instanceof Date) {
+      updatedItems[index][key] = formatNewDate(new Date(value));
+    } else {
+      updatedItems[index][key] = value;
+    }
+    setFields({ ...fields, invoiceItems: updatedItems });
   };
-
   const periodOptions = ["Daily", "Weekly", "Monthly", "Yearly"].map(
     (period) => ({ label: period, value: period })
   );
@@ -89,252 +122,528 @@ export default function AddClientInvoice() {
 
   return (
     <Box minH="75vh">
-      <Flex justifyContent="center" align="center" w="full" flexDir="column">
-        <GoBackTab />
-        <Flex
-          bg="#fff"
-          borderRadius="16px"
-          py="24px"
-          px="28px"
-          justifyContent="center"
-          w="30rem"
-          flexDir="column"
-          border="1px solid #E4E6E8"
-        >
-          <Text textAlign={"center"} mb={3} fontWeight={500}>
-            Client Info
-          </Text>
-
-          <Box w="full" mb={4}>
-            <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
-              Client
-            </Text>
-            <Select
-              styles={customStyles}
-              placeholder="Select client"
-              options={clientOptions}
-              onChange={(selectedOption) =>
-                setState({ ...state, client: selectedOption.value })
-              }
-            />
-          </Box>
-
-          <Box w="full" mb={4}>
-            <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
-              Tax Rate (%)
-            </Text>
-            <CustomInput
-              auth
-              type={"number"}
-              value={state.taxRate}
-              mb
-              holder="Enter tax rate"
-              onChange={(e) =>
-                setState({ ...state, taxRate: parseFloat(e.target.value) })
-              }
-            />
-          </Box>
-
-          <Box mb={4}>
-            <Text mb="8px" fontWeight={500} color="#444648" fontSize="10px">
-              Invoice Date
-            </Text>
-            <DateTimePicker
-              selectedDate={state.invoiceDate}
-              onChange={(date) => setState({ ...state, invoiceDate: date })}
-              hasTime
-            />
-          </Box>
-
-          <Box mb={4}>
-            <Text mb="8px" fontWeight={500} color="#444648" fontSize="10px">
-              Due Date
-            </Text>
-            <DateTimePicker
-              selectedDate={state.dueDate}
-              onChange={(date) => setState({ ...state, dueDate: date })}
-              hasTime
-            />
-          </Box>
-        </Flex>
-
-        <Flex
-          bg="#fff"
-          borderRadius="16px"
-          py="24px"
-          px="28px"
-          justifyContent="center"
-          w={{ base: "100%" }}
-          flexDir="column"
-          border="1px solid #E4E6E8"
-          mt={5}
-        >
-          <Text mb={4}>Invoice items</Text>
-
-          {state.invoiceItems?.map((item, index) => (
-            <Flex
-              flexWrap={{ base: "wrap", lg: "nowrap" }}
-              alignItems="center"
-              gap={3}
-              mb={6}
-            >
-              <Box>
-                <Text mb="8px" fontWeight={500} color="#444648" fontSize="10px">
-                  Invoice Date
-                </Text>
-                <DateTimePicker
-                  selectedDate={item.date}
-                  onChange={(date) => handleInvoiceChange(index, date, "date")}
-                />
-              </Box>
-
-              <Box>
-                <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
-                  Period Type
-                </Text>
-
-                <Box w={{ base: "100%", lg: "200px" }}>
-                  <Select
-                    styles={customStyles}
-                    placeholder="Select period type"
-                    options={periodOptions}
-                    onChange={({ value }) =>
-                      handleInvoiceChange(index, value, "period")
-                    }
-                    value={periodOptions?.find(
-                      (period) => period.value === item?.period
-                    )}
-                  />
-                </Box>
-              </Box>
-
-              <Box>
-                <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
-                  Service
-                </Text>
-                <Box w={{ base: "100%", lg: "200px" }}>
-                  <Select
-                    styles={customStyles}
-                    placeholder="Select service"
-                    options={serviceOptions}
-                    onChange={({ value }) =>
-                      handleInvoiceChange(index, value, "serviceType")
-                    }
-                    value={serviceOptions?.find(
-                      (service) => service.value === item?.service
-                    )}
-                  />
-                </Box>
-              </Box>
-
-              <Box>
-                <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
-                  Description
-                </Text>
-                <Box w={{ base: "100%", lg: "200px" }}>
-                  <Select
-                    styles={customStyles}
-                    placeholder="Select description"
-                    options={descriptionOptions}
-                    onChange={({ value }) =>
-                      handleInvoiceChange(index, value, "description")
-                    }
-                    value={descriptionOptions?.find(
-                      (desc) => desc.value === item?.description
-                    )}
-                  />
-                </Box>
-              </Box>
-
-              <Box>
-                <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
-                  Unit
-                </Text>
-                <CustomInput
-                  auth
-                  type={"number"}
-                  mb
-                  holder="Enter unit"
-                  onChange={({ target }) =>
-                    handleInvoiceChange(index, parseInt(target.value), "unit")
-                  }
-                  value={item?.unit}
-                />
-              </Box>
-
-              <Box>
-                <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
-                  Price
-                </Text>
-                <CustomInput
-                  type={"number"}
-                  auth
-                  mb
-                  holder="Enter price"
-                  value={item?.rate}
-                  onChange={({ target }) =>
-                    handleInvoiceChange(index, parseInt(target.value), "rate")
-                  }
-                />
-              </Box>
-
+      <Formik
+        onSubmit={handleSubmit}
+        initialValues={initClientInvoiceValues}
+        validationSchema={validateClientInvoiceSchema}
+      >
+        {({
+          values,
+          errors,
+          touched,
+          handleChange,
+          handleBlur,
+          handleSubmit,
+          setValues,
+          isValid,
+          dirty,
+        }) => (
+          <Form onSubmit={handleSubmit}>
+            <Flex align="flex-start" flexDir={{ md: "row", base: "column" }}>
+              <GoBackTab />
               <Flex
-                w={10}
-                h={20}
-                alignItems={"center"}
-                justifyContent={"center"}
+                justifyContent="center"
+                align="center"
+                w="full"
+                flexDir="column"
               >
-                {index !== 0 && (
-                  <Box
-                    cursor={"pointer"}
-                    onClick={() => {
-                      const temp = [...state.invoiceItems];
-                      temp.splice(index, 1);
-                      setState({
-                        ...state,
-                        invoiceItems: [...temp],
-                      });
-                    }}
+                <Flex
+                  bg="#fff"
+                  borderRadius="8px"
+                  py="32px"
+                  px="24px"
+                  justifyContent="center"
+                  w={{ md: "32.5rem", base: "100%" }}
+                  flexDir="column"
+                  border="1px solid #E4E6E8"
+                >
+                  <Text
+                    textAlign={"center"}
+                    color="#646668"
+                    lineHeight="100%"
+                    fontSize="14px"
+                    mb="31px"
+                    fontWeight={700}
                   >
-                    <FiTrash2 color="red" size={22} />
+                    Client Info
+                  </Text>
+
+                  <Box w="full" mb="16px">
+                    <Text
+                      mb="8px"
+                      fontSize="10px"
+                      fontWeight={500}
+                      color="#444648"
+                    >
+                      Client
+                    </Text>
+                    <Select
+                      styles={customStyles}
+                      placeholder="Add client"
+                      options={clientOptions}
+                      components={{
+                        IndicatorSeparator: () => (
+                          <div style={{ display: "none" }}></div>
+                        ),
+                        DropdownIndicator: () => (
+                          <div>
+                            <IoIosArrowDown size="15px" color="#646668" />
+                          </div>
+                        ),
+                      }}
+                      name="client"
+                      onChange={(selectedOption) =>
+                        setValues({
+                          ...values,
+                          client: selectedOption,
+                        })
+                      }
+                      onBlur={handleBlur}
+                    />
                   </Box>
-                )}
+
+                  <Box w="full" mb="16px">
+                    <Text
+                      mb="8px"
+                      fontSize="10px"
+                      fontWeight={500}
+                      color="#444648"
+                    >
+                      Tax Rate (%)
+                    </Text>
+                    <CustomInput
+                      auth
+                      type="number"
+                      mb
+                      holder="tax rate"
+                      name="taxRate"
+                      value={values?.taxRate}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      error={
+                        errors?.taxRate && touched?.taxRate && errors?.taxRate
+                      }
+                    />
+                  </Box>
+
+                  <Box mb="16px">
+                    <Text
+                      mb="8px"
+                      fontWeight={500}
+                      color="#444648"
+                      fontSize="10px"
+                    >
+                      Invoice Date
+                    </Text>
+                    <Box pos="relative" w="full" className="box">
+                      <Flex
+                        fontSize="14px"
+                        onClick={() => setShowInvoiceDate((prev) => !prev)}
+                        align="center"
+                        justifyContent="space-between"
+                        w="full"
+                        bg={values.invoiceDate ? "#F4F6F8" : "transparent"}
+                        color={values.invoiceDate ? "#000" : ""}
+                        h="44px"
+                        cursor="pointer"
+                        borderRadius="4px"
+                        border="1px solid #D4D6D8"
+                        py="12px"
+                        px="16px"
+                      >
+                        <Text>
+                          {values.invoiceDate
+                            ? formatNewDate(values.invoiceDate)
+                            : "Select Date"}
+                        </Text>
+                        <Image src="/assets/calendar.svg" w="20px" h="20px" />{" "}
+                      </Flex>
+                      {showInvoiceDate && (
+                        <Box pos="absolute" top="50px" w="100%" zIndex="3">
+                          <Calendar
+                            onChange={(date) => {
+                              setValues({ ...values, invoiceDate: date });
+                              setShowInvoiceDate(false);
+                            }}
+                            value={values.invoiceDate}
+                          />
+                        </Box>
+                      )}
+                    </Box>
+                  </Box>
+
+                  <Box mb="16px">
+                    <Text
+                      mb="8px"
+                      fontWeight={500}
+                      color="#444648"
+                      fontSize="10px"
+                    >
+                      Due Date
+                    </Text>
+                    <Box pos="relative" w="full" className="box">
+                      <Flex
+                        fontSize="14px"
+                        onClick={() => setShowDueDate((prev) => !prev)}
+                        align="center"
+                        justifyContent="space-between"
+                        w="full"
+                        bg={values.dueDate ? "#F4F6F8" : "transparent"}
+                        color={values.dueDate ? "#000" : ""}
+                        h="44px"
+                        cursor="pointer"
+                        borderRadius="4px"
+                        border="1px solid #D4D6D8"
+                        py="12px"
+                        px="16px"
+                      >
+                        <Text>
+                          {values.dueDate
+                            ? formatNewDate(values.dueDate)
+                            : "Select Date"}
+                        </Text>
+                        <Image src="/assets/calendar.svg" w="20px" h="20px" />{" "}
+                      </Flex>
+                      {showDueDate && (
+                        <Box pos="absolute" top="50px" w="100%" zIndex="3">
+                          <Calendar
+                            onChange={(date) => {
+                              setValues({ ...values, dueDate: date });
+                              setShowDueDate(false);
+                            }}
+                            value={values.dueDate}
+                          />
+                        </Box>
+                      )}
+                    </Box>
+                  </Box>
+                </Flex>
               </Flex>
             </Flex>
-          ))}
-        </Flex>
 
-        <Flex gap={4} my={7}>
-          <Button
-            variant="adminSecondary"
-            w={{ base: "100%", lg: "250px" }}
-            onClick={() => navigate(PRIVATE_PATHS.ADMIN_CLIENTS_INVOICES)}
-          >
-            Cancel
-          </Button>
+            <Flex
+              bg="#fff"
+              borderRadius="8px"
+              py="32px"
+              px="24px"
+              justifyContent="center"
+              w="100%"
+              flexDir="column"
+              border="1px solid #E4E6E8"
+              mt="24px"
+            >
+              <Text
+                mb="26px"
+                color="#646668"
+                fontWeight={700}
+                lineHeight="100%"
+              >
+                Invoice items
+              </Text>
 
-          <Button
-            variant="adminAlt"
-            w={{ base: "100%", lg: "300px" }}
-            minW={"fit-content"}
-            onClick={() =>
-              setState({ ...state, invoiceItems: [...state.invoiceItems, {}] })
-            }
-          >
-            Add invoice item +
-          </Button>
+              {fields.invoiceItems?.map((item, index) => (
+                <Flex
+                  flexWrap={{ base: "wrap", lg: "nowrap" }}
+                  alignItems="center"
+                  gap="16px"
+                  mb="26px"
+                >
+                  <Box w={{ base: "100%", lg: "22rem" }}>
+                    <Text
+                      mb="8px"
+                      fontWeight={500}
+                      color="#444648"
+                      fontSize="10px"
+                    >
+                      Invoice Date
+                    </Text>
+                    <Box pos="relative" w="full" className="box">
+                      <Flex
+                        fontSize="14px"
+                        onClick={() => {
+                          const updatedShowServiceDateArray = [
+                            ...showServiceDateArray,
+                          ];
+                          updatedShowServiceDateArray[index] =
+                            !showServiceDateArray[index];
+                          setShowServiceDateArray(updatedShowServiceDateArray);
+                        }}
+                        align="center"
+                        justifyContent="space-between"
+                        w="full"
+                        bg={item?.date ? "#F4F6F8" : "transparent"}
+                        color={item?.date ? "#000" : ""}
+                        h="44px"
+                        cursor="pointer"
+                        borderRadius="4px"
+                        border="1px solid #D4D6D8"
+                        py="12px"
+                        px="16px"
+                      >
+                        <Text>
+                          {item?.date
+                            ? formatNewDate(new Date(item.date))
+                            : "Select Date"}
+                        </Text>
+                        <Image src="/assets/calendar.svg" w="20px" h="20px" />{" "}
+                      </Flex>
+                      {showServiceDateArray[index] && (
+                        <Box pos="absolute" top="50px" w="150%" zIndex="3">
+                          <Calendar
+                            onChange={(date) => {
+                              handleInvoiceChange(index, date, "date");
+                              const updatedShowServiceDateArray = [
+                                ...showServiceDateArray,
+                              ];
+                              updatedShowServiceDateArray[index] = false;
+                              setShowServiceDateArray(
+                                updatedShowServiceDateArray
+                              );
+                            }}
+                            value={item.date}
+                          />
+                        </Box>
+                      )}
+                    </Box>
+                  </Box>
 
-          <Button
-            variant="adminPrimary"
-            w={{ base: "100%", lg: "250px" }}
-            isDisabled={isDisabled}
-            isLoading={isLoading}
-            onClick={handleSubmit}
-          >
-            Save
-          </Button>
-        </Flex>
-      </Flex>
+                  <Box w={{ base: "100%", lg: "15rem" }}>
+                    <Text
+                      mb="8px"
+                      fontSize="10px"
+                      fontWeight={500}
+                      color="#444648"
+                    >
+                      Period Type
+                    </Text>
+
+                    <Box>
+                      <Select
+                        styles={customStyles}
+                        options={periodOptions}
+                        components={{
+                          IndicatorSeparator: () => (
+                            <div style={{ display: "none" }}></div>
+                          ),
+                          DropdownIndicator: () => (
+                            <div>
+                              <IoIosArrowDown size="15px" color="#646668" />
+                            </div>
+                          ),
+                        }}
+                        onChange={({ value }) =>
+                          handleInvoiceChange(index, value, "period")
+                        }
+                        value={periodOptions?.find(
+                          (period) => period.value === item?.period
+                        )}
+                      />
+                    </Box>
+                  </Box>
+
+                  <Box w={{ base: "100%", lg: "19rem" }}>
+                    <Text
+                      mb="8px"
+                      fontSize="10px"
+                      fontWeight={500}
+                      color="#444648"
+                    >
+                      Service
+                    </Text>
+                    <Box>
+                      <Select
+                        styles={customStyles}
+                        placeholder="Select service"
+                        options={serviceOptions}
+                        components={{
+                          IndicatorSeparator: () => (
+                            <div style={{ display: "none" }}></div>
+                          ),
+                          DropdownIndicator: () => (
+                            <div>
+                              <IoIosArrowDown size="15px" color="#646668" />
+                            </div>
+                          ),
+                        }}
+                        onChange={({ value }) =>
+                          handleInvoiceChange(
+                            index,
+                            parseInt(value),
+                            "serviceType"
+                          )
+                        }
+                        value={serviceOptions?.find(
+                          (service) => service.value === item?.service
+                        )}
+                      />
+                    </Box>
+                  </Box>
+
+                  <Box minW={{ base: "100%", lg: "13rem" }}>
+                    <Text
+                      mb="8px"
+                      fontSize="10px"
+                      fontWeight={500}
+                      color="#444648"
+                    >
+                      Description
+                    </Text>
+                    <Box>
+                      <Select
+                        styles={customStyles}
+                        placeholder="Select description"
+                        options={descriptionOptions}
+                        onChange={({ value }) =>
+                          handleInvoiceChange(index, value, "description")
+                        }
+                        components={{
+                          IndicatorSeparator: () => (
+                            <div style={{ display: "none" }}></div>
+                          ),
+                          DropdownIndicator: () => (
+                            <div>
+                              <IoIosArrowDown size="15px" color="#646668" />
+                            </div>
+                          ),
+                        }}
+                        value={descriptionOptions?.find(
+                          (desc) => desc.value === item?.description
+                        )}
+                      />
+                    </Box>
+                  </Box>
+
+                  <Box w={{ base: "40%", md: "20%" }}>
+                    <Text
+                      mb="8px"
+                      fontSize="10px"
+                      fontWeight={500}
+                      color="#444648"
+                    >
+                      Unit
+                    </Text>
+                    <CustomInput
+                      auth
+                      type={"number"}
+                      mb
+                      holder="Enter unit"
+                      onChange={({ target }) =>
+                        handleInvoiceChange(
+                          index,
+                          parseInt(target.value),
+                          "unit"
+                        )
+                      }
+                      value={item?.unit}
+                    />
+                  </Box>
+
+                  <Box w={{ base: "40%", md: "20%" }}>
+                    <Text
+                      mb="8px"
+                      fontSize="10px"
+                      fontWeight={500}
+                      color="#444648"
+                    >
+                      Price
+                    </Text>
+                    <CustomInput
+                      type={"number"}
+                      auth
+                      mb
+                      holder="Enter price"
+                      value={item?.rate}
+                      onChange={({ target }) =>
+                        handleInvoiceChange(
+                          index,
+                          parseInt(target.value),
+                          "rate"
+                        )
+                      }
+                    />
+                  </Box>
+
+                  {index !== 0 && (
+                    <Flex
+                      alignItems={"center"}
+                      mt="1rem"
+                      justifyContent={"center"}
+                    >
+                      <Box
+                        cursor={"pointer"}
+                        onClick={() => {
+                          const temp = [...fields.invoiceItems];
+                          temp.splice(index, 1);
+                          setFields({
+                            ...fields,
+                            invoiceItems: [...temp],
+                          });
+                        }}
+                      >
+                        <BsTrash color="red" size="22px" />
+                      </Box>
+                    </Flex>
+                  )}
+                </Flex>
+              ))}
+            </Flex>
+
+            <Flex gap={4} my={7} justifyContent="center" align="center">
+              <Button
+                bg="transparent"
+                _hover={{ bg: "transparent" }}
+                _active={{ bg: "transparent" }}
+                _focus={{ bg: "transparent" }}
+                border="1px solid #A11212"
+                color="#A11212"
+                w={{ base: "100%", lg: "250px" }}
+                onClick={() => navigate(PRIVATE_PATHS.ADMIN_CLIENTS_INVOICES)}
+              >
+                Cancel
+              </Button>
+
+              <Button
+                w={{ base: "100%", lg: "300px" }}
+                minW={"fit-content"}
+                display="flex"
+                gap="8px"
+                align="center"
+                onClick={() =>
+                  setFields({
+                    ...fields,
+                    invoiceItems: [...fields.invoiceItems, {}],
+                  })
+                }
+              >
+                Add invoice item <Add fill="#fff" />
+              </Button>
+
+              <Button
+                bg="#000"
+                w={{ base: "100%", lg: "250px" }}
+                isLoading={isLoading}
+                isDisabled={
+                  !isValid ||
+                  !dirty ||
+                  !fields.invoiceItems.length ||
+                  !fields.invoiceItems?.every(
+                    (item) =>
+                      item?.date &&
+                      item?.description &&
+                      item?.period &&
+                      item?.rate &&
+                      item?.serviceType &&
+                      item?.unit
+                  )
+                }
+                type="submit"
+              >
+                Save{" "}
+              </Button>
+            </Flex>
+          </Form>
+        )}
+      </Formik>
     </Box>
   );
 }

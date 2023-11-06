@@ -21,7 +21,6 @@ import useCustomToast from "../../../utils/notifications";
 import Select from "react-select";
 import GoBackTab from "../../../components/data/Admin/GoBackTab";
 import { useGetManagers } from "../../../services/admin/query/users";
-import AdminChangePassword from "../../../components/modals/AdminChangePasswordModal";
 import {
   allStates,
   cardImg,
@@ -754,11 +753,11 @@ export default function ViewCustomer() {
                               h="32px"
                               w="32px"
                               opacity={edit ? 1 : 0.6}
-                              onClick={() => !edit ? "" : handleDetach(user)}
+                              onClick={() => (!edit ? "" : handleDetach(user))}
                               border="1px solid #e4e6e8"
                               bg="#E4E6E8"
                               borderRadius="8px"
-                              cursor={!edit ? "" :"pointer"}
+                              cursor={!edit ? "" : "pointer"}
                             >
                               {isDetaching && currentuser === user.id ? (
                                 <Spinner size="xs" />

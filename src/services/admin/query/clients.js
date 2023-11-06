@@ -8,7 +8,6 @@ import {
   getClientsInvoices,
   deleteClientInvoice,
   addClientInvoice,
-  makeClientPayment,
   updateClientInvoice,
   getClientsEvents,
   addClientEvent,
@@ -18,6 +17,9 @@ import {
   getAdminClient,
   getAdminClientUsers,
   detachAdminClientUser,
+  getAdminClientsInvoicesList,
+  getAdminClientInvoice,
+  adminClientMakePayment,
 } from "../api/clients";
 
 export const useGetClients = (options = {}, page = 1, limit = 25, query) => {
@@ -43,6 +45,14 @@ export const useGetAdminClients = (options = {}) => {
 export const useGetAdminClient = (options = {}) => {
   const { mutate, isLoading, data } = useMutation(getAdminClient, {
     mutationKey: "GET_ADMIN_CLIENT",
+    ...options,
+  });
+  return { mutate, isLoading, data };
+};
+
+export const useGetAdminClientInvoice = (options = {}) => {
+  const { mutate, isLoading, data } = useMutation(getAdminClientInvoice, {
+    mutationKey: "GET_ADMIN_CLIENT_INVOICE",
     ...options,
   });
   return { mutate, isLoading, data };
@@ -102,6 +112,14 @@ export const useEditClient = (options = {}) => {
   return { isLoading, mutate };
 };
 
+export const useGetAdminClientsInvoicesList = (options = {}) => {
+  const { mutate, isLoading, data } = useMutation(getAdminClientsInvoicesList, {
+    mutationKey: "GET_ADMIN_CLIENTS_INVOICE_LIST",
+    ...options,
+  });
+  return { mutate, isLoading, data };
+};
+
 export const useGetClientsInvoices = (
   options = {},
   page = 1,
@@ -137,13 +155,12 @@ export const useAddClientInvoice = (options = {}) => {
   return { isLoading, data, mutate };
 };
 
-export const useMakeClientPayment = (options = {}) => {
-  const { isLoading, data, mutate } = useMutation(makeClientPayment, {
-    mutationKey: ["MAKE_CLIENT_PAYMENT"],
+export const useAdminClientMakePayment = (options = {}) => {
+  const { mutate, isLoading, data } = useMutation(adminClientMakePayment, {
+    mutationKey: "MAKE_PAYMENT_CLIENT",
     ...options,
   });
-
-  return { isLoading, data, mutate };
+  return { mutate, isLoading, data };
 };
 
 export const useUpdateClientInvoice = (options = {}) => {

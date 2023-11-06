@@ -14,10 +14,7 @@ import {
   Icon,
 } from "@chakra-ui/react";
 import TableFormat from "../../../common/TableFormat";
-import { FiEdit, FiTrash2 } from "react-icons/fi";
-import NoData from "../../../common/NoData";
 import { formatDate } from "../../../../utils/helpers";
-import { HiOutlineInformationCircle } from "react-icons/hi";
 import { useNavigate } from "react-router-dom";
 import AdminDeleteModal from "../../../modals/AdminDeleteModal";
 import useCustomToast from "../../../../utils/notifications";
@@ -46,6 +43,7 @@ const TableLayer = ({
     "STATE",
     "ACCOUNT TYPE",
     "STATUS",
+    "MANAGERS",
     "DATE",
     "ACTIONS",
   ];
@@ -87,13 +85,10 @@ const TableLayer = ({
       ) : data?.data?.length ? (
         <>
           <TableFormat
-            minH="25vh"
-            maxH="65vh"
             header={headers}
             opt
             alignFirstHeader
             alignSecondHeader
-            filter
             paginationValues={{
               startRow,
               endRow,
@@ -108,92 +103,91 @@ const TableLayer = ({
             }}
             useDefaultPagination
           >
-            {data?.data?.length ? (
-              data?.data?.map((client, i) => (
-                <Tr
-                  key={i}
-                  color="#646668"
-                  fontWeight={500}
-                  fontSize="12px"
-                  lineHeight="100%"
-                >
-                  <Td>{client?.name}</Td>
-                  <Td textTransform="capitalize">{client?.contactPerson}</Td>
-                  <Td textAlign="center">{client?.phone}</Td>
-                  <Td textAlign="center">{client?.state}</Td>
-                  <Td>
-                    <Flex align="center" w="full" justifyContent="center">
-                      <Flex
-                        bg="#F4F6F8"
-                        py="5px"
-                        justifyContent="center"
-                        px="16px"
+            {data?.data?.map((client, i) => (
+              <Tr
+                key={i}
+                color="#646668"
+                fontWeight={500}
+                fontSize="12px"
+                lineHeight="100%"
+              >
+                <Td>{client?.name}</Td>
+                <Td textTransform="capitalize">{client?.contactPerson}</Td>
+                <Td textAlign="center">{client?.phone}</Td>
+                <Td textAlign="center">{client?.state}</Td>
+                <Td>
+                  <Flex align="center" w="full" justifyContent="center">
+                    <Flex
+                      bg="#F4F6F8"
+                      py="5px"
+                      justifyContent="center"
+                      px="16px"
+                      borderRadius="4px"
+                    >
+                      {client?.accountType?.replace("_", " ")}
+                    </Flex>
+                  </Flex>
+                </Td>
+                <Td>
+                  <Flex align="center" w="full" justifyContent="center">
+                    <Flex
+                      color={Object?.values(SecStatus[client?.status])[0]}
+                      bg={Object?.values(SecStatus[client?.status])[2]}
+                      justifyContent="center"
+                      align="center"
+                      py="5px"
+                      px="16px"
+                      borderRadius="4px"
+                    >
+                      {Object?.values(SecStatus[client?.status])[1]}
+                    </Flex>
+                  </Flex>
+                </Td>
+                <Td textAlign="center">
+                  {client?.managers?.map((manager, i) => (
+                    <React.Fragment key={i}>
+                      {manager.firstName} {manager.lastName}
+                      {i < client.managers.length - 1 && ", "}
+                      <br />
+                    </React.Fragment>
+                  ))}
+                </Td>
+
+                <Td textAlign="center">{formatDate(client?.createdAt)}</Td>
+                <Td>
+                  <Flex justifyContent="center" align="center">
+                    <Menu>
+                      <MenuButton as={Text} cursor="pointer">
+                        <BsChevronDown />
+                      </MenuButton>
+                      <MenuList
                         borderRadius="4px"
+                        p="10px"
+                        border="1px solid #F4F6F8"
+                        boxShadow="0px 8px 16px 0px rgba(0, 0, 0, 0.08)"
                       >
-                        {client?.accountType?.replace("_", " ")}
-                      </Flex>
-                    </Flex>
-                  </Td>
-                  <Td>
-                    <Flex align="center" w="full" justifyContent="center">
-                      <Flex
-                        color={Object?.values(SecStatus[client?.status])[0]}
-                        bg={Object?.values(SecStatus[client?.status])[2]}
-                        justifyContent="center"
-                        align="center"
-                        py="5px"
-                        px="16px"
-                        borderRadius="4px"
-                      >
-                        {Object?.values(SecStatus[client?.status])[1]}
-                      </Flex>
-                    </Flex>
-                  </Td>
-                  <Td textAlign="center">{formatDate(client?.createdAt)}</Td>
-                  <Td>
-                    <Flex justifyContent="center" align="center">
-                      <Menu>
-                        <MenuButton as={Text} cursor="pointer">
-                          <BsChevronDown />
-                        </MenuButton>
-                        <MenuList
-                          borderRadius="4px"
-                          p="10px"
-                          border="1px solid #F4F6F8"
-                          boxShadow="0px 8px 16px 0px rgba(0, 0, 0, 0.08)"
-                        >
-                          {clientListOption.map((dat, i) => (
-                            <MenuItem
-                              gap="12px"
-                              borderRadius="2px"
-                              mb="8px"
-                              py="6px"
-                              px="8px"
-                              _hover={{ bg: "#F4F6F8" }}
-                              align="center"
-                              fontWeight="500"
-                              onClick={() => openOption(i, client)}
-                            >
-                              <Icon as={dat.icon} />
-                              {dat?.name}
-                            </MenuItem>
-                          ))}
-                        </MenuList>
-                      </Menu>
-                    </Flex>
-                  </Td>
-                </Tr>
-              ))
-            ) : (
-              <Tr>
-                <Td colSpan={7} rowSpan={2}>
-                  <NoData
-                    title="No Client"
-                    desc="You have not added a client"
-                  />
+                        {clientListOption.map((dat, i) => (
+                          <MenuItem
+                            gap="12px"
+                            borderRadius="2px"
+                            mb="8px"
+                            py="6px"
+                            px="8px"
+                            _hover={{ bg: "#F4F6F8" }}
+                            align="center"
+                            fontWeight="500"
+                            onClick={() => openOption(i, client)}
+                          >
+                            <Icon as={dat.icon} />
+                            {dat?.name}
+                          </MenuItem>
+                        ))}
+                      </MenuList>
+                    </Menu>
+                  </Flex>
                 </Td>
               </Tr>
-            )}
+            ))}
           </TableFormat>
 
           <AdminDeleteModal

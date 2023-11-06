@@ -38,6 +38,27 @@ export const formatDate = (
   return `${year}-${month}-${day} ${withTime ? `${hours}:${minutes}` : ""}`;
 };
 
+export const formatNewDate = (
+  date,
+  fallback = "",
+  withTime = false,
+  yearFirstFormat = false
+) => {
+  if (!date) return fallback;
+
+  const formattedDate = new Date(date);
+
+  const year = formattedDate.getFullYear();
+  const month = (formattedDate.getMonth() + 1).toString().padStart(2, "0");
+  const day = formattedDate.getDate().toString().padStart(2, "0");
+
+  const hours = formattedDate.getHours().toString().padStart(2, "0");
+  const minutes = formattedDate.getMinutes().toString().padStart(2, "0");
+  // const seconds = formattedDate.getSeconds().toString().padStart(2, "0");
+
+  return `${year}-${month}-${day}${withTime ? `${hours}:${minutes}` : ""}`;
+};
+
 export const formatDateHour = (date, fallback = "") => {
   if (!date) return fallback;
 

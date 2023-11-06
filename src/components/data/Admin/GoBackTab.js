@@ -13,7 +13,7 @@ const BackButtonBox = () => {
 
   return (
     <Box
-      w="full"
+      w="fit-content"
       py={2}
       mb={3}
       color="#242628"

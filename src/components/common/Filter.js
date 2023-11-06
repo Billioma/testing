@@ -22,6 +22,7 @@ const Filter = ({
   gap,
   fieldToCompare,
   handleSearch,
+  client,
   title,
 }) => {
   const [values, setValues] = useState({
@@ -54,6 +55,12 @@ const Filter = ({
     value: account,
     label: account,
   }));
+  const clientAccountOptions = [
+    "BUSINESS",
+    "EVENT_PLANNER",
+    "CORPORATE",
+    "OTHERS",
+  ].map((type) => ({ label: type, value: type }));
 
   const payOptions = PaymentMethods.map((payment, i) => ({
     value: i,
@@ -332,8 +339,10 @@ const Filter = ({
                             ? yesNoOptions
                             : values.dropFilter === "Duration"
                             ? intervalOptions
-                            : values.dropFilter === "Account Type"
+                            : (values.dropFilter === "Account Type" && !client)
                             ? accountOptions
+                            : values.dropFilter === "Account Type" && client
+                            ? clientAccountOptions
                             : values.dropFilter === "State"
                             ? stateOptions
                             : values.dropFilter === "Duration Type"

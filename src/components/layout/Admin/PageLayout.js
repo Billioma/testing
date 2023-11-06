@@ -11,13 +11,15 @@ export const AuthLayout = ({ children }) => {
     <Box color="#000" fontFamily="Sailec" h="100vh">
       <Box overflowX="hidden">
         {!isMobile && <SideBar />}
-        <Box mt="32px" mx={!isMobile ? "310px" : "20px"}>
-          <Header />
+        <Box h="2.3rem" w="full">
+          <Box pt="32px" px={!isMobile ? "310px" : "20px"}>
+            <Header />
+          </Box>
         </Box>
         <Box overflow="auto" className="no_scroller">
           <Box
             w="100%"
-            pt={isMobile ? "150px" : "110px"}
+            pt={isMobile ? "130px" : "105px"}
             color="#828282"
             maxHeight="92vh"
             pl={!isMobile ? "310px" : "20px"}

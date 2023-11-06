@@ -131,6 +131,29 @@ export const initAttendantValues = {
   userId: "",
 };
 
+export const initClientValues = {
+  name: "",
+  email: "",
+  billingEmail: "",
+  contactPerson: "",
+  phone: "",
+  address: "",
+  state: "",
+  password: "",
+  passwordConfirmation: "",
+  accountType: "",
+  managers: "",
+  status: "",
+};
+
+export const initClientInvoiceValues = {
+  client: "",
+  taxRate: "",
+  invoiceDate: "",
+  dueDate: "",
+  serviceDate: "",
+};
+
 export const passValues = {
   password: "",
   passwordConfirmation: "",
@@ -178,6 +201,36 @@ export const validateAttendantSchema = Yup.object().shape({
     .required("Confirm password is required")
     .oneOf([Yup.ref("password")], "Passwords do not match"),
   userId: Yup.string().required("User Id is required"),
+});
+
+export const validateClientSchema = Yup.object().shape({
+  name: Yup.string().required("Full Name is required"),
+  email: Yup.string().email().required("Email is required"),
+  billingEmail: Yup.string().email().required("Email is required"),
+  contactPerson: Yup.string().required("Contact is required"),
+  phone: Yup.string().required("Phone Numnber is required"),
+  address: Yup.string().required("Address is required"),
+  state: Yup.object().required("State is required"),
+  password: Yup.string()
+    .required("Password required")
+    .matches(
+      passwordRegex,
+      "Minimum of 8 characters, and must contain at least one uppercase, one lowercase and one number"
+    ),
+  passwordConfirmation: Yup.string()
+    .required("Confirm password is required")
+    .oneOf([Yup.ref("password")], "Passwords do not match"),
+  accountType: Yup.object().required("Account Type is required"),
+  managers: Yup.array().required("A Manager is required"),
+  status: Yup.object().required("Status is required"),
+});
+
+export const validateClientInvoiceSchema = Yup.object().shape({
+  client: Yup.object().required("Client is required"),
+  taxRate: Yup.string().required().required("Tax Rate is required"),
+  invoiceDate: Yup.string().required().required("Invoice Date is required"),
+  dueDate: Yup.string().required("Due Date is required"),
+ 
 });
 
 export const validateSchema = Yup.object().shape({

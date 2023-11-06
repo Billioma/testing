@@ -48,6 +48,15 @@ export const ADMIN_CLIENTS_LIST = (filterString = "", limit = "", page = "") =>
 export const ADMIN_CLIENT = (id = "") => `admin/clients/${id}`;
 export const ADMIN_EVENTS = "admin/events";
 export const ADMIN_CLIENTS_INVOICES = "admin/client-invoices";
+export const ADMIN_CLIENTS_MAKE_PAYMENT = (id = "") =>
+  `admin/client-invoices/${id}/payment`;
+export const ADMIN_CLIENT_INVOICE = (id = "") => `admin/client-invoices/${id}`;
+export const ADMIN_CLIENTS_INVOICES_LIST = (
+  filterString = "",
+  limit = "",
+  page = ""
+) =>
+  `admin/client-invoices?${filterString}&limit=${limit}&page=${page}&sort=id,DESC`;
 export const ADMIN_PAY_TO_PARK = "admin/pay-to-park";
 
 export const ADMIN_RESERVED_PARKING = "admin/reservations";
