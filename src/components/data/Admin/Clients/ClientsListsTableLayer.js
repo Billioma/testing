@@ -144,13 +144,15 @@ const TableLayer = ({
                   </Flex>
                 </Td>
                 <Td textAlign="center">
-                  {client?.managers?.map((manager, i) => (
-                    <React.Fragment key={i}>
-                      {manager.firstName} {manager.lastName}
-                      {i < client.managers.length - 1 && ", "}
-                      <br />
-                    </React.Fragment>
-                  ))}
+                  {client?.managers?.length
+                    ? client?.managers?.map((manager, i) => (
+                        <React.Fragment key={i}>
+                          {manager.firstName} {manager.lastName}
+                          {i < client.managers.length - 1 && ", "}
+                          <br />
+                        </React.Fragment>
+                      ))
+                    : "N/A"}
                 </Td>
 
                 <Td textAlign="center">{formatDate(client?.createdAt)}</Td>
