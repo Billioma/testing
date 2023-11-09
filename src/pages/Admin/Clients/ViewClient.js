@@ -12,6 +12,7 @@ import CustomInput from "../../../components/common/CustomInput";
 import { useNavigate, useParams } from "react-router-dom";
 import { PRIVATE_PATHS } from "../../../routes/constants";
 import {
+  useAttachAdminClientUser,
   useDetachAdminClientUser,
   useEditClient,
   useGetAdminClient,
@@ -30,6 +31,8 @@ import { IoIosArrowDown } from "react-icons/io";
 import { useCustomerUploadPic } from "../../../services/customer/query/user";
 import { MdClose } from "react-icons/md";
 import UpdateOperatorPasswordModal from "../../../components/modals/UpdateOperatorPasswordModal";
+import { Add } from "../../../components/common/images";
+import AdminClientAddUserModal from "../../../components/modals/AdminClientAddUserModal";
 
 export default function ViewCustomer() {
   const isEdit = sessionStorage.getItem("edit");
@@ -72,6 +75,13 @@ export default function ViewCustomer() {
         setCurrentuser("");
       },
     });
+  const { mutate: attachUser, isLoading: isAttaching } =
+    useAttachAdminClientUser({
+      onSuccess: () => {
+        usersMutate({ id: id });
+        setCurrentuser("");
+      },
+    });
   const {
     mutate: uploadMutate,
     isLoading: isUploading,
@@ -86,6 +96,13 @@ export default function ViewCustomer() {
   const handleDetach = (user) => {
     setCurrentuser(user.id);
     detachUser({
+      id: id,
+      email: user.email,
+    });
+  };
+  const handleAttach = (user) => {
+    setCurrentuser(user.id);
+    attachUser({
       id: id,
       email: user.email,
     });
@@ -157,14 +174,16 @@ export default function ViewCustomer() {
         contactPerson: values?.contactPerson,
         phone: values?.phone,
         address: values?.address,
-        managers: values.managers?.map((item) => item?.value),
+        managers: values?.managers?.map((item) => item?.value),
         state: values?.state?.value,
         accountType: values?.accountType?.value,
         status: values?.status?.value,
-        logo: profilePicData?.path || values.pic,
+        logo: profilePicData?.path || values?.pic,
       },
     });
   };
+
+  const [showAddUser, setShowAddUser] = useState(false);
 
   const handleSelectChange = (selectedOption, { name }) => {
     setValues({
@@ -231,7 +250,10 @@ export default function ViewCustomer() {
                 py="32px"
                 px="24px"
                 justifyContent="center"
-                w={{ base: "100%", md: "80%" }}
+                w={{
+                  base: "100%",
+                  md: data?.accountType === "CORPORATE" ? "80%" : "30rem",
+                }}
                 flexDir="column"
                 border="1px solid #E4E6E8"
               >
@@ -588,15 +610,19 @@ export default function ViewCustomer() {
                 <Flex gap={4} mt={4}>
                   <Button
                     variant="adminSecondary"
-                    w="45%"
-                    onClick={() => setEdit(false)}
+                    w="100%"
+                    onClick={() =>
+                      edit
+                        ? setEdit(false)
+                        : (navigate(PRIVATE_PATHS.ADMIN_CLIENTS),
+                          sessionStorage.removeItem("edit"))
+                    }
                   >
                     Cancel
                   </Button>
                   <Button
                     variant={"adminPrimary"}
-                    w="55%"
-                    isDisabled={isUpdating}
+                    w="100%"
                     isLoading={isUpdating}
                     onClick={() => (!edit ? setEdit(true) : handleSubmit())}
                   >
@@ -604,8 +630,12 @@ export default function ViewCustomer() {
                   </Button>
                 </Flex>
               </Flex>
-
-              <Flex gap={5} flexDir={"column"} w="100%">
+              <Flex
+                display={data?.accountType === "CORPORATE" ? "flex" : "none"}
+                gap={5}
+                flexDir={"column"}
+                w="100%"
+              >
                 <Flex
                   bg="#fff"
                   borderRadius="8px"
@@ -705,19 +735,30 @@ export default function ViewCustomer() {
                   border="1px solid #E4E6E8"
                   h="fit-content"
                 >
-                  <Text
-                    alignSelf={"center"}
-                    color="#646668"
-                    fontWeight={500}
-                    fontSize={"14px"}
-                  >
-                    Client users
-                  </Text>
+                  <Flex align="center" justifyContent="space-between" w="full">
+                    <Text color="#646668" fontWeight={500} fontSize={"14px"}>
+                      Client users
+                    </Text>
 
+                    <Button
+                      borderRadius="8px"
+                      bg="#000"
+                      display="flex"
+                      align="center"
+                      onClick={() => setShowAddUser(true)}
+                      fontSize="10px"
+                      gap="8px"
+                    >
+                      Add Users
+                      <Add fill="#fff" />
+                    </Button>
+                  </Flex>
                   <Flex gap={4} flexDir="column" mt={4}>
                     <Box
                       p="16px"
                       border="1px solid #D4D6D8"
+                      maxH="20rem"
+                      overflowY="scroll"
                       borderRadius={"4px"}
                     >
                       {isUser ? (
@@ -781,6 +822,17 @@ export default function ViewCustomer() {
                 </Flex>
               </Flex>
             </Flex>
+
+            <AdminClientAddUserModal
+              isOpen={showAddUser}
+              handleAttach={handleAttach}
+              handleDetach={handleDetach}
+              clientUsers={clientUsers}
+              isUser={isUser}
+              isAttaching={isAttaching}
+              isDetaching={isDetaching}
+              onClose={() => setShowAddUser(false)}
+            />
 
             <UpdateOperatorPasswordModal
               isOpen={isOpen}

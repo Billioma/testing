@@ -17,6 +17,17 @@ import {
   createOperator,
   editOperator,
   getManagers,
+  getAdminCustomerList,
+  getAdminCustomer,
+  getAdminAttendantList,
+  getAdminAttendant,
+  getAdministratorsList,
+  editAdmin,
+  getAdmin,
+  getOperatorsList,
+  getOperator,
+  editAdminOperator,
+  getAdminEvent,
 } from "../api/users";
 
 export const useGetAttendants = (options = {}, page, limit, query) => {
@@ -31,6 +42,30 @@ export const useGetAttendants = (options = {}, page, limit, query) => {
   return { isLoading, data, refetch };
 };
 
+export const useGetAdminAttendant = (options = {}) => {
+  const { mutate, isLoading, data } = useMutation(getAdminAttendant, {
+    mutationKey: "GET_ADMIN_ATTENDANT",
+    ...options,
+  });
+  return { mutate, isLoading, data };
+};
+
+export const useGetAdminEvent = (options = {}) => {
+  const { mutate, isLoading, data } = useMutation(getAdminEvent, {
+    mutationKey: "GET_ADMIN_EVENT",
+    ...options,
+  });
+  return { mutate, isLoading, data };
+};
+
+export const useGetAdminAttendantsList = (options = {}) => {
+  const { mutate, isLoading, data } = useMutation(getAdminAttendantList, {
+    mutationKey: "GET_ADMIN_ATTENDANT_LIST",
+    ...options,
+  });
+  return { mutate, isLoading, data };
+};
+
 export const useGetAdministrators = (options = {}, page, limit, query) => {
   const { data, isLoading, refetch } = useQuery(
     ["GET_ADMINISTRATORS", page, limit, query],
@@ -41,6 +76,14 @@ export const useGetAdministrators = (options = {}, page, limit, query) => {
   );
 
   return { isLoading, data, refetch };
+};
+
+export const useGetAdministratorsList = (options = {}) => {
+  const { mutate, isLoading, data } = useMutation(getAdministratorsList, {
+    mutationKey: "GET_ADMIN_LIST",
+    ...options,
+  });
+  return { mutate, isLoading, data };
 };
 
 export const useGetManagers = (options = {}) => {
@@ -69,6 +112,23 @@ export const useEditAdministrator = (options = {}) => {
   return { isLoading, data, mutate };
 };
 
+export const useGetAdmin = (options = {}) => {
+  const { mutate, isLoading, data } = useMutation(getAdmin, {
+    mutationKey: "GET_ADMIN",
+    ...options,
+  });
+  return { mutate, isLoading, data };
+};
+
+export const useEditAdmin = (options = {}) => {
+  const { isLoading, data, mutate } = useMutation(editAdmin, {
+    mutationKey: ["EDIT_ADMIN"],
+    ...options,
+  });
+
+  return { isLoading, data, mutate };
+};
+
 export const useDeleteAdministrator = (options = {}) => {
   const { isLoading, data, mutate } = useMutation(deleteAdministrator, {
     mutationKey: ["DELETE_ADMINISTRATOR"],
@@ -90,6 +150,22 @@ export const useGetOperators = (options = {}, page = 1, limit = 25, query) => {
   return { isLoading, data, refetch };
 };
 
+export const useGetOperator = (options = {}) => {
+  const { mutate, isLoading, data } = useMutation(getOperator, {
+    mutationKey: "GET_ADMIN_OP",
+    ...options,
+  });
+  return { mutate, isLoading, data };
+};
+
+export const useGetOperatorList = (options = {}) => {
+  const { mutate, isLoading, data } = useMutation(getOperatorsList, {
+    mutationKey: "GET_OPS_LIST",
+    ...options,
+  });
+  return { mutate, isLoading, data };
+};
+
 export const useCreateOperator = (options = {}) => {
   const { isLoading, data, mutate } = useMutation(createOperator, {
     mutationKey: ["CREATE_OPERATOR"],
@@ -105,6 +181,14 @@ export const useEditOperator = (options = {}) => {
     ...options,
   });
 
+  return { isLoading, data, mutate };
+};
+
+export const useEditAdminOperator = (options = {}) => {
+  const { isLoading, data, mutate } = useMutation(editAdminOperator, {
+    mutationKey: ["EDIT_ADMIN_OP"],
+    ...options,
+  });
   return { isLoading, data, mutate };
 };
 
@@ -181,4 +265,20 @@ export const useGetCustomers = (options = {}, page, limit, query) => {
   );
 
   return { isLoading, data, refetch };
+};
+
+export const useGetAdminCustomer = (options = {}) => {
+  const { mutate, isLoading, data } = useMutation(getAdminCustomer, {
+    mutationKey: "GET_ADMIN_CUSTOMER",
+    ...options,
+  });
+  return { mutate, isLoading, data };
+};
+
+export const useGetAdminCustomers = (options = {}) => {
+  const { mutate, isLoading, data } = useMutation(getAdminCustomerList, {
+    mutationKey: "GET_ADMIN_CUSTOMERS_LIST",
+    ...options,
+  });
+  return { mutate, isLoading, data };
 };

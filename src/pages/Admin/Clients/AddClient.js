@@ -486,7 +486,6 @@ export default function AddClient() {
                     </Text>
                     <Select
                       styles={customStyles}
-                      placeholder="Select account type"
                       options={statusOptions}
                       value={values.status}
                       components={{
@@ -554,5 +553,10 @@ const customStyles = {
   menu: (provided) => ({
     ...provided,
     fontSize: "13px",
+  }),
+  option: (provided, state) => ({
+    ...provided,
+    color: state.isFocused ? "" : "",
+    backgroundColor: state.isFocused ? "#d4d6d8" : "",
   }),
 };

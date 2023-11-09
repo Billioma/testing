@@ -1,36 +1,112 @@
 import React, { useState, useEffect } from "react";
-import { Box, Flex, Text, Button, Switch } from "@chakra-ui/react";
+import {
+  Box,
+  Flex,
+  Text,
+  Button,
+  Switch,
+  Spinner,
+  Image,
+  Input,
+} from "@chakra-ui/react";
 import CustomInput from "../../../components/common/CustomInput";
-import { customStyles } from "../../../components/common/constants";
+import { customStyles, statusType } from "../../../components/common/constants";
 import Select from "react-select";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { PRIVATE_PATHS } from "../../../routes/constants";
 import useCustomToast from "../../../utils/notifications";
 import GoBackTab from "../../../components/data/Admin/GoBackTab";
-import { AiOutlineFolderOpen } from "react-icons/ai";
 import {
   useGetClients,
-  useGetClientsEvents,
   useUpdateClientEvent,
 } from "../../../services/admin/query/clients";
 import DateTimePicker from "../../../components/data/Admin/DateTimePicker";
+import { IoIosArrowDown } from "react-icons/io";
+import { useCustomerUploadPic } from "../../../services/customer/query/user";
+import { useGetAdminEvent } from "../../../services/admin/query/users";
+import { formatDateToISOString } from "../../../utils/helpers";
 
 export default function ViewEvent() {
-  const [state, setState] = useState({
-    paymentRequired: 0,
+  const isEdit = sessionStorage.getItem("edit");
+  const [edit, setEdit] = useState(false);
+
+  useEffect(() => {
+    if (isEdit !== null) {
+      setEdit(true);
+    }
+  }, [isEdit]);
+
+  const [values, setValues] = useState({
+    image: "",
+    name: "",
+    description: "",
+    address: "",
+    website: "",
+    eventStartDateTime: "",
+    eventEndDateTime: "",
+    client: "",
+    status: "",
+    price: "",
+    paymentRequired: "",
   });
 
-  const [isEdit, setIsEdit] = useState(false);
-  const location = useLocation();
+  const { id } = useParams();
+
+  const { mutate, data, isLoading } = useGetAdminEvent();
+
+  useEffect(() => {
+    mutate({ id: id });
+  }, []);
+
+  const handleSelectChange = (selectedOption, { name }) => {
+    setValues({
+      ...values,
+      [name]: selectedOption,
+    });
+  };
+
+  const statusOptions = statusType?.map((status, i) => ({
+    value: i,
+    label: status,
+  }));
+
+  const {
+    mutate: uploadMutate,
+    isLoading: isUploading,
+    data: profilePicData,
+  } = useCustomerUploadPic({
+    onError: (err) => {
+      errorToast(
+        err?.response?.data?.message || err?.message || "An Error occurred"
+      );
+    },
+  });
+
+  const [fileType, setFileType] = useState("");
+
+  const handleUpload = (e) => {
+    const selectedFile = e.target.files[0];
+    if (!selectedFile) {
+      return;
+    }
+
+    setFileType(URL.createObjectURL(selectedFile));
+    const formData = new FormData();
+    formData.append("file", selectedFile);
+    uploadMutate({
+      fileType: "image",
+      entityType: "admin",
+      file: formData.get("file"),
+    });
+  };
+
   const navigate = useNavigate();
-  const [isDisabled, setIsDisabled] = useState(true);
   const { errorToast, successToast } = useCustomToast();
-  const { refetch } = useGetClientsEvents();
-  const { mutate, isLoading } = useUpdateClientEvent({
+  const { mutate: updateMutate, isLoading: isUpdating } = useUpdateClientEvent({
     onSuccess: () => {
       successToast("Event updated successfully!");
-      refetch();
       navigate(PRIVATE_PATHS.ADMIN_EVENTS);
+      sessionStorage.removeItem("edit");
     },
     onError: (error) => {
       errorToast(
@@ -42,255 +118,430 @@ export default function ViewEvent() {
   const { data: clients } = useGetClients({}, 1, 10000);
 
   const clientOptions = clients?.data?.map((client) => ({
-    label: client.name,
-    value: parseInt(client.id),
+    label: client?.name,
+    value: parseInt(client?.id),
   }));
 
-  const isFormValid = () => {
-    return !state.name || !state.address || !state.client || !state.description;
-  };
-
   useEffect(() => {
-    setIsDisabled(isFormValid);
-  }, [state]);
+    const selectedStatusOption = statusOptions?.find(
+      (option) => option?.value === data?.status
+    );
+    const selectedClientOption = clientOptions?.find(
+      (option) => option?.value === Number(data?.client?.id)
+    );
+    setValues({
+      ...values,
+      avatar: data?.avatar?.replace("https://staging-api.ezpark.ng/", ""),
+      name: data?.name,
+      description: data?.description,
+      address: data?.address,
+      website: data?.website,
+      price: data?.price,
+      paymentRequired: data?.paymentRequired,
+      eventStartDateTime: data?.eventStartDateTime,
+      eventEndDateTime: data?.eventEndDateTime,
+      status: selectedStatusOption,
+      client: selectedClientOption,
+    });
+  }, [data]);
 
   const handleSubmit = () => {
-    mutate(state);
+    values?.paymentRequired
+      ? updateMutate({
+          query: id,
+          body: {
+            image: profilePicData?.path || values?.image,
+            name: values?.name,
+            description: values?.description,
+            address: values?.address,
+            website: values?.website,
+            price: values?.price,
+            paymentRequired: 1,
+            eventStartDateTime: formatDateToISOString(
+              values?.eventStartDateTime
+            ),
+            eventEndDateTime: formatDateToISOString(values?.eventEndDateTime),
+            status: values?.status?.value,
+            client: values?.client?.value,
+          },
+        })
+      : updateMutate({
+          query: id,
+          body: {
+            image: profilePicData?.path || values?.image,
+            name: values?.name,
+            description: values?.description,
+            address: values?.address,
+            website: values?.website,
+            paymentRequired: 0,
+            eventStartDateTime: formatDateToISOString(
+              values?.eventStartDateTime
+            ),
+            eventEndDateTime: formatDateToISOString(values?.eventEndDateTime),
+            status: values?.status?.value,
+            client: values?.client?.value,
+          },
+        });
   };
-
-  useEffect(() => {
-    setState({
-      ...location.state,
-      client: parseInt(location.state.client.id),
-      zones: location.state.zones?.map((zone) => parseInt(zone.id)),
-    });
-    setIsEdit(location.state.isEdit);
-  }, [location.state]);
 
   return (
     <Box minH="75vh">
-      <Flex justifyContent="center" align="center" w="full" flexDir="column">
+      {" "}
+      <Flex
+        align="flex-start"
+        flexDir={{ md: "row", base: "column" }}
+        gap={{ base: "", md: "40px" }}
+      >
         <GoBackTab />
-        <Flex
-          bg="#fff"
-          borderRadius="16px"
-          py="24px"
-          px="28px"
-          justifyContent="center"
-          w="30rem"
-          flexDir="column"
-          border="1px solid #E4E6E8"
-        >
-          <Box alignSelf={"center"} w="full" mb={5}>
+        {isLoading ? (
+          <Flex minH="60vh" w="full" justifyContent="center" align="center">
+            <Spinner />
+          </Flex>
+        ) : (
+          <>
             <Flex
-              w="100%"
-              h="120px"
               justifyContent="center"
-              alignItems="center"
-              border="4px solid #0D0718"
-              borderRadius="12px"
-              display="flex"
-              cursor="pointer"
-              flexDir={"column"}
+              align="center"
+              w="full"
+              flexDir="column"
             >
-              <AiOutlineFolderOpen size={32} />
-              <Text
-                fontSize="10px"
-                fontWeight={500}
-                color="#444648"
-                textAlign="center"
+              <Flex
+                bg="#fff"
+                borderRadius="8px"
+                py="32px"
+                px="24px"
+                justifyContent="center"
+                w={{ base: "100%", md: "30rem" }}
+                flexDir="column"
+                border="1px solid #E4E6E8"
               >
-                Add event image
-              </Text>
+                <Box
+                  alignSelf={"center"}
+                  justifyContent={"center"}
+                  mb={5}
+                  display="flex"
+                  flexDir="column"
+                >
+                  <Text
+                    fontSize="10px"
+                    fontWeight={500}
+                    color="#444648"
+                    textAlign="center"
+                  >
+                    Event image
+                  </Text>
+                  <Input
+                    id="image_upload"
+                    isDisabled={edit ? false : true}
+                    onChange={handleUpload}
+                    type="file"
+                    display="none"
+                  />
+                  <label htmlFor="image_upload">
+                    <Flex
+                      flexDir="column"
+                      justifyContent="center"
+                      align="center"
+                      cursor={edit ? "pointer" : ""}
+                      w="full"
+                    >
+                      {isUploading ? (
+                        <Flex
+                          w="120px"
+                          border="4px solid #0D0718"
+                          justifyContent="center"
+                          align="center"
+                          h="120px"
+                          borderRadius="12px"
+                        >
+                          <Spinner />
+                        </Flex>
+                      ) : (
+                        <Image
+                          objectFit="cover"
+                          w="120px"
+                          border={
+                            data?.image === null ? "none" : "4px solid #0D0718"
+                          }
+                          h="120px"
+                          borderRadius="12px"
+                          src={
+                            fileType
+                              ? fileType
+                              : data?.image === null
+                              ? "/assets/prof-avatar.jpg"
+                              : process.env.REACT_APP_BASE_URL + data?.image
+                          }
+                        />
+                      )}
+                    </Flex>
+                  </label>
+                </Box>
+                <Box w="full" mb={4}>
+                  <Text
+                    mb="8px"
+                    fontSize="10px"
+                    fontWeight={500}
+                    color="#444648"
+                  >
+                    Event Name
+                  </Text>
+                  <CustomInput
+                    auth
+                    value={values?.name}
+                    mb
+                    holder="Enter event name"
+                    onChange={(e) =>
+                      setValues({ ...values, name: e.target.value })
+                    }
+                    dis={edit ? false : true}
+                  />
+                </Box>
+
+                <Box w="full" mb={4}>
+                  <Text
+                    mb="8px"
+                    fontSize="10px"
+                    fontWeight={500}
+                    color="#444648"
+                  >
+                    Event Description
+                  </Text>
+                  <CustomInput
+                    auth
+                    value={values?.description}
+                    mb
+                    holder="Describe event"
+                    onChange={(e) =>
+                      setValues({ ...values, description: e.target.value })
+                    }
+                    dis={edit ? false : true}
+                  />
+                </Box>
+
+                <Box w="full" mb={4}>
+                  <Text
+                    mb="8px"
+                    fontSize="10px"
+                    fontWeight={500}
+                    color="#444648"
+                  >
+                    Event Address
+                  </Text>
+                  <CustomInput
+                    auth
+                    value={values?.address}
+                    mb
+                    holder="Enter event address"
+                    onChange={(e) =>
+                      setValues({ ...values, address: e.target.value })
+                    }
+                    dis={edit ? false : true}
+                  />
+                </Box>
+
+                <Box w="full" mb={4}>
+                  <Text
+                    mb="8px"
+                    fontSize="10px"
+                    fontWeight={500}
+                    color="#444648"
+                  >
+                    Event Website
+                  </Text>
+                  <CustomInput
+                    auth
+                    value={values?.website}
+                    mb
+                    holder="Enter event website"
+                    onChange={(e) =>
+                      setValues({ ...values, website: e.target.value })
+                    }
+                    dis={edit ? false : true}
+                  />
+                </Box>
+
+                <Box mb={4}>
+                  <Text
+                    mb="8px"
+                    fontWeight={500}
+                    color="#444648"
+                    fontSize="10px"
+                  >
+                    Event Start Date & Timee
+                  </Text>
+                  <DateTimePicker
+                    selectedDate={values?.eventStartDateTime || new Date()}
+                    onChange={(date) =>
+                      setValues({
+                        ...values,
+                        eventStartDateTime: new Date(date),
+                      })
+                    }
+                    hasTime
+                    isDisabled={edit ? false : true}
+                  />
+                </Box>
+
+                <Box mb={4}>
+                  <Text
+                    mb="8px"
+                    fontWeight={500}
+                    color="#444648"
+                    fontSize="10px"
+                  >
+                    Event End Date & Timee
+                  </Text>
+                  <DateTimePicker
+                    selectedDate={values?.eventEndDateTime || new Date()}
+                    onChange={(date) =>
+                      setValues({ ...values, eventEndDateTime: new Date(date) })
+                    }
+                    hasTime
+                    isDisabled={edit ? false : true}
+                  />
+                </Box>
+
+                <Box w="full" mb={4}>
+                  <Text
+                    mb="8px"
+                    fontSize="10px"
+                    fontWeight={500}
+                    color="#444648"
+                  >
+                    Client
+                  </Text>
+                  <Select
+                    styles={customStyles}
+                    placeholder="Select client"
+                    options={clientOptions}
+                    onChange={(selectedOption) =>
+                      handleSelectChange(selectedOption, {
+                        name: "client",
+                      })
+                    }
+                    components={{
+                      IndicatorSeparator: () => (
+                        <div style={{ display: "none" }}></div>
+                      ),
+                      DropdownIndicator: () => (
+                        <div>
+                          <IoIosArrowDown size="15px" color="#646668" />
+                        </div>
+                      ),
+                    }}
+                    value={values.client}
+                    isDisabled={edit ? false : true}
+                  />
+                </Box>
+
+                <Box mb={4}>
+                  <Text
+                    mb="8px"
+                    fontSize="10px"
+                    fontWeight={500}
+                    color="#444648"
+                  >
+                    Event Status
+                  </Text>
+                  <Select
+                    styles={customStyles}
+                    options={statusOptions}
+                    onChange={(selectedOption) =>
+                      handleSelectChange(selectedOption, {
+                        name: "status",
+                      })
+                    }
+                    components={{
+                      IndicatorSeparator: () => (
+                        <div style={{ display: "none" }}></div>
+                      ),
+                      DropdownIndicator: () => (
+                        <div>
+                          <IoIosArrowDown size="15px" color="#646668" />
+                        </div>
+                      ),
+                    }}
+                    value={values?.status}
+                    isDisabled={edit ? false : true}
+                  />
+                </Box>
+
+                <Flex
+                  align="center"
+                  justifyContent={"space-between"}
+                  gap="15px"
+                  mb="16px"
+                  mt={2}
+                >
+                  <Text fontSize="12px" fontWeight={500} color="#444648">
+                    Add Event Price
+                  </Text>
+                  <Switch
+                    onChange={() =>
+                      setValues({
+                        ...values,
+                        paymentRequired: values?.paymentRequired ? 0 : 1,
+                      })
+                    }
+                    isChecked={values?.paymentRequired ? true : false}
+                    value={values?.paymentRequired}
+                    size="sm"
+                    variant="adminPrimary"
+                    isDisabled={edit ? false : true}
+                  />
+                  {console.log(values?.paymentRequired)}
+                </Flex>
+
+                {values?.paymentRequired ? (
+                  <Box w="full" mb={4}>
+                    <Text
+                      mb="8px"
+                      fontSize="10px"
+                      fontWeight={500}
+                      color="#444648"
+                    >
+                      Event Price
+                    </Text>
+                    <CustomInput
+                      auth
+                      value={values?.price}
+                      mb
+                      holder="Enter event price"
+                      onChange={(e) =>
+                        setValues({ ...values, price: e.target.value })
+                      }
+                      dis={edit ? false : true}
+                    />
+                  </Box>
+                ) : null}
+
+                <Flex gap="24px" mt="24px">
+                  <Button
+                    variant="adminSecondary"
+                    w="100%"
+                    onClick={() =>
+                      edit
+                        ? setEdit(false)
+                        : (navigate(PRIVATE_PATHS.ADMIN_EVENTS),
+                          sessionStorage.removeItem("edit"))
+                    }
+                  >
+                    Cancel
+                  </Button>
+                  <Button
+                    variant="adminPrimary"
+                    w="100%"
+                    isLoading={isUpdating}
+                    onClick={() => (!edit ? setEdit(true) : handleSubmit())}
+                  >
+                    {!edit ? "Edit" : "Save"}
+                  </Button>
+                </Flex>
+              </Flex>
             </Flex>
-          </Box>
-          <Box w="full" mb={4}>
-            <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
-              Event Name
-            </Text>
-            <CustomInput
-              auth
-              value={state.name}
-              mb
-              holder="Enter event name"
-              onChange={(e) => setState({ ...state, name: e.target.value })}
-              isDisabled={!isEdit}
-            />
-          </Box>
-
-          <Box w="full" mb={4}>
-            <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
-              Event Description
-            </Text>
-            <CustomInput
-              auth
-              value={state.description}
-              mb
-              holder="Describe event"
-              onChange={(e) =>
-                setState({ ...state, description: e.target.value })
-              }
-              isDisabled={!isEdit}
-            />
-          </Box>
-
-          <Box w="full" mb={4}>
-            <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
-              Event Address
-            </Text>
-            <CustomInput
-              auth
-              value={state.address}
-              mb
-              holder="Enter event address"
-              onChange={(e) => setState({ ...state, address: e.target.value })}
-              isDisabled={!isEdit}
-            />
-          </Box>
-
-          <Box w="full" mb={4}>
-            <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
-              Event Website
-            </Text>
-            <CustomInput
-              auth
-              value={state.website}
-              mb
-              holder="Enter event website"
-              onChange={(e) => setState({ ...state, website: e.target.value })}
-              isDisabled={!isEdit}
-            />
-          </Box>
-
-          <Box mb={4}>
-            <Text mb="8px" fontWeight={500} color="#444648" fontSize="10px">
-              Event Start Date & Timee
-            </Text>
-            <DateTimePicker
-              selectedDate={state.eventStartDateTime || new Date()}
-              onChange={(date) =>
-                setState({ ...state, eventStartDateTime: new Date(date) })
-              }
-              hasTime
-              isDisabled={!isEdit}
-            />
-          </Box>
-
-          <Box mb={4}>
-            <Text mb="8px" fontWeight={500} color="#444648" fontSize="10px">
-              Event End Date & Timee
-            </Text>
-            <DateTimePicker
-              selectedDate={state.eventEndDateTime || new Date()}
-              onChange={(date) =>
-                setState({ ...state, eventEndDateTime: new Date(date) })
-              }
-              hasTime
-              isDisabled={!isEdit}
-            />
-          </Box>
-
-          <Box w="full" mb={4}>
-            <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
-              Client
-            </Text>
-            <Select
-              styles={customStyles}
-              placeholder="Select client"
-              options={clientOptions}
-              onChange={(selectedOption) =>
-                setState({ ...state, client: selectedOption.value })
-              }
-              value={clientOptions?.find(
-                (client) => client.value === state.client
-              )}
-              isDisabled={!isEdit}
-            />
-          </Box>
-
-          <Box mb={4}>
-            <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
-              Event Status
-            </Text>
-            <Select
-              styles={customStyles}
-              options={[
-                { label: "Active", value: 1 },
-                { label: "Inactive", value: 0 },
-              ]}
-              placeholder="Select event status"
-              onChange={(selectedOption) =>
-                setState({
-                  ...state,
-                  status: selectedOption.value,
-                })
-              }
-              value={[
-                { label: "Active", value: 1 },
-                { label: "Inactive", value: 0 },
-              ].find((status) => status.value === state.status)}
-              isDisabled={!isEdit}
-            />
-          </Box>
-
-          <Flex
-            align="center"
-            justifyContent={"space-between"}
-            gap="15px"
-            mb="16px"
-            mt={2}
-          >
-            <Text fontSize="12px" fontWeight={500} color="#444648">
-              Add Event Price
-            </Text>
-            <Switch
-              onChange={() =>
-                setState({
-                  ...state,
-                  setPrice: state.setPrice ? 0 : 1,
-                })
-              }
-              size="sm"
-              variant="adminPrimary"
-              isDisabled={!isEdit}
-            />
-          </Flex>
-
-          {state.setPrice ? (
-            <Box w="full" mb={4}>
-              <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
-                Event Price
-              </Text>
-              <CustomInput
-                auth
-                value={state.price}
-                mb
-                holder="Enter event price"
-                onChange={(e) => setState({ ...state, price: e.target.value })}
-                isDisabled={!isEdit}
-              />
-            </Box>
-          ) : null}
-
-          <Flex gap={4} mt={4}>
-            <Button
-              variant="adminSecondary"
-              w="45%"
-              onClick={() => navigate(PRIVATE_PATHS.ADMIN_EVENTS)}
-            >
-              Cancel
-            </Button>
-            <Button
-              variant="adminPrimary"
-              w="55%"
-              isDisabled={isEdit && isDisabled}
-              isLoading={isLoading}
-              onClick={() => (!isEdit ? setIsEdit(!isEdit) : handleSubmit())}
-            >
-              {!isEdit ? "Edit" : "Save"}
-            </Button>
-          </Flex>
-        </Flex>
+          </>
+        )}
       </Flex>
     </Box>
   );

@@ -1,38 +1,58 @@
 import React, { useState, useEffect } from "react";
-import { Box, Flex, Text, Button, Switch } from "@chakra-ui/react";
+import { Box, Flex, Text, Button, Switch, Spinner } from "@chakra-ui/react";
 import CustomInput from "../../../components/common/CustomInput";
-import { customStyles } from "../../../components/common/constants";
+import {
+  allStates,
+  customStyles,
+  statusType,
+} from "../../../components/common/constants";
 import Select from "react-select";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { PRIVATE_PATHS } from "../../../routes/constants";
-import { useEditOperator } from "../../../services/admin/query/users";
+import {
+  useEditAdminOperator,
+  useGetOperator,
+} from "../../../services/admin/query/users";
 import useCustomToast from "../../../utils/notifications";
-import { useGetStates } from "../../../services/customer/query/locations";
-import AdminChangePassword from "../../../components/modals/AdminChangePasswordModal";
 import GoBackTab from "../../../components/data/Admin/GoBackTab";
-import { useGetOperators } from "../../../services/admin/query/users";
+import { IoIosArrowDown } from "react-icons/io";
+import UpdateOperatorPasswordModal from "../../../components/modals/UpdateOperatorPasswordModal";
 
 export default function ViewOperator() {
-  const [state, setState] = useState({
+  const [values, setValues] = useState({
     name: "",
-    operator: "",
-    accountType: "",
-    userId: "",
-    locations: [],
-    status: 1,
+    email: "",
+    phone: "",
+    address: "",
+    state: "",
+    contactPerson: "",
+    status: "",
+    enableTips: "",
   });
-  const [isEdit, setIsEdit] = useState(false);
-  const location = useLocation();
-  const { data: states } = useGetStates();
+
+  const { id } = useParams();
+  const isEdit = sessionStorage.getItem("edit");
+  const [edit, setEdit] = useState(false);
+
+  useEffect(() => {
+    if (isEdit !== null) {
+      setEdit(true);
+    }
+  }, [isEdit]);
+
+  const { mutate, data, isLoading } = useGetOperator();
+
+  useEffect(() => {
+    mutate({ id: id });
+  }, []);
+
   const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
-  const [isDisabled, setIsDisabled] = useState(true);
   const { errorToast, successToast } = useCustomToast();
-  const { refetch } = useGetOperators();
-  const { mutate, isLoading } = useEditOperator({
+  const { mutate: updateMutate, isLoading: isUpdating } = useEditAdminOperator({
     onSuccess: () => {
       successToast("Operator updated successfully!");
-      refetch();
+      sessionStorage.removeItem("edit");
       navigate(PRIVATE_PATHS.ADMIN_OPERATORS);
     },
     onError: (error) => {
@@ -42,238 +62,335 @@ export default function ViewOperator() {
     },
   });
 
-  const isFormValid = () => {
-    return (
-      !state.name ||
-      !state.email ||
-      !state.state ||
-      !state.phone ||
-      !state.contactPerson ||
-      !state.address
-    );
-  };
-
-  useEffect(() => {
-    setIsDisabled(isFormValid);
-  }, [state]);
-
-  const stateOptions = states?.data?.map((state) => ({
+  const stateOptions = allStates?.map((state) => ({
     value: state,
     label: state,
   }));
 
-  const handleSubmit = (data = state) => {
-    mutate({ ...data, id: state.id });
+  const statusOptions = statusType?.map((status, i) => ({
+    value: i,
+    label: status,
+  }));
+
+  const handleSelectChange = (selectedOption, { name }) => {
+    setValues({
+      ...values,
+      [name]: selectedOption,
+    });
   };
 
   useEffect(() => {
-    setState({
-      ...state,
-      ...location.state,
+    const selectedStateOption = stateOptions?.find(
+      (option) => option.value === data?.state
+    );
+    console.log(selectedStateOption);
+    const selectedStatusOption = statusOptions?.find(
+      (option) => option.value === data?.status
+    );
+    setValues({
+      ...values,
+      name: data?.name,
+      email: data?.email,
+      phone: data?.phone,
+      address: data?.address,
+      contactPerson: data?.contactPerson,
+      state: selectedStateOption,
+      status: selectedStatusOption,
+      enableTips: data?.enableTips,
     });
+  }, [data]);
 
-    setIsEdit(location?.state?.isEdit);
-  }, [location.state]);
+  const handleSubmit = () => {
+    updateMutate({
+      query: id,
+      body: {
+        name: values?.name,
+        email: values?.email,
+        phone: `+234${Number(values?.phone)}`,
+        enableTips: values?.enableTips,
+        address: values?.address,
+        state: values?.state?.value,
+        contactPerson: values?.contactPerson,
+        status: values?.status?.value,
+      },
+    });
+  };
 
   return (
     <Box minH="75vh">
-      <Flex justifyContent="center" align="center" w="full" flexDir="column">
+      <Flex
+        align="flex-start"
+        flexDir={{ md: "row", base: "column" }}
+        gap={{ base: "", md: "40px" }}
+      >
         <GoBackTab />
-        <Flex
-          bg="#fff"
-          borderRadius="16px"
-          py="24px"
-          px="28px"
-          justifyContent="center"
-          w="30rem"
-          flexDir="column"
-          border="1px solid #E4E6E8"
-        >
-          <Box w="full" mb={4}>
-            <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
-              Name
-            </Text>
-            <CustomInput
-              auth
-              value={state.name}
-              mb
-              holder="Enter operator name"
-              onChange={(e) => setState({ ...state, name: e.target.value })}
-              isDisabled={!isEdit}
-            />
-          </Box>
-
-          <Box w="full" mb={4}>
-            <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
-              Email Address
-            </Text>
-            <CustomInput
-              auth
-              value={state.email}
-              mb
-              holder="Enter email address"
-              onChange={(e) => setState({ ...state, email: e.target.value })}
-              isDisabled={!isEdit}
-            />
-          </Box>
-
-          <Box mb={4}>
-            <Text mb="8px" fontWeight={500} color="#444648" fontSize="10px">
-              Phone Number
-            </Text>
-            <CustomInput
-              mb
-              ngn
-              name="phone"
-              value={`${state?.phone}`}
-              onChange={(e) => {
-                const inputPhone = e.target.value
-                  .replace(/\D/g, "")
-                  .slice(0, 10);
-                setState({
-                  ...state,
-                  phone: inputPhone,
-                });
-              }}
-              holder="Enter Phone Number"
-              isDisabled={!isEdit}
-            />
-          </Box>
-
-          <Box w="full" mb={4}>
-            <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
-              Address
-            </Text>
-            <CustomInput
-              auth
-              value={state.address}
-              mb
-              holder="Enter operator address"
-              onChange={(e) => setState({ ...state, address: e.target.value })}
-              isDisabled={!isEdit}
-            />
-          </Box>
-          <Box mb={4}>
-            <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
-              State
-            </Text>
-            <Select
-              styles={customStyles}
-              placeholder="Select State"
-              options={stateOptions}
-              value={stateOptions?.find(
-                (option) => option.value === state.state
-              )}
-              onChange={(selectedOption) =>
-                setState({ ...state, state: selectedOption.value })
-              }
-              isDisabled={!isEdit}
-            />
-          </Box>
-
-          <Box w="full" mb={4}>
-            <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
-              Contact Person
-            </Text>
-            <CustomInput
-              auth
-              value={state.contactPerson}
-              mb
-              holder="Enter contact person"
-              onChange={(e) =>
-                setState({ ...state, contactPerson: e.target.value })
-              }
-              isDisabled={!isEdit}
-            />
-          </Box>
-
-          <Box mb={4}>
-            <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
-              Status
-            </Text>
-            <Select
-              styles={customStyles}
-              options={[
-                { label: "Active", value: 1 },
-                { label: "Inactive", value: 0 },
-              ]}
-              placeholder="Select an operator"
-              onChange={(selectedOption) =>
-                setState({
-                  ...state,
-                  status: selectedOption.value,
-                })
-              }
-              value={[
-                { label: "Active", value: 1 },
-                { label: "Inactive", value: 0 },
-              ].find((status) => status.value === state.status)}
-              isDisabled={!isEdit}
-            />
-          </Box>
-
-          <Flex
-            align="center"
-            justifyContent={"space-between"}
-            gap="15px"
-            mb="16px"
-            mt={2}
-          >
-            <Text fontSize="12px" fontWeight={500} color="#444648">
-              Enable Tips
-            </Text>
-            <Switch
-              onChange={() =>
-                setState({
-                  ...state,
-                  enableTips: state.enableTips ? 0 : 1,
-                })
-              }
-              isChecked={state.enableTips}
-              size="sm"
-              variant="adminPrimary"
-              isDisabled={!isEdit}
-            />
+        {isLoading ? (
+          <Flex minH="60vh" w="full" justifyContent="center" align="center">
+            <Spinner />
           </Flex>
-
-          <Button
-            variant="adminSecondary"
-            fontSize="12px"
-            mt={4}
-            h="32px"
-            onClick={() => setIsOpen(true)}
-            alignSelf={"center"}
-          >
-            Change Password
-          </Button>
-
-          <Flex gap={4} mt={4}>
-            <Button
-              variant="adminSecondary"
-              w="45%"
-              onClick={() => navigate(PRIVATE_PATHS.ADMIN_OPERATORS)}
+        ) : (
+          <>
+            <Flex
+              justifyContent="center"
+              align="center"
+              w="full"
+              flexDir="column"
             >
-              Cancel
-            </Button>
-            <Button
-              variant="adminPrimary"
-              w="55%"
-              isDisabled={isEdit && isDisabled}
-              isLoading={!isOpen && isLoading}
-              onClick={() => (!isEdit ? setIsEdit(!isEdit) : handleSubmit())}
-            >
-              {!isEdit ? "Edit" : "Save"}
-            </Button>
-          </Flex>
-        </Flex>
+              <Flex
+                bg="#fff"
+                borderRadius="8px"
+                py="32px"
+                px="24px"
+                justifyContent="center"
+                w={{ base: "100%", md: "30rem" }}
+                flexDir="column"
+                border="1px solid #E4E6E8"
+              >
+                <Box w="full" mb={4}>
+                  <Text
+                    mb="8px"
+                    fontSize="10px"
+                    fontWeight={500}
+                    color="#444648"
+                  >
+                    Name
+                  </Text>
+                  <CustomInput
+                    auth
+                    value={values?.name}
+                    mb
+                    holder="Enter operator name"
+                    onChange={(e) =>
+                      setValues({ ...values, name: e.target.value })
+                    }
+                    dis={edit ? false : true}
+                  />
+                </Box>
+
+                <Box w="full" mb={4}>
+                  <Text
+                    mb="8px"
+                    fontSize="10px"
+                    fontWeight={500}
+                    color="#444648"
+                  >
+                    Email Address
+                  </Text>
+                  <CustomInput
+                    auth
+                    value={values?.email}
+                    mb
+                    holder="Enter email address"
+                    onChange={(e) =>
+                      setValues({ ...values, email: e.target.value })
+                    }
+                    dis={edit ? false : true}
+                  />
+                </Box>
+
+                <Box mb={4}>
+                  <Text
+                    mb="8px"
+                    fontWeight={500}
+                    color="#444648"
+                    fontSize="10px"
+                  >
+                    Phone Number
+                  </Text>
+                  <CustomInput
+                    mb
+                    ngn
+                    name="phone"
+                    value={`${values?.phone}`}
+                    onChange={(e) => {
+                      const inputPhone = e.target.value
+                        .replace(/\D/g, "")
+                        .slice(0, 10);
+                      setValues({
+                        ...values,
+                        phone: inputPhone,
+                      });
+                    }}
+                    holder="Enter Phone Number"
+                    dis={edit ? false : true}
+                  />
+                </Box>
+
+                <Box w="full" mb={4}>
+                  <Text
+                    mb="8px"
+                    fontSize="10px"
+                    fontWeight={500}
+                    color="#444648"
+                  >
+                    Address
+                  </Text>
+                  <CustomInput
+                    auth
+                    value={values?.address}
+                    mb
+                    holder="Enter operator address"
+                    onChange={(e) =>
+                      setValues({ ...values, address: e.target.value })
+                    }
+                    dis={edit ? false : true}
+                  />
+                </Box>
+                <Box mb={4}>
+                  <Text
+                    mb="8px"
+                    fontSize="10px"
+                    fontWeight={500}
+                    color="#444648"
+                  >
+                    State
+                  </Text>
+                  <Select
+                    styles={customStyles}
+                    placeholder="Select State"
+                    options={stateOptions}
+                    onChange={(selectedOption) =>
+                      handleSelectChange(selectedOption, {
+                        name: "state",
+                      })
+                    }
+                    value={values?.state}
+                    components={{
+                      IndicatorSeparator: () => (
+                        <div style={{ display: "none" }}></div>
+                      ),
+                      DropdownIndicator: () => (
+                        <div>
+                          <IoIosArrowDown size="15px" color="#646668" />
+                        </div>
+                      ),
+                    }}
+                    isDisabled={edit ? false : true}
+                  />
+                </Box>
+
+                <Box w="full" mb={4}>
+                  <Text
+                    mb="8px"
+                    fontSize="10px"
+                    fontWeight={500}
+                    color="#444648"
+                  >
+                    Contact Person
+                  </Text>
+                  <CustomInput
+                    auth
+                    value={values?.contactPerson}
+                    mb
+                    holder="Enter contact person"
+                    onChange={(e) =>
+                      setValues({ ...values, contactPerson: e.target.value })
+                    }
+                    dis={edit ? false : true}
+                  />
+                </Box>
+
+                <Box mb={4}>
+                  <Text
+                    mb="8px"
+                    fontSize="10px"
+                    fontWeight={500}
+                    color="#444648"
+                  >
+                    Status
+                  </Text>
+                  <Select
+                    styles={customStyles}
+                    options={statusOptions}
+                    onChange={(selectedOption) =>
+                      handleSelectChange(selectedOption, {
+                        name: "status",
+                      })
+                    }
+                    components={{
+                      IndicatorSeparator: () => (
+                        <div style={{ display: "none" }}></div>
+                      ),
+                      DropdownIndicator: () => (
+                        <div>
+                          <IoIosArrowDown size="15px" color="#646668" />
+                        </div>
+                      ),
+                    }}
+                    value={values?.status}
+                    isDisabled={edit ? false : true}
+                  />
+                </Box>
+
+                <Flex
+                  align="center"
+                  justifyContent={"space-between"}
+                  gap="15px"
+                  mb="16px"
+                  mt={2}
+                >
+                  <Text fontSize="12px" fontWeight={500} color="#444648">
+                    Enable Tips
+                  </Text>
+                  <Switch
+                    onChange={() =>
+                      setValues({
+                        ...values,
+                        enableTips: values?.enableTips ? 0 : 1,
+                      })
+                    }
+                    isChecked={values?.enableTips ? true : false}
+                    size="sm"
+                    variant="adminPrimary"
+                    isDisabled={edit ? false : true}
+                  />
+                </Flex>
+
+                <Button
+                  variant="adminSecondary"
+                  fontSize="12px"
+                  mt={4}
+                  h="32px"
+                  onClick={() => setIsOpen(true)}
+                  alignSelf={"center"}
+                >
+                  Change Password
+                </Button>
+
+                <Flex gap="24px" mt="24px">
+                  <Button
+                    variant="adminSecondary"
+                    w="100%"
+                    onClick={() =>
+                      edit
+                        ? setEdit(false)
+                        : (navigate("/admin/users/operators"),
+                          sessionStorage.removeItem("edit"))
+                    }
+                  >
+                    Cancel
+                  </Button>
+                  <Button
+                    variant="adminPrimary"
+                    w="100%"
+                    isLoading={isUpdating}
+                    onClick={() => (!edit ? setEdit(true) : handleSubmit())}
+                  >
+                    {!edit ? "Edit" : "Save"}
+                  </Button>
+                </Flex>
+              </Flex>
+            </Flex>
+
+            <UpdateOperatorPasswordModal
+              isOpen={isOpen}
+              id={id}
+              operator
+              onClose={() => setIsOpen(false)}
+            />
+          </>
+        )}
       </Flex>
-
-      <AdminChangePassword
-        isOpen={isOpen}
-        onClose={() => setIsOpen(false)}
-        handleSubmit={handleSubmit}
-        isLoading={isLoading}
-      />
     </Box>
   );
 }

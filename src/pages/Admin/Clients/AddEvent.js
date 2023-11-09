@@ -1,33 +1,42 @@
-import React, { useState, useEffect } from "react";
-import { Box, Flex, Text, Button, Switch } from "@chakra-ui/react";
+import React, { useState } from "react";
+import {
+  Box,
+  Flex,
+  Text,
+  Button,
+  Switch,
+  Spinner,
+  Input,
+  Image,
+} from "@chakra-ui/react";
 import CustomInput from "../../../components/common/CustomInput";
-import { customStyles } from "../../../components/common/constants";
+import { customStyles, statusType } from "../../../components/common/constants";
 import Select from "react-select";
 import { useNavigate } from "react-router-dom";
 import { PRIVATE_PATHS } from "../../../routes/constants";
 import useCustomToast from "../../../utils/notifications";
 import GoBackTab from "../../../components/data/Admin/GoBackTab";
-import { AiOutlineFolderOpen } from "react-icons/ai";
 import {
   useAddClientEvent,
   useGetClients,
-  useGetClientsEvents,
 } from "../../../services/admin/query/clients";
 import DateTimePicker from "../../../components/data/Admin/DateTimePicker";
+import { useCustomerUploadPic } from "../../../services/customer/query/user";
+import { Form, Formik } from "formik";
+import { IoIosArrowDown } from "react-icons/io";
+import {
+  initEventValues,
+  validateEventPriceSchema,
+  validateEventSchema,
+} from "../../../utils/validation";
+import { formatDateToISOString } from "../../../utils/helpers";
 
 export default function AddEvent() {
-  const [state, setState] = useState({
-    paymentRequired: 0,
-  });
-
   const navigate = useNavigate();
-  const [isDisabled, setIsDisabled] = useState(true);
   const { errorToast, successToast } = useCustomToast();
-  const { refetch } = useGetClientsEvents();
   const { mutate, isLoading } = useAddClientEvent({
     onSuccess: () => {
       successToast("Event added successfully!");
-      refetch();
       navigate(PRIVATE_PATHS.ADMIN_EVENTS);
     },
     onError: (error) => {
@@ -37,234 +46,419 @@ export default function AddEvent() {
     },
   });
 
+  const statusOptions = statusType?.map((status, i) => ({
+    value: i,
+    label: status,
+  }));
+
+  const {
+    mutate: uploadMutate,
+    isLoading: isUploading,
+    data: profilePicData,
+  } = useCustomerUploadPic({
+    onError: (err) => {
+      errorToast(
+        err?.response?.data?.message || err?.message || "An Error occurred"
+      );
+    },
+  });
+
+  const [fileType, setFileType] = useState("");
+
+  const handleUpload = (e) => {
+    const selectedFile = e.target.files[0];
+    if (!selectedFile) {
+      return;
+    }
+
+    setFileType(URL.createObjectURL(selectedFile));
+    const formData = new FormData();
+    formData.append("file", selectedFile);
+    uploadMutate({
+      fileType: "image",
+      entityType: "admin",
+      file: formData.get("file"),
+    });
+  };
+
   const { data: clients } = useGetClients({}, 1, 10000);
 
   const clientOptions = clients?.data?.map((client) => ({
-    label: client.name,
+    label: client?.name,
     value: parseInt(client.id),
   }));
 
-  const isFormValid = () => {
-    return !state.name || !state.address || !state.client || !state.description;
+  const handleSubmit = (values = "") => {
+    const { status, price, client, ...rest } = values;
+    values?.paymentRequired
+      ? mutate({
+          ...rest,
+          status: status?.value,
+          price: Number(price),
+          client: Number(client?.value),
+          image: profilePicData?.path,
+        })
+      : mutate({
+          ...rest,
+          status: status?.value,
+          client: Number(client?.value),
+          image: profilePicData?.path,
+        });
   };
-
-  useEffect(() => {
-    setIsDisabled(isFormValid);
-  }, [state]);
-
-  const handleSubmit = () => {
-    mutate(state);
-  };
-
   return (
     <Box minH="75vh">
-      <Flex justifyContent="center" align="center" w="full" flexDir="column">
+      <Flex align="flex-start" flexDir={{ md: "row", base: "column" }}>
         <GoBackTab />
-        <Flex
-          bg="#fff"
-          borderRadius="16px"
-          py="24px"
-          px="28px"
-          justifyContent="center"
-          w="30rem"
-          flexDir="column"
-          border="1px solid #E4E6E8"
-        >
-          <Box alignSelf={"center"} w="full" mb={5}>
-            <Flex
-              w="100%"
-              h="120px"
-              justifyContent="center"
-              alignItems="center"
-              border="4px solid #0D0718"
-              borderRadius="12px"
-              display="flex"
-              cursor="pointer"
-              flexDir={"column"}
-            >
-              <AiOutlineFolderOpen size={32} />
+        <Flex justifyContent="center" align="center" w="full" flexDir="column">
+          <Flex
+            bg="#fff"
+            borderRadius="12px"
+            py="32px"
+            px="28px"
+            justifyContent="center"
+            w={{ md: "30rem", base: "100%" }}
+            flexDir="column"
+            border="1px solid #E4E6E8"
+          >
+            <Box alignSelf={"center"} mb={5}>
               <Text
                 fontSize="10px"
                 fontWeight={500}
                 color="#444648"
                 textAlign="center"
               >
-                Add event image
+                Event Image
               </Text>
-            </Flex>
-          </Box>
-          <Box w="full" mb={4}>
-            <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
-              Event Name
-            </Text>
-            <CustomInput
-              auth
-              value={state.name}
-              mb
-              holder="Enter event name"
-              onChange={(e) => setState({ ...state, name: e.target.value })}
-            />
-          </Box>
-
-          <Box w="full" mb={4}>
-            <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
-              Event Description
-            </Text>
-            <CustomInput
-              auth
-              value={state.description}
-              mb
-              holder="Describe event"
-              onChange={(e) =>
-                setState({ ...state, description: e.target.value })
-              }
-            />
-          </Box>
-
-          <Box w="full" mb={4}>
-            <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
-              Event Address
-            </Text>
-            <CustomInput
-              auth
-              value={state.address}
-              mb
-              holder="Enter event address"
-              onChange={(e) => setState({ ...state, address: e.target.value })}
-            />
-          </Box>
-
-          <Box w="full" mb={4}>
-            <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
-              Event Website
-            </Text>
-            <CustomInput
-              auth
-              value={state.website}
-              mb
-              holder="Enter event website"
-              onChange={(e) => setState({ ...state, website: e.target.value })}
-            />
-          </Box>
-
-          <Box mb={4}>
-            <Text mb="8px" fontWeight={500} color="#444648" fontSize="10px">
-              Event Start Date & Timee
-            </Text>
-            <DateTimePicker
-              selectedDate={state.eventStartDateTime}
-              onChange={(date) =>
-                setState({ ...state, eventStartDateTime: new Date(date) })
-              }
-              hasTime
-            />
-          </Box>
-
-          <Box mb={4}>
-            <Text mb="8px" fontWeight={500} color="#444648" fontSize="10px">
-              Event End Date & Timee
-            </Text>
-            <DateTimePicker
-              selectedDate={state.eventEndDateTime}
-              onChange={(date) =>
-                setState({ ...state, eventEndDateTime: new Date(date) })
-              }
-              hasTime
-            />
-          </Box>
-
-          <Box w="full" mb={4}>
-            <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
-              Client
-            </Text>
-            <Select
-              styles={customStyles}
-              placeholder="Select client"
-              options={clientOptions}
-              onChange={(selectedOption) =>
-                setState({ ...state, client: selectedOption.value })
-              }
-            />
-          </Box>
-
-          <Box mb={4}>
-            <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
-              Event Status
-            </Text>
-            <Select
-              styles={customStyles}
-              options={[
-                { label: "Active", value: 1 },
-                { label: "Inactive", value: 0 },
-              ]}
-              placeholder="Select event status"
-              onChange={(selectedOption) =>
-                setState({
-                  ...state,
-                  status: selectedOption.value,
-                })
-              }
-              value={[
-                { label: "Active", value: 1 },
-                { label: "Inactive", value: 0 },
-              ].find((status) => status.value === state.status)}
-            />
-          </Box>
-
-          <Flex
-            align="center"
-            justifyContent={"space-between"}
-            gap="15px"
-            mb="16px"
-            mt={2}
-          >
-            <Text fontSize="12px" fontWeight={500} color="#444648">
-              Add Event Price
-            </Text>
-            <Switch
-              onChange={() =>
-                setState({
-                  ...state,
-                  setPrice: state.setPrice ? 0 : 1,
-                })
-              }
-              size="sm"
-              variant="adminPrimary"
-            />
-          </Flex>
-
-          {state.setPrice ? (
-            <Box w="full" mb={4}>
-              <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
-                Event Price
-              </Text>
-              <CustomInput
-                auth
-                value={state.price}
-                mb
-                holder="Enter event price"
-                onChange={(e) => setState({ ...state, price: e.target.value })}
+              <Input
+                id="image_upload"
+                onChange={handleUpload}
+                type="file"
+                display="none"
               />
+              <label htmlFor="image_upload">
+                <Flex
+                  flexDir="column"
+                  cursor="pointer"
+                  justifyContent="center"
+                  align="center"
+                  w="full"
+                >
+                  {isUploading ? (
+                    <Spinner />
+                  ) : (
+                    <Image
+                      rounded="full"
+                      objectFit="cover"
+                      w="120px"
+                      border={fileType ? "4px solid #0D0718" : ""}
+                      h="120px"
+                      borderRadius="12px"
+                      src={fileType || "/assets/prof-avatar.jpg"}
+                    />
+                  )}
+                </Flex>
+              </label>
             </Box>
-          ) : null}
 
-          <Flex gap={4} mt={4}>
-            <Button
-              variant="adminSecondary"
-              w="45%"
-              onClick={() => navigate(PRIVATE_PATHS.ADMIN_EVENTS)}
+            <Formik
+              onSubmit={handleSubmit}
+              initialValues={initEventValues}
+              validationSchema={validateEventSchema}
             >
-              Cancel
-            </Button>
-            <Button
-              variant="adminPrimary"
-              w="55%"
-              isDisabled={isDisabled}
-              isLoading={isLoading}
-              onClick={handleSubmit}
-            >
-              Save
-            </Button>
+              {({
+                values,
+                errors,
+                touched,
+                handleChange,
+                handleBlur,
+                handleSubmit,
+                setValues,
+                isValid,
+                dirty,
+              }) => (
+                <Form onSubmit={handleSubmit}>
+                  <Box w="full" mb={4}>
+                    <Text
+                      mb="8px"
+                      fontSize="10px"
+                      fontWeight={500}
+                      color="#444648"
+                    >
+                      Event Name
+                    </Text>
+                    <CustomInput
+                      auth
+                      mb
+                      holder="Enter event name"
+                      name="name"
+                      value={values?.name}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      error={errors?.name && touched?.name && errors?.name}
+                    />
+                  </Box>
+
+                  <Box w="full" mb={4}>
+                    <Text
+                      mb="8px"
+                      fontSize="10px"
+                      fontWeight={500}
+                      color="#444648"
+                    >
+                      Event Description
+                    </Text>
+                    <CustomInput
+                      auth
+                      mb
+                      holder="Describe event"
+                      name="description"
+                      value={values?.description}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      error={
+                        errors?.description &&
+                        touched?.description &&
+                        errors?.description
+                      }
+                    />
+                  </Box>
+
+                  <Box w="full" mb={4}>
+                    <Text
+                      mb="8px"
+                      fontSize="10px"
+                      fontWeight={500}
+                      color="#444648"
+                    >
+                      Event Address
+                    </Text>
+                    <CustomInput
+                      auth
+                      mb
+                      holder="Enter event address"
+                      name="address"
+                      value={values?.address}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      error={
+                        errors?.address && touched?.address && errors?.address
+                      }
+                    />
+                  </Box>
+
+                  <Box w="full" mb={4}>
+                    <Text
+                      mb="8px"
+                      fontSize="10px"
+                      fontWeight={500}
+                      color="#444648"
+                    >
+                      Event Website
+                    </Text>
+                    <CustomInput
+                      auth
+                      mb
+                      holder="Enter event website"
+                      name="website"
+                      value={values?.website}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      error={
+                        errors?.website && touched?.website && errors?.website
+                      }
+                    />
+                  </Box>
+
+                  <Box mb={4}>
+                    <Text
+                      mb="8px"
+                      fontWeight={500}
+                      color="#444648"
+                      fontSize="10px"
+                    >
+                      Event Start Date & Timee
+                    </Text>
+                    <DateTimePicker
+                      selectedDate={values?.eventStartDateTime}
+                      onChange={(date) => {
+                        setValues({ ...values, eventStartDateTime: date });
+                      }}
+                      hasTime
+                    />
+                  </Box>
+
+                  <Box mb={4}>
+                    <Text
+                      mb="8px"
+                      fontWeight={500}
+                      color="#444648"
+                      fontSize="10px"
+                    >
+                      Event End Date & Timee
+                    </Text>
+                    <DateTimePicker
+                      selectedDate={values?.eventEndDateTime}
+                      onChange={(date) => {
+                        setValues({ ...values, eventEndDateTime: date });
+                      }}
+                      hasTime
+                    />
+                  </Box>
+
+                  {values?.eventEndDateTime < values?.eventStartDateTime && (
+                    <Text
+                      mt={-3}
+                      fontSize="13px"
+                      mb={4}
+                      color="tomato"
+                      fontWeight={500}
+                    >
+                      Event's end date is before its start date
+                    </Text>
+                  )}
+                  <Box w="full" mb={4}>
+                    <Text
+                      mb="8px"
+                      fontSize="10px"
+                      fontWeight={500}
+                      color="#444648"
+                    >
+                      Client
+                    </Text>
+                    <Select
+                      styles={customStyles}
+                      placeholder="Select client"
+                      options={clientOptions}
+                      name="client"
+                      onChange={(selectedOption) =>
+                        setValues({
+                          ...values,
+                          client: selectedOption,
+                        })
+                      }
+                      onBlur={handleBlur}
+                      components={{
+                        IndicatorSeparator: () => (
+                          <div style={{ display: "none" }}></div>
+                        ),
+                        DropdownIndicator: () => (
+                          <div>
+                            <IoIosArrowDown size="15px" color="#646668" />
+                          </div>
+                        ),
+                      }}
+                    />
+                  </Box>
+
+                  <Box mb={4}>
+                    <Text
+                      mb="8px"
+                      fontSize="10px"
+                      fontWeight={500}
+                      color="#444648"
+                    >
+                      Event Status
+                    </Text>
+                    <Select
+                      styles={customStyles}
+                      options={statusOptions}
+                      name="status"
+                      onChange={(selectedOption) =>
+                        setValues({
+                          ...values,
+                          status: selectedOption,
+                        })
+                      }
+                      onBlur={handleBlur}
+                      components={{
+                        IndicatorSeparator: () => (
+                          <div style={{ display: "none" }}></div>
+                        ),
+                        DropdownIndicator: () => (
+                          <div>
+                            <IoIosArrowDown size="15px" color="#646668" />
+                          </div>
+                        ),
+                      }}
+                    />
+                  </Box>
+
+                  <Flex
+                    align="center"
+                    justifyContent={"space-between"}
+                    gap="15px"
+                    mb="16px"
+                    mt={2}
+                  >
+                    <Text fontSize="12px" fontWeight={500} color="#444648">
+                      Add Event Price
+                    </Text>
+                    <Switch
+                      onChange={() =>
+                        setValues({
+                          ...values,
+                          paymentRequired: values?.paymentRequired ? 0 : 1,
+                        })
+                      }
+                      value={values?.paymentRequired}
+                      isChecked={values?.paymentRequired ? true : false}
+                      size="sm"
+                      variant="adminPrimary"
+                    />
+                  </Flex>
+
+                  {values?.paymentRequired ? (
+                    <Box w="full" mb={4}>
+                      <Text
+                        mb="8px"
+                        fontSize="10px"
+                        fontWeight={500}
+                        color="#444648"
+                      >
+                        Event Price
+                      </Text>
+                      <CustomInput
+                        auth
+                        mb
+                        holder="Enter event price"
+                        name="price"
+                        value={values?.price}
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        error={errors?.price && touched?.price && errors?.price}
+                      />
+                    </Box>
+                  ) : null}
+
+                  <Flex gap="24px" mt="24px">
+                    <Button
+                      variant="adminSecondary"
+                      w="100%"
+                      onClick={() => navigate(PRIVATE_PATHS.ADMIN_EVENTS)}
+                    >
+                      Cancel
+                    </Button>
+                    <Button
+                      variant="adminPrimary"
+                      w="100%"
+                      isDisabled={
+                        values?.paymentRequired
+                          ? !values?.price
+                          : "" ||
+                            !isValid ||
+                            !dirty ||
+                            values?.eventEndDateTime <
+                              values?.eventStartDateTime
+                      }
+                      isLoading={isLoading}
+                      type="submit"
+                    >
+                      Save
+                    </Button>
+                  </Flex>
+                </Form>
+              )}
+            </Formik>
           </Flex>
         </Flex>
       </Flex>

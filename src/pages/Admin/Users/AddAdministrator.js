@@ -1,43 +1,75 @@
-import React, { useState, useEffect } from "react";
-import { Box, Flex, Text, Button, Switch, Image } from "@chakra-ui/react";
-import CustomInput from "../../../components/common/CustomInput";
+import React, { useState } from "react";
 import {
-  AiOutlineEye,
-  AiOutlineEyeInvisible,
-  AiOutlineCamera,
-} from "react-icons/ai";
+  Box,
+  Flex,
+  Text,
+  Button,
+  Switch,
+  Image,
+  Spinner,
+  Input,
+} from "@chakra-ui/react";
+import CustomInput from "../../../components/common/CustomInput";
 import Select from "react-select";
 import { useNavigate } from "react-router-dom";
 import { PRIVATE_PATHS } from "../../../routes/constants";
 import { useCreateAdministrator } from "../../../services/admin/query/users";
 import useCustomToast from "../../../utils/notifications";
 import { useGetAllRoles } from "../../../services/admin/query/roles";
-import { useUploadMedia } from "../../../services/admin/query/general";
 import GoBackTab from "../../../components/data/Admin/GoBackTab";
+import { useCustomerUploadPic } from "../../../services/customer/query/user";
+import { Form, Formik } from "formik";
+import { IoIosArrowDown } from "react-icons/io";
+import {
+  initAdminValues,
+  validateAdminSchema,
+} from "../../../utils/validation";
+import { statusType } from "../../../components/common/constants";
 
 export default function AddAttendants() {
-  const [state, setState] = useState({
-    firstName: "",
-    lastName: "",
-    password: "",
-    passwordConfirmation: "",
-    email: "",
-    status: 1,
-    isManager: 0,
-    avatarImage: null,
+  const [fileType, setFileType] = useState("");
+  const {
+    mutate: uploadMutate,
+    isLoading: isUploading,
+    data: profilePicData,
+  } = useCustomerUploadPic({
+    onError: (err) => {
+      errorToast(
+        err?.response?.data?.message || err?.message || "An Error occurred"
+      );
+    },
   });
-  const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+  const handleUpload = (e) => {
+    const selectedFile = e.target.files[0];
+    if (!selectedFile) {
+      return;
+    }
+
+    setFileType(URL.createObjectURL(selectedFile));
+    const formData = new FormData();
+    formData.append("file", selectedFile);
+    uploadMutate({
+      fileType: "avatar",
+      entityType: "client",
+      file: formData.get("file"),
+    });
+  };
+
+  const [show, setShow] = useState(false);
   const navigate = useNavigate();
-  const [isDisabled, setIsDisabled] = useState(true);
   const { errorToast, successToast } = useCustomToast();
   const { data: allRoles } = useGetAllRoles();
 
-  const roleOptions =
-    allRoles?.data?.map((role) => ({
-      label: role.displayName,
-      value: parseInt(role.id),
-    })) || [];
+  const roleOptions = allRoles?.data?.map((role) => ({
+    label: role.displayName,
+    value: parseInt(role.id),
+  }));
+
+  const statusOptions = statusType?.map((status, i) => ({
+    value: i,
+    label: status,
+  }));
 
   const { mutate, isLoading } = useCreateAdministrator({
     onSuccess: () => {
@@ -51,269 +83,322 @@ export default function AddAttendants() {
     },
   });
 
-  const { mutate: uploadMedia, isLoading: uploadingImage } = useUploadMedia({
-    onSuccess: (data) => {
-      mutate({ ...state, avatar: data.path });
-    },
-    onError: (err) => {
-      errorToast(
-        err?.response?.data?.message || err?.message || "An Error occurred"
-      );
-    },
-  });
-
-  const isFormValid = () => {
-    return (
-      !state.firstName ||
-      !state.lastName ||
-      !state.email ||
-      !state.role ||
-      !state.password ||
-      !state.passwordConfirmation
-    );
+  const handleSubmit = (values = "") => {
+    const { status, role, ...rest } = values;
+    mutate({
+      ...rest,
+      status: status?.value,
+      role: Number(role?.value),
+      avatar: profilePicData?.path,
+    });
   };
-
-  const handleAvatarImageChange = (e) => {
-    const selectedImage = e.target.files[0];
-    if (selectedImage) {
-      setState({
-        ...state,
-        avatarImage: selectedImage,
-      });
-    }
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (state.avatarImage) {
-      const formData = new FormData();
-      formData.append("profilePicture", state.avatarImage);
-      uploadMedia({
-        fileType: "avatar",
-        entityType: "admin",
-        file: formData.get("profilePicture"),
-      });
-    } else {
-      mutate(state);
-    }
-  };
-
-  useEffect(() => {
-    setIsDisabled(isFormValid);
-  }, [state]);
 
   return (
     <Box minH="75vh">
-      <Flex justifyContent="center" align="center" w="full" flexDir="column">
+      <Flex align="flex-start" flexDir={{ md: "row", base: "column" }}>
         <GoBackTab />
-        <Flex
-          bg="#fff"
-          borderRadius="16px"
-          py="24px"
-          px="28px"
-          justifyContent="center"
-          w={{ md: "30rem", base: "100%" }}
-          flexDir="column"
-          border="1px solid #E4E6E8"
-        >
-          <Box alignSelf={"center"} mb={5}>
-            <Text
-              fontSize="10px"
-              fontWeight={500}
-              color="#444648"
-              textAlign="center"
-            >
-              Avatar
-            </Text>
-            <label htmlFor="avatarInput">
-              <Box
-                w="120px"
-                h="120px"
-                justifyContent="center"
-                alignItems="center"
-                border="4px solid #0D0718"
-                borderRadius="12px"
-                display="flex"
-                cursor="pointer"
-                overflow={"hidden"}
-              >
-                {state.avatarImage ? (
-                  <Image
-                    src={URL.createObjectURL(state.avatarImage)}
-                    alt="Avatar"
-                    boxSize="100%"
-                    objectFit="cover"
-                  />
-                ) : (
-                  <AiOutlineCamera size={32} />
-                )}
-              </Box>
-            </label>
-            <input
-              type="file"
-              id="avatarInput"
-              accept="image/*"
-              style={{ display: "none" }}
-              onChange={handleAvatarImageChange}
-            />
-          </Box>
-          <Box w="full" mb={4}>
-            <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
-              First Name
-            </Text>
-            <CustomInput
-              auth
-              value={state.firstName}
-              mb
-              holder="Enter first name"
-              onChange={(e) =>
-                setState({ ...state, firstName: e.target.value })
-              }
-            />
-          </Box>
-
-          <Box w="full" mb={4}>
-            <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
-              Last Name
-            </Text>
-            <CustomInput
-              auth
-              value={state.lastName}
-              mb
-              holder="Enter last name"
-              onChange={(e) => setState({ ...state, lastName: e.target.value })}
-            />
-          </Box>
-
-          <Box w="full" mb={4}>
-            <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
-              Email Address
-            </Text>
-            <CustomInput
-              auth
-              value={state.email}
-              mb
-              holder="Enter email address"
-              onChange={(e) => setState({ ...state, email: e.target.value })}
-            />
-          </Box>
-
-          <Box w="full" mb={4} position="relative">
-            <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
-              Password
-            </Text>
-            <CustomInput
-              auth
-              value={state.password}
-              mb
-              holder="Set password"
-              onChange={(e) => setState({ ...state, password: e.target.value })}
-              type={showPassword ? "text" : "password"}
-            />
-            <Box
-              w="fit-content"
-              position="absolute"
-              zIndex={2}
-              right={"10px"}
-              top="35px"
-              cursor="pointer"
-              onClick={() => setShowPassword(!showPassword)}
-            >
-              {showPassword ? (
-                <AiOutlineEyeInvisible size={20} />
-              ) : (
-                <AiOutlineEye size={20} />
-              )}
-            </Box>
-          </Box>
-
-          <Box position="relative" mb={4}>
-            <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
-              Comfirm Password
-            </Text>
-            <CustomInput
-              auth
-              value={state.passwordConfirmation}
-              mb
-              holder="Re-enter password"
-              onChange={(e) =>
-                setState({ ...state, passwordConfirmation: e.target.value })
-              }
-              type={showConfirmPassword ? "text" : "password"}
-            />
-
-            <Box
-              w="fit-content"
-              position="absolute"
-              zIndex={2}
-              right={"10px"}
-              top="35px"
-              cursor="pointer"
-              onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-            >
-              {showConfirmPassword ? (
-                <AiOutlineEyeInvisible size={20} />
-              ) : (
-                <AiOutlineEye size={20} />
-              )}
-            </Box>
-          </Box>
-
-          <Box mb={4}>
-            <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
-              Default Role
-            </Text>
-            <Select
-              styles={customStyles}
-              options={roleOptions}
-              placeholder="Select role"
-              onChange={(selectedOption) =>
-                setState({
-                  ...state,
-                  role: selectedOption.value,
-                })
-              }
-            />
-          </Box>
-
+        <Flex justifyContent="center" align="center" w="full" flexDir="column">
           <Flex
-            align="center"
-            justifyContent={"space-between"}
-            gap="15px"
-            mb="16px"
+            bg="#fff"
+            borderRadius="12px"
+            py="32px"
+            px="28px"
+            justifyContent="center"
+            w={{ md: "30rem", base: "100%" }}
+            flexDir="column"
+            border="1px solid #E4E6E8"
           >
-            <Text fontSize="12px" fontWeight={500} color="#444648">
-              This user is a manager
-            </Text>
-            <Switch
-              onChange={() =>
-                setState({
-                  ...state,
-                  isManager: state.isManager ? 0 : 1,
-                })
-              }
-              size="sm"
-              variant="adminPrimary"
-            />
-          </Flex>
+            <Box alignSelf={"center"} mb={5}>
+              <Text
+                fontSize="10px"
+                fontWeight={500}
+                color="#444648"
+                textAlign="center"
+              >
+                Avatar
+              </Text>
+              <Input
+                id="image_upload"
+                onChange={handleUpload}
+                type="file"
+                display="none"
+              />
+              <label htmlFor="image_upload">
+                <Flex
+                  flexDir="column"
+                  cursor="pointer"
+                  justifyContent="center"
+                  align="center"
+                  w="full"
+                >
+                  {isUploading ? (
+                    <Spinner />
+                  ) : (
+                    <Image
+                      rounded="full"
+                      objectFit="cover"
+                      w="120px"
+                      border={fileType ? "4px solid #0D0718" : ""}
+                      h="120px"
+                      borderRadius="12px"
+                      src={fileType || "/assets/prof-avatar.jpg"}
+                    />
+                  )}
+                </Flex>
+              </label>
+            </Box>
 
-          <Flex gap={4} mt={4}>
-            <Button
-              variant="adminSecondary"
-              w="45%"
-              onClick={() => navigate(PRIVATE_PATHS.ADMIN_ADMINISTRATORS)}
+            <Formik
+              onSubmit={handleSubmit}
+              initialValues={initAdminValues}
+              validationSchema={validateAdminSchema}
             >
-              Cancel
-            </Button>
-            <Button
-              variant="adminPrimary"
-              w="55%"
-              isDisabled={isDisabled}
-              isLoading={isLoading || uploadingImage}
-              onClick={handleSubmit}
-            >
-              Save
-            </Button>
+              {({
+                values,
+                errors,
+                touched,
+                handleChange,
+                handleBlur,
+                handleSubmit,
+                setValues,
+                isValid,
+                dirty,
+              }) => (
+                <Form onSubmit={handleSubmit}>
+                  <Box w="full" mb={4}>
+                    <Text
+                      mb="8px"
+                      fontSize="10px"
+                      fontWeight={500}
+                      color="#444648"
+                    >
+                      First Name
+                    </Text>
+                    <CustomInput
+                      auth
+                      mb
+                      holder="Enter first name"
+                      name="firstName"
+                      value={values?.firstName}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      error={
+                        errors?.firstName &&
+                        touched?.firstName &&
+                        errors?.firstName
+                      }
+                    />
+                  </Box>
+                  <Box w="full" mb={4}>
+                    <Text
+                      mb="8px"
+                      fontSize="10px"
+                      fontWeight={500}
+                      color="#444648"
+                    >
+                      Last Name
+                    </Text>
+                    <CustomInput
+                      auth
+                      mb
+                      holder="Enter last name"
+                      name="lastName"
+                      value={values?.lastName}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      error={
+                        errors?.lastName &&
+                        touched?.lastName &&
+                        errors?.lastName
+                      }
+                    />
+                  </Box>
+                  <Box w="full" mb={4}>
+                    <Text
+                      mb="8px"
+                      fontSize="10px"
+                      fontWeight={500}
+                      color="#444648"
+                    >
+                      Email Address
+                    </Text>
+                    <CustomInput
+                      auth
+                      mb
+                      holder="Enter email address"
+                      name="email"
+                      value={values?.email}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      error={errors?.email && touched?.email && errors?.email}
+                    />
+                  </Box>
+                  <Box w="full" mb={4}>
+                    <Text
+                      mb="8px"
+                      fontSize="10px"
+                      fontWeight={500}
+                      color="#444648"
+                    >
+                      Password
+                    </Text>
+                    <CustomInput
+                      mb
+                      name="password"
+                      value={values.password}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      error={
+                        errors?.password &&
+                        touched?.password &&
+                        errors?.password
+                      }
+                      holder="Enter Password"
+                      onClick={() => setShow((prev) => !prev)}
+                      password={show ? false : true}
+                      show
+                      type={show ? "text" : "password"}
+                    />
+                  </Box>
+                  <Box mb={4}>
+                    <Text
+                      mb="8px"
+                      fontSize="10px"
+                      fontWeight={500}
+                      color="#444648"
+                    >
+                      Comfirm Password
+                    </Text>
+                    <CustomInput
+                      mb
+                      name="passwordConfirmation"
+                      value={values.passwordConfirmation}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      error={
+                        errors?.passwordConfirmation &&
+                        touched?.passwordConfirmation &&
+                        errors?.passwordConfirmation
+                      }
+                      holder="Confirm Password"
+                      onClick={() => setShow((prev) => !prev)}
+                      password={show ? false : true}
+                      show
+                      type={show ? "text" : "password"}
+                    />
+                  </Box>
+                  <Box mb={4}>
+                    <Text
+                      mb="8px"
+                      fontSize="10px"
+                      fontWeight={500}
+                      color="#444648"
+                    >
+                      Default Role
+                    </Text>
+                    <Select
+                      styles={customStyles}
+                      options={roleOptions}
+                      placeholder="Select role"
+                      name="role"
+                      onChange={(selectedOption) =>
+                        setValues({
+                          ...values,
+                          role: selectedOption,
+                        })
+                      }
+                      onBlur={handleBlur}
+                      value={values.role}
+                      components={{
+                        IndicatorSeparator: () => (
+                          <div style={{ display: "none" }}></div>
+                        ),
+                        DropdownIndicator: () => (
+                          <div>
+                            <IoIosArrowDown size="15px" color="#646668" />
+                          </div>
+                        ),
+                      }}
+                    />
+                  </Box>
+                  <Flex
+                    align="center"
+                    justifyContent={"space-between"}
+                    gap="15px"
+                    mb="16px"
+                  >
+                    <Text fontSize="12px" fontWeight={500} color="#444648">
+                      This user is a manager
+                    </Text>
+                    <Switch
+                      onChange={() =>
+                        setValues({
+                          ...values,
+                          isManager: values.isManager ? 0 : 1,
+                        })
+                      }
+                      value={values.isManager}
+                      isChecked={values.isManager ? true : false}
+                      size="sm"
+                      variant="adminPrimary"
+                    />
+                  </Flex>
+                  <Box>
+                    <Text
+                      mb="8px"
+                      fontSize="10px"
+                      fontWeight={500}
+                      color="#444648"
+                    >
+                      Status
+                    </Text>
+                    <Select
+                      styles={customStyles}
+                      options={statusOptions}
+                      name="status"
+                      onChange={(selectedOption) =>
+                        setValues({
+                          ...values,
+                          status: selectedOption,
+                        })
+                      }
+                      onBlur={handleBlur}
+                      components={{
+                        IndicatorSeparator: () => (
+                          <div style={{ display: "none" }}></div>
+                        ),
+                        DropdownIndicator: () => (
+                          <div>
+                            <IoIosArrowDown size="15px" color="#646668" />
+                          </div>
+                        ),
+                      }}
+                    />
+                  </Box>
+                  
+                  <Flex gap="24px" mt="24px">
+                    <Button
+                      variant="adminSecondary"
+                      w="100%"
+                      onClick={() =>
+                        navigate(PRIVATE_PATHS.ADMIN_ADMINISTRATORS)
+                      }
+                    >
+                      Cancel
+                    </Button>
+                    <Button
+                      variant="adminPrimary"
+                      w="100%"
+                      isDisabled={!isValid || !dirty}
+                      isLoading={isLoading}
+                      type="submit"
+                    >
+                      Save
+                    </Button>
+                  </Flex>
+                </Form>
+              )}
+            </Formik>
           </Flex>
         </Flex>
       </Flex>
@@ -322,19 +407,26 @@ export default function AddAttendants() {
 }
 
 const customStyles = {
-  control: (provided) => ({
+  control: (provided, state) => ({
     ...provided,
     width: "100%",
-    height: "44px",
+    minHeight: "44px",
     color: "#646668",
     fontSize: "14px",
     cursor: "pointer",
     borderRadius: "4px",
-    border: "1px solid #D4D6D8",
-    background: "unset",
+    border: state.hasValue ? "none" : "1px solid #D4D6D8",
+    paddingRight: "16px",
+    background: state.hasValue ? "#f4f6f8" : "unset",
   }),
   menu: (provided) => ({
     ...provided,
     fontSize: "13px",
+    backgroundColor: "#f4f6f8",
+  }),
+  option: (provided, state) => ({
+    ...provided,
+    color: state.isFocused ? "" : "",
+    backgroundColor: state.isFocused ? "#d4d6d8" : "",
   }),
 };

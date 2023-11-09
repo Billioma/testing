@@ -21,13 +21,23 @@ import {
 } from "../../utils/validation";
 import { Form, Formik } from "formik";
 import { useEditClient } from "../../services/admin/query/clients";
+import {
+  useEditAdmin,
+  useEditAdminOperator,
+  useEditAttendant,
+  useEditCustomer,
+} from "../../services/admin/query/users";
 
 const UpdateOperatorPasswordModal = ({
   clientValues,
   id,
   isOpen,
   onClose,
+  adminUser,
   admin,
+  operator,
+  attendant,
+  customer,
 }) => {
   const [show, setShow] = useState(false);
 
@@ -56,10 +66,55 @@ const UpdateOperatorPasswordModal = ({
       );
     },
   });
+  const { mutate: operatorMutate, isLoading: isOperator } =
+    useEditAdminOperator({
+      onSuccess: (res) => {
+        successToast(res?.message);
+        onClose();
+      },
+      onError: (err) => {
+        errorToast(
+          err?.response?.data?.message || err?.message || "An Error occurred"
+        );
+      },
+    });
+  const { mutate: customerMutate, isLoading: isCustomer } = useEditCustomer({
+    onSuccess: (res) => {
+      successToast(res?.message);
+      onClose();
+    },
+    onError: (err) => {
+      errorToast(
+        err?.response?.data?.message || err?.message || "An Error occurred"
+      );
+    },
+  });
+  const { mutate: attendantMutate, isLoading: isAttendant } = useEditAttendant({
+    onSuccess: (res) => {
+      successToast(res?.message);
+      onClose();
+    },
+    onError: (err) => {
+      errorToast(
+        err?.response?.data?.message || err?.message || "An Error occurred"
+      );
+    },
+  });
+  const { mutate: adminMutate, isLoading: isAdmin } = useEditAdmin({
+    onSuccess: (res) => {
+      successToast(res?.message);
+      onClose();
+    },
+    onError: (err) => {
+      errorToast(
+        err?.response?.data?.message || err?.message || "An Error occurred"
+      );
+    },
+  });
 
   const handleSubmit = (values = "") => {
     const { currentPassword, ...rest } = values;
-    const { accountType, status, state, managers, ...list } = clientValues;
+
     admin
       ? clientMutate({
           query: id,
@@ -70,6 +125,34 @@ const UpdateOperatorPasswordModal = ({
             status: clientValues?.status?.value,
             state: clientValues?.state?.value,
             managers: clientValues.managers?.map((item) => item?.value),
+          },
+        })
+      : customer
+      ? customerMutate({
+          query: id,
+          body: {
+            ...rest,
+          },
+        })
+      : attendant
+      ? attendantMutate({
+          query: id,
+          body: {
+            ...rest,
+          },
+        })
+      : operator
+      ? operatorMutate({
+          query: id,
+          body: {
+            ...rest,
+          },
+        })
+      : adminUser
+      ? adminMutate({
+          query: id,
+          body: {
+            ...rest,
           },
         })
       : mutate(values);
@@ -99,8 +182,16 @@ const UpdateOperatorPasswordModal = ({
           </Text>
           <Formik
             onSubmit={handleSubmit}
-            initialValues={admin ? initClientPassValues : initOpPassValues}
-            validationSchema={admin ? clientPassSchema : opPassSchema}
+            initialValues={
+              admin || customer || attendant || adminUser || operator
+                ? initClientPassValues
+                : initOpPassValues
+            }
+            validationSchema={
+              admin || customer || attendant || adminUser || operator
+                ? clientPassSchema
+                : opPassSchema
+            }
           >
             {({
               values,
@@ -113,7 +204,7 @@ const UpdateOperatorPasswordModal = ({
               dirty,
             }) => (
               <Form onSubmit={handleSubmit}>
-                {admin ? (
+                {admin || customer || attendant || adminUser || operator ? (
                   ""
                 ) : (
                   <Box mb="24px">
@@ -217,7 +308,14 @@ const UpdateOperatorPasswordModal = ({
                     fontWeight={500}
                     bg={admin ? "#000" : "red"}
                     type="submit"
-                    isLoading={isLoading || isClient}
+                    isLoading={
+                      isLoading ||
+                      isClient ||
+                      isCustomer ||
+                      isAttendant ||
+                      isAdmin ||
+                      isOperator
+                    }
                     isDisabled={!isValid || !dirty}
                     lineHeight="100%"
                     w="full"

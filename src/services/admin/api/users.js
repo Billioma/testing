@@ -9,11 +9,52 @@ export const getAttendants = async (page, limit, query) => {
   return response.data;
 };
 
+export const getAdminAttendant = async (query) => {
+  const res = await axiosInstance.get(API.ADMIN_ATTENDANT(query.id));
+  return res.data;
+};
+
+export const getAdminEvent = async (query) => {
+  const res = await axiosInstance.get(API.ADMIN_EVENT(query.id));
+  return res.data;
+};
+
+export const getAdminAttendantList = async (query) => {
+  const res = await axiosInstance.get(
+    API.ADMIN_ATTENDANTS_LIST(query.filterString, query.limit, query.page)
+  );
+  return res.data;
+};
+
+export const getAdminCustomerList = async (query) => {
+  const res = await axiosInstance.get(
+    API.ADMIN_CUSTOMERS_LIST(query.filterString, query.limit, query.page)
+  );
+  return res.data;
+};
+
+export const getAdminCustomer = async (query) => {
+  const res = await axiosInstance.get(API.ADMIN_CUSTOMER(query.id));
+  return res.data;
+};
+
 export const getCustomers = async (page, limit, query) => {
   const response = await axiosInstance.get(
     API.ADMIN_CUSTOMERS +
       `?page=${page}&limit=${limit}&sort=id,DESC&${query || ""}`
   );
+  return response.data;
+};
+
+export const getOperatorsList = async (query) => {
+  const res = await axiosInstance.get(
+    API.ADMIN_OPERATORS_LIST(query.filterString, query.limit, query.page)
+  );
+  return res.data;
+};
+
+export const getOperator = async (query) => {
+  const response = await axiosInstance.get(API.ADMIN_OPERATOR(query.id));
   return response.data;
 };
 
@@ -31,6 +72,13 @@ export const getAdministrators = async (page, limit, query) => {
       `?page=${page}&limit=${limit}&sort=id,DESC&${query || ""}`
   );
   return response.data;
+};
+
+export const getAdministratorsList = async (query) => {
+  const res = await axiosInstance.get(
+    API.ADMIN_ADMINISTRATORS_LIST(query.filterString, query.limit, query.page)
+  );
+  return res.data;
 };
 
 export const getManagers = async () => {
@@ -53,11 +101,8 @@ export const createAttendant = async (data) => {
   return response.data;
 };
 
-export const editCustomer = async (data) => {
-  const response = await axiosInstance.patch(
-    `${API.ADMIN_CUSTOMERS}/${data.id}`,
-    data
-  );
+export const editCustomer = async ({ query, body }) => {
+  const response = await axiosInstance.patch(API.ADMIN_CUSTOMER(query), body);
   return response.data;
 };
 
@@ -65,6 +110,19 @@ export const editAdministrator = async (data) => {
   const response = await axiosInstance.patch(
     `${API.ADMIN_ADMINISTRATORS}/${data.id}`,
     data
+  );
+  return response.data;
+};
+
+export const getAdmin = async (query) => {
+  const response = await axiosInstance.get(API.ADMIN_ADMINISTRATOR(query.id));
+  return response.data;
+};
+
+export const editAdmin = async ({ query, body }) => {
+  const response = await axiosInstance.patch(
+    API.ADMIN_ADMINISTRATOR(query),
+    body
   );
   return response.data;
 };
@@ -77,11 +135,13 @@ export const editOperator = async (data) => {
   return response.data;
 };
 
-export const editAttendant = async (data) => {
-  const response = await axiosInstance.patch(
-    `${API.ADMIN_ATTENDANTS}/${data.id}`,
-    data
-  );
+export const editAdminOperator = async ({ query, body }) => {
+  const response = await axiosInstance.patch(API.ADMIN_OPERATOR(query), body);
+  return response.data;
+};
+
+export const editAttendant = async ({ query, body }) => {
+  const response = await axiosInstance.patch(API.ADMIN_ATTENDANT(query), body);
   return response.data;
 };
 

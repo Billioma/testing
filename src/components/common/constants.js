@@ -980,7 +980,7 @@ export const clientStyle = {
   color: "#fff",
   fontWeight: 500,
   borderRadius: "4px",
-  fontSize: "14px",
+  fontSize: "13px",
   lineHeight: "100%",
   margin: "0 -20px 12px",
   padding: "5px 2px 5px 16px",
@@ -1476,6 +1476,16 @@ export const customStyles = {
     paddingRight: "16px",
     background: state.hasValue ? "#f4f6f8" : "unset",
   }),
+  menu: (provided) => ({
+    ...provided,
+    fontSize: "13px",
+    backgroundColor: "#f4f6f8",
+  }),
+  option: (provided, state) => ({
+    ...provided,
+    color: state.isFocused ? "" : "",
+    backgroundColor: state.isFocused ? "#d4d6d8" : "",
+  }),
 };
 
 export const clientListOptions = [
@@ -1498,24 +1508,19 @@ export const customersOptions = [
   { label: "Phone", value: "profile.phone" },
   { label: "Company Name", value: "profile.companyName" },
   { label: "Email", value: "email" },
-  { label: "Status", value: "status" },
-  { label: "Created At", value: "createdAt" },
 ];
 
 export const attendantsOptions = [
   { label: "Name", value: "name" },
   { label: "User ID", value: "userId" },
   { label: "Account Type", value: "accountType" },
-  { label: "Status", value: "status" },
-  { label: "Created At", value: "createdAt" },
 ];
 
 export const administratorsOptions = [
-  { label: "Name", value: "name" },
+  { label: "First Name", value: "firstName" },
+  { label: "Last Name", value: "lastName" },
   { label: "Email", value: "email" },
   { label: "Role", value: "role.displayName" },
-  { label: "Status", value: "status" },
-  { label: "Created At", value: "createdAt" },
 ];
 
 export const operatorOptions = [
@@ -1524,18 +1529,12 @@ export const operatorOptions = [
   { label: "Contact Person", value: "contactPerson" },
   { label: "Phone", value: "phone" },
   { label: "State", value: "state" },
-  { label: "Status", value: "status" },
-  { label: "Created At", value: "createdAt" },
 ];
 
 export const eventsOptions = [
   { label: "Name", value: "name" },
   { label: "Client", value: "client.name" },
   { label: "Website", value: "website" },
-  { label: "Start Date", value: "eventStartDateTime" },
-  { label: "End Date", value: "eventEndDateTime" },
-  { label: "Status", value: "status" },
-  { label: "Created At", value: "createdAt" },
 ];
 
 export const locationsOptions = [

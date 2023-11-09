@@ -42,7 +42,7 @@ export default function () {
 
     const currentPage = page;
     const itemsPerPage = limit;
-    const totalItems = data.total;
+    const totalItems = data?.total;
 
     const currentStartRow = (currentPage - 1) * itemsPerPage + 1;
     const currentEndRow = Math.min(currentPage * itemsPerPage, totalItems);

@@ -129,7 +129,7 @@ const SideBar = () => {
                       : item.icon}
                   </Box>
                   <Box>
-                    <Text fontSize="14px" ml={4} mb={0}>
+                    <Text fontSize="13px" ml={4} mb={0}>
                       {item.name}
                     </Text>
                   </Box>

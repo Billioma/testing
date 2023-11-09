@@ -1,11 +1,14 @@
-import React, { useState, useEffect } from "react";
-import { Box, Flex, Text, Button, Image } from "@chakra-ui/react";
-import CustomInput from "../../../components/common/CustomInput";
+import React, { useState } from "react";
 import {
-  AiOutlineEye,
-  AiOutlineEyeInvisible,
-  AiOutlineCamera,
-} from "react-icons/ai";
+  Box,
+  Flex,
+  Text,
+  Button,
+  Image,
+  Spinner,
+  Input,
+} from "@chakra-ui/react";
+import CustomInput from "../../../components/common/CustomInput";
 import Select from "react-select";
 import { useGetAllOperators } from "../../../services/admin/query/operators";
 import { useNavigate } from "react-router-dom";
@@ -13,24 +16,18 @@ import { PRIVATE_PATHS } from "../../../routes/constants";
 import { useCreateAttendant } from "../../../services/admin/query/users";
 import useCustomToast from "../../../utils/notifications";
 import GoBackTab from "../../../components/data/Admin/GoBackTab";
-import { useUploadMedia } from "../../../services/admin/query/general";
+import { Form, Formik } from "formik";
+import {
+  initAttendantsValues,
+  validateAttendantsSchema,
+} from "../../../utils/validation";
+import { useCustomerUploadPic } from "../../../services/customer/query/user";
+import { accountType, statusType } from "../../../components/common/constants";
+import { useGetAllLocations } from "../../../services/admin/query/locations";
+import { IoIosArrowDown } from "react-icons/io";
 
 export default function AddAttendants() {
-  const [state, setState] = useState({
-    name: "",
-    password: "",
-    passwordConfirmation: "",
-    operator: "",
-    accountType: "",
-    userId: "",
-    status: 1,
-    avatarImage: null,
-  });
-  const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const navigate = useNavigate();
-  const { data } = useGetAllOperators();
-  const [isDisabled, setIsDisabled] = useState(true);
   const { errorToast, successToast } = useCustomToast();
   const { mutate, isLoading } = useCreateAttendant({
     onSuccess: () => {
@@ -44,50 +41,59 @@ export default function AddAttendants() {
     },
   });
 
-  const isFormValid = () => {
-    return (
-      !state.name ||
-      !state.userId ||
-      !state.password ||
-      !state.passwordConfirmation ||
-      !state.accountType ||
-      !state.operator
-    );
-  };
-
-  useEffect(() => {
-    setIsDisabled(isFormValid);
-  }, [state]);
-
   const customStyles = {
-    control: (provided) => ({
+    control: (provided, state) => ({
       ...provided,
       width: "100%",
-      height: "44px",
+      minHeight: "44px",
       color: "#646668",
       fontSize: "14px",
       cursor: "pointer",
       borderRadius: "4px",
-      border: "1px solid #D4D6D8",
-      background: "unset",
+      border: state.hasValue ? "none" : "1px solid #D4D6D8",
+      paddingRight: "16px",
+      background: state.hasValue ? "#f4f6f8" : "unset",
     }),
     menu: (provided) => ({
       ...provided,
       fontSize: "13px",
+      backgroundColor: "#f4f6f8",
+    }),
+    option: (provided, state) => ({
+      ...provided,
+      color: state.isFocused ? "" : "",
+      backgroundColor: state.isFocused ? "#d4d6d8" : "",
     }),
   };
 
-  const selectOptions = [
-    { label: "PARKING", value: "PARKING" },
-    { label: "VALET", value: "VALET" },
-    { label: "SERVICE", value: "SERVICE" },
-    { label: "OTHERS", value: "OTHERS" },
-  ];
+  const { data: operators } = useGetAllOperators();
 
-  const { mutate: uploadMedia, isLoading: uploadingImage } = useUploadMedia({
-    onSuccess: (data) => {
-      mutate({ ...state, avatar: data.path });
-    },
+  const { data: locationsData } = useGetAllLocations();
+  const locationOptions = locationsData?.data?.map((location) => ({
+    label: location?.name,
+    value: location?.id,
+  }));
+
+  const operatorOptions = operators?.data?.map((operator) => ({
+    label: operator?.name,
+    value: operator?.id,
+  }));
+
+  const statusOptions = statusType?.map((status, i) => ({
+    value: i,
+    label: status,
+  }));
+  const accountOptions = accountType?.map((account, i) => ({
+    value: account,
+    label: account,
+  }));
+
+  const [fileType, setFileType] = useState("");
+  const {
+    mutate: uploadMutate,
+    isLoading: isUploading,
+    data: profilePicData,
+  } = useCustomerUploadPic({
     onError: (err) => {
       errorToast(
         err?.response?.data?.message || err?.message || "An Error occurred"
@@ -95,228 +101,368 @@ export default function AddAttendants() {
     },
   });
 
-  const handleAvatarImageChange = (e) => {
-    const selectedImage = e.target.files[0];
-    if (selectedImage) {
-      setState({
-        ...state,
-        avatarImage: selectedImage,
-      });
+  const handleUpload = (e) => {
+    const selectedFile = e.target.files[0];
+    if (!selectedFile) {
+      return;
     }
+
+    setFileType(URL.createObjectURL(selectedFile));
+    const formData = new FormData();
+    formData.append("file", selectedFile);
+    uploadMutate({
+      fileType: "avatar",
+      entityType: "client",
+      file: formData.get("file"),
+    });
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (state.avatarImage) {
-      const formData = new FormData();
-      formData.append("profilePicture", state.avatarImage);
-      uploadMedia({
-        fileType: "avatar",
-        entityType: "admin",
-        file: formData.get("profilePicture"),
-      });
-    } else {
-      mutate(state);
-    }
+  const [show, setShow] = useState(false);
+
+  const handleSubmit = (values = "") => {
+    const { status, accountType, userId, locations, operator, ...rest } = values;
+    mutate({
+      ...rest,
+      status: status?.value,
+      userId: String(userId),
+      accountType: accountType?.value,
+      operator: Number(operator?.value),
+      avatar: profilePicData?.path,
+      locations: locations?.map((item) => Number(item?.value)),
+    });
   };
 
   return (
     <Box minH="75vh">
-      <Flex justifyContent="center" align="center" w="full" flexDir="column">
+      <Flex align="flex-start" flexDir={{ md: "row", base: "column" }}>
         <GoBackTab />
-        <Flex
-          bg="#fff"
-          borderRadius="16px"
-          py="24px"
-          px="28px"
-          justifyContent="center"
-          w="30rem"
-          flexDir="column"
-          border="1px solid #E4E6E8"
-        >
-          <Box alignSelf={"center"} mb={5}>
-            <Text
-              fontSize="10px"
-              fontWeight={500}
-              color="#444648"
-              textAlign="center"
-            >
-              Avatar
-            </Text>
-            <label htmlFor="avatarInput">
-              <Box
-                w="120px"
-                h="120px"
-                justifyContent="center"
-                alignItems="center"
-                border="4px solid #0D0718"
-                borderRadius="12px"
-                display="flex"
-                cursor="pointer"
-                overflow={"hidden"}
+        <Flex justifyContent="center" align="center" w="full" flexDir="column">
+          <Flex
+            bg="#fff"
+            borderRadius="12px"
+            py="32px"
+            px="28px"
+            justifyContent="center"
+            w={{ md: "30rem", base: "100%" }}
+            flexDir="column"
+            border="1px solid #E4E6E8"
+          >
+            <Box alignSelf={"center"} mb={5}>
+              <Text
+                fontSize="10px"
+                fontWeight={500}
+                color="#444648"
+                textAlign="center"
               >
-                {state.avatarImage ? (
-                  <Image
-                    src={URL.createObjectURL(state.avatarImage)}
-                    alt="Avatar"
-                    boxSize="100%"
-                    objectFit="cover"
-                  />
-                ) : (
-                  <AiOutlineCamera size={32} />
-                )}
-              </Box>
-            </label>
-            <input
-              type="file"
-              id="avatarInput"
-              accept="image/*"
-              style={{ display: "none" }}
-              onChange={handleAvatarImageChange}
-            />
-          </Box>
-          <Box w="full" mb={4}>
-            <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
-              Full Name
-            </Text>
-            <CustomInput
-              auth
-              value={state.name}
-              mb
-              holder="Enter full name"
-              onChange={(e) => setState({ ...state, name: e.target.value })}
-            />
-          </Box>
-
-          <Box w="full" mb={4}>
-            <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
-              User ID
-            </Text>
-            <CustomInput
-              auth
-              value={state.userId}
-              mb
-              type="number"
-              holder="Enter user ID"
-              onChange={(e) => setState({ ...state, userId: e.target.value })}
-            />
-          </Box>
-
-          <Box w="full" mb={4} position="relative">
-            <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
-              Password
-            </Text>
-            <CustomInput
-              auth
-              value={state.password}
-              mb
-              holder="Set password"
-              onChange={(e) => setState({ ...state, password: e.target.value })}
-              type={showPassword ? "text" : "password"}
-            />
-            <Box
-              w="fit-content"
-              position="absolute"
-              zIndex={2}
-              right={"10px"}
-              top="35px"
-              cursor="pointer"
-              onClick={() => setShowPassword(!showPassword)}
-            >
-              {showPassword ? (
-                <AiOutlineEyeInvisible size={20} />
-              ) : (
-                <AiOutlineEye size={20} />
-              )}
+                Avatar
+              </Text>
+              <Input
+                id="image_upload"
+                onChange={handleUpload}
+                type="file"
+                display="none"
+              />
+              <label htmlFor="image_upload">
+                <Flex
+                  flexDir="column"
+                  cursor="pointer"
+                  justifyContent="center"
+                  align="center"
+                  w="full"
+                >
+                  {isUploading ? (
+                    <Spinner />
+                  ) : (
+                    <Image
+                      rounded="full"
+                      objectFit="cover"
+                      w="120px"
+                      border={fileType ? "4px solid #0D0718" : ""}
+                      h="120px"
+                      borderRadius="12px"
+                      src={fileType || "/assets/prof-avatar.jpg"}
+                    />
+                  )}
+                </Flex>
+              </label>
             </Box>
-          </Box>
 
-          <Box position="relative" mb={4}>
-            <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
-              Comfirm Password
-            </Text>
-            <CustomInput
-              auth
-              value={state.passwordConfirmation}
-              mb
-              holder="Re-enter password"
-              onChange={(e) =>
-                setState({ ...state, passwordConfirmation: e.target.value })
-              }
-              type={showConfirmPassword ? "text" : "password"}
-            />
-
-            <Box
-              w="fit-content"
-              position="absolute"
-              zIndex={2}
-              right={"10px"}
-              top="35px"
-              cursor="pointer"
-              onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+            <Formik
+              onSubmit={handleSubmit}
+              initialValues={initAttendantsValues}
+              validationSchema={validateAttendantsSchema}
             >
-              {showConfirmPassword ? (
-                <AiOutlineEyeInvisible size={20} />
-              ) : (
-                <AiOutlineEye size={20} />
+              {({
+                values,
+                errors,
+                touched,
+                handleChange,
+                handleBlur,
+                handleSubmit,
+                setValues,
+                isValid,
+                dirty,
+              }) => (
+                <Form onSubmit={handleSubmit}>
+                  <Box w="full" mb={4}>
+                    <Text
+                      mb="8px"
+                      fontSize="10px"
+                      fontWeight={500}
+                      color="#444648"
+                    >
+                      Full Name
+                    </Text>
+                    <CustomInput
+                      auth
+                      mb
+                      name="name"
+                      holder="Enter Full Name"
+                      value={values?.name}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      error={errors?.name && touched?.name && errors?.name}
+                    />
+                  </Box>
+
+                  <Box w="full" mb={4}>
+                    <Text
+                      mb="8px"
+                      fontSize="10px"
+                      fontWeight={500}
+                      color="#444648"
+                    >
+                      User ID
+                    </Text>
+                    <CustomInput
+                      auth
+                      mb
+                      type="number"
+                      holder="Enter user ID"
+                      name="userId"
+                      value={values?.userId}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      error={
+                        errors?.userId && touched?.userId && errors?.userId
+                      }
+                    />
+                  </Box>
+
+                  <Box w="full" mb={4}>
+                    <Text
+                      mb="8px"
+                      fontSize="10px"
+                      fontWeight={500}
+                      color="#444648"
+                    >
+                      Password
+                    </Text>
+                    <CustomInput
+                      mb
+                      name="password"
+                      value={values.password}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      error={
+                        errors?.password &&
+                        touched?.password &&
+                        errors?.password
+                      }
+                      holder="Enter Password"
+                      onClick={() => setShow((prev) => !prev)}
+                      password={show ? false : true}
+                      show
+                      type={show ? "text" : "password"}
+                    />
+                  </Box>
+
+                  <Box mb={4}>
+                    <Text
+                      mb="8px"
+                      fontSize="10px"
+                      fontWeight={500}
+                      color="#444648"
+                    >
+                      Comfirm Password
+                    </Text>
+                    <CustomInput
+                      mb
+                      name="passwordConfirmation"
+                      value={values.passwordConfirmation}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      error={
+                        errors?.passwordConfirmation &&
+                        touched?.passwordConfirmation &&
+                        errors?.passwordConfirmation
+                      }
+                      holder="Confirm Password"
+                      onClick={() => setShow((prev) => !prev)}
+                      password={show ? false : true}
+                      show
+                      type={show ? "text" : "password"}
+                    />
+                  </Box>
+
+                  <Box mb={4}>
+                    <Text
+                      mb="8px"
+                      fontSize="10px"
+                      fontWeight={500}
+                      color="#444648"
+                    >
+                      Select Account Type
+                    </Text>
+                    <Select
+                      styles={customStyles}
+                      options={accountOptions}
+                      placeholder="Select account type"
+                      name="accountType"
+                      onChange={(selectedOption) =>
+                        setValues({
+                          ...values,
+                          accountType: selectedOption,
+                        })
+                      }
+                      onBlur={handleBlur}
+                      components={{
+                        IndicatorSeparator: () => (
+                          <div style={{ display: "none" }}></div>
+                        ),
+                        DropdownIndicator: () => (
+                          <div>
+                            <IoIosArrowDown size="15px" color="#646668" />
+                          </div>
+                        ),
+                      }}
+                    />
+                  </Box>
+
+                  <Box mb={4}>
+                    <Text
+                      mb="8px"
+                      fontSize="10px"
+                      fontWeight={500}
+                      color="#444648"
+                    >
+                      Assign Operator
+                    </Text>
+                    <Select
+                      styles={customStyles}
+                      options={operatorOptions}
+                      placeholder="Select an operator"
+                      name="operator"
+                      onChange={(selectedOption) =>
+                        setValues({
+                          ...values,
+                          operator: selectedOption,
+                        })
+                      }
+                      onBlur={handleBlur}
+                      components={{
+                        IndicatorSeparator: () => (
+                          <div style={{ display: "none" }}></div>
+                        ),
+                        DropdownIndicator: () => (
+                          <div>
+                            <IoIosArrowDown size="15px" color="#646668" />
+                          </div>
+                        ),
+                      }}
+                    />
+                  </Box>
+
+                  <Box mb={4}>
+                    <Text
+                      mb="8px"
+                      fontSize="10px"
+                      fontWeight={500}
+                      color="#444648"
+                    >
+                      Select Locations
+                    </Text>
+                    <Select
+                      styles={customStyles}
+                      options={locationOptions}
+                      placeholder="Select locations"
+                      name="locations"
+                      onChange={(selectedOption) =>
+                        setValues({
+                          ...values,
+                          locations: selectedOption,
+                        })
+                      }
+                      value={values.locations}
+                      isMulti
+                      onBlur={handleBlur}
+                      components={{
+                        IndicatorSeparator: () => (
+                          <div style={{ display: "none" }}></div>
+                        ),
+                        DropdownIndicator: () => (
+                          <div>
+                            <IoIosArrowDown size="15px" color="#646668" />
+                          </div>
+                        ),
+                      }}
+                    />
+                  </Box>
+
+                  <Box>
+                    <Text
+                      mb="8px"
+                      fontSize="10px"
+                      fontWeight={500}
+                      color="#444648"
+                    >
+                      Status
+                    </Text>
+                    <Select
+                      styles={customStyles}
+                      options={statusOptions}
+                      name="status"
+                      onChange={(selectedOption) =>
+                        setValues({
+                          ...values,
+                          status: selectedOption,
+                        })
+                      }
+                      onBlur={handleBlur}
+                      components={{
+                        IndicatorSeparator: () => (
+                          <div style={{ display: "none" }}></div>
+                        ),
+                        DropdownIndicator: () => (
+                          <div>
+                            <IoIosArrowDown size="15px" color="#646668" />
+                          </div>
+                        ),
+                      }}
+                    />
+                  </Box>
+
+                  <Flex gap="24px" mt="24px">
+                    <Button
+                      variant="adminSecondary"
+                      w="100%"
+                      onClick={() => navigate(PRIVATE_PATHS.ADMIN_ATTENDANTS)}
+                    >
+                      Cancel
+                    </Button>
+                    <Button
+                      variant="adminPrimary"
+                      w="100%"
+                      isDisabled={!isValid || !dirty}
+                      isLoading={isLoading}
+                      type="submit"
+                    >
+                      Save
+                    </Button>
+                  </Flex>
+                </Form>
               )}
-            </Box>
-          </Box>
-
-          <Box mb={4}>
-            <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
-              Select Account Type
-            </Text>
-            <Select
-              styles={customStyles}
-              options={selectOptions}
-              placeholder="Select account type"
-              onChange={(selectedOption) =>
-                setState({
-                  ...state,
-                  accountType: selectedOption.value,
-                })
-              }
-            />
-          </Box>
-
-          <Box>
-            <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
-              Assign Operator
-            </Text>
-            <Select
-              styles={customStyles}
-              options={data?.data?.map((operator) => ({
-                label: operator.name,
-                value: operator.id,
-              }))}
-              placeholder="Select an operator"
-              onChange={(selectedOption) =>
-                setState({
-                  ...state,
-                  operator: parseInt(selectedOption.value),
-                })
-              }
-            />
-          </Box>
-
-          <Flex gap={4} mt={4}>
-            <Button
-              variant="adminSecondary"
-              w="45%"
-              onClick={() => navigate(PRIVATE_PATHS.ADMIN_ATTENDANTS)}
-            >
-              Cancel
-            </Button>
-            <Button
-              variant="adminPrimary"
-              w="55%"
-              isDisabled={isDisabled}
-              isLoading={isLoading}
-              onClick={handleSubmit}
-            >
-              Save
-            </Button>
+            </Formik>
           </Flex>
         </Flex>
       </Flex>

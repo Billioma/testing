@@ -20,6 +20,9 @@ import {
   getAdminClientsInvoicesList,
   getAdminClientInvoice,
   adminClientMakePayment,
+  getEntityCustomers,
+  attachAdminClientUser,
+  getAdminEventsList,
 } from "../api/clients";
 
 export const useGetClients = (options = {}, page = 1, limit = 25, query) => {
@@ -32,6 +35,18 @@ export const useGetClients = (options = {}, page = 1, limit = 25, query) => {
   );
 
   return { isLoading, data, refetch };
+};
+
+export const useGetEntityCustomers = (email = "", options = {}) => {
+  const { data, isLoading, refetch } = useQuery(
+    ["GET_ENTITY_CUSTOMERS", email],
+    getEntityCustomers,
+    {
+      ...options,
+    }
+  );
+
+  return { data, isLoading, refetch };
 };
 
 export const useGetAdminClients = (options = {}) => {
@@ -79,6 +94,15 @@ export const useGetAdminClientUsers = (options = {}) => {
 export const useDetachAdminClientUser = (options = {}) => {
   const { isLoading, data, mutate } = useMutation(detachAdminClientUser, {
     mutationKey: ["DETACH_ADMIN_CLIENT_USER"],
+    ...options,
+  });
+
+  return { isLoading, data, mutate };
+};
+
+export const useAttachAdminClientUser = (options = {}) => {
+  const { isLoading, data, mutate } = useMutation(attachAdminClientUser, {
+    mutationKey: ["ATTACH_ADMIN_CLIENT_USER"],
     ...options,
   });
 
@@ -170,6 +194,14 @@ export const useUpdateClientInvoice = (options = {}) => {
   });
 
   return { isLoading, data, mutate };
+};
+
+export const useGetAdminEvents = (options = {}) => {
+  const { mutate, isLoading, data } = useMutation(getAdminEventsList, {
+    mutationKey: "GET_ADMIN_EVENTS_LIST",
+    ...options,
+  });
+  return { mutate, isLoading, data };
 };
 
 export const useGetClientsEvents = (

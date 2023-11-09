@@ -138,3 +138,20 @@ export const formatTimeToHHMMSS = (time) => {
   const seconds = "00";
   return `${hours}:${minutes}:${seconds}`;
 };
+
+
+export const formatDateToISOString = (date) => {
+  
+  const newDate = new Date(date);
+
+  const year = newDate.getUTCFullYear();
+  const month = String(newDate.getUTCMonth() + 1).padStart(2, '0');
+  const day = String(newDate.getUTCDate()).padStart(2, '0');
+  const hours = String(newDate.getUTCHours()).padStart(2, '0');
+  const minutes = String(newDate.getUTCMinutes()).padStart(2, '0');
+  const seconds = String(newDate.getUTCSeconds()).padStart(2, '0');
+  const milliseconds = String(newDate.getUTCMilliseconds()).padStart(3, '0');
+
+  const formattedDate = `${year}-${month}-${day}T${hours}:${minutes}:${seconds}.${milliseconds}Z`;
+  return formattedDate;
+}

@@ -10,6 +10,12 @@ export const getClients = async (page, limit, query) => {
   return response.data;
 };
 
+export const getEntityCustomers = async ({ queryKey }) => {
+  const [, email] = queryKey;
+  const response = await axiosInstance.get(`${API.CUSTOMERS}?email=${email}`);
+  return response.data;
+};
+
 export const getAdminClients = async (query) => {
   const res = await axiosInstance.get(
     API.ADMIN_CLIENTS_LIST(query.filterString, query.limit, query.page)
@@ -35,6 +41,13 @@ export const getAdminClientUsers = async (query) => {
 export const detachAdminClientUser = async (query) => {
   const res = await axiosInstance.get(
     API.DETACH_CLIENT_USER(query.id, query.email)
+  );
+  return res.data;
+};
+
+export const attachAdminClientUser = async (query) => {
+  const res = await axiosInstance.get(
+    API.ATTACH_CLIENT_USER(query.id, query.email)
   );
   return res.data;
 };
@@ -99,10 +112,7 @@ export const addClientInvoice = async (data) => {
 };
 
 export const updateClientInvoice = async ({ query, body }) => {
-  const res = await axiosInstance.patch(
-    API.ADMIN_CLIENT_INVOICE(query),
-    body
-  );
+  const res = await axiosInstance.patch(API.ADMIN_CLIENT_INVOICE(query), body);
   return res.data;
 };
 
@@ -115,16 +125,20 @@ export const getClientsEvents = async (page, limit, query) => {
   return response.data;
 };
 
+export const getAdminEventsList = async (query) => {
+  const res = await axiosInstance.get(
+    API.ADMIN_EVENTS_LIST(query.filterString, query.limit, query.page)
+  );
+  return res.data;
+};
+
 export const addClientEvent = async (data) => {
   const response = await axiosInstance.post(`${API.ADMIN_EVENTS}`, data);
   return response.data;
 };
 
-export const updateClientEvent = async (data) => {
-  const response = await axiosInstance.patch(
-    `${API.ADMIN_EVENTS}/${data.id}`,
-    data
-  );
+export const updateClientEvent = async ({ query, body }) => {
+  const response = await axiosInstance.patch(API.ADMIN_EVENT(query), body);
   return response.data;
 };
 

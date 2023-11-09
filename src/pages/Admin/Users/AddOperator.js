@@ -1,43 +1,36 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Box, Flex, Text, Button, Switch } from "@chakra-ui/react";
 import CustomInput from "../../../components/common/CustomInput";
-import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import Select from "react-select";
-import { customStyles } from "../../../components/common/constants";
+import {
+  allStates,
+  customStyles,
+  statusType,
+} from "../../../components/common/constants";
 import { useNavigate } from "react-router-dom";
 import { PRIVATE_PATHS } from "../../../routes/constants";
-import {
-  useCreateOperator,
-  useGetOperators,
-} from "../../../services/admin/query/users";
+import { useCreateOperator } from "../../../services/admin/query/users";
 import useCustomToast from "../../../utils/notifications";
 import GoBackTab from "../../../components/data/Admin/GoBackTab";
-import { useGetStates } from "../../../services/customer/query/locations";
+import { IoIosArrowDown } from "react-icons/io";
+import { Form, Formik } from "formik";
+import {
+  initOperatorValues,
+  validateOperatorSchema,
+} from "../../../utils/validation";
 
 export default function AddOperator() {
-  const [state, setState] = useState({
-    name: "",
-    password: "",
-    email: "",
-    passwordConfirmation: "",
-    phone: "",
-    address: "",
-    contactPerson: "",
-    state: "",
-    status: 1,
-    enableTips: 0,
-  });
-  const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const statusOptions = statusType?.map((status, i) => ({
+    value: i,
+    label: status,
+  }));
+
+  const [show, setShow] = useState(false);
   const navigate = useNavigate();
-  const [isDisabled, setIsDisabled] = useState(true);
   const { errorToast, successToast } = useCustomToast();
-  const { data: states } = useGetStates();
-  const { refetch } = useGetOperators();
   const { mutate, isLoading } = useCreateOperator({
     onSuccess: () => {
       successToast("Operator added successfully!");
-      refetch();
       navigate(PRIVATE_PATHS.ADMIN_OPERATORS);
     },
     onError: (error) => {
@@ -47,239 +40,342 @@ export default function AddOperator() {
     },
   });
 
-  const stateOptions = states?.data?.map((state) => ({
+  const stateOptions = allStates?.map((state) => ({
     value: state,
     label: state,
   }));
 
-  const isFormValid = () => {
-    return (
-      !state.name ||
-      !state.email ||
-      !state.password ||
-      !state.passwordConfirmation ||
-      !state.state ||
-      !state.phone ||
-      !state.contactPerson ||
-      !state.address
-    );
-  };
-
-  useEffect(() => {
-    setIsDisabled(isFormValid);
-  }, [state]);
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    mutate({ ...state, phone: `0${state.phone}` });
+  const handleSubmit = (values = "") => {
+    const { status, state, phone, ...rest } = values;
+    mutate({
+      ...rest,
+      status: status?.value,
+      state: state?.value,
+      phone: `+234${Number(phone)}`,
+    });
   };
 
   return (
     <Box minH="75vh">
-      <Flex justifyContent="center" align="center" w="full" flexDir="column">
+      <Flex align="flex-start" flexDir={{ md: "row", base: "column" }}>
         <GoBackTab />
-        <Flex
-          bg="#fff"
-          borderRadius="16px"
-          py="24px"
-          px="28px"
-          justifyContent="center"
-          w="30rem"
-          flexDir="column"
-          border="1px solid #E4E6E8"
-        >
-          <Box w="full" mb={4}>
-            <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
-              Name
-            </Text>
-            <CustomInput
-              auth
-              value={state.name}
-              mb
-              holder="Enter operator name"
-              onChange={(e) => setState({ ...state, name: e.target.value })}
-            />
-          </Box>
-
-          <Box w="full" mb={4}>
-            <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
-              Email Address
-            </Text>
-            <CustomInput
-              auth
-              value={state.email}
-              mb
-              holder="Enter email address"
-              onChange={(e) => setState({ ...state, email: e.target.value })}
-            />
-          </Box>
-
-          <Box mb={4}>
-            <Text mb="8px" fontWeight={500} color="#444648" fontSize="10px">
-              Phone Number
-            </Text>
-            <CustomInput
-              mb
-              ngn
-              name="phone"
-              value={`${state?.phone}`}
-              onChange={(e) => {
-                const inputPhone = e.target.value
-                  .replace(/\D/g, "")
-                  .slice(0, 10);
-                setState({
-                  ...state,
-                  phone: inputPhone,
-                });
-              }}
-              holder="Enter Phone Number"
-            />
-          </Box>
-
-          <Box w="full" mb={4}>
-            <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
-              Address
-            </Text>
-            <CustomInput
-              auth
-              value={state.address}
-              mb
-              holder="Enter operator address"
-              onChange={(e) => setState({ ...state, address: e.target.value })}
-            />
-          </Box>
-          <Box mb={4}>
-            <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
-              State
-            </Text>
-            <Select
-              styles={customStyles}
-              placeholder="Select State"
-              options={stateOptions}
-              value={stateOptions?.find(
-                (option) => option.value === state.state
-              )}
-              onChange={(selectedOption) =>
-                setState({ ...state, state: selectedOption.value })
-              }
-            />
-          </Box>
-
-          <Box w="full" mb={4}>
-            <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
-              Contact Person
-            </Text>
-            <CustomInput
-              auth
-              value={state.contactPerson}
-              mb
-              holder="Enter contact person"
-              onChange={(e) =>
-                setState({ ...state, contactPerson: e.target.value })
-              }
-            />
-          </Box>
-
-          <Box w="full" mb={4} position="relative">
-            <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
-              Password
-            </Text>
-            <CustomInput
-              auth
-              value={state.password}
-              mb
-              holder="Set password"
-              onChange={(e) => setState({ ...state, password: e.target.value })}
-              type={showPassword ? "text" : "password"}
-            />
-            <Box
-              w="fit-content"
-              position="absolute"
-              zIndex={0.5}
-              right={"10px"}
-              top="35px"
-              cursor="pointer"
-              onClick={() => setShowPassword(!showPassword)}
-            >
-              {showPassword ? (
-                <AiOutlineEyeInvisible size={20} />
-              ) : (
-                <AiOutlineEye size={20} />
-              )}
-            </Box>
-          </Box>
-
-          <Box position="relative" mb={4}>
-            <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
-              Confirm Password
-            </Text>
-            <CustomInput
-              auth
-              value={state.passwordConfirmation}
-              mb
-              holder="Re-enter password"
-              onChange={(e) =>
-                setState({ ...state, passwordConfirmation: e.target.value })
-              }
-              type={showConfirmPassword ? "text" : "password"}
-            />
-
-            <Box
-              w="fit-content"
-              position="absolute"
-              zIndex={0.5}
-              right={"10px"}
-              top="35px"
-              cursor="pointer"
-              onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-            >
-              {showConfirmPassword ? (
-                <AiOutlineEyeInvisible size={20} />
-              ) : (
-                <AiOutlineEye size={20} />
-              )}
-            </Box>
-          </Box>
-
+        <Flex justifyContent="center" align="center" w="full" flexDir="column">
           <Flex
-            align="center"
-            justifyContent={"space-between"}
-            gap="15px"
-            mb="16px"
-            mt={2}
+            bg="#fff"
+            borderRadius="12px"
+            py="32px"
+            px="28px"
+            justifyContent="center"
+            w={{ md: "30rem", base: "100%" }}
+            flexDir="column"
+            border="1px solid #E4E6E8"
           >
-            <Text fontSize="12px" fontWeight={500} color="#444648">
-              Enable Tips
-            </Text>
-            <Switch
-              onChange={() =>
-                setState({
-                  ...state,
-                  enableTips: state.enableTips ? 0 : 1,
-                })
-              }
-              size="sm"
-              variant="adminPrimary"
-            />
-          </Flex>
+            <Formik
+              onSubmit={handleSubmit}
+              initialValues={initOperatorValues}
+              validationSchema={validateOperatorSchema}
+            >
+              {({
+                values,
+                errors,
+                touched,
+                handleChange,
+                handleBlur,
+                handleSubmit,
+                setValues,
+                isValid,
+                dirty,
+              }) => (
+                <Form onSubmit={handleSubmit}>
+                  <Box w="full" mb={4}>
+                    <Text
+                      mb="8px"
+                      fontSize="10px"
+                      fontWeight={500}
+                      color="#444648"
+                    >
+                      Name
+                    </Text>
+                    <CustomInput
+                      auth
+                      mb
+                      holder="Enter operator name"
+                      name="name"
+                      value={values?.name}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      error={errors?.name && touched?.name && errors?.name}
+                    />
+                  </Box>
 
-          <Flex gap={4} mt={4}>
-            <Button
-              variant="adminSecondary"
-              w="45%"
-              onClick={() => navigate(PRIVATE_PATHS.ADMIN_OPERATORS)}
-            >
-              Cancel
-            </Button>
-            <Button
-              variant="adminPrimary"
-              w="55%"
-              isDisabled={isDisabled}
-              isLoading={isLoading}
-              onClick={handleSubmit}
-            >
-              Save
-            </Button>
+                  <Box w="full" mb={4}>
+                    <Text
+                      mb="8px"
+                      fontSize="10px"
+                      fontWeight={500}
+                      color="#444648"
+                    >
+                      Email Address
+                    </Text>
+                    <CustomInput
+                      auth
+                      mb
+                      holder="Enter email address"
+                      name="email"
+                      value={values?.email}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      error={errors?.email && touched?.email && errors?.email}
+                    />
+                  </Box>
+
+                  <Box mb={4}>
+                    <Text
+                      mb="8px"
+                      fontWeight={500}
+                      color="#444648"
+                      fontSize="10px"
+                    >
+                      Phone Number
+                    </Text>
+                    <CustomInput
+                      mb
+                      ngn
+                      name="phone"
+                      value={`${values?.phone}`}
+                      onChange={(e) => {
+                        const inputPhone = e.target.value
+                          .replace(/\D/g, "")
+                          .slice(0, 10);
+                        handleChange({
+                          target: {
+                            name: "phone",
+                            value: `${inputPhone}`,
+                          },
+                        });
+                      }}
+                      onBlur={handleBlur}
+                      error={errors?.phone && touched?.phone && errors?.phone}
+                      holder="Enter Phone Number"
+                    />
+                  </Box>
+
+                  <Box w="full" mb={4}>
+                    <Text
+                      mb="8px"
+                      fontSize="10px"
+                      fontWeight={500}
+                      color="#444648"
+                    >
+                      Address
+                    </Text>
+                    <CustomInput
+                      auth
+                      mb
+                      holder="Enter operator address"
+                      name="address"
+                      value={values?.address}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      error={
+                        errors?.address && touched?.address && errors?.address
+                      }
+                    />
+                  </Box>
+                  <Box mb={4}>
+                    <Text
+                      mb="8px"
+                      fontSize="10px"
+                      fontWeight={500}
+                      color="#444648"
+                    >
+                      State
+                    </Text>
+                    <Select
+                      styles={customStyles}
+                      placeholder="Select State"
+                      options={stateOptions}
+                      name="state"
+                      onChange={(selectedOption) =>
+                        setValues({
+                          ...values,
+                          state: selectedOption,
+                        })
+                      }
+                      onBlur={handleBlur}
+                      value={values.state}
+                      components={{
+                        IndicatorSeparator: () => (
+                          <div style={{ display: "none" }}></div>
+                        ),
+                        DropdownIndicator: () => (
+                          <div>
+                            <IoIosArrowDown size="15px" color="#646668" />
+                          </div>
+                        ),
+                      }}
+                    />
+                  </Box>
+
+                  <Box w="full" mb={4}>
+                    <Text
+                      mb="8px"
+                      fontSize="10px"
+                      fontWeight={500}
+                      color="#444648"
+                    >
+                      Contact Person
+                    </Text>
+                    <CustomInput
+                      auth
+                      mb
+                      holder="Enter contact person"
+                      name="contactPerson"
+                      value={values?.contactPerson}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      error={
+                        errors?.contactPerson &&
+                        touched?.contactPerson &&
+                        errors?.contactPerson
+                      }
+                    />
+                  </Box>
+
+                  <Box w="full" mb={4}>
+                    <Text
+                      mb="8px"
+                      fontSize="10px"
+                      fontWeight={500}
+                      color="#444648"
+                    >
+                      Password
+                    </Text>
+                    <CustomInput
+                      mb
+                      name="password"
+                      value={values.password}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      error={
+                        errors?.password &&
+                        touched?.password &&
+                        errors?.password
+                      }
+                      holder="Enter Password"
+                      onClick={() => setShow((prev) => !prev)}
+                      password={show ? false : true}
+                      show
+                      type={show ? "text" : "password"}
+                    />
+                  </Box>
+
+                  <Box mb={4}>
+                    <Text
+                      mb="8px"
+                      fontSize="10px"
+                      fontWeight={500}
+                      color="#444648"
+                    >
+                      Confirm Password
+                    </Text>
+                    <CustomInput
+                      mb
+                      name="passwordConfirmation"
+                      value={values.passwordConfirmation}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      error={
+                        errors?.passwordConfirmation &&
+                        touched?.passwordConfirmation &&
+                        errors?.passwordConfirmation
+                      }
+                      holder="Confirm Password"
+                      onClick={() => setShow((prev) => !prev)}
+                      password={show ? false : true}
+                      show
+                      type={show ? "text" : "password"}
+                    />
+                  </Box>
+
+                  <Flex
+                    align="center"
+                    justifyContent={"space-between"}
+                    gap="15px"
+                    mb="16px"
+                    mt={2}
+                  >
+                    <Text fontSize="12px" fontWeight={500} color="#444648">
+                      Enable Tips
+                    </Text>
+                    <Switch
+                      onChange={() =>
+                        setValues({
+                          ...values,
+                          enableTips: values.enableTips ? 0 : 1,
+                        })
+                      }
+                      value={values.enableTips}
+                      isChecked={values.enableTips ? true : false}
+                      size="sm"
+                      variant="adminPrimary"
+                    />
+                  </Flex>
+
+                  <Box>
+                    <Text
+                      mb="8px"
+                      fontSize="10px"
+                      fontWeight={500}
+                      color="#444648"
+                    >
+                      Status
+                    </Text>
+                    <Select
+                      styles={customStyles}
+                      options={statusOptions}
+                      name="status"
+                      onChange={(selectedOption) =>
+                        setValues({
+                          ...values,
+                          status: selectedOption,
+                        })
+                      }
+                      onBlur={handleBlur}
+                      components={{
+                        IndicatorSeparator: () => (
+                          <div style={{ display: "none" }}></div>
+                        ),
+                        DropdownIndicator: () => (
+                          <div>
+                            <IoIosArrowDown size="15px" color="#646668" />
+                          </div>
+                        ),
+                      }}
+                    />
+                  </Box>
+
+                  <Flex gap="24px" mt="24px">
+                    <Button
+                      variant="adminSecondary"
+                      w="100%"
+                      onClick={() => navigate(PRIVATE_PATHS.ADMIN_OPERATORS)}
+                    >
+                      Cancel
+                    </Button>
+                    <Button
+                      variant="adminPrimary"
+                      w="100%"
+                      isDisabled={!isValid || !dirty}
+                      isLoading={isLoading}
+                      type="submit"
+                    >
+                      Save
+                    </Button>
+                  </Flex>
+                </Form>
+              )}
+            </Formik>
           </Flex>
         </Flex>
       </Flex>

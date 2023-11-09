@@ -17,14 +17,44 @@ export const GET_ACTIVITIES_METRICS = "admin/dashboard/activities-metrics";
 
 export const CREATE_SERVICE = "admin/services";
 export const ADMIN_ATTENDANTS = "admin/attendants";
+export const ADMIN_ATTENDANT = (id = "") => `admin/attendants/${id}`;
+export const ADMIN_ATTENDANTS_LIST = (
+  filterString = "",
+  limit = "",
+  page = ""
+) =>
+  `admin/attendants?${filterString}&limit=${limit}&page=${page}&sort=id,DESC`;
 export const ADMIN_CUSTOMERS = "admin/customers";
+export const ADMIN_CUSTOMERS_LIST = (
+  filterString = "",
+  limit = "",
+  page = ""
+) => `admin/customers?${filterString}&limit=${limit}&page=${page}&sort=id,DESC`;
+
+export const ADMIN_CUSTOMER = (id = "") => `admin/customers/${id}`;
 
 export const ADMIN_OPERATORS = "admin/operators";
+export const ADMIN_OPERATOR = (id = "") => `admin/operators/${id}`;
+export const ADMIN_OPERATORS_LIST = (
+  filterString = "",
+  limit = "",
+  page = ""
+) => `admin/operators?${filterString}&limit=${limit}&page=${page}&sort=id,DESC`;
+
 export const ADMIN_ADMINISTRATORS = "admin/users";
+export const ADMIN_ADMINISTRATOR = (id = "") => `admin/users/${id}`;
+export const ADMIN_ADMINISTRATORS_LIST = (
+  filterString = "",
+  limit = "",
+  page = ""
+) => `admin/users?${filterString}&limit=${limit}&page=${page}&sort=id,DESC`;
 export const CLIENT_USERS = (id = "") => `admin/clients/users/${id}`;
 export const DETACH_CLIENT_USER = (id = "", email = "") =>
   `admin/clients/detach-user/${id}/?email=${email}`;
+export const ATTACH_CLIENT_USER = (id = "", email = "") =>
+  `admin/clients/attach-user/${id}/?email=${email}`;
 export const MANAGERS = "admin/entity-selectors/users/?search=&manager=1";
+export const CUSTOMERS = "admin/entity-selectors/customers/";
 
 export const ADMIN_LOCATIONS = "admin/locations";
 export const ADMIN_ZONES = "admin/zones";
@@ -47,6 +77,12 @@ export const ADMIN_CLIENTS_LIST = (filterString = "", limit = "", page = "") =>
   `admin/clients?${filterString}&limit=${limit}&page=${page}&sort=id,DESC`;
 export const ADMIN_CLIENT = (id = "") => `admin/clients/${id}`;
 export const ADMIN_EVENTS = "admin/events";
+
+export const ADMIN_EVENT = (id = "") => `admin/events/${id}`;
+
+export const ADMIN_EVENTS_LIST = (filterString = "", limit = "", page = "") =>
+  `admin/events?${filterString}&limit=${limit}&page=${page}&sort=id,DESC`;
+
 export const ADMIN_CLIENTS_INVOICES = "admin/client-invoices";
 export const ADMIN_CLIENTS_MAKE_PAYMENT = (id = "") =>
   `admin/client-invoices/${id}/payment`;
