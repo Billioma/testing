@@ -94,11 +94,12 @@ export default function AddClient() {
   }));
 
   const handleSubmit = (values = "") => {
-    const { accountType, state, status, managers, ...rest } = values;
+    const { accountType, state, status, phone, managers, ...rest } = values;
     mutate({
       ...rest,
       accountType: accountType?.value,
       status: status?.value,
+      phone: `+234${Number(phone)}`,
       state: state?.value,
       managers: managers?.map((dat) => dat?.value),
       logo: profilePicData?.path,

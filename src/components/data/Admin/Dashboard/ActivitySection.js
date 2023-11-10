@@ -126,7 +126,7 @@ export default function ActivitySection() {
           locations: "Locations",
           invoices: "Invoices",
           corporateSubscriptions: "Corporate Subscriptions",
-          customereSubscriptions: "Customer Subscriptions",
+          customerSubscriptions: "Customer Subscriptions",
         };
 
         const title =
@@ -168,7 +168,7 @@ export default function ActivitySection() {
           locations: "Locations",
           invoices: "Invoices",
           corporateSubscriptions: "Corporate Subscriptions",
-          customereSubscriptions: "Customer Subscriptions",
+          customerSubscriptions: "Customer Subscriptions",
         };
 
         const title =

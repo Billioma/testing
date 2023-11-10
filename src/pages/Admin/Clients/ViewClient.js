@@ -252,7 +252,7 @@ export default function ViewCustomer() {
                 justifyContent="center"
                 w={{
                   base: "100%",
-                  md: data?.accountType === "CORPORATE" ? "80%" : "30rem",
+                  md: "80%",
                 }}
                 flexDir="column"
                 border="1px solid #E4E6E8"
@@ -600,6 +600,7 @@ export default function ViewCustomer() {
                     variant="adminSecondary"
                     fontSize="12px"
                     mt={4}
+                    isDisabled={edit ? false : true}
                     h="32px"
                     onClick={() => setIsOpen(true)}
                   >
@@ -631,7 +632,6 @@ export default function ViewCustomer() {
                 </Flex>
               </Flex>
               <Flex
-                display={data?.accountType === "CORPORATE" ? "flex" : "none"}
                 gap={5}
                 flexDir={"column"}
                 w="100%"
@@ -731,6 +731,7 @@ export default function ViewCustomer() {
                   py="24px"
                   px="28px"
                   justifyContent="center"
+                  display={data?.accountType === "CORPORATE" ? "flex" : "none"}
                   flexDir="column"
                   border="1px solid #E4E6E8"
                   h="fit-content"
@@ -747,6 +748,7 @@ export default function ViewCustomer() {
                       align="center"
                       onClick={() => setShowAddUser(true)}
                       fontSize="10px"
+                      isDisabled={edit ? false : true}
                       gap="8px"
                     >
                       Add Users

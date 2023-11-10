@@ -131,7 +131,7 @@ export default function ViewEvent() {
     );
     setValues({
       ...values,
-      avatar: data?.avatar?.replace("https://staging-api.ezpark.ng/", ""),
+      image: data?.image?.replace("https://staging-api.ezpark.ng/", ""),
       name: data?.name,
       description: data?.description,
       address: data?.address,
@@ -402,6 +402,18 @@ export default function ViewEvent() {
                   />
                 </Box>
 
+                {values?.eventEndDateTime < values?.eventStartDateTime && (
+                  <Text
+                    mt={-3}
+                    fontSize="13px"
+                    mb={4}
+                    color="tomato"
+                    fontWeight={500}
+                  >
+                    Event's end date is before its start date
+                  </Text>
+                )}
+
                 <Box w="full" mb={4}>
                   <Text
                     mb="8px"
@@ -532,6 +544,9 @@ export default function ViewEvent() {
                   <Button
                     variant="adminPrimary"
                     w="100%"
+                    isDisabled={
+                      values?.eventEndDateTime < values?.eventStartDateTime
+                    }
                     isLoading={isUpdating}
                     onClick={() => (!edit ? setEdit(true) : handleSubmit())}
                   >

@@ -116,7 +116,7 @@ const TableLayer = ({
                 lineHeight="100%"
               >
                 <Td>{invoice?.client?.name}</Td>
-                <Td>₦ {invoice?.amount?.toLocaleString()}</Td>
+                <Td>₦ {invoice?.amountPayable?.toLocaleString()}</Td>
                 <Td>{invoice?.createdBy}</Td>
                 <Td textAlign="center">
                   {formatDate(invoice?.paidAt) || "N/A"}

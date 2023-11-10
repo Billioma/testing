@@ -350,6 +350,7 @@ export default function ViewOperator() {
                   variant="adminSecondary"
                   fontSize="12px"
                   mt={4}
+                  isDisabled={edit ? false : true}
                   h="32px"
                   onClick={() => setIsOpen(true)}
                   alignSelf={"center"}

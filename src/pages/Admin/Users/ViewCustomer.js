@@ -159,7 +159,7 @@ export default function ViewCustomer() {
           <>
             <Flex
               justifyContent="center"
-              w={{ base: "100%", md: "85%" }}
+              w={{ base: "100%", md: edit ? "100%" : "85%" }}
               flexDir={{ md: "row", base: "column" }}
               gap={{ base: "", md: "40px" }}
             >
@@ -169,7 +169,7 @@ export default function ViewCustomer() {
                 py="32px"
                 px="24px"
                 justifyContent="center"
-                w={{ base: "100%", md: "100%" }}
+                w={{ base: "100%", md: edit ? "30rem" : "100%" }}
                 flexDir="column"
                 border="1px solid #E4E6E8"
               >
@@ -418,7 +418,7 @@ export default function ViewCustomer() {
                 </Flex>
               </Flex>
 
-              <Flex gap={5} flexDir={"column"} w={{ base: "100%", md: "100%" }}>
+              <Flex gap={5} flexDir={"column"} w={{ base: "100%", md:edit ? "0" :  "100%" }}>
                 <Flex
                   bg="#fff"
                   borderRadius="8px"
