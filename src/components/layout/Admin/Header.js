@@ -113,6 +113,9 @@ const Header = () => {
       case locationRoute.includes("reports/vehicles"):
         return setSecTitle("Vehicles");
 
+      case locationRoute.includes("reports/tips"):
+        return setSecTitle("Tips");
+
       case locationRoute.includes("reports/customers"):
         return setSecTitle("Customers");
 

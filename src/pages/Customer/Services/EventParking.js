@@ -254,7 +254,7 @@ const EventParking = () => {
           w={{
             base: "full",
             sm: "30rem",
-            lg: !filteredEvent?.length ? "30rem" : "unset",
+            lg: !filteredEvent?.length || step !== 1 ? "30rem" : "unset",
           }}
           flexDir="column"
         >
@@ -681,8 +681,11 @@ const EventParking = () => {
                       })
                     }
                     align="center"
-                    display="flex"
-                    gap="24px"
+                    display="grid"
+                    gridTemplateColumns={"repeat(2,1fr)"}
+                    rowGap="15px"
+                    w="full"
+                    justifyContent="space-between"
                   >
                     <Radio size="sm" value={"1"}>
                       <Text fontSize="14px"> Pay with Wallet</Text>
@@ -692,6 +695,9 @@ const EventParking = () => {
                     </Radio>
                     <Radio size="sm" value={"2"}>
                       <Text fontSize="14px">Pay with Points</Text>
+                    </Radio>
+                    <Radio size="sm" value={"3"}>
+                      <Text fontSize="14px">Pay with Transfer</Text>
                     </Radio>
                   </RadioGroup>
                 </Flex>

@@ -229,4 +229,5 @@ export const PRIVATE_PATHS = {
   ADMIN_REP_SUBS: "/admin/reports/subscriptions",
   ADMIN_REP_LOGS: "/admin/reports/logs",
   ADMIN_REP_HISTORY: "/admin/reports/payment-history",
+  ADMIN_REP_TIPS: "/admin/reports/tips",
 };

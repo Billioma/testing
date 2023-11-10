@@ -629,6 +629,10 @@ const AdminRepCustomer = WithSuspense(
   lazy(() => import("../pages/Admin/Reports/Customers"))
 );
 
+const AdminRepTips = WithSuspense(
+  lazy(() => import("../pages/Admin/Reports/Tips"))
+);
+
 const AdminRepHistory = WithSuspense(
   lazy(() => import("../pages/Admin/Reports/History"))
 );
@@ -1095,6 +1099,10 @@ export const PRIVATE_ROUTES = [
   {
     path: PRIVATE_PATHS.ADMIN_REP_CUSTOMERS,
     element: <AdminRepCustomer />,
+  },
+  {
+    path: PRIVATE_PATHS.ADMIN_REP_TIPS,
+    element: <AdminRepTips />,
   },
   {
     path: PRIVATE_PATHS.ADMIN_REP_HISTORY,

@@ -267,6 +267,10 @@ export const sidebarItems = [
         name: "Payment History",
         path: "/admin/reports/payment-history",
       },
+      {
+        name: "Tips",
+        path: "/admin/reports/tips",
+      },
     ],
   },
   {
@@ -385,6 +389,15 @@ export const operatorLogHeader = [
   "ATTENDANT",
   "DATE CREATED",
   "ACTIONS",
+];
+
+export const adminTipsHeader = [
+  "TICKET NUMBER",
+  "ATTENDANT",
+  "AMOUNT",
+  "LOCATION",
+  "LICENSE PLATE",
+  "DATE",
 ];
 
 export const operatorRepLocationHeader = [
@@ -1458,6 +1471,7 @@ export const intervals = [
 
 export const serviceTabs = [
   "Pay-To-Park",
+  "Valet Parking",
   "Reserve Parking",
   "Event Parking",
   "Car Services",

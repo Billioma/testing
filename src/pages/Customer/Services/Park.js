@@ -446,8 +446,11 @@ const Park = () => {
                       })
                     }
                     align="center"
-                    display="flex"
-                    gap="24px"
+                    display="grid"
+                    gridTemplateColumns={"repeat(2,1fr)"}
+                    rowGap="15px"
+                    w="full"
+                    justifyContent="space-between"
                   >
                     <Radio size="sm" value={"1"}>
                       <Text fontSize="14px"> Pay with Wallet</Text>
@@ -457,6 +460,9 @@ const Park = () => {
                     </Radio>
                     <Radio size="sm" value={"2"}>
                       <Text fontSize="14px">Pay with Points</Text>
+                    </Radio>
+                    <Radio size="sm" value={"3"}>
+                      <Text fontSize="14px">Pay with Transfer</Text>
                     </Radio>
                   </RadioGroup>
                 </Flex>

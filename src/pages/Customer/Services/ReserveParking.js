@@ -233,7 +233,9 @@ const ReserveParking = () => {
       ? reserveMutate({
           amount: requestData?.amount,
           arrival: `${start}${formatTimeToHHMMSS(values?.arrivalTime?.value)}`,
-          departure: `${end}${formatTimeToHHMMSS(values?.departureTime?.value)}`,
+          departure: `${end}${formatTimeToHHMMSS(
+            values?.departureTime?.value
+          )}`,
           cardId: values?.cardId,
           customer: userData?.id,
           paymentMethod: Number(values?.paymentMethod),
@@ -245,7 +247,9 @@ const ReserveParking = () => {
       : reserveMutate({
           amount: requestData?.amount,
           arrival: `${start}${formatTimeToHHMMSS(values?.arrivalTime?.value)}`,
-          departure: `${end}${formatTimeToHHMMSS(values?.departureTime?.value)}`,
+          departure: `${end}${formatTimeToHHMMSS(
+            values?.departureTime?.value
+          )}`,
           customer: userData?.id,
           paymentMethod: Number(values?.paymentMethod),
           rates: requestData?.rates?.map((dat) => dat?.id),
@@ -683,8 +687,11 @@ const ReserveParking = () => {
                       })
                     }
                     align="center"
-                    display="flex"
-                    gap="24px"
+                    display="grid"
+                    gridTemplateColumns={"repeat(2,1fr)"}
+                    rowGap="15px"
+                    w="full"
+                    justifyContent="space-between"
                   >
                     <Radio size="sm" value={"1"}>
                       <Text fontSize="14px"> Pay with Wallet</Text>
@@ -694,6 +701,9 @@ const ReserveParking = () => {
                     </Radio>
                     <Radio size="sm" value={"2"}>
                       <Text fontSize="14px">Pay with Points</Text>
+                    </Radio>
+                    <Radio size="sm" value={"3"}>
+                      <Text fontSize="14px">Pay with Transfer</Text>
                     </Radio>
                   </RadioGroup>
                 </Flex>
