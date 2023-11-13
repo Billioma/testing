@@ -158,7 +158,9 @@ export const deleteAdministrator = async (id) => {
 };
 
 export const deleteOperator = async (id) => {
-  const response = await axiosInstance.delete(`${API.ADMIN_OPERATORS}/operators/${id}`);
+  const response = await axiosInstance.delete(
+    `${API.ADMIN_OPERATORS}/operators/${id}`
+  );
   return response;
 };
 

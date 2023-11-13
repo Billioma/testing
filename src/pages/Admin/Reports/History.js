@@ -20,14 +20,11 @@ const History = () => {
   });
 
   const query = convertedFilters?.join("&");
-  const { refetch, data, isLoading } = useGetAdminTran(
-    {
-      refetchOnWindowFocus: true,
-    },
-    page,
-    limit,
-    query
-  );
+  const { mutate, data, isLoading } = useGetAdminTran();
+
+  useEffect(() => {
+    mutate({ filterString: query, limit, page: page });
+  }, [page, query, limit]);
 
   useEffect(() => {
     setPage(1);
@@ -40,7 +37,7 @@ const History = () => {
 
     const currentPage = page;
     const itemsPerPage = limit;
-    const totalItems = data.total;
+    const totalItems = data?.total;
 
     const currentStartRow = (currentPage - 1) * itemsPerPage + 1;
     const currentEndRow = Math.min(currentPage * itemsPerPage, totalItems);
@@ -49,34 +46,40 @@ const History = () => {
     setEndRow(currentEndRow);
   }, [data, page, limit]);
 
-  useEffect(() => {
-    refetch();
-  }, []);
-
   return (
-    <Box minH="75vh">
-      <Box
-        mt="24px"
-        borderRadius="8px"
-        border="1px solid #d4d6d8"
-        p="16px 23px 24px"
-      >
+    <>
+      <Box border="1px solid #d4d6d8" borderRadius="8px" p="16px 23px 24px">
         <Filter
           setFiltArray={setFiltArray}
           filtArray={filtArray}
           fieldToCompare={paymentHistoryReportOptions}
-          handleSearch={refetch}
-          title={<Text fontWeight="500">All Payment History</Text>}
+          handleSearch={() =>
+            mutate({ filterString: query, limit: limit, page: page })
+          }
+          title={
+            <Text
+              fontSize="14px"
+              fontWeight={500}
+              lineHeight="100%"
+              color="#242628"
+            >
+              All Payment History
+            </Text>
+          }
+          gap
           main={
-            <Flex align="center" gap="24px">
-              <HistoryExport data={data?.data} />
+            <>
+              {" "}
+              {data?.data?.length ? <HistoryExport data={data?.data} /> : ""}
               <Flex
                 justifyContent="center"
                 align="center"
                 cursor="pointer"
                 transition=".3s ease-in-out"
                 _hover={{ bg: "#F4F6F8" }}
-                onClick={refetch}
+                onClick={() =>
+                  mutate({ filterString: query, limit, page: page })
+                }
                 borderRadius="8px"
                 border="1px solid #848688"
                 p="10px"
@@ -88,7 +91,7 @@ const History = () => {
                   h="20px"
                 />
               </Flex>
-            </Flex>
+            </>
           }
         />
 
@@ -100,11 +103,10 @@ const History = () => {
           setPage={setPage}
           startRow={startRow}
           endRow={endRow}
-          refetch={refetch}
           setLimit={setLimit}
         />
       </Box>
-    </Box>
+    </>
   );
 };
 

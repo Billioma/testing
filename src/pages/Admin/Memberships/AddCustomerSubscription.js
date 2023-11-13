@@ -14,7 +14,6 @@ import {
 } from "../../../services/admin/query/memberships";
 import { useGetAllCustomers } from "../../../services/admin/query/customers";
 import { useGetAllLocations } from "../../../services/admin/query/locations";
-import { useGetVehicles } from "../../../services/admin/query/vehicles";
 
 export default function AddCustomerSubscription() {
   const [state, setState] = useState({
@@ -35,7 +34,6 @@ export default function AddCustomerSubscription() {
   const navigate = useNavigate();
   const [isDisabled, setIsDisabled] = useState(true);
   const { errorToast, successToast } = useCustomToast();
-  const { data: vehicles } = useGetVehicles({}, 1, 100000);
   const { refetch } = useGetCustomerSubscriptions();
 
   const { mutate, isLoading } = useCreateCustomerSubscription({

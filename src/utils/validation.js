@@ -155,6 +155,20 @@ export const initAttendantsValues = {
   status: "",
 };
 
+export const initAdminLocationValues = {
+  name: "",
+  description: "",
+  geoLocation: "",
+  address: "",
+  state: "",
+  operator: "",
+  locationType: "",
+  amenities: "",
+  managers: "",
+  enableTips: 0,
+  status: "",
+};
+
 export const initEventValues = {
   name: "",
   description: "",
@@ -177,6 +191,16 @@ export const initAdminValues = {
   password: "",
   passwordConfirmation: "",
   status: "",
+};
+
+export const initVehicleValues = {
+  licensePlate: "",
+  customer: "",
+  color: "",
+  state: "",
+  make: "",
+  model: "",
+  status: 1,
 };
 
 export const initOperatorValues = {
@@ -317,6 +341,19 @@ export const validateAttendantsSchema = Yup.object().shape({
   locations: Yup.array().required("Locations is required"),
 });
 
+export const validateAdminLocationSchema = Yup.object().shape({
+  name: Yup.string().required("Name is required"),
+  description: Yup.string().required("Description is required"),
+  geoLocation: Yup.string().required("Geo Location is required"),
+  address: Yup.string().required("Address is required"),
+  state: Yup.object().required("State is required"),
+  operator: Yup.object().required("Operator is required"),
+  locationType: Yup.object().required("Location type is required"),
+  amenities: Yup.array().required("Amenities is required"),
+  managers: Yup.array().required("Manager is required"),
+  status: Yup.object().required("Status is required"),
+});
+
 export const validateEventSchema = Yup.object().shape({
   name: Yup.string().required("Name is required"),
   description: Yup.string().required("Description is required"),
@@ -353,6 +390,15 @@ export const validateAdminSchema = Yup.object().shape({
     .oneOf([Yup.ref("password")], "Passwords do not match"),
   role: Yup.object().required("Role is required"),
   status: Yup.object().required("Status is required"),
+});
+
+export const validateVehicleSchema = Yup.object().shape({
+  licensePlate: Yup.string().required("License Plate is required"),
+  customer: Yup.object().required("Customer is required"),
+  color: Yup.object().required("Color is required"),
+  state: Yup.object().required("State is required"),
+  make: Yup.object().required("Make is required"),
+  model: Yup.object().required("Model is required"),
 });
 
 export const validateOperatorSchema = Yup.object().shape({

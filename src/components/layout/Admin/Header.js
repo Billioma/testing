@@ -143,6 +143,9 @@ const Header = () => {
       case locationRoute.includes("transactions/pay-to-park"):
         return setSecTitle("Pay-To-Park");
 
+      case locationRoute.includes("transactions/event-parking"):
+        return setSecTitle("Event Parking");
+
       case locationRoute.includes("transactions/reserved-parking"):
         return setSecTitle("Reserved Parking");
 
@@ -244,6 +247,9 @@ const Header = () => {
         return setFinTitle("Add Vehicle Model");
 
       case locationRoute.includes("transactions/pay-to-park/"):
+        return setFinTitle("Transaction Details");
+
+      case locationRoute.includes("transactions/event-parking/"):
         return setFinTitle("Transaction Details");
 
       case locationRoute.includes("transactions/reserved-parking/"):

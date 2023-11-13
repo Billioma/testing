@@ -1,38 +1,32 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Box, Flex, Text, Button } from "@chakra-ui/react";
 import CustomInput from "../../../components/common/CustomInput";
-import { colors } from "../../../components/common/constants";
+import { allStates, colors } from "../../../components/common/constants";
 import Select from "react-select";
 import { customStyles } from "../../../components/common/constants";
 import { useNavigate } from "react-router-dom";
 import { PRIVATE_PATHS } from "../../../routes/constants";
 import useCustomToast from "../../../utils/notifications";
 import GoBackTab from "../../../components/data/Admin/GoBackTab";
-import { useGetStates } from "../../../services/customer/query/locations";
 import {
   useCreateVehicle,
   useGetMake,
   useGetModel,
 } from "../../../services/admin/query/vehicles";
 import { useGetAllCustomers } from "../../../services/admin/query/customers";
+import {
+  initVehicleValues,
+  validateVehicleSchema,
+} from "../../../utils/validation";
+import { Form, Formik } from "formik";
+import { IoIosArrowDown } from "react-icons/io";
 
 export default function AddOperator() {
-  const [state, setState] = useState({
-    customer: 0,
-    licensePlate: "",
-    make: 0,
-    model: 0,
-    color: "",
-    state: "",
-    status: 1,
-  });
   const { data: models } = useGetModel();
   const { data: makes } = useGetMake();
   const { data: customers } = useGetAllCustomers();
   const navigate = useNavigate();
-  const [isDisabled, setIsDisabled] = useState(true);
   const { errorToast, successToast } = useCustomToast();
-  const { data: states } = useGetStates();
   const { mutate, isLoading } = useCreateVehicle({
     onSuccess: () => {
       successToast("Vehicle added successfully!");
@@ -45,20 +39,26 @@ export default function AddOperator() {
     },
   });
 
-  const stateOptions = states?.data?.map((state) => ({
+  const stateOptions = allStates?.map((state) => ({
     value: state,
     label: state,
   }));
 
-  const colorOptions = colors.map((color) => ({
+  const colorOptions = colors?.map((color) => ({
     value: color,
     label: color,
   }));
 
-  const modelOptions = models?.data?.map((model) => ({
+  const [make, setMake] = useState("");
+  const modelToMap = models?.data?.filter(
+    (item) => Number(item?.make?.id) === make?.value
+  );
+  const model = make?.value ? modelToMap : models?.data;
+  const modelOptions = model?.map((model) => ({
     value: parseInt(model?.id),
     label: model?.name,
   }));
+
   const makeOptions = makes?.data?.map((make) => ({
     value: parseInt(make?.id),
     label: make?.name,
@@ -68,28 +68,6 @@ export default function AddOperator() {
     value: parseInt(customer?.id),
     label: `${customer?.profile.firstName} ${customer?.profile.lastName}`,
   }));
-
-  const isFormValid = () => {
-    return (
-      !state.customer ||
-      !state.licensePlate ||
-      !state.make ||
-      !state.model ||
-      !state.state ||
-      !state.color
-    );
-  };
-
-  useEffect(() => {
-    setIsDisabled(isFormValid);
-  }, [state]);
-
-  const handleSelectChange = (selectedOption, { name }) => {
-    setState({
-      ...state,
-      [name]: selectedOption,
-    });
-  };
 
   const ColorOptio = ({ data }) => (
     <Flex mt="-30px" gap="8px" align="center" h="40px">
@@ -103,149 +81,281 @@ export default function AddOperator() {
     </Flex>
   );
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    mutate({ ...state, phone: `0${state.phone}` });
+  const handleSubmit = (values = "") => {
+    const { make, model, customer, color, state, ...rest } = values;
+    mutate({
+      ...rest,
+      make: Number(make?.value),
+      model: Number(model?.value),
+      customer: Number(customer?.value),
+      color: color?.value,
+      state: state?.value,
+    });
   };
 
   return (
     <Box minH="75vh">
-      <Flex justifyContent="center" align="center" w="full" flexDir="column">
+      {" "}
+      <Flex align="flex-start" flexDir={{ md: "row", base: "column" }}>
         <GoBackTab />
-        <Flex
-          bg="#fff"
-          borderRadius="16px"
-          py="24px"
-          px="28px"
-          justifyContent="center"
-          w="30rem"
-          flexDir="column"
-          border="1px solid #E4E6E8"
-        >
-          <Box w="full" mb={4}>
-            <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
-              License Plate
-            </Text>
-            <CustomInput
-              auth
-              value={state.licensePlate}
-              mb
-              holder="Enter license plate"
-              onChange={(e) =>
-                setState({ ...state, licensePlate: e.target.value })
-              }
-            />
-          </Box>
-          <Box w="full" mb={4}>
-            <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
-              Assign Customer
-            </Text>
-            <Select
-              styles={customStyles}
-              placeholder="Select customer"
-              options={customerOptions}
-              value={stateOptions?.find(
-                (option) => option.value === state.customer
-              )}
-              onChange={(selectedOption) =>
-                setState({ ...state, customer: selectedOption.value })
-              }
-            />
-          </Box>
-          <Box mb="24px">
-            <Text
-              color="#444648"
-              lineHeight="100%"
-              fontSize="10px"
-              fontWeight={500}
-              mb="8px"
+        <Flex justifyContent="center" align="center" w="full" flexDir="column">
+          <Flex
+            bg="#fff"
+            borderRadius="12px"
+            py="32px"
+            px="28px"
+            justifyContent="center"
+            w={{ md: "30rem", base: "100%" }}
+            flexDir="column"
+            border="1px solid #E4E6E8"
+          >
+            <Formik
+              onSubmit={handleSubmit}
+              initialValues={initVehicleValues}
+              validationSchema={validateVehicleSchema}
             >
-              Vehicle Color
-            </Text>
-            <Select
-              styles={customStyles}
-              components={{
-                SingleValue: ColorOptio,
-              }}
-              onChange={({ value }) =>
-                handleSelectChange(value, { name: "color" })
-              }
-              options={colorOptions}
-              placeholder="Select vehicle color"
-            />
-          </Box>
+              {({
+                values,
+                errors,
+                touched,
+                handleChange,
+                handleBlur,
+                handleSubmit,
+                setValues,
+                isValid,
+                dirty,
+              }) => (
+                <Form onSubmit={handleSubmit}>
+                  <Box w="full" mb={4}>
+                    <Text
+                      mb="8px"
+                      fontSize="10px"
+                      fontWeight={500}
+                      color="#444648"
+                    >
+                      License Plate
+                    </Text>
+                    <CustomInput
+                      auth
+                      mb
+                      holder="Enter license plate"
+                      name="licensePlate"
+                      value={values?.licensePlate}
+                      onChange={(e) => {
+                        const licensePlate = e.target.value.slice(0, 8);
+                        handleChange({
+                          target: {
+                            name: "licensePlate",
+                            value: `${licensePlate}`,
+                          },
+                        });
+                      }}
+                      onBlur={handleBlur}
+                      error={
+                        errors?.licensePlate &&
+                        touched?.licensePlate &&
+                        errors?.licensePlate
+                      }
+                    />
+                  </Box>
+                  <Box w="full" mb={4}>
+                    <Text
+                      mb="8px"
+                      fontSize="10px"
+                      fontWeight={500}
+                      color="#444648"
+                    >
+                      Assign Customer
+                    </Text>
+                    <Select
+                      styles={customStyles}
+                      placeholder="Select customer"
+                      options={customerOptions}
+                      name="customer"
+                      onChange={(selectedOption) =>
+                        setValues({
+                          ...values,
+                          customer: selectedOption,
+                        })
+                      }
+                      onBlur={handleBlur}
+                      value={values?.customer}
+                      components={{
+                        IndicatorSeparator: () => (
+                          <div style={{ display: "none" }}></div>
+                        ),
+                        DropdownIndicator: () => (
+                          <div>
+                            <IoIosArrowDown size="15px" color="#646668" />
+                          </div>
+                        ),
+                      }}
+                    />
+                  </Box>
+                  <Box mb="24px">
+                    <Text
+                      color="#444648"
+                      lineHeight="100%"
+                      fontSize="10px"
+                      fontWeight={500}
+                      mb="8px"
+                    >
+                      Vehicle Color
+                    </Text>
+                    <Select
+                      styles={customStyles}
+                      name="color"
+                      onChange={(selectedOption) =>
+                        setValues({
+                          ...values,
+                          color: selectedOption,
+                        })
+                      }
+                      onBlur={handleBlur}
+                      value={values?.color}
+                      components={{
+                        SingleValue: ColorOptio,
+                        IndicatorSeparator: () => (
+                          <div style={{ display: "none" }}></div>
+                        ),
+                        DropdownIndicator: () => (
+                          <div>
+                            <IoIosArrowDown size="15px" color="#646668" />
+                          </div>
+                        ),
+                      }}
+                      options={colorOptions}
+                      placeholder="Select vehicle color"
+                    />
+                  </Box>
 
-          <Box w="full" mb={4}>
-            <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
-              Vehicle State
-            </Text>
-            <Select
-              styles={customStyles}
-              placeholder="Select vehicle state"
-              options={stateOptions}
-              value={stateOptions?.find(
-                (option) => option.value === state.customer
+                  <Box w="full" mb={4}>
+                    <Text
+                      mb="8px"
+                      fontSize="10px"
+                      fontWeight={500}
+                      color="#444648"
+                    >
+                      Vehicle State
+                    </Text>
+                    <Select
+                      styles={customStyles}
+                      placeholder="Select vehicle state"
+                      options={stateOptions}
+                      name="state"
+                      onChange={(selectedOption) =>
+                        setValues({
+                          ...values,
+                          state: selectedOption,
+                        })
+                      }
+                      onBlur={handleBlur}
+                      value={values?.state}
+                      components={{
+                        IndicatorSeparator: () => (
+                          <div style={{ display: "none" }}></div>
+                        ),
+                        DropdownIndicator: () => (
+                          <div>
+                            <IoIosArrowDown size="15px" color="#646668" />
+                          </div>
+                        ),
+                      }}
+                    />
+                  </Box>
+                  <Box mb="24px">
+                    <Text
+                      color="#444648"
+                      lineHeight="100%"
+                      fontSize="10px"
+                      fontWeight={500}
+                      mb="8px"
+                    >
+                      Vehicle Make
+                    </Text>
+                    <Select
+                      styles={customStyles}
+                      options={makeOptions}
+                      name="make"
+                      onChange={(selectedOption) => {
+                        setValues({
+                          ...values,
+                          make: selectedOption,
+                          model: "",
+                        });
+                        setMake(selectedOption);
+                      }}
+                      onBlur={handleBlur}
+                      value={values?.make}
+                      components={{
+                        IndicatorSeparator: () => (
+                          <div style={{ display: "none" }}></div>
+                        ),
+                        DropdownIndicator: () => (
+                          <div>
+                            <IoIosArrowDown size="15px" color="#646668" />
+                          </div>
+                        ),
+                      }}
+                      placeholder="Select vehicle make"
+                    />
+                  </Box>
+                  <Box mb="24px">
+                    <Text
+                      color="#444648"
+                      lineHeight="100%"
+                      fontSize="10px"
+                      fontWeight={500}
+                      mb="8px"
+                    >
+                      Select Vehicle Model
+                    </Text>
+                    <Select
+                      styles={customStyles}
+                      options={modelOptions}
+                      name="model"
+                      onChange={(selectedOption) =>
+                        setValues({
+                          ...values,
+                          model: selectedOption,
+                        })
+                      }
+                      onBlur={handleBlur}
+                      value={values?.model}
+                      components={{
+                        IndicatorSeparator: () => (
+                          <div style={{ display: "none" }}></div>
+                        ),
+                        DropdownIndicator: () => (
+                          <div>
+                            <IoIosArrowDown size="15px" color="#646668" />
+                          </div>
+                        ),
+                      }}
+                      placeholder="Select vehicle model"
+                    />
+                  </Box>
+                  <Flex gap={4} mt={4}>
+                    <Button
+                      variant="adminSecondary"
+                      w="100%"
+                      onClick={() => navigate(PRIVATE_PATHS.ADMIN_VEHICLES)}
+                    >
+                      Cancel
+                    </Button>
+                    <Button
+                      variant="adminPrimary"
+                      w="100%"
+                      isDisabled={!isValid || !dirty}
+                      isLoading={isLoading}
+                      type="submit"
+                    >
+                      Save
+                    </Button>
+                  </Flex>
+                </Form>
               )}
-              onChange={(selectedOption) =>
-                setState({ ...state, state: selectedOption.value })
-              }
-            />
-          </Box>
-          <Box mb="24px">
-            <Text
-              color="#444648"
-              lineHeight="100%"
-              fontSize="10px"
-              fontWeight={500}
-              mb="8px"
-            >
-              Vehicle Make
-            </Text>
-            <Select
-              styles={customStyles}
-              options={makeOptions}
-              onChange={({ value }) =>
-                handleSelectChange(value, { name: "make" })
-              }
-              placeholder="Select vehicle make"
-            />
-          </Box>
-          <Box mb="24px">
-            <Text
-              color="#444648"
-              lineHeight="100%"
-              fontSize="10px"
-              fontWeight={500}
-              mb="8px"
-            >
-              Select Vehicle Model
-            </Text>
-            <Select
-              styles={customStyles}
-              options={modelOptions}
-              onChange={({ value }) =>
-                handleSelectChange(value, { name: "model" })
-              }
-              placeholder="Select vehicle model"
-            />
-          </Box>
-          <Flex gap={4} mt={4}>
-            <Button
-              variant="adminSecondary"
-              w="45%"
-              onClick={() => navigate(PRIVATE_PATHS.ADMIN_VEHICLES)}
-            >
-              Cancel
-            </Button>
-            <Button
-              variant="adminPrimary"
-              w="55%"
-              isDisabled={isDisabled}
-              isLoading={isLoading}
-              onClick={handleSubmit}
-            >
-              Save
-            </Button>
+            </Formik>
           </Flex>
         </Flex>
       </Flex>

@@ -4,6 +4,7 @@ import {
   getServices,
   editService,
   deleteService,
+  getAdminServicesList,
 } from "../api/services";
 
 export const useCreateService = (options = {}) => {
@@ -34,6 +35,14 @@ export const useGetServices = (options = {}, page = 1, limit = 25, query) => {
   );
 
   return { isLoading, data, refetch };
+};
+
+export const useGetAdminServicesList = (options = {}) => {
+  const { mutate, isLoading, data } = useMutation(getAdminServicesList, {
+    mutationKey: "GET_ADMIN_SERVICES_LIST",
+    ...options,
+  });
+  return { mutate, isLoading, data };
 };
 
 export const useDeleteService = (options = {}) => {

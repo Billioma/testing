@@ -9,10 +9,7 @@ export const clientLogin = async (body) => {
 };
 
 export const clientResetPassword = async (body) => {
-  const res = await axios.post(
-    BASE_URL + "client/" + API.RESET_PASSWORD,
-    body
-  );
+  const res = await axios.post(BASE_URL + "client/" + API.RESET_PASSWORD, body);
   return res.data;
 };
 

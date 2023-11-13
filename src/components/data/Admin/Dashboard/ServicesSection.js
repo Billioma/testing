@@ -1,12 +1,6 @@
 import React, { useState, useEffect } from "react";
 import StatCard from "./StatCard";
-import {
-  Text,
-  Box,
-  Flex,
-  SimpleGrid,
-  Skeleton,
-} from "@chakra-ui/react";
+import { Text, Box, Flex, SimpleGrid, Skeleton } from "@chakra-ui/react";
 import Select from "react-select";
 import {
   useGetServiceMetricsFilter,

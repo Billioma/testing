@@ -5,7 +5,6 @@ import {
   ModalContent,
   ModalBody,
   Flex,
-  Textarea,
   Text,
   Box,
   Button,
@@ -14,6 +13,8 @@ import Select from "react-select";
 import CustomInput from "../common/CustomInput";
 import useCustomToast from "../../utils/notifications";
 import { useCreateService } from "../../services/admin/query/services";
+import TextInput from "../common/TextInput";
+import { IoIosArrowDown } from "react-icons/io";
 
 const AdminAddServiceModal = ({ isOpen, refetch, onClose }) => {
   const [values, setValues] = useState({
@@ -25,16 +26,27 @@ const AdminAddServiceModal = ({ isOpen, refetch, onClose }) => {
   const isDisabled = Object.values(values).some((value) => !value);
 
   const customStyles = {
-    control: (provided) => ({
+    control: (provided, state) => ({
       ...provided,
       width: "100%",
-      height: "44px",
+      minHeight: "44px",
       color: "#646668",
       fontSize: "14px",
       cursor: "pointer",
       borderRadius: "4px",
-      border: "1px solid #D4D6D8",
-      background: "unset",
+      border: state.hasValue ? "none" : "1px solid #D4D6D8",
+      paddingRight: "16px",
+      background: state.hasValue ? "#f4f6f8" : "unset",
+    }),
+    menu: (provided) => ({
+      ...provided,
+      fontSize: "13px",
+      backgroundColor: "#f4f6f8",
+    }),
+    option: (provided, state) => ({
+      ...provided,
+      color: state.isFocused ? "" : "",
+      backgroundColor: state.isFocused ? "#d4d6d8" : "",
     }),
   };
 
@@ -63,15 +75,27 @@ const AdminAddServiceModal = ({ isOpen, refetch, onClose }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    mutate({ ...values, status: 0 });
+    mutate({ ...values, status: 1, serviceType: values?.serviceType?.value });
+  };
+
+  const close = () => {
+    onClose();
+    setValues({ name: "", serviceType: "", description: "" });
+  };
+
+  const handleSelectChange = (selectedOption, { name }) => {
+    setValues({
+      ...values,
+      [name]: selectedOption,
+    });
   };
 
   return (
-    <Modal isCentered trapFocus={false} isOpen={isOpen} onClose={onClose}>
+    <Modal isCentered trapFocus={false} isOpen={isOpen} onClose={close}>
       <ModalOverlay backdropFilter="auto" backdropBlur="2px" />
       <ModalContent
-        py="32px"
-        px="0"
+        py="40px"
+        px="24px"
         overflowY="auto"
         borderRadius="8px"
         bg="#fff"
@@ -103,8 +127,6 @@ const AdminAddServiceModal = ({ isOpen, refetch, onClose }) => {
             <CustomInput
               value={values.name}
               auth
-              bg="#F4F6F8"
-              border="0px"
               onChange={(e) =>
                 setValues({
                   ...values,
@@ -124,11 +146,8 @@ const AdminAddServiceModal = ({ isOpen, refetch, onClose }) => {
             >
               Description
             </Text>
-            <Textarea
+            <TextInput
               value={values.description}
-              borderRadius={"4px"}
-              fontSize={"12px"}
-              bg="#F4F6F8"
               onChange={(e) =>
                 setValues({
                   ...values,
@@ -152,27 +171,38 @@ const AdminAddServiceModal = ({ isOpen, refetch, onClose }) => {
               styles={customStyles}
               options={selectOptions}
               onChange={(selectedOption) =>
-                setValues({
-                  ...values,
-                  serviceType: selectedOption.value,
+                handleSelectChange(selectedOption, {
+                  name: "serviceType",
                 })
               }
+              value={values?.serviceType}
+              components={{
+                IndicatorSeparator: () => (
+                  <div style={{ display: "none" }}></div>
+                ),
+                DropdownIndicator: () => (
+                  <div>
+                    <IoIosArrowDown size="15px" color="#646668" />
+                  </div>
+                ),
+              }}
             />
           </Box>
 
-          <Button
-            fontSize="14px"
-            fontWeight={500}
-            isDisabled={isDisabled}
-            isLoading={isLoading}
-            onClick={handleSubmit}
-            lineHeight="100%"
-            w="full"
-            py="17px"
-            variant="adminPrimary"
-          >
-            Save
-          </Button>
+          <Flex align="center" gap="24px">
+            <Button variant="adminSecondary" onClick={close} w="100%">
+              Cancel
+            </Button>
+            <Button
+              isDisabled={isDisabled}
+              isLoading={isLoading}
+              onClick={handleSubmit}
+              w="100%"
+              variant="adminPrimary"
+            >
+              Save
+            </Button>
+          </Flex>
         </ModalBody>
       </ModalContent>
     </Modal>

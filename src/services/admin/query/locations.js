@@ -16,6 +16,10 @@ import {
   editPolicy,
   addPolicy,
   deletePolicy,
+  getAdminLocations,
+  getAdminLocation,
+  getAdminZones,
+  getAdminZone,
 } from "../api/locations";
 
 export const useGetAllLocations = (options = {}) => {
@@ -40,6 +44,38 @@ export const useGetLocations = (options = {}, page = 1, limit = 25, query) => {
   );
 
   return { isLoading, data, refetch };
+};
+
+export const useGetAdminLocations = (options = {}) => {
+  const { mutate, isLoading, data } = useMutation(getAdminLocations, {
+    mutationKey: "GET_ADMIN_LOCATIONS_LIST",
+    ...options,
+  });
+  return { mutate, isLoading, data };
+};
+
+export const useGetAdminLocation = (options = {}) => {
+  const { mutate, isLoading, data } = useMutation(getAdminLocation, {
+    mutationKey: "GET_ADMIN_LOCATION",
+    ...options,
+  });
+  return { mutate, isLoading, data };
+};
+
+export const useGetAdminZones = (options = {}) => {
+  const { mutate, isLoading, data } = useMutation(getAdminZones, {
+    mutationKey: "GET_ADMIN_ZONES_LIST",
+    ...options,
+  });
+  return { mutate, isLoading, data };
+};
+
+export const useGetAdminZone = (options = {}) => {
+  const { mutate, isLoading, data } = useMutation(getAdminZone, {
+    mutationKey: "GET_ADMIN_ZONE",
+    ...options,
+  });
+  return { mutate, isLoading, data };
 };
 
 export const useAddLocation = (options = {}) => {

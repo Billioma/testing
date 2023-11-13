@@ -37,7 +37,6 @@ const TableLayer = ({ sub, page, setPage, limit, subMutate, isLoading }) => {
     amount: "",
   });
 
-
   const open = (dat) => {
     setShow(true);
     setCurrentSub(dat);

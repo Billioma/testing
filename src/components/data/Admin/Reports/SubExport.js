@@ -11,6 +11,7 @@ const SubExport = ({ data }) => {
     { name: "Next Renewal", selector: "nextRenewal" },
     { name: "AutoRenew", selector: "autoRenew" },
     { name: "Cancelled", selector: "isCancelled" },
+    { name: "Status", selector: "status" },
     { name: "Date Created", selector: "createdAt" },
   ];
 

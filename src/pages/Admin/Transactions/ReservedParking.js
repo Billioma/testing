@@ -1,20 +1,15 @@
 import React, { useState, useEffect } from "react";
-import { Box, Button, Flex, Text } from "@chakra-ui/react";
-import { VscDebugRestart } from "react-icons/vsc";
-import { useNavigate } from "react-router-dom";
+import { Box, Flex, Image, Text } from "@chakra-ui/react";
 import TableLayer from "../../../components/data/Admin/Transactions/ReservedParkingTableLayer";
-import { useGetReservedParking } from "../../../services/admin/query/transactions";
+import { useGetAdminReservedParkingList } from "../../../services/admin/query/transactions";
 import Filter from "../../../components/common/Filter";
 import { reservedParkingOptions } from "../../../components/common/constants";
-import { FiPlus } from "react-icons/fi";
-import { PRIVATE_PATHS } from "../../../routes/constants";
 
 export default function () {
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(25);
   const [startRow, setStartRow] = useState(1);
   const [endRow, setEndRow] = useState(25);
-  const navigate = useNavigate();
   const [filtArray, setFiltArray] = useState([]);
 
   const convertedFilters = filtArray?.map((filterObj) => {
@@ -24,15 +19,11 @@ export default function () {
   });
 
   const query = convertedFilters?.join("&");
+  const { mutate, data, isLoading } = useGetAdminReservedParkingList();
 
-  const { data, isLoading, refetch } = useGetReservedParking(
-    {
-      refetchOnWindowFocus: true,
-    },
-    page,
-    limit,
-    query
-  );
+  useEffect(() => {
+    mutate({ filterString: query, limit, page: page });
+  }, [page, query, limit]);
 
   useEffect(() => {
     setPage(1);
@@ -45,7 +36,7 @@ export default function () {
 
     const currentPage = page;
     const itemsPerPage = limit;
-    const totalItems = data.total;
+    const totalItems = data?.total;
 
     const currentStartRow = (currentPage - 1) * itemsPerPage + 1;
     const currentEndRow = Math.min(currentPage * itemsPerPage, totalItems);
@@ -54,42 +45,50 @@ export default function () {
     setEndRow(currentEndRow);
   }, [data, page, limit]);
 
-  useEffect(() => {
-    refetch();
-  }, []);
-
   return (
-    <Box w="full" border={"1px solid #E4E6E8"} borderRadius={"12px"}>
+    <Box border="1px solid #d4d6d8" borderRadius="8px" p="16px 23px 24px">
       <Filter
         setFiltArray={setFiltArray}
         filtArray={filtArray}
         fieldToCompare={reservedParkingOptions}
-        handleSearch={refetch}
-        title={<Text fontWeight="500">Reserved Parking</Text>}
+        handleSearch={() =>
+          mutate({ filterString: query, limit: limit, page: page })
+        }
+        title={
+          <Text
+            fontSize="14px"
+            fontWeight={500}
+            lineHeight="100%"
+            color="#242628"
+          >
+            Reserved Parking
+          </Text>
+        }
+        gap
         main={
-          <Flex gap="6px">
-            {/* <Button
-              variant="adminPrimary"
-              gap={2}
-              fontSize={"12px"}
-              onClick={() => navigate(PRIVATE_PATHS.ADMIN_ADD_RESERVED_PARKING)}
+          <>
+            <Flex
+              justifyContent="center"
+              align="center"
+              cursor="pointer"
+              transition=".3s ease-in-out"
+              _hover={{ bg: "#F4F6F8" }}
+              onClick={() => mutate({ filterString: query, limit, page: page })}
+              borderRadius="8px"
+              border="1px solid #848688"
+              p="10px"
             >
-              Add Reserve Parking <FiPlus size={18} />
-            </Button> */}
-            <Button
-              bg="white"
-              py={3}
-              h="43px"
-              border="1px solid #000"
-              color="#000"
-              onClick={refetch}
-            >
-              <VscDebugRestart size={20} />
-            </Button>
-          </Flex>
+              <Image
+                src="/assets/refresh.svg"
+                className={isLoading && "mirrored-icon"}
+                w="20px"
+                h="20px"
+              />
+            </Flex>
+          </>
         }
       />
-      <hr />
+
       <TableLayer
         data={data}
         isLoading={isLoading}
@@ -98,7 +97,7 @@ export default function () {
         setPage={setPage}
         startRow={startRow}
         endRow={endRow}
-        refetch={refetch}
+        refetch={() => mutate({ filterString: query, limit, page: page })}
         setLimit={setLimit}
       />
     </Box>

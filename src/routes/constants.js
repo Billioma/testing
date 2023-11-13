@@ -66,7 +66,7 @@ export const PRIVATE_PATHS = {
   CLIENT_LOGS_VALET: "/client/logs/valet-park",
   CLIENT_LOGS_VALET_DETAILS: "/client/logs/valet-park/details",
   CLIENT_TRAN: "/client/transactions",
-  CLIENT_TRAN_DETAILS: "/client/transaction-details",
+  CLIENT_TRAN_DETAILS: "/client/transactions/transaction-details",
   CLIENT_ADD_EVENT: "/client/events/create",
   CLIENT_EDIT_EVENT: "/client/events/:id",
   CLIENT_ADD_SUB: "/client/subscriptions/create",
@@ -74,6 +74,8 @@ export const PRIVATE_PATHS = {
 
   //OPERATOR ROUTES
   OP_DASHBOARD: "/operator/dashboard",
+  OP_TRANSACTION: "/operator/transactions",
+  OP_TRANSACTION_DETAILS: "/operator/transactions/transaction-details",
   OP_ATTENDANT: "/operator/users/attendants",
   OP_ADD_ATTENDANT: "/operator/users/attendants/create",
   OP_ATTENDANT_DETAILS: "/operator/users/attendants/:id",
@@ -144,6 +146,8 @@ export const PRIVATE_PATHS = {
     "/admin/memberships/corporate-subscriptions/details/:id",
 
   ADMIN_PAYTOPARK: "/admin/transactions/pay-to-park",
+  ADMIN_EVENTPARK: "/admin/transactions/event-parking",
+  ADMIN_VIEW_EVENTPARK: "/admin/transactions/event-parking/details/:id",
   ADMIN_VIEW_PAYTOPARK: "/admin/transactions/pay-to-park/:id",
   ADMIN_RESERVED_PARKING: "/admin/transactions/reserved-parking",
   ADMIN_VIEW_RESERVED_PARKING:
@@ -151,6 +155,8 @@ export const PRIVATE_PATHS = {
   ADMIN_ADD_RESERVED_PARKING: "/admin/transactions/reserved-parking/create",
 
   ADMIN_CAR_SERVICES: "/admin/transactions/car-services",
+  ADMIN_TIPS: "/admin/transactions/tips",
+  ADMIN_VIEWTIPS: "/admin/transactions/tips/:id",
   ADMIN_VIEW_CAR_SERVICE: "/admin/transactions/car-services/details/:id",
   ADMIN_ADD_CAR_SERVICE: "/admin/transactions/car-services/create",
 

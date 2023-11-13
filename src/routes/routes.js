@@ -93,6 +93,8 @@ const {
   OP_ADD_ZONE,
   OP_ADD_POLICY,
   OP_VALETED,
+  OP_TRANSACTION,
+  OP_TRANSACTION_DETAILS,
   OP_VALETED_DETAILS,
   OP_PARKED,
   OP_PARKED_DETAILS,
@@ -143,6 +145,10 @@ const {
   ADMIN_VIEW_PAYTOPARK,
   ADMIN_RESERVED_PARKING,
   ADMIN_VIEW_RESERVED_PARKING,
+  ADMIN_EVENTPARK,
+  ADMIN_TIPS,
+  ADMIN_VIEWTIPS,
+  ADMIN_VIEW_EVENTPARK,
   ADMIN_ADD_RESERVED_PARKING,
   ADMIN_CAR_SERVICES,
   ADMIN_ADD_CAR_SERVICE,
@@ -351,6 +357,12 @@ const OpAddLocation = WithSuspense(
 const OpZone = WithSuspense(
   lazy(() => import("../pages/Operator/Locations/Zones/Zones"))
 );
+const OpTransactions = WithSuspense(
+  lazy(() => import("../pages/Operator/Transactions/Transactions"))
+);
+const OpTransactionDetails = WithSuspense(
+  lazy(() => import("../pages/Operator/Transactions/TransactionDetails"))
+);
 const OpZoneDetails = WithSuspense(
   lazy(() => import("../pages/Operator/Locations/Zones/ZoneDetails"))
 );
@@ -551,6 +563,22 @@ const AdminReservedParking = WithSuspense(
 
 const AdminViewReservedParking = WithSuspense(
   lazy(() => import("../pages/Admin/Transactions/ViewReservedParking"))
+);
+
+const AdminTips = WithSuspense(
+  lazy(() => import("../pages/Admin/Transactions/Tips"))
+);
+
+const AdminViewTips = WithSuspense(
+  lazy(() => import("../pages/Admin/Transactions/ViewTips"))
+);
+
+const AdminEventParking = WithSuspense(
+  lazy(() => import("../pages/Admin/Transactions/EventParking"))
+);
+
+const AdminViewEventParking = WithSuspense(
+  lazy(() => import("../pages/Admin/Transactions/ViewEventParking"))
 );
 
 const AdminAddReservedParking = WithSuspense(
@@ -910,6 +938,8 @@ export const PRIVATE_ROUTES = [
   { path: OP_ADD_RATE, element: <OpAddRate /> },
   { path: OP_RATE_DETAILS, element: <OpRateDetails /> },
   { path: OP_ZONES, element: <OpZone /> },
+  { path: OP_TRANSACTION, element: <OpTransactions /> },
+  { path: OP_TRANSACTION_DETAILS, element: <OpTransactionDetails /> },
   { path: OP_ZONE_DETAILS, element: <OpZoneDetails /> },
   { path: OP_ADD_ZONE, element: <OpAddZone /> },
   { path: OP_POLICIES, element: <OpPolicies /> },
@@ -1005,6 +1035,22 @@ export const PRIVATE_ROUTES = [
   {
     path: ADMIN_VIEW_RESERVED_PARKING,
     element: <AdminViewReservedParking />,
+  },
+  {
+    path: ADMIN_TIPS,
+    element: <AdminTips />,
+  },
+  {
+    path: ADMIN_VIEWTIPS,
+    element: <AdminViewTips />,
+  },
+  {
+    path: ADMIN_EVENTPARK,
+    element: <AdminEventParking />,
+  },
+  {
+    path: ADMIN_VIEW_EVENTPARK,
+    element: <AdminViewEventParking />,
   },
 
   {

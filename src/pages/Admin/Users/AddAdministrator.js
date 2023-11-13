@@ -245,7 +245,7 @@ export default function AddAttendants() {
                     <CustomInput
                       mb
                       name="password"
-                      value={values.password}
+                      value={values?.password}
                       onChange={handleChange}
                       onBlur={handleBlur}
                       error={
@@ -272,7 +272,7 @@ export default function AddAttendants() {
                     <CustomInput
                       mb
                       name="passwordConfirmation"
-                      value={values.passwordConfirmation}
+                      value={values?.passwordConfirmation}
                       onChange={handleChange}
                       onBlur={handleBlur}
                       error={
@@ -308,7 +308,7 @@ export default function AddAttendants() {
                         })
                       }
                       onBlur={handleBlur}
-                      value={values.role}
+                      value={values?.role}
                       components={{
                         IndicatorSeparator: () => (
                           <div style={{ display: "none" }}></div>
@@ -334,11 +334,11 @@ export default function AddAttendants() {
                       onChange={() =>
                         setValues({
                           ...values,
-                          isManager: values.isManager ? 0 : 1,
+                          isManager: values?.isManager ? 0 : 1,
                         })
                       }
-                      value={values.isManager}
-                      isChecked={values.isManager ? true : false}
+                      value={values?.isManager}
+                      isChecked={values?.isManager ? true : false}
                       size="sm"
                       variant="adminPrimary"
                     />
@@ -375,7 +375,7 @@ export default function AddAttendants() {
                       }}
                     />
                   </Box>
-                  
+
                   <Flex gap="24px" mt="24px">
                     <Button
                       variant="adminSecondary"

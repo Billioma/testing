@@ -17,12 +17,7 @@ export const trim = (str) => {
   return str?.length > 20 ? str.substring(0, 20) + "..." : str;
 };
 
-export const formatDate = (
-  date,
-  fallback = "",
-  withTime = false,
-  yearFirstFormat = false
-) => {
+export const formatDate = (date, fallback = "", withTime = false) => {
   if (!date) return fallback;
 
   const formattedDate = new Date(date);
@@ -33,17 +28,11 @@ export const formatDate = (
 
   const hours = formattedDate.getHours().toString().padStart(2, "0");
   const minutes = formattedDate.getMinutes().toString().padStart(2, "0");
-  // const seconds = formattedDate.getSeconds().toString().padStart(2, "0");
 
   return `${year}-${month}-${day} ${withTime ? `${hours}:${minutes}` : ""}`;
 };
 
-export const formatNewDate = (
-  date,
-  fallback = "",
-  withTime = false,
-  yearFirstFormat = false
-) => {
+export const formatNewDate = (date, fallback = "", withTime = false) => {
   if (!date) return fallback;
 
   const formattedDate = new Date(date);
@@ -139,19 +128,17 @@ export const formatTimeToHHMMSS = (time) => {
   return `${hours}:${minutes}:${seconds}`;
 };
 
-
 export const formatDateToISOString = (date) => {
-  
   const newDate = new Date(date);
 
   const year = newDate.getUTCFullYear();
-  const month = String(newDate.getUTCMonth() + 1).padStart(2, '0');
-  const day = String(newDate.getUTCDate()).padStart(2, '0');
-  const hours = String(newDate.getUTCHours()).padStart(2, '0');
-  const minutes = String(newDate.getUTCMinutes()).padStart(2, '0');
-  const seconds = String(newDate.getUTCSeconds()).padStart(2, '0');
-  const milliseconds = String(newDate.getUTCMilliseconds()).padStart(3, '0');
+  const month = String(newDate.getUTCMonth() + 1).padStart(2, "0");
+  const day = String(newDate.getUTCDate()).padStart(2, "0");
+  const hours = String(newDate.getUTCHours()).padStart(2, "0");
+  const minutes = String(newDate.getUTCMinutes()).padStart(2, "0");
+  const seconds = String(newDate.getUTCSeconds()).padStart(2, "0");
+  const milliseconds = String(newDate.getUTCMilliseconds()).padStart(3, "0");
 
   const formattedDate = `${year}-${month}-${day}T${hours}:${minutes}:${seconds}.${milliseconds}Z`;
   return formattedDate;
-}
+};

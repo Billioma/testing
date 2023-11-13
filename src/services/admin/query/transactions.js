@@ -9,6 +9,18 @@ import {
   addReservedParking,
   getCarServices,
   editCarService,
+  getPayToParkList,
+  getPayToParkDetails,
+  getReservedParkingList,
+  getReservedParkingDetails,
+  getEventParkingList,
+  getEventParkingDetails,
+  getCarServiceDetails,
+  getCarServiceList,
+  deleteEventParking,
+  editEventParking,
+  getTipsList,
+  getTipsDetails,
 } from "../api/transactions";
 
 export const useGetPayToPark = (options = {}, page = 1, limit = 25, query) => {
@@ -21,6 +33,86 @@ export const useGetPayToPark = (options = {}, page = 1, limit = 25, query) => {
   );
 
   return { isLoading, data, refetch };
+};
+
+export const useGetAdminPayToParkList = (options = {}) => {
+  const { mutate, isLoading, data } = useMutation(getPayToParkList, {
+    mutationKey: "GET_ADMIN_PAY_TO_PARK_LIST",
+    ...options,
+  });
+  return { mutate, isLoading, data };
+};
+
+export const useGetAdminPayToParkDetails = (options = {}) => {
+  const { mutate, isLoading, data } = useMutation(getPayToParkDetails, {
+    mutationKey: "GET_ADMIN_PAY_TO_PARK_DETAILS",
+    ...options,
+  });
+  return { mutate, isLoading, data };
+};
+
+export const useGetAdminReservedParkingList = (options = {}) => {
+  const { mutate, isLoading, data } = useMutation(getReservedParkingList, {
+    mutationKey: "GET_ADMIN_RESERVED_PARKING_LIST",
+    ...options,
+  });
+  return { mutate, isLoading, data };
+};
+
+export const useGetAdminReservedParkingDetails = (options = {}) => {
+  const { mutate, isLoading, data } = useMutation(getReservedParkingDetails, {
+    mutationKey: "GET_ADMIN_RESERVED_PARKING_DETAILS",
+    ...options,
+  });
+  return { mutate, isLoading, data };
+};
+
+export const useGetAdminEventParkingList = (options = {}) => {
+  const { mutate, isLoading, data } = useMutation(getEventParkingList, {
+    mutationKey: "GET_ADMIN_Event_PARKING_LIST",
+    ...options,
+  });
+  return { mutate, isLoading, data };
+};
+
+export const useGetAdminEventParkingDetails = (options = {}) => {
+  const { mutate, isLoading, data } = useMutation(getEventParkingDetails, {
+    mutationKey: "GET_ADMIN_Event_PARKING_DETAILS",
+    ...options,
+  });
+  return { mutate, isLoading, data };
+};
+
+export const useGetAdminCarServicesList = (options = {}) => {
+  const { mutate, isLoading, data } = useMutation(getCarServiceList, {
+    mutationKey: "GET_ADMIN_CAR_SERVICES_LIST",
+    ...options,
+  });
+  return { mutate, isLoading, data };
+};
+
+export const useGetAdminCarServicesDetails = (options = {}) => {
+  const { mutate, isLoading, data } = useMutation(getCarServiceDetails, {
+    mutationKey: "GET_ADMIN_CAR_SERVICES_DETAILS",
+    ...options,
+  });
+  return { mutate, isLoading, data };
+};
+
+export const useGetAdminTipsList = (options = {}) => {
+  const { mutate, isLoading, data } = useMutation(getTipsList, {
+    mutationKey: "GET_ADMIN_TIPS_LIST",
+    ...options,
+  });
+  return { mutate, isLoading, data };
+};
+
+export const useGetAdminTipsDetails = (options = {}) => {
+  const { mutate, isLoading, data } = useMutation(getTipsDetails, {
+    mutationKey: "GET_ADMIN_TIPS_DETAILS",
+    ...options,
+  });
+  return { mutate, isLoading, data };
 };
 
 export const useDeletePayToPark = (options = {}) => {
@@ -44,6 +136,15 @@ export const useDeleteReservedParking = (options = {}) => {
 export const useEditReservedParking = (options = {}) => {
   const { isLoading, mutate } = useMutation(editReservedParking, {
     mutationKey: ["EDIT_RESERVED_PARKING"],
+    ...options,
+  });
+
+  return { isLoading, mutate };
+};
+
+export const useEditEventParking = (options = {}) => {
+  const { isLoading, mutate } = useMutation(editEventParking, {
+    mutationKey: ["EDIT_EVENT_PARKING"],
     ...options,
   });
 
@@ -96,6 +197,15 @@ export const useGetCarServices = (
 export const useDeleteCarService = (options = {}) => {
   const { isLoading, mutate } = useMutation(deleteCarService, {
     mutationKey: ["DELETE_CAR_SERVICE"],
+    ...options,
+  });
+
+  return { isLoading, mutate };
+};
+
+export const useDeleteEventParking = (options = {}) => {
+  const { isLoading, mutate } = useMutation(deleteEventParking, {
+    mutationKey: ["DELETE_EVENT_PARKING"],
     ...options,
   });
 

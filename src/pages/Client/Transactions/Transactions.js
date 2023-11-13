@@ -135,7 +135,9 @@ const Transactions = () => {
                               align="center"
                               _hover={{ bg: "#F4F6F8" }}
                               onClick={() =>
-                                navigate("/client/transaction-details")
+                                navigate(
+                                  "/client/transactions/transaction-details"
+                                )
                               }
                               cursor="pointer"
                               fontSize="10px"

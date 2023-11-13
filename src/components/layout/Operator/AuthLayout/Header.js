@@ -41,6 +41,9 @@ const Header = () => {
       case locationRoute.includes("location"):
         return setTitle("Locations");
 
+      case locationRoute.includes("transactions"):
+        return setTitle("Transactions");
+
       default:
         return setTitle("");
     }

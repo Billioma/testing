@@ -1,13 +1,17 @@
 import React, { useState, useEffect } from "react";
 import ZonesTableLayer from "../../../components/data/Admin/Locations/ZonesTableLayer";
-import { Box, Button, Flex, Text } from "@chakra-ui/react";
+import { Box, Button, Flex, Image, Text } from "@chakra-ui/react";
 import { FiPlus } from "react-icons/fi";
 import { VscDebugRestart } from "react-icons/vsc";
 import { useNavigate } from "react-router-dom";
 import { PRIVATE_PATHS } from "../../../routes/constants";
-import { useGetZones } from "../../../services/admin/query/locations";
+import {
+  useGetAdminZones,
+  useGetZones,
+} from "../../../services/admin/query/locations";
 import Filter from "../../../components/common/Filter";
 import { zonesOptions } from "../../../components/common/constants";
+import { MdAdd } from "react-icons/md";
 
 export default function () {
   const [page, setPage] = useState(1);
@@ -25,14 +29,11 @@ export default function () {
 
   const query = convertedFilters?.join("&");
 
-  const { data, isLoading, refetch } = useGetZones(
-    {
-      refetchOnWindowFocus: true,
-    },
-    page,
-    limit,
-    query
-  );
+  const { mutate, data, isLoading } = useGetAdminZones();
+
+  useEffect(() => {
+    mutate({ filterString: query, limit, page: page });
+  }, [page, query, limit]);
 
   useEffect(() => {
     setPage(1);
@@ -45,7 +46,7 @@ export default function () {
 
     const currentPage = page;
     const itemsPerPage = limit;
-    const totalItems = data.total;
+    const totalItems = data?.total;
 
     const currentStartRow = (currentPage - 1) * itemsPerPage + 1;
     const currentEndRow = Math.min(currentPage * itemsPerPage, totalItems);
@@ -54,46 +55,59 @@ export default function () {
     setEndRow(currentEndRow);
   }, [data, page, limit]);
 
-  useEffect(() => {
-    refetch();
-  }, []);
-
   return (
-    <Box w="full" border={"1px solid #E4E6E8"} borderRadius={"12px"}>
+    <Box border="1px solid #d4d6d8" borderRadius="8px" p="16px 23px 24px">
       <Filter
         setFiltArray={setFiltArray}
         filtArray={filtArray}
         fieldToCompare={zonesOptions}
-        handleSearch={refetch}
-        title={<Text fontWeight="500">All Zones</Text>}
+        handleSearch={() =>
+          mutate({ filterString: query, limit: limit, page: page })
+        }
+        gap
+        title={
+          <Text
+            fontSize="14px"
+            fontWeight={500}
+            lineHeight="100%"
+            color="#242628"
+          >
+            All Zones
+          </Text>
+        }
         main={
-          <Flex gap="6px">
+          <>
             <Button
-              variant="adminPrimary"
-              gap={2}
-              fontSize={"12px"}
               onClick={() => navigate(PRIVATE_PATHS.ADMIN_ADD_ZONE)}
+              display="flex"
+              bg="#000"
+              gap="8px"
             >
-              <Text display={{ base: "none", md: "inline-flex" }}>
-                Add Zone
-              </Text>
-              <FiPlus size={18} />
+              <Text fontSize="12px">Add a Zone</Text>
+              <MdAdd size="20px" />
             </Button>
-            <Button
-              bg="white"
-              py={3}
-              h="43px"
-              border="1px solid #000"
-              color="#000"
-              onClick={() => refetch()}
+            <Flex
+              justifyContent="center"
+              align="center"
+              cursor="pointer"
+              transition=".3s ease-in-out"
+              _hover={{ bg: "#F4F6F8" }}
+              onClick={() => mutate({ filterString: query, limit, page: page })}
+              borderRadius="8px"
+              border="1px solid #848688"
+              p="10px"
             >
-              <VscDebugRestart size={20} />
-            </Button>
-          </Flex>
+              <Image
+                src="/assets/refresh.svg"
+                className={isLoading && "mirrored-icon"}
+                w="20px"
+                h="20px"
+              />
+            </Flex>
+          </>
         }
       />
 
-      <hr />
       <ZonesTableLayer
         data={data}
         isLoading={isLoading}
@@ -102,7 +116,7 @@ export default function () {
         setPage={setPage}
         startRow={startRow}
         endRow={endRow}
-        refetch={refetch}
+        refetch={() => mutate({ filterString: query, limit, page: page })}
         setLimit={setLimit}
       />
     </Box>

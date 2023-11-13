@@ -14,11 +14,8 @@ import {
   Icon,
 } from "@chakra-ui/react";
 import TableFormat from "../../../common/TableFormat";
-import { FiEdit, FiTrash2 } from "react-icons/fi";
-import NoData from "../../../common/NoData";
 import { formatDate } from "../../../../utils/helpers";
 import { useNavigate } from "react-router-dom";
-import { HiOutlineInformationCircle } from "react-icons/hi";
 import AdminDeleteModal from "../../../modals/AdminDeleteModal";
 import useCustomToast from "../../../../utils/notifications";
 import { useDeleteOperator } from "../../../../services/admin/query/users";
@@ -127,7 +124,8 @@ const TableLayer = ({
                       bg={Object?.values(SecStatus[operator?.status])[2]}
                       justifyContent={"center"}
                       alignItems="center"
-                      padding="7px 10px"
+                      py="5px"
+                      px="16px"
                       borderRadius="4px"
                     >
                       {operator?.status ? "Active" : "Inactive"}

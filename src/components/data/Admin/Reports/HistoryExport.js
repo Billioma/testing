@@ -5,10 +5,9 @@ import { PiExportLight } from "react-icons/pi";
 
 const HistoryExport = ({ data }) => {
   const columns = [
-    { name: "First Name", selector: "firstName" },
-    { name: "Last Name", selector: "lastName" },
-    { name: "Email", selector: "email" },
-    { name: "Phone", selector: "phone" },
+    { name: "Transaction ID", selector: "transactionId" },
+    { name: "Last Name", selector: "amount" },
+    { name: "Customer Email", selector: "customer.email" },
     { name: "Date Created", selector: "createdAt" },
   ];
 

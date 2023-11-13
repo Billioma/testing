@@ -5,7 +5,6 @@ import {
   ModalContent,
   ModalBody,
   Flex,
-  Textarea,
   Text,
   Box,
   Button,
@@ -14,6 +13,8 @@ import Select from "react-select";
 import CustomInput from "../common/CustomInput";
 import useCustomToast from "../../utils/notifications";
 import { useEditService } from "../../services/admin/query/services";
+import { IoIosArrowDown } from "react-icons/io";
+import TextInput from "../common/TextInput";
 
 const AdminEditServiceModal = ({ isOpen, refetch, onClose, service }) => {
   const [values, setValues] = useState({
@@ -22,28 +23,30 @@ const AdminEditServiceModal = ({ isOpen, refetch, onClose, service }) => {
     description: "",
   });
 
-  useEffect(() => {
-    if (values.serviceType) return;
-    setValues({
-      name: service?.name,
-      serviceType: service?.serviceType,
-      description: service?.description,
-    });
-  }, [service]);
-
   const isDisabled = Object.values(values).some((value) => !value);
 
   const customStyles = {
-    control: (provided) => ({
+    control: (provided, state) => ({
       ...provided,
       width: "100%",
-      height: "44px",
+      minHeight: "44px",
       color: "#646668",
-      fontSize: "13px",
+      fontSize: "14px",
       cursor: "pointer",
       borderRadius: "4px",
-      border: "1px solid #D4D6D8",
-      background: "unset",
+      border: state.hasValue ? "none" : "1px solid #D4D6D8",
+      paddingRight: "16px",
+      background: state.hasValue ? "#f4f6f8" : "unset",
+    }),
+    menu: (provided) => ({
+      ...provided,
+      fontSize: "13px",
+      backgroundColor: "#f4f6f8",
+    }),
+    option: (provided, state) => ({
+      ...provided,
+      color: state.isFocused ? "" : "",
+      backgroundColor: state.isFocused ? "#d4d6d8" : "",
     }),
   };
 
@@ -72,7 +75,35 @@ const AdminEditServiceModal = ({ isOpen, refetch, onClose, service }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    mutate({ ...values, status: 0, id: service.id });
+    mutate({
+      ...values,
+      status: 1,
+      id: service?.id,
+      serviceType: values?.serviceType?.value,
+    });
+  };
+
+  console.log(values);
+
+  useEffect(() => {
+    const selectedServiceOption = selectOptions?.find(
+      (option) => option.label === service?.serviceType
+    );
+    if (service) {
+      setValues({
+        ...values,
+        name: service?.name,
+        serviceType: selectedServiceOption,
+        description: service?.description,
+      });
+    } else return;
+  }, [service]);
+
+  const handleSelectChange = (selectedOption, { name }) => {
+    setValues({
+      ...values,
+      [name]: selectedOption,
+    });
   };
 
   return (
@@ -110,10 +141,8 @@ const AdminEditServiceModal = ({ isOpen, refetch, onClose, service }) => {
               Name
             </Text>
             <CustomInput
-              value={values.name}
+              value={values?.name}
               auth
-              bg="#F4F6F8"
-              border="0px"
               onChange={(e) =>
                 setValues({
                   ...values,
@@ -133,11 +162,9 @@ const AdminEditServiceModal = ({ isOpen, refetch, onClose, service }) => {
             >
               Description
             </Text>
-            <Textarea
-              value={values.description}
-              borderRadius={"4px"}
-              fontSize={"12px"}
-              bg="#F4F6F8"
+            <TextInput
+              value={values?.description}
+              auth
               onChange={(e) =>
                 setValues({
                   ...values,
@@ -160,31 +187,39 @@ const AdminEditServiceModal = ({ isOpen, refetch, onClose, service }) => {
             <Select
               styles={customStyles}
               options={selectOptions}
-              value={selectOptions.find(
-                (option) => option.value == values.serviceType
-              )}
+              value={values?.serviceType}
               onChange={(selectedOption) =>
-                setValues({
-                  ...values,
-                  serviceType: selectedOption.value,
+                handleSelectChange(selectedOption, {
+                  name: "serviceType",
                 })
               }
+              components={{
+                IndicatorSeparator: () => (
+                  <div style={{ display: "none" }}></div>
+                ),
+                DropdownIndicator: () => (
+                  <div>
+                    <IoIosArrowDown size="15px" color="#646668" />
+                  </div>
+                ),
+              }}
             />
           </Box>
 
-          <Button
-            fontSize="14px"
-            fontWeight={500}
-            isDisabled={isDisabled}
-            isLoading={isLoading}
-            onClick={handleSubmit}
-            lineHeight="100%"
-            w="full"
-            py="17px"
-            variant="adminPrimary"
-          >
-            Save
-          </Button>
+          <Flex align="center" gap="24px">
+            <Button variant="adminSecondary" onClick={onClose} w="100%">
+              Cancel
+            </Button>
+            <Button
+              isDisabled={isDisabled}
+              isLoading={isLoading}
+              onClick={handleSubmit}
+              w="100%"
+              variant="adminPrimary"
+            >
+              Save
+            </Button>
+          </Flex>
         </ModalBody>
       </ModalContent>
     </Modal>

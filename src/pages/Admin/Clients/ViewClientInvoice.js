@@ -42,7 +42,7 @@ export default function ViewOperator() {
 
   const { id } = useParams();
 
-  const { mutate: clientMutate, data: clients } = useGetAdminClients(); 
+  const { mutate: clientMutate, data: clients } = useGetAdminClients();
   const { mutate, data, isLoading } = useGetAdminClientInvoice();
   const limit = 10000;
   const page = 1;

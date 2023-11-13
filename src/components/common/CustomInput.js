@@ -89,6 +89,7 @@ const CustomInput = ({
           isDisabled={dis}
           w="100%"
           name={name}
+          cursor={isDisabled ? "auto" : ""}
           isReadOnly={isDisabled}
           onKeyPress={handleKeyPress}
           onChange={handleInputChange}
@@ -112,7 +113,11 @@ const CustomInput = ({
             <BsSearch />
           </InputRightElement>
         ) : add ? (
-          <InputRightElement  onClick={onAdd} cursor="pointer" h={opt ? "60px" : "44px"}>
+          <InputRightElement
+            onClick={onAdd}
+            cursor="pointer"
+            h={opt ? "60px" : "44px"}
+          >
             <MdAdd />
           </InputRightElement>
         ) : (

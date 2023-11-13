@@ -161,13 +161,13 @@ const LocationDetails = () => {
     updateMutate({
       query: id,
       body: {
-        address: values.address,
-        amenities: values.amenities?.map((item) => item?.value),
+        address: values?.address,
+        amenities: values?.amenities?.map((item) => item?.value),
         description: values?.desc,
         picture: profilePicData?.path,
-        geoLocation: values.geo,
-        locationType: values.locationType?.value,
-        state: values.state?.value,
+        geoLocation: values?.geo,
+        locationType: values?.locationType?.value,
+        state: values?.state?.value,
         status: values?.status?.value,
       },
     });
@@ -281,7 +281,7 @@ const LocationDetails = () => {
                         }
                       />
                     ) : (
-                      values.img === null && (
+                      values?.img === null && (
                         <Image
                           src="/assets/prof-avatar.jpg"
                           w="120px"
@@ -307,7 +307,7 @@ const LocationDetails = () => {
                       auth
                       mb
                       dis={edit ? false : true}
-                      value={values.name}
+                      value={values?.name}
                       onChange={(e) =>
                         setValues({
                           ...values,
@@ -331,7 +331,7 @@ const LocationDetails = () => {
                       auth
                       mb
                       dis={edit ? false : true}
-                      value={values.desc}
+                      value={values?.desc}
                       onChange={(e) =>
                         setValues({
                           ...values,
@@ -355,7 +355,7 @@ const LocationDetails = () => {
                       auth
                       mb
                       dis={edit ? false : true}
-                      value={values.geo}
+                      value={values?.geo}
                       onChange={(e) =>
                         setValues({
                           ...values,
@@ -379,7 +379,7 @@ const LocationDetails = () => {
                       auth
                       mb
                       dis={edit ? false : true}
-                      value={values.address}
+                      value={values?.address}
                       onChange={(e) =>
                         setValues({
                           ...values,
@@ -402,7 +402,7 @@ const LocationDetails = () => {
                     <Select
                       styles={customStyles}
                       isDisabled={edit ? false : true}
-                      value={values.state}
+                      value={values?.state}
                       options={stateOptions}
                       components={{
                         IndicatorSeparator: () => (
@@ -436,8 +436,8 @@ const LocationDetails = () => {
                       styles={customStyles}
                       isDisabled={edit ? false : true}
                       options={locationOptions}
-                      value={values.locationType}
-                      defaultValue={values.locationType}
+                      value={values?.locationType}
+                      defaultValue={values?.locationType}
                       components={{
                         IndicatorSeparator: () => (
                           <div style={{ display: "none" }}></div>
@@ -470,7 +470,7 @@ const LocationDetails = () => {
                       styles={customStyles}
                       isDisabled={edit ? false : true}
                       isMulti
-                      value={values.amenities}
+                      value={values?.amenities}
                       options={amenitiesOptions}
                       components={{
                         IndicatorSeparator: () => (

@@ -13,7 +13,7 @@ import {
   adminInvoiceGrid,
   invoicesReportOptions,
 } from "../../../components/common/constants";
-import { useGetAdminReport } from "../../../services/admin/query/reports";
+import { useGetAdminRep } from "../../../services/admin/query/reports";
 import InvoiceExport from "../../../components/data/Admin/Reports/InvoiceExport";
 import Filter from "../../../components/common/Filter";
 
@@ -31,15 +31,11 @@ const Invoices = () => {
   });
 
   const query = convertedFilters?.join("&");
-  const { refetch, data, isLoading } = useGetAdminReport(
-    "invoices",
-    {
-      refetchOnWindowFocus: true,
-    },
-    page,
-    limit,
-    query
-  );
+  const { mutate, data, isLoading } = useGetAdminRep();
+
+  useEffect(() => {
+    mutate({ type: "invoices", filterString: query, limit, page: page });
+  }, [page, query, limit]);
 
   useEffect(() => {
     setPage(1);
@@ -52,7 +48,7 @@ const Invoices = () => {
 
     const currentPage = page;
     const itemsPerPage = limit;
-    const totalItems = data.total;
+    const totalItems = data?.total;
 
     const currentStartRow = (currentPage - 1) * itemsPerPage + 1;
     const currentEndRow = Math.min(currentPage * itemsPerPage, totalItems);
@@ -60,10 +56,6 @@ const Invoices = () => {
     setStartRow(currentStartRow);
     setEndRow(currentEndRow);
   }, [data, page, limit]);
-
-  useEffect(() => {
-    refetch();
-  }, []);
 
   return (
     <Box minH="75vh">
@@ -83,7 +75,8 @@ const Invoices = () => {
               <Box
                 borderRadius="8px"
                 bg="#F4F6F8"
-                p="5px"
+                pt="5px"
+                px="5px"
                 border="1px solid #E4E6E8"
               >
                 <Box
@@ -128,19 +121,10 @@ const Invoices = () => {
                         {i === 0
                           ? data?.total
                           : i === 1
-                          ? data?.aggregate?.totalAmountPayable?.toLocaleString(
-                              undefined,
-                              {
-                                maximumFractionDigits: 2,
-                              }
-                            ) || "0.00"
+                          ? data?.aggregate?.totalAmountPayable?.toLocaleString() ||
+                            "0.00"
                           : (i === 2 &&
-                              data?.aggregate?.totalAmountPaid?.toLocaleString(
-                                undefined,
-                                {
-                                  maximumFractionDigits: 2,
-                                }
-                              )) ||
+                              data?.aggregate?.totalAmountPaid?.toLocaleString()) ||
                             "0.00"}
                       </Text>
                     </Box>
@@ -157,18 +141,37 @@ const Invoices = () => {
           setFiltArray={setFiltArray}
           filtArray={filtArray}
           fieldToCompare={invoicesReportOptions}
-          handleSearch={refetch}
-          title={<Text fontWeight="500">All Invoices</Text>}
+          handleSearch={() =>
+            mutate({ type: "invoices", filterString: query, limit, page: page })
+          }
+          title={
+            <Text
+              fontSize="14px"
+              fontWeight={500}
+              lineHeight="100%"
+              color="#242628"
+            >
+              All Invoices
+            </Text>
+          }
+          gap
           main={
-            <Flex align="center" gap="24px">
-              <InvoiceExport data={data?.data} />
+            <>
+              {data?.data?.length ? <InvoiceExport data={data?.data} /> : ""}
               <Flex
                 justifyContent="center"
                 align="center"
                 cursor="pointer"
                 transition=".3s ease-in-out"
                 _hover={{ bg: "#F4F6F8" }}
-                onClick={refetch}
+                onClick={() =>
+                  mutate({
+                    type: "invoices",
+                    filterString: query,
+                    limit,
+                    page: page,
+                  })
+                }
                 borderRadius="8px"
                 border="1px solid #848688"
                 p="10px"
@@ -180,7 +183,7 @@ const Invoices = () => {
                   h="20px"
                 />
               </Flex>
-            </Flex>
+            </>
           }
         />
 
@@ -192,7 +195,6 @@ const Invoices = () => {
           setPage={setPage}
           startRow={startRow}
           endRow={endRow}
-          refetch={refetch}
           setLimit={setLimit}
         />
       </Box>

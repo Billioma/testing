@@ -5,6 +5,8 @@ export const GET_PROFILE = BASE_URL + "admin/auth/profile";
 
 export const GET_ADMIN_DASHBOARD_DATA = BASE_URL + "admin/dashboard/metrics";
 export const ADMIN_SERVICES = "admin/services";
+export const ADMIN_SERVICES_LIST = (filterString = "", limit = "", page = "") =>
+  `admin/services?${filterString}&limit=${limit}&page=${page}&sort=id,DESC`;
 export const GET_USERS_METRICS = "admin/dashboard/user-metrics";
 export const GET_USERS_METRICS_FILTER = (from = "", to = "") =>
   `admin/dashboard/user-metrics/?from=${from}&to=${to}`;
@@ -57,12 +59,27 @@ export const MANAGERS = "admin/entity-selectors/users/?search=&manager=1";
 export const CUSTOMERS = "admin/entity-selectors/customers/";
 
 export const ADMIN_LOCATIONS = "admin/locations";
+export const ADMIN_LOCATIONS_LIST = (
+  filterString = "",
+  limit = "",
+  page = ""
+) => `admin/locations?${filterString}&limit=${limit}&page=${page}&sort=id,DESC`;
+
+export const ADMIN_LOCATION = (id = "") => `admin/locations/${id}`;
 export const ADMIN_ZONES = "admin/zones";
+export const ADMIN_ZONES_LIST = (filterString = "", limit = "", page = "") =>
+  `admin/zones?${filterString}&limit=${limit}&page=${page}&sort=id,DESC`;
+
+export const ADMIN_ZONE = (id = "") => `admin/zones/${id}`;
 
 export const ADMIN_ROLES = "admin/roles";
 export const UPLOAD_MEDIA = "system/media-upload";
 
 export const ADMIN_VEHICLES = "admin/vehicles";
+export const ADMIN_VEHICLES_LIST = (filterString = "", limit = "", page = "") =>
+  `admin/vehicles?${filterString}&limit=${limit}&page=${page}&sort=id,DESC`;
+export const ADMIN_VEHICLE = (id = "") => `admin/vehicles/${id}`;
+
 export const ADMIN_VEHICLE_MAKES = "admin/vehicle-makes";
 export const ADMIN_VEHICLE_MODELS = "admin/vehicle-models";
 
@@ -94,10 +111,51 @@ export const ADMIN_CLIENTS_INVOICES_LIST = (
 ) =>
   `admin/client-invoices?${filterString}&limit=${limit}&page=${page}&sort=id,DESC`;
 export const ADMIN_PAY_TO_PARK = "admin/pay-to-park";
+export const ADMIN_PAY_TO_PARK_LIST = (
+  filterString = "",
+  limit = "",
+  page = ""
+) =>
+  `admin/pay-to-park?${filterString}&limit=${limit}&page=${page}&sort=id,DESC`;
+export const ADMIN_PAY_TO_PARK_DETAIL = (id = "") => `admin/pay-to-park/${id}`;
+export const ADMIN_EVENT_PARKING_LIST = (
+  filterString = "",
+  limit = "",
+  page = ""
+) =>
+  `admin/event-parking?${filterString}&limit=${limit}&page=${page}&sort=id,DESC`;
+
+export const ADMIN_EVENT_PARKING = "admin/event-parking";
 
 export const ADMIN_RESERVED_PARKING = "admin/reservations";
+export const ADMIN_RESERVED_PARKING_LIST = (
+  filterString = "",
+  limit = "",
+  page = ""
+) =>
+  `admin/reservations?${filterString}&limit=${limit}&page=${page}&sort=id,DESC`;
+
+export const ADMIN_RESERVED_PARKING_DETAIL = (id = "") =>
+  `admin/reservations/${id}`;
+
+export const ADMIN_EVENT_PARKING_DETAIL = (id = "") =>
+  `admin/event-parking/${id}`;
 
 export const ADMIN_CAR_SERVICES = "admin/service-bookings";
+export const ADMIN_CAR_SERVICES_LIST = (
+  filterString = "",
+  limit = "",
+  page = ""
+) =>
+  `admin/service-bookings?${filterString}&limit=${limit}&page=${page}&sort=id,DESC`;
+
+export const ADMIN_CAR_SERVICE_DETAIL = (id = "") =>
+  `admin/service-bookings/${id}`;
+
+export const ADMIN_TIPS_LIST = (filterString = "", limit = "", page = "") =>
+  `admin/tips?${filterString}&limit=${limit}&page=${page}&sort=id,DESC`;
+
+export const ADMIN_TIPS_DETAIL = (id = "") => `admin/tips/${id}`;
 
 export const ADMIN_AMENITIES = "admin/amenities";
 
@@ -105,13 +163,14 @@ export const ADMIN_SERVICE_LOGS = "admin/service-logs";
 
 export const GET_ADMIN_REPORTS = (
   type = "",
-  page = "",
+  filterString = "",
   limit = "",
-  query = ""
-) => `admin/reports/${type}/?limit=${limit}&page=${page}&sort=id,DESC&${query}`;
+  page = ""
+) =>
+  `admin/reports/${type}?${filterString}&limit=${limit}&page=${page}&sort=id,DESC`;
 
-export const GET_ADMIN_TRAN = (page = "", limit = "", query = "") =>
-  `admin/transactions/?limit=${limit}&page=${page}&sort=id,DESC&${query}`;
+export const GET_ADMIN_TRAN = (filterString = "", limit = "", page = "") =>
+  `admin/transactions?${filterString}&limit=${limit}&page=${page}&sort=id,DESC`;
 
 export const ADMIN_RATES = "admin/rates";
 export const ADMIN_POLICIES = "admin/policies";

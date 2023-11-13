@@ -9,6 +9,30 @@ export const getLocations = async (page, limit, query) => {
   return response.data;
 };
 
+export const getAdminLocations = async (query) => {
+  const res = await axiosInstance.get(
+    API.ADMIN_LOCATIONS_LIST(query.filterString, query.limit, query.page)
+  );
+  return res.data;
+};
+
+export const getAdminLocation = async (query) => {
+  const res = await axiosInstance.get(API.ADMIN_LOCATION(query.id));
+  return res.data;
+};
+
+export const getAdminZones = async (query) => {
+  const res = await axiosInstance.get(
+    API.ADMIN_ZONES_LIST(query.filterString, query.limit, query.page)
+  );
+  return res.data;
+};
+
+export const getAdminZone = async (query) => {
+  const res = await axiosInstance.get(API.ADMIN_ZONE(query.id));
+  return res.data;
+};
+
 export const getZones = async (page, limit, query) => {
   const response = await axiosInstance.get(
     API.ADMIN_ZONES + `?page=${page}&limit=${limit}&sort=id,DESC&${query || ""}`
@@ -33,11 +57,8 @@ export const addZone = async (data) => {
   return response.data;
 };
 
-export const editLocation = async (data) => {
-  const response = await axiosInstance.patch(
-    `${API.ADMIN_LOCATIONS}/${data.id}`,
-    data
-  );
+export const editLocation = async ({ query, body }) => {
+  const response = await axiosInstance.patch(API.ADMIN_LOCATION(query), body);
 
   return response.data;
 };
@@ -56,11 +77,8 @@ export const editRate = async (data) => {
   return response.data;
 };
 
-export const editZone = async (data) => {
-  const response = await axiosInstance.patch(
-    `${API.ADMIN_ZONES}/${data.id}`,
-    data
-  );
+export const editZone = async ({ query, body }) => {
+  const response = await axiosInstance.patch(API.ADMIN_ZONE(query), body);
 
   return response.data;
 };

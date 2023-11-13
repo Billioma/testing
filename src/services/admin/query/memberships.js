@@ -65,7 +65,7 @@ export const useGetCorporatePlans = (options = {}) => {
     { ...options }
   );
 
-  return { data, isLoading };
+  return { data, isLoading, refetch };
 };
 
 export const useDeleteMembershipPlan = (options = {}) => {

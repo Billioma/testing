@@ -9,10 +9,10 @@ import {
   Text,
 } from "@chakra-ui/react";
 import ZoneTableLayer from "../../../components/data/Admin/Reports/ZoneTableLayer";
-import { useGetAdminReport } from "../../../services/admin/query/reports";
+import { useGetAdminRep } from "../../../services/admin/query/reports";
 import ZoneExport from "../../../components/data/Admin/Reports/ZoneExport";
 import Filter from "../../../components/common/Filter";
-import { zonesReportOptions } from "../../../components/common/constants";
+import { adminZonesReportOptions } from "../../../components/common/constants";
 
 const Zones = () => {
   const [page, setPage] = useState(1);
@@ -28,15 +28,11 @@ const Zones = () => {
   });
 
   const query = convertedFilters?.join("&");
-  const { refetch, data, isLoading } = useGetAdminReport(
-    "zones",
-    {
-      refetchOnWindowFocus: true,
-    },
-    page,
-    limit,
-    query
-  );
+  const { mutate, data, isLoading } = useGetAdminRep();
+
+  useEffect(() => {
+    mutate({ type: "zones", filterString: query, limit, page: page });
+  }, [page, query, limit]);
 
   useEffect(() => {
     setPage(1);
@@ -49,7 +45,7 @@ const Zones = () => {
 
     const currentPage = page;
     const itemsPerPage = limit;
-    const totalItems = data.total;
+    const totalItems = data?.total;
 
     const currentStartRow = (currentPage - 1) * itemsPerPage + 1;
     const currentEndRow = Math.min(currentPage * itemsPerPage, totalItems);
@@ -57,10 +53,6 @@ const Zones = () => {
     setStartRow(currentStartRow);
     setEndRow(currentEndRow);
   }, [data, page, limit]);
-
-  useEffect(() => {
-    refetch();
-  }, []);
 
   return (
     <Box minH="75vh">
@@ -70,7 +62,8 @@ const Zones = () => {
             <Box
               borderRadius="8px"
               bg="#F4F6F8"
-              p="5px"
+              px="5px"
+              pt="5px"
               border="1px solid #E4E6E8"
             >
               <Box h="6px" w="full" bg="#EE383A" borderRadius="full"></Box>
@@ -113,19 +106,43 @@ const Zones = () => {
         <Filter
           setFiltArray={setFiltArray}
           filtArray={filtArray}
-          fieldToCompare={zonesReportOptions}
-          handleSearch={refetch}
-          title={<Text fontWeight="500">All Zones</Text>}
+          fieldToCompare={adminZonesReportOptions}
+          handleSearch={() =>
+            mutate({
+              type: "locations",
+              filterString: query,
+              limit,
+              page: page,
+            })
+          }
+          title={
+            <Text
+              fontSize="14px"
+              fontWeight={500}
+              lineHeight="100%"
+              color="#242628"
+            >
+              All Zones
+            </Text>
+          }
+          gap
           main={
-            <Flex align="center" gap="24px">
-              <ZoneExport data={data?.data} />
+            <>
+              {data?.data?.length ? <ZoneExport data={data?.data} /> : ""}
               <Flex
                 justifyContent="center"
                 align="center"
                 cursor="pointer"
                 transition=".3s ease-in-out"
                 _hover={{ bg: "#F4F6F8" }}
-                onClick={() => mutate({ type: "zones", limit, page: page + 1 })}
+                onClick={() =>
+                  mutate({
+                    type: "zones",
+                    filterString: query,
+                    limit,
+                    page: page,
+                  })
+                }
                 borderRadius="8px"
                 border="1px solid #848688"
                 p="10px"
@@ -137,7 +154,7 @@ const Zones = () => {
                   h="20px"
                 />
               </Flex>
-            </Flex>
+            </>
           }
         />
 
@@ -149,7 +166,6 @@ const Zones = () => {
           setPage={setPage}
           startRow={startRow}
           endRow={endRow}
-          refetch={refetch}
           setLimit={setLimit}
         />
       </Box>

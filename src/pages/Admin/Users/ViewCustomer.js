@@ -418,7 +418,11 @@ export default function ViewCustomer() {
                 </Flex>
               </Flex>
 
-              <Flex gap={5} flexDir={"column"} w={{ base: "100%", md:edit ? "0" :  "100%" }}>
+              <Flex
+                gap={5}
+                flexDir={"column"}
+                w={{ base: "100%", md: edit ? "0" : "100%" }}
+              >
                 <Flex
                   bg="#fff"
                   borderRadius="8px"

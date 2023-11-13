@@ -1,62 +1,46 @@
 import React, { useState, useEffect } from "react";
-import { Box, Flex, Text, Button, Switch } from "@chakra-ui/react";
+import { Box, Flex, Text, Button, Switch, Spinner } from "@chakra-ui/react";
 import CustomInput from "../../../components/common/CustomInput";
 import {
   customStyles,
   BillingTypes,
+  statusType,
 } from "../../../components/common/constants";
 import Select from "react-select";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { PRIVATE_PATHS } from "../../../routes/constants";
 import useCustomToast from "../../../utils/notifications";
 import GoBackTab from "../../../components/data/Admin/GoBackTab";
 import { useGetAmenities } from "../../../services/admin/query/amenities";
 import {
-  useDeleteZone,
   useEditZone,
+  useGetAdminZone,
   useGetLocations,
-  useGetZones,
 } from "../../../services/admin/query/locations";
 import { useGetServices } from "../../../services/admin/query/services";
-import AdminDeleteModal from "../../../components/modals/AdminDeleteModal";
+import { IoIosArrowDown } from "react-icons/io";
 
 export default function ViewZone() {
-  const [state, setState] = useState({
-    status: 1,
-    reservable: 0,
-    showBillingType: false,
-  });
+  const isEdit = sessionStorage.getItem("edit");
+  const [edit, setEdit] = useState(false);
 
-  const [isEdit, setIsEdit] = useState(false);
-  const location = useLocation();
+  useEffect(() => {
+    if (isEdit !== null) {
+      setEdit(true);
+    }
+  }, [isEdit]);
+
   const navigate = useNavigate();
-  const [isDisabled, setIsDisabled] = useState(true);
   const { errorToast, successToast } = useCustomToast();
-  const [isOpen, setIsOpen] = useState(false);
-  const { refetch } = useGetZones();
-  const { mutate, isLoading } = useEditZone({
+  const { mutate: updateMutate, isLoading: isUpdating } = useEditZone({
     onSuccess: () => {
       successToast("Zone updated successfully!");
-      refetch();
       navigate(PRIVATE_PATHS.ADMIN_ZONES);
+      sessionStorage.removeItem("edit");
     },
     onError: (error) => {
       errorToast(
         error?.response?.data?.message || error?.message || "An Error occurred"
-      );
-    },
-  });
-
-  const { mutate: deleteZone, isLoading: isDeleting } = useDeleteZone({
-    onSuccess: (res) => {
-      successToast(res?.message);
-      setIsOpen(false);
-      refetch();
-      navigate(PRIVATE_PATHS.ADMIN_ZONES);
-    },
-    onError: (err) => {
-      errorToast(
-        err?.response?.data?.message || err?.message || "An Error occurred"
       );
     },
   });
@@ -66,329 +50,516 @@ export default function ViewZone() {
   const { data: amenities } = useGetAmenities({}, 1, 1000);
 
   const locationOptions = locations?.data?.map((location) => ({
-    label: location.name,
-    value: parseInt(location.id),
+    label: location?.name,
+    value: parseInt(location?.id),
   }));
 
   const serviceOptions = services?.data?.map((service) => ({
-    label: service.name,
-    value: service.id,
+    label: service?.name,
+    value: Number(service?.id),
+  }));
+
+  const statusOptions = statusType?.map((status, i) => ({
+    value: i,
+    label: status,
+  }));
+
+  const billingOptions = BillingTypes?.map((type, index) => ({
+    label: type,
+    value: index,
   }));
 
   const amenitiesOptions = amenities?.data?.map((amenity) => ({
-    label: amenity.name,
-    value: parseInt(amenity.id),
+    label: amenity?.name,
+    value: parseInt(amenity?.id),
   }));
 
-  const isFormValid = () => {
-    return (
-      !state.name ||
-      !state.capacity ||
-      !state.description ||
-      !state.location ||
-      !state.amenities?.length ||
-      !state.minimumDuration
-    );
-  };
+  const { id } = useParams();
+  const { mutate, data, isLoading } = useGetAdminZone();
 
   useEffect(() => {
-    setIsDisabled(isFormValid);
-  }, [state]);
+    mutate({ id: id });
+  }, []);
+
+  const [values, setValues] = useState({
+    name: "",
+    description: "",
+    capacity: "",
+    location: "",
+    minimumDuration: "",
+    service: "",
+    amenities: "",
+    reservable: 0,
+    reservableSpace: "",
+    showBillingType: 0,
+    billingType: "",
+    status: "",
+  });
+
+  useEffect(() => {
+    const selectedStatusOption = statusOptions?.find(
+      (option) => option?.value === data?.status
+    );
+    const selectedLocationOption = locationOptions?.find(
+      (option) => option?.value === Number(data?.location?.id)
+    );
+    const selectedServiceOption = serviceOptions?.find(
+      (option) => option?.value === Number(data?.service?.id)
+    );
+    const selectedBillingOption = billingOptions?.find(
+      (option) => option?.value === Number(data?.billingType)
+    );
+
+    const selectedAmenitiesOption = data?.amenities?.map((item) => ({
+      value: Number(item?.id),
+      label: item?.name,
+    }));
+
+    setValues({
+      ...values,
+      name: data?.name,
+      description: data?.description,
+      capacity: data?.capacity,
+      location: selectedLocationOption,
+      minimumDuration: data?.minimumDuration,
+      service: selectedServiceOption,
+      showBillingType: data?.billingType !== null ? 1 : 0,
+      amenities: selectedAmenitiesOption,
+      reservable: data?.reservable,
+      reservableSpace: data?.reservableSpace,
+      billingType: selectedBillingOption,
+      status: selectedStatusOption,
+    });
+  }, [data]);
 
   const handleSubmit = () => {
-    mutate(state);
+    values?.showBillingType
+      ? updateMutate({
+          query: id,
+          body: {
+            name: values?.name,
+            description: values?.description,
+            capacity: values?.capacity,
+            location: values?.location?.value,
+            minimumDuration: values?.minimumDuration,
+            service: values?.service?.value,
+            amenities: values?.amenities?.map((item) => Number(item?.value)),
+            reservable: values?.reservable,
+            reservableSpace: Number(values?.reservableSpace),
+            billingType: values?.billingType?.value,
+            status: values?.status?.value,
+          },
+        })
+      : updateMutate({
+          query: id,
+          body: {
+            name: values?.name,
+            description: values?.description,
+            capacity: values?.capacity,
+            location: values?.location?.value,
+            minimumDuration: values?.minimumDuration,
+            service: values?.service?.value,
+            amenities: values?.amenities?.map((item) => Number(item?.value)),
+            reservable: values?.reservable,
+            reservableSpace: Number(values?.reservableSpace),
+            billingType: null,
+            status: values?.status?.value,
+          },
+        });
   };
 
-  useEffect(() => {
-    setState({
-      ...location.state,
-      amenities: location.state.amenities.map((amenity) =>
-        parseInt(amenity.id)
-      ),
-      location: parseInt(location.state.location.id),
-      service: location.state.service.id,
+  const handleSelectChange = (selectedOption, { name }) => {
+    setValues({
+      ...values,
+      [name]: selectedOption,
     });
-    setIsEdit(location.state.isEdit);
-  }, [location.state]);
+  };
 
   return (
     <Box minH="75vh">
-      <Flex justifyContent="center" align="center" w="full" flexDir="column">
-        <GoBackTab />
-        <Flex
-          bg="#fff"
-          borderRadius="16px"
-          py="24px"
-          px="28px"
-          justifyContent="center"
-          w="30rem"
-          flexDir="column"
-          border="1px solid #E4E6E8"
-        >
-          <Box w="full" mb={4}>
-            <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
-              Zone Name
-            </Text>
-            <CustomInput
-              auth
-              value={state.name}
-              mb
-              holder="Enter zone name"
-              onChange={(e) => setState({ ...state, name: e.target.value })}
-              isDisabled={!isEdit}
-            />
-          </Box>
-
-          <Box w="full" mb={4}>
-            <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
-              Zone Description
-            </Text>
-            <CustomInput
-              opt
-              auth
-              value={state.description}
-              mb
-              holder="Enter zone description"
-              onChange={(e) =>
-                setState({ ...state, description: e.target.value })
-              }
-              isDisabled={!isEdit}
-            />
-          </Box>
-
-          <Box w="full" mb={4}>
-            <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
-              Zone capacity
-            </Text>
-            <CustomInput
-              auth
-              value={state.capacity}
-              mb
-              holder="Enter a number"
-              onChange={(e) => setState({ ...state, capacity: e.target.value })}
-              isDisabled={!isEdit}
-            />
-          </Box>
-
-          <Box w="full" mb={4}>
-            <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
-              Location
-            </Text>
-            <Select
-              styles={customStyles}
-              placeholder="Select location"
-              options={locationOptions}
-              onChange={(selectedOption) =>
-                setState({ ...state, location: selectedOption.value })
-              }
-              value={locationOptions?.find(
-                (location) => location.value === state.location
-              )}
-              isDisabled={!isEdit}
-            />
-          </Box>
-
-          <Box w="full" mb={4}>
-            <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
-              Minimum Duration (In Minutes)
-            </Text>
-            <CustomInput
-              auth
-              value={state.minimumDuration}
-              mb
-              holder="Enter a number"
-              onChange={(e) =>
-                setState({ ...state, minimumDuration: e.target.value })
-              }
-              isDisabled={!isEdit}
-            />
-          </Box>
-
-          <Box w="full" mb={4}>
-            <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
-              Service
-            </Text>
-            <Select
-              styles={customStyles}
-              placeholder="Select service"
-              options={serviceOptions}
-              onChange={(selectedOption) =>
-                setState({ ...state, service: selectedOption.value })
-              }
-              value={serviceOptions?.find(
-                (service) => service.value === state.service
-              )}
-              isDisabled={!isEdit}
-            />
-          </Box>
-
-          <Box w="full" mb={4}>
-            <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
-              Assign Amenities
-            </Text>
-            <Select
-              isMulti
-              styles={customStyles}
-              placeholder="Select amenities"
-              options={amenitiesOptions}
-              onChange={(selectedOptions) =>
-                setState({
-                  ...state,
-                  amenities: selectedOptions.map((option) => option.value),
-                })
-              }
-              value={amenitiesOptions?.filter((option) =>
-                state.amenities?.find((amenity) => amenity == option.value)
-              )}
-              isDisabled={!isEdit}
-            />
-          </Box>
-
-          <Flex
-            align="center"
-            justifyContent={"space-between"}
-            gap="15px"
-            mb="16px"
-            mt={2}
-          >
-            <Text fontSize="12px" fontWeight={500} color="#444648">
-              Add Reservable Space
-            </Text>
-            <Switch
-              onChange={() =>
-                setState({
-                  ...state,
-                  reservable: state.reservable === 1 ? 0 : 1,
-                })
-              }
-              size="sm"
-              variant="adminPrimary"
-              isDisabled={!isEdit}
-              isChecked={state.reservable}
-            />
+      <Flex
+        align="flex-start"
+        flexDir={{ md: "row", base: "column" }}
+        gap={{ base: "", md: "30px" }}
+      >
+        <Box w="fit-content">
+          <GoBackTab />
+        </Box>
+        {isLoading ? (
+          <Flex minH="60vh" w="full" justifyContent="center" align="center">
+            <Spinner />
           </Flex>
-
-          {state.reservable ? (
-            <Box w="full" mb={4}>
-              <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
-                Enter Reservable Space
-              </Text>
-              <CustomInput
-                auth
-                value={state.reservableSpace}
-                mb
-                holder="Enter reservable space"
-                onChange={(e) =>
-                  setState({ ...state, reservableSpace: e.target.value })
-                }
-                isDisabled={!isEdit}
-              />
-            </Box>
-          ) : null}
-
-          <Flex
-            align="center"
-            justifyContent={"space-between"}
-            gap="15px"
-            mb="16px"
-            mt={2}
-          >
-            <Text fontSize="12px" fontWeight={500} color="#444648">
-              Select Billing Type
-            </Text>
-            <Switch
-              onChange={() =>
-                setState({
-                  ...state,
-                  showBillingType: !state.showBillingType,
-                })
-              }
-              size="sm"
-              variant="adminPrimary"
-              isDisabled={!isEdit}
-            />
-          </Flex>
-
-          {state.showBillingType ? (
-            <Box w="full" mb={4}>
-              <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
-                Select Billing Type
-              </Text>
-              <Select
-                isMulti
-                styles={customStyles}
-                placeholder="Select billing type"
-                options={BillingTypes.map((type, index) => ({
-                  label: type,
-                  value: index,
-                }))}
-                onChange={(selectedOptions) =>
-                  setState({
-                    ...state,
-                    billingType: selectedOptions.map((option) => option.value),
-                  })
-                }
-                isDisabled={!isEdit}
-              />
-            </Box>
-          ) : null}
-
-          <Box w="full" mb={4}>
-            <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
-              Status
-            </Text>
-            <Select
-              styles={customStyles}
-              options={[
-                { label: "Active", value: 1 },
-                { label: "Inactive", value: 0 },
-              ]}
-              placeholder="Select event status"
-              onChange={(selectedOption) =>
-                setState({
-                  ...state,
-                  status: selectedOption.value,
-                })
-              }
-              value={[
-                { label: "Active", value: 1 },
-                { label: "Inactive", value: 0 },
-              ].find((status) => status.value === state.status)}
-              isDisabled={!isEdit}
-            />
-          </Box>
-
-          <Flex gap={4} mt={4}>
-            <Button
-              variant={!isEdit ? "adminDanger" : "adminSecondary"}
-              w="45%"
-              onClick={() =>
-                !isEdit ? setIsOpen(true) : navigate(PRIVATE_PATHS.ADMIN_ZONES)
-              }
+        ) : (
+          <>
+            <Flex
+              justifyContent="center"
+              align="center"
+              w="full"
+              flexDir="column"
             >
-              {!isEdit ? "Delete" : "Cancel"}
-            </Button>
-            <Button
-              variant="adminPrimary"
-              w="55%"
-              isDisabled={isEdit && isDisabled}
-              isLoading={isLoading}
-              onClick={() => (!isEdit ? setIsEdit(true) : handleSubmit())}
-            >
-              {!isEdit ? "Edit" : "Save"}
-            </Button>
-          </Flex>
-        </Flex>
+              <Flex
+                bg="#fff"
+                borderRadius="8px"
+                py="32px"
+                px="24px"
+                justifyContent="center"
+                w={{ base: "100%", md: "30rem" }}
+                flexDir="column"
+                border="1px solid #E4E6E8"
+              >
+                <Box w="full" mb={4}>
+                  <Text
+                    mb="8px"
+                    fontSize="10px"
+                    fontWeight={500}
+                    color="#444648"
+                  >
+                    Zone Name
+                  </Text>
+                  <CustomInput
+                    auth
+                    value={values?.name}
+                    mb
+                    holder="Enter zone name"
+                    onChange={(e) =>
+                      setValues({ ...values, name: e.target.value })
+                    }
+                    dis={edit ? false : true}
+                  />
+                </Box>
+
+                <Box w="full" mb={4}>
+                  <Text
+                    mb="8px"
+                    fontSize="10px"
+                    fontWeight={500}
+                    color="#444648"
+                  >
+                    Zone Description
+                  </Text>
+                  <CustomInput
+                    opt
+                    auth
+                    value={values?.description}
+                    mb
+                    holder="Enter zone description"
+                    onChange={(e) =>
+                      setValues({ ...values, description: e.target.value })
+                    }
+                    dis={edit ? false : true}
+                  />
+                </Box>
+
+                <Box w="full" mb={4}>
+                  <Text
+                    mb="8px"
+                    fontSize="10px"
+                    fontWeight={500}
+                    color="#444648"
+                  >
+                    Zone capacity
+                  </Text>
+                  <CustomInput
+                    auth
+                    value={values?.capacity}
+                    mb
+                    holder="Enter a number"
+                    onChange={(e) =>
+                      setValues({ ...values, capacity: e.target.value })
+                    }
+                    dis={edit ? false : true}
+                  />
+                </Box>
+
+                <Box w="full" mb={4}>
+                  <Text
+                    mb="8px"
+                    fontSize="10px"
+                    fontWeight={500}
+                    color="#444648"
+                  >
+                    Location
+                  </Text>
+                  <Select
+                    styles={customStyles}
+                    placeholder="Select location"
+                    options={locationOptions}
+                    onChange={(selectedOption) =>
+                      handleSelectChange(selectedOption, {
+                        name: "location",
+                      })
+                    }
+                    components={{
+                      IndicatorSeparator: () => (
+                        <div style={{ display: "none" }}></div>
+                      ),
+                      DropdownIndicator: () => (
+                        <div>
+                          <IoIosArrowDown size="15px" color="#646668" />
+                        </div>
+                      ),
+                    }}
+                    value={values?.location}
+                    isDisabled={edit ? false : true}
+                  />
+                </Box>
+
+                <Box w="full" mb={4}>
+                  <Text
+                    mb="8px"
+                    fontSize="10px"
+                    fontWeight={500}
+                    color="#444648"
+                  >
+                    Minimum Duration (In Minutes)
+                  </Text>
+                  <CustomInput
+                    auth
+                    value={values?.minimumDuration}
+                    mb
+                    holder="Enter a number"
+                    onChange={(e) =>
+                      setValues({ ...values, minimumDuration: e.target.value })
+                    }
+                    dis={edit ? false : true}
+                  />
+                </Box>
+
+                <Box w="full" mb={4}>
+                  <Text
+                    mb="8px"
+                    fontSize="10px"
+                    fontWeight={500}
+                    color="#444648"
+                  >
+                    Service
+                  </Text>
+                  <Select
+                    styles={customStyles}
+                    placeholder="Select service"
+                    options={serviceOptions}
+                    onChange={(selectedOption) =>
+                      handleSelectChange(selectedOption, {
+                        name: "service",
+                      })
+                    }
+                    components={{
+                      IndicatorSeparator: () => (
+                        <div style={{ display: "none" }}></div>
+                      ),
+                      DropdownIndicator: () => (
+                        <div>
+                          <IoIosArrowDown size="15px" color="#646668" />
+                        </div>
+                      ),
+                    }}
+                    value={values?.service}
+                    isDisabled={edit ? false : true}
+                  />
+                </Box>
+
+                <Box w="full" mb={4}>
+                  <Text
+                    mb="8px"
+                    fontSize="10px"
+                    fontWeight={500}
+                    color="#444648"
+                  >
+                    Assign Amenities
+                  </Text>
+                  <Select
+                    isMulti
+                    styles={customStyles}
+                    placeholder="Select amenities"
+                    options={amenitiesOptions}
+                    onChange={(selectedOption) =>
+                      handleSelectChange(selectedOption, {
+                        name: "amenities",
+                      })
+                    }
+                    components={{
+                      IndicatorSeparator: () => (
+                        <div style={{ display: "none" }}></div>
+                      ),
+                      DropdownIndicator: () => (
+                        <div>
+                          <IoIosArrowDown size="15px" color="#646668" />
+                        </div>
+                      ),
+                    }}
+                    value={values?.amenities}
+                    isDisabled={edit ? false : true}
+                  />
+                </Box>
+
+                <Flex
+                  align="center"
+                  justifyContent={"space-between"}
+                  gap="15px"
+                  mb="16px"
+                  mt={2}
+                >
+                  <Text fontSize="12px" fontWeight={500} color="#444648">
+                    Add Reservable Space
+                  </Text>
+                  <Switch
+                    onChange={() =>
+                      setValues({
+                        ...values,
+                        reservable: values?.reservable === 1 ? 0 : 1,
+                      })
+                    }
+                    size="sm"
+                    variant="adminPrimary"
+                    isDisabled={edit ? false : true}
+                    isChecked={values?.reservable}
+                  />
+                </Flex>
+
+                {values?.reservable ? (
+                  <Box w="full" mb={4}>
+                    <Text
+                      mb="8px"
+                      fontSize="10px"
+                      fontWeight={500}
+                      color="#444648"
+                    >
+                      Enter Reservable Space
+                    </Text>
+                    <CustomInput
+                      auth
+                      value={values?.reservableSpace}
+                      mb
+                      holder="Enter reservable space"
+                      onChange={(e) =>
+                        setValues({
+                          ...values,
+                          reservableSpace: e.target.value,
+                        })
+                      }
+                      isDisabled={edit ? false : true}
+                    />
+                  </Box>
+                ) : null}
+
+                <Flex
+                  align="center"
+                  justifyContent={"space-between"}
+                  gap="15px"
+                  mb="16px"
+                  mt={4}
+                >
+                  <Text fontSize="12px" fontWeight={500} color="#444648">
+                    Select Billing Type
+                  </Text>
+                  <Switch
+                    onChange={() =>
+                      setValues({
+                        ...values,
+                        showBillingType: values?.showBillingType ? 0 : 1,
+                      })
+                    }
+                    isChecked={values?.showBillingType}
+                    size="sm"
+                    variant="adminPrimary"
+                    isDisabled={edit ? false : true}
+                  />
+                </Flex>
+
+                {values?.showBillingType ? (
+                  <Box w="full" mb={4}>
+                    <Text
+                      mb="8px"
+                      fontSize="10px"
+                      fontWeight={500}
+                      color="#444648"
+                    >
+                      Select Billing Type
+                    </Text>
+                    <Select
+                      styles={customStyles}
+                      placeholder="Select billing type"
+                      options={billingOptions}
+                      onChange={(selectedOption) =>
+                        handleSelectChange(selectedOption, {
+                          name: "billingType",
+                        })
+                      }
+                      components={{
+                        IndicatorSeparator: () => (
+                          <div style={{ display: "none" }}></div>
+                        ),
+                        DropdownIndicator: () => (
+                          <div>
+                            <IoIosArrowDown size="15px" color="#646668" />
+                          </div>
+                        ),
+                      }}
+                      value={values?.billingType}
+                      isDisabled={edit ? false : true}
+                    />
+                  </Box>
+                ) : null}
+
+                <Box w="full" mb={4}>
+                  <Text
+                    mb="8px"
+                    fontSize="10px"
+                    fontWeight={500}
+                    color="#444648"
+                  >
+                    Status
+                  </Text>
+                  <Select
+                    styles={customStyles}
+                    options={statusOptions}
+                    onChange={(selectedOption) =>
+                      handleSelectChange(selectedOption, {
+                        name: "status",
+                      })
+                    }
+                    components={{
+                      IndicatorSeparator: () => (
+                        <div style={{ display: "none" }}></div>
+                      ),
+                      DropdownIndicator: () => (
+                        <div>
+                          <IoIosArrowDown size="15px" color="#646668" />
+                        </div>
+                      ),
+                    }}
+                    value={values?.status}
+                    isDisabled={edit ? false : true}
+                  />
+                </Box>
+
+                <Flex gap="24px" mt="24px">
+                  <Button
+                    variant="adminSecondary"
+                    w="100%"
+                    onClick={() =>
+                      edit
+                        ? setEdit(false)
+                        : (navigate(PRIVATE_PATHS.ADMIN_ZONES),
+                          sessionStorage.removeItem("edit"))
+                    }
+                  >
+                    Cancel
+                  </Button>
+                  <Button
+                    variant="adminPrimary"
+                    w="100%"
+                    isLoading={isUpdating}
+                    onClick={() => (!edit ? setEdit(true) : handleSubmit())}
+                  >
+                    {!edit ? "Edit" : "Save"}
+                  </Button>
+                </Flex>
+              </Flex>
+            </Flex>{" "}
+          </>
+        )}
       </Flex>
-
-      <AdminDeleteModal
-        isOpen={isOpen}
-        onClose={() => setIsOpen(false)}
-        title="Delete Zone"
-        subTitle="Are you sure you want to delete this zone?"
-        handleSubmit={() => deleteZone(state.id)}
-        isLoading={isDeleting}
-      />
     </Box>
   );
 }

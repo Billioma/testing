@@ -64,7 +64,6 @@ export default function AddOperator() {
     );
   };
 
-
   useEffect(() => {
     setIsDisabled(isFormValid);
   }, [state]);

@@ -1,13 +1,12 @@
-import { Box, Button, Flex, Text } from "@chakra-ui/react";
+import { Box, Button, Flex, Image, Text } from "@chakra-ui/react";
 import React, { useState, useEffect } from "react";
-import { FiPlus } from "react-icons/fi";
 import TableLayer from "../../../components/data/Admin/Services/TableLayer";
 import AdminAddServiceModal from "../../../components/modals/AdminAddServiceModal";
-import { useGetServices } from "../../../services/admin/query/services";
+import { useGetAdminServicesList } from "../../../services/admin/query/services";
 import AdminEditServiceModal from "../../../components/modals/AdminEditServiceModal";
 import Filter from "../../../components/common/Filter";
-import { VscDebugRestart } from "react-icons/vsc";
 import { servicesOptions } from "../../../components/common/constants";
+import { MdAdd } from "react-icons/md";
 
 export default function Services() {
   const [isOpen, setIsOpen] = useState(false);
@@ -29,14 +28,11 @@ export default function Services() {
 
   const query = convertedFilters?.join("&");
 
-  const { data, isLoading, refetch } = useGetServices(
-    {
-      refetchOnWindowFocus: true,
-    },
-    page,
-    limit,
-    query
-  );
+  const { mutate, data, isLoading } = useGetAdminServicesList();
+
+  useEffect(() => {
+    mutate({ filterString: query, limit, page: page });
+  }, [page, query, limit]);
 
   useEffect(() => {
     setPage(1);
@@ -49,7 +45,7 @@ export default function Services() {
 
     const currentPage = page;
     const itemsPerPage = limit;
-    const totalItems = data.total;
+    const totalItems = data?.total;
 
     const currentStartRow = (currentPage - 1) * itemsPerPage + 1;
     const currentEndRow = Math.min(currentPage * itemsPerPage, totalItems);
@@ -57,10 +53,6 @@ export default function Services() {
     setStartRow(currentStartRow);
     setEndRow(currentEndRow);
   }, [data, page, limit]);
-
-  useEffect(() => {
-    refetch();
-  }, []);
 
   const handleEdit = (service) => {
     setIsEditOpen({ isOpen: true, selectedService: service });
@@ -73,58 +65,81 @@ export default function Services() {
           setFiltArray={setFiltArray}
           filtArray={filtArray}
           fieldToCompare={servicesOptions}
-          handleSearch={refetch}
-          title={<Text fontWeight="500">All Services</Text>}
+          handleSearch={() =>
+            mutate({ filterString: query, limit: limit, page: page })
+          }
+          title={
+            <Text
+              fontSize="14px"
+              fontWeight={500}
+              lineHeight="100%"
+              color="#242628"
+            >
+              All Services
+            </Text>
+          }
+          gap
           main={
-            <Flex gap="6px">
+            <>
               <Button
-                variant="adminPrimary"
-                gap={2}
-                fontSize={"12px"}
                 onClick={() => setIsOpen(true)}
+                display="flex"
+                bg="#000"
+                gap="8px"
               >
-                Add a Service <FiPlus size={18} />
+                <Text fontSize="12px"> Add a Service</Text>
+                <MdAdd size="20px" />
               </Button>
-              <Button
-                bg="white"
-                py={3}
-                h="43px"
-                border="1px solid #000"
-                color="#000"
-                onClick={() => refetch()}
+              <Flex
+                justifyContent="center"
+                align="center"
+                cursor="pointer"
+                transition=".3s ease-in-out"
+                _hover={{ bg: "#F4F6F8" }}
+                onClick={() =>
+                  mutate({ filterString: query, limit, page: page })
+                }
+                borderRadius="8px"
+                border="1px solid #848688"
+                p="10px"
               >
-                <VscDebugRestart size={20} />
-              </Button>
-            </Flex>
+                <Image
+                  src="/assets/refresh.svg"
+                  className={isLoading && "mirrored-icon"}
+                  w="20px"
+                  h="20px"
+                />
+              </Flex>
+            </>
           }
         />
 
-        <hr />
         <TableLayer
           data={data}
           isLoading={isLoading}
           page={page}
           limit={limit}
+          setIsOpen={setIsOpen}
           setPage={setPage}
           handleEdit={handleEdit}
           setLimit={setLimit}
           startRow={startRow}
           endRow={endRow}
-          refetch={refetch}
+          refetch={() => mutate({ filterString: query, limit, page: page })}
         />
       </Box>
 
       <AdminAddServiceModal
         isOpen={isOpen}
-        refetch={refetch}
-        onClose={() => setIsOpen(!isOpen)}
+        refetch={() => mutate({ filterString: query, limit, page: page })}
+        onClose={() => setIsOpen(false)}
       />
 
       <AdminEditServiceModal
         isOpen={isEditOpen.isOpen}
         service={isEditOpen.selectedService}
-        refetch={refetch}
-        onClose={() => setIsEditOpen({ isOpen: false, selectedService: null })}
+        refetch={() => mutate({ filterString: query, limit, page: page })}
+        onClose={() => setIsEditOpen(false)}
       />
     </Box>
   );

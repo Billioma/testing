@@ -19,14 +19,18 @@ export const useGetAdminReport = (
   return { isLoading, data, refetch };
 };
 
-export const useGetAdminTran = (options = {}, page = 1, limit = 50, query) => {
-  const { data, isLoading, refetch } = useQuery(
-    ["GET_ADMIN_TRAN", page, limit, query],
-    () => getAdminTran(page, limit, query),
-    {
-      ...options,
-    }
-  );
+export const useGetAdminRep = (options = {}) => {
+  const { mutate, isLoading, data } = useMutation(getAdminReport, {
+    mutationKey: "GET_ADMIN_REP",
+    ...options,
+  });
+  return { mutate, isLoading, data };
+};
 
-  return { isLoading, data, refetch };
+export const useGetAdminTran = (options = {}) => {
+  const { mutate, isLoading, data } = useMutation(getAdminTran, {
+    mutationKey: "GET_ADMIN_TRAN",
+    ...options,
+  });
+  return { mutate, isLoading, data };
 };

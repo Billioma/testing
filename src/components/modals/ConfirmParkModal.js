@@ -18,6 +18,7 @@ const ConfirmParkModal = ({
   onClose,
   isLoading,
   action,
+  onClick,
 }) => {
   return (
     <Modal isCentered trapFocus={false} isOpen={isOpen} onClose={onClose}>

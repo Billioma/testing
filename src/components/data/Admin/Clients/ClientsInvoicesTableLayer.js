@@ -14,9 +14,7 @@ import {
   Icon,
 } from "@chakra-ui/react";
 import TableFormat from "../../../common/TableFormat";
-import { FiEdit, FiTrash2 } from "react-icons/fi";
 import { formatDate } from "../../../../utils/helpers";
-import { HiOutlineInformationCircle } from "react-icons/hi";
 import { useNavigate } from "react-router-dom";
 import AdminDeleteModal from "../../../modals/AdminDeleteModal";
 import useCustomToast from "../../../../utils/notifications";

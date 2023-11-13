@@ -8,17 +8,17 @@ import {
   Skeleton,
   Text,
 } from "@chakra-ui/react";
-import LocationTableLayer from "../../../components/data/Operator/Reports/LocationTableLayer";
-import { useGetAdminReport } from "../../../services/admin/query/reports";
+import LocationTableLayer from "../../../components/data/Admin/Reports/LocationTableLayer";
+import { useGetAdminRep } from "../../../services/admin/query/reports";
 import LocationExport from "../../../components/data/Admin/Reports/LocationExport";
 import Filter from "../../../components/common/Filter";
-import { locationsReportOptions } from "../../../components/common/constants";
+import { adminLocationsReportOptions } from "../../../components/common/constants";
 
 const Locations = () => {
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(50);
   const [startRow, setStartRow] = useState(1);
-  const [endRow, setEndRow] = useState(0);
+  const [endRow, setEndRow] = useState(25);
   const [filtArray, setFiltArray] = useState([]);
 
   const convertedFilters = filtArray?.map((filterObj) => {
@@ -28,15 +28,11 @@ const Locations = () => {
   });
 
   const query = convertedFilters?.join("&");
-  const { refetch, data, isLoading } = useGetAdminReport(
-    "locations",
-    {
-      refetchOnWindowFocus: true,
-    },
-    page,
-    limit,
-    query
-  );
+  const { mutate, data, isLoading } = useGetAdminRep();
+
+  useEffect(() => {
+    mutate({ type: "locations", filterString: query, limit, page: page });
+  }, [page, query, limit]);
 
   useEffect(() => {
     setPage(1);
@@ -49,7 +45,7 @@ const Locations = () => {
 
     const currentPage = page;
     const itemsPerPage = limit;
-    const totalItems = data.total;
+    const totalItems = data?.total;
 
     const currentStartRow = (currentPage - 1) * itemsPerPage + 1;
     const currentEndRow = Math.min(currentPage * itemsPerPage, totalItems);
@@ -57,10 +53,6 @@ const Locations = () => {
     setStartRow(currentStartRow);
     setEndRow(currentEndRow);
   }, [data, page, limit]);
-
-  useEffect(() => {
-    refetch();
-  }, []);
 
   return (
     <Box minH="75vh">
@@ -70,7 +62,8 @@ const Locations = () => {
             <Box
               borderRadius="8px"
               bg="#F4F6F8"
-              p="5px"
+              pt="5px"
+              px="5px"
               border="1px solid #E4E6E8"
             >
               <Box h="6px" w="full" bg="#EE383A" borderRadius="full"></Box>
@@ -82,7 +75,7 @@ const Locations = () => {
                   fontWeight={700}
                   color="#242628"
                 >
-                  Total locations
+                  Total Locations
                 </Text>
 
                 <Flex
@@ -113,13 +106,29 @@ const Locations = () => {
         <Filter
           setFiltArray={setFiltArray}
           filtArray={filtArray}
-          fieldToCompare={locationsReportOptions}
-          handleSearch={refetch}
-          title={<Text fontWeight="500">All Locations</Text>}
+          fieldToCompare={adminLocationsReportOptions}
+          handleSearch={() =>
+            mutate({
+              type: "locations",
+              filterString: query,
+              limit,
+              page: page,
+            })
+          }
+          title={
+            <Text
+              fontSize="14px"
+              fontWeight={500}
+              lineHeight="100%"
+              color="#242628"
+            >
+              All Locations
+            </Text>
+          }
+          gap
           main={
-            <Flex align="center" gap="24px">
-              <LocationExport data={data?.data} />
-
+            <>
+              {data?.data?.length ? <LocationExport data={data?.data} /> : ""}
               <Flex
                 justifyContent="center"
                 align="center"
@@ -127,7 +136,12 @@ const Locations = () => {
                 transition=".3s ease-in-out"
                 _hover={{ bg: "#F4F6F8" }}
                 onClick={() =>
-                  mutate({ type: "locations", limit, page: page + 1 })
+                  mutate({
+                    type: "locations",
+                    filterString: query,
+                    limit,
+                    page: page,
+                  })
                 }
                 borderRadius="8px"
                 border="1px solid #848688"
@@ -140,7 +154,7 @@ const Locations = () => {
                   h="20px"
                 />
               </Flex>
-            </Flex>
+            </>
           }
         />
 
@@ -152,7 +166,6 @@ const Locations = () => {
           setPage={setPage}
           startRow={startRow}
           endRow={endRow}
-          refetch={refetch}
           setLimit={setLimit}
         />
       </Box>

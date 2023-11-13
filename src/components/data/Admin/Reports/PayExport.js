@@ -11,12 +11,9 @@ const PayExport = ({ data }) => {
     { name: "Attendant", selector: "attendant" },
     { name: "Customer", selector: "customer" },
     { name: "Service Type", selector: "serviceType" },
-    { name: "Billing Type", selector: "billingType" },
     { name: "Payment Method", selector: "paymentMethod" },
-    { name: "Ticket Number", selector: "ticketNumber" },
     { name: "Amount", selector: "amount" },
     { name: "Amount Paid", selector: "amountPaid" },
-    { name: "Comment", selector: "comment" },
     { name: "Date Created", selector: "createdAt" },
   ];
 

@@ -2,10 +2,12 @@ import { useMutation, useQuery } from "react-query";
 import {
   createVehicle,
   getVehicles,
-  editVehicle,
   getMakes,
   getModel,
   deleteVehicle,
+  getVehiclesList,
+  getAdminVehicle,
+  updateAdminVehicle,
 } from "../api/vehicles";
 
 export const useCreateVehicle = (options = {}) => {
@@ -18,7 +20,7 @@ export const useCreateVehicle = (options = {}) => {
 };
 
 export const useEditVehicle = (options = {}) => {
-  const { isLoading, data, mutate } = useMutation(editVehicle, {
+  const { isLoading, data, mutate } = useMutation(updateAdminVehicle, {
     mutationKey: ["EDIT_VEHICLE"],
     ...options,
   });
@@ -45,6 +47,22 @@ export const useGetVehicles = (options = {}, page = 1, limit = 25, query) => {
   );
 
   return { isLoading, data, refetch };
+};
+
+export const useGetVehicleList = (options = {}) => {
+  const { mutate, isLoading, data } = useMutation(getVehiclesList, {
+    mutationKey: "VEHICLE_LIST",
+    ...options,
+  });
+  return { mutate, isLoading, data };
+};
+
+export const useGetAdminVehicle = (options = {}) => {
+  const { mutate, isLoading, data } = useMutation(getAdminVehicle, {
+    mutationKey: "GET_ADMIN_VEHICLE",
+    ...options,
+  });
+  return { mutate, isLoading, data };
 };
 
 export const useGetMake = (options = {}) => {

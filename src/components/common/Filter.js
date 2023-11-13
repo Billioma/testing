@@ -13,7 +13,13 @@ import {
   allStates,
   DurationTypes,
   LocationTypes,
+  serviceType,
+  BookingTypes,
 } from "./constants";
+import {
+  useGetMakes,
+  useGetModels,
+} from "../../services/admin/query/configurations";
 
 const Filter = ({
   main,
@@ -31,13 +37,31 @@ const Filter = ({
     dropFilter: "",
     filter: "",
   });
+  const { data: makes } = useGetMakes(1, 1, 100000);
+  const { data: models } = useGetModels(1, 1, 100000);
   const searchOptions = searchOption.map((search) => ({
     value: search?.value,
     label: search?.label,
   }));
+  const makeOptions = makes?.data?.map((make) => ({
+    value: make?.name,
+    label: make?.name,
+  }));
+  const modelOptions = models?.data?.map((model) => ({
+    value: model?.name,
+    label: model?.name,
+  }));
   const durationOptions = DurationTypes.map((duration) => ({
     value: duration,
     label: duration,
+  }));
+  const serviceTypeOptions = serviceType.map((type) => ({
+    value: type,
+    label: type,
+  }));
+  const bookingTypeOptions = BookingTypes.map((type) => ({
+    value: type,
+    label: type,
   }));
   const locationOptions = LocationTypes.map((location, i) => ({
     value: i,
@@ -72,6 +96,11 @@ const Filter = ({
     label: transaction,
   }));
 
+  const payMethodOptions = ["CARD", "WALLET"].map((type, i) => ({
+    value: i,
+    label: type,
+  }));
+
   const yesNoOptions = ["No", "Yes"].map((opt, i) => ({
     value: i,
     label: opt,
@@ -88,7 +117,7 @@ const Filter = ({
   }));
 
   const servicesOptions = ["VALET", "PARKING", "SERVICE", "OTHERS"].map(
-    (opt, i) => ({ value: opt, label: opt })
+    (opt) => ({ value: opt, label: opt })
   );
 
   const featureTypesOptions = [
@@ -309,7 +338,10 @@ const Filter = ({
                 values?.dropFilter === "Corporate" ||
                 values?.dropFilter === "Upgradeable" ||
                 values?.dropFilter === "Status" ||
+                values?.dropFilter === "Make" ||
+                values?.dropFilter === "Model" ||
                 values?.dropFilter?.includes("State") ||
+                values?.dropFilter?.includes("Payment_Method") ||
                 values?.dropFilter?.includes("Duration Type") ||
                 values?.dropFilter?.includes("Account Type") ? (
                   <Flex
@@ -319,7 +351,7 @@ const Filter = ({
                     align="center"
                     borderRadius="4px"
                     border="1px solid #D4D6D8"
-                    background={values.filter ? "#F4F6F8" : "unset"}
+                    background={values?.filter ? "#F4F6F8" : "unset"}
                   >
                     <Box w="full">
                       <Select
@@ -331,32 +363,42 @@ const Filter = ({
                           DropdownIndicator: () => <div></div>,
                         }}
                         options={
-                          values.dropFilter === "Payment Type"
+                          values?.dropFilter === "Payment Type"
                             ? payOptions
-                            : values.dropFilter === "Transaction Type"
+                            : values?.dropFilter === "Transaction Type"
                             ? transactionOptions
-                            : values.dropFilter === "Reservable"
+                            : values?.dropFilter === "Payment_Method"
+                            ? payMethodOptions
+                            : values?.dropFilter === "Make"
+                            ? makeOptions
+                            : values?.dropFilter === "Model"
+                            ? modelOptions
+                            : values?.dropFilter === "Reservable"
                             ? yesNoOptions
-                            : values.dropFilter === "Duration"
+                            : values?.dropFilter === "Duration"
                             ? intervalOptions
-                            : (values.dropFilter === "Account Type" && !client)
+                            : values?.dropFilter === "Account Type" && !client
                             ? accountOptions
-                            : values.dropFilter === "Account Type" && client
+                            : values?.dropFilter === "Account Type" && client
                             ? clientAccountOptions
-                            : values.dropFilter === "State"
+                            : values?.dropFilter === "State"
                             ? stateOptions
-                            : values.dropFilter === "Duration Type"
+                            : values?.dropFilter === "Duration Type"
                             ? durationOptions
-                            : values.dropFilter === "Location Type"
+                            : values?.dropFilter === "Booking Type"
+                            ? bookingTypeOptions
+                            : values?.dropFilter === "Service-Type"
+                            ? serviceTypeOptions
+                            : values?.dropFilter === "Location Type"
                             ? locationOptions
-                            : values.dropFilter === "Service Type"
+                            : values?.dropFilter === "Service Type"
                             ? servicesOptions
-                            : values.dropFilter === "Feature Type"
+                            : values?.dropFilter === "Feature Type"
                             ? featureTypesOptions
-                            : values.dropFilter === "Corporate" ||
-                              values.dropFilter === "Upgradeable"
+                            : values?.dropFilter === "Corporate" ||
+                              values?.dropFilter === "Upgradeable"
                             ? booleanOptions
-                            : values.dropFilter === "Status"
+                            : values?.dropFilter === "Status"
                             ? statusOptions
                             : searchOptions
                         }
@@ -399,7 +441,7 @@ const Filter = ({
                     }}
                     mb
                     holder="Add search item"
-                    value={values.filter}
+                    value={values?.filter}
                     onChange={(e) =>
                       setValues({ ...values, filter: e.target.value })
                     }
@@ -461,7 +503,9 @@ const Filter = ({
                 </Text>
                 <Text fontSize="12px" lineHeight="100%" color="#646668">
                   "
-                  {dat?.title === "paymentMethod"
+                  {dat?.dropFilter === "Payment_Method"
+                    ? ["CARD", "WALLET"]?.find((item, i) => i === dat?.filter)
+                    : dat?.title === "paymentMethod"
                     ? PaymentMethods?.find((item, i) => i === dat?.filter)
                     : dat?.title === "transactionType"
                     ? TransactionTypes?.find((item, i) => i === dat?.filter)

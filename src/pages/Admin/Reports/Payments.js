@@ -13,7 +13,7 @@ import {
   operatorPayGrid,
   paymentsOptions,
 } from "../../../components/common/constants";
-import { useGetAdminReport } from "../../../services/admin/query/reports";
+import { useGetAdminRep } from "../../../services/admin/query/reports";
 import PayExport from "../../../components/data/Admin/Reports/PayExport";
 import Filter from "../../../components/common/Filter";
 
@@ -21,7 +21,7 @@ const Payments = () => {
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(50);
   const [startRow, setStartRow] = useState(1);
-  const [endRow, setEndRow] = useState(0);
+  const [endRow, setEndRow] = useState(25);
   const [filtArray, setFiltArray] = useState([]);
 
   const convertedFilters = filtArray?.map((filterObj) => {
@@ -31,15 +31,11 @@ const Payments = () => {
   });
 
   const query = convertedFilters?.join("&");
-  const { data, isLoading, refetch } = useGetAdminReport(
-    "payments",
-    {
-      refetchOnWindowFocus: true,
-    },
-    page,
-    limit,
-    query
-  );
+  const { mutate, data, isLoading } = useGetAdminRep();
+
+  useEffect(() => {
+    mutate({ type: "payments", filterString: query, limit, page: page });
+  }, [page, query, limit]);
 
   useEffect(() => {
     setPage(1);
@@ -52,7 +48,7 @@ const Payments = () => {
 
     const currentPage = page;
     const itemsPerPage = limit;
-    const totalItems = data.total;
+    const totalItems = data?.total;
 
     const currentStartRow = (currentPage - 1) * itemsPerPage + 1;
     const currentEndRow = Math.min(currentPage * itemsPerPage, totalItems);
@@ -60,10 +56,6 @@ const Payments = () => {
     setStartRow(currentStartRow);
     setEndRow(currentEndRow);
   }, [data, page, limit]);
-
-  useEffect(() => {
-    refetch();
-  }, []);
 
   return (
     <Box minH="75vh">
@@ -83,7 +75,8 @@ const Payments = () => {
               <Box
                 borderRadius="8px"
                 bg="#F4F6F8"
-                p="5px"
+                pt="5px"
+                px="5px"
                 border="1px solid #E4E6E8"
               >
                 <Box
@@ -98,7 +91,7 @@ const Payments = () => {
                   }
                   borderRadius="full"
                 ></Box>
-                <Box p="15px" pt="0px" pb="20px">
+                <Box px="15px" pt="0px" pb="20px">
                   <Text
                     mt="24px"
                     fontSize="14px"
@@ -126,23 +119,14 @@ const Payments = () => {
                         {" "}
                         {i !== 2 && "₦"}{" "}
                         {i === 0
-                          ? data?.aggregate?.totalAmountDue?.toLocaleString(
-                              undefined,
-                              {
-                                maximumFractionDigits: 2,
-                              }
-                            )
+                          ? Number(
+                              data?.aggregate?.totalAmountDue
+                            )?.toLocaleString()
                           : i === 1
-                          ? data?.aggregate?.totalAmountPaid?.toLocaleString(
-                              undefined,
-                              {
-                                maximumFractionDigits: 2,
-                              }
-                            )
-                          : i === 2 &&
-                            data?.count?.toLocaleString(undefined, {
-                              maximumFractionDigits: 2,
-                            })}
+                          ? Number(
+                              data?.aggregate?.totalAmountPaid
+                            )?.toLocaleString()
+                          : i === 2 && data?.count?.toLocaleString()}
                       </Text>
                     </Box>
                   </Flex>
@@ -158,18 +142,37 @@ const Payments = () => {
           setFiltArray={setFiltArray}
           filtArray={filtArray}
           fieldToCompare={paymentsOptions}
-          handleSearch={refetch}
-          title={<Text fontWeight="500">All Payments</Text>}
+          handleSearch={() =>
+            mutate({ type: "payments", filterString: query, limit, page: page })
+          }
+          title={
+            <Text
+              fontSize="14px"
+              fontWeight={500}
+              lineHeight="100%"
+              color="#242628"
+            >
+              All Payments
+            </Text>
+          }
+          gap
           main={
-            <Flex align="center" gap="24px">
-              <PayExport data={data?.data} />
+            <>
+              {data?.data?.length ? <PayExport data={data?.data} /> : ""}
               <Flex
                 justifyContent="center"
                 align="center"
                 cursor="pointer"
                 transition=".3s ease-in-out"
                 _hover={{ bg: "#F4F6F8" }}
-                onClick={refetch}
+                onClick={() =>
+                  mutate({
+                    type: "payments",
+                    filterString: query,
+                    limit,
+                    page: page,
+                  })
+                }
                 borderRadius="8px"
                 border="1px solid #848688"
                 p="10px"
@@ -181,10 +184,9 @@ const Payments = () => {
                   h="20px"
                 />
               </Flex>
-            </Flex>
+            </>
           }
         />
-
         <PaymentTableLayer
           data={data}
           isLoading={isLoading}
@@ -193,7 +195,6 @@ const Payments = () => {
           setPage={setPage}
           startRow={startRow}
           endRow={endRow}
-          refetch={refetch}
           setLimit={setLimit}
         />
       </Box>

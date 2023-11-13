@@ -9,10 +9,10 @@ import {
   Text,
 } from "@chakra-ui/react";
 import SubTableLayer from "../../../components/data/Admin/Reports/SubTableLayer";
-import { useGetAdminReport } from "../../../services/admin/query/reports";
-import CustomerExport from "../../../components/data/Admin/Reports/CustomerExport";
+import { useGetAdminRep } from "../../../services/admin/query/reports";
+import SubExport from "../../../components/data/Admin/Reports/SubExport";
 import Filter from "../../../components/common/Filter";
-import { subsReportOptions } from "../../../components/common/constants";
+import { adminSubsReportOptions } from "../../../components/common/constants";
 
 const Subs = () => {
   const [page, setPage] = useState(1);
@@ -28,15 +28,11 @@ const Subs = () => {
   });
 
   const query = convertedFilters?.join("&");
-  const { refetch, data, isLoading } = useGetAdminReport(
-    "subscriptions",
-    {
-      refetchOnWindowFocus: true,
-    },
-    page,
-    limit,
-    query
-  );
+  const { mutate, data, isLoading } = useGetAdminRep();
+
+  useEffect(() => {
+    mutate({ type: "subscriptions", filterString: query, limit, page: page });
+  }, [page, query, limit]);
 
   useEffect(() => {
     setPage(1);
@@ -49,7 +45,7 @@ const Subs = () => {
 
     const currentPage = page;
     const itemsPerPage = limit;
-    const totalItems = data.total;
+    const totalItems = data?.total;
 
     const currentStartRow = (currentPage - 1) * itemsPerPage + 1;
     const currentEndRow = Math.min(currentPage * itemsPerPage, totalItems);
@@ -58,9 +54,6 @@ const Subs = () => {
     setEndRow(currentEndRow);
   }, [data, page, limit]);
 
-  useEffect(() => {
-    refetch();
-  }, []);
   return (
     <Box minH="75vh">
       <Grid mb="24px" templateColumns={"repeat(3,1fr)"}>
@@ -69,7 +62,8 @@ const Subs = () => {
             <Box
               borderRadius="8px"
               bg="#F4F6F8"
-              p="5px"
+              pt="5px"
+              px="5px"
               border="1px solid #E4E6E8"
             >
               <Box h="6px" w="full" bg="#EE383A" borderRadius="full"></Box>
@@ -112,12 +106,29 @@ const Subs = () => {
         <Filter
           setFiltArray={setFiltArray}
           filtArray={filtArray}
-          fieldToCompare={subsReportOptions}
-          handleSearch={refetch}
-          title={<Text fontWeight="500">All Subscriptions</Text>}
+          fieldToCompare={adminSubsReportOptions}
+          handleSearch={() =>
+            mutate({
+              type: "subscriptions",
+              filterString: query,
+              limit,
+              page: page,
+            })
+          }
+          title={
+            <Text
+              fontSize="14px"
+              fontWeight={500}
+              lineHeight="100%"
+              color="#242628"
+            >
+              All Subscriptions
+            </Text>
+          }
+          gap
           main={
-            <Flex align="center" gap="24px">
-              <CustomerExport data={data?.data} />
+            <>
+              {data?.data?.length ? <SubExport data={data?.data} /> : ""}
               <Flex
                 justifyContent="center"
                 align="center"
@@ -125,7 +136,12 @@ const Subs = () => {
                 transition=".3s ease-in-out"
                 _hover={{ bg: "#F4F6F8" }}
                 onClick={() =>
-                  mutate({ type: "subscriptions", limit, page: page + 1 })
+                  mutate({
+                    type: "subscriptions",
+                    filterString: query,
+                    limit,
+                    page: page,
+                  })
                 }
                 borderRadius="8px"
                 border="1px solid #848688"
@@ -138,7 +154,7 @@ const Subs = () => {
                   h="20px"
                 />
               </Flex>
-            </Flex>
+            </>
           }
         />
 
@@ -150,7 +166,6 @@ const Subs = () => {
           setPage={setPage}
           startRow={startRow}
           endRow={endRow}
-          refetch={refetch}
           setLimit={setLimit}
         />
       </Box>

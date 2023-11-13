@@ -9,7 +9,7 @@ export const getPaymentHistory = async (query) => {
   return res.data;
 };
 
-export const getPaymentTips= async (query) => {
+export const getPaymentTips = async (query) => {
   const res = await axiosInstance.get(
     "customers/" +
       API.GET_PAYMENT_TIPS(query.filterString, query.limit, query.page)

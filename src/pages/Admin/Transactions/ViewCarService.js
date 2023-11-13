@@ -1,43 +1,70 @@
 import React, { useState, useEffect } from "react";
-import { Box, Flex, Text, Button, RadioGroup, Radio } from "@chakra-ui/react";
+import {
+  Box,
+  Flex,
+  Text,
+  Button,
+  RadioGroup,
+  Radio,
+  Spinner,
+} from "@chakra-ui/react";
 
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { PRIVATE_PATHS } from "../../../routes/constants";
 import useCustomToast from "../../../utils/notifications";
 import GoBackTab from "../../../components/data/Admin/GoBackTab";
-import { formatDate } from "../../../utils/helpers";
-import { useGetVehicles } from "../../../services/admin/query/vehicles";
-import {
-  useGetLocations,
-  useGetZones,
-} from "../../../services/admin/query/locations";
-import { useGetAllCustomers } from "../../../services/admin/query/customers";
+import { useGetZones } from "../../../services/admin/query/locations";
 import Select from "react-select";
 import {
   BillingTypes,
+  Status,
   customStyles,
 } from "../../../components/common/constants";
 import {
-  useDeleteCarService,
   useEditCarService,
-  useGetCarServices,
+  useGetAdminCarServicesDetails,
 } from "../../../services/admin/query/transactions";
 import DateTimePicker from "../../../components/data/Admin/DateTimePicker";
 import CustomInput from "../../../components/common/CustomInput";
-import AdminDeleteModal from "../../../components/modals/AdminDeleteModal";
+import { QRCodeCanvas } from "qrcode.react";
+import { IoIosArrowDown } from "react-icons/io";
+import { formatDateToISOString } from "../../../utils/helpers";
 
 export default function AddCarService() {
-  const [state, setState] = useState({
-    service: "3",
+  const { id } = useParams();
+  const isEdit = sessionStorage.getItem("edit");
+
+  const statusOptions = Status?.map((status, i) => ({
+    value: i,
+    label: status.name,
+  }));
+
+  const [edit, setEdit] = useState(false);
+
+  useEffect(() => {
+    if (isEdit !== null) {
+      setEdit(true);
+    }
+  }, [isEdit]);
+
+  const [values, setValues] = useState({
+    billingType: "",
+    bookingType: "",
+    serviceType: "",
+    appointmentSlot: "",
+    appointmentDate: "",
+    status: "",
   });
-  const [isEdit, setIsEdit] = useState(false);
-  const [isOpen, setIsOpen] = useState(false);
-  const { refetch } = useGetCarServices();
-  const location = useLocation();
+
+  const { mutate, data, isLoading } = useGetAdminCarServicesDetails();
+
+  useEffect(() => {
+    mutate({ id: id });
+  }, []);
+
   const navigate = useNavigate();
-  const [isDisabled, setIsDisabled] = useState(true);
   const { errorToast, successToast } = useCustomToast();
-  const { mutate, isLoading } = useEditCarService({
+  const { mutate: updateMutate, isLoading: isUpdating } = useEditCarService({
     onSuccess: () => {
       successToast("Transaction edited successfully!");
       navigate(PRIVATE_PATHS.ADMIN_CAR_SERVICES);
@@ -49,48 +76,11 @@ export default function AddCarService() {
     },
   });
 
-  const { mutate: deleteTransaction, isLoading: isDeleting } =
-    useDeleteCarService({
-      onSuccess: (res) => {
-        refetch();
-        successToast(res?.message);
-        setIsOpen(false);
-        navigate(PRIVATE_PATHS.ADMIN_CAR_SERVICES);
-      },
-      onError: (err) => {
-        errorToast(
-          err?.response?.data?.message || err?.message || "An Error occurred"
-        );
-      },
-    });
-
-  const { data: customers } = useGetAllCustomers();
-  const customerOptions = customers?.data?.map((customer) => ({
-    label: `${customer.profile.firstName} ${customer.profile.lastName}`,
-    value: customer.id,
-  }));
-
-  const { data: vehicles } = useGetVehicles({}, 1, 100000);
-
-  const vehicleOptions = vehicles?.data
-    ?.filter((vehicle) => vehicle.customer?.id == state.customer)
-    ?.map((vehicle) => ({
-      label: `${vehicle.color} - ${vehicle.make.name} - ${vehicle.model.name}`,
-      value: vehicle.id,
-    }));
-
   const { data: zones } = useGetZones({}, 1, 10000);
 
   const zoneOptions = zones?.data?.map((zone) => ({
-    label: `${zone.name} - ${zone?.location?.name}`,
-    value: zone.id,
-  }));
-
-  const { data: locations } = useGetLocations({}, 1, 100000);
-
-  const locationOptions = locations?.data?.map((location) => ({
-    label: location.name,
-    value: location.id,
+    label: zone?.name,
+    value: zone?.id,
   }));
 
   const billingTypeOptions = BillingTypes.map((type, i) => ({
@@ -115,267 +105,396 @@ export default function AddCarService() {
   ].map((slot, i) => ({ label: slot, value: i }));
 
   const handleSelectChange = (selectedOption, { name }) => {
-    setState({
-      ...state,
+    setValues({
+      ...values,
       [name]: selectedOption,
     });
   };
 
-  const isFormValid = () => {
-    return (
-      !state.bookingId ||
-      !state.customer ||
-      !state.amount ||
-      !state.appointmentSlot ||
-      !state.appointmentDate
-    );
-  };
-
-  useEffect(() => {
-    setIsDisabled(isFormValid);
-  }, [state]);
-
   const handleSubmit = () => {
-    mutate(state);
+    updateMutate({
+      query: id,
+      body: {
+        serviceType: values?.serviceType,
+        appointmentSlot: values?.appointmentSlot?.value,
+        appointmentDate: formatDateToISOString(values?.appointmentDate),
+        status: values?.status?.value,
+      },
+    });
   };
 
   useEffect(() => {
-    setState({
-      ...state,
-      ...location.state,
-      customer: location.state?.customer?.id,
-      bookingType: bookingTypeOptions.find(
-        (type) => type.label === location.state?.bookingType
-      )?.value,
+    const selectedStatusOption = statusOptions?.find(
+      (option) => option.value === data?.status
+    );
+    const selectedZoneOption = zoneOptions?.find(
+      (option) => option.value === data?.zone?.id
+    );
+    const selectedBillingTypeOption = billingTypeOptions?.find(
+      (option) => option.value === data?.billingType
+    );
+    const selectedBookingTypeOption = bookingTypeOptions?.find(
+      (option) => option.label === data?.bookingType
+    );
+    const selectedBookingSlotOption = bookingSlotOptions?.find(
+      (option) => option.value === data?.appointmentSlot
+    );
+    setValues({
+      ...values,
+      zone: selectedZoneOption,
+      billingType: selectedBillingTypeOption,
+      bookingType: selectedBookingTypeOption,
+      serviceType: data?.serviceType,
+      appointmentSlot: selectedBookingSlotOption,
+      appointmentDate: data?.appointmentDate,
+      status: selectedStatusOption,
     });
-
-    setIsEdit(location?.state?.isEdit);
-  }, [location]);
+  }, [data]);
 
   return (
     <Box minH="75vh">
-      <Flex justifyContent="center" align="center" w="full" flexDir="column">
+      <Flex
+        align="flex-start"
+        flexDir={{ md: "row", base: "column" }}
+        gap={{ base: "", md: "40px" }}
+      >
         <GoBackTab />
-        <Flex
-          bg="#fff"
-          borderRadius="16px"
-          py="24px"
-          px="28px"
-          justifyContent="center"
-          w="30rem"
-          flexDir="column"
-          border="1px solid #E4E6E8"
-        >
-          <Box w="full" mb={4}>
-            <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
-              Booking Id
-            </Text>
-            <CustomInput
-              auth
-              value={state.bookingId}
-              mb
-              holder="Enter booking ID"
-              onChange={(e) =>
-                setState({ ...state, bookingId: e.target.value })
-              }
-              isDisabled={!isEdit}
-            />
-          </Box>
-
-          <Box mb={4}>
-            <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
-              Customer
-            </Text>
-            <Select
-              styles={customStyles}
-              onChange={({ value }) =>
-                handleSelectChange(value, { name: "customer" })
-              }
-              options={customerOptions}
-              value={customerOptions?.find(
-                (method) => method.value == state.customer
-              )}
-              placeholder="Select payment method"
-              isDisabled={!isEdit}
-            />
-          </Box>
-
-          <Box w="full" mb={4}>
-            <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
-              Amount
-            </Text>
-            <CustomInput
-              auth
-              value={state.amount}
-              mb
-              type={"number"}
-              holder="Enter amount"
-              onChange={(e) => setState({ ...state, amount: e.target.value })}
-              isDisabled={!isEdit}
-            />
-          </Box>
-
-          <Box mb={4}>
-            <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
-              Billing Type
-            </Text>
-            <Select
-              styles={customStyles}
-              onChange={({ value }) =>
-                handleSelectChange(value, { name: "billingType" })
-              }
-              options={billingTypeOptions}
-              value={billingTypeOptions?.find(
-                (type) => type.value == state.billingType
-              )}
-              placeholder="Select billing type"
-              isDisabled={!isEdit}
-            />
-          </Box>
-
-          <Box mb={4}>
-            <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
-              Booking Type
-            </Text>
-            <Select
-              styles={customStyles}
-              onChange={({ value }) =>
-                handleSelectChange(value, { name: "bookingType" })
-              }
-              options={bookingTypeOptions}
-              value={bookingTypeOptions?.find(
-                (type) => type.value === state.bookingType
-              )}
-              placeholder="Select booking type"
-              isDisabled={!isEdit}
-            />
-          </Box>
-
-          <Box mb={4}>
-            <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
-              Service Type
-            </Text>
-            <Flex my="16px" align="center">
-              <RadioGroup
-                value={state.serviceType}
-                onChange={(e) =>
-                  setState({
-                    ...state,
-                    serviceType: e,
-                  })
-                }
-                align="center"
-                display="flex"
-                gap="32px"
-                isDisabled={!isEdit}
-              >
-                <Radio variant={"admin"} size="sm" value={"BASIC"}>
-                  <Text
-                    color={
-                      state.serviceType === "BASIC" ? "#0D0718" : "#646668"
-                    }
-                    fontWeight={state.serviceType === "BASIC" ? 500 : 400}
-                    fontSize="14px"
-                  >
-                    Basic
-                  </Text>
-                </Radio>
-                <Radio variant={"admin"} size="sm" value={"PREMIUM"}>
-                  <Text
-                    color={
-                      state.serviceType === "PREMIUM" ? "#0D0718" : "#646668"
-                    }
-                    fontWeight={state.serviceType === "PREMIUM" ? 500 : 400}
-                    fontSize="14px"
-                  >
-                    Premium
-                  </Text>
-                </Radio>
-              </RadioGroup>
-            </Flex>
-          </Box>
-
-          <Box mb={4}>
-            <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
-              Appointment Slot
-            </Text>
-            <Select
-              styles={customStyles}
-              onChange={({ value }) =>
-                handleSelectChange(value, { name: "appointmentSlot" })
-              }
-              options={bookingSlotOptions}
-              value={bookingSlotOptions?.find(
-                (slot) => slot.value == state.appointmentSlot
-              )}
-              placeholder="Select slot"
-              isDisabled={!isEdit}
-            />
-          </Box>
-
-          <Box mb={4}>
-            <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
-              Appointment Date
-            </Text>
-
-            <Box pos="relative" w="full" className="box">
-              <DateTimePicker
-                selectedDate={state.arrival}
-                onChange={(date) =>
-                  setState({ ...state, appointmentDate: date })
-                }
-                isDisabled={!isEdit}
-              />
-            </Box>
-          </Box>
-
-          <Box w="full" mb={4}>
-            <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
-              Address
-            </Text>
-            <CustomInput
-              auth
-              value={state.address}
-              mb
-              holder="Enter address"
-              onChange={(e) => setState({ ...state, address: e.target.value })}
-              isDisabled={!isEdit}
-            />
-          </Box>
-
-          <Flex gap={4} mt={4}>
-            <Button
-              variant="adminDanger"
-              w="45%"
-              onClick={() =>
-                !isEdit
-                  ? setIsOpen(true)
-                  : navigate(PRIVATE_PATHS.ADMIN_CAR_SERVICES)
-              }
-            >
-              {!isEdit ? "Delete" : "Cancel"}
-            </Button>
-            <Button
-              variant="adminPrimary"
-              w="55%"
-              isDisabled={isEdit && isDisabled}
-              isLoading={!isOpen && isLoading}
-              onClick={() => (!isEdit ? setIsEdit(!isEdit) : handleSubmit())}
-            >
-              {!isEdit ? "Edit" : "Save"}
-            </Button>
+        {isLoading ? (
+          <Flex minH="60vh" w="full" justifyContent="center" align="center">
+            <Spinner />
           </Flex>
-        </Flex>
-      </Flex>
+        ) : (
+          <>
+            <Flex
+              justifyContent="center"
+              align="flex-start"
+              w={{
+                base: "100%",
+                md: "80%",
+              }}
+              flexDir={{ md: "row", base: "column" }}
+              gap="30px"
+            >
+              <Flex
+                bg="#fff"
+                borderRadius="8px"
+                py="32px"
+                px="24px"
+                justifyContent="center"
+                w="100%"
+                flexDir="column"
+                border="1px solid #E4E6E8"
+              >
+                <Box w="full" mb={4}>
+                  <Text
+                    mb="8px"
+                    fontSize="10px"
+                    fontWeight={500}
+                    color="#444648"
+                  >
+                    Booking Id
+                  </Text>
+                  <CustomInput auth value={data?.bookingId} mb isDisabled />
+                </Box>
 
-      <AdminDeleteModal
-        isOpen={isOpen}
-        onClose={() => setIsOpen(false)}
-        title="Delete Transaction"
-        subTitle="Are you sure you want to delete this transaction?"
-        handleSubmit={() => deleteTransaction(state.id)}
-        isLoading={isDeleting}
-      />
+                <Box mb={4}>
+                  <Text
+                    mb="8px"
+                    fontSize="10px"
+                    fontWeight={500}
+                    color="#444648"
+                  >
+                    Customer
+                  </Text>
+                  <CustomInput
+                    auth
+                    value={`${data?.customer?.profile?.firstName} ${data?.customer?.profile?.lastName}`}
+                    mb
+                    isDisabled
+                  />
+                </Box>
+
+                <Box w="full" mb={4}>
+                  <Text
+                    mb="8px"
+                    fontSize="10px"
+                    fontWeight={500}
+                    color="#444648"
+                  >
+                    Amount
+                  </Text>
+                  <CustomInput auth value={data?.amount} mb isDisabled />
+                </Box>
+
+                <Box mb={4}>
+                  <Text
+                    mb="8px"
+                    fontSize="10px"
+                    fontWeight={500}
+                    color="#444648"
+                  >
+                    Billing Type
+                  </Text>
+                  <Select
+                    styles={customStyles}
+                    options={billingTypeOptions}
+                    value={values?.billingType}
+                    components={{
+                      IndicatorSeparator: () => (
+                        <div style={{ display: "none" }}></div>
+                      ),
+                      DropdownIndicator: () => (
+                        <div>
+                          <IoIosArrowDown size="15px" color="#646668" />
+                        </div>
+                      ),
+                    }}
+                    isDisabled
+                  />
+                </Box>
+
+                <Box mb={4}>
+                  <Text
+                    mb="8px"
+                    fontSize="10px"
+                    fontWeight={500}
+                    color="#444648"
+                  >
+                    Booking Type
+                  </Text>
+                  <Select
+                    styles={customStyles}
+                    options={bookingTypeOptions}
+                    value={values?.bookingType}
+                    components={{
+                      IndicatorSeparator: () => (
+                        <div style={{ display: "none" }}></div>
+                      ),
+                      DropdownIndicator: () => (
+                        <div>
+                          <IoIosArrowDown size="15px" color="#646668" />
+                        </div>
+                      ),
+                    }}
+                    placeholder="Select booking type"
+                    isDisabled
+                  />
+                </Box>
+
+                <Box mb={4}>
+                  <Text
+                    mb="8px"
+                    fontSize="10px"
+                    fontWeight={500}
+                    color="#444648"
+                  >
+                    Service Type
+                  </Text>
+                  <Flex my="16px" align="center">
+                    <RadioGroup
+                      value={values?.serviceType}
+                      onChange={(e) =>
+                        setValues({
+                          ...values,
+                          serviceType: e,
+                        })
+                      }
+                      align="center"
+                      display="flex"
+                      gap="32px"
+                      isDisabled={edit ? false : true}
+                    >
+                      <Radio variant={"admin"} size="sm" value={"BASIC"}>
+                        <Text
+                          color={
+                            values?.serviceType === "BASIC"
+                              ? "#0D0718"
+                              : "#646668"
+                          }
+                          fontWeight={
+                            values?.serviceType === "BASIC" ? 500 : 400
+                          }
+                          fontSize="14px"
+                        >
+                          Basic
+                        </Text>
+                      </Radio>
+                      <Radio variant={"admin"} size="sm" value={"PREMIUM"}>
+                        <Text
+                          color={
+                            values?.serviceType === "PREMIUM"
+                              ? "#0D0718"
+                              : "#646668"
+                          }
+                          fontWeight={
+                            values?.serviceType === "PREMIUM" ? 500 : 400
+                          }
+                          fontSize="14px"
+                        >
+                          Premium
+                        </Text>
+                      </Radio>
+                    </RadioGroup>
+                  </Flex>
+                </Box>
+
+                <Box mb={4}>
+                  <Text
+                    mb="8px"
+                    fontSize="10px"
+                    fontWeight={500}
+                    color="#444648"
+                  >
+                    Appointment Slot
+                  </Text>
+                  <Select
+                    styles={customStyles}
+                    onChange={(selectedOption) =>
+                      handleSelectChange(selectedOption, {
+                        name: "appointmentSlot",
+                      })
+                    }
+                    options={bookingSlotOptions}
+                    value={values?.appointmentSlot}
+                    components={{
+                      IndicatorSeparator: () => (
+                        <div style={{ display: "none" }}></div>
+                      ),
+                      DropdownIndicator: () => (
+                        <div>
+                          <IoIosArrowDown size="15px" color="#646668" />
+                        </div>
+                      ),
+                    }}
+                    placeholder="Select slot"
+                    isDisabled={edit ? false : true}
+                  />
+                </Box>
+
+                <Box mb={4}>
+                  <Text
+                    mb="8px"
+                    fontSize="10px"
+                    fontWeight={500}
+                    color="#444648"
+                  >
+                    Appointment Date
+                  </Text>
+
+                  <Box pos="relative" w="full" className="box">
+                    <DateTimePicker
+                      selectedDate={values?.appointmentDate || new Date()}
+                      onChange={(date) =>
+                        setValues({ ...values, appointmentDate: date })
+                      }
+                      isDisabled={edit ? false : true}
+                    />
+                  </Box>
+                </Box>
+
+                <Box w="full" mb={4}>
+                  <Text
+                    mb="8px"
+                    fontSize="10px"
+                    fontWeight={500}
+                    color="#444648"
+                  >
+                    Address
+                  </Text>
+                  <CustomInput auth value={data?.address} mb isDisabled />
+                </Box>
+
+                <Box mb={4}>
+                  <Text
+                    mb="8px"
+                    fontSize="10px"
+                    fontWeight={500}
+                    color="#444648"
+                  >
+                    Status
+                  </Text>
+
+                  <Select
+                    styles={customStyles}
+                    options={statusOptions}
+                    components={{
+                      IndicatorSeparator: () => (
+                        <div style={{ display: "none" }}></div>
+                      ),
+                      DropdownIndicator: () => (
+                        <div>
+                          <IoIosArrowDown size="15px" color="#646668" />
+                        </div>
+                      ),
+                    }}
+                    onChange={(selectedOption) =>
+                      handleSelectChange(selectedOption, {
+                        name: "status",
+                      })
+                    }
+                    value={values?.status}
+                    isDisabled={edit ? false : true}
+                  />
+                </Box>
+
+                <Flex gap="24px" mt="24px">
+                  <Button
+                    variant="adminDanger"
+                    w="100%"
+                    onClick={() =>
+                      edit
+                        ? setEdit(false)
+                        : (navigate(ADMIN_CAR_SERVICES),
+                          sessionStorage.removeItem("edit"))
+                    }
+                  >
+                    Cancel
+                  </Button>
+                  <Button
+                    variant="adminPrimary"
+                    w="100%"
+                    isLoading={isUpdating}
+                    onClick={() => (!edit ? setEdit(true) : handleSubmit())}
+                  >
+                    {!edit ? "Edit" : "Save"}
+                  </Button>
+                </Flex>
+              </Flex>
+
+              <Flex flexDir={"column"} w="100%">
+                <Flex
+                  bg="#fff"
+                  borderRadius="8px"
+                  py="32px"
+                  px="28px"
+                  align="center"
+                  justifyContent="center"
+                  gap="30px"
+                  border="1px solid #E4E6E8"
+                  h="fit-content"
+                >
+                  <Text
+                    fontSize="24px"
+                    fontWeight={500}
+                    lineHeight="100%"
+                    color="#646668"
+                  >
+                    QR Code
+                  </Text>
+
+                  <QRCodeCanvas
+                    size={150}
+                    value={data?.zone?.name}
+                    viewBox={`0 0 150 150`}
+                    renderAs="canvas"
+                    id="qrcode"
+                  />
+                </Flex>
+              </Flex>
+            </Flex>
+          </>
+        )}
+      </Flex>
     </Box>
   );
 }

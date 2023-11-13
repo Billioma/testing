@@ -9,6 +9,23 @@ export const getVehicles = async (page, limit, query) => {
   return response.data;
 };
 
+export const getVehiclesList = async (query) => {
+  const res = await axiosInstance.get(
+    API.ADMIN_VEHICLES_LIST(query.filterString, query.limit, query.page)
+  );
+  return res.data;
+};
+
+export const getAdminVehicle = async (query) => {
+  const res = await axiosInstance.get(API.ADMIN_VEHICLE(query.id));
+  return res.data;
+};
+
+export const updateAdminVehicle = async ({ query, body }) => {
+  const res = await axiosInstance.patch(API.ADMIN_VEHICLE(query), body);
+  return res.data;
+};
+
 export const editVehicle = async (data) => {
   const response = await axiosInstance.patch(
     `${API.ADMIN_VEHICLES}/${data.id}`,

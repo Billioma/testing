@@ -69,7 +69,7 @@ const CarServices = () => {
             ?.replace("s", "")
         : values?.serviceId?.label?.toLowerCase().split(" ")[0];
 
-      const filteredLocations = locations.filter((location) => {
+      const filteredLocations = locations?.filter((location) => {
         const matchingAmenities = location?.amenities?.filter((amenity) =>
           amenity?.name?.toLowerCase().includes(searchTerm)
         );

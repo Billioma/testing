@@ -7,12 +7,8 @@ const LocationExport = ({ data }) => {
   const columns = [
     { name: "ID", selector: "id" },
     { name: "Name", selector: "name" },
-    { name: "Description", selector: "description" },
     { name: "State", selector: "state" },
-    { name: "GeoLocation", selector: "geoLocation" },
     { name: "Location Type", selector: "locationType" },
-    { name: "Zones", selector: "zones" },
-    { name: "Amenities", selector: "amenities" },
     { name: "Status", selector: "status" },
     { name: "Date Created", selector: "createdAt" },
   ];

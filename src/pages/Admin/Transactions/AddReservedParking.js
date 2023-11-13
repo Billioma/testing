@@ -5,12 +5,8 @@ import { useNavigate } from "react-router-dom";
 import { PRIVATE_PATHS } from "../../../routes/constants";
 import useCustomToast from "../../../utils/notifications";
 import GoBackTab from "../../../components/data/Admin/GoBackTab";
-import { formatDate } from "../../../utils/helpers";
 import { useGetVehicles } from "../../../services/admin/query/vehicles";
-import {
-  useGetLocations,
-  useGetZones,
-} from "../../../services/admin/query/locations";
+import { useGetZones } from "../../../services/admin/query/locations";
 import { useGetAllCustomers } from "../../../services/admin/query/customers";
 import Select from "react-select";
 import { customStyles } from "../../../components/common/constants";
@@ -21,8 +17,6 @@ export default function AddReservedParking() {
   const [state, setState] = useState({
     service: "3",
   });
-  const [departureDate, setDepartureDate] = useState(false);
-  const [startDate, setStartDate] = useState(false);
   const navigate = useNavigate();
   const [isDisabled, setIsDisabled] = useState(true);
   const { errorToast, successToast } = useCustomToast();
@@ -60,28 +54,11 @@ export default function AddReservedParking() {
     value: zone.id,
   }));
 
-  const { data: locations } = useGetLocations({}, 1, 100000);
-
-  const locationOptions = locations?.data?.map((location) => ({
-    label: location.name,
-    value: location.id,
-  }));
-
   const handleSelectChange = (selectedOption, { name }) => {
     setState({
       ...state,
       [name]: selectedOption,
     });
-  };
-
-  const handleDepartureDateChange = (date) => {
-    setState({ ...state, departure: date });
-    setDepartureDate(false);
-  };
-
-  const handleDateChange = (date) => {
-    setState({ ...state, arrival: formatDate(date, "", true) });
-    setStartDate(false);
   };
 
   const isFormValid = () => {

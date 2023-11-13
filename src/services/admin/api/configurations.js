@@ -36,12 +36,17 @@ export const addModel = async (data) => {
 };
 
 export const getModels = async (page, limit, query) => {
-  const response = await axiosInstance.get(
-    `${API.ADMIN_VEHICLE_MODELS}?page=${page}&limit=${limit}&sort=id,DESC&${
-      query || ""
-    }`
-  );
-  return response.data;
+  if (window.location.pathname.includes("/admin")) {
+    const response = await axiosInstance.get(
+      `${API.ADMIN_VEHICLE_MODELS}?page=${page}&limit=${limit}&sort=id,DESC&${
+        query || ""
+      }`
+    );
+    return response.data;
+  } else {
+    // Return an empty array or handle it according to your requirements
+    return [];
+  }
 };
 
 export const editModel = async (data) => {
@@ -66,12 +71,17 @@ export const addMake = async (data) => {
 };
 
 export const getMakes = async (page, limit, query) => {
-  const response = await axiosInstance.get(
-    `${API.ADMIN_VEHICLE_MAKES}?page=${page}&limit=${limit}&sort=id,DESC&${
-      query || ""
-    }`
-  );
-  return response.data;
+  if (window.location.pathname.includes("/admin")) {
+    const response = await axiosInstance.get(
+      `${API.ADMIN_VEHICLE_MAKES}?page=${page}&limit=${limit}&sort=id,DESC&${
+        query || ""
+      }`
+    );
+    return response.data;
+  } else {
+    // Return an empty array or handle it according to your requirements
+    return [];
+  }
 };
 
 export const editMake = async (data) => {

@@ -43,7 +43,7 @@ const TableLayer = ({
     "START DATE",
     "END DATE",
     "STATUS",
-    "DATE CREATED",
+    "DATE",
     "ACTIONS",
   ];
   const [selectedRow, setSelectedRow] = useState({ isOpen: false, id: null });
@@ -120,16 +120,18 @@ const TableLayer = ({
                 <Td>{formatDate(event?.eventEndDateTime, "", true)}</Td>
 
                 <Td>
-                  <Flex align="center" w="full" justifyContent="center">
+                  <Flex justifyContent="center" align="center" w="full">
                     <Flex
-                      color={Object?.values(SecStatus[event?.status])[0]}
-                      bg={Object?.values(SecStatus[event?.status])[2]}
-                      justifyContent={"center"}
-                      alignItems="center"
-                      padding="7px 10px"
+                      color={Object.values(SecStatus[event?.status])[0]}
+                      bg={Object.values(SecStatus[event?.status])[2]}
+                      py="5px"
+                      px="16px"
+                      w="fit-content"
+                      justifyContent="center"
                       borderRadius="4px"
+                      align="center"
                     >
-                      {event?.status ? "Active" : "Inactive"}
+                      {Object.values(SecStatus[event?.status])[1]}
                     </Flex>
                   </Flex>
                 </Td>

@@ -19,7 +19,10 @@ import { useNavigate } from "react-router-dom";
 import AdminDeleteModal from "../../../modals/AdminDeleteModal";
 import useCustomToast from "../../../../utils/notifications";
 import { BsChevronDown } from "react-icons/bs";
-import { useDeleteBankDetail, useDeleteMake } from "../../../../services/admin/query/configurations";
+import {
+  useDeleteBankDetail,
+  useDeleteMake,
+} from "../../../../services/admin/query/configurations";
 
 const TableLayer = ({
   data,

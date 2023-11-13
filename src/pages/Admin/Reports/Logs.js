@@ -10,7 +10,7 @@ import {
 } from "@chakra-ui/react";
 import LogsTableLayer from "../../../components/data/Admin/Reports/LogsTableLayer";
 import LogsExport from "../../../components/data/Admin/Reports/LogsExport";
-import { useGetAdminReport } from "../../../services/admin/query/reports";
+import { useGetAdminRep } from "../../../services/admin/query/reports";
 import Filter from "../../../components/common/Filter";
 import { logsReportOptions } from "../../../components/common/constants";
 
@@ -28,15 +28,11 @@ const Logs = () => {
   });
 
   const query = convertedFilters?.join("&");
-  const { refetch, data, isLoading } = useGetAdminReport(
-    "parking",
-    {
-      refetchOnWindowFocus: true,
-    },
-    page,
-    limit,
-    query
-  );
+  const { mutate, data, isLoading } = useGetAdminRep();
+
+  useEffect(() => {
+    mutate({ type: "parking", filterString: query, limit, page: page });
+  }, [page, query, limit]);
 
   useEffect(() => {
     setPage(1);
@@ -49,7 +45,7 @@ const Logs = () => {
 
     const currentPage = page;
     const itemsPerPage = limit;
-    const totalItems = data.total;
+    const totalItems = data?.total;
 
     const currentStartRow = (currentPage - 1) * itemsPerPage + 1;
     const currentEndRow = Math.min(currentPage * itemsPerPage, totalItems);
@@ -57,10 +53,6 @@ const Logs = () => {
     setStartRow(currentStartRow);
     setEndRow(currentEndRow);
   }, [data, page, limit]);
-
-  useEffect(() => {
-    refetch();
-  }, []);
 
   return (
     <Box minH="75vh">
@@ -70,7 +62,8 @@ const Logs = () => {
             <Box
               borderRadius="8px"
               bg="#F4F6F8"
-              p="5px"
+              pt="5px"
+              px="5px"
               border="1px solid #E4E6E8"
             >
               <Box h="6px" w="full" bg="#EE383A" borderRadius="full"></Box>
@@ -99,7 +92,7 @@ const Logs = () => {
                       color="#646668"
                       fontWeight={500}
                     >
-                      {data?.total?.toLocaleString()}
+                      {data?.total}
                     </Text>
                   </Box>
                 </Flex>
@@ -114,18 +107,42 @@ const Logs = () => {
           setFiltArray={setFiltArray}
           filtArray={filtArray}
           fieldToCompare={logsReportOptions}
-          handleSearch={refetch}
-          title={<Text fontWeight="500">All Logs</Text>}
+          handleSearch={() =>
+            mutate({
+              type: "parking",
+              filterString: query,
+              limit,
+              page: page,
+            })
+          }
+          title={
+            <Text
+              fontSize="14px"
+              fontWeight={500}
+              lineHeight="100%"
+              color="#242628"
+            >
+              All Logs
+            </Text>
+          }
+          gap
           main={
-            <Flex align="center" gap="24px">
-              <LogsExport data={data?.data} />
+            <>
+              {data?.data?.length ? <LogsExport data={data?.data} /> : ""}
               <Flex
                 justifyContent="center"
                 align="center"
                 cursor="pointer"
                 transition=".3s ease-in-out"
                 _hover={{ bg: "#F4F6F8" }}
-                onClick={refetch}
+                onClick={() =>
+                  mutate({
+                    type: "parking",
+                    filterString: query,
+                    limit,
+                    page: page,
+                  })
+                }
                 borderRadius="8px"
                 border="1px solid #848688"
                 p="10px"
@@ -137,7 +154,7 @@ const Logs = () => {
                   h="20px"
                 />
               </Flex>
-            </Flex>
+            </>
           }
         />
 
@@ -149,7 +166,6 @@ const Logs = () => {
           setPage={setPage}
           startRow={startRow}
           endRow={endRow}
-          refetch={refetch}
           setLimit={setLimit}
         />
       </Box>

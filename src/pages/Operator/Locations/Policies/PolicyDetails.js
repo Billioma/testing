@@ -9,7 +9,7 @@ import useCustomToast from "../../../../utils/notifications";
 import {
   useGetPolicy,
   useUpdatePolicy,
-  useGetOpLocation
+  useGetOpLocation,
 } from "../../../../services/operator/query/locations";
 import { statusType } from "../../../../components/common/constants";
 

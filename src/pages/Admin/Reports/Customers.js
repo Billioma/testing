@@ -9,7 +9,7 @@ import {
   Text,
 } from "@chakra-ui/react";
 import CustomerTableLayer from "../../../components/data/Admin/Reports/CustomerTableLayer";
-import { useGetAdminReport } from "../../../services/admin/query/reports";
+import { useGetAdminRep } from "../../../services/admin/query/reports";
 import CustomerExport from "../../../components/data/Admin/Reports/CustomerExport";
 import Filter from "../../../components/common/Filter";
 import { customersReportOptions } from "../../../components/common/constants";
@@ -28,15 +28,11 @@ const Customers = () => {
   });
 
   const query = convertedFilters?.join("&");
-  const { refetch, data, isLoading } = useGetAdminReport(
-    "customers",
-    {
-      refetchOnWindowFocus: true,
-    },
-    page,
-    limit,
-    query
-  );
+  const { mutate, data, isLoading } = useGetAdminRep();
+
+  useEffect(() => {
+    mutate({ type: "customers", filterString: query, limit, page: page });
+  }, [page, query, limit]);
 
   useEffect(() => {
     setPage(1);
@@ -49,7 +45,7 @@ const Customers = () => {
 
     const currentPage = page;
     const itemsPerPage = limit;
-    const totalItems = data.total;
+    const totalItems = data?.total;
 
     const currentStartRow = (currentPage - 1) * itemsPerPage + 1;
     const currentEndRow = Math.min(currentPage * itemsPerPage, totalItems);
@@ -57,10 +53,6 @@ const Customers = () => {
     setStartRow(currentStartRow);
     setEndRow(currentEndRow);
   }, [data, page, limit]);
-
-  useEffect(() => {
-    refetch();
-  }, []);
 
   return (
     <Box minH="75vh">
@@ -70,7 +62,8 @@ const Customers = () => {
             <Box
               borderRadius="8px"
               bg="#F4F6F8"
-              p="5px"
+              pt="5px"
+              px="5px"
               border="1px solid #E4E6E8"
             >
               <Box h="6px" w="full" bg="#EE383A" borderRadius="full"></Box>
@@ -114,18 +107,44 @@ const Customers = () => {
           setFiltArray={setFiltArray}
           filtArray={filtArray}
           fieldToCompare={customersReportOptions}
-          handleSearch={refetch}
-          title={<Text fontWeight="500">All Customers</Text>}
+          handleSearch={() =>
+            mutate({
+              type: "customers",
+              filterString: query,
+              limit,
+              page: page,
+            })
+          }
+          title={
+            <Text
+              mt="24px"
+              fontSize="14px"
+              lineHeight="100%"
+              fontWeight={700}
+              color="#242628"
+            >
+              All Customers
+            </Text>
+          }
+          gap
           main={
-            <Flex align="center" gap="24px">
-              <CustomerExport data={data?.data} />
+            <>
+              {data?.data?.length ? <CustomerExport data={data?.data} /> : ""}
+
               <Flex
                 justifyContent="center"
                 align="center"
                 cursor="pointer"
                 transition=".3s ease-in-out"
                 _hover={{ bg: "#F4F6F8" }}
-                onClick={refetch}
+                onClick={() =>
+                  mutate({
+                    type: "customers",
+                    filterString: query,
+                    limit,
+                    page: page,
+                  })
+                }
                 borderRadius="8px"
                 border="1px solid #848688"
                 p="10px"
@@ -137,7 +156,7 @@ const Customers = () => {
                   h="20px"
                 />
               </Flex>
-            </Flex>
+            </>
           }
         />
 
@@ -149,7 +168,6 @@ const Customers = () => {
           setPage={setPage}
           startRow={startRow}
           endRow={endRow}
-          refetch={refetch}
           setLimit={setLimit}
         />
       </Box>

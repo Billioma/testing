@@ -9,7 +9,7 @@ import {
   Text,
 } from "@chakra-ui/react";
 import VehicleTableLayer from "../../../components/data/Admin/Reports/VehicleTableLayer";
-import { useGetAdminReport } from "../../../services/admin/query/reports";
+import { useGetAdminRep } from "../../../services/admin/query/reports";
 import VehicleExport from "../../../components/data/Admin/Reports/VehicleExport";
 import Filter from "../../../components/common/Filter";
 import { vehiclesReportOptions } from "../../../components/common/constants";
@@ -28,15 +28,11 @@ const Vehicles = () => {
   });
 
   const query = convertedFilters?.join("&");
-  const { refetch, data, isLoading } = useGetAdminReport(
-    "vehicles",
-    {
-      refetchOnWindowFocus: true,
-    },
-    page,
-    limit,
-    query
-  );
+  const { mutate, data, isLoading } = useGetAdminRep();
+
+  useEffect(() => {
+    mutate({ type: "vehicles", filterString: query, limit, page: page });
+  }, [page, query, limit]);
 
   useEffect(() => {
     setPage(1);
@@ -49,7 +45,7 @@ const Vehicles = () => {
 
     const currentPage = page;
     const itemsPerPage = limit;
-    const totalItems = data.total;
+    const totalItems = data?.total;
 
     const currentStartRow = (currentPage - 1) * itemsPerPage + 1;
     const currentEndRow = Math.min(currentPage * itemsPerPage, totalItems);
@@ -57,10 +53,6 @@ const Vehicles = () => {
     setStartRow(currentStartRow);
     setEndRow(currentEndRow);
   }, [data, page, limit]);
-
-  useEffect(() => {
-    refetch();
-  }, []);
 
   return (
     <Box minH="75vh">
@@ -70,7 +62,8 @@ const Vehicles = () => {
             <Box
               borderRadius="8px"
               bg="#F4F6F8"
-              p="5px"
+              pt="5px"
+              px="5px"
               border="1px solid #E4E6E8"
             >
               <Box h="6px" w="full" bg="#EE383A" borderRadius="full"></Box>
@@ -99,7 +92,7 @@ const Vehicles = () => {
                       color="#646668"
                       fontWeight={500}
                     >
-                      {data?.total?.toLocaleString()}
+                      {data?.total}
                     </Text>
                   </Box>
                 </Flex>
@@ -114,18 +107,43 @@ const Vehicles = () => {
           setFiltArray={setFiltArray}
           filtArray={filtArray}
           fieldToCompare={vehiclesReportOptions}
-          handleSearch={refetch}
-          title={<Text fontWeight="500">All Vehicles</Text>}
+          handleSearch={() =>
+            mutate({
+              type: "vehicles",
+              filterString: query,
+              limit,
+              page: page,
+            })
+          }
+          title={
+            <Text
+              mt="24px"
+              fontSize="14px"
+              lineHeight="100%"
+              fontWeight={700}
+              color="#242628"
+            >
+              All Vehicles
+            </Text>
+          }
+          gap
           main={
-            <Flex align="center" gap="24px">
-              <VehicleExport data={data?.data} />
+            <>
+              {data?.data?.length ? <VehicleExport data={data?.data} /> : ""}
               <Flex
                 justifyContent="center"
                 align="center"
                 cursor="pointer"
                 transition=".3s ease-in-out"
                 _hover={{ bg: "#F4F6F8" }}
-                onClick={refetch}
+                onClick={() =>
+                  mutate({
+                    type: "vehicles",
+                    filterString: query,
+                    limit,
+                    page: page,
+                  })
+                }
                 borderRadius="8px"
                 border="1px solid #848688"
                 p="10px"
@@ -137,7 +155,7 @@ const Vehicles = () => {
                   h="20px"
                 />
               </Flex>
-            </Flex>
+            </>
           }
         />
 
@@ -149,7 +167,6 @@ const Vehicles = () => {
           setPage={setPage}
           startRow={startRow}
           endRow={endRow}
-          refetch={refetch}
           setLimit={setLimit}
         />
       </Box>

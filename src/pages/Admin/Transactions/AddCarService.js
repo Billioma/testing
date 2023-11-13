@@ -5,12 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { PRIVATE_PATHS } from "../../../routes/constants";
 import useCustomToast from "../../../utils/notifications";
 import GoBackTab from "../../../components/data/Admin/GoBackTab";
-import { formatDate } from "../../../utils/helpers";
-import { useGetVehicles } from "../../../services/admin/query/vehicles";
-import {
-  useGetLocations,
-  useGetZones,
-} from "../../../services/admin/query/locations";
+import { useGetZones } from "../../../services/admin/query/locations";
 import { useGetAllCustomers } from "../../../services/admin/query/customers";
 import Select from "react-select";
 import {
@@ -25,8 +20,6 @@ export default function AddCarService() {
   const [state, setState] = useState({
     service: "3",
   });
-  const [departureDate, setDepartureDate] = useState(false);
-  const [startDate, setStartDate] = useState(false);
   const navigate = useNavigate();
   const [isDisabled, setIsDisabled] = useState(true);
   const { errorToast, successToast } = useCustomToast();
@@ -48,27 +41,11 @@ export default function AddCarService() {
     value: customer.id,
   }));
 
-  const { data: vehicles } = useGetVehicles({}, 1, 100000);
-
-  const vehicleOptions = vehicles?.data
-    ?.filter((vehicle) => vehicle.customer?.id == state.customer)
-    ?.map((vehicle) => ({
-      label: `${vehicle.color} - ${vehicle.make.name} - ${vehicle.model.name}`,
-      value: vehicle.id,
-    }));
-
   const { data: zones } = useGetZones({}, 1, 10000);
 
   const zoneOptions = zones?.data?.map((zone) => ({
     label: `${zone.name} - ${zone?.location?.name}`,
     value: zone.id,
-  }));
-
-  const { data: locations } = useGetLocations({}, 1, 100000);
-
-  const locationOptions = locations?.data?.map((location) => ({
-    label: location.name,
-    value: location.id,
   }));
 
   const billingTypeOptions = BillingTypes.map((type, i) => ({
@@ -97,16 +74,6 @@ export default function AddCarService() {
       ...state,
       [name]: selectedOption,
     });
-  };
-
-  const handleDepartureDateChange = (date) => {
-    setState({ ...state, departure: date });
-    setDepartureDate(false);
-  };
-
-  const handleDateChange = (date) => {
-    setState({ ...state, arrival: formatDate(date, "", true) });
-    setStartDate(false);
   };
 
   const isFormValid = () => {

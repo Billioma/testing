@@ -21,7 +21,9 @@ const Payment = () => {
   const { mutate, data, isLoading } = useGetRepPayment();
 
   const [page, setPage] = useState(1);
-  const limit = 10;
+  const [limit, setLimit] = useState(25);
+  const [startRow, setStartRow] = useState(1);
+  const [endRow, setEndRow] = useState(25);
 
   const [filtArray, setFiltArray] = useState([]);
   const convertedFilters = filtArray?.map((filterObj) => {
@@ -33,7 +35,27 @@ const Payment = () => {
 
   useEffect(() => {
     mutate({ filterString: query, limit, page: page });
-  }, [page, query]);
+  }, [page, query, limit]);
+
+  useEffect(() => {
+    setPage(1);
+  }, [limit]);
+
+  useEffect(() => {
+    if (!data) {
+      return;
+    }
+
+    const currentPage = page;
+    const itemsPerPage = limit;
+    const totalItems = data?.total;
+
+    const currentStartRow = (currentPage - 1) * itemsPerPage + 1;
+    const currentEndRow = Math.min(currentPage * itemsPerPage, totalItems);
+
+    setStartRow(currentStartRow);
+    setEndRow(currentEndRow);
+  }, [data, page, limit]);
 
   return (
     <Box minH="75vh">
@@ -145,7 +167,7 @@ const Payment = () => {
           }
           mai={
             <>
-              <PayExport data={data?.data} />
+              {data?.data?.length ? <PayExport data={data?.data} /> : ""}
               <Flex
                 justifyContent="center"
                 align="center"
@@ -169,11 +191,14 @@ const Payment = () => {
         />
 
         <PaymentTableLayer
-          page={page}
-          setPage={setPage}
           data={data}
-          limit={limit}
           isLoading={isLoading}
+          page={page}
+          limit={limit}
+          setPage={setPage}
+          startRow={startRow}
+          endRow={endRow}
+          setLimit={setLimit}
         />
       </Box>
     </Box>

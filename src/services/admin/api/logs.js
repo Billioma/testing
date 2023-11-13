@@ -1,7 +1,7 @@
 import axiosInstance from "../../axiosInstance";
 import * as API from "../url";
 
-export const getValetedVehicles = async (page, limit, query) => {
+export const getValetedVehicles = async (page, limit) => {
   const response = await axiosInstance.get(
     `${API.ADMIN_SERVICE_LOGS}?page=${page}&limit=${limit}&sort=id,DESC&filter=service.serviceType||$eq||VALET`
   );
@@ -24,7 +24,7 @@ export const deleteValetedVehicle = async (id) => {
   return response.data;
 };
 
-export const getParkedVehicles = async (page, limit, query) => {
+export const getParkedVehicles = async (page, limit) => {
   const response = await axiosInstance.get(
     `${API.ADMIN_SERVICE_LOGS}?page=${page}&limit=${limit}&sort=id,DESC&filter=service.serviceType||$eq||PARKING`
   );
@@ -47,7 +47,7 @@ export const deleteParkedVehicle = async (id) => {
   return response.data;
 };
 
-export const getServicedVehicles = async (page, limit, query) => {
+export const getServicedVehicles = async (page, limit) => {
   const response = await axiosInstance.get(
     `${API.ADMIN_SERVICE_LOGS}?page=${page}&limit=${limit}&sort=id,DESC&filter=service.serviceType||$eq||SERVICE`
   );

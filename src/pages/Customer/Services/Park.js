@@ -636,6 +636,9 @@ const Park = () => {
       <ConfirmParkModal
         isLoading={isCreating}
         dataa={data}
+        onClick={() => {
+          initializePayment(onSuccess, onCloses);
+        }}
         action={handlePark}
         values={values}
         isOpen={isOpen}

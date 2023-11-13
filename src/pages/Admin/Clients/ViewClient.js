@@ -631,11 +631,7 @@ export default function ViewCustomer() {
                   </Button>
                 </Flex>
               </Flex>
-              <Flex
-                gap={5}
-                flexDir={"column"}
-                w="100%"
-              >
+              <Flex gap={5} flexDir={"column"} w="100%">
                 <Flex
                   bg="#fff"
                   borderRadius="8px"

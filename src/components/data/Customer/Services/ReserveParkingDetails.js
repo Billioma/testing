@@ -175,7 +175,7 @@ const ReserveParkingDetails = () => {
               </Box>
             </Flex>
 
-            {(data?.status === 1 && currentTip === undefined) && (
+            {data?.status === 1 && currentTip === undefined && (
               <Flex align="center" w="full" justifyContent="center" mt="28px">
                 <Flex
                   align="center"

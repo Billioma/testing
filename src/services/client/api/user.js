@@ -11,7 +11,6 @@ export const getCards = async () => {
   return res.data;
 };
 
-
 export const clientFundWallet = async (body) => {
   const res = await axiosInstance.post("client/" + API.FUND_WALLET, body);
   return res.data;

@@ -83,7 +83,7 @@ export default function AddAttendants() {
     value: i,
     label: status,
   }));
-  const accountOptions = accountType?.map((account, i) => ({
+  const accountOptions = accountType?.map((account) => ({
     value: account,
     label: account,
   }));
@@ -120,7 +120,8 @@ export default function AddAttendants() {
   const [show, setShow] = useState(false);
 
   const handleSubmit = (values = "") => {
-    const { status, accountType, userId, locations, operator, ...rest } = values;
+    const { status, accountType, userId, locations, operator, ...rest } =
+      values;
     mutate({
       ...rest,
       status: status?.value,

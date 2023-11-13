@@ -9,10 +9,10 @@ import {
   Text,
 } from "@chakra-ui/react";
 import TipsTableLayer from "../../../components/data/Operator/Reports/TipsTableLayer";
-import { useGetAdminReport } from "../../../services/admin/query/reports";
-import LocationExport from "../../../components/data/Admin/Reports/LocationExport";
+import { useGetAdminRep } from "../../../services/admin/query/reports";
+import TipsExport from "../../../components/data/Admin/Reports/TipsExport";
 import Filter from "../../../components/common/Filter";
-import { locationsReportOptions } from "../../../components/common/constants";
+import { adminTipReportOptions } from "../../../components/common/constants";
 
 const Tips = () => {
   const [page, setPage] = useState(1);
@@ -28,15 +28,11 @@ const Tips = () => {
   });
 
   const query = convertedFilters?.join("&");
-  const { refetch, data, isLoading } = useGetAdminReport(
-    "tips",
-    {
-      refetchOnWindowFocus: true,
-    },
-    page,
-    limit,
-    query
-  );
+  const { mutate, data, isLoading } = useGetAdminRep();
+
+  useEffect(() => {
+    mutate({ type: "tips", filterString: query, limit, page: page });
+  }, [page, query, limit]);
 
   useEffect(() => {
     setPage(1);
@@ -58,10 +54,6 @@ const Tips = () => {
     setEndRow(currentEndRow);
   }, [data, page, limit]);
 
-  useEffect(() => {
-    refetch();
-  }, []);
-
   return (
     <Box minH="75vh">
       <Grid mb="24px" templateColumns={"repeat(3,1fr)"}>
@@ -70,7 +62,8 @@ const Tips = () => {
             <Box
               borderRadius="8px"
               bg="#F4F6F8"
-              p="5px"
+              pt="5px"
+              px="5px"
               border="1px solid #E4E6E8"
             >
               <Box h="6px" w="full" bg="#EE383A" borderRadius="full"></Box>
@@ -113,13 +106,29 @@ const Tips = () => {
         <Filter
           setFiltArray={setFiltArray}
           filtArray={filtArray}
-          fieldToCompare={locationsReportOptions}
-          handleSearch={refetch}
-          title={<Text fontWeight="500">All Tips</Text>}
+          fieldToCompare={adminTipReportOptions}
+          handleSearch={() =>
+            mutate({
+              type: "tips",
+              filterString: query,
+              limit,
+              page: page,
+            })
+          }
+          title={
+            <Text
+              fontSize="14px"
+              fontWeight={500}
+              lineHeight="100%"
+              color="#242628"
+            >
+              All Tips
+            </Text>
+          }
+          gap
           main={
-            <Flex align="center" gap="24px">
-              <LocationExport data={data?.data} />
-
+            <>
+              {data?.data?.length ? <TipsExport data={data?.data} /> : ""}
               <Flex
                 justifyContent="center"
                 align="center"
@@ -127,7 +136,12 @@ const Tips = () => {
                 transition=".3s ease-in-out"
                 _hover={{ bg: "#F4F6F8" }}
                 onClick={() =>
-                  mutate({ type: "tips", limit, page: page + 1 })
+                  mutate({
+                    type: "tips",
+                    filterString: query,
+                    limit,
+                    page: page,
+                  })
                 }
                 borderRadius="8px"
                 border="1px solid #848688"
@@ -140,7 +154,7 @@ const Tips = () => {
                   h="20px"
                 />
               </Flex>
-            </Flex>
+            </>
           }
         />
 
@@ -152,7 +166,6 @@ const Tips = () => {
           setPage={setPage}
           startRow={startRow}
           endRow={endRow}
-          refetch={refetch}
           setLimit={setLimit}
         />
       </Box>
