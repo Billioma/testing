@@ -25,6 +25,7 @@ import { IoIosArrowDown } from "react-icons/io";
 import { useCustomerUploadPic } from "../../../services/customer/query/user";
 import { useGetAdminEvent } from "../../../services/admin/query/users";
 import { formatDateToISOString } from "../../../utils/helpers";
+import { useGetZones } from "../../../services/admin/query/locations";
 
 export default function ViewEvent() {
   const isEdit = sessionStorage.getItem("edit");
@@ -46,6 +47,7 @@ export default function ViewEvent() {
     eventEndDateTime: "",
     client: "",
     status: "",
+    zones: "",
     price: "",
     paymentRequired: "",
   });
@@ -64,6 +66,13 @@ export default function ViewEvent() {
       [name]: selectedOption,
     });
   };
+
+  const { data: zones } = useGetZones({}, 1, 1000);
+
+  const zoneOptions = zones?.data?.map((zone) => ({
+    label: zone?.name,
+    value: parseInt(zone?.id),
+  }));
 
   const statusOptions = statusType?.map((status, i) => ({
     value: i,
@@ -129,6 +138,10 @@ export default function ViewEvent() {
     const selectedClientOption = clientOptions?.find(
       (option) => option?.value === Number(data?.client?.id)
     );
+    const selectedZonesOption = data?.zones?.map((item) => ({
+      value: item?.id,
+      label: item?.name,
+    }));
     setValues({
       ...values,
       image: data?.image?.replace("https://staging-api.ezpark.ng/", ""),
@@ -142,8 +155,9 @@ export default function ViewEvent() {
       eventEndDateTime: data?.eventEndDateTime,
       status: selectedStatusOption,
       client: selectedClientOption,
+      zones: selectedZonesOption,
     });
-  }, [data]);
+  }, [data, zones, clients]);
 
   const handleSubmit = () => {
     values?.paymentRequired
@@ -160,6 +174,8 @@ export default function ViewEvent() {
             eventStartDateTime: formatDateToISOString(
               values?.eventStartDateTime
             ),
+            zones: values?.zones?.map((item) => item?.value),
+
             eventEndDateTime: formatDateToISOString(values?.eventEndDateTime),
             status: values?.status?.value,
             client: values?.client?.value,
@@ -173,6 +189,8 @@ export default function ViewEvent() {
             description: values?.description,
             address: values?.address,
             website: values?.website,
+            zones: values?.zones?.map((item) => item?.value),
+
             paymentRequired: 0,
             eventStartDateTime: formatDateToISOString(
               values?.eventStartDateTime
@@ -443,6 +461,40 @@ export default function ViewEvent() {
                       ),
                     }}
                     value={values.client}
+                    isDisabled={edit ? false : true}
+                  />
+                </Box>
+
+                <Box w="full" mb={4}>
+                  <Text
+                    mb="8px"
+                    fontSize="10px"
+                    fontWeight={500}
+                    color="#444648"
+                  >
+                    Assign Zones
+                  </Text>
+                  <Select
+                    isMulti
+                    styles={customStyles}
+                    placeholder="Select zones"
+                    options={zoneOptions}
+                    onChange={(selectedOption) =>
+                      handleSelectChange(selectedOption, {
+                        name: "zones",
+                      })
+                    }
+                    components={{
+                      IndicatorSeparator: () => (
+                        <div style={{ display: "none" }}></div>
+                      ),
+                      DropdownIndicator: () => (
+                        <div>
+                          <IoIosArrowDown size="15px" color="#646668" />
+                        </div>
+                      ),
+                    }}
+                    value={values?.zones}
                     isDisabled={edit ? false : true}
                   />
                 </Box>

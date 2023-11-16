@@ -19,6 +19,7 @@ import AddVehicleModal from "../../../modals/AddVehicleModal";
 import useCustomToast from "../../../../utils/notifications";
 import EditVehicleModal from "../../../modals/EditVehicleModal";
 import ConfirmDeleteModal from "../../../modals/ConfirmDeleteModal";
+import { colorTypes } from "../../../common/constants";
 
 const VehicleCards = () => {
   const { data: vehicles, isLoading, refetch } = useGetVehicles();
@@ -127,7 +128,12 @@ const VehicleCards = () => {
                       Color
                     </Text>
                     <Text fontSize="14px" color="#242628" fontWeight={500}>
-                      {data?.color}
+                      {
+                        colorTypes.find(
+                          (item) =>
+                            item?.color?.toLocaleLowerCase() === data?.color
+                        )?.label
+                      }
                     </Text>
                   </Flex>
                 </Flex>

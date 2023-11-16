@@ -9,7 +9,52 @@ import {
   editServicedVehicle,
   deleteServicedVehicle,
   getServicedVehicles,
+  getAdminServiceLogs,
+  getAdminServiceLog,
+  editServiceLogs,
+  makePaymentServiceLog,
+  retrieveTickets,
 } from "../api/logs";
+
+export const useGetAdminServiceLogs = (options = {}) => {
+  const { mutate, isLoading, data } = useMutation(getAdminServiceLogs, {
+    mutationKey: "GET_ADMIN_SERVICE_LOGS_LIST",
+    ...options,
+  });
+  return { mutate, isLoading, data };
+};
+
+export const useGetAdminServiceLog = (options = {}) => {
+  const { mutate, isLoading, data } = useMutation(getAdminServiceLog, {
+    mutationKey: "GET_ADMIN_SERVICE_LOG_DETAILS",
+    ...options,
+  });
+  return { mutate, isLoading, data };
+};
+
+export const useMakePaymentServiceLog = (options = {}) => {
+  const { mutate, isLoading, data } = useMutation(makePaymentServiceLog, {
+    mutationKey: "MAKE_PAYMENT_SRVICE_LOG",
+    ...options,
+  });
+  return { mutate, isLoading, data };
+};
+
+export const useEditServiceLogs = (options = {}) => {
+  const { mutate, isLoading, data } = useMutation(editServiceLogs, {
+    mutationKey: "UPDATE_ADMIN_SERVICE_LOG_DETAILS",
+    ...options,
+  });
+  return { mutate, isLoading, data };
+};
+
+export const useRetrieveTickets = (options = {}) => {
+  const { mutate, isLoading, data } = useMutation(retrieveTickets, {
+    mutationKey: "RETRIEVE_TICKETS",
+    ...options,
+  });
+  return { mutate, isLoading, data };
+};
 
 export const useGetValetedVehicles = (
   options = {},

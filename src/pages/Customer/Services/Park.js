@@ -16,7 +16,11 @@ import Select from "react-select";
 import ConfirmParkModal from "../../../components/modals/ConfirmParkModal";
 import { useGetZone } from "../../../services/customer/query/locations";
 import useCustomToast from "../../../utils/notifications";
-import { useGetVehicles } from "../../../services/customer/query/vehicles";
+import {
+  useGetMake,
+  useGetModel,
+  useGetVehicles,
+} from "../../../services/customer/query/vehicles";
 import { useGetUser } from "../../../services/customer/query/user";
 import {
   useCreatePayToPark,
@@ -26,6 +30,7 @@ import { useNavigate } from "react-router-dom";
 import { useGetCards } from "../../../services/customer/query/payment";
 import { usePaystackPayment } from "react-paystack";
 import FundWalletDrawer from "../../../components/modals/FundWalletDrawer";
+import AddVehicleModal from "../../../components/modals/AddVehicleModal";
 
 const Park = () => {
   const [zone, setZone] = useState("");
@@ -144,7 +149,10 @@ const Park = () => {
     setZone("");
   }, []);
 
-  const { data: vehicles } = useGetVehicles();
+  const [showVehicle, setShowVehicle] = useState(false);
+  const { data: models } = useGetModel();
+  const { data: vehicles, refetch: refetchVehicle } = useGetVehicles();
+  const { data: makes } = useGetMake();
   const serviceOptions = data?.rates?.map((service) => ({
     value: service?.name,
     label: service?.name,
@@ -426,6 +434,28 @@ const Park = () => {
                   }
                 />
               </Box>
+              {vehicles?.data?.length === 0 ? (
+                <Flex
+                  mt="8px"
+                  color="red"
+                  mb="16px"
+                  fontSize="12px"
+                  fontWeight={500}
+                  lineHeight="100%"
+                  justifyContent="flex-end"
+                  w="full"
+                >
+                  <Text
+                    cursor="pointer"
+                    onClick={(onOp) => setShowVehicle(true)}
+                    textDecor="underline"
+                  >
+                    Add a Vehicle
+                  </Text>
+                </Flex>
+              ) : (
+                ""
+              )}
 
               <Box my="16px">
                 <Text
@@ -652,6 +682,14 @@ const Park = () => {
           initializePayment(onSuccess, onCloses);
         }}
         onClose={() => setShowFunds(false)}
+      />
+      <AddVehicleModal
+        makes={makes}
+        models={models}
+        noVehicle
+        refetch={refetchVehicle}
+        isOpen={showVehicle}
+        onClose={() => setShowVehicle(false)}
       />
     </Box>
   );

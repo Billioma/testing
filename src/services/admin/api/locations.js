@@ -47,6 +47,42 @@ export const getRates = async (page, limit, query) => {
   return response.data;
 };
 
+export const getAdminRates = async (query) => {
+  const res = await axiosInstance.get(
+    API.ADMIN_RATES_LIST(query.filterString, query.limit, query.page)
+  );
+  return res.data;
+};
+
+export const getAdminRate = async (query) => {
+  const res = await axiosInstance.get(API.ADMIN_RATE(query.id));
+  return res.data;
+};
+
+export const getAdminAmenities = async (query) => {
+  const res = await axiosInstance.get(
+    API.ADMIN_AMENITIES_LIST(query.filterString, query.limit, query.page)
+  );
+  return res.data;
+};
+
+export const getAdminAmenity = async (query) => {
+  const res = await axiosInstance.get(API.ADMIN_AMENITY(query.id));
+  return res.data;
+};
+
+export const getAdminPolicies = async (query) => {
+  const res = await axiosInstance.get(
+    API.ADMIN_POLICIES_LIST(query.filterString, query.limit, query.page)
+  );
+  return res.data;
+};
+
+export const getAdminPolicy = async (query) => {
+  const res = await axiosInstance.get(API.ADMIN_POLICY(query.id));
+  return res.data;
+};
+
 export const addLocation = async (data) => {
   const response = await axiosInstance.post(API.ADMIN_LOCATIONS, data);
   return response.data;
@@ -68,11 +104,8 @@ export const addRate = async (data) => {
   return response.data;
 };
 
-export const editRate = async (data) => {
-  const response = await axiosInstance.patch(
-    `${API.ADMIN_RATES}/${data.id}`,
-    data
-  );
+export const editRate = async ({ query, body }) => {
+  const response = await axiosInstance.patch(API.ADMIN_RATE(query), body);
 
   return response.data;
 };
@@ -108,15 +141,11 @@ export const addPolicy = async (data) => {
   return response.data;
 };
 
-export const editPolicy = async (data) => {
-  const response = await axiosInstance.patch(
-    `${API.ADMIN_POLICIES}/${data.id}`,
-    data
-  );
+export const editPolicy = async ({ query, body }) => {
+  const response = await axiosInstance.patch(API.ADMIN_POLICY(query), body);
 
   return response.data;
 };
-
 export const getPolicies = async (page, limit, query) => {
   const response = await axiosInstance.get(
     API.ADMIN_POLICIES +

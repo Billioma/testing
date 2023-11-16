@@ -474,6 +474,11 @@ export default function ViewCustomer() {
                   <Select
                     styles={customStyles}
                     options={stateOptions}
+                    onChange={(selectedOption) =>
+                      handleSelectChange(selectedOption, {
+                        name: "state",
+                      })
+                    }
                     components={{
                       IndicatorSeparator: () => (
                         <div style={{ display: "none" }}></div>
@@ -487,11 +492,6 @@ export default function ViewCustomer() {
                     name="state"
                     isDisabled={edit ? false : true}
                     value={values.state}
-                    onChange={(selectedOption) =>
-                      handleSelectChange(selectedOption, {
-                        name: "state",
-                      })
-                    }
                   />
                 </Box>
 
@@ -631,6 +631,7 @@ export default function ViewCustomer() {
                   </Button>
                 </Flex>
               </Flex>
+
               <Flex gap={5} flexDir={"column"} w="100%">
                 <Flex
                   bg="#fff"

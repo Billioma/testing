@@ -8,11 +8,94 @@ export const getRoles = async (page, limit, query) => {
   return response.data;
 };
 
-export const editRole = async (data) => {
-  const response = await axiosInstance.patch(
-    `${API.ADMIN_ROLES}/${data.id}`,
-    data
+export const getAdminRoles = async (query) => {
+  const res = await axiosInstance.get(
+    API.ADMIN_ROLES_LIST(query.filterString, query.limit, query.page)
   );
+  return res.data;
+};
+
+export const getAdminRole = async (query) => {
+  const res = await axiosInstance.get(API.ADMIN_ROLE(query.id));
+  return res.data;
+};
+
+export const getAdminPermissions = async (query) => {
+  const res = await axiosInstance.get(
+    API.ADMIN_PERMISSIONS_LIST(query.filterString, query.limit, query.page)
+  );
+  return res.data;
+};
+
+export const getAdminPermission = async (query) => {
+  const res = await axiosInstance.get(API.ADMIN_PERMISSION(query.id));
+  return res.data;
+};
+
+export const getAdminVehicleMakes = async (query) => {
+  const res = await axiosInstance.get(
+    API.ADMIN_VEHICLE_MAKES_LIST(query.filterString, query.limit, query.page)
+  );
+  return res.data;
+};
+
+export const getAdminVehicleMake = async (query) => {
+  const res = await axiosInstance.get(API.ADMIN_VEHICLE_MAKE(query.id));
+  return res.data;
+};
+
+export const getAdminVehicleModels = async (query) => {
+  const res = await axiosInstance.get(
+    API.ADMIN_VEHICLE_MODELS_LIST(query.filterString, query.limit, query.page)
+  );
+  return res.data;
+};
+
+export const getAdminVehicleModel = async (query) => {
+  const res = await axiosInstance.get(API.ADMIN_VEHICLE_MODEL(query.id));
+  return res.data;
+};
+
+export const getAdminFaqs = async (query) => {
+  const res = await axiosInstance.get(
+    API.ADMIN_FAQS_LIST(query.filterString, query.limit, query.page)
+  );
+  return res.data;
+};
+
+export const getAdminFaq = async (query) => {
+  const res = await axiosInstance.get(API.ADMIN_FAQ(query.id));
+  return res.data;
+};
+
+export const getAdminBanks = async (query) => {
+  const res = await axiosInstance.get(
+    API.ADMIN_BANKS_LIST(query.filterString, query.limit, query.page)
+  );
+  return res.data;
+};
+
+export const getAdminBank = async (query) => {
+  const res = await axiosInstance.get(API.ADMIN_BANK(query.id));
+  return res.data;
+};
+
+export const editRole = async ({ query, body }) => {
+  const response = await axiosInstance.patch(API.ADMIN_ROLE(query), body);
+
+  return response.data;
+};
+
+export const getPermissions = async (page, limit, query) => {
+  const response = await axiosInstance.get(
+    API.ADMIN_ROLES_PERMISSIONS +
+      `?page=${page}&limit=${limit}&sort=id,ASC&${query || ""}`
+  );
+  return response.data;
+};
+
+export const editPermission = async ({ query, body }) => {
+  const response = await axiosInstance.patch(API.ADMIN_PERMISSION(query), body);
 
   return response.data;
 };
@@ -22,8 +105,18 @@ export const addRole = async (data) => {
   return response.data;
 };
 
+export const addPermission = async (data) => {
+  const response = await axiosInstance.post(`${API.ADMIN_PERMISSIONS}`, data);
+  return response.data;
+};
+
 export const deleteRole = async (id) => {
   const response = await axiosInstance.delete(`${API.ADMIN_ROLES}/${id}`);
+  return response.data;
+};
+
+export const deletePermissions = async (id) => {
+  const response = await axiosInstance.delete(`${API.ADMIN_PERMISSIONS}/${id}`);
   return response.data;
 };
 
@@ -49,10 +142,10 @@ export const getModels = async (page, limit, query) => {
   }
 };
 
-export const editModel = async (data) => {
+export const editModel = async ({ query, body }) => {
   const response = await axiosInstance.patch(
-    `${API.ADMIN_VEHICLE_MODELS}/${data.id}`,
-    data
+    API.ADMIN_VEHICLE_MODEL(query),
+    body
   );
 
   return response.data;
@@ -84,10 +177,10 @@ export const getMakes = async (page, limit, query) => {
   }
 };
 
-export const editMake = async (data) => {
+export const editMake = async ({ query, body }) => {
   const response = await axiosInstance.patch(
-    `${API.ADMIN_VEHICLE_MAKES}/${data.id}`,
-    data
+    API.ADMIN_VEHICLE_MAKE(query),
+    body
   );
 
   return response.data;
@@ -114,11 +207,8 @@ export const getBankDetails = async (page, limit, query) => {
   return response.data;
 };
 
-export const editBankDetail = async (data) => {
-  const response = await axiosInstance.patch(
-    `${API.ADMIN_BANK_DETAILS}/${data.id}`,
-    data
-  );
+export const editBankDetail = async ({ query, body }) => {
+  const response = await axiosInstance.patch(API.ADMIN_BANK(query), body);
 
   return response.data;
 };
@@ -142,11 +232,8 @@ export const getFaqs = async (page, limit, query) => {
   return response.data;
 };
 
-export const editFaq = async (data) => {
-  const response = await axiosInstance.patch(
-    `${API.ADMIN_FAQS}/${data.id}`,
-    data
-  );
+export const editFaq = async ({ query, body }) => {
+  const response = await axiosInstance.patch(API.ADMIN_FAQ(query), body);
 
   return response.data;
 };

@@ -204,6 +204,9 @@ export const PRIVATE_PATHS = {
   ADMIN_CONFIG_ROLES: "/admin/configurations/roles",
   ADMIN_CONFIG_ADD_ROLE: "/admin/configurations/roles/create",
   ADMIN_CONFIG_VIEW_ROLE: "/admin/configurations/roles/details/:id",
+  ADMIN_CONFIG_PERMISSIONS: "/admin/configurations/permissions",
+  ADMIN_CONFIG_ADD_PERMISSION: "/admin/configurations/permissions/create",
+  ADMIN_CONFIG_VIEW_PERMISSION: "/admin/configurations/permissions/details/:id",
 
   ADMIN_CONFIG_VEHICLE_MAKES: "/admin/configurations/vehicle-makes",
   ADMIN_CONFIG_ADD_VEHICLE_MAKE: "/admin/configurations/vehicle-makes/create",

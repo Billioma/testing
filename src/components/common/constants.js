@@ -290,6 +290,10 @@ export const sidebarItems = [
         path: "/admin/configurations/roles",
       },
       {
+        name: "Permissions",
+        path: "/admin/configurations/permissions",
+      },
+      {
         name: "Vehicle Makes",
         path: "/admin/configurations/vehicle-makes",
       },
@@ -422,7 +426,7 @@ export const operatorRepLocationHeader = [
   "DATE CREATED",
 ];
 
-export const operatorRepZoneHeader = [
+export const adminRepZoneHeader = [
   "NAME",
   "LOCATION",
   "CAPACITY",
@@ -430,6 +434,16 @@ export const operatorRepZoneHeader = [
   "RESERVABLE SPACE",
   "SERVICE",
   "STATUS",
+  "DATE CREATED",
+];
+
+export const operatorRepZoneHeader = [
+  "NAME",
+  "LOCATION",
+  "CAPACITY",
+  "RESERVABLE",
+  "RESERVABLE SPACE",
+  "SERVICE",
   "DATE CREATED",
 ];
 
@@ -588,43 +602,43 @@ export const LocationTypes = [
 export const cities = ["Ikoyi", "VI", "Ikeja", "Lekki", "Wuse", "Maitama"];
 
 export const allStates = [
-  // "Abia",
-  // "Adamawa",
-  // "Akwa Ibom",
-  // "Anambra",
-  // "Bauchi",
-  // "Bayelsa",
-  // "Benue",
-  // "Borno",
-  // "Cross River",
-  // "Delta",
-  // "Ebonyi",
-  // "Edo",
-  // "Ekiti",
-  // "Enugu",
+  "Abia",
+  "Adamawa",
+  "Akwa Ibom",
+  "Anambra",
+  "Bauchi",
+  "Bayelsa",
+  "Benue",
+  "Borno",
+  "Cross River",
+  "Delta",
+  "Ebonyi",
+  "Edo",
+  "Ekiti",
+  "Enugu",
   "FCT",
-  // "Gombe",
-  // "Imo",
-  // "Jigawa",
-  // "Kaduna",
-  // "Kano",
-  // "Katsina",
-  // "Kebbi",
-  // "Kogi",
-  // "Kwara",
+  "Gombe",
+  "Imo",
+  "Jigawa",
+  "Kaduna",
+  "Kano",
+  "Katsina",
+  "Kebbi",
+  "Kogi",
+  "Kwara",
   "Lagos",
-  // "Nasarawa",
-  // "Niger",
-  // "Ogun",
-  // "Ondo",
-  // "Osun",
-  // "Oyo",
-  // "Plateau",
-  // "Rivers",
-  // "Sokoto",
-  // "Taraba",
-  // "Yobe",
-  // "Zamfara",
+  "Nasarawa",
+  "Niger",
+  "Ogun",
+  "Ondo",
+  "Osun",
+  "Oyo",
+  "Plateau",
+  "Rivers",
+  "Sokoto",
+  "Taraba",
+  "Yobe",
+  "Zamfara",
 ];
 
 export const clientEventHeader = [
@@ -872,6 +886,17 @@ export const operatorSidebar = [
   },
 ];
 
+export const optTranHeader = [
+  "TICKET NUMBER",
+  "AMOUNT",
+  "ZONE",
+  "VEHICLE",
+  "SERVICE",
+  "STATUS",
+  "DATE",
+  "ACTIONS",
+];
+
 export const clientTranHeader = [
   "TICKET NUMBER",
   "FULL NAME",
@@ -900,7 +925,6 @@ export const clientLogPayHeader = [
 export const clientTranBody = [
   {
     ticket: "003832",
-    fullName: "Bilal Omari",
     amount: "3000",
     zone: "V10098",
     plate: "ABJD833H",
@@ -1114,8 +1138,17 @@ export const SecStatus = [
   { color: "#F9A11E", name: "Pending", bg: "#FDF6E7" },
 ];
 
+export const ReservedStatus = ["Pending", "Completed", "Cancelled"];
+export const LogsStatus = ["In Service", "Completed", "Cancelled"];
+
 export const Status = [
   { color: "#F9A11E", name: "Pending", bg: "#FDF6E7" },
+  { color: "#008000", name: "Completed", bg: "#E5FFE5" },
+  { color: "#E81313", name: "Cancelled", bg: "#F9D0CD" },
+];
+
+export const LogStatus = [
+  { color: "#F9A11E", name: "In Service", bg: "#FDF6E7" },
   { color: "#008000", name: "Completed", bg: "#E5FFE5" },
   { color: "#E81313", name: "Cancelled", bg: "#F9D0CD" },
 ];
@@ -1203,8 +1236,25 @@ export const viewDeleteOption = [
   },
 ];
 
+export const viewClaimOption = [
+  {
+    name: "View",
+    icon: HiOutlineInformationCircle,
+  },
+  {
+    name: "Delete",
+    icon: BsTrash,
+  },
+  {
+    name: "Claim",
+    icon: FiEdit,
+  },
+];
+
 export const accountType = ["VALET", "PARKING", "GENERAL", "SERVICE"];
 export const statusType = ["Inactive", "Active"];
+export const newStatusType = ["Inactive", "Active", "Pending"];
+export const invoiceStatusType = ["Unpaid", "Paid", "Pending"];
 
 export const eventOptions = ["Edit Event", "Delete Event"];
 
@@ -1358,6 +1408,7 @@ export const subFieldOption = [
   { label: "Plan", value: "membershipPlan.name" },
   { label: "Amount", value: "membershipPlan.amount" },
   { label: "Duration", value: "membershipPlan.interval" },
+  { label: "Status", value: "status" },
 ];
 
 export const clientUserFieldOption = [
@@ -1365,18 +1416,21 @@ export const clientUserFieldOption = [
   { label: "Last Name", value: "profile.lastName" },
   { label: "Email", value: "email" },
   { label: "Company", value: "profile.companyName" },
+  { label: "Status", value: "status" },
 ];
 
 export const opUserFieldOption = [
   { label: "Full Name", value: "name" },
   { label: "User ID", value: "userId" },
   { label: "Account Type", value: "accountType" },
+  { label: "Status", value: "status" },
 ];
 
 export const opLocFieldOption = [
   { label: "Name", value: "name" },
   { label: "Operator", value: "operator.name" },
   { label: "State", value: "state" },
+  { label: "Status", value: "status" }
 ];
 
 export const opLogServiceFieldOption = [
@@ -1424,6 +1478,7 @@ export const opZoneFieldOption = [
   { label: "Capacity", value: "capacity" },
   { label: "Minimum Duration", value: "minimumDuration" },
   { label: "Duration Type", value: "durationType" },
+  { label: "Status", value: "status" }
 ];
 
 export const opRateFieldOption = [
@@ -1432,16 +1487,19 @@ export const opRateFieldOption = [
   { label: "Duration Start", value: "durationStart" },
   { label: "Duration Limit", value: "durationLimit" },
   { label: "Amount", value: "amount" },
+  { label: "Status", value: "status" }
 ];
 
 export const opPolicyFieldOption = [
   { label: "Title", value: "title" },
   { label: "Location", value: "location.name" },
+  { label: "Status", value: "status" }
 ];
 
 export const clientEventFieldOption = [
   { label: "Name", value: "name" },
   { label: "Website", value: "website" },
+  { label: "Status", value: "status" },
 ];
 
 export const custPayFieldOption = [
@@ -1542,12 +1600,14 @@ export const clientListOptions = [
   { label: "Phone", value: "phone" },
   { label: "State", value: "state" },
   { label: "Account Type", value: "accountType" },
+  { label: "Status", value: "status" },
 ];
 
 export const clientInvoiceOptions = [
   { label: "Client", value: "client.name" },
   { label: "Amount Payable", value: "amount" },
   { label: "Created By", value: "createdBy" },
+  { label: "Payment Status", value: "paymentStatus" },
 ];
 
 export const customersOptions = [
@@ -1556,12 +1616,14 @@ export const customersOptions = [
   { label: "Phone", value: "profile.phone" },
   { label: "Company Name", value: "profile.companyName" },
   { label: "Email", value: "email" },
+  { label: "Status", value: "status" },
 ];
 
 export const attendantsOptions = [
   { label: "Name", value: "name" },
   { label: "User ID", value: "userId" },
   { label: "Account Type", value: "accountType" },
+  { label: "Status", value: "status" },
 ];
 
 export const administratorsOptions = [
@@ -1569,6 +1631,7 @@ export const administratorsOptions = [
   { label: "Last Name", value: "lastName" },
   { label: "Email", value: "email" },
   { label: "Role", value: "role.displayName" },
+  { label: "Status", value: "status" },
 ];
 
 export const operatorOptions = [
@@ -1577,26 +1640,41 @@ export const operatorOptions = [
   { label: "Contact Person", value: "contactPerson" },
   { label: "Phone", value: "phone" },
   { label: "State", value: "state" },
+  { label: "Status", value: "status" },
 ];
 
 export const eventsOptions = [
   { label: "Name", value: "name" },
   { label: "Client", value: "client.name" },
   { label: "Website", value: "website" },
+  { label: "Status", value: "status" },
 ];
 
 export const locationsOptions = [
   { label: "Name", value: "name" },
   { label: "Operator", value: "operator.name" },
   { label: "State", value: "state" },
+  { label: "Status", value: "status" },
+];
+
+export const valetedVehiclesOptions = [
+  { label: "Ticket Number", value: "ticketNumber" },
+  { label: "License Plate", value: "vehicle.licensePlate" },
+  { label: "Customer Name", value: "vehicle.customerName" },
+  { label: "Location", value: "location.name" },
+  { label: "Zone", value: "zone.name" },
+  { label: "Attendant", value: "attendant.name" },
+  { label: "Amount", value: "amount" },
+  { label: "Status", value: "status" },
 ];
 
 export const zonesOptions = [
   { label: "Name", value: "name" },
   { label: "Code", value: "code" },
   { label: "Location", value: "location.name" },
-  { label: "Description", value: "location.description" },
+  { label: "Description", value: "description" },
   { label: "Capacity", value: "capacity" },
+  { label: "Status", value: "status" },
 ];
 
 export const ratesOptions = [
@@ -1605,6 +1683,7 @@ export const ratesOptions = [
   { label: "Duration Start", value: "durationStart" },
   { label: "Duration Limit", value: "durationLimit" },
   { label: "Amount", value: "amount" },
+  { label: "Status", value: "status" },
 ];
 
 export const amenitiesOptions = [
@@ -1675,6 +1754,7 @@ export const payToParkOptions = [
   { label: "Vehicle", value: "vehicle.licensePlate" },
   { label: "Customer First Name", value: "customer.profile.firstName" },
   { label: "Customer Last Name", value: "customer.profile.lastName" },
+  { label: "Status", value: "status" },
 ];
 
 export const eventParkingOptions = [
@@ -1683,6 +1763,7 @@ export const eventParkingOptions = [
   { label: "License Plate", value: "vehicle.licensePlate" },
   { label: "Location", value: "zone.location.name" },
   { label: "Amount (₦)", value: "amount" },
+  { label: "Status", value: "status" },
 ];
 
 export const carServiceOptions = [
@@ -1692,6 +1773,7 @@ export const carServiceOptions = [
   { label: "Amount (₦)", value: "amount" },
   { label: "Customer First Name", value: "customer.profile.firstName" },
   { label: "Customer Last Name", value: "customer.profile.lastName" },
+  { label: "Status", value: "status" },
 ];
 
 export const tipsOptions = [
@@ -1707,6 +1789,7 @@ export const tipsOptions = [
   },
   { label: "Attendant", value: "serviceLog.attendant.name" },
   { label: "Payment_Method", value: "paymentMethod" },
+  { label: "Status", value: "status" },
 ];
 
 export const reservedParkingOptions = [
@@ -1717,6 +1800,7 @@ export const reservedParkingOptions = [
   { label: "Arrival", value: "arrival" },
   { label: "Customer First Name", value: "customer.profile.firstName" },
   { label: "Customer Last Name", value: "customer.profile.lastName" },
+  { label: "Status", value: "status" },
 ];
 
 export const rolesOptions = [
@@ -1762,6 +1846,7 @@ export const adminLocationsReportOptions = [
   { label: "Name", value: "name" },
   { label: "State", value: "state" },
   { label: "Location Type", value: "locationType" },
+  { label: "Status", value: "status" },
 ];
 
 export const locationsReportOptions = [
@@ -1789,6 +1874,7 @@ export const zonesReportOptions = [
 export const adminZonesReportOptions = [
   { label: "Name", value: "name" },
   { label: "Location", value: "location.name" },
+  { label: "Status", value: "status" },
 ];
 
 export const vehiclesReportOptions = [

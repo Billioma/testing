@@ -17,7 +17,7 @@ const Login = () => {
   const { errorToast } = useCustomToast();
   const { mutate, isLoading } = useClientLogin({
     onSuccess: (res) => {
-      sessionStorage.setItem("user", JSON.stringify(res));
+      localStorage.setItem("client", JSON.stringify(res));
       navigate("/client/dashboard");
     },
     onError: (err) => {

@@ -17,7 +17,7 @@ const Login = () => {
   const { errorToast } = useCustomToast();
   const { mutate, isLoading } = useOperatorLogin({
     onSuccess: (res) => {
-      sessionStorage.setItem("user", JSON.stringify(res));
+      localStorage.setItem("operator", JSON.stringify(res));
       navigate("/operator/dashboard");
     },
     onError: (err) => {

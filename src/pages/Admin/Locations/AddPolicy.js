@@ -1,31 +1,29 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { Box, Flex, Text, Button } from "@chakra-ui/react";
 import CustomInput from "../../../components/common/CustomInput";
 import { useNavigate } from "react-router-dom";
 import { PRIVATE_PATHS } from "../../../routes/constants";
 import useCustomToast from "../../../utils/notifications";
 import GoBackTab from "../../../components/data/Admin/GoBackTab";
-import { customStyles } from "../../../components/common/constants";
+import { customStyles, statusType } from "../../../components/common/constants";
 import {
   useAddPolicy,
   useGetLocations,
-  useGetPolicies,
 } from "../../../services/admin/query/locations";
 import Select from "react-select";
+import { Form, Formik } from "formik";
+import { IoIosArrowDown } from "react-icons/io";
+import {
+  initAdminPoliciesValues,
+  validateAdminPoliciesSchema,
+} from "../../../utils/validation";
 
 export default function AddPolicy() {
-  const [state, setState] = useState({
-    status: 1,
-  });
-
   const navigate = useNavigate();
-  const [isDisabled, setIsDisabled] = useState(true);
   const { errorToast, successToast } = useCustomToast();
-  const { refetch } = useGetPolicies();
   const { mutate, isLoading } = useAddPolicy({
     onSuccess: () => {
       successToast("Policy added successfully!");
-      refetch();
       navigate(PRIVATE_PATHS.ADMIN_POLICIES);
     },
     onError: (error) => {
@@ -38,94 +36,186 @@ export default function AddPolicy() {
   const { data: locations } = useGetLocations({}, 1, 1000);
 
   const locationOptions = locations?.data?.map((location) => ({
-    label: location.name,
-    value: parseInt(location.id),
+    label: location?.name,
+    value: parseInt(location?.id),
   }));
 
-  const isFormValid = () => {
-    return !state.title || !state.body || !state.location;
-  };
+  const statusOptions = statusType?.map((status, i) => ({
+    value: i,
+    label: status,
+  }));
 
-  useEffect(() => {
-    setIsDisabled(isFormValid);
-  }, [state]);
-
-  const handleSubmit = () => {
-    mutate(state);
+  const handleSubmit = (values = "") => {
+    const { status, location, ...rest } = values;
+    mutate({
+      ...rest,
+      status: status?.value,
+      location: location?.value,
+    });
   };
 
   return (
     <Box minH="75vh">
-      <Flex justifyContent="center" align="center" w="full" flexDir="column">
+      {" "}
+      <Flex align="flex-start" flexDir={{ md: "row", base: "column" }}>
         <GoBackTab />
-        <Flex
-          bg="#fff"
-          borderRadius="16px"
-          py="24px"
-          px="28px"
-          justifyContent="center"
-          w="30rem"
-          flexDir="column"
-          border="1px solid #E4E6E8"
-        >
-          <Box w="full" mb={4}>
-            <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
-              Title
-            </Text>
-            <CustomInput
-              auth
-              value={state.title}
-              mb
-              holder="Enter policy name"
-              onChange={(e) => setState({ ...state, title: e.target.value })}
-            />
-          </Box>
-
-          <Box w="full" mb={4}>
-            <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
-              Description
-            </Text>
-            <CustomInput
-              opt
-              auth
-              value={state.body}
-              mb
-              holder="Enter policy description"
-              onChange={(e) => setState({ ...state, body: e.target.value })}
-            />
-          </Box>
-
-          <Box w="full" mb={4}>
-            <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
-              Location
-            </Text>
-            <Select
-              styles={customStyles}
-              placeholder="Select location"
-              options={locationOptions}
-              onChange={(selectedOption) =>
-                setState({ ...state, location: selectedOption.value })
-              }
-            />
-          </Box>
-
-          <Flex gap={4} mt={4}>
-            <Button
-              variant="adminSecondary"
-              w="45%"
-              onClick={() => navigate(PRIVATE_PATHS.ADMIN_AMENITIES)}
+        <Flex justifyContent="center" align="center" w="full" flexDir="column">
+          <Flex
+            bg="#fff"
+            borderRadius="12px"
+            py="32px"
+            px="28px"
+            justifyContent="center"
+            w={{ md: "30rem", base: "100%" }}
+            flexDir="column"
+            border="1px solid #E4E6E8"
+          >
+            <Formik
+              onSubmit={handleSubmit}
+              initialValues={initAdminPoliciesValues}
+              validationSchema={validateAdminPoliciesSchema}
             >
-              Cancel
-            </Button>
-            <Button
-              variant="adminPrimary"
-              w="55%"
-              isDisabled={isDisabled}
-              isLoading={isLoading}
-              onClick={handleSubmit}
-            >
-              Save
-            </Button>
+              {({
+                values,
+                errors,
+                touched,
+                handleChange,
+                handleBlur,
+                handleSubmit,
+                setValues,
+                isValid,
+                dirty,
+              }) => (
+                <Form onSubmit={handleSubmit}>
+                  <Box w="full" mb={4}>
+                    <Text
+                      mb="8px"
+                      fontSize="10px"
+                      fontWeight={500}
+                      color="#444648"
+                    >
+                      Title
+                    </Text>
+                    <CustomInput
+                      auth
+                      mb
+                      holder="Enter policy title"
+                      name="title"
+                      value={values?.title}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      error={errors?.title && touched?.title && errors?.title}
+                    />
+                  </Box>
+
+                  <Box w="full" mb={4}>
+                    <Text
+                      mb="8px"
+                      fontSize="10px"
+                      fontWeight={500}
+                      color="#444648"
+                    >
+                      Description
+                    </Text>
+                    <CustomInput
+                      auth
+                      mb
+                      holder="Enter policy description"
+                      name="body"
+                      value={values?.body}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      error={errors?.body && touched?.body && errors?.body}
+                    />
+                  </Box>
+
+                  <Box w="full" mb={4}>
+                    <Text
+                      mb="8px"
+                      fontSize="10px"
+                      fontWeight={500}
+                      color="#444648"
+                    >
+                      Location
+                    </Text>
+                    <Select
+                      styles={customStyles}
+                      placeholder="Select location"
+                      options={locationOptions}
+                      name="location"
+                      onChange={(selectedOption) =>
+                        setValues({
+                          ...values,
+                          location: selectedOption,
+                        })
+                      }
+                      onBlur={handleBlur}
+                      components={{
+                        IndicatorSeparator: () => (
+                          <div style={{ display: "none" }}></div>
+                        ),
+                        DropdownIndicator: () => (
+                          <div>
+                            <IoIosArrowDown size="15px" color="#646668" />
+                          </div>
+                        ),
+                      }}
+                    />
+                  </Box>
+                  <Box w="full" mb={4}>
+                    <Text
+                      mb="8px"
+                      fontSize="10px"
+                      fontWeight={500}
+                      color="#444648"
+                    >
+                      Status
+                    </Text>
+                    <Select
+                      styles={customStyles}
+                      options={statusOptions}
+                      name="status"
+                      onChange={(selectedOption) =>
+                        setValues({
+                          ...values,
+                          status: selectedOption,
+                        })
+                      }
+                      onBlur={handleBlur}
+                      components={{
+                        IndicatorSeparator: () => (
+                          <div style={{ display: "none" }}></div>
+                        ),
+                        DropdownIndicator: () => (
+                          <div>
+                            <IoIosArrowDown size="15px" color="#646668" />
+                          </div>
+                        ),
+                      }}
+                    />
+                  </Box>
+
+                  <Flex gap="24px" mt="24px">
+                    <Button
+                      variant="adminSecondary"
+                      w="100%"
+                      onClick={() => navigate(PRIVATE_PATHS.ADMIN_AMENITIES)}
+                    >
+                      Cancel
+                    </Button>
+                    <Button
+                      variant="adminPrimary"
+                      w="100%"
+                      isDisabled={!isValid || !dirty}
+                      isLoading={isLoading}
+                      type="submit"
+                    >
+                      Save
+                    </Button>
+                  </Flex>
+                </Form>
+              )}
+            </Formik>
           </Flex>
         </Flex>
       </Flex>

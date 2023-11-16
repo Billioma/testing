@@ -26,7 +26,6 @@ const ZoneTableLayer = ({
             opt
             alignFirstHeader
             alignSecondHeader
-            alignSixthHeader
             paginationValues={{
               startRow,
               endRow,
@@ -48,7 +47,7 @@ const ZoneTableLayer = ({
                 <Td textAlign="center">{item?.capacity}</Td>
                 <Td textAlign="center">{item?.reservable}</Td>
                 <Td textAlign="center">{item?.reservableSpace}</Td>
-                <Td>{item?.service}</Td>
+                <Td textAlign="center">{item?.service}</Td>
 
                 <Td textAlign="center">{formatDateTimes(item?.createdAt)}</Td>
               </Tr>

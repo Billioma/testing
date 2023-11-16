@@ -7,6 +7,7 @@ import {
   GridItem,
   Radio,
   RadioGroup,
+  Skeleton,
   Switch,
   Text,
 } from "@chakra-ui/react";
@@ -35,7 +36,7 @@ const AddUser = () => {
   const { errorToast, successToast } = useCustomToast();
   const navigate = useNavigate();
   const { data: clientUsers } = useGetClientusers();
-  const { data: plans } = useGetMemPlan();
+  const { data: plans, isLoading } = useGetMemPlan();
   const { mutate } = useGetClientSubs(10, 1);
 
   const [currentSub, setCurrentSub] = useState({});
@@ -193,7 +194,17 @@ const AddUser = () => {
           </Text>
         </Flex>
       )}
-      {step === 1 && (
+
+      <Flex w="full" justifyContent="center" align="center">
+        <Skeleton
+          display={isLoading ? "flex" : "none"}
+          isLoaded={!isLoading}
+          w="50%"
+          h="8rem"
+        ></Skeleton>
+      </Flex>
+
+      {plans?.length && step === 1 && (
         <Grid
           border="1px solid #e4e6e8"
           borderRadius="16px"
@@ -201,10 +212,14 @@ const AddUser = () => {
           py="24px"
           px="28px"
           templateColumns={[
-            "repeat(1,1fr)",
-            "repeat(1,1fr)",
-            "repeat(1,1fr)",
-            "repeat(2,1fr)",
+            plans?.length === 1
+              ? "repeat(1,1fr)"
+              : [
+                  "repeat(1,1fr)",
+                  "repeat(1,1fr)",
+                  "repeat(1,1fr)",
+                  "repeat(2,1fr)",
+                ],
           ]}
         >
           {plans?.length

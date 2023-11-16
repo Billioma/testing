@@ -1,33 +1,33 @@
 import React, { useState, useEffect } from "react";
-import { Box, Flex, Text, Button } from "@chakra-ui/react";
+import { Box, Flex, Text, Button, Spinner } from "@chakra-ui/react";
 import CustomInput from "../../../components/common/CustomInput";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { PRIVATE_PATHS } from "../../../routes/constants";
 import useCustomToast from "../../../utils/notifications";
 import GoBackTab from "../../../components/data/Admin/GoBackTab";
-import {
-  useDeleteAmenity,
-  useEditAmenity,
-  useGetAmenities,
-} from "../../../services/admin/query/amenities";
-import AdminDeleteModal from "../../../components/modals/AdminDeleteModal";
+import { useEditAmenity } from "../../../services/admin/query/amenities";
+import { statusType, customStyles } from "../../../components/common/constants";
+import { useGetAdminAmenity } from "../../../services/admin/query/locations";
+import { IoIosArrowDown } from "react-icons/io";
+import Select from "react-select";
 
 export default function AddAmenity() {
-  const [state, setState] = useState({
-    status: 1,
-  });
-  const [isOpen, setIsOpen] = useState(false);
-  const [isEdit, setIsEdit] = useState(false);
-  const location = useLocation();
+  const isEdit = sessionStorage.getItem("edit");
+  const [edit, setEdit] = useState(false);
+
+  useEffect(() => {
+    if (isEdit !== null) {
+      setEdit(true);
+    }
+  }, [isEdit]);
+
   const navigate = useNavigate();
-  const [isDisabled, setIsDisabled] = useState(true);
   const { errorToast, successToast } = useCustomToast();
-  const { refetch } = useGetAmenities();
-  const { mutate, isLoading } = useEditAmenity({
+  const { mutate: updateMutate, isLoading: isUpdating } = useEditAmenity({
     onSuccess: () => {
       successToast("Amenity updated successfully!");
-      refetch();
       navigate(PRIVATE_PATHS.ADMIN_AMENITIES);
+      sessionStorage.removeItem("edit");
     },
     onError: (error) => {
       errorToast(
@@ -36,115 +36,188 @@ export default function AddAmenity() {
     },
   });
 
-  const { mutate: deleteAmenity, isLoading: isDeleting } = useDeleteAmenity({
-    onSuccess: (res) => {
-      successToast(res?.message);
-      setIsOpen(false);
-      refetch();
-      navigate(PRIVATE_PATHS.ADMIN_AMENITIES);
-    },
-    onError: (err) => {
-      errorToast(
-        err?.response?.data?.message || err?.message || "An Error occurred"
-      );
-    },
+  const [values, setValues] = useState({
+    name: "",
+    description: "",
+    status: "",
   });
 
-  const isFormValid = () => {
-    return !state.name || !state.description;
-  };
+  const { id } = useParams();
+  const { mutate, isLoading, data } = useGetAdminAmenity();
 
   useEffect(() => {
-    setIsDisabled(isFormValid);
-  }, [state]);
+    mutate({ id: id });
+  }, []);
+
+  const statusOptions = statusType?.map((status, i) => ({
+    value: i,
+    label: status,
+  }));
+
+  useEffect(() => {
+    const selectedStatusOption = statusOptions?.find(
+      (option) => option?.value === data?.status
+    );
+
+    setValues({
+      ...values,
+      name: data?.name,
+      description: data?.description,
+      status: selectedStatusOption,
+    });
+  }, [data]);
+
+  const handleSelectChange = (selectedOption, { name }) => {
+    setValues({
+      ...values,
+      [name]: selectedOption,
+    });
+  };
 
   const handleSubmit = () => {
-    mutate(state);
-  };
-
-  useEffect(() => {
-    setState({
-      ...location.state,
+    updateMutate({
+      query: id,
+      body: {
+        name: values?.name,
+        description: values?.description,
+        status: values?.status?.value,
+      },
     });
-    setIsEdit(location.state.isEdit);
-  }, [location.state]);
+  };
 
   return (
     <Box minH="75vh">
-      <Flex justifyContent="center" align="center" w="full" flexDir="column">
-        <GoBackTab />
-        <Flex
-          bg="#fff"
-          borderRadius="16px"
-          py="24px"
-          px="28px"
-          justifyContent="center"
-          w="30rem"
-          flexDir="column"
-          border="1px solid #E4E6E8"
-        >
-          <Box w="full" mb={4}>
-            <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
-              Name
-            </Text>
-            <CustomInput
-              auth
-              value={state.name}
-              mb
-              holder="Enter amenity name"
-              onChange={(e) => setState({ ...state, name: e.target.value })}
-              isDisabled={!isEdit}
-            />
-          </Box>
-
-          <Box w="full" mb={4}>
-            <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
-              Description
-            </Text>
-            <CustomInput
-              opt
-              auth
-              value={state.description}
-              mb
-              holder="Enter amenity description"
-              onChange={(e) =>
-                setState({ ...state, description: e.target.value })
-              }
-              isDisabled={!isEdit}
-            />
-          </Box>
-
-          <Flex gap={4} mt={4}>
-            <Button
-              variant={!isEdit ? "adminDanger" : "adminSecondary"}
-              w="45%"
-              onClick={() =>
-                !isEdit ? setIsOpen(true) : navigate(PRIVATE_PATHS.ADMIN_ZONES)
-              }
-            >
-              {!isEdit ? "Delete" : "Cancel"}
-            </Button>
-            <Button
-              variant="adminPrimary"
-              w="55%"
-              isDisabled={isEdit && isDisabled}
-              isLoading={isLoading}
-              onClick={() => (!isEdit ? setIsEdit(!isEdit) : handleSubmit())}
-            >
-              {!isEdit ? "Edit" : "Save"}
-            </Button>
+      <Flex
+        align="flex-start"
+        flexDir={{ md: "row", base: "column" }}
+        gap={{ base: "", md: "30px" }}
+      >
+        <Box w="fit-content">
+          <GoBackTab />
+        </Box>
+        {isLoading ? (
+          <Flex minH="60vh" w="full" justifyContent="center" align="center">
+            <Spinner />
           </Flex>
-        </Flex>
-      </Flex>
+        ) : (
+          <>
+            <Flex
+              justifyContent="center"
+              align="center"
+              w="full"
+              flexDir="column"
+            >
+              <Flex
+                bg="#fff"
+                borderRadius="8px"
+                py="32px"
+                px="24px"
+                justifyContent="center"
+                w={{ base: "100%", md: "30rem" }}
+                flexDir="column"
+                border="1px solid #E4E6E8"
+              >
+                <Box w="full" mb={4}>
+                  <Text
+                    mb="8px"
+                    fontSize="10px"
+                    fontWeight={500}
+                    color="#444648"
+                  >
+                    Name
+                  </Text>
+                  <CustomInput
+                    auth
+                    value={values?.name}
+                    mb
+                    holder="Enter amenity name"
+                    onChange={(e) =>
+                      setValues({ ...values, name: e.target.value })
+                    }
+                    dis={edit ? false : true}
+                  />
+                </Box>
 
-      <AdminDeleteModal
-        isOpen={isOpen}
-        onClose={() => setIsOpen(false)}
-        title="Delete Amenity"
-        subTitle="Are you sure you want to delete this amenity?"
-        handleSubmit={() => deleteAmenity(state.id)}
-        isLoading={isDeleting}
-      />
+                <Box w="full" mb={4}>
+                  <Text
+                    mb="8px"
+                    fontSize="10px"
+                    fontWeight={500}
+                    color="#444648"
+                  >
+                    Description
+                  </Text>
+                  <CustomInput
+                    auth
+                    value={values?.description}
+                    mb
+                    holder="Enter amenity description"
+                    onChange={(e) =>
+                      setValues({ ...values, description: e.target.value })
+                    }
+                    dis={edit ? false : true}
+                  />
+                </Box>
+
+                <Box w="full" mb={4}>
+                  <Text
+                    mb="8px"
+                    fontSize="10px"
+                    fontWeight={500}
+                    color="#444648"
+                  >
+                    Status
+                  </Text>
+                  <Select
+                    styles={customStyles}
+                    options={statusOptions}
+                    onChange={(selectedOption) =>
+                      handleSelectChange(selectedOption, {
+                        name: "status",
+                      })
+                    }
+                    components={{
+                      IndicatorSeparator: () => (
+                        <div style={{ display: "none" }}></div>
+                      ),
+                      DropdownIndicator: () => (
+                        <div>
+                          <IoIosArrowDown size="15px" color="#646668" />
+                        </div>
+                      ),
+                    }}
+                    value={values?.status}
+                    isDisabled={edit ? false : true}
+                  />
+                </Box>
+
+                <Flex gap="24px" mt="24px">
+                  <Button
+                    variant="adminSecondary"
+                    w="100%"
+                    onClick={() =>
+                      edit
+                        ? setEdit(false)
+                        : (navigate(PRIVATE_PATHS.ADMIN_AMENITIES),
+                          sessionStorage.removeItem("edit"))
+                    }
+                  >
+                    Cancel
+                  </Button>
+                  <Button
+                    variant="adminPrimary"
+                    w="100%"
+                    isLoading={isUpdating}
+                    onClick={() => (!edit ? setEdit(true) : handleSubmit())}
+                  >
+                    {!edit ? "Edit" : "Save"}
+                  </Button>
+                </Flex>
+              </Flex>
+            </Flex>
+          </>
+        )}
+      </Flex>
     </Box>
   );
 }

@@ -30,6 +30,7 @@ import {
   validateEventSchema,
 } from "../../../utils/validation";
 import { formatDateToISOString } from "../../../utils/helpers";
+import { useGetZones } from "../../../services/admin/query/locations";
 
 export default function AddEvent() {
   const navigate = useNavigate();
@@ -45,6 +46,13 @@ export default function AddEvent() {
       );
     },
   });
+
+  const { data: zones } = useGetZones({}, 1, 1000);
+
+  const zoneOptions = zones?.data?.map((zone) => ({
+    label: zone?.name,
+    value: parseInt(zone?.id),
+  }));
 
   const statusOptions = statusType?.map((status, i) => ({
     value: i,
@@ -89,7 +97,7 @@ export default function AddEvent() {
   }));
 
   const handleSubmit = (values = "") => {
-    const { status, price, client, ...rest } = values;
+    const { status, price, client, zones, ...rest } = values;
     values?.paymentRequired
       ? mutate({
           ...rest,
@@ -97,12 +105,14 @@ export default function AddEvent() {
           price: Number(price),
           client: Number(client?.value),
           image: profilePicData?.path,
+          zones: zones?.map((item) => Number(item?.value)),
         })
       : mutate({
           ...rest,
           status: status?.value,
           client: Number(client?.value),
           image: profilePicData?.path,
+          zones: zones?.map((item) => Number(item?.value)),
         });
   };
   return (
@@ -334,6 +344,40 @@ export default function AddEvent() {
                         setValues({
                           ...values,
                           client: selectedOption,
+                        })
+                      }
+                      onBlur={handleBlur}
+                      components={{
+                        IndicatorSeparator: () => (
+                          <div style={{ display: "none" }}></div>
+                        ),
+                        DropdownIndicator: () => (
+                          <div>
+                            <IoIosArrowDown size="15px" color="#646668" />
+                          </div>
+                        ),
+                      }}
+                    />
+                  </Box>
+                  <Box w="full" mb={4}>
+                    <Text
+                      mb="8px"
+                      fontSize="10px"
+                      fontWeight={500}
+                      color="#444648"
+                    >
+                      Assign Zones
+                    </Text>
+                    <Select
+                      isMulti
+                      styles={customStyles}
+                      placeholder="Select zone"
+                      options={zoneOptions}
+                      name="zones"
+                      onChange={(selectedOption) =>
+                        setValues({
+                          ...values,
+                          zones: selectedOption,
                         })
                       }
                       onBlur={handleBlur}

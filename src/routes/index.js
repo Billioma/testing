@@ -29,10 +29,13 @@ const PrivateRouteWrapper = () => {
 };
 
 const Pages = () => {
-  const user = sessionStorage.getItem("user");
+  const admin = localStorage.getItem("admin");
+  const customer = localStorage.getItem("customer");
+  const operator = localStorage.getItem("operator");
+  const client = localStorage.getItem("client");
   const location = useLocation();
   return location.pathname.includes("admin") ? (
-    user ? (
+    admin ? (
       <AdminAuthLayout>
         <PrivateRouteWrapper key={location.pathname} />
       </AdminAuthLayout>
@@ -42,7 +45,7 @@ const Pages = () => {
       </AdminNonAuthLayout>
     )
   ) : location.pathname.includes("client") ? (
-    user ? (
+    client ? (
       <ClientAuthLayout>
         <PrivateRouteWrapper key={location.pathname} />
       </ClientAuthLayout>
@@ -52,7 +55,7 @@ const Pages = () => {
       </ClientNonAuthLayout>
     )
   ) : location.pathname.includes("operator") ? (
-    user ? (
+    operator ? (
       <OperatorAuthLayout>
         <PrivateRouteWrapper key={location.pathname} />
       </OperatorAuthLayout>
@@ -61,7 +64,7 @@ const Pages = () => {
         <PublicRouteWrapper key={location.pathname} />
       </OperatorNonAuthLayout>
     )
-  ) : user ? (
+  ) : customer ? (
     <AuthLayout>
       <PrivateRouteWrapper key={location.pathname} />
     </AuthLayout>

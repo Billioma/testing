@@ -246,7 +246,7 @@ export const LogoutIcon = ({ fill }) => {
     >
       <path
         d="M10 3.75V9.6875"
-        stroke="#242628"
+        stroke={fill}
         stroke-width="1.2"
         stroke-linecap="round"
         stroke-linejoin="round"

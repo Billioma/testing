@@ -51,7 +51,7 @@ const PaymentTableLayer = ({
                 </Td>
                 <Td textAlign="center">{item?.customer}</Td>
                 <Td textAlign="center">{item?.vehicle}</Td>
-                <Td>{item?.serviceType}</Td>
+                <Td textAlign="center">{item?.serviceType}</Td>
                 <Td textAlign="center">{item?.paymentMethod || "N/A"}</Td>
                 <Td textAlign="center">{formatDateTimes(item?.createdAt)}</Td>
               </Tr>

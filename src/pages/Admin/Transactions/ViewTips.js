@@ -4,7 +4,6 @@ import CustomInput from "../../../components/common/CustomInput";
 import { useParams } from "react-router-dom";
 import GoBackTab from "../../../components/data/Admin/GoBackTab";
 import { useGetAdminTipsDetails } from "../../../services/admin/query/transactions";
-import { QRCodeCanvas } from "qrcode.react";
 
 export default function ViewTips() {
   const { id } = useParams();
@@ -17,7 +16,6 @@ export default function ViewTips() {
 
   return (
     <Box minH="75vh">
-      {" "}
       <Flex
         align="flex-start"
         flexDir={{ md: "row", base: "column" }}
@@ -32,13 +30,9 @@ export default function ViewTips() {
           <>
             <Flex
               justifyContent="center"
-              align="flex-start"
-              w={{
-                base: "100%",
-                md: "80%",
-              }}
-              flexDir={{ md: "row", base: "column" }}
-              gap="30px"
+              align="center"
+              w="full"
+              flexDir="column"
             >
               <Flex
                 bg="#fff"
@@ -46,7 +40,7 @@ export default function ViewTips() {
                 py="32px"
                 px="24px"
                 justifyContent="center"
-                w="100%"
+                w={{ base: "100%", md: "30rem" }}
                 flexDir="column"
                 border="1px solid #E4E6E8"
               >
@@ -156,37 +150,6 @@ export default function ViewTips() {
                     isDisabled
                   />
                 </Box>
-              </Flex>
-
-              <Flex flexDir={"column"} w="100%">
-                <Flex
-                  bg="#fff"
-                  borderRadius="8px"
-                  py="32px"
-                  px="28px"
-                  align="center"
-                  justifyContent="center"
-                  gap="30px"
-                  border="1px solid #E4E6E8"
-                  h="fit-content"
-                >
-                  <Text
-                    fontSize="24px"
-                    fontWeight={500}
-                    lineHeight="100%"
-                    color="#646668"
-                  >
-                    QR Code
-                  </Text>
-
-                  <QRCodeCanvas
-                    size={150}
-                    value={data?.serviceLog?.zone?.name}
-                    viewBox={`0 0 150 150`}
-                    renderAs="canvas"
-                    id="qrcode"
-                  />
-                </Flex>
               </Flex>
             </Flex>
           </>

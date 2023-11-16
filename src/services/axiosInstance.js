@@ -19,8 +19,21 @@ export const uploadInstance = axios.create({
 });
 
 const onRequest = (request) => {
-  const user = JSON.parse(sessionStorage.getItem("user"));
-  request.headers.Authorization = `Bearer ${user?.access_token}` || "";
+  const customer = JSON.parse(localStorage.getItem("customer"));
+  const admin = JSON.parse(localStorage.getItem("admin"));
+  const client = JSON.parse(localStorage.getItem("client"));
+  const operator = JSON.parse(localStorage.getItem("operator"));
+  request.headers.Authorization =
+    `Bearer ${
+      (location.pathname.includes("operator/")
+        ? operator
+        : location.pathname.includes("admin/")
+        ? admin
+        : location.pathname.includes("client/")
+        ? client
+        : customer
+      )?.access_token
+    }` || "";
 
   return request;
 };
@@ -36,6 +49,7 @@ const onResponse = (response) => {
 const onResponseError = (error) => {
   if (error.response) {
     if (error.response.status === 401) {
+      localStorage.clear();
       sessionStorage.clear();
       if (window.location.pathname.includes("admin")) {
         window.location.href = "/admin/auth/login";

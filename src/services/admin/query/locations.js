@@ -20,6 +20,12 @@ import {
   getAdminLocation,
   getAdminZones,
   getAdminZone,
+  getAdminRate,
+  getAdminRates,
+  getAdminAmenity,
+  getAdminAmenities,
+  getAdminPolicy,
+  getAdminPolicies,
 } from "../api/locations";
 
 export const useGetAllLocations = (options = {}) => {
@@ -155,6 +161,56 @@ export const useGetRates = (options = {}, page = 1, limit = 25, query) => {
 
   return { isLoading, data, refetch };
 };
+
+
+export const useGetAdminRates = (options = {}) => {
+  const { mutate, isLoading, data } = useMutation(getAdminRates, {
+    mutationKey: "GET_ADMIN_RATES_LIST",
+    ...options,
+  });
+  return { mutate, isLoading, data };
+};
+
+export const useGetAdminRate = (options = {}) => {
+  const { mutate, isLoading, data } = useMutation(getAdminRate, {
+    mutationKey: "GET_ADMIN_RATE",
+    ...options,
+  });
+  return { mutate, isLoading, data };
+};
+
+export const useGetAdminAmenities = (options = {}) => {
+  const { mutate, isLoading, data } = useMutation(getAdminAmenities, {
+    mutationKey: "GET_ADMIN_AMENITIES_LIST",
+    ...options,
+  });
+  return { mutate, isLoading, data };
+};
+
+export const useGetAdminAmenity = (options = {}) => {
+  const { mutate, isLoading, data } = useMutation(getAdminAmenity, {
+    mutationKey: "GET_ADMIN_AMENTIY",
+    ...options,
+  });
+  return { mutate, isLoading, data };
+};
+
+export const useGetAdminPolicies = (options = {}) => {
+  const { mutate, isLoading, data } = useMutation(getAdminPolicies, {
+    mutationKey: "GET_ADMIN_POLICIES_LIST",
+    ...options,
+  });
+  return { mutate, isLoading, data };
+};
+
+export const useGetAdminPolicy = (options = {}) => {
+  const { mutate, isLoading, data } = useMutation(getAdminPolicy, {
+    mutationKey: "GET_ADMIN_POLICY",
+    ...options,
+  });
+  return { mutate, isLoading, data };
+};
+
 
 export const useDeleteRate = (options = {}) => {
   const { isLoading, mutate } = useMutation(deleteRate, {

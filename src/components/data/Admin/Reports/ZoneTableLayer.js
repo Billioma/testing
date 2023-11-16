@@ -14,10 +14,8 @@ import {
   Tr,
 } from "@chakra-ui/react";
 import TableLoader from "../../../loaders/TableLoader";
-import { operatorRepZoneHeader } from "../../../common/constants";
-import NoData from "../../../common/NoData";
+import { adminRepZoneHeader } from "../../../common/constants";
 import { formatDateTimes } from "../../../../utils/helpers";
-import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import TableFormat from "../../../common/TableFormat";
 
 const ZoneTableLayer = ({
@@ -37,7 +35,7 @@ const ZoneTableLayer = ({
       ) : data?.data?.length ? (
         <>
           <TableFormat
-            header={operatorRepZoneHeader}
+            header={adminRepZoneHeader}
             opt
             alignFirstHeader
             alignSecondHeader

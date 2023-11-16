@@ -121,7 +121,7 @@ const TableLayer = ({ isLoading, limit, data, setPage, page, eventMutate }) => {
 
                     <Td textAlign="center">
                       <a href={item?.website} target="_blank" rel="noreferrer">
-                        {trim(item?.website)}
+                        {trim(item?.website) || "N/A"}
                       </a>
                     </Td>
                     <Td textAlign="center">

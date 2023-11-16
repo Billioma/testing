@@ -1,40 +1,35 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { Box, Flex, Text, Button, Switch } from "@chakra-ui/react";
 import CustomInput from "../../../components/common/CustomInput";
 import {
   customStyles,
   BillingTypes,
+  statusType,
 } from "../../../components/common/constants";
 import Select from "react-select";
 import { useNavigate } from "react-router-dom";
 import { PRIVATE_PATHS } from "../../../routes/constants";
 import useCustomToast from "../../../utils/notifications";
 import GoBackTab from "../../../components/data/Admin/GoBackTab";
-import { useGetOperators } from "../../../services/admin/query/users";
-
 import { useGetAmenities } from "../../../services/admin/query/amenities";
 import {
   useAddZone,
   useGetLocations,
-  useGetZones,
 } from "../../../services/admin/query/locations";
 import { useGetServices } from "../../../services/admin/query/services";
+import { Form, Formik } from "formik";
+import { IoIosArrowDown } from "react-icons/io";
+import {
+  initAdminZoneValues,
+  validateAdminZoneSchema,
+} from "../../../utils/validation";
 
 export default function AddZone() {
-  const [state, setState] = useState({
-    status: 1,
-    reservable: 0,
-    showBillingType: false,
-  });
-
   const navigate = useNavigate();
-  const [isDisabled, setIsDisabled] = useState(true);
   const { errorToast, successToast } = useCustomToast();
-  const { refetch } = useGetZones();
   const { mutate, isLoading } = useAddZone({
     onSuccess: () => {
       successToast("Zone added successfully!");
-      refetch();
       navigate(PRIVATE_PATHS.ADMIN_ZONES);
     },
     onError: (error) => {
@@ -53,6 +48,11 @@ export default function AddZone() {
     value: parseInt(location.id),
   }));
 
+  const statusOptions = statusType?.map((status, i) => ({
+    value: i,
+    label: status,
+  }));
+
   const serviceOptions = services?.data?.map((service) => ({
     label: service.name,
     value: service.id,
@@ -63,243 +63,415 @@ export default function AddZone() {
     value: parseInt(amenity.id),
   }));
 
-  const isFormValid = () => {
-    return (
-      !state.name ||
-      !state.capacity ||
-      !state.description ||
-      !state.location ||
-      !state.amenities?.length ||
-      !state.minimumDuration
-    );
-  };
+  const billingOptions = BillingTypes.map((type, index) => ({
+    label: type,
+    value: index,
+  }));
 
-  useEffect(() => {
-    setIsDisabled(isFormValid);
-  }, [state]);
-
-  const handleSubmit = () => {
-    mutate(state);
+  const handleSubmit = (values = "") => {
+    const {
+      location,
+      service,
+      amenities,
+      billingType,
+      status,
+      showBillingType,
+      ...rest
+    } = values;
+    mutate({
+      ...rest,
+      location: location?.value,
+      service: service?.value,
+      billingType: billingType?.value,
+      status: status?.value,
+      amenities: amenities?.map((item) => item?.value),
+    });
   };
 
   return (
     <Box minH="75vh">
-      <Flex justifyContent="center" align="center" w="full" flexDir="column">
+      <Flex align="flex-start" flexDir={{ md: "row", base: "column" }}>
         <GoBackTab />
-        <Flex
-          bg="#fff"
-          borderRadius="16px"
-          py="24px"
-          px="28px"
-          justifyContent="center"
-          w="30rem"
-          flexDir="column"
-          border="1px solid #E4E6E8"
-        >
-          <Box w="full" mb={4}>
-            <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
-              Zone Name
-            </Text>
-            <CustomInput
-              auth
-              value={state.name}
-              mb
-              holder="Enter zone name"
-              onChange={(e) => setState({ ...state, name: e.target.value })}
-            />
-          </Box>
-
-          <Box w="full" mb={4}>
-            <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
-              Zone Description
-            </Text>
-            <CustomInput
-              opt
-              auth
-              value={state.description}
-              mb
-              holder="Enter zone description"
-              onChange={(e) =>
-                setState({ ...state, description: e.target.value })
-              }
-            />
-          </Box>
-
-          <Box w="full" mb={4}>
-            <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
-              Zone capacity
-            </Text>
-            <CustomInput
-              auth
-              value={state.capacity}
-              mb
-              holder="Enter a number"
-              onChange={(e) => setState({ ...state, capacity: e.target.value })}
-            />
-          </Box>
-
-          <Box w="full" mb={4}>
-            <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
-              Location
-            </Text>
-            <Select
-              styles={customStyles}
-              placeholder="Select location"
-              options={locationOptions}
-              onChange={(selectedOption) =>
-                setState({ ...state, location: selectedOption.value })
-              }
-            />
-          </Box>
-
-          <Box w="full" mb={4}>
-            <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
-              Minimum Duration (In Minutes)
-            </Text>
-            <CustomInput
-              auth
-              value={state.minimumDuration}
-              mb
-              holder="Enter a number"
-              onChange={(e) =>
-                setState({ ...state, minimumDuration: e.target.value })
-              }
-            />
-          </Box>
-
-          <Box w="full" mb={4}>
-            <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
-              Service
-            </Text>
-            <Select
-              styles={customStyles}
-              placeholder="Select service"
-              options={serviceOptions}
-              onChange={(selectedOption) =>
-                setState({ ...state, service: selectedOption.value })
-              }
-            />
-          </Box>
-
-          <Box w="full" mb={4}>
-            <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
-              Assign Amenities
-            </Text>
-            <Select
-              isMulti
-              styles={customStyles}
-              placeholder="Select amenities"
-              options={amenitiesOptions}
-              onChange={(selectedOptions) =>
-                setState({
-                  ...state,
-                  amenities: selectedOptions.map((option) => option.value),
-                })
-              }
-            />
-          </Box>
-
+        <Flex justifyContent="center" align="center" w="full" flexDir="column">
           <Flex
-            align="center"
-            justifyContent={"space-between"}
-            gap="15px"
-            mb="16px"
-            mt={2}
+            bg="#fff"
+            borderRadius="12px"
+            py="32px"
+            px="28px"
+            justifyContent="center"
+            w={{ md: "30rem", base: "100%" }}
+            flexDir="column"
+            border="1px solid #E4E6E8"
           >
-            <Text fontSize="12px" fontWeight={500} color="#444648">
-              Add Reservable Space
-            </Text>
-            <Switch
-              onChange={() =>
-                setState({
-                  ...state,
-                  reservable: state.reservable === 1 ? 0 : 1,
-                })
-              }
-              size="sm"
-              variant="adminPrimary"
-            />
-          </Flex>
-
-          {state.reservable ? (
-            <Box w="full" mb={4}>
-              <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
-                Enter Reservable Space
-              </Text>
-              <CustomInput
-                auth
-                value={state.reservableSpace}
-                mb
-                holder="Enter reservable space"
-                onChange={(e) =>
-                  setState({ ...state, reservableSpace: e.target.value })
-                }
-              />
-            </Box>
-          ) : null}
-
-          <Flex
-            align="center"
-            justifyContent={"space-between"}
-            gap="15px"
-            mb="16px"
-            mt={2}
-          >
-            <Text fontSize="12px" fontWeight={500} color="#444648">
-              Select Billing Type
-            </Text>
-            <Switch
-              onChange={() =>
-                setState({
-                  ...state,
-                  showBillingType: !state.showBillingType,
-                })
-              }
-              size="sm"
-              variant="adminPrimary"
-            />
-          </Flex>
-
-          {state.showBillingType ? (
-            <Box w="full" mb={4}>
-              <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
-                Select Billing Type
-              </Text>
-              <Select
-                isMulti
-                styles={customStyles}
-                placeholder="Select billing type"
-                options={BillingTypes.map((type, index) => ({
-                  label: type,
-                  value: index,
-                }))}
-                onChange={(selectedOptions) =>
-                  setState({
-                    ...state,
-                    billingType: selectedOptions.map((option) => option.value),
-                  })
-                }
-              />
-            </Box>
-          ) : null}
-
-          <Flex gap={4} mt={4}>
-            <Button
-              variant="adminSecondary"
-              w="45%"
-              onClick={() => navigate(PRIVATE_PATHS.ADMIN_EVENTS)}
+            <Formik
+              onSubmit={handleSubmit}
+              initialValues={initAdminZoneValues}
+              validationSchema={validateAdminZoneSchema}
             >
-              Cancel
-            </Button>
-            <Button
-              variant="adminPrimary"
-              w="55%"
-              isDisabled={isDisabled}
-              isLoading={isLoading}
-              onClick={handleSubmit}
-            >
-              Save
-            </Button>
+              {({
+                values,
+                errors,
+                touched,
+                handleChange,
+                handleBlur,
+                handleSubmit,
+                setValues,
+                isValid,
+                dirty,
+              }) => (
+                <Form onSubmit={handleSubmit}>
+                  <Box w="full" mb={4}>
+                    <Text
+                      mb="8px"
+                      fontSize="10px"
+                      fontWeight={500}
+                      color="#444648"
+                    >
+                      Zone Name
+                    </Text>
+                    <CustomInput
+                      auth
+                      mb
+                      holder="Enter zone name"
+                      name="name"
+                      value={values?.name}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      error={errors?.name && touched?.name && errors?.name}
+                    />
+                  </Box>
+                  <Box w="full" mb={4}>
+                    <Text
+                      mb="8px"
+                      fontSize="10px"
+                      fontWeight={500}
+                      color="#444648"
+                    >
+                      Zone Description
+                    </Text>
+                    <CustomInput
+                      auth
+                      mb
+                      holder="Enter zone description"
+                      name="description"
+                      value={values?.description}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      error={
+                        errors?.description &&
+                        touched?.description &&
+                        errors?.description
+                      }
+                    />
+                  </Box>
+                  <Box w="full" mb={4}>
+                    <Text
+                      mb="8px"
+                      fontSize="10px"
+                      fontWeight={500}
+                      color="#444648"
+                    >
+                      Zone Capacity
+                    </Text>
+                    <CustomInput
+                      auth
+                      type="number"
+                      mb
+                      holder="Enter a number"
+                      name="capacity"
+                      value={values?.capacity}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      error={
+                        errors?.capacity &&
+                        touched?.capacity &&
+                        errors?.capacity
+                      }
+                    />
+                  </Box>
+                  <Box w="full" mb={4}>
+                    <Text
+                      mb="8px"
+                      fontSize="10px"
+                      fontWeight={500}
+                      color="#444648"
+                    >
+                      Location
+                    </Text>
+                    <Select
+                      styles={customStyles}
+                      placeholder="Select location"
+                      options={locationOptions}
+                      name="location"
+                      onChange={(selectedOption) =>
+                        setValues({
+                          ...values,
+                          location: selectedOption,
+                        })
+                      }
+                      onBlur={handleBlur}
+                      components={{
+                        IndicatorSeparator: () => (
+                          <div style={{ display: "none" }}></div>
+                        ),
+                        DropdownIndicator: () => (
+                          <div>
+                            <IoIosArrowDown size="15px" color="#646668" />
+                          </div>
+                        ),
+                      }}
+                    />
+                  </Box>
+                  <Box w="full" mb={4}>
+                    <Text
+                      mb="8px"
+                      fontSize="10px"
+                      fontWeight={500}
+                      color="#444648"
+                    >
+                      Minimum Duration (In Minutes)
+                    </Text>
+                    <CustomInput
+                      auth
+                      type="number"
+                      mb
+                      holder="Enter a number"
+                      name="minimumDuration"
+                      value={values?.minimumDuration}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      error={
+                        errors?.minimumDuration &&
+                        touched?.minimumDuration &&
+                        errors?.minimumDuration
+                      }
+                    />
+                  </Box>
+                  <Box w="full" mb={4}>
+                    <Text
+                      mb="8px"
+                      fontSize="10px"
+                      fontWeight={500}
+                      color="#444648"
+                    >
+                      Service
+                    </Text>
+                    <Select
+                      styles={customStyles}
+                      placeholder="Select service"
+                      options={serviceOptions}
+                      name="service"
+                      onChange={(selectedOption) =>
+                        setValues({
+                          ...values,
+                          service: selectedOption,
+                        })
+                      }
+                      onBlur={handleBlur}
+                      components={{
+                        IndicatorSeparator: () => (
+                          <div style={{ display: "none" }}></div>
+                        ),
+                        DropdownIndicator: () => (
+                          <div>
+                            <IoIosArrowDown size="15px" color="#646668" />
+                          </div>
+                        ),
+                      }}
+                    />
+                  </Box>
+                  <Box w="full" mb={4}>
+                    <Text
+                      mb="8px"
+                      fontSize="10px"
+                      fontWeight={500}
+                      color="#444648"
+                    >
+                      Assign Amenities
+                    </Text>
+                    <Select
+                      isMulti
+                      styles={customStyles}
+                      placeholder="Select amenities"
+                      options={amenitiesOptions}
+                      name="amenities"
+                      onChange={(selectedOptions) =>
+                        setValues({
+                          ...values,
+                          amenities: selectedOptions,
+                        })
+                      }
+                      components={{
+                        IndicatorSeparator: () => (
+                          <div style={{ display: "none" }}></div>
+                        ),
+                        DropdownIndicator: () => (
+                          <div>
+                            <IoIosArrowDown size="15px" color="#646668" />
+                          </div>
+                        ),
+                      }}
+                    />
+                  </Box>
+                  <Flex
+                    align="center"
+                    justifyContent={"space-between"}
+                    gap="15px"
+                    mb="16px"
+                    mt={2}
+                  >
+                    <Text fontSize="12px" fontWeight={500} color="#444648">
+                      Add Reservable Space
+                    </Text>
+                    <Switch
+                      onChange={() =>
+                        setValues({
+                          ...values,
+                          reservable: values?.reservable === 1 ? 0 : 1,
+                        })
+                      }
+                      isChecked={values?.reservable}
+                      size="sm"
+                      variant="adminPrimary"
+                    />
+                  </Flex>
+                  {values?.reservable ? (
+                    <Box w="full" mb={4}>
+                      <Text
+                        mb="8px"
+                        fontSize="10px"
+                        fontWeight={500}
+                        color="#444648"
+                      >
+                        Enter Reservable Space
+                      </Text>
+                      <CustomInput
+                        auth
+                        type="number"
+                        mb
+                        holder="Enter reservable space"
+                        name="reservableSpace"
+                        value={values?.reservableSpace}
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        error={
+                          errors?.reservableSpace &&
+                          touched?.reservableSpace &&
+                          errors?.reservableSpace
+                        }
+                      />
+                    </Box>
+                  ) : null}
+                  <Flex
+                    align="center"
+                    justifyContent={"space-between"}
+                    gap="15px"
+                    mb="16px"
+                    mt={2}
+                  >
+                    <Text fontSize="12px" fontWeight={500} color="#444648">
+                      Billing Type
+                    </Text>
+                    <Switch
+                      onChange={() =>
+                        setValues({
+                          ...values,
+                          showBillingType: !values?.showBillingType,
+                        })
+                      }
+                      isChecked={values?.showBillingType}
+                      size="sm"
+                      variant="adminPrimary"
+                    />
+                  </Flex>
+                  {values?.showBillingType ? (
+                    <Box w="full" mb={4}>
+                      <Text
+                        mb="8px"
+                        fontSize="10px"
+                        fontWeight={500}
+                        color="#444648"
+                      >
+                        Select Billing Type
+                      </Text>
+                      <Select
+                        styles={customStyles}
+                        placeholder="Select billing type"
+                        options={billingOptions}
+                        name="billingType"
+                        onChange={(selectedOption) =>
+                          setValues({
+                            ...values,
+                            billingType: selectedOption,
+                          })
+                        }
+                        onBlur={handleBlur}
+                        components={{
+                          IndicatorSeparator: () => (
+                            <div style={{ display: "none" }}></div>
+                          ),
+                          DropdownIndicator: () => (
+                            <div>
+                              <IoIosArrowDown size="15px" color="#646668" />
+                            </div>
+                          ),
+                        }}
+                      />
+                    </Box>
+                  ) : null}
+                  <Box w="full" mb={4}>
+                    <Text
+                      mb="8px"
+                      fontSize="10px"
+                      fontWeight={500}
+                      color="#444648"
+                    >
+                      Select Status
+                    </Text>
+                    <Select
+                      styles={customStyles}
+                      options={statusOptions}
+                      name="status"
+                      onChange={(selectedOption) =>
+                        setValues({
+                          ...values,
+                          status: selectedOption,
+                        })
+                      }
+                      onBlur={handleBlur}
+                      components={{
+                        IndicatorSeparator: () => (
+                          <div style={{ display: "none" }}></div>
+                        ),
+                        DropdownIndicator: () => (
+                          <div>
+                            <IoIosArrowDown size="15px" color="#646668" />
+                          </div>
+                        ),
+                      }}
+                    />
+                  </Box>
+                  <Flex gap="24px" mt="24px">
+                    <Button
+                      variant="adminSecondary"
+                      w="100%"
+                      onClick={() => navigate(PRIVATE_PATHS.ADMIN_EVENTS)}
+                    >
+                      Cancel
+                    </Button>
+                    <Button
+                      variant="adminPrimary"
+                      w="100%"
+                      isDisabled={!isValid || !dirty}
+                      isLoading={isLoading}
+                      type="submit"
+                    >
+                      Save
+                    </Button>
+                  </Flex>{" "}
+                </Form>
+              )}
+            </Formik>
           </Flex>
         </Flex>
       </Flex>

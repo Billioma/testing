@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from "react";
 import ValetedVehiclesTableLayer from "../../../components/data/Admin/Logs/ValetedVehiclesTableLayer";
-import { Box, Button, Flex, Text } from "@chakra-ui/react";
-import { VscDebugRestart } from "react-icons/vsc";
-import { useGetValetedVehicles } from "../../../services/admin/query/logs";
+import { Box, Flex, Image, Text } from "@chakra-ui/react";
+import {
+  useGetAdminServiceLogs,
+} from "../../../services/admin/query/logs";
+import { valetedVehiclesOptions } from "../../../components/common/constants";
+import Filter from "../../../components/common/Filter";
 
 export default function () {
   const [page, setPage] = useState(1);
@@ -19,14 +22,11 @@ export default function () {
 
   const query = convertedFilters?.join("&");
 
-  const { data, isLoading, refetch } = useGetValetedVehicles(
-    {
-      refetchOnWindowFocus: true,
-    },
-    page,
-    limit,
-    query
-  );
+  const { mutate, data, isLoading } = useGetAdminServiceLogs();
+
+  useEffect(() => {
+    mutate({ type: "VALET", filterString: query, limit, page: page });
+  }, [page, query, limit]);
 
   useEffect(() => {
     setPage(1);
@@ -39,7 +39,7 @@ export default function () {
 
     const currentPage = page;
     const itemsPerPage = limit;
-    const totalItems = data.total;
+    const totalItems = data?.total;
 
     const currentStartRow = (currentPage - 1) * itemsPerPage + 1;
     const currentEndRow = Math.min(currentPage * itemsPerPage, totalItems);
@@ -48,28 +48,62 @@ export default function () {
     setEndRow(currentEndRow);
   }, [data, page, limit]);
 
-  useEffect(() => {
-    refetch();
-  }, []);
-
   return (
-    <Box w="full" border={"1px solid #E4E6E8"} borderRadius={"12px"}>
-      <Flex justifyContent={"space-between"} alignItems="center" py={3} px={5}>
-        <Text fontWeight="500">All Valeted Vehicles</Text>
-        <Flex gap="6px">
-          <Button
-            bg="white"
-            py={3}
-            h="43px"
-            border="1px solid #000"
-            color="#000"
-            onClick={() => refetch()}
+    <Box border="1px solid #d4d6d8" borderRadius="8px" p="16px 23px 24px">
+      <Filter
+        setFiltArray={setFiltArray}
+        filtArray={filtArray}
+        fieldToCompare={valetedVehiclesOptions}
+        handleSearch={() =>
+          mutate({
+            type: "VALET",
+            ilterString: query,
+            limit: limit,
+            page: page,
+          })
+        }
+        gap
+        title={
+          <Text
+            fontSize="14px"
+            fontWeight={500}
+            lineHeight="100%"
+            color="#242628"
           >
-            <VscDebugRestart size={20} />
-          </Button>
-        </Flex>
-      </Flex>
-      <hr />
+            All Valeted Vehicles
+          </Text>
+        }
+        main={
+          <>
+            <Flex
+              justifyContent="center"
+              align="center"
+              cursor="pointer"
+              transition=".3s ease-in-out"
+              _hover={{ bg: "#F4F6F8" }}
+              onClick={() =>
+                mutate({
+                  type: "VALET",
+                  filterString: query,
+                  limit,
+                  page: page,
+                })
+              }
+              borderRadius="8px"
+              border="1px solid #848688"
+              p="10px"
+            >
+              <Image
+                src="/assets/refresh.svg"
+                className={isLoading && "mirrored-icon"}
+                w="20px"
+                h="20px"
+              />
+            </Flex>
+          </>
+        }
+      />
+
       <ValetedVehiclesTableLayer
         data={data}
         isLoading={isLoading}
@@ -78,7 +112,9 @@ export default function () {
         setPage={setPage}
         startRow={startRow}
         endRow={endRow || 25}
-        refetch={refetch}
+        refetch={() =>
+          mutate({ type: "VALET", filterString: query, limit, page: page })
+        }
         setLimit={setLimit}
       />
     </Box>

@@ -8,12 +8,50 @@ export const getValetedVehicles = async (page, limit) => {
   return response.data;
 };
 
+export const getAdminServiceLogs = async (query) => {
+  const res = await axiosInstance.get(
+    API.ADMIN_SERVICE_LOGS_LIST(
+      query.type,
+      query.filterString,
+      query.limit,
+      query.page
+    )
+  );
+  return res.data;
+};
+
+export const getAdminServiceLog = async (query) => {
+  const res = await axiosInstance.get(API.ADMIN_SERVICE_LOGS_DETAIL(query.id));
+  return res.data;
+};
+
+export const makePaymentServiceLog = async (query) => {
+  const res = await axiosInstance.post(API.SERVICE_LOG_MAKE_PAYMENT(query.id));
+  return res.data;
+};
+
 export const editValetedVehicle = async (data) => {
   const response = await axiosInstance.patch(
     `${API.ADMIN_SERVICE_LOGS}/${data.id}`,
     data
   );
 
+  return response.data;
+};
+
+export const editServiceLogs = async ({ query, body }) => {
+  const response = await axiosInstance.patch(
+    API.ADMIN_SERVICE_LOGS_DETAIL(query),
+    body
+  );
+
+  return response.data;
+};
+
+export const retrieveTickets = async (id) => {
+  const response = await axiosInstance.get(
+    `${API.ADMIN_SERVICE_TICKET}/${id}`
+  );
   return response.data;
 };
 

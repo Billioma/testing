@@ -24,7 +24,17 @@ import RenewSubModal from "../../../modals/RenewSubModal";
 import { useGetCards } from "../../../../services/customer/query/payment";
 import { usePaystackPayment } from "react-paystack";
 
-const TableLayer = ({ sub, page, setPage, limit, subMutate, isLoading }) => {
+const TableLayer = ({
+  sub,
+  subMutate,
+  isLoading,
+  page,
+  setPage,
+  startRow,
+  endRow,
+  limit,
+  setLimit,
+}) => {
   const navigate = useNavigate();
   const [showRenew, setShowRenew] = useState(false);
   const [show, setShow] = useState(false);
@@ -160,67 +170,21 @@ const TableLayer = ({ sub, page, setPage, limit, subMutate, isLoading }) => {
         <TableLoader />
       ) : sub?.data?.length ? (
         <TableFormat
-          maxH={"50vh"}
-          opt
-          minH="25vh"
           header={subHeader}
-          paginate={
-            <Flex
-              justifyContent="center"
-              align="center"
-              flexDir="column"
-              w="full"
-            >
-              <Flex
-                flexDir={{ base: "column", md: "row" }}
-                justifyContent="center"
-                gap={{ base: "10px", md: "32px" }}
-                align="center"
-              >
-                <Text fontSize="12px" color="#242628" lineHeight="100%">
-                  Showing rows {page === 1 ? 1 : (page - 1) * limit + 1} to{" "}
-                  {sub?.pageCount === page
-                    ? page * limit > sub?.total
-                      ? sub?.total
-                      : page * limit
-                    : page * limit}{" "}
-                  of {sub?.total}
-                </Text>
-
-                <Flex gap="16px" align="center" fontSize="12px">
-                  <Flex
-                    opacity={sub?.page === 1 ? 0.5 : 1}
-                    onClick={() => (sub?.page !== 1 ? setPage(page - 1) : "")}
-                    cursor={sub?.page === 1 ? "" : "pointer"}
-                    align="center"
-                    gap="2px"
-                    color="#A4A6A8"
-                  >
-                    <IoIosArrowBack />
-                    <Text lineHeight="100%">Previous</Text>
-                  </Flex>
-
-                  <Flex color="#242628" lineHeight="100%">
-                    <Text>{sub?.page}</Text>
-                  </Flex>
-
-                  <Flex
-                    opacity={sub?.page === sub?.pageCount ? 0.5 : 1}
-                    onClick={() =>
-                      sub?.page !== sub?.pageCount ? setPage(page + 1) : ""
-                    }
-                    cursor={sub?.page === sub?.pageCount ? "" : "pointer"}
-                    align="center"
-                    gap="2px"
-                    color="#A4A6A8"
-                  >
-                    <IoIosArrowForward />
-                    <Text lineHeight="100%">Next</Text>
-                  </Flex>
-                </Flex>
-              </Flex>
-            </Flex>
-          }
+          opt
+          paginationValues={{
+            startRow,
+            endRow,
+            total: sub?.total,
+            page: sub?.page,
+            pageCount: sub?.pageCount,
+            onNext: () =>
+              sub?.page !== sub?.pageCount ? setPage(page + 1) : null,
+            onPrevious: () => (sub?.page !== 1 ? setPage(page - 1) : null),
+            setLimit,
+            limit,
+          }}
+          useDefaultPagination
         >
           {sub?.data?.map((dat, i) => {
             const nextPaymentDate = new Date(dat?.nextPaymentDate);

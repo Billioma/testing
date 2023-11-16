@@ -1,36 +1,32 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { Box, Flex, Text, Button, Switch } from "@chakra-ui/react";
 import CustomInput from "../../../components/common/CustomInput";
-import { customStyles, RateTypes } from "../../../components/common/constants";
+import {
+  customStyles,
+  RateTypes,
+  statusType,
+} from "../../../components/common/constants";
 import Select from "react-select";
 import { useNavigate } from "react-router-dom";
 import { PRIVATE_PATHS } from "../../../routes/constants";
 import useCustomToast from "../../../utils/notifications";
 import GoBackTab from "../../../components/data/Admin/GoBackTab";
 import { useGetOperators } from "../../../services/admin/query/users";
-import {
-  useAddRate,
-  useGetRates,
-  useGetZones,
-} from "../../../services/admin/query/locations";
+import { useAddRate } from "../../../services/admin/query/locations";
 import { useGetServices } from "../../../services/admin/query/services";
+import { Form, Formik } from "formik";
+import { IoIosArrowDown } from "react-icons/io";
+import {
+  initAdminRateValues,
+  validateAdminRateSchema,
+} from "../../../utils/validation";
 
 export default function AddZone() {
-  const [state, setState] = useState({
-    status: 1,
-    addLimit: false,
-    flatRate: 0,
-    showCarServiceType: false,
-  });
-
   const navigate = useNavigate();
-  const [isDisabled, setIsDisabled] = useState(true);
   const { errorToast, successToast } = useCustomToast();
-  const { refetch } = useGetRates();
   const { mutate, isLoading } = useAddRate({
     onSuccess: () => {
       successToast("Rate added successfully!");
-      refetch();
       navigate(PRIVATE_PATHS.ADMIN_RATES);
     },
     onError: (error) => {
@@ -47,272 +43,430 @@ export default function AddZone() {
     value: i,
     label: rate,
   }));
+
   const operatorOptions = operators?.data?.map((operator) => ({
-    label: operator.name,
-    value: parseInt(operator.id),
+    label: operator?.name,
+    value: parseInt(operator?.id),
   }));
 
-  const serviceOptions = services?.data?.map((service) => ({
-    label: service.name,
-    value: parseInt(service.id),
+  const statusOptions = statusType?.map((status, i) => ({
+    value: i,
+    label: status,
   }));
 
-  const selectOptions = [
-    { label: "PARKING", value: "PARKING" },
-    { label: "VALET", value: "VALET" },
-    { label: "SERVICE", value: "SERVICE" },
-    { label: "OTHERS", value: "OTHERS" },
+  const carServiceOptions = [
+    { label: "PREMIUM", value: "PREMIUM" },
+    { label: "BASIC", value: "BASIC" },
   ];
 
-  const isFormValid = () => {
-    return (
-      !state.name ||
-      !state.amount ||
-      !state.operator ||
-      state.rateType === undefined ||
-      !state.service
-    );
-  };
+  const serviceOptions = services?.data?.map((service) => ({
+    label: service?.name,
+    value: parseInt(service?.id),
+    serviceType: service?.serviceType,
+  }));
 
-  useEffect(() => {
-    setIsDisabled(isFormValid);
-  }, [state]);
-
-  const handleSubmit = () => {
-    mutate(state);
+  const handleSubmit = (values = "") => {
+    const {
+      operator,
+      service,
+      rateType,
+      status,
+      showCarServiceType,
+      carServiceType,
+      ...rest
+    } = values;
+    mutate({
+      ...rest,
+      operator: operator?.value,
+      service: service?.value,
+      serviceType: service?.serviceType,
+      rateType: rateType?.value,
+      status: status?.value,
+      carServiceType: showCarServiceType ? carServiceType?.value : null,
+    });
   };
 
   return (
     <Box minH="75vh">
-      <Flex justifyContent="center" align="center" w="full" flexDir="column">
+      <Flex align="flex-start" flexDir={{ md: "row", base: "column" }}>
         <GoBackTab />
-        <Flex
-          bg="#fff"
-          borderRadius="16px"
-          py="24px"
-          px="28px"
-          justifyContent="center"
-          w="30rem"
-          flexDir="column"
-          border="1px solid #E4E6E8"
-        >
-          <Box w="full" mb={4}>
-            <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
-              Rate Name
-            </Text>
-            <CustomInput
-              auth
-              value={state.name}
-              mb
-              holder="Enter rate name"
-              onChange={(e) => setState({ ...state, name: e.target.value })}
-            />
-          </Box>
-
-          <Box w="full" mb={4}>
-            <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
-              Operator
-            </Text>
-            <Select
-              styles={customStyles}
-              placeholder="Select operator"
-              options={operatorOptions}
-              onChange={(selectedOption) =>
-                setState({ ...state, operator: selectedOption.value })
-              }
-            />
-          </Box>
-
-          <Box w="full" mb={4}>
-            <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
-              Service Type
-            </Text>
-            <Select
-              styles={customStyles}
-              placeholder="Select service type"
-              options={selectOptions}
-              onChange={(selectedOption) =>
-                setState({ ...state, serviceType: selectedOption.value })
-              }
-            />
-          </Box>
-
-          <Box w="full" mb={4}>
-            <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
-              Service
-            </Text>
-            <Select
-              styles={customStyles}
-              placeholder="Select service"
-              options={serviceOptions}
-              onChange={(selectedOption) =>
-                setState({ ...state, service: selectedOption.value })
-              }
-            />
-          </Box>
-
-          <Box w="full" mb={4}>
-            <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
-              Rate Type
-            </Text>
-            <Select
-              styles={customStyles}
-              placeholder="Select rate type"
-              options={rateOptions}
-              onChange={(selectedOption) =>
-                setState({ ...state, rateType: selectedOption.value })
-              }
-            />
-          </Box>
-
-          <Box w="full" mb={4}>
-            <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
-              Amount
-            </Text>
-            <CustomInput
-              auth
-              value={state.amount}
-              mb
-              holder="Enter amount"
-              onChange={(e) => setState({ ...state, amount: e.target.value })}
-            />
-          </Box>
-
+        <Flex justifyContent="center" align="center" w="full" flexDir="column">
           <Flex
-            align="center"
-            justifyContent={"space-between"}
-            gap="15px"
-            mb="16px"
-            mt={2}
+            bg="#fff"
+            borderRadius="12px"
+            py="32px"
+            px="28px"
+            justifyContent="center"
+            w={{ md: "30rem", base: "100%" }}
+            flexDir="column"
+            border="1px solid #E4E6E8"
           >
-            <Text fontSize="12px" fontWeight={500} color="#444648">
-              Add Limit
-            </Text>
-            <Switch
-              onChange={() =>
-                setState({
-                  ...state,
-                  addLimit: !state.addLimit,
-                })
-              }
-              size="sm"
-              variant="adminPrimary"
-            />
-          </Flex>
-
-          {state.addLimit ? (
-            <Flex flexDir={"row"} gap={4}>
-              <Box w="full" mb={4}>
-                <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
-                  Duration Start (Minutes)
-                </Text>
-                <CustomInput
-                  auth
-                  value={state.durationStart}
-                  mb
-                  holder="Enter duration start"
-                  onChange={(e) =>
-                    setState({ ...state, durationStart: e.target.value })
-                  }
-                />
-              </Box>
-              <Box w="full" mb={4}>
-                <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
-                  Duration Limit (Minutes)
-                </Text>
-                <CustomInput
-                  auth
-                  value={state.durationLimit}
-                  mb
-                  holder="Enter duration limit"
-                  onChange={(e) =>
-                    setState({ ...state, durationLimit: e.target.value })
-                  }
-                />
-              </Box>
-            </Flex>
-          ) : null}
-
-          <Flex
-            align="center"
-            justifyContent={"space-between"}
-            gap="15px"
-            mb="16px"
-            mt={2}
-          >
-            <Text fontSize="12px" fontWeight={500} color="#444648">
-              Flat Rate
-            </Text>
-            <Switch
-              onChange={() =>
-                setState({
-                  ...state,
-                  flatRate: state.flatRate === 1 ? 0 : 1,
-                })
-              }
-              size="sm"
-              variant="adminPrimary"
-            />
-          </Flex>
-
-          <Flex
-            align="center"
-            justifyContent={"space-between"}
-            gap="15px"
-            mb="16px"
-            mt={2}
-          >
-            <Text fontSize="12px" fontWeight={500} color="#444648">
-              Select Car Service Type
-            </Text>
-            <Switch
-              onChange={() =>
-                setState({
-                  ...state,
-                  showCarServiceType: !state.showCarServiceType,
-                })
-              }
-              size="sm"
-              variant="adminPrimary"
-            />
-          </Flex>
-
-          {state.showCarServiceType ? (
-            <Box w="full" mb={4}>
-              <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
-                Add Billing Type
-              </Text>
-              <Select
-                styles={customStyles}
-                placeholder="Select car service type"
-                options={[
-                  { label: "PREMIUM", value: "PREMIUM" },
-                  { label: "BASIC", value: "BASIC" },
-                ]}
-                onChange={(selectedOption) =>
-                  setState({ ...state, carServiceType: selectedOption.label })
-                }
-              />
-            </Box>
-          ) : null}
-
-          <Flex gap={4} mt={4}>
-            <Button
-              variant="adminSecondary"
-              w="45%"
-              onClick={() => navigate(PRIVATE_PATHS.ADMIN_RATES)}
+            <Formik
+              onSubmit={handleSubmit}
+              initialValues={initAdminRateValues}
+              validationSchema={validateAdminRateSchema}
             >
-              Cancel
-            </Button>
-            <Button
-              variant="adminPrimary"
-              w="55%"
-              isDisabled={isDisabled}
-              isLoading={isLoading}
-              onClick={handleSubmit}
-            >
-              Save
-            </Button>
+              {({
+                values,
+                errors,
+                touched,
+                handleChange,
+                handleBlur,
+                handleSubmit,
+                setValues,
+                isValid,
+                dirty,
+              }) => (
+                <Form onSubmit={handleSubmit}>
+                  <Box w="full" mb={4}>
+                    <Text
+                      mb="8px"
+                      fontSize="10px"
+                      fontWeight={500}
+                      color="#444648"
+                    >
+                      Rate Name
+                    </Text>
+                    <CustomInput
+                      auth
+                      mb
+                      holder="Enter rate name"
+                      name="name"
+                      value={values?.name}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      error={errors?.name && touched?.name && errors?.name}
+                    />
+                  </Box>
+                  <Box w="full" mb={4}>
+                    <Text
+                      mb="8px"
+                      fontSize="10px"
+                      fontWeight={500}
+                      color="#444648"
+                    >
+                      Operator
+                    </Text>
+                    <Select
+                      styles={customStyles}
+                      placeholder="Select operator"
+                      options={operatorOptions}
+                      name="operator"
+                      onChange={(selectedOption) =>
+                        setValues({
+                          ...values,
+                          operator: selectedOption,
+                        })
+                      }
+                      onBlur={handleBlur}
+                      components={{
+                        IndicatorSeparator: () => (
+                          <div style={{ display: "none" }}></div>
+                        ),
+                        DropdownIndicator: () => (
+                          <div>
+                            <IoIosArrowDown size="15px" color="#646668" />
+                          </div>
+                        ),
+                      }}
+                    />
+                  </Box>
+                  <Box w="full" mb={4}>
+                    <Text
+                      mb="8px"
+                      fontSize="10px"
+                      fontWeight={500}
+                      color="#444648"
+                    >
+                      Service
+                    </Text>
+                    <Select
+                      styles={customStyles}
+                      placeholder="Select service"
+                      options={serviceOptions}
+                      name="service"
+                      onChange={(selectedOption) =>
+                        setValues({
+                          ...values,
+                          service: selectedOption,
+                        })
+                      }
+                      onBlur={handleBlur}
+                      components={{
+                        IndicatorSeparator: () => (
+                          <div style={{ display: "none" }}></div>
+                        ),
+                        DropdownIndicator: () => (
+                          <div>
+                            <IoIosArrowDown size="15px" color="#646668" />
+                          </div>
+                        ),
+                      }}
+                    />
+                  </Box>
+                  <Box w="full" mb={4}>
+                    <Text
+                      mb="8px"
+                      fontSize="10px"
+                      fontWeight={500}
+                      color="#444648"
+                    >
+                      Rate Type
+                    </Text>
+                    <Select
+                      styles={customStyles}
+                      placeholder="Select rate type"
+                      options={rateOptions}
+                      name="rateType"
+                      onChange={(selectedOption) =>
+                        setValues({
+                          ...values,
+                          rateType: selectedOption,
+                        })
+                      }
+                      onBlur={handleBlur}
+                      components={{
+                        IndicatorSeparator: () => (
+                          <div style={{ display: "none" }}></div>
+                        ),
+                        DropdownIndicator: () => (
+                          <div>
+                            <IoIosArrowDown size="15px" color="#646668" />
+                          </div>
+                        ),
+                      }}
+                    />
+                  </Box>
+                  <Box w="full" mb={4}>
+                    <Text
+                      mb="8px"
+                      fontSize="10px"
+                      fontWeight={500}
+                      color="#444648"
+                    >
+                      Amount
+                    </Text>
+                    <CustomInput
+                      auth
+                      mb
+                      holder="Enter amount"
+                      type="number"
+                      name="amount"
+                      value={values?.amount}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      error={
+                        errors?.amount && touched?.amount && errors?.amount
+                      }
+                    />
+                  </Box>
+                  <Flex
+                    align="center"
+                    justifyContent={"space-between"}
+                    gap="15px"
+                    mb="16px"
+                    mt={2}
+                  >
+                    <Text fontSize="12px" fontWeight={500} color="#444648">
+                      Add Limit
+                    </Text>
+                    <Switch
+                      onChange={() =>
+                        setValues({
+                          ...values,
+                          noLimit: !values?.noLimit,
+                        })
+                      }
+                      isChecked={values?.noLimit}
+                      size="sm"
+                      variant="adminPrimary"
+                    />
+                  </Flex>
+                  {values?.noLimit ? (
+                    <Flex flexDir={"row"} gap={4}>
+                      <Box w="full" mb={4}>
+                        <Text
+                          mb="8px"
+                          fontSize="10px"
+                          fontWeight={500}
+                          color="#444648"
+                        >
+                          Duration Start (Minutes)
+                        </Text>
+                        <CustomInput
+                          auth
+                          mb
+                          holder="Enter duration start"
+                          type="number"
+                          name="durationStart"
+                          value={values?.durationStart}
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                          error={
+                            errors?.durationStart &&
+                            touched?.durationStart &&
+                            errors?.durationStart
+                          }
+                        />
+                      </Box>
+                      <Box w="full" mb={4}>
+                        <Text
+                          mb="8px"
+                          fontSize="10px"
+                          fontWeight={500}
+                          color="#444648"
+                        >
+                          Duration Limit (Minutes)
+                        </Text>
+                        <CustomInput
+                          auth
+                          mb
+                          holder="Enter duration limit"
+                          name="durationLimit"
+                          value={values?.durationLimit}
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                          error={
+                            errors?.durationLimit &&
+                            touched?.durationLimit &&
+                            errors?.durationLimit
+                          }
+                        />
+                      </Box>
+                    </Flex>
+                  ) : null}
+                  <Flex
+                    align="center"
+                    justifyContent={"space-between"}
+                    gap="15px"
+                    mb="16px"
+                    mt={2}
+                  >
+                    <Text fontSize="12px" fontWeight={500} color="#444648">
+                      Flat Rate
+                    </Text>
+                    <Switch
+                      onChange={() =>
+                        setValues({
+                          ...values,
+                          flatRate: values?.flatRate === 1 ? 0 : 1,
+                        })
+                      }
+                      isChecked={values?.flatRate}
+                      size="sm"
+                      variant="adminPrimary"
+                    />
+                  </Flex>
+                  <Flex
+                    align="center"
+                    justifyContent={"space-between"}
+                    gap="15px"
+                    mb="16px"
+                    mt={2}
+                  >
+                    <Text fontSize="12px" fontWeight={500} color="#444648">
+                      Select Car Service Type
+                    </Text>
+                    <Switch
+                      onChange={() =>
+                        setValues({
+                          ...values,
+                          showCarServiceType: !values?.showCarServiceType,
+                        })
+                      }
+                      isChecked={values?.showCarServiceType}
+                      size="sm"
+                      variant="adminPrimary"
+                    />
+                  </Flex>
+                  {values?.showCarServiceType ? (
+                    <Box w="full" mb={4}>
+                      <Text
+                        mb="8px"
+                        fontSize="10px"
+                        fontWeight={500}
+                        color="#444648"
+                      >
+                        Add Billing Type
+                      </Text>
+                      <Select
+                        styles={customStyles}
+                        placeholder="Select car service type"
+                        options={carServiceOptions}
+                        name="carServiceType"
+                        onChange={(selectedOption) =>
+                          setValues({
+                            ...values,
+                            carServiceType: selectedOption,
+                          })
+                        }
+                        onBlur={handleBlur}
+                        components={{
+                          IndicatorSeparator: () => (
+                            <div style={{ display: "none" }}></div>
+                          ),
+                          DropdownIndicator: () => (
+                            <div>
+                              <IoIosArrowDown size="15px" color="#646668" />
+                            </div>
+                          ),
+                        }}
+                      />
+                    </Box>
+                  ) : null}
+                  <Box w="full" mb={4}>
+                    <Text
+                      mb="8px"
+                      fontSize="10px"
+                      fontWeight={500}
+                      color="#444648"
+                    >
+                      Select Status
+                    </Text>
+                    <Select
+                      styles={customStyles}
+                      options={statusOptions}
+                      name="status"
+                      onChange={(selectedOption) =>
+                        setValues({
+                          ...values,
+                          status: selectedOption,
+                        })
+                      }
+                      onBlur={handleBlur}
+                      components={{
+                        IndicatorSeparator: () => (
+                          <div style={{ display: "none" }}></div>
+                        ),
+                        DropdownIndicator: () => (
+                          <div>
+                            <IoIosArrowDown size="15px" color="#646668" />
+                          </div>
+                        ),
+                      }}
+                    />
+                  </Box>
+                  <Flex gap="24px" mt="24px">
+                    <Button
+                      variant="adminSecondary"
+                      w="100%"
+                      onClick={() => navigate(PRIVATE_PATHS.ADMIN_RATES)}
+                    >
+                      Cancel
+                    </Button>
+                    <Button
+                      variant="adminPrimary"
+                      w="100%"
+                      isDisabled={!isValid || !dirty}
+                      isLoading={isLoading}
+                      type="submit"
+                    >
+                      Save
+                    </Button>
+                  </Flex>{" "}
+                </Form>
+              )}
+            </Formik>
           </Flex>
         </Flex>
       </Flex>

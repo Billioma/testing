@@ -1,28 +1,36 @@
-import React, { useState, useEffect } from "react";
-import { Box, Flex, Text, Button, Textarea } from "@chakra-ui/react";
+import React, { useState } from "react";
+import { Box, Flex, Text, Button } from "@chakra-ui/react";
 import CustomInput from "../../../components/common/CustomInput";
 import { useNavigate } from "react-router-dom";
 import { PRIVATE_PATHS } from "../../../routes/constants";
 import useCustomToast from "../../../utils/notifications";
 import GoBackTab from "../../../components/data/Admin/GoBackTab";
-import {
-  useAddFaq,
-  useGetFaqs,
-} from "../../../services/admin/query/configurations";
+import { customStyles, statusType } from "../../../components/common/constants";
+import Select from "react-select";
+import { useAddFaq } from "../../../services/admin/query/configurations";
+import { IoIosArrowDown } from "react-icons/io";
+import TextInput from "../../../components/common/TextInput";
 
 export default function AddFaq() {
-  const [state, setState] = useState({
-    status: 1,
+  const [values, setValues] = useState({
+    title: "",
+    body: "",
+    externalLink: "",
+    status: "",
   });
 
+  const handleSelectChange = (selectedOption, { name }) => {
+    setValues({
+      ...values,
+      [name]: selectedOption,
+    });
+  };
+
   const navigate = useNavigate();
-  const [isDisabled, setIsDisabled] = useState(true);
   const { errorToast, successToast } = useCustomToast();
-  const { refetch } = useGetFaqs();
-  const { mutate, isLoading } = useAddFaq({
+  const { mutate: updateMutate, isLoading: isUpdating } = useAddFaq({
     onSuccess: () => {
-      successToast("Faq added successfully!");
-      refetch();
+      successToast("Faq created successfully!");
       navigate(PRIVATE_PATHS.ADMIN_CONFIG_FAQS);
     },
     onError: (error) => {
@@ -32,92 +40,126 @@ export default function AddFaq() {
     },
   });
 
-  const isFormValid = () => {
-    return !state.title || !state.body;
-  };
-
-  useEffect(() => {
-    setIsDisabled(isFormValid);
-  }, [state]);
+  const statusOptions = statusType?.map((status, i) => ({
+    value: i,
+    label: status,
+  }));
 
   const handleSubmit = () => {
-    mutate(state);
+    updateMutate({
+      title: values?.title,
+      body: values?.body,
+      externalLink: values?.externalLink,
+      status: values?.status?.value,
+    });
   };
 
   return (
     <Box minH="75vh">
-      <Flex justifyContent="center" align="center" w="full" flexDir="column">
+      <Flex
+        align="flex-start"
+        flexDir={{ md: "row", base: "column" }}
+        gap={{ base: "", md: "40px" }}
+      >
         <GoBackTab />
-        <Flex
-          bg="#fff"
-          borderRadius="16px"
-          py="24px"
-          px="28px"
-          justifyContent="center"
-          w="30rem"
-          flexDir="column"
-          border="1px solid #E4E6E8"
-        >
-          <Box w="full" mb={4}>
-            <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
-              Title (The Question)
-            </Text>
-            <CustomInput
-              auth
-              value={state.title}
-              mb
-              holder="Enter question"
-              onChange={(e) => setState({ ...state, title: e.target.value })}
-            />
-          </Box>
 
-          <Box w="full" mb={4}>
-            <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
-              Body
-            </Text>
+        <Flex justifyContent="center" align="center" w="full" flexDir="column">
+          <Flex
+            bg="#fff"
+            borderRadius="8px"
+            py="32px"
+            px="24px"
+            justifyContent="center"
+            w={{ base: "100%", md: "30rem" }}
+            flexDir="column"
+            border="1px solid #E4E6E8"
+          >
+            <Box w="full" mb={4}>
+              <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
+                Title (The Question)
+              </Text>
+              <CustomInput
+                auth
+                value={values?.title}
+                mb
+                holder="Enter question"
+                onChange={(e) =>
+                  setValues({ ...values, title: e.target.value })
+                }
+              />
+            </Box>
 
-            <Textarea
-              onChange={(e) => setState({ ...state, body: e.target.value })}
-              borderRadius={"4px"}
-              fontSize={"12px"}
-              bg="#fff"
-              border="1px solid #D4D6D8"
-              placeholder="Enter answer to question"
-            />
-          </Box>
+            <Box w="full" mb={4}>
+              <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
+                Body
+              </Text>
 
-          <Box w="full" mb={4}>
-            <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
-              External link
-            </Text>
-            <CustomInput
-              auth
-              value={state.externalLink}
-              mb
-              holder="Enter external link"
-              onChange={(e) =>
-                setState({ ...state, externalLink: e.target.value })
-              }
-            />
-          </Box>
+              <TextInput
+                onChange={(e) => setValues({ ...values, body: e.target.value })}
+                holder="Enter answer to question"
+                value={values?.body}
+              />
+            </Box>
 
-          <Flex gap={4} mt={4}>
-            <Button
-              variant="adminSecondary"
-              w="45%"
-              onClick={() => navigate(PRIVATE_PATHS.ADMIN_CONFIG_FAQS)}
-            >
-              Cancel
-            </Button>
-            <Button
-              variant="adminPrimary"
-              w="55%"
-              isDisabled={isDisabled}
-              isLoading={isLoading}
-              onClick={handleSubmit}
-            >
-              Save
-            </Button>
+            <Box w="full" mb={4}>
+              <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
+                External link
+              </Text>
+              <CustomInput
+                auth
+                value={values?.externalLink}
+                mb
+                holder="Enter external link"
+                onChange={(e) =>
+                  setValues({ ...values, externalLink: e.target.value })
+                }
+              />
+            </Box>
+
+            <Box mb={4}>
+              <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
+                Status
+              </Text>
+              <Select
+                styles={customStyles}
+                options={statusOptions}
+                placeholder="Select status"
+                onChange={(selectedOption) =>
+                  handleSelectChange(selectedOption, {
+                    name: "status",
+                  })
+                }
+                components={{
+                  IndicatorSeparator: () => (
+                    <div style={{ display: "none" }}></div>
+                  ),
+                  DropdownIndicator: () => (
+                    <div>
+                      <IoIosArrowDown size="15px" color="#646668" />
+                    </div>
+                  ),
+                }}
+                value={values?.status}
+              />
+            </Box>
+
+            <Flex gap={4} mt={4}>
+              <Button
+                variant="adminSecondary"
+                w="100%"
+                onClick={() => navigate(PRIVATE_PATHS.ADMIN_CONFIG_FAQS)}
+              >
+                Cancel
+              </Button>
+              <Button
+                variant="adminPrimary"
+                w="100%"
+                isLoading={isUpdating}
+                onClick={() => handleSubmit()}
+              >
+                Save
+              </Button>
+            </Flex>
           </Flex>
         </Flex>
       </Flex>

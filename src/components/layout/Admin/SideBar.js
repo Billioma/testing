@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Box, Flex, Text, VStack, Collapse } from "@chakra-ui/react";
+import { Box, Flex, Text, VStack, Collapse, Image } from "@chakra-ui/react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { ChevronDownIcon, ChevronRightIcon } from "@chakra-ui/icons";
 import { sidebarItems } from "../../common/constants";
@@ -101,8 +101,9 @@ const SideBar = () => {
                   color={
                     pathname.includes(item.path) || openSubItems[item.name]
                       ? "#fff"
-                      : "#242628"
+                      : "#646668"
                   }
+                  fontWeight={500}
                   _hover={{
                     bg: pathname.includes(item.path) ? "" : "transparent",
                     color: pathname.includes(item.path) ? "" : "#EE383A",
@@ -228,8 +229,9 @@ const SideBar = () => {
                   color={
                     pathname.includes(item.path) || openSubItems[item.name]
                       ? "#fff"
-                      : "#242628"
+                      : "#646668"
                   }
+                  fontWeight={500}
                   _hover={{
                     bg: pathname.includes(item.path) ? "" : "transparent",
                     color: pathname.includes(item.path) ? "" : "#EE383A",
@@ -317,6 +319,13 @@ const SideBar = () => {
             );
           })}
         </Box>
+
+        <Flex mt="60px" flexDir="column" justifyContent="center" align="center">
+          <Text fontSize="12px" color="#000" lineHeight="100%" mb="8px">
+            Powered by
+          </Text>
+          <Image src="/assets/ezlogo.svg" objectFit="cover" />
+        </Flex>
       </Box>
     </Flex>
   );

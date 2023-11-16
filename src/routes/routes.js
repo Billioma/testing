@@ -737,7 +737,7 @@ const AdminValetedVehicles = WithSuspense(
 );
 
 const AdminViewValetedVehicle = WithSuspense(
-  lazy(() => import("../pages/Admin/Logs/ViewValetedVehicle"))
+  lazy(() => import("../pages/Admin/Logs/ViewValetedVehice"))
 );
 
 const AdminServicedVehicles = WithSuspense(
@@ -766,6 +766,18 @@ const AdminConfigViewRole = WithSuspense(
 
 const AdminConfigAddRole = WithSuspense(
   lazy(() => import("../pages/Admin/Configurations/AddRole"))
+);
+
+const AdminConfigPermissions = WithSuspense(
+  lazy(() => import("../pages/Admin/Configurations/Permissions"))
+);
+
+const AdminConfigViewPermission = WithSuspense(
+  lazy(() => import("../pages/Admin/Configurations/ViewPermission"))
+);
+
+const AdminConfigAddPermission = WithSuspense(
+  lazy(() => import("../pages/Admin/Configurations/AddPermission"))
 );
 
 const AdminConfigVehicleMakes = WithSuspense(
@@ -1276,6 +1288,20 @@ export const PRIVATE_ROUTES = [
   {
     path: PRIVATE_PATHS.ADMIN_CONFIG_VIEW_ROLE,
     element: <AdminConfigViewRole />,
+  },
+  {
+    path: PRIVATE_PATHS.ADMIN_CONFIG_PERMISSIONS,
+    element: <AdminConfigPermissions />,
+  },
+
+  {
+    path: PRIVATE_PATHS.ADMIN_CONFIG_ADD_PERMISSION,
+    element: <AdminConfigAddPermission />,
+  },
+
+  {
+    path: PRIVATE_PATHS.ADMIN_CONFIG_VIEW_PERMISSION,
+    element: <AdminConfigViewPermission />,
   },
 
   {

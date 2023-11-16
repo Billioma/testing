@@ -1,13 +1,10 @@
 import React, { useState, useEffect } from "react";
 import ZonesTableLayer from "../../../components/data/Admin/Locations/ZonesTableLayer";
 import { Box, Button, Flex, Image, Text } from "@chakra-ui/react";
-import { FiPlus } from "react-icons/fi";
-import { VscDebugRestart } from "react-icons/vsc";
 import { useNavigate } from "react-router-dom";
 import { PRIVATE_PATHS } from "../../../routes/constants";
 import {
   useGetAdminZones,
-  useGetZones,
 } from "../../../services/admin/query/locations";
 import Filter from "../../../components/common/Filter";
 import { zonesOptions } from "../../../components/common/constants";

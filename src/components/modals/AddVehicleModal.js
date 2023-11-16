@@ -15,9 +15,15 @@ import CustomInput from "../common/CustomInput";
 import { allStates, colorTypes } from "../common/constants";
 import { useCreateVehicles } from "../../services/customer/query/vehicles";
 import useCustomToast from "../../utils/notifications";
-import ConfirmVehicleModal from "./ConfirmVehicleModal";
 
-const AddVehicleModal = ({ isOpen, refetch, makes, models, onClose }) => {
+const AddVehicleModal = ({
+  isOpen,
+  refetch,
+  makes,
+  models,
+  onClose,
+  noVehicle,
+}) => {
   const [values, setValues] = useState({
     state: "",
     plate: "",
@@ -25,7 +31,6 @@ const AddVehicleModal = ({ isOpen, refetch, makes, models, onClose }) => {
     make: "",
     model: "",
   });
-  const [show, setShow] = useState(false);
   const stateOptions = allStates?.map((state) => ({
     value: state,
     label: state,
@@ -94,6 +99,7 @@ const AddVehicleModal = ({ isOpen, refetch, makes, models, onClose }) => {
   const { errorToast, successToast } = useCustomToast();
 
   const close = () => {
+    localStorage.removeItem("login");
     onClose();
     setValues({ state: "", plate: "", color: "", make: "", model: "" });
   };
@@ -102,7 +108,7 @@ const AddVehicleModal = ({ isOpen, refetch, makes, models, onClose }) => {
       refetch();
       successToast(res?.message);
       close();
-      setShow(false);
+      localStorage.removeItem("login");
     },
     onError: (err) => {
       errorToast(
@@ -148,23 +154,34 @@ const AddVehicleModal = ({ isOpen, refetch, makes, models, onClose }) => {
           <Flex justifyContent="center" align="center" flexDir="column">
             <Image w="56px" h="40px" src="/assets/car.png" />
             <Text
-              my="24px"
+              my="18px"
               color="#242628"
               fontWeight={700}
-              fontSize="24px"
+              fontSize="22px"
               lineHeight="100%"
             >
               Add Vehicle
             </Text>
+            {noVehicle && (
+              <Text
+                mb="18px"
+                color="#444648"
+                fontWeight={500}
+                fontSize="13px"
+                lineHeight="100%"
+              >
+                Kindly add a vehicle to your account
+              </Text>
+            )}
           </Flex>
 
-          <Box mb="24px">
+          <Box mb="18px">
             <Text
               color="#444648"
               lineHeight="100%"
               fontSize="10px"
               fontWeight={500}
-              mb="8px"
+              mb="5px"
             >
               Vehicle State
             </Text>
@@ -182,12 +199,12 @@ const AddVehicleModal = ({ isOpen, refetch, makes, models, onClose }) => {
             />
           </Box>
 
-          <Box mb="24px">
+          <Box mb="18px">
             <Text
               color="#444648"
               lineHeight="100%"
               fontSize="10px"
-              mb="8px"
+              mb="5px"
               fontWeight={500}
             >
               License Plate Number
@@ -205,13 +222,13 @@ const AddVehicleModal = ({ isOpen, refetch, makes, models, onClose }) => {
             />
           </Box>
 
-          <Box mb="24px">
+          <Box mb="18px">
             <Text
               color="#444648"
               lineHeight="100%"
               fontSize="10px"
               fontWeight={500}
-              mb="8px"
+              mb="5px"
             >
               Vehicle Color
             </Text>
@@ -229,13 +246,13 @@ const AddVehicleModal = ({ isOpen, refetch, makes, models, onClose }) => {
               options={colorOptions}
             />
           </Box>
-          <Box mb="24px">
+          <Box mb="18px">
             <Text
               color="#444648"
               lineHeight="100%"
               fontSize="10px"
               fontWeight={500}
-              mb="8px"
+              mb="5px"
             >
               Vehicle Make
             </Text>
@@ -254,13 +271,13 @@ const AddVehicleModal = ({ isOpen, refetch, makes, models, onClose }) => {
             />
           </Box>
 
-          <Box mb="24px">
+          <Box mb="18px">
             <Text
               color="#444648"
               lineHeight="100%"
               fontSize="10px"
               fontWeight={500}
-              mb="8px"
+              mb="5px"
             >
               Vehicle Model
             </Text>
@@ -279,24 +296,27 @@ const AddVehicleModal = ({ isOpen, refetch, makes, models, onClose }) => {
             />
           </Box>
 
-          <Flex align="center" gap="15px">
-            <Button
-              bg="transparent"
-              color="#0D0718"
-              fontSize="14px"
-              onClick={close}
-              w="full"
-              border="1px solid #0D0718"
-              py="17px"
-            >
-              Cancel
-            </Button>
+          <Flex align="center" mb="18px" gap="15px">
+            {!noVehicle && (
+              <Button
+                bg="transparent"
+                color="#0D0718"
+                fontSize="14px"
+                onClick={close}
+                w="full"
+                border="1px solid #0D0718"
+                py="17px"
+              >
+                Cancel
+              </Button>
+            )}
 
             <Button
               fontSize="14px"
               fontWeight={500}
-              onClick={() => setShow(true)}
+              onClick={handleSubmit}
               isDisabled={isDisabled}
+              isLoading={isLoading}
               lineHeight="100%"
               w="full"
               py="17px"
@@ -304,16 +324,22 @@ const AddVehicleModal = ({ isOpen, refetch, makes, models, onClose }) => {
               Save
             </Button>
           </Flex>
+
+          {noVehicle && (
+            <Text
+              onClick={close}
+              cursor="pointer"
+              color="#848688"
+              fontWeight={500}
+              textAlign="center"
+              lineHeight="100%"
+              fontSize="14px"
+            >
+              Skip for later
+            </Text>
+          )}
         </ModalBody>
       </ModalContent>
-
-      <ConfirmVehicleModal
-        action={handleSubmit}
-        isLoading={isLoading}
-        values={values}
-        isOpen={show}
-        onClose={() => setShow(false)}
-      />
     </Modal>
   );
 };

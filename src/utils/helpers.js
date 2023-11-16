@@ -1,6 +1,7 @@
 export const useLogOut = () => {
   return () => {
     sessionStorage.clear();
+    localStorage.clear();
     setTimeout(() => {
       window.location.href = location.pathname.includes("operator")
         ? "/operator/auth/login"

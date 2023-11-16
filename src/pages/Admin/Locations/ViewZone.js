@@ -133,39 +133,24 @@ export default function ViewZone() {
   }, [data]);
 
   const handleSubmit = () => {
-    values?.showBillingType
-      ? updateMutate({
-          query: id,
-          body: {
-            name: values?.name,
-            description: values?.description,
-            capacity: values?.capacity,
-            location: values?.location?.value,
-            minimumDuration: values?.minimumDuration,
-            service: values?.service?.value,
-            amenities: values?.amenities?.map((item) => Number(item?.value)),
-            reservable: values?.reservable,
-            reservableSpace: Number(values?.reservableSpace),
-            billingType: values?.billingType?.value,
-            status: values?.status?.value,
-          },
-        })
-      : updateMutate({
-          query: id,
-          body: {
-            name: values?.name,
-            description: values?.description,
-            capacity: values?.capacity,
-            location: values?.location?.value,
-            minimumDuration: values?.minimumDuration,
-            service: values?.service?.value,
-            amenities: values?.amenities?.map((item) => Number(item?.value)),
-            reservable: values?.reservable,
-            reservableSpace: Number(values?.reservableSpace),
-            billingType: null,
-            status: values?.status?.value,
-          },
-        });
+    updateMutate({
+      query: id,
+      body: {
+        name: values?.name,
+        description: values?.description,
+        capacity: values?.capacity,
+        location: values?.location?.value,
+        minimumDuration: values?.minimumDuration,
+        service: values?.service?.value,
+        amenities: values?.amenities?.map((item) => Number(item?.value)),
+        reservable: values?.reservable,
+        reservableSpace: Number(values?.reservableSpace),
+        billingType: values?.showBillingType
+          ? values?.billingType?.value
+          : null,
+        status: values?.status?.value,
+      },
+    });
   };
 
   const handleSelectChange = (selectedOption, { name }) => {
@@ -257,7 +242,7 @@ export default function ViewZone() {
                     fontWeight={500}
                     color="#444648"
                   >
-                    Zone capacity
+                    Zone Capacity
                   </Text>
                   <CustomInput
                     auth
@@ -474,7 +459,7 @@ export default function ViewZone() {
                       fontWeight={500}
                       color="#444648"
                     >
-                      Select Billing Type
+                      Billing Type
                     </Text>
                     <Select
                       styles={customStyles}
@@ -556,7 +541,7 @@ export default function ViewZone() {
                   </Button>
                 </Flex>
               </Flex>
-            </Flex>{" "}
+            </Flex>
           </>
         )}
       </Flex>

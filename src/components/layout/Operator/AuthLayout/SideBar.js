@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Box, Flex, Text, VStack, Collapse } from "@chakra-ui/react";
+import { Box, Flex, Text, VStack, Collapse, Image } from "@chakra-ui/react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { operatorSidebar } from "../../../common/constants";
 import { useLogOut } from "../../../../utils/helpers";
@@ -197,27 +197,53 @@ const SideBar = () => {
               </VStack>
             );
           })}
+
+          <Flex
+            fontSize="13px"
+            cursor="pointer"
+            onClick={action}
+            align="center"
+            gap="8px"
+            lineHeight="100%"
+            mb="39px"
+            p={2}
+            pt={3}
+          >
+            {isLoading ? (
+              <Flex
+                _hover={{ color: "#ee383a" }}
+                gap="8px"
+                color="red"
+                align="center"
+                fontWeight={500}
+              >
+                <Spinner size="sm" /> Logging Out
+              </Flex>
+            ) : (
+              <Flex
+                _hover={{ color: "#ee383a" }}
+                gap="8px"
+                align="center"
+                color="#242628"
+              >
+                <LogoutIcon fill="#242628" /> Log Out
+              </Flex>
+            )}
+          </Flex>
         </Box>
       </Box>
 
       <Flex
-        fontSize="14px"
-        fontWeight={400}
-        cursor="pointer"
-        onClick={action}
-        align="center"
-        gap="8px"
+        mt="auto"
         mb="39px"
+        flexDir="column"
+        justifyContent="center"
+        align="center"
       >
-        {isLoading ? (
-          <Flex gap="8px" color="red" align="center">
-            <Spinner size="sm" /> Logging Out
-          </Flex>
-        ) : (
-          <Flex gap="8px" align="center" color="#242628">
-            <LogoutIcon fill="#242628" /> Log Out
-          </Flex>
-        )}
+        <Text fontSize="12px" color="#000" lineHeight="100%" mb="8px">
+          Powered by
+        </Text>
+        <Image src="/assets/ezlogo.svg" objectFit="cover" />
       </Flex>
     </Flex>
   );

@@ -92,6 +92,9 @@ const Header = () => {
       case locationRoute.includes("configurations/faq"):
         return setSecTitle("FAQs");
 
+      case locationRoute.includes("configurations/permissions"):
+        return setSecTitle("Permissions");
+
       case locationRoute.includes("configurations/bank-details"):
         return setSecTitle("Bank Details");
 
@@ -221,6 +224,12 @@ const Header = () => {
 
       case locationRoute.includes("configurations/roles/create"):
         return setFinTitle("Add Role");
+
+      case locationRoute.includes("configurations/permissions/details"):
+        return setFinTitle("Permission Details");
+
+      case locationRoute.includes("configurations/permissions/create"):
+        return setFinTitle("Add Permission");
 
       case locationRoute.includes("configurations/vehicle-makes/details"):
         return setFinTitle("Vehicle Make Details");

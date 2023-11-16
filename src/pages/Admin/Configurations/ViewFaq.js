@@ -1,32 +1,49 @@
 import React, { useState, useEffect } from "react";
-import { Box, Flex, Text, Button, Textarea } from "@chakra-ui/react";
+import { Box, Flex, Text, Button, Spinner } from "@chakra-ui/react";
 import CustomInput from "../../../components/common/CustomInput";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { PRIVATE_PATHS } from "../../../routes/constants";
 import useCustomToast from "../../../utils/notifications";
 import GoBackTab from "../../../components/data/Admin/GoBackTab";
-import { customStyles } from "../../../components/common/constants";
+import { customStyles, statusType } from "../../../components/common/constants";
 import Select from "react-select";
 import {
-  useDeleteFaq,
   useEditFaq,
-  useGetFaqs,
+  useGetAdminFaq,
 } from "../../../services/admin/query/configurations";
-import AdminDeleteModal from "../../../components/modals/AdminDeleteModal";
+import { IoIosArrowDown } from "react-icons/io";
+import TextInput from "../../../components/common/TextInput";
 
 export default function AddFaq() {
-  const [state, setState] = useState({});
-  const [isEdit, setIsEdit] = useState(false);
-  const [isOpen, setIsOpen] = useState(false);
-  const location = useLocation();
+  const [values, setValues] = useState({
+    title: "",
+    body: "",
+    externalLink: "",
+    status: "",
+  });
+
+  const handleSelectChange = (selectedOption, { name }) => {
+    setValues({
+      ...values,
+      [name]: selectedOption,
+    });
+  };
+
+  const isEdit = sessionStorage.getItem("edit");
+  const [edit, setEdit] = useState(false);
+
+  useEffect(() => {
+    if (isEdit !== null) {
+      setEdit(true);
+    }
+  }, [isEdit]);
+
   const navigate = useNavigate();
-  const [isDisabled, setIsDisabled] = useState(true);
   const { errorToast, successToast } = useCustomToast();
-  const { refetch } = useGetFaqs();
-  const { mutate, isLoading } = useEditFaq({
+  const { mutate: updateMutate, isLoading: isUpdating } = useEditFaq({
     onSuccess: () => {
       successToast("Faq updated successfully!");
-      refetch();
+      sessionStorage.removeItem("edit");
       navigate(PRIVATE_PATHS.ADMIN_CONFIG_FAQS);
     },
     onError: (error) => {
@@ -36,158 +53,195 @@ export default function AddFaq() {
     },
   });
 
-  const { mutate: deleteFaq, isLoading: isDeleting } = useDeleteFaq({
-    onSuccess: (res) => {
-      successToast(res?.message);
-      setIsOpen(false);
-      refetch();
-      navigate(PRIVATE_PATHS.ADMIN_CONFIG_VEHICLE_MAKES);
-    },
-    onError: (err) => {
-      errorToast(
-        err?.response?.data?.message || err?.message || "An Error occurred"
-      );
-    },
-  });
-
-  const isFormValid = () => {
-    return !state.title || !state.body;
-  };
+  const { id } = useParams();
+  const { mutate, data, isLoading } = useGetAdminFaq();
 
   useEffect(() => {
-    setIsDisabled(isFormValid);
-  }, [state]);
+    mutate({ id: id });
+  }, []);
+
+  const statusOptions = statusType?.map((status, i) => ({
+    value: i,
+    label: status,
+  }));
 
   const handleSubmit = () => {
-    mutate(state);
+    updateMutate({
+      query: id,
+      body: {
+        title: values?.title,
+        body: values?.body,
+        externalLink: values?.externalLink,
+        status: values?.status?.value,
+      },
+    });
   };
 
   useEffect(() => {
-    setState({
-      ...location.state,
+    const selectedStatusOption = statusOptions?.find(
+      (option) => option.value === data?.status
+    );
+    setValues({
+      ...values,
+      title: data?.title,
+      body: data?.body,
+      externalLink: data?.externalLink,
+      status: selectedStatusOption,
     });
-    setIsEdit(location?.state?.isEdit);
-  }, [location.state]);
+  }, [data]);
 
   return (
     <Box minH="75vh">
-      <Flex justifyContent="center" align="center" w="full" flexDir="column">
+      <Flex
+        align="flex-start"
+        flexDir={{ md: "row", base: "column" }}
+        gap={{ base: "", md: "40px" }}
+      >
         <GoBackTab />
-        <Flex
-          bg="#fff"
-          borderRadius="16px"
-          py="24px"
-          px="28px"
-          justifyContent="center"
-          w="30rem"
-          flexDir="column"
-          border="1px solid #E4E6E8"
-        >
-          <Box w="full" mb={4}>
-            <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
-              Title (The Question)
-            </Text>
-            <CustomInput
-              auth
-              value={state.title}
-              mb
-              holder="Enter question"
-              onChange={(e) => setState({ ...state, title: e.target.value })}
-              isDisabled={!isEdit}
-            />
-          </Box>
-
-          <Box w="full" mb={4}>
-            <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
-              Body
-            </Text>
-
-            <Textarea
-              onChange={(e) => setState({ ...state, body: e.target.value })}
-              borderRadius={"4px"}
-              fontSize={"12px"}
-              bg="#fff"
-              border="1px solid #D4D6D8"
-              placeholder="Enter answer to question"
-              value={state.body}
-              isDisabled={!isEdit}
-            />
-          </Box>
-
-          <Box w="full" mb={4}>
-            <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
-              External link
-            </Text>
-            <CustomInput
-              auth
-              value={state.externalLink}
-              mb
-              holder="Enter external link"
-              onChange={(e) =>
-                setState({ ...state, externalLink: e.target.value })
-              }
-              isDisabled={!isEdit}
-            />
-          </Box>
-
-          <Box mb={4}>
-            <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
-              Status
-            </Text>
-            <Select
-              styles={customStyles}
-              options={[
-                { label: "Active", value: 1 },
-                { label: "Inactive", value: 0 },
-              ]}
-              placeholder="Select status"
-              onChange={(selectedOption) =>
-                setState({
-                  ...state,
-                  status: selectedOption.value,
-                })
-              }
-              value={[
-                { label: "Active", value: 1 },
-                { label: "Inactive", value: 0 },
-              ].find((status) => status.value === state.status)}
-              isDisabled={!isEdit}
-            />
-          </Box>
-
-          <Flex gap={4} mt={4}>
-            <Button
-              variant={!isEdit ? "adminDanger" : "adminSecondary"}
-              w="45%"
-              onClick={() =>
-                !isEdit
-                  ? setIsOpen(true)
-                  : navigate(PRIVATE_PATHS.ADMIN_CONFIG_FAQS)
-              }
-            >
-              {!isEdit ? "Delete" : "Cancel"}
-            </Button>
-            <Button
-              variant="adminPrimary"
-              w="55%"
-              isDisabled={isEdit && isDisabled}
-              isLoading={isLoading}
-              onClick={() => (!isEdit ? setIsEdit(!isEdit) : handleSubmit())}
-            >
-              {!isEdit ? "Edit" : "Save"}
-            </Button>
+        {isLoading ? (
+          <Flex minH="60vh" w="full" justifyContent="center" align="center">
+            <Spinner />
           </Flex>
-        </Flex>
-      </Flex>
+        ) : (
+          <>
+            <Flex
+              justifyContent="center"
+              align="center"
+              w="full"
+              flexDir="column"
+            >
+              <Flex
+                bg="#fff"
+                borderRadius="8px"
+                py="32px"
+                px="24px"
+                justifyContent="center"
+                w={{ base: "100%", md: "30rem" }}
+                flexDir="column"
+                border="1px solid #E4E6E8"
+              >
+                <Box w="full" mb={4}>
+                  <Text
+                    mb="8px"
+                    fontSize="10px"
+                    fontWeight={500}
+                    color="#444648"
+                  >
+                    Title (The Question)
+                  </Text>
+                  <CustomInput
+                    auth
+                    value={values?.title}
+                    mb
+                    holder="Enter question"
+                    onChange={(e) =>
+                      setValues({ ...values, title: e.target.value })
+                    }
+                    dis={edit ? false : true}
+                  />
+                </Box>
 
-      <AdminDeleteModal
-        isOpen={isOpen}
-        onClose={() => setIsOpen(false)}
-        title="Delete Question"
-        subTitle="Are you sure you want to delete this question?"
-        handleSubmit={() => deleteFaq(state.id)}
-        isLoading={isDeleting}
-      />
+                <Box w="full" mb={4}>
+                  <Text
+                    mb="8px"
+                    fontSize="10px"
+                    fontWeight={500}
+                    color="#444648"
+                  >
+                    Body
+                  </Text>
+
+                  <TextInput
+                    onChange={(e) =>
+                      setValues({ ...values, body: e.target.value })
+                    }
+                    holder="Enter answer to question"
+                    value={values?.body}
+                    dis={edit ? false : true}
+                  />
+                </Box>
+
+                <Box w="full" mb={4}>
+                  <Text
+                    mb="8px"
+                    fontSize="10px"
+                    fontWeight={500}
+                    color="#444648"
+                  >
+                    External link
+                  </Text>
+                  <CustomInput
+                    auth
+                    value={values?.externalLink}
+                    mb
+                    holder="Enter external link"
+                    onChange={(e) =>
+                      setValues({ ...values, externalLink: e.target.value })
+                    }
+                    dis={edit ? false : true}
+                  />
+                </Box>
+
+                <Box mb={4}>
+                  <Text
+                    mb="8px"
+                    fontSize="10px"
+                    fontWeight={500}
+                    color="#444648"
+                  >
+                    Status
+                  </Text>
+                  <Select
+                    styles={customStyles}
+                    options={statusOptions}
+                    placeholder="Select status"
+                    onChange={(selectedOption) =>
+                      handleSelectChange(selectedOption, {
+                        name: "status",
+                      })
+                    }
+                    components={{
+                      IndicatorSeparator: () => (
+                        <div style={{ display: "none" }}></div>
+                      ),
+                      DropdownIndicator: () => (
+                        <div>
+                          <IoIosArrowDown size="15px" color="#646668" />
+                        </div>
+                      ),
+                    }}
+                    value={values?.status}
+                    isDisabled={edit ? false : true}
+                  />
+                </Box>
+
+                <Flex gap={4} mt={4}>
+                  <Button
+                    variant="adminSecondary"
+                    w="100%"
+                    onClick={() =>
+                      edit
+                        ? setEdit(false)
+                        : (navigate(PRIVATE_PATHS.ADMIN_CONFIG_FAQS),
+                          sessionStorage.removeItem("edit"))
+                    }
+                  >
+                    Cancel
+                  </Button>
+                  <Button
+                    variant="adminPrimary"
+                    w="100%"
+                    isLoading={isUpdating}
+                    onClick={() => (!edit ? setEdit(true) : handleSubmit())}
+                  >
+                    {!edit ? "Edit" : "Save"}
+                  </Button>
+                </Flex>
+              </Flex>
+            </Flex>
+          </>
+        )}
+      </Flex>
     </Box>
   );
 }

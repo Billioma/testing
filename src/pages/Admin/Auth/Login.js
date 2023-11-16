@@ -17,7 +17,7 @@ const Login = () => {
 
   const { mutate, isLoading } = useLogin({
     onSuccess: (data) => {
-      sessionStorage.setItem("user", JSON.stringify(data));
+      localStorage.setItem("admin", JSON.stringify(data));
       navigate("/admin/dashboard");
     },
 

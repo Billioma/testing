@@ -13,7 +13,6 @@ import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import {
   useGetMake,
   useGetModel,
-  useGetVehicles,
 } from "../../../../services/customer/query/vehicles";
 import {
   useGetUser,
@@ -21,7 +20,7 @@ import {
   useRenewSub,
 } from "../../../../services/customer/query/user";
 import { formatDate } from "../../../../utils/helpers";
-import { intervals } from "../../../common/constants";
+import { colorTypes, intervals } from "../../../common/constants";
 import FundWalletDrawer from "../../../modals/FundWalletDrawer";
 import { useGetCards } from "../../../../services/customer/query/payment";
 import { usePaystackPayment } from "react-paystack";
@@ -32,15 +31,11 @@ import { MdOutlineRefresh } from "react-icons/md";
 import RenewSubModal from "../../../modals/RenewSubModal";
 import useCustomToast from "../../../../utils/notifications";
 
-const Cards = () => {
+const Cards = ({ vehicles, isLoading, refetchVehicle }) => {
   const [index, setIndex] = useState(0);
   const [showAdd, setShowAdd] = useState(false);
   const [subIndex, setSubIndex] = useState(0);
-  const {
-    data: vehicles,
-    isLoading,
-    refetch: refetchVehicle,
-  } = useGetVehicles();
+
   const [showFunds, setShowFunds] = useState(false);
   const {
     isLoading: isSubscription,
@@ -575,7 +570,12 @@ const Cards = () => {
                           fontWeight={500}
                           lineHeight="100%"
                         >
-                          {data?.color}
+                          {
+                            colorTypes.find(
+                              (item) =>
+                                item?.color?.toLocaleLowerCase() === data?.color
+                            )?.label
+                          }
                         </Text>
                       </Box>
                     </Flex>

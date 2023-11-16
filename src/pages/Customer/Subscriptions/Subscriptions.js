@@ -13,7 +13,10 @@ const Subscriptions = () => {
   const [filtArray, setFiltArray] = useState([]);
 
   const [page, setPage] = useState(1);
-  const limit = 10;
+  const [limit, setLimit] = useState(25);
+  const [startRow, setStartRow] = useState(1);
+  const [endRow, setEndRow] = useState(0);
+
   const convertedFilters = filtArray?.map((filterObj) => {
     return `filter=${filterObj?.title}||${filterObj?.type || "cont"}||"${
       filterObj?.filter
@@ -24,7 +27,27 @@ const Subscriptions = () => {
 
   useEffect(() => {
     subMutate({ filterString: query, limit: limit, page: page });
-  }, [query, page]);
+  }, [query, page, limit]);
+
+  useEffect(() => {
+    setPage(1);
+  }, [limit]);
+
+  useEffect(() => {
+    if (!sub) {
+      return;
+    }
+
+    const currentPage = page;
+    const itemsPerPage = limit;
+    const totalItems = sub?.total;
+
+    const currentStartRow = (currentPage - 1) * itemsPerPage + 1;
+    const currentEndRow = Math.min(currentPage * itemsPerPage, totalItems);
+
+    setStartRow(currentStartRow);
+    setEndRow(currentEndRow);
+  }, [sub, page, limit]);
 
   return (
     <Box minH="75vh">
@@ -37,7 +60,12 @@ const Subscriptions = () => {
             subMutate({ filterString: query, limit: limit, page: page })
           }
           title={
-            <Text color="#242628" fontWeight={500} lineHeight="100%">
+            <Text
+              fontSize="14px"
+              fontWeight={500}
+              lineHeight="100%"
+              color="#242628"
+            >
               Subscriptions
             </Text>
           }
@@ -56,12 +84,15 @@ const Subscriptions = () => {
         />
 
         <TableLayer
-          setPage={setPage}
-          page={page}
-          isLoading={isLoading}
           sub={sub}
-          limit={limit}
           subMutate={subMutate}
+          isLoading={isLoading}
+          page={page}
+          limit={limit}
+          setPage={setPage}
+          startRow={startRow}
+          endRow={endRow}
+          setLimit={setLimit}
         />
       </Box>
     </Box>

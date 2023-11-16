@@ -18,13 +18,13 @@ export default function QrCode() {
     const downloadLink = document.createElement("a");
 
     downloadLink.href = dataUrl;
-    downloadLink.download = `${state.ticketNumber}-qrcode.png`;
+    downloadLink.download = `${state?.ticketNumber}-qrcode.png`;
 
     downloadLink.click();
   };
 
   const isFormValid = () => {
-    return !state.ticketNumber;
+    return !state?.ticketNumber;
   };
 
   useEffect(() => {
@@ -44,11 +44,11 @@ export default function QrCode() {
       <Flex justifyContent="center" align="center" w="full" flexDir="column">
         <Flex
           bg="#fff"
-          borderRadius="16px"
-          py="24px"
-          px="28px"
+          borderRadius="8px"
+          py="32px"
+          px="24px"
           justifyContent="center"
-          w="30rem"
+          w={{ base: "100%", md: "30rem" }}
           flexDir="column"
           border="1px solid #E4E6E8"
         >
@@ -58,7 +58,7 @@ export default function QrCode() {
             </Text>
             <CustomInput
               auth
-              value={state.ticketNumber}
+              value={state?.ticketNumber}
               mb
               holder="Enter ticket number"
               onChange={(e) =>
@@ -81,15 +81,26 @@ export default function QrCode() {
               onChange={() =>
                 setState({
                   ...state,
-                  claim: state.claim === 1 ? 0 : 1,
+                  claim: state?.claim === 1 ? 0 : 1,
                 })
               }
+              isChecked={state?.claim}
               size="sm"
               variant="adminPrimary"
             />
           </Flex>
 
           <Flex gap={4} mt={4}>
+            <Button
+              variant="adminSecondary"
+              onClick={() => {
+                setState({ ...state, ticketNumber: "", claim: 0 });
+                setShowQr(false);
+              }}
+              w="full"
+            >
+              Cancel
+            </Button>
             <Button
               variant="adminPrimary"
               w="full"
@@ -110,14 +121,21 @@ export default function QrCode() {
               flexDir={"column"}
             >
               <QRCodeCanvas
-                size={256}
-                value={state.ticketNumber}
-                viewBox={`0 0 256 256`}
+                size={200}
+                value={state?.ticketNumber}
+                viewBox={`0 0 200 200`}
                 renderAs="canvas"
                 id="qrcode"
               />
 
-              <button onClick={downloadQRCode}>Download QR Code</button>
+              <Button
+                variant="adminPrimary"
+                w="full"
+                mt="24px"
+                onClick={downloadQRCode}
+              >
+                Download QR Code
+              </Button>
             </Flex>
           ) : null}
         </Flex>

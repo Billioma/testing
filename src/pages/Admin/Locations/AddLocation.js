@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   Box,
   Flex,
@@ -24,13 +24,10 @@ import {
   useGetAdministrators,
   useGetOperators,
 } from "../../../services/admin/query/users";
-import { AiOutlineFolderOpen } from "react-icons/ai";
 import { useGetAmenities } from "../../../services/admin/query/amenities";
 import {
   useAddLocation,
-  useGetLocations,
 } from "../../../services/admin/query/locations";
-import { useUploadMedia } from "../../../services/admin/query/general";
 import { useCustomerUploadPic } from "../../../services/customer/query/user";
 import { Form, Formik } from "formik";
 import { IoIosArrowDown } from "react-icons/io";
@@ -40,13 +37,7 @@ import {
 } from "../../../utils/validation";
 
 export default function AddLocation() {
-  const [state, setState] = useState({
-    status: 1,
-    enableTips: 0,
-  });
-
   const navigate = useNavigate();
-  const [isDisabled, setIsDisabled] = useState(true);
   const { errorToast, successToast } = useCustomToast();
   const { mutate, isLoading } = useAddLocation({
     onSuccess: () => {
@@ -533,6 +524,7 @@ export default function AddLocation() {
                       variant="adminPrimary"
                     />
                   </Flex>
+                  
                   <Flex gap="24px" mt="24px">
                     <Button
                       variant="adminSecondary"

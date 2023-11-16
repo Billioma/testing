@@ -12,14 +12,19 @@ import {
   accountType,
   allStates,
   DurationTypes,
+  newStatusType,
   LocationTypes,
   serviceType,
   BookingTypes,
+  invoiceStatusType,
+  ReservedStatus,
+  LogsStatus,
 } from "./constants";
 import {
   useGetMakes,
   useGetModels,
 } from "../../services/admin/query/configurations";
+import { useLocation } from "react-router-dom";
 
 const Filter = ({
   main,
@@ -110,10 +115,22 @@ const Filter = ({
     value: i,
     label: opt,
   }));
+  const { pathname } = useLocation();
 
-  const statusOptions = ["Inactive", "Active"].map((opt, i) => ({
+  const statusOptions = (
+    pathname.includes("/transactions")
+      ? ReservedStatus
+      : pathname.includes("/logs")
+      ? LogsStatus
+      : newStatusType
+  )?.map((status, i) => ({
     value: i,
-    label: opt,
+    label: status,
+  }));
+
+  const payStatusOptions = invoiceStatusType?.map((status, i) => ({
+    value: i,
+    label: status,
   }));
 
   const servicesOptions = ["VALET", "PARKING", "SERVICE", "OTHERS"].map(
@@ -338,6 +355,7 @@ const Filter = ({
                 values?.dropFilter === "Corporate" ||
                 values?.dropFilter === "Upgradeable" ||
                 values?.dropFilter === "Status" ||
+                values?.dropFilter === "Payment Status" ||
                 values?.dropFilter === "Make" ||
                 values?.dropFilter === "Model" ||
                 values?.dropFilter?.includes("State") ||
@@ -400,6 +418,8 @@ const Filter = ({
                             ? booleanOptions
                             : values?.dropFilter === "Status"
                             ? statusOptions
+                            : values?.dropFilter === "Payment Status"
+                            ? payStatusOptions
                             : searchOptions
                         }
                         value={selectedFilter}
@@ -511,6 +531,15 @@ const Filter = ({
                     ? TransactionTypes?.find((item, i) => i === dat?.filter)
                     : dat?.title === "reservable"
                     ? ["No", "Yes"]?.find((item, i) => i === dat?.filter)
+                    : dat?.title === "status"
+                    ? (pathname.includes("/transactions")
+                        ? ReservedStatus
+                        : pathname.includes("/logs")
+                        ? LogsStatus
+                        : newStatusType
+                      )?.find((item, i) => i === dat?.filter)
+                    : dat?.title === "paymentStatus"
+                    ? invoiceStatusType?.find((item, i) => i === dat?.filter)
                     : dat?.title === "locationType"
                     ? LocationTypes?.find((item, i) => i === dat?.filter)
                     : dat?.title.includes("interval")

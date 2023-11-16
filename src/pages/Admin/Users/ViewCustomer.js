@@ -249,7 +249,7 @@ export default function ViewCustomer() {
                   </Text>
                   <CustomInput
                     auth
-                    value={values.firstName}
+                    value={values?.firstName}
                     mb
                     holder="Enter first name"
                     onChange={(e) =>
@@ -270,7 +270,7 @@ export default function ViewCustomer() {
                   </Text>
                   <CustomInput
                     auth
-                    value={values.lastName}
+                    value={values?.lastName}
                     mb
                     holder="Enter last name"
                     onChange={(e) =>
@@ -291,7 +291,7 @@ export default function ViewCustomer() {
                   </Text>
                   <CustomInput
                     auth
-                    value={values.email}
+                    value={values?.email}
                     mb
                     holder="Enter email address"
                     onChange={(e) =>
@@ -340,7 +340,7 @@ export default function ViewCustomer() {
                   </Text>
                   <CustomInput
                     auth
-                    value={values.companyName}
+                    value={values?.companyName}
                     mb
                     holder="Enter your company name"
                     onChange={(e) =>
@@ -378,7 +378,7 @@ export default function ViewCustomer() {
                         name: "status",
                       })
                     }
-                    value={values.status}
+                    value={values?.status}
                     isDisabled={edit ? false : true}
                   />
                 </Box>

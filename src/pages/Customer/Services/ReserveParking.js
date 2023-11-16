@@ -21,7 +21,11 @@ import {
   formatTimeToHHMMSS,
   timeArray,
 } from "../../../utils/helpers";
-import { useGetVehicles } from "../../../services/customer/query/vehicles";
+import {
+  useGetMake,
+  useGetModel,
+  useGetVehicles,
+} from "../../../services/customer/query/vehicles";
 import { useGetCards } from "../../../services/customer/query/payment";
 import { useGetUser } from "../../../services/customer/query/user";
 import {
@@ -34,6 +38,7 @@ import { useNavigate } from "react-router-dom";
 import { usePaystackPayment } from "react-paystack";
 import FundWalletDrawer from "../../../components/modals/FundWalletDrawer";
 import { allStates, cities } from "../../../components/common/constants";
+import AddVehicleModal from "../../../components/modals/AddVehicleModal";
 
 const ReserveParking = () => {
   const [step, setStep] = useState(1);
@@ -53,8 +58,14 @@ const ReserveParking = () => {
     model: "",
   });
 
+  const [startDate, setStartDate] = useState(false);
+  const [startValue, startChange] = useState("");
+  const [endValue, endChange] = useState("");
+  const [endDate, setEndDate] = useState(false);
   useEffect(() => {
     setStep(1);
+    endChange("");
+    startChange("");
     setValues({
       state: "",
       city: "",
@@ -72,11 +83,6 @@ const ReserveParking = () => {
 
   const { data: cards, refetch: refetchCards } = useGetCards();
   const { data: userData, refetch } = useGetUser();
-
-  const [startDate, setStartDate] = useState(false);
-  const [startValue, startChange] = useState("");
-  const [endValue, endChange] = useState("");
-  const [endDate, setEndDate] = useState(false);
 
   const start = formatDate(startValue);
   const end = formatDate(endValue);
@@ -111,7 +117,10 @@ const ReserveParking = () => {
   };
 
   const { data: locations } = useGetLocations();
-  const { data: vehicles } = useGetVehicles();
+  const [showVehicle, setShowVehicle] = useState(false);
+  const { data: models } = useGetModel();
+  const { data: vehicles, refetch: refetchVehicle } = useGetVehicles();
+  const { data: makes } = useGetMake();
   const currentStateLocation = locations?.filter((dat) =>
     dat?.address?.includes(values?.city?.value)
   );
@@ -121,7 +130,7 @@ const ReserveParking = () => {
     label: state,
   }));
   const cityOptions = (
-    values.state.value === "Lagos" ? cities.slice(0, 4) : cities.slice(4, 6)
+    values?.state.value === "Lagos" ? cities.slice(0, 4) : cities.slice(4, 6)
   )?.map((city) => ({
     value: city,
     label: city,
@@ -211,7 +220,7 @@ const ReserveParking = () => {
         departure: `${end}${formatTimeToHHMMSS(values?.departureTime?.value)}`,
         location: Number(values?.locations?.id),
         service: "3",
-        vehicle: values.vehicle?.id,
+        vehicle: values?.vehicle?.id,
       });
     }
   }, [values, start, end]);
@@ -241,7 +250,7 @@ const ReserveParking = () => {
           paymentMethod: Number(values?.paymentMethod),
           rates: requestData?.rates?.map((dat) => dat?.id),
           service: "3",
-          vehicle: values.vehicle?.id,
+          vehicle: values?.vehicle?.id,
           zone: Number(requestData?.zone?.id),
         })
       : reserveMutate({
@@ -254,7 +263,7 @@ const ReserveParking = () => {
           paymentMethod: Number(values?.paymentMethod),
           rates: requestData?.rates?.map((dat) => dat?.id),
           service: "3",
-          vehicle: values.vehicle?.id,
+          vehicle: values?.vehicle?.id,
           zone: Number(requestData?.zone?.id),
         });
   };
@@ -365,8 +374,8 @@ const ReserveParking = () => {
                   styles={customStyles}
                   placeholder="Select State"
                   options={stateOptions}
-                  value={values.state}
-                  defaultValue={values.state}
+                  value={values?.state}
+                  defaultValue={values?.state}
                   onChange={(selectedOption) => {
                     handleSelectChange(selectedOption, { name: "state" });
                   }}
@@ -382,9 +391,9 @@ const ReserveParking = () => {
                   styles={customStyles}
                   placeholder="Select City"
                   options={cityOptions}
-                  isDisabled={!values.state}
-                  value={values.city}
-                  defaultValue={values.city}
+                  isDisabled={!values?.state}
+                  value={values?.city}
+                  defaultValue={values?.city}
                   onChange={(selectedOption) =>
                     handleSelectChange(selectedOption, { name: "city" })
                   }
@@ -400,9 +409,9 @@ const ReserveParking = () => {
                   styles={customStyles}
                   placeholder="Select Location"
                   options={locationOptions}
-                  value={values.locations}
-                  isDisabled={!values.state || !values.city}
-                  defaultValue={values.locations}
+                  value={values?.locations}
+                  isDisabled={!values?.state || !values?.city}
+                  defaultValue={values?.locations}
                   onChange={(selectedOption) =>
                     handleSelectChange(selectedOption, { name: "locations" })
                   }
@@ -537,8 +546,8 @@ const ReserveParking = () => {
                     styles={customStyles}
                     placeholder="Select Time"
                     options={timeOptions}
-                    value={values.arrivalTime}
-                    defaultValue={values.arrivalTime}
+                    value={values?.arrivalTime}
+                    defaultValue={values?.arrivalTime}
                     onChange={(selectedOption) =>
                       handleSelectChange(selectedOption, {
                         name: "arrivalTime",
@@ -617,8 +626,8 @@ const ReserveParking = () => {
                     styles={customStyles}
                     placeholder="Select Time"
                     options={timeOptions}
-                    value={values.departureTime}
-                    defaultValue={values.departureTime}
+                    value={values?.departureTime}
+                    defaultValue={values?.departureTime}
                     onChange={(selectedOption) =>
                       handleSelectChange(selectedOption, {
                         name: "departureTime",
@@ -641,8 +650,8 @@ const ReserveParking = () => {
               </Flex>
               {start &&
                 end &&
-                values.arrivalTime &&
-                values.departureTime &&
+                values?.arrivalTime &&
+                values?.departureTime &&
                 formattedDeparture < formattedDate && (
                   <Text mt="8px" fontSize="12px" color="red">
                     Departure Date is earlier than Arrival Date
@@ -658,8 +667,8 @@ const ReserveParking = () => {
                   styles={customStyles}
                   placeholder="Select Vehicle"
                   options={vehicleOptions}
-                  value={values.vehicle}
-                  defaultValue={values.vehicle}
+                  value={values?.vehicle}
+                  defaultValue={values?.vehicle}
                   onChange={(selectedOption) =>
                     handleSelectChange(selectedOption, {
                       name: "vehicle",
@@ -672,6 +681,28 @@ const ReserveParking = () => {
                   }}
                 />
               </Box>
+              {vehicles?.data?.length === 0 ? (
+                <Flex
+                  mt="-8px"
+                  color="red"
+                  mb="16px"
+                  fontSize="12px"
+                  fontWeight={500}
+                  lineHeight="100%"
+                  justifyContent="flex-end"
+                  w="full"
+                >
+                  <Text
+                    cursor="pointer"
+                    onClick={(onOp) => setShowVehicle(true)}
+                    textDecor="underline"
+                  >
+                    Add a Vehicle
+                  </Text>
+                </Flex>
+              ) : (
+                ""
+              )}
 
               <Box>
                 <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
@@ -679,7 +710,7 @@ const ReserveParking = () => {
                 </Text>
                 <Flex mt="17px" align="center">
                   <RadioGroup
-                    value={values.paymentMethod}
+                    value={values?.paymentMethod}
                     onChange={(e) =>
                       setValues({
                         ...values,
@@ -709,7 +740,7 @@ const ReserveParking = () => {
                 </Flex>
               </Box>
 
-              {values.paymentMethod === "1" && (
+              {values?.paymentMethod === "1" && (
                 <Box
                   mt="16px"
                   border="1px solid #D4D6D8"
@@ -742,7 +773,7 @@ const ReserveParking = () => {
                 </Box>
               )}
 
-              {values.paymentMethod === "0" && (
+              {values?.paymentMethod === "0" && (
                 <Box>
                   {cards?.data?.length ? (
                     cards?.data?.map((dat, i) => (
@@ -788,7 +819,7 @@ const ReserveParking = () => {
                               </Text>
                             </Box>
 
-                            {values.cardId === dat?.id && (
+                            {values?.cardId === dat?.id && (
                               <Box>
                                 <BsCheckCircle color="#0B841D" />
                               </Box>
@@ -798,7 +829,9 @@ const ReserveParking = () => {
                       </Box>
                     ))
                   ) : (
-                    <Box>No Card Available</Box>
+                    <Box fontSize="14px" fontWeight={500} mt="8px">
+                      No Card Available
+                    </Box>
                   )}
                   <Flex
                     mt="8px"
@@ -822,7 +855,7 @@ const ReserveParking = () => {
                 </Box>
               )}
 
-              {values.paymentMethod === "1" && (
+              {values?.paymentMethod === "1" && (
                 <Flex
                   mt="8px"
                   color="red"
@@ -854,13 +887,17 @@ const ReserveParking = () => {
               step === 1
                 ? !values?.state || !values?.city || !values?.locations
                 : step === 2
-                ? (start &&
-                    end &&
-                    values.arrivalTime &&
-                    values.departureTime &&
-                    formattedDeparture < formattedDate) ||
-                  !values.arrivalTime ||
-                  !values.departureTime
+                ? values?.paymentMethod === "0"
+                  ? !values?.cardId
+                  : (start &&
+                      end &&
+                      values?.arrivalTime &&
+                      values?.departureTime &&
+                      formattedDeparture < formattedDate) ||
+                    !values?.arrivalTime ||
+                    !values?.departureTime ||
+                    !values?.vehicle ||
+                    !values?.paymentMethod
                 : ""
             }
             fontSize="14px"
@@ -887,6 +924,14 @@ const ReserveParking = () => {
           initializePayment(onSuccess, onCloses);
         }}
         onClose={() => setShowFunds(false)}
+      />
+      <AddVehicleModal
+        makes={makes}
+        models={models}
+        noVehicle
+        refetch={refetchVehicle}
+        isOpen={showVehicle}
+        onClose={() => setShowVehicle(false)}
       />
     </Box>
   );

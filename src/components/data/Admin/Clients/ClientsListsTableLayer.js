@@ -75,7 +75,7 @@ const TableLayer = ({
       : i === 1
       ? (navigate(`/admin/clients/all/details/${client?.id}`),
         sessionStorage.setItem("edit", "edit"))
-      : i === 2 && setSelectedRow({ isOpen: true, id: client.id });
+      : i === 2 && setSelectedRow({ isOpen: true, id: client?.id });
   };
 
   return (
@@ -148,7 +148,7 @@ const TableLayer = ({
                     ? client?.managers?.map((manager, i) => (
                         <React.Fragment key={i}>
                           {manager.firstName} {manager.lastName}
-                          {i < client.managers.length - 1 && ", "}
+                          {i < client?.managers.length - 1 && ", "}
                           <br />
                         </React.Fragment>
                       ))

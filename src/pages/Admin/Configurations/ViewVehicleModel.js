@@ -1,37 +1,48 @@
 import React, { useState, useEffect } from "react";
-import { Box, Flex, Text, Button } from "@chakra-ui/react";
+import { Box, Flex, Text, Button, Spinner } from "@chakra-ui/react";
 import CustomInput from "../../../components/common/CustomInput";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { PRIVATE_PATHS } from "../../../routes/constants";
 import useCustomToast from "../../../utils/notifications";
 import GoBackTab from "../../../components/data/Admin/GoBackTab";
 import { customStyles } from "../../../components/common/constants";
 import Select from "react-select";
 import {
-  useDeleteModel,
   useEditModel,
+  useGetAdminVehicleModel,
   useGetMakes,
-  useGetModels,
 } from "../../../services/admin/query/configurations";
-import AdminDeleteModal from "../../../components/modals/AdminDeleteModal";
-
+import { IoIosArrowDown } from "react-icons/io";
 export default function AddVehicleMake() {
-  const [state, setState] = useState({
-    status: 1,
+  const [values, setValues] = useState({
+    name: "",
+    model: "",
   });
-  const [isEdit, setIsEdit] = useState(false);
-  const [isOpen, setIsOpen] = useState(false);
-  const location = useLocation();
+
+  const handleSelectChange = (selectedOption, { name }) => {
+    setValues({
+      ...values,
+      [name]: selectedOption,
+    });
+  };
+
+  const isEdit = sessionStorage.getItem("edit");
+  const [edit, setEdit] = useState(false);
+
+  useEffect(() => {
+    if (isEdit !== null) {
+      setEdit(true);
+    }
+  }, [isEdit]);
+
   const navigate = useNavigate();
-  const [isDisabled, setIsDisabled] = useState(true);
   const { errorToast, successToast } = useCustomToast();
   const { data: makes } = useGetMakes({}, 1, 10000);
-  const { refetch } = useGetModels();
-  const { mutate, isLoading } = useEditModel({
+  const { mutate: updateMutate, isLoading: isUpdating } = useEditModel({
     onSuccess: () => {
       successToast("Model updated successfully!");
-      refetch();
       navigate(PRIVATE_PATHS.ADMIN_CONFIG_VEHICLE_MODELS);
+      sessionStorage.removeItem("edit");
     },
     onError: (error) => {
       errorToast(
@@ -40,122 +51,151 @@ export default function AddVehicleMake() {
     },
   });
 
-  const { mutate: deleteModel, isLoading: isDeleting } = useDeleteModel({
-    onSuccess: (res) => {
-      successToast(res?.message);
-      setIsOpen(false);
-      refetch();
-      navigate(PRIVATE_PATHS.ADMIN_CONFIG_VEHICLE_MODELS);
-    },
-    onError: (err) => {
-      errorToast(
-        err?.response?.data?.message || err?.message || "An Error occurred"
-      );
-    },
-  });
+  const { id } = useParams();
+  const { mutate, data, isLoading } = useGetAdminVehicleModel();
+
+  useEffect(() => {
+    mutate({ id: id });
+  }, []);
 
   const makeOptions = makes?.data?.map((make) => ({
     label: make.name,
     value: parseInt(make.id),
   }));
 
-  const isFormValid = () => {
-    return !state.name;
-  };
-
-  useEffect(() => {
-    setIsDisabled(isFormValid);
-  }, [state]);
-
   const handleSubmit = () => {
-    mutate(state);
+    updateMutate({
+      query: id,
+      body: {
+        name: values?.name,
+        make: values?.make?.value,
+      },
+    });
   };
 
   useEffect(() => {
-    setState({
-      ...location.state,
-      make: parseInt(location.state?.make?.id),
+    const selectedMakeOption = makeOptions?.find(
+      (option) => option.value === Number(data?.make?.id)
+    );
+    setValues({
+      ...values,
+      name: data?.name,
+      make: selectedMakeOption,
     });
-    setIsEdit(location?.state?.isEdit);
-  }, [location.state]);
+  }, [data, makes]);
 
   return (
     <Box minH="75vh">
-      <Flex justifyContent="center" align="center" w="full" flexDir="column">
+      {" "}
+      <Flex
+        align="flex-start"
+        flexDir={{ md: "row", base: "column" }}
+        gap={{ base: "", md: "40px" }}
+      >
         <GoBackTab />
-        <Flex
-          bg="#fff"
-          borderRadius="16px"
-          py="24px"
-          px="28px"
-          justifyContent="center"
-          w="30rem"
-          flexDir="column"
-          border="1px solid #E4E6E8"
-        >
-          <Box w="full" mb={4}>
-            <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
-              Model Name
-            </Text>
-            <CustomInput
-              auth
-              value={state.name}
-              mb
-              holder="Enter model name"
-              onChange={(e) => setState({ ...state, name: e.target.value })}
-              isDisabled={!isEdit}
-            />
-          </Box>
-
-          <Box w="full" mb={4}>
-            <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
-              Make
-            </Text>
-            <Select
-              styles={customStyles}
-              placeholder="Select make"
-              options={makeOptions}
-              onChange={(selectedOption) =>
-                setState({ ...state, make: selectedOption.value })
-              }
-              value={makeOptions?.find((make) => make.value === state.make)}
-              isDisabled={!isEdit}
-            />
-          </Box>
-
-          <Flex gap={4} mt={4}>
-            <Button
-              variant={!isEdit ? "adminDanger" : "adminSecondary"}
-              w="45%"
-              onClick={() =>
-                !isEdit
-                  ? setIsOpen(true)
-                  : navigate(PRIVATE_PATHS.ADMIN_CONFIG_VEHICLE_MAKES)
-              }
-            >
-              {!isEdit ? "Delete" : "Cancel"}
-            </Button>
-            <Button
-              variant="adminPrimary"
-              w="55%"
-              isDisabled={isEdit && isDisabled}
-              isLoading={isLoading}
-              onClick={() => (!isEdit ? setIsEdit(!isEdit) : handleSubmit())}
-            >
-              {!isEdit ? "Edit" : "Save"}
-            </Button>
+        {isLoading ? (
+          <Flex minH="60vh" w="full" justifyContent="center" align="center">
+            <Spinner />
           </Flex>
-        </Flex>
-      </Flex>
+        ) : (
+          <>
+            <Flex
+              justifyContent="center"
+              align="center"
+              w="full"
+              flexDir="column"
+            >
+              <Flex
+                bg="#fff"
+                borderRadius="8px"
+                py="32px"
+                px="24px"
+                justifyContent="center"
+                w={{ base: "100%", md: "30rem" }}
+                flexDir="column"
+                border="1px solid #E4E6E8"
+              >
+                <Box w="full" mb={4}>
+                  <Text
+                    mb="8px"
+                    fontSize="10px"
+                    fontWeight={500}
+                    color="#444648"
+                  >
+                    Model Name
+                  </Text>
+                  <CustomInput
+                    auth
+                    value={values?.name}
+                    mb
+                    holder="Enter model name"
+                    onChange={(e) =>
+                      setValues({ ...values, name: e.target.value })
+                    }
+                    dis={edit ? false : true}
+                  />
+                </Box>
 
-      <AdminDeleteModal
-        isOpen={isOpen}
-        onClose={() => setIsOpen(false)}
-        title="Delete Model"
-        subTitle="Are you sure you want to delete this model?"
-        handleSubmit={() => deleteModel(state.id)}
-        isLoading={isDeleting}
-      />
+                <Box w="full" mb={4}>
+                  <Text
+                    mb="8px"
+                    fontSize="10px"
+                    fontWeight={500}
+                    color="#444648"
+                  >
+                    Make
+                  </Text>
+                  <Select
+                    styles={customStyles}
+                    placeholder="Select make"
+                    options={makeOptions}
+                    onChange={(selectedOption) =>
+                      handleSelectChange(selectedOption, {
+                        name: "make",
+                      })
+                    }
+                    components={{
+                      IndicatorSeparator: () => (
+                        <div style={{ display: "none" }}></div>
+                      ),
+                      DropdownIndicator: () => (
+                        <div>
+                          <IoIosArrowDown size="15px" color="#646668" />
+                        </div>
+                      ),
+                    }}
+                    value={values?.make}
+                    isDisabled={edit ? false : true}
+                  />
+                </Box>
+
+                <Flex gap={4} mt={4}>
+                  <Button
+                    variant="adminSecondary"
+                    w="100%"
+                    onClick={() =>
+                      edit
+                        ? setEdit(false)
+                        : (navigate(PRIVATE_PATHS.ADMIN_CONFIG_VEHICLE_MODELS),
+                          sessionStorage.removeItem("edit"))
+                    }
+                  >
+                    Cancel
+                  </Button>
+                  <Button
+                    variant="adminPrimary"
+                    w="100%"
+                    isLoading={isUpdating}
+                    onClick={() => (!edit ? setEdit(true) : handleSubmit())}
+                  >
+                    {!edit ? "Edit" : "Save"}
+                  </Button>
+                </Flex>
+              </Flex>
+            </Flex>
+          </>
+        )}
+      </Flex>
     </Box>
   );
 }

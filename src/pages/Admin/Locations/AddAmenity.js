@@ -1,29 +1,26 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { Box, Flex, Text, Button } from "@chakra-ui/react";
 import CustomInput from "../../../components/common/CustomInput";
 import { useNavigate } from "react-router-dom";
 import { PRIVATE_PATHS } from "../../../routes/constants";
 import useCustomToast from "../../../utils/notifications";
 import GoBackTab from "../../../components/data/Admin/GoBackTab";
-import { useGetLocations } from "../../../services/admin/query/locations";
+import { useAddAmenity } from "../../../services/admin/query/amenities";
+import { customStyles, statusType } from "../../../components/common/constants";
+import { IoIosArrowDown } from "react-icons/io";
+import Select from "react-select";
+import { Formik, Form } from "formik";
 import {
-  useAddAmenity,
-  useGetAmenities,
-} from "../../../services/admin/query/amenities";
+  initAdminAmenitiesValues,
+  validateAdminAmenitiesSchema,
+} from "../../../utils/validation";
 
 export default function AddAmenity() {
-  const [state, setState] = useState({
-    status: 1,
-  });
-
   const navigate = useNavigate();
-  const [isDisabled, setIsDisabled] = useState(true);
   const { errorToast, successToast } = useCustomToast();
-  const { refetch } = useGetAmenities();
   const { mutate, isLoading } = useAddAmenity({
     onSuccess: () => {
       successToast("Amenity added successfully!");
-      refetch();
       navigate(PRIVATE_PATHS.ADMIN_AMENITIES);
     },
     onError: (error) => {
@@ -33,78 +30,148 @@ export default function AddAmenity() {
     },
   });
 
-  const isFormValid = () => {
-    return !state.name || !state.description;
-  };
+  const statusOptions = statusType?.map((status, i) => ({
+    value: i,
+    label: status,
+  }));
 
-  useEffect(() => {
-    setIsDisabled(isFormValid);
-  }, [state]);
-
-  const handleSubmit = () => {
-    mutate(state);
+  const handleSubmit = (values = "") => {
+    const { status, ...rest } = values;
+    mutate({
+      ...rest,
+      status: status?.value,
+    });
   };
 
   return (
     <Box minH="75vh">
-      <Flex justifyContent="center" align="center" w="full" flexDir="column">
+      <Flex align="flex-start" flexDir={{ md: "row", base: "column" }}>
         <GoBackTab />
-        <Flex
-          bg="#fff"
-          borderRadius="16px"
-          py="24px"
-          px="28px"
-          justifyContent="center"
-          w="30rem"
-          flexDir="column"
-          border="1px solid #E4E6E8"
-        >
-          <Box w="full" mb={4}>
-            <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
-              Name
-            </Text>
-            <CustomInput
-              auth
-              value={state.name}
-              mb
-              holder="Enter amenity name"
-              onChange={(e) => setState({ ...state, name: e.target.value })}
-            />
-          </Box>
-
-          <Box w="full" mb={4}>
-            <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
-              Description
-            </Text>
-            <CustomInput
-              opt
-              auth
-              value={state.description}
-              mb
-              holder="Enter amenity description"
-              onChange={(e) =>
-                setState({ ...state, description: e.target.value })
-              }
-            />
-          </Box>
-
-          <Flex gap={4} mt={4}>
-            <Button
-              variant="adminSecondary"
-              w="45%"
-              onClick={() => navigate(PRIVATE_PATHS.ADMIN_AMENITIES)}
+        <Flex justifyContent="center" align="center" w="full" flexDir="column">
+          <Flex
+            bg="#fff"
+            borderRadius="12px"
+            py="32px"
+            px="28px"
+            justifyContent="center"
+            w={{ md: "30rem", base: "100%" }}
+            flexDir="column"
+            border="1px solid #E4E6E8"
+          >
+            <Formik
+              onSubmit={handleSubmit}
+              initialValues={initAdminAmenitiesValues}
+              validationSchema={validateAdminAmenitiesSchema}
             >
-              Cancel
-            </Button>
-            <Button
-              variant="adminPrimary"
-              w="55%"
-              isDisabled={isDisabled}
-              isLoading={isLoading}
-              onClick={handleSubmit}
-            >
-              Save
-            </Button>
+              {({
+                values,
+                errors,
+                touched,
+                handleChange,
+                handleBlur,
+                handleSubmit,
+                setValues,
+                isValid,
+                dirty,
+              }) => (
+                <Form onSubmit={handleSubmit}>
+                  <Box w="full" mb={4}>
+                    <Text
+                      mb="8px"
+                      fontSize="10px"
+                      fontWeight={500}
+                      color="#444648"
+                    >
+                      Name
+                    </Text>
+                    <CustomInput
+                      auth
+                      mb
+                      holder="Enter amenity name"
+                      name="name"
+                      value={values?.name}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      error={errors?.name && touched?.name && errors?.name}
+                    />
+                  </Box>
+                  <Box w="full" mb={4}>
+                    <Text
+                      mb="8px"
+                      fontSize="10px"
+                      fontWeight={500}
+                      color="#444648"
+                    >
+                      Description
+                    </Text>
+                    <CustomInput
+                      auth
+                      mb
+                      holder="Enter amenity description"
+                      name="description"
+                      value={values?.description}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      error={
+                        errors?.description &&
+                        touched?.description &&
+                        errors?.description
+                      }
+                    />
+                  </Box>
+                  <Box w="full" mb={4}>
+                    <Text
+                      mb="8px"
+                      fontSize="10px"
+                      fontWeight={500}
+                      color="#444648"
+                    >
+                      Select Status
+                    </Text>
+                    <Select
+                      styles={customStyles}
+                      options={statusOptions}
+                      name="status"
+                      onChange={(selectedOption) =>
+                        setValues({
+                          ...values,
+                          status: selectedOption,
+                        })
+                      }
+                      onBlur={handleBlur}
+                      components={{
+                        IndicatorSeparator: () => (
+                          <div style={{ display: "none" }}></div>
+                        ),
+                        DropdownIndicator: () => (
+                          <div>
+                            <IoIosArrowDown size="15px" color="#646668" />
+                          </div>
+                        ),
+                      }}
+                    />
+                  </Box>
+                  <Flex gap="24px" mt="24px">
+                    <Button
+                      variant="adminSecondary"
+                      w="100%"
+                      onClick={() => navigate(PRIVATE_PATHS.ADMIN_AMENITIES)}
+                    >
+                      Cancel
+                    </Button>
+                    <Button
+                      variant="adminPrimary"
+                      w="100%"
+                      isDisabled={!isValid || !dirty}
+                      isLoading={isLoading}
+                      type="submit"
+                    >
+                      Save
+                    </Button>
+                  </Flex>{" "}
+                </Form>
+              )}
+            </Formik>
           </Flex>
         </Flex>
       </Flex>

@@ -20,7 +20,11 @@ import {
   carServiceDesc,
   carServiceIcon,
 } from "../../../components/common/constants";
-import { useGetVehicles } from "../../../services/customer/query/vehicles";
+import {
+  useGetMake,
+  useGetModel,
+  useGetVehicles,
+} from "../../../services/customer/query/vehicles";
 import Select from "react-select";
 import { Calendar } from "react-calendar";
 import { formatDate } from "../../../utils/helpers";
@@ -36,6 +40,7 @@ import useCustomToast from "../../../utils/notifications";
 import { useNavigate } from "react-router-dom";
 import FundWalletDrawer from "../../../components/modals/FundWalletDrawer";
 import { usePaystackPayment } from "react-paystack";
+import AddVehicleModal from "../../../components/modals/AddVehicleModal";
 
 const CarServices = () => {
   const [step, setStep] = useState(1);
@@ -165,8 +170,10 @@ const CarServices = () => {
 
   const start = formatDate(startValue);
 
-  const { data: vehicles } = useGetVehicles();
-
+  const [showVehicle, setShowVehicle] = useState(false);
+  const { data: models } = useGetModel();
+  const { data: vehicles, refetch: refetchVehicle } = useGetVehicles();
+  const { data: makes } = useGetMake();
   const [showFunds, setShowFunds] = useState(false);
   const { data: basicRate } = useGetBookingRate(
     values?.serviceId?.value,
@@ -251,7 +258,7 @@ const CarServices = () => {
   );
 
   const selectedIndex = BookingSlots.findIndex(
-    (time) => time === values.appointmentTime?.value
+    (time) => time === values?.appointmentTime?.value
   );
 
   const handleBook = () => {
@@ -456,8 +463,8 @@ const CarServices = () => {
                   styles={customStyles}
                   placeholder="Car Service"
                   options={servicesOptions}
-                  value={values.serviceId}
-                  defaultValue={values.serviceId}
+                  value={values?.serviceId}
+                  defaultValue={values?.serviceId}
                   onChange={(selectedOption) =>
                     handleSelectChange(selectedOption, {
                       name: "serviceId",
@@ -479,8 +486,8 @@ const CarServices = () => {
                   styles={customStyles}
                   placeholder="Car Service"
                   options={ratesOptions}
-                  value={values.billingRate}
-                  defaultValue={values.billingRate}
+                  value={values?.billingRate}
+                  defaultValue={values?.billingRate}
                   onChange={(selectedOption) =>
                     handleSelectChange(selectedOption, {
                       name: "billingRate",
@@ -502,7 +509,7 @@ const CarServices = () => {
                   styles={customStyles}
                   placeholder="Enter Address"
                   options={addressOptions}
-                  value={values.address}
+                  value={values?.address}
                   onChange={(selectedOption) =>
                     handleSelectChange(selectedOption, {
                       name: "address",
@@ -574,8 +581,8 @@ const CarServices = () => {
                     styles={customStyles}
                     placeholder="Select Time"
                     options={timeOptions}
-                    value={values.appointmentTime}
-                    defaultValue={values.appointmentTime}
+                    value={values?.appointmentTime}
+                    defaultValue={values?.appointmentTime}
                     onChange={(selectedOption) =>
                       handleSelectChange(selectedOption, {
                         name: "appointmentTime",
@@ -606,8 +613,8 @@ const CarServices = () => {
                   styles={customStyles}
                   placeholder="Select Vehicle"
                   options={vehicleOptions}
-                  value={values.vehicle}
-                  defaultValue={values.vehicle}
+                  value={values?.vehicle}
+                  defaultValue={values?.vehicle}
                   onChange={(selectedOption) =>
                     handleSelectChange(selectedOption, {
                       name: "vehicle",
@@ -620,6 +627,28 @@ const CarServices = () => {
                   }}
                 />
               </Box>
+              {vehicles?.data?.length === 0 ? (
+                <Flex
+                  mt="8px"
+                  color="red"
+                  mb="16px"
+                  fontSize="12px"
+                  fontWeight={500}
+                  lineHeight="100%"
+                  justifyContent="flex-end"
+                  w="full"
+                >
+                  <Text
+                    cursor="pointer"
+                    onClick={(onOp) => setShowVehicle(true)}
+                    textDecor="underline"
+                  >
+                    Add a Vehicle
+                  </Text>
+                </Flex>
+              ) : (
+                ""
+              )}
             </Box>
           )}
 
@@ -630,7 +659,7 @@ const CarServices = () => {
                   w="40px"
                   h="40px"
                   src={
-                    values.img ||
+                    values?.img ||
                     carServiceIcon.find((item) =>
                       item
                         ?.toLowerCase()
@@ -800,7 +829,7 @@ const CarServices = () => {
                 </Text>
                 <Flex my="17px" align="center">
                   <RadioGroup
-                    value={values.paymentMethod}
+                    value={values?.paymentMethod}
                     onChange={(e) =>
                       setValues({
                         ...values,
@@ -824,7 +853,7 @@ const CarServices = () => {
                 </Flex>
               </Box>
 
-              {values.paymentMethod === "1" && (
+              {values?.paymentMethod === "1" && (
                 <Box border="1px solid #D4D6D8" borderRadius="4px" p="16px">
                   <Flex align="center" w="full" justifyContent="space-between">
                     <Box>
@@ -852,7 +881,7 @@ const CarServices = () => {
                 </Box>
               )}
 
-              {values.paymentMethod === "0" && (
+              {values?.paymentMethod === "0" && (
                 <Box>
                   {cards?.data?.length ? (
                     cards?.data?.map((dat, i) => (
@@ -898,7 +927,7 @@ const CarServices = () => {
                               </Text>
                             </Box>
 
-                            {values.cardId === dat?.id && (
+                            {values?.cardId === dat?.id && (
                               <Box>
                                 <BsCheckCircle color="#0B841D" />
                               </Box>
@@ -932,7 +961,7 @@ const CarServices = () => {
                 </Box>
               )}
 
-              {values.paymentMethod === "1" && (
+              {values?.paymentMethod === "1" && (
                 <Flex
                   mt="8px"
                   color="red"
@@ -961,15 +990,15 @@ const CarServices = () => {
               isLoading={isBooking}
               isDisabled={
                 step === 3
-                  ? values.paymentMethod === "0"
-                    ? !values.cardId
-                    : !values.paymentMethod
+                  ? values?.paymentMethod === "0"
+                    ? !values?.cardId
+                    : !values?.paymentMethod
                   : step === 2
-                  ? !values.address ||
-                    !values.appointmentTime ||
-                    !values.billingRate ||
-                    !values.serviceId ||
-                    !values.vehicle
+                  ? !values?.address ||
+                    !values?.appointmentTime ||
+                    !values?.billingRate ||
+                    !values?.serviceId ||
+                    !values?.vehicle
                   : ""
               }
               fontSize="14px"
@@ -990,6 +1019,14 @@ const CarServices = () => {
           initializePayment(onSuccess, onCloses);
         }}
         onClose={() => setShowFunds(false)}
+      />
+       <AddVehicleModal
+        makes={makes}
+        models={models}
+        noVehicle
+        refetch={refetchVehicle}
+        isOpen={showVehicle}
+        onClose={() => setShowVehicle(false)}
       />
     </Box>
   );

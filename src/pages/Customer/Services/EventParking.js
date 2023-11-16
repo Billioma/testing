@@ -23,7 +23,11 @@ import {
 } from "../../../services/customer/query/locations";
 import { Calendar } from "react-calendar";
 import { formatDate, formatTime } from "../../../utils/helpers";
-import { useGetVehicles } from "../../../services/customer/query/vehicles";
+import {
+  useGetMake,
+  useGetModel,
+  useGetVehicles,
+} from "../../../services/customer/query/vehicles";
 import { useGetCards } from "../../../services/customer/query/payment";
 import { useGetUser } from "../../../services/customer/query/user";
 import { usePaystackPayment } from "react-paystack";
@@ -34,6 +38,7 @@ import {
 } from "../../../services/customer/query/services";
 import useCustomToast from "../../../utils/notifications";
 import { useNavigate } from "react-router-dom";
+import AddVehicleModal from "../../../components/modals/AddVehicleModal";
 
 const EventParking = () => {
   const [step, setStep] = useState(1);
@@ -45,9 +50,12 @@ const EventParking = () => {
     cardId: "",
     paymentMethod: "",
   });
+  const [startDate, setStartDate] = useState(false);
+  const [startValue, startChange] = useState("");
 
   useEffect(() => {
     setStep(1);
+    startChange("")
     setValues({
       event: "",
       service: "",
@@ -93,14 +101,15 @@ const EventParking = () => {
 
   const [event, setEvent] = useState({});
 
-  const [startDate, setStartDate] = useState(false);
-  const [startValue, startChange] = useState("");
 
   const start = formatDate(startValue);
 
   const { data: events, isLoading: isEVent } = useGetEvents();
   const { data: services } = useGetServices();
-  const { data: vehicles } = useGetVehicles();
+  const [showVehicle, setShowVehicle] = useState(false);
+  const { data: models } = useGetModel();
+  const { data: vehicles, refetch: refetchVehicle } = useGetVehicles();
+  const { data: makes } = useGetMake();
   const today = new Date();
   const filteredEvent = events?.filter(
     (item) =>
@@ -191,14 +200,14 @@ const EventParking = () => {
           paymentMethod: Number(values?.paymentMethod),
           reservedDate: start,
           service: values?.service?.id,
-          vehicle: values.vehicle?.id,
+          vehicle: values?.vehicle?.id,
         })
       : eventMutate({
           event: event?.id,
           paymentMethod: Number(values?.paymentMethod),
           reservedDate: start,
           service: values?.service?.id,
-          vehicle: values.vehicle?.id,
+          vehicle: values?.vehicle?.id,
         });
   };
 
@@ -305,7 +314,7 @@ const EventParking = () => {
                       holder="Search Event"
                       search
                       auth
-                      value={values.event}
+                      value={values?.event}
                       onChange={(e) =>
                         setValues({
                           ...values,
@@ -628,8 +637,8 @@ const EventParking = () => {
                   styles={customStyles}
                   placeholder="Select Service"
                   options={servicesOptions}
-                  value={values.service}
-                  defaultValue={values.service}
+                  value={values?.service}
+                  defaultValue={values?.service}
                   onChange={(selectedOption) =>
                     handleSelectChange(selectedOption, {
                       name: "service",
@@ -652,8 +661,8 @@ const EventParking = () => {
                   styles={customStyles}
                   placeholder="Select Vehicle"
                   options={vehicleOptions}
-                  value={values.vehicle}
-                  defaultValue={values.vehicle}
+                  value={values?.vehicle}
+                  defaultValue={values?.vehicle}
                   onChange={(selectedOption) =>
                     handleSelectChange(selectedOption, {
                       name: "vehicle",
@@ -666,6 +675,28 @@ const EventParking = () => {
                   }}
                 />
               </Box>
+              {vehicles?.data?.length === 0 ? (
+                <Flex
+                  mt="8px"
+                  color="red"
+                  mb="16px"
+                  fontSize="12px"
+                  fontWeight={500}
+                  lineHeight="100%"
+                  justifyContent="flex-end"
+                  w="full"
+                >
+                  <Text
+                    cursor="pointer"
+                    onClick={(onOp) => setShowVehicle(true)}
+                    textDecor="underline"
+                  >
+                    Add a Vehicle
+                  </Text>
+                </Flex>
+              ) : (
+                ""
+              )}
 
               <Box mb="16px">
                 <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
@@ -673,7 +704,7 @@ const EventParking = () => {
                 </Text>
                 <Flex mt="17px" align="center">
                   <RadioGroup
-                    value={values.paymentMethod}
+                    value={values?.paymentMethod}
                     onChange={(e) =>
                       setValues({
                         ...values,
@@ -703,7 +734,7 @@ const EventParking = () => {
                 </Flex>
               </Box>
 
-              {values.paymentMethod === "1" && (
+              {values?.paymentMethod === "1" && (
                 <Box>
                   <Box border="1px solid #D4D6D8" borderRadius="4px" p="16px">
                     <Flex
@@ -758,7 +789,7 @@ const EventParking = () => {
                 </Box>
               )}
 
-              {values.paymentMethod === "0" && (
+              {values?.paymentMethod === "0" && (
                 <Box>
                   {cards?.data?.length ? (
                     cards?.data?.map((dat, i) => (
@@ -804,7 +835,7 @@ const EventParking = () => {
                               </Text>
                             </Box>
 
-                            {values.cardId === dat?.id && (
+                            {values?.cardId === dat?.id && (
                               <Box>
                                 <BsCheckCircle color="#0B841D" />
                               </Box>
@@ -851,9 +882,9 @@ const EventParking = () => {
               step === 1
                 ? !values?.event
                 : step === 2
-                ? values.paymentMethod === "0"
-                  ? !values.cardId
-                  : !values.service || !values.vehicle || !values.paymentMethod
+                ? values?.paymentMethod === "0"
+                  ? !values?.cardId
+                  : !values?.service || !values?.vehicle || !values?.paymentMethod
                 : ""
             }
             fontSize="14px"
@@ -879,6 +910,14 @@ const EventParking = () => {
           initializePayment(onSuccess, onCloses);
         }}
         onClose={() => setShowFunds(false)}
+      />
+      <AddVehicleModal
+        makes={makes}
+        models={models}
+        noVehicle
+        refetch={refetchVehicle}
+        isOpen={showVehicle}
+        onClose={() => setShowVehicle(false)}
       />
     </Box>
   );

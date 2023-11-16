@@ -15,11 +15,8 @@ export const addAmenity = async (data) => {
   return response.data;
 };
 
-export const editAmenity = async (data) => {
-  const response = await axiosInstance.patch(
-    `${API.ADMIN_AMENITIES}/${data.id}`,
-    data
-  );
+export const editAmenity = async ({ query, body }) => {
+  const response = await axiosInstance.patch(API.ADMIN_AMENITY(query), body);
 
   return response.data;
 };

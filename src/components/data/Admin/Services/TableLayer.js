@@ -101,7 +101,7 @@ const TableLayer = ({
                 lineHeight="100%"
               >
                 <Td>{service?.name}</Td>
-                <Td whiteSpace="pre-wrap">{service?.description}</Td>
+                <Td whiteSpace="pre-wrap" w="400px">{service?.description}</Td>
                 <Td textAlign="center">{service?.serviceType}</Td>
                 <Td textAlign="center">{formatDate(service?.createdAt)}</Td>
                 <Td>

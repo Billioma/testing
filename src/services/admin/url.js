@@ -73,7 +73,43 @@ export const ADMIN_ZONES_LIST = (filterString = "", limit = "", page = "") =>
 export const ADMIN_ZONE = (id = "") => `admin/zones/${id}`;
 
 export const ADMIN_ROLES = "admin/roles";
+export const ADMIN_PERMISSIONS = "admin/permissions";
+export const ADMIN_ROLES_PERMISSIONS = "admin/roles/permissions";
+export const ADMIN_ROLES_LIST = (filterString = "", limit = "", page = "") =>
+  `admin/roles?${filterString}&limit=${limit}&page=${page}&sort=id,DESC`;
+
+export const ADMIN_ROLE = (id = "") => `admin/roles/${id}`;
+
+export const ADMIN_PERMISSIONS_LIST = (
+  filterString = "",
+  limit = "",
+  page = ""
+) =>
+  `admin/permissions?${filterString}&limit=${limit}&page=${page}&sort=id,DESC`;
+
+export const ADMIN_PERMISSION = (id = "") => `admin/permissions/${id}`;
+
+export const ADMIN_VEHICLE_MAKES_LIST = (
+  filterString = "",
+  limit = "",
+  page = ""
+) =>
+  `admin/vehicle-makes?${filterString}&limit=${limit}&page=${page}&sort=id,DESC`;
+
+export const ADMIN_VEHICLE_MAKE = (id = "") => `admin/vehicle-makes/${id}`;
+
+export const ADMIN_VEHICLE_MODELS_LIST = (
+  filterString = "",
+  limit = "",
+  page = ""
+) =>
+  `admin/vehicle-models?${filterString}&limit=${limit}&page=${page}&sort=id,DESC`;
+
+export const ADMIN_VEHICLE_MODEL = (id = "") => `admin/vehicle-models/${id}`;
+
 export const UPLOAD_MEDIA = "system/media-upload";
+export const SERVICE_LOG_MAKE_PAYMENT = (id = "") =>
+  `admin/service-logs/make-payment/${id}`;
 
 export const ADMIN_VEHICLES = "admin/vehicles";
 export const ADMIN_VEHICLES_LIST = (filterString = "", limit = "", page = "") =>
@@ -157,6 +193,18 @@ export const ADMIN_TIPS_LIST = (filterString = "", limit = "", page = "") =>
 
 export const ADMIN_TIPS_DETAIL = (id = "") => `admin/tips/${id}`;
 
+export const ADMIN_SERVICE_LOGS_LIST = (
+  type = "",
+  filterString = "",
+  limit = "",
+  page = ""
+) =>
+  `admin/service-logs?filter=service.serviceType||$eq||${type}&${filterString}&limit=${limit}&page=${page}&sort=id,DESC`;
+
+export const ADMIN_SERVICE_LOGS_DETAIL = (id = "") =>
+  `admin/service-logs/${id}`;
+export const ADMIN_SERVICE_TICKET = "admin/service-logs/retrieve-ticket";
+
 export const ADMIN_AMENITIES = "admin/amenities";
 
 export const ADMIN_SERVICE_LOGS = "admin/service-logs";
@@ -173,7 +221,35 @@ export const GET_ADMIN_TRAN = (filterString = "", limit = "", page = "") =>
   `admin/transactions?${filterString}&limit=${limit}&page=${page}&sort=id,DESC`;
 
 export const ADMIN_RATES = "admin/rates";
+export const ADMIN_RATES_LIST = (filterString = "", limit = "", page = "") =>
+  `admin/rates?${filterString}&limit=${limit}&page=${page}&sort=id,DESC`;
+
+export const ADMIN_RATE = (id = "") => `admin/rates/${id}`;
+
+export const ADMIN_AMENITIES_LIST = (
+  filterString = "",
+  limit = "",
+  page = ""
+) => `admin/amenities?${filterString}&limit=${limit}&page=${page}&sort=id,DESC`;
+
+export const ADMIN_AMENITY = (id = "") => `admin/amenities/${id}`;
+
 export const ADMIN_POLICIES = "admin/policies";
 
+export const ADMIN_POLICIES_LIST = (filterString = "", limit = "", page = "") =>
+  `admin/policies?${filterString}&limit=${limit}&page=${page}&sort=id,DESC`;
+
+export const ADMIN_POLICY = (id = "") => `admin/policies/${id}`;
+
 export const ADMIN_BANK_DETAILS = "admin/bank-details";
+
+export const ADMIN_BANKS_LIST = (filterString = "", limit = "", page = "") =>
+  `admin/bank-details?${filterString}&limit=${limit}&page=${page}&sort=id,DESC`;
+
+export const ADMIN_BANK = (id = "") => `admin/bank-details/${id}`;
 export const ADMIN_FAQS = "admin/faqs";
+
+export const ADMIN_FAQS_LIST = (filterString = "", limit = "", page = "") =>
+  `admin/faqs?${filterString}&limit=${limit}&page=${page}&sort=id,DESC`;
+
+export const ADMIN_FAQ = (id = "") => `admin/faqs/${id}`;

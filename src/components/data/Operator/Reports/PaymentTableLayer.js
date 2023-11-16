@@ -27,7 +27,6 @@ const PaymentTableLayer = ({
             alignFirstHeader
             alignSecondHeader
             alignThirdHeader
-            alignSixthHeader
             paginationValues={{
               startRow,
               endRow,
@@ -59,7 +58,7 @@ const PaymentTableLayer = ({
                     maximumFractionDigits: 2,
                   }) || "0.00"}
                 </Td>
-                <Td>{item?.serviceType}</Td>
+                <Td textAlign="center">{item?.serviceType}</Td>
                 <Td textAlign="center">{formatDateTimes(item?.createdAt)}</Td>
               </Tr>
             ))}

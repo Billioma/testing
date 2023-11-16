@@ -78,7 +78,6 @@ const TableLayer = ({
 
   return (
     <Box>
-      {" "}
       {isLoading ? (
         <TableLoader />
       ) : data?.data?.length ? (

@@ -21,7 +21,7 @@ import NoData from "../../../components/common/NoData";
 import {
   SecStatus,
   clientTranBody,
-  clientTranHeader,
+  optTranHeader,
 } from "../../../components/common/constants";
 import { useNavigate } from "react-router-dom";
 
@@ -55,12 +55,12 @@ const Transactions = () => {
           <Table>
             <Thead bg="#F4F6F8">
               <Tr>
-                {clientTranHeader?.map((data, i) => (
+                {optTranHeader?.map((data, i) => (
                   <Th
                     key={i}
                     pos="sticky"
                     top="0"
-                    textAlign={i === 6 ? "center" : ""}
+                    textAlign={i !== 0 ? "center" : ""}
                     bg="#F4F6F8"
                     fontFamily="Sailec"
                     zIndex="2"
@@ -78,31 +78,32 @@ const Transactions = () => {
                 clientTranBody?.map((item, i) => (
                   <Tr fontSize="12px" fontWeight={500} color="#646668" key={i}>
                     <Td>{item?.ticket}</Td>
-                    <Td>{item?.fullName}</Td>
-                    <Td>
+                    <Td textAlign="center">
                       ₦{" "}
                       {item?.amount?.toLocaleString(undefined, {
                         maximumFractionDigits: 2,
                       }) || "0.00"}
                     </Td>
-                    <Td>{item?.zone}</Td>
-                    <Td>{item?.plate}</Td>
-                    <Td>{item?.type}</Td>
+                    <Td textAlign="center">{item?.zone}</Td>
+                    <Td textAlign="center">{item?.plate}</Td>
+                    <Td textAlign="center">{item?.type}</Td>
 
                     <Td>
-                      <Flex
-                        color={Object.values(SecStatus[item?.status])[0]}
-                        bg={Object.values(SecStatus[item?.status])[2]}
-                        py="5px"
-                        px="16px"
-                        justifyContent="center"
-                        borderRadius="4px"
-                        align="center"
-                      >
-                        {Object.values(SecStatus[item?.status])[1]}
+                      <Flex justifyContent="center" w="full" align="center">
+                        <Flex
+                          color={Object.values(SecStatus[item?.status])[0]}
+                          bg={Object.values(SecStatus[item?.status])[2]}
+                          py="5px"
+                          px="16px"
+                          justifyContent="center"
+                          borderRadius="4px"
+                          align="center"
+                        >
+                          {Object.values(SecStatus[item?.status])[1]}
+                        </Flex>
                       </Flex>
                     </Td>
-                    <Td>{item?.date}</Td>
+                    <Td textAlign="center">{item?.date}</Td>
                     <Td>
                       <Flex
                         onClick={() => open(item)}

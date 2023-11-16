@@ -146,6 +146,12 @@ export const initClientValues = {
   status: "",
 };
 
+export const initPermisisonValues = {
+  name: "",
+  displayName: "",
+  tableName: "",
+};
+
 export const initAttendantsValues = {
   name: "",
   userId: "",
@@ -169,6 +175,49 @@ export const initAdminLocationValues = {
   status: "",
 };
 
+export const initAdminZoneValues = {
+  name: "",
+  description: "",
+  capacity: "",
+  location: "",
+  minimumDuration: "",
+  service: "",
+  amenities: "",
+  reservable: 0,
+  reservableSpace: "",
+  showBillingType: "",
+  billingType: null,
+  status: "",
+};
+
+export const initAdminRateValues = {
+  name: "",
+  operator: "",
+  service: "",
+  rateType: "",
+  amount: "",
+  noLimit: 0,
+  durationStart: "",
+  durationLimit: "",
+  flatRate: 0,
+  showCarServiceType: 0,
+  carServiceType: "",
+  status: "",
+};
+
+export const initAdminAmenitiesValues = {
+  name: "",
+  description: "",
+  status: "",
+};
+
+export const initAdminPoliciesValues = {
+  title: "",
+  body: "",
+  location: "",
+  status: "",
+};
+
 export const initEventValues = {
   name: "",
   description: "",
@@ -180,6 +229,7 @@ export const initEventValues = {
   status: "",
   paymentRequired: 0,
   price: "",
+  zones: "",
 };
 
 export const initAdminValues = {
@@ -306,6 +356,12 @@ export const validateClientSchema = Yup.object().shape({
   status: Yup.object().required("Status is required"),
 });
 
+export const validatePermissionSchema = Yup.object().shape({
+  name: Yup.string().required("Permission Name is required"),
+  displayName: Yup.string().required("Display Name is required"),
+  tableName: Yup.string().required("Group Name is required"),
+});
+
 export const validateCustomerSchema = Yup.object().shape({
   firstName: Yup.string().required("First Name is required"),
   lastName: Yup.string().required("Last Name is required"),
@@ -354,6 +410,39 @@ export const validateAdminLocationSchema = Yup.object().shape({
   status: Yup.object().required("Status is required"),
 });
 
+export const validateAdminZoneSchema = Yup.object().shape({
+  name: Yup.string().required("Name is required"),
+  description: Yup.string().required("Description is required"),
+  capacity: Yup.string().required("Capacity is required"),
+  location: Yup.object().required("Location is required"),
+  minimumDuration: Yup.string().required("Minimum Duration is required"),
+  service: Yup.object().required("Service is required"),
+  amenities: Yup.array().required("Amenities is required"),
+  status: Yup.object().required("Status is required"),
+});
+
+export const validateAdminRateSchema = Yup.object().shape({
+  name: Yup.string().required("Name is required"),
+  operator: Yup.object().required("Operator is required"),
+  service: Yup.object().required("Service is required"),
+  rateType: Yup.object().required("Rate Type is required"),
+  amount: Yup.string().required("Amount is required"),
+  status: Yup.object().required("Status is required"),
+});
+
+export const validateAdminAmenitiesSchema = Yup.object().shape({
+  name: Yup.string().required("Name is required"),
+  description: Yup.string().required("Description is required"),
+  status: Yup.object().required("Status is required"),
+});
+
+export const validateAdminPoliciesSchema = Yup.object().shape({
+  title: Yup.string().required("Title is required"),
+  body: Yup.string().required("Description is required"),
+  location: Yup.object().required("Location is required"),
+  status: Yup.object().required("Status is required"),
+});
+
 export const validateEventSchema = Yup.object().shape({
   name: Yup.string().required("Name is required"),
   description: Yup.string().required("Description is required"),
@@ -362,6 +451,7 @@ export const validateEventSchema = Yup.object().shape({
   eventEndDateTime: Yup.string().required("End Date is required"),
   client: Yup.object().required("Client is required"),
   status: Yup.object().required("Status is required"),
+  zones: Yup.array().required("Zone is required"),
 });
 
 export const validateEventPriceSchema = Yup.object().shape({

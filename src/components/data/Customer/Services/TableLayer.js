@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Box, Flex, Icon, Image, Td, Text, Tr } from "@chakra-ui/react";
+import { Box, Flex, Icon, Image, Select, Td, Text, Tr } from "@chakra-ui/react";
 import TableFormat from "../../../common/TableFormat";
 import { FiMoreVertical } from "react-icons/fi";
 import {
@@ -32,7 +32,7 @@ const TableLayer = () => {
   const [page, setPage] = useState(1);
   const navigate = useNavigate();
   const [tab, setTab] = useState("Valet Parking");
-  const limit = 10;
+  const [limit, setLimit] = useState(25);
   const { isLoading, data: payToPark } = useGetPayToPark(limit, page);
   const {
     isLoading: isReserving,
@@ -118,21 +118,19 @@ const TableLayer = () => {
         Recent Activity
       </Text>
       <TableFormat
-        maxH={"50vh"}
         tab={
           <Flex flexWrap="wrap" rowGap={{ base: "20px", md: "unset" }}>
             {serviceTabs.map((dat, i) => (
               <Text
-                px={{ base: "30px", md: "50px" }}
-                pb="16px"
+                px={{ base: "30px", md: "30px" }}
+                pb="13px"
                 fontSize={{ base: "12px", md: "14px" }}
                 cursor="pointer"
                 onClick={() => {
                   setTab(dat);
                   setPage(1);
+                  setLimit(25);
                 }}
-                _hover={{ color: "red" }}
-                transition=".4s ease-in-out"
                 fontWeight={tab === dat ? 500 : 400}
                 color={tab === dat ? "red" : "#646668"}
                 borderBottom={tab === dat ? "3px solid #EE383A" : ""}
@@ -152,7 +150,6 @@ const TableLayer = () => {
             ? isEvent
             : isCar
         }
-        minH="25vh"
         header={
           tab === "Pay-To-Park" || tab === "Valet Parking"
             ? payToParkHeader
@@ -346,6 +343,23 @@ const TableLayer = () => {
                   <Text lineHeight="100%">Next</Text>
                 </Flex>
               </Flex>
+
+              <Select
+                defaultValue={limit}
+                w="fit-content"
+                size="sm"
+                bg="transparent"
+                fontSize={12}
+                borderRadius={8}
+                borderWidth={1}
+                onChange={(e) => setLimit(e.target.value)}
+              >
+                {["25", "50", "100"].map((dat, i) => (
+                  <option key={i} value={dat}>
+                    {dat}
+                  </option>
+                ))}
+              </Select>
             </Flex>
           </Flex>
         }
