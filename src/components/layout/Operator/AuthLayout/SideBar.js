@@ -212,7 +212,7 @@ const SideBar = () => {
             {isLoading ? (
               <Flex
                 _hover={{ color: "#ee383a" }}
-                gap="8px"
+                gap={3}
                 color="red"
                 align="center"
                 fontWeight={500}
@@ -222,7 +222,7 @@ const SideBar = () => {
             ) : (
               <Flex
                 _hover={{ color: "#ee383a" }}
-                gap="8px"
+                gap={3}
                 align="center"
                 color="#242628"
               >
@@ -234,16 +234,23 @@ const SideBar = () => {
       </Box>
 
       <Flex
-        mt="auto"
-        mb="39px"
-        flexDir="column"
+        pos="sticky"
+        bg="#fff"
+        left="0"
+        right="0"
         justifyContent="center"
-        align="center"
+        zIndex={55555}
+        h="7rem"
+        pt="10px"
+        pb="20px"
+        w="full"
       >
-        <Text fontSize="12px" color="#000" lineHeight="100%" mb="8px">
-          Powered by
-        </Text>
-        <Image src="/assets/ezlogo.svg" objectFit="cover" />
+        <Flex flexDir="column" justifyContent="center" align="center">
+          <Text fontSize="12px" color="#000" lineHeight="100%" mb="8px">
+            Powered by
+          </Text>
+          <Image src="/assets/ezlogo.svg" objectFit="cover" />
+        </Flex>
       </Flex>
     </Flex>
   );

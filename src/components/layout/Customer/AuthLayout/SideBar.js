@@ -26,7 +26,7 @@ const SideBar = () => {
       position={"fixed"}
       zIndex="5"
       pt="40px"
-      h="89vh"
+      h="90vh"
       px="24px"
       w="275px"
       borderRadius="40px"
@@ -116,7 +116,7 @@ const SideBar = () => {
             {isLoading ? (
               <Flex
                 _hover={{ color: "#ee383a" }}
-                gap="8px"
+                gap="5px"
                 color="red"
                 align="center"
                 fontWeight={500}
@@ -126,7 +126,7 @@ const SideBar = () => {
             ) : (
               <Flex
                 _hover={{ color: "#ee383a" }}
-                gap="8px"
+                gap="5px"
                 align="center"
                 color="#242628"
               >

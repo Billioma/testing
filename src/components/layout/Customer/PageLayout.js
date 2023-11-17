@@ -25,6 +25,7 @@ export const AuthLayout = ({ children }) => {
         px={isMobile ? "5px" : "24px"}
         bg="#F4F6F8"
         overflowX="hidden"
+        minH="96vh"
         borderRadius="40px"
       >
         <Box mx={!isMobile ? "310px" : "20px"}>
