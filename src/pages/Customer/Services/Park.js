@@ -100,7 +100,7 @@ const Park = () => {
       onClose();
       refetchPark();
       refetch();
-      navigate("/customer/services");
+      navigate("/customer/history/user");
       setValues({
         vehicle: "",
         serviceType: "",
@@ -280,6 +280,12 @@ const Park = () => {
               setZone(e.target.value);
               setStep(1);
               setError(false);
+              setValues({
+                vehicle: "",
+                serviceType: "",
+                paymentMethod: "",
+                cardId: "",
+              });
             }}
           />
 
@@ -447,7 +453,7 @@ const Park = () => {
                 >
                   <Text
                     cursor="pointer"
-                    onClick={(onOp) => setShowVehicle(true)}
+                    onClick={() => setShowVehicle(true)}
                     textDecor="underline"
                   >
                     Add a Vehicle
@@ -654,7 +660,9 @@ const Park = () => {
                 : step === 3
                 ? values.paymentMethod === "0"
                   ? !values.cardId
-                  : ""
+                  : !values.paymentMethod ||
+                    !values.vehicle ||
+                    !values.serviceType
                 : ""
             }
             fontSize="14px"

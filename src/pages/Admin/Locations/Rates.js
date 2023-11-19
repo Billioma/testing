@@ -3,9 +3,7 @@ import RatesTableLayer from "../../../components/data/Admin/Locations/RatesTable
 import { Box, Button, Flex, Image, Text } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import { PRIVATE_PATHS } from "../../../routes/constants";
-import {
-  useGetAdminRates,
-} from "../../../services/admin/query/locations";
+import { useGetAdminRates } from "../../../services/admin/query/locations";
 import Filter from "../../../components/common/Filter";
 import { ratesOptions } from "../../../components/common/constants";
 import { MdAdd } from "react-icons/md";

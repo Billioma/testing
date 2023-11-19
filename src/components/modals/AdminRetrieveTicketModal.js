@@ -26,7 +26,7 @@ const AdminRetrieveTicketModal = ({
         py="32px"
         px="0"
         overflowY="auto"
-        borderRadius="8px"
+        borderRadius="12px"
         bg="#fff"
         color="#000"
       >

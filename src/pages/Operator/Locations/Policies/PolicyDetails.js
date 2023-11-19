@@ -87,7 +87,7 @@ const PolicyDetails = () => {
       location: selectedLocationOption,
       status: selectedStatusOption,
     });
-  }, [data, edit]);
+  }, [data, edit, allLocations]);
 
   const { errorToast, successToast } = useCustomToast();
 

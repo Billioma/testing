@@ -37,10 +37,11 @@ const {
 const {
   // CUSTOMER ROUTES
   CUST_DASHBOARD,
-  CUST_SERVICES,
   CUST_SERVICES_PARK,
   CUST_SERVICES_PARK_DETAILS,
   CUST_HISTORY_PARK_DETAILS,
+  CUST_HISTORY_USER,
+  CUST_HISTORY_US,
   CUST_SERVICES_RESERVE_PARK,
   CUST_SERVICES_RESERVE_PARK_DETAILS,
   CUST_HISTORY_RESERVE_PARK_DETAILS,
@@ -53,7 +54,6 @@ const {
   CUST_HELP_CENTER,
   CUST_HELP_CENTER_MAIL,
   CUST_HELP_CENTER_FAQ,
-  CUST_HISTORY,
   CUST_SETTINGS,
   CUST_SERVICES_CAR_SERVICE,
   CUST_PAYMENT,
@@ -204,9 +204,6 @@ const CustDashboard = WithSuspense(
   lazy(() => import("../pages/Customer/Dashboard/Dashboard"))
 );
 
-const CustServices = WithSuspense(
-  lazy(() => import("../pages/Customer/Services/Services"))
-);
 const CustServicesPark = WithSuspense(
   lazy(() => import("../pages/Customer/Services/Park"))
 );
@@ -237,8 +234,11 @@ const CustFaq = WithSuspense(lazy(() => import("../pages/Customer/Help/Faq")));
 const CustMail = WithSuspense(
   lazy(() => import("../pages/Customer/Help/ContactUs"))
 );
-const CustHistory = WithSuspense(
-  lazy(() => import("../pages/Customer/History/History"))
+const CustHistoryUs = WithSuspense(
+  lazy(() => import("../pages/Customer/History/Us"))
+);
+const CustHistoryUser = WithSuspense(
+  lazy(() => import("../pages/Customer/History/User"))
 );
 const CustSubscriptions = WithSuspense(
   lazy(() => import("../pages/Customer/Subscriptions/Subscriptions"))
@@ -884,7 +884,6 @@ export const PUBLIC_ROUTES = [
 export const PRIVATE_ROUTES = [
   // CUSTOMER ROUTES
   { path: CUST_DASHBOARD, element: <CustDashboard /> },
-  { path: CUST_SERVICES, element: <CustServices /> },
   { path: CUST_SERVICES_PARK, element: <CustServicesPark /> },
   { path: CUST_SERVICES_PARK_DETAILS, element: <CustServicesParkDetails /> },
   { path: CUST_HISTORY_PARK_DETAILS, element: <CustServicesParkDetails /> },
@@ -912,7 +911,8 @@ export const PRIVATE_ROUTES = [
   { path: CUST_HELP_CENTER_MAIL, element: <CustMail /> },
   { path: CUST_HELP_CENTER_FAQ, element: <CustFaq /> },
   { path: CUST_VEHICLES, element: <CustVehicles /> },
-  { path: CUST_HISTORY, element: <CustHistory /> },
+  { path: CUST_HISTORY_US, element: <CustHistoryUs /> },
+  { path: CUST_HISTORY_USER, element: <CustHistoryUser /> },
   { path: CUST_SETTINGS, element: <CustSettings /> },
   { path: CUST_PAYMENT, element: <CustPayment /> },
   { path: CUST_PROFILE, element: <CustProfile /> },

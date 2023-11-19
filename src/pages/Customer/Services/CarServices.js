@@ -233,7 +233,6 @@ const CarServices = () => {
         startChange("");
         refetch();
         refetchBooking();
-
         setValues({
           serviceId: "",
           address: "",
@@ -246,7 +245,7 @@ const CarServices = () => {
           vehicle: "",
         });
         setStep(1);
-        navigate("/customer/services");
+        navigate("/customer/history/user");
         successToast("Payment Successful");
       },
       onError: (err) => {
@@ -640,7 +639,7 @@ const CarServices = () => {
                 >
                   <Text
                     cursor="pointer"
-                    onClick={(onOp) => setShowVehicle(true)}
+                    onClick={() => setShowVehicle(true)}
                     textDecor="underline"
                   >
                     Add a Vehicle
@@ -827,7 +826,7 @@ const CarServices = () => {
                 >
                   Payment Method
                 </Text>
-                <Flex my="17px" align="center">
+                <Flex mt="17px" align="center">
                   <RadioGroup
                     value={values?.paymentMethod}
                     onChange={(e) =>
@@ -837,17 +836,23 @@ const CarServices = () => {
                       })
                     }
                     align="center"
-                    display="flex"
-                    gap="24px"
+                    display="grid"
+                    gridTemplateColumns={"repeat(2,1fr)"}
+                    rowGap="15px"
+                    w="full"
+                    justifyContent="space-between"
                   >
                     <Radio size="sm" value={"1"}>
-                      <Text fontSize="13px"> Pay via Wallet</Text>
+                      <Text fontSize="14px"> Pay with Wallet</Text>
                     </Radio>
                     <Radio size="sm" value={"0"}>
-                      <Text fontSize="13px">Pay via Card</Text>
+                      <Text fontSize="14px">Pay with Card</Text>
                     </Radio>
                     <Radio size="sm" value={"2"}>
-                      <Text fontSize="13px">Pay via Points</Text>
+                      <Text fontSize="14px">Pay with Points</Text>
+                    </Radio>
+                    <Radio size="sm" value={"3"}>
+                      <Text fontSize="14px">Pay with Transfer</Text>
                     </Radio>
                   </RadioGroup>
                 </Flex>
@@ -1020,7 +1025,7 @@ const CarServices = () => {
         }}
         onClose={() => setShowFunds(false)}
       />
-       <AddVehicleModal
+      <AddVehicleModal
         makes={makes}
         models={models}
         noVehicle

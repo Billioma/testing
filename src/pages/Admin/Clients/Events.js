@@ -1,14 +1,9 @@
 import React, { useState, useEffect } from "react";
 import EventsTableLayer from "../../../components/data/Admin/Clients/EventsTableLayer";
 import { Box, Button, Flex, Image, Text } from "@chakra-ui/react";
-import { FiPlus } from "react-icons/fi";
-import { VscDebugRestart } from "react-icons/vsc";
 import { useNavigate } from "react-router-dom";
 import { PRIVATE_PATHS } from "../../../routes/constants";
-import {
-  useGetAdminEvents,
-  useGetClientsEvents,
-} from "../../../services/admin/query/clients";
+import { useGetAdminEvents } from "../../../services/admin/query/clients";
 import Filter from "../../../components/common/Filter";
 import { eventsOptions } from "../../../components/common/constants";
 import { MdAdd } from "react-icons/md";

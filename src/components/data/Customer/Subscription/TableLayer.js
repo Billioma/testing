@@ -8,7 +8,6 @@ import {
   subHeader,
   subOption,
 } from "../../../common/constants";
-import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import {
   useCancelSub,
   useGetUser,

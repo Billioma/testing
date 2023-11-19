@@ -19,6 +19,7 @@ import {
   invoiceStatusType,
   ReservedStatus,
   LogsStatus,
+  FeatureType,
 } from "./constants";
 import {
   useGetMakes,
@@ -137,15 +138,10 @@ const Filter = ({
     (opt) => ({ value: opt, label: opt })
   );
 
-  const featureTypesOptions = [
-    "Vehicle Limit",
-    "Parking Limit",
-    "Valet Limit",
-    "Location Limit",
-    "Car Service Limit",
-    "Applicable Locations",
-    "User Limit",
-  ].map((opt, i) => ({ value: i, label: opt }));
+  const featureTypesOptions = FeatureType.map((opt, i) => ({
+    value: i,
+    label: opt,
+  }));
 
   const [show, setShow] = useState(false);
 
@@ -389,6 +385,8 @@ const Filter = ({
                             ? payMethodOptions
                             : values?.dropFilter === "Make"
                             ? makeOptions
+                            : values?.dropFilter === "Make"
+                            ? makeOptions
                             : values?.dropFilter === "Model"
                             ? modelOptions
                             : values?.dropFilter === "Reservable"
@@ -529,6 +527,8 @@ const Filter = ({
                     ? PaymentMethods?.find((item, i) => i === dat?.filter)
                     : dat?.title === "transactionType"
                     ? TransactionTypes?.find((item, i) => i === dat?.filter)
+                    : dat?.title === "featureType"
+                    ? FeatureType?.find((item, i) => i === dat?.filter)
                     : dat?.title === "reservable"
                     ? ["No", "Yes"]?.find((item, i) => i === dat?.filter)
                     : dat?.title === "status"

@@ -195,7 +195,7 @@ export default function ViewServicedVehicle() {
   };
 
   const handlePay = () => {
-    console.log({
+    payMutate({
       query: id,
       body: {
         amount: Number(values?.amount),

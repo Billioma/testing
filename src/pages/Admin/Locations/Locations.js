@@ -1,14 +1,9 @@
 import React, { useState, useEffect } from "react";
 import LocationsTableLayer from "../../../components/data/Admin/Locations/LocationsTableLayer";
 import { Box, Button, Flex, Image, Text } from "@chakra-ui/react";
-import { FiPlus } from "react-icons/fi";
-import { VscDebugRestart } from "react-icons/vsc";
 import { useNavigate } from "react-router-dom";
 import { PRIVATE_PATHS } from "../../../routes/constants";
-import {
-  useGetAdminLocations,
-  useGetLocations,
-} from "../../../services/admin/query/locations";
+import { useGetAdminLocations } from "../../../services/admin/query/locations";
 import Filter from "../../../components/common/Filter";
 import { locationsOptions } from "../../../components/common/constants";
 import { MdAdd } from "react-icons/md";

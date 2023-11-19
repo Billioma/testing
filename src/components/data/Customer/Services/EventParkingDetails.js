@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   Box,
   Button,
@@ -13,8 +13,8 @@ import {
   useGetTips,
 } from "../../../../services/customer/query/services";
 import { useParams } from "react-router-dom";
-import { formatDate, formatDateTime } from "../../../../utils/helpers";
-import { PaymentMethods, Status } from "../../../common/constants";
+import { formatDate } from "../../../../utils/helpers";
+import { Status } from "../../../common/constants";
 import MakeTipModal from "../../../modals/MakeTipModal";
 
 export const Layout = ({ label, data }) => {

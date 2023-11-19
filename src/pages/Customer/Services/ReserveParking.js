@@ -18,8 +18,10 @@ import { CiLocationOn } from "react-icons/ci";
 import { Calendar } from "react-calendar";
 import {
   formatDate,
+  formatHour,
+  formatNewDate,
+  formatTimeMinute,
   formatTimeToHHMMSS,
-  timeArray,
 } from "../../../utils/helpers";
 import {
   useGetMake,
@@ -125,12 +127,49 @@ const ReserveParking = () => {
     dat?.address?.includes(values?.city?.value)
   );
 
+  const today = new Date();
+  const firstHour = formatHour(today);
+  const lastMinute = formatTimeMinute(today);
+  const generateTimeArrays = (date) => {
+    const times = [];
+    const shouldStartFromNow = formatNewDate(date) === formatNewDate(today);
+    const startHour = shouldStartFromNow
+      ? Number(lastMinute) === 45 || Number(lastMinute) === 0
+        ? Number(firstHour) + 1
+        : Number(firstHour)
+      : 0;
+    const startMinute = shouldStartFromNow
+      ? Number(lastMinute) === 45
+        ? 0
+        : Number(lastMinute)
+      : 0;
+    for (let hour = startHour; hour < 24; hour++) {
+      for (let minute = startMinute; minute < 60; minute += 15) {
+        const isPM = hour >= 12;
+        const hourFormatted = (hour % 12 || 12).toString().padStart(2, "0");
+        const minuteFormatted = minute.toString().padStart(2, "0");
+        const period = isPM ? "PM" : "AM";
+        const time = `${hourFormatted}:${minuteFormatted} ${period}`;
+        times.push(time);
+      }
+    }
+
+    return times;
+  };
+
+  const timeArrays = generateTimeArrays(startValue);
+  const timeArray = generateTimeArrays(endValue);
+
   const stateOptions = allStates?.map((state) => ({
     value: state,
     label: state,
   }));
   const cityOptions = (
-    values?.state.value === "Lagos" ? cities.slice(0, 4) : cities.slice(4, 6)
+    values?.state.value === "Lagos"
+      ? cities.slice(0, 4)
+      : values?.state.value === "FCT"
+      ? cities.slice(4, 6)
+      : []
   )?.map((city) => ({
     value: city,
     label: city,
@@ -140,7 +179,11 @@ const ReserveParking = () => {
     label: city?.name,
     id: city?.id,
   }));
-  const timeOptions = timeArray?.map((time) => ({
+  const timeOption = timeArray?.map((time) => ({
+    value: time,
+    label: time,
+  }));
+  const timeOptions = timeArrays?.map((time) => ({
     value: time,
     label: time,
   }));
@@ -203,8 +246,8 @@ const ReserveParking = () => {
       onSuccess: () => {
         refetch();
         refetchParking();
-        navigate("/customer/services");
-        successToast("Payment Successful");
+        navigate("/customer/history/user");
+        successToast("Parking spot reserved");
       },
       onError: (err) => {
         errorToast(
@@ -328,6 +371,8 @@ const ReserveParking = () => {
               mb="23px"
               onClick={() => {
                 setStep(step - 1);
+                endChange("");
+                startChange("");
                 setValues({
                   state: "",
                   city: "",
@@ -625,7 +670,7 @@ const ReserveParking = () => {
                   <Select
                     styles={customStyles}
                     placeholder="Select Time"
-                    options={timeOptions}
+                    options={timeOption}
                     value={values?.departureTime}
                     defaultValue={values?.departureTime}
                     onChange={(selectedOption) =>
@@ -694,7 +739,7 @@ const ReserveParking = () => {
                 >
                   <Text
                     cursor="pointer"
-                    onClick={(onOp) => setShowVehicle(true)}
+                    onClick={() => setShowVehicle(true)}
                     textDecor="underline"
                   >
                     Add a Vehicle
@@ -888,7 +933,16 @@ const ReserveParking = () => {
                 ? !values?.state || !values?.city || !values?.locations
                 : step === 2
                 ? values?.paymentMethod === "0"
-                  ? !values?.cardId
+                  ? !values?.cardId ||
+                    (start &&
+                      end &&
+                      values?.arrivalTime &&
+                      values?.departureTime &&
+                      formattedDeparture < formattedDate) ||
+                    !values?.arrivalTime ||
+                    !values?.departureTime ||
+                    !values?.vehicle ||
+                    !values?.paymentMethod
                   : (start &&
                       end &&
                       values?.arrivalTime &&

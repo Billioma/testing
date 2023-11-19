@@ -130,7 +130,7 @@ const LocationDetails = () => {
       amenities: selectedAmenitiesOption,
       status: selectedStatusOption,
     });
-  }, [data, edit]);
+  }, [data, edit, amenities]);
 
   const { errorToast, successToast } = useCustomToast();
   const {

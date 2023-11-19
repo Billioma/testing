@@ -162,7 +162,6 @@ export const useGetRates = (options = {}, page = 1, limit = 25, query) => {
   return { isLoading, data, refetch };
 };
 
-
 export const useGetAdminRates = (options = {}) => {
   const { mutate, isLoading, data } = useMutation(getAdminRates, {
     mutationKey: "GET_ADMIN_RATES_LIST",
@@ -210,7 +209,6 @@ export const useGetAdminPolicy = (options = {}) => {
   });
   return { mutate, isLoading, data };
 };
-
 
 export const useDeleteRate = (options = {}) => {
   const { isLoading, mutate } = useMutation(deleteRate, {

@@ -3,9 +3,7 @@ import PoliciesTableLayer from "../../../components/data/Admin/Locations/Policie
 import { Box, Button, Flex, Image, Text } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import { PRIVATE_PATHS } from "../../../routes/constants";
-import {
-  useGetAdminPolicies,
-} from "../../../services/admin/query/locations";
+import { useGetAdminPolicies } from "../../../services/admin/query/locations";
 import Filter from "../../../components/common/Filter";
 import { policiesOptions } from "../../../components/common/constants";
 import { MdAdd } from "react-icons/md";

@@ -138,7 +138,7 @@ const RateDetails = () => {
       status: selectedStatusOption,
     });
     setLimit(data?.noLimit === 0 ? false : data?.noLimit === 1 && true);
-  }, [data, edit]);
+  }, [data, edit, services, locations]);
 
   const { errorToast, successToast } = useCustomToast();
 

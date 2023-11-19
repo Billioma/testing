@@ -83,8 +83,6 @@ const AdminEditServiceModal = ({ isOpen, refetch, onClose, service }) => {
     });
   };
 
-  console.log(values);
-
   useEffect(() => {
     const selectedServiceOption = selectOptions?.find(
       (option) => option.label === service?.serviceType
@@ -113,7 +111,7 @@ const AdminEditServiceModal = ({ isOpen, refetch, onClose, service }) => {
         py="32px"
         px="0"
         overflowY="auto"
-        borderRadius="8px"
+        borderRadius="12px"
         bg="#fff"
         color="#000"
       >

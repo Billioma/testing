@@ -124,7 +124,7 @@ export default function AddZone() {
       carServiceType: selectedCarServiceOption,
       status: selectedStatusOption,
     });
-  }, [data]);
+  }, [data, services, operators]);
 
   const handleSelectChange = (selectedOption, { name }) => {
     setValues({

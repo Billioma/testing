@@ -130,7 +130,7 @@ const ZoneDetails = () => {
     setReservable(
       data?.reservable === 0 ? false : data?.reservable === 1 && true
     );
-  }, [data, edit]);
+  }, [data, edit, services, locations, amenities]);
 
   const { errorToast, successToast } = useCustomToast();
 

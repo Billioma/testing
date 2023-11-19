@@ -133,7 +133,7 @@ export default function AddAttendants() {
       role: selectedRoleOption,
       status: selectedStatusOption,
     });
-  }, [data]);
+  }, [data, allRoles]);
 
   const handleSubmit = () => {
     updateMutate({

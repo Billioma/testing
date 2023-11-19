@@ -15,6 +15,7 @@ import CustomInput from "../common/CustomInput";
 import { allStates, colorTypes } from "../common/constants";
 import { useCreateVehicles } from "../../services/customer/query/vehicles";
 import useCustomToast from "../../utils/notifications";
+import { IoIosArrowDown } from "react-icons/io";
 
 const AddVehicleModal = ({
   isOpen,
@@ -75,19 +76,21 @@ const AddVehicleModal = ({
   const isDisabled = Object.values(values).some((value) => !value);
 
   const customStyles = {
-    control: (provided) => ({
+    control: (provided, state) => ({
       ...provided,
       width: "100%",
-      height: "44px",
+      minHeight: "44px",
       color: "#646668",
       fontSize: "14px",
       cursor: "pointer",
       borderRadius: "4px",
-      border: "1px solid #D4D6D8",
-      background: "unset",
+      border: state.hasValue ? "none" : "1px solid #D4D6D8",
+      paddingRight: "16px",
+      background: state.hasValue ? "#f4f6f8" : "unset",
     }),
     menu: (provided) => ({
       ...provided,
+      fontSize: "13px",
       backgroundColor: "#f4f6f8",
     }),
     option: (provided, state) => ({
@@ -96,6 +99,7 @@ const AddVehicleModal = ({
       backgroundColor: state.isFocused ? "#d4d6d8" : "",
     }),
   };
+
   const { errorToast, successToast } = useCustomToast();
 
   const close = () => {
@@ -127,6 +131,45 @@ const AddVehicleModal = ({
     });
   };
 
+  const getOptionLabel = (option) => (
+    <Flex gap="8px" align="center">
+      <Box
+        width="28px"
+        height="20px"
+        backgroundColor={option.value}
+        borderRadius="4px"
+      />
+      {option.label}
+    </Flex>
+  );
+
+  const [menuIsOpen, setMenuIsOpen] = useState(false);
+  const getOptionValue = (option) => option.value;
+
+  const ColorOption = ({ data }) => (
+    <Flex
+      mt="-5px"
+      onClick={() => {
+        setValues({ ...values, color: data });
+        setMenuIsOpen(false);
+      }}
+      px="10px"
+      cursor="pointer"
+      _hover={{ bg: "#fff" }}
+      gap="8px"
+      align="center"
+      h="40px"
+    >
+      <Flex
+        width="28px"
+        height="20px"
+        backgroundColor={data?.value}
+        borderRadius="4px"
+      ></Flex>
+      {data?.label}
+    </Flex>
+  );
+
   const ColorOptio = ({ data }) => (
     <Flex mt="-30px" gap="8px" align="center" h="40px">
       <Flex
@@ -146,11 +189,11 @@ const AddVehicleModal = ({
         py="32px"
         px="24px"
         overflowY="auto"
-        borderRadius="8px"
+        borderRadius="12px"
         bg="#fff"
         color="#000"
       >
-        <ModalBody>
+        <ModalBody px="0">
           <Flex justifyContent="center" align="center" flexDir="column">
             <Image w="56px" h="40px" src="/assets/car.png" />
             <Text
@@ -191,6 +234,11 @@ const AddVehicleModal = ({
               components={{
                 IndicatorSeparator: () => (
                   <div style={{ display: "none" }}></div>
+                ),
+                DropdownIndicator: () => (
+                  <div>
+                    <IoIosArrowDown size="15px" color="#646668" />
+                  </div>
                 ),
               }}
               onChange={(selectedOption) =>
@@ -234,16 +282,28 @@ const AddVehicleModal = ({
             </Text>
             <Select
               styles={customStyles}
+              onMenuOpen={() => setMenuIsOpen(true)}
+              menuIsOpen={menuIsOpen}
+              onMenuClose={() => setMenuIsOpen(false)}
               components={{
                 SingleValue: ColorOptio,
+                Option: ColorOption,
                 IndicatorSeparator: () => (
                   <div style={{ display: "none" }}></div>
+                ),
+                DropdownIndicator: () => (
+                  <div>
+                    <IoIosArrowDown size="15px" color="#646668" />
+                  </div>
                 ),
               }}
               onChange={(selectedOption) =>
                 handleSelectChange(selectedOption, { name: "color" })
               }
+              value={values?.color}
               options={colorOptions}
+              getOptionLabel={getOptionLabel}
+              getOptionValue={getOptionValue}
             />
           </Box>
           <Box mb="18px">
@@ -262,6 +322,11 @@ const AddVehicleModal = ({
               components={{
                 IndicatorSeparator: () => (
                   <div style={{ display: "none" }}></div>
+                ),
+                DropdownIndicator: () => (
+                  <div>
+                    <IoIosArrowDown size="15px" color="#646668" />
+                  </div>
                 ),
               }}
               options={makeOptions}
@@ -288,6 +353,11 @@ const AddVehicleModal = ({
               components={{
                 IndicatorSeparator: () => (
                   <div style={{ display: "none" }}></div>
+                ),
+                DropdownIndicator: () => (
+                  <div>
+                    <IoIosArrowDown size="15px" color="#646668" />
+                  </div>
                 ),
               }}
               onChange={(selectedOption) =>

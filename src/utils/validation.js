@@ -400,7 +400,6 @@ export const validateAttendantsSchema = Yup.object().shape({
 export const validateAdminLocationSchema = Yup.object().shape({
   name: Yup.string().required("Name is required"),
   description: Yup.string().required("Description is required"),
-  geoLocation: Yup.string().required("Geo Location is required"),
   address: Yup.string().required("Address is required"),
   state: Yup.object().required("State is required"),
   operator: Yup.object().required("Operator is required"),

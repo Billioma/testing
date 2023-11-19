@@ -16,9 +16,9 @@ const TableLayer = () => {
         Active Sessions
       </Text>
       <TableFormat
-        maxH={"70vh"}
+        newOpt
         isLoading={isLoading}
-        minH="20vh"
+        maxH="50vh"
         header={servicesHeader}
       >
         {payToPark?.data?.length ? (

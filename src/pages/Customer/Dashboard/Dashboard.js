@@ -20,7 +20,7 @@ const Dashboard = () => {
     refetch: refetchVehicle,
   } = useGetVehicles();
   const { data: makes } = useGetMake();
-  
+
   useEffect(() => {
     setTimeout(() => {
       if (login === "login" && vehicles?.data?.length === 0) {

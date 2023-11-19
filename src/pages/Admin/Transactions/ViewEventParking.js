@@ -99,7 +99,7 @@ export default function ViewPayToPark() {
       reservedDate: data?.reservedDate,
       status: selectedStatusOption,
     });
-  }, [data]);
+  }, [data, zones]);
 
   return (
     <Box minH="75vh">

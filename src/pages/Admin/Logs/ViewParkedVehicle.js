@@ -195,7 +195,7 @@ export default function ViewParkedVehicle() {
   };
 
   const handlePay = () => {
-    console.log({
+    payMutate({
       query: id,
       body: {
         amount: Number(values?.amount),

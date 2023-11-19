@@ -132,7 +132,7 @@ const Header = () => {
       bg={"#fff"}
       pos="fixed"
       w={isMobile ? "calc(100% - 85px)" : "calc(100% - 390px)"}
-      borderRadius="24px"
+      borderRadius="16px"
       zIndex="5"
       py={isMobile ? "30px" : "20px"}
       color="#000"

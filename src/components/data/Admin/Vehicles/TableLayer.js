@@ -21,7 +21,7 @@ import useCustomToast from "../../../../utils/notifications";
 import { PRIVATE_PATHS } from "../../../../routes/constants";
 import { BsChevronDown } from "react-icons/bs";
 import { useDeleteVehicle } from "../../../../services/admin/query/vehicles";
-import { clientListOption } from "../../../common/constants";
+import { clientListOption, colorTypes } from "../../../common/constants";
 import { Add } from "../../../common/images";
 import TableLoader from "../../../loaders/TableLoader";
 
@@ -112,7 +112,14 @@ const TableLayer = ({
               >
                 <Td>{vehicle?.customerName}</Td>
                 <Td>{vehicle?.licensePlate}</Td>
-                <Td textAlign="center">{vehicle?.color}</Td>
+                <Td textAlign="center">
+                  {vehicle?.color?.includes("#")
+                    ? colorTypes.find(
+                        (item) =>
+                          item?.color?.toLocaleLowerCase() === vehicle?.color
+                      )?.label
+                    : vehicle?.color}
+                </Td>
                 <Td textAlign="center">{vehicle?.make?.name}</Td>
                 <Td textAlign="center">{vehicle?.model?.name}</Td>
                 <Td textAlign="center">{vehicle?.createdBy}</Td>

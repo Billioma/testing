@@ -121,6 +121,46 @@ export const ADMIN_VEHICLE_MODELS = "admin/vehicle-models";
 
 export const ADMIN_CORPORATE_PLANS = "public/membership-plans";
 export const ADMIN_MEMBERSHIP_PLANS = "admin/membership-plans";
+
+export const ADMIN_MEMBERSHIP_PLANS_LIST = (
+  filterString = "",
+  limit = "",
+  page = ""
+) =>
+  `admin/membership-plans?${filterString}&limit=${limit}&page=${page}&sort=id,DESC`;
+
+export const ADMIN_MEMBERSHIP_PLAN = (id = "") =>
+  `admin/membership-plans/${id}`;
+
+export const ADMIN_MEMBERSHIP_FEATURES_LIST = (
+  filterString = "",
+  limit = "",
+  page = ""
+) =>
+  `admin/membership-plan-features?${filterString}&limit=${limit}&page=${page}&sort=id,DESC`;
+
+export const ADMIN_MEMBERSHIP_FEATURE = (id = "") =>
+  `admin/membership-plan-features/${id}`;
+
+export const ADMIN_CUSTOMER_SUBS_LIST = (
+  filterString = "",
+  limit = "",
+  page = ""
+) =>
+  `admin/membership-subscriptions?${filterString}&limit=${limit}&page=${page}&sort=id,DESC`;
+
+export const ADMIN_CUSTOMER_SUB = (id = "") =>
+  `admin/membership-subscriptions/${id}`;
+
+export const ADMIN_CORP_SUBS_LIST = (
+  filterString = "",
+  limit = "",
+  page = ""
+) =>
+  `admin/corporate-subscriptions?${filterString}&limit=${limit}&page=${page}&sort=id,DESC`;
+
+export const ADMIN_CORP_SUB = (id = "") =>
+  `admin/corporate-subscriptions/${id}`;
 export const ADMIN_MEMBERSHIP_FEATURES = "admin/membership-plan-features";
 export const ADMIN_CUSTOMER_SUBSCRIPTIONS = "admin/membership-subscriptions";
 export const ADMIN_CORPORATE_SUBSCRIPTIONS = "admin/corporate-subscriptions";

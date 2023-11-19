@@ -9,7 +9,7 @@ import { subFieldOption } from "../../../components/common/constants";
 
 const Subscriptions = () => {
   const { mutate, data, isLoading } = useGetClientSubs();
-  
+
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(25);
   const [startRow, setStartRow] = useState(1);
@@ -48,7 +48,6 @@ const Subscriptions = () => {
     setStartRow(currentStartRow);
     setEndRow(currentEndRow);
   }, [data, page, limit]);
-
 
   return (
     <Box>
@@ -108,14 +107,14 @@ const Subscriptions = () => {
         />
 
         <TableLayer
-        data={data}
-        isLoading={isLoading}
-        page={page}
-        limit={limit}
-        setLimit={setLimit}
-        setPage={setPage}
-        startRow={startRow}
-        endRow={endRow}
+          data={data}
+          isLoading={isLoading}
+          page={page}
+          limit={limit}
+          setLimit={setLimit}
+          setPage={setPage}
+          startRow={startRow}
+          endRow={endRow}
         />
       </Box>
     </Box>

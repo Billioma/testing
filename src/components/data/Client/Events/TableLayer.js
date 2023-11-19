@@ -162,8 +162,8 @@ const TableLayer = ({ isLoading, limit, data, setPage, page, eventMutate }) => {
                             bg="#fff"
                             borderRadius="4px"
                             pos="absolute"
-                            top={i < 3 ? "20px" : "unset"}
-                            bottom={i > 3 ? "0" : "unset"}
+                            top={i === data?.data?.length - 1 ? "" : "20px"}
+                            bottom={i === data?.data?.length - 1 ? "0" : ""}
                             right="0"
                             zIndex={5555555}
                             boxShadow="0px 8px 16px 0px rgba(0, 0, 0, 0.08)"

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import StatCard from "./StatCard";
 import Select from "react-select";
-import { Text, Box, Flex, SimpleGrid, Skeleton, Grid } from "@chakra-ui/react";
+import { Text, Box, Flex, SimpleGrid, Skeleton } from "@chakra-ui/react";
 import {
   useGetUsersMetrics,
   useGetUsersMetricsFilter,
@@ -213,8 +213,8 @@ export default function TopUserSection() {
                 isLoaded={notLoading}
               ></Skeleton>
             ))
-          : state?.length &&
-            state?.map((card) => (
+          : state?.length
+          ? state?.map((card) => (
               <StatCard
                 key={card.id}
                 title={card.title}
@@ -223,7 +223,8 @@ export default function TopUserSection() {
                 active={card.active}
                 inactive={card.inactive}
               />
-            ))}
+            ))
+          : ""}
       </SimpleGrid>
     </Box>
   );

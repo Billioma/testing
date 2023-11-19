@@ -80,7 +80,7 @@ export default function ViewPolicy() {
       location: selectedLocationOption,
       status: selectedStatusOption,
     });
-  }, [data]);
+  }, [data, locations]);
 
   const handleSelectChange = (selectedOption, { name }) => {
     setValues({

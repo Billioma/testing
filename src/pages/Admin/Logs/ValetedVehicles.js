@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from "react";
 import ValetedVehiclesTableLayer from "../../../components/data/Admin/Logs/ValetedVehiclesTableLayer";
 import { Box, Flex, Image, Text } from "@chakra-ui/react";
-import {
-  useGetAdminServiceLogs,
-} from "../../../services/admin/query/logs";
+import { useGetAdminServiceLogs } from "../../../services/admin/query/logs";
 import { valetedVehiclesOptions } from "../../../components/common/constants";
 import Filter from "../../../components/common/Filter";
 

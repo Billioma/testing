@@ -15,8 +15,10 @@ import { useNavigate } from "react-router-dom";
 import { AiOutlineFolderOpen } from "react-icons/ai";
 import {
   formatDate,
+  formatHour,
+  formatNewDate,
+  formatTimeMinute,
   formatTimeToHHMMSS,
-  timeArray,
 } from "../../../utils/helpers";
 import { Calendar } from "react-calendar";
 import Select from "react-select";
@@ -49,7 +51,45 @@ const AddEvent = () => {
   const [startValue, startChange] = useState("");
   const [endValue, endChange] = useState("");
   const [endDate, setEndDate] = useState(false);
-  const timeOptions = timeArray?.map((time) => ({
+  const today = new Date();
+  const firstHour = formatHour(today);
+  const lastMinute = formatTimeMinute(today);
+  const generateTimeArrays = (date) => {
+    const times = [];
+
+    const shouldStartFromNow = formatNewDate(date) === formatNewDate(today);
+    const startHour = shouldStartFromNow
+      ? Number(lastMinute) === 45 || Number(lastMinute) === 0
+        ? Number(firstHour) + 1
+        : Number(firstHour)
+      : 0;
+    const startMinute = shouldStartFromNow
+      ? Number(lastMinute) === 45
+        ? 0
+        : Number(lastMinute)
+      : 0;
+
+    for (let hour = startHour; hour < 24; hour++) {
+      for (let minute = startMinute; minute < 60; minute += 15) {
+        const isPM = hour >= 12;
+        const hourFormatted = (hour % 12 || 12).toString().padStart(2, "0");
+        const minuteFormatted = minute.toString().padStart(2, "0");
+        const period = isPM ? "PM" : "AM";
+        const time = `${hourFormatted}:${minuteFormatted} ${period}`;
+        times.push(time);
+      }
+    }
+
+    return times;
+  };
+
+  const timeArrays = generateTimeArrays(startValue);
+  const timeArray = generateTimeArrays(endValue);
+  const timeOptions = timeArrays?.map((time) => ({
+    value: time,
+    label: time,
+  }));
+  const secTimeOptions = timeArray?.map((time) => ({
     value: time,
     label: time,
   }));
@@ -475,7 +515,7 @@ const AddEvent = () => {
               <Select
                 styles={customStyles}
                 placeholder="Select Time"
-                options={timeOptions}
+                options={secTimeOptions}
                 value={values.departureTime}
                 defaultValue={values.departureTime}
                 onChange={(selectedOption) =>

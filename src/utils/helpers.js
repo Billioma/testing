@@ -84,32 +84,67 @@ export const formatTime = (date, fallback = "") => {
   });
 };
 
-export const formatDateTime = (date, fallback = "") => {
+export const formatTimes = (date, fallback = "") => {
   if (!date) return fallback;
 
   return new Date(date).toLocaleTimeString("default", {
-    day: "numeric",
-    month: "short",
-    year: "numeric",
+    hour: "numeric",
+    minute: "numeric",
   });
 };
 
-const generateTimeArray = () => {
-  const times = [];
-  for (let hour = 0; hour < 24; hour++) {
-    for (let minute = 0; minute < 60; minute += 15) {
-      const isPM = hour >= 12;
-      const hourFormatted = (hour % 12 || 12).toString().padStart(2, "0");
-      const minuteFormatted = minute.toString().padStart(2, "0");
-      const period = isPM ? "PM" : "AM";
-      const time = `${hourFormatted}:${minuteFormatted} ${period}`;
-      times.push(time);
-    }
-  }
-  return times;
+export const formatMinute = (date, fallback = "") => {
+  if (!date) return fallback;
+
+  return new Date(date).toLocaleTimeString("default", {
+    minute: "numeric",
+  });
 };
 
-export const timeArray = generateTimeArray();
+export const formatHour = (date, fallback = "") => {
+  if (!date) return fallback;
+
+  return new Date(date).toLocaleTimeString("default", {
+    hour: "numeric",
+    hour12: false,
+  });
+};
+
+export const formatTimeMinute = (date, fallback = "") => {
+  if (!date) return fallback;
+
+  const currentMinutes = date.getMinutes();
+  const roundedMinutes = Math.floor(currentMinutes / 15) * 15;
+  const nextRoundedMinutes = roundedMinutes + 15;
+
+  const roundedDate = new Date(date);
+  if (currentMinutes >= roundedMinutes) {
+    roundedDate.setMinutes(nextRoundedMinutes);
+  } else {
+    roundedDate.setMinutes(roundedMinutes);
+  }
+
+  return roundedDate.toLocaleTimeString("default", {
+    minute: "numeric",
+  });
+};
+
+export const formatDateTime = (date, fallback = "") => {
+  if (!date) return fallback;
+
+  const formattedDate = new Date(date);
+  const options = {
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+    hour: "numeric",
+    minute: "numeric",
+    hour12: false,
+    timeZone: "UTC",
+  };
+
+  return formattedDate.toLocaleString("default", options);
+};
 
 export const formatTimeToHHMMSS = (time) => {
   if (!time) {

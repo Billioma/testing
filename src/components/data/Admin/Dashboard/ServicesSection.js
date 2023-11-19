@@ -232,8 +232,8 @@ export default function ServicesSection() {
                 isLoaded={notLoading}
               ></Skeleton>
             ))
-          : state?.length &&
-            state?.map((card) => (
+          : state?.length
+          ? state?.map((card) => (
               <StatCard
                 key={card.id}
                 title={card.title}
@@ -246,7 +246,8 @@ export default function ServicesSection() {
                 large
                 bg="#fff"
               />
-            ))}
+            ))
+          : ""}
       </SimpleGrid>
     </Box>
   );

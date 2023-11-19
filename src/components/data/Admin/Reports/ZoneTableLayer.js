@@ -1,18 +1,5 @@
 import React from "react";
-import {
-  Box,
-  Flex,
-  Image,
-  Select,
-  Table,
-  TableContainer,
-  Tbody,
-  Td,
-  Text,
-  Th,
-  Thead,
-  Tr,
-} from "@chakra-ui/react";
+import { Box, Flex, Image, Td, Text, Tr } from "@chakra-ui/react";
 import TableLoader from "../../../loaders/TableLoader";
 import { adminRepZoneHeader } from "../../../common/constants";
 import { formatDateTimes } from "../../../../utils/helpers";

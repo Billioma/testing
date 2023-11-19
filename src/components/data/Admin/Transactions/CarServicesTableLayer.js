@@ -15,14 +15,12 @@ import {
 import TableFormat from "../../../common/TableFormat";
 import { formatDate } from "../../../../utils/helpers";
 import { useNavigate } from "react-router-dom";
-import { HiOutlineInformationCircle } from "react-icons/hi";
 import AdminDeleteModal from "../../../modals/AdminDeleteModal";
 import useCustomToast from "../../../../utils/notifications";
-import { PRIVATE_PATHS } from "../../../../routes/constants";
 import { BsChevronDown } from "react-icons/bs";
 import { useDeleteCarService } from "../../../../services/admin/query/transactions";
 import TableLoader from "../../../loaders/TableLoader";
-import { SecStatus, Status, clientListOption } from "../../../common/constants";
+import { Status, clientListOption } from "../../../common/constants";
 
 const TableLayer = ({
   data,

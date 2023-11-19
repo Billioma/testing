@@ -14,6 +14,8 @@ import {
 } from "../../../services/admin/query/memberships";
 import { useGetAllCustomers } from "../../../services/admin/query/customers";
 import { useGetAllLocations } from "../../../services/admin/query/locations";
+import { HiOutlineArrowNarrowLeft } from "react-icons/hi";
+import { IoIosArrowDown } from "react-icons/io";
 
 export default function AddCustomerSubscription() {
   const [state, setState] = useState({
@@ -87,7 +89,7 @@ export default function AddCustomerSubscription() {
       return;
     }
 
-    let temp = state.subscriptionOptions;
+    let temp = state?.subscriptionOptions;
     let tempType;
     if (name === "vehicle") {
       tempType = temp?.find((feature) => feature.type === "vehicle");
@@ -156,24 +158,51 @@ export default function AddCustomerSubscription() {
 
   return (
     <Box minH="75vh">
+      {" "}
+      {!state?.membershipPlan ? (
+        <Box w="fit-content">
+          <GoBackTab />
+        </Box>
+      ) : (
+        <Box
+          w="fit-content"
+          py={2}
+          mb={3}
+          color="#242628"
+          display="flex"
+          alignItems="center"
+          justifyContent="flex-start"
+        >
+          <Flex
+            align="center"
+            fontSize="14px"
+            fontWeight="500"
+            lineHeight="100%"
+            cursor="pointer"
+            gap="8px"
+            onClick={() => setState({ ...state, membershipPlan: "" })}
+          >
+            <HiOutlineArrowNarrowLeft size={20} />
+            Back
+          </Flex>
+        </Box>
+      )}
       <Flex justifyContent="center" align="center" w="full" flexDir="column">
-        <GoBackTab />
-
-        {state.membershipPlan ? (
+        {state?.membershipPlan ? (
           <Flex
             bg="#fff"
-            borderRadius="16px"
-            py="24px"
-            px="28px"
+            borderRadius="8px"
+            py="32px"
+            px="24px"
             justifyContent="center"
-            w="30rem"
+            w={{ base: "100%", md: "30rem" }}
             flexDir="column"
             border="1px solid #E4E6E8"
           >
             <Box bg="#0D0718" borderRadius="8px" p={4} mb={4}>
               <Text color="#fff" fontSize="14px" fontWeight={500}>
                 {
-                  plans?.data?.find((plan) => plan.id === state.membershipPlan)
+                  plans?.data?.find((plan) => plan.id === state?.membershipPlan)
                     ?.name
                 }
               </Text>
@@ -186,7 +215,7 @@ export default function AddCustomerSubscription() {
                   <Text fontSize="12px" color="#848688" fontWeight={500}>
                     ₦
                     {plans?.data
-                      ?.find((plan) => plan.id === state.membershipPlan)
+                      ?.find((plan) => plan.id === state?.membershipPlan)
                       ?.amount?.toLocaleString()}
                   </Text>
                 </Flex>
@@ -198,7 +227,7 @@ export default function AddCustomerSubscription() {
                     {
                       intervalOptions[
                         plans?.data?.find(
-                          (plan) => plan.id === state.membershipPlan
+                          (plan) => plan.id === state?.membershipPlan
                         )?.interval
                       ]
                     }
@@ -212,6 +241,16 @@ export default function AddCustomerSubscription() {
                 Select a customer
               </Text>
               <Select
+                components={{
+                  IndicatorSeparator: () => (
+                    <div style={{ display: "none" }}></div>
+                  ),
+                  DropdownIndicator: () => (
+                    <div>
+                      <IoIosArrowDown size="15px" color="#646668" />
+                    </div>
+                  ),
+                }}
                 styles={customStyles}
                 onChange={({ value }) =>
                   handleSelectChange(value, { name: "customer" })
@@ -229,6 +268,16 @@ export default function AddCustomerSubscription() {
                     : "Select a vehicle"}
                 </Text>
                 <Select
+                 components={{
+                    IndicatorSeparator: () => (
+                      <div style={{ display: "none" }}></div>
+                    ),
+                    DropdownIndicator: () => (
+                      <div>
+                        <IoIosArrowDown size="15px" color="#646668" />
+                      </div>
+                    ),
+                  }}
                   styles={customStyles}
                   onChange={({ value }) =>
                     handleSelectChange(value, { name: "vehicle" })
@@ -238,7 +287,7 @@ export default function AddCustomerSubscription() {
                   }
                   options={vehicles?.data
                     ?.filter(
-                      (vehicle) => vehicle?.customer?.id == state.customer
+                      (vehicle) => vehicle?.customer?.id == state?.customer
                     )
                     ?.map((vehicle) => ({
                       label: `${vehicle.color} - ${vehicle?.make?.name} - ${vehicle?.model?.name}`,
@@ -257,6 +306,16 @@ export default function AddCustomerSubscription() {
                     : " Select a location"}
                 </Text>
                 <Select
+                  components={{
+                    IndicatorSeparator: () => (
+                      <div style={{ display: "none" }}></div>
+                    ),
+                    DropdownIndicator: () => (
+                      <div>
+                        <IoIosArrowDown size="15px" color="#646668" />
+                      </div>
+                    ),
+                  }}
                   styles={customStyles}
                   onChange={({ value }) =>
                     handleSelectChange(value, { name: "location" })
@@ -283,7 +342,7 @@ export default function AddCustomerSubscription() {
                 onChange={() =>
                   setState({
                     ...state,
-                    autoRenewal: state.autoRenewal ? 0 : 1,
+                    autoRenewal: state?.autoRenewal ? 0 : 1,
                   })
                 }
                 size="sm"

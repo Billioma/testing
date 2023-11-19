@@ -69,15 +69,8 @@ export default function AddZone() {
   }));
 
   const handleSubmit = (values = "") => {
-    const {
-      location,
-      service,
-      amenities,
-      billingType,
-      status,
-      showBillingType,
-      ...rest
-    } = values;
+    const { location, service, amenities, billingType, status, ...rest } =
+      values;
     mutate({
       ...rest,
       location: location?.value,

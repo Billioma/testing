@@ -40,11 +40,7 @@ export default function ViewRole() {
 
   const navigate = useNavigate();
 
-  const { data: permissionList } = useGetPermissions(
-    {},
-    1,
-    2000
-  );
+  const { data: permissionList } = useGetPermissions({}, 1, 2000);
 
   const { errorToast, successToast } = useCustomToast();
   const { mutate: updateMutate, isLoading: isUpdating } = useEditRole({
@@ -93,25 +89,24 @@ export default function ViewRole() {
     );
   }
   const [selectAll, setSelectAll] = useState(false);
-  
+
   const handleSelectAll = (group) => {
     const groupPermissionIds = group?.map((permi) => Number(permi?.id));
-  
+
     const allSelected = groupPermissionIds.every((id) =>
       values?.permissions?.includes(id)
     );
-  
+
     const updatedPermissions = allSelected
       ? values?.permissions?.filter((id) => !groupPermissionIds?.includes(id))
       : [...values?.permissions, ...groupPermissionIds];
-  
+
     setValues((prevValues) => ({
       ...prevValues,
       permissions: updatedPermissions,
     }));
   };
-  
-  
+
   const handleChange = (id, isChecked) => {
     const temp = [...values?.permissions];
     if (isChecked) {
@@ -273,8 +268,15 @@ export default function ViewRole() {
                               <Flex gap={2}>
                                 <Checkbox
                                   colorScheme="orange"
-                                  onChange={() => handleSelectAll(group)} isChecked={selectAll || group?.every((permi) => values?.permissions?.includes(Number(permi?.id)))}
- 
+                                  onChange={() => handleSelectAll(group)}
+                                  isChecked={
+                                    selectAll ||
+                                    group?.every((permi) =>
+                                      values?.permissions?.includes(
+                                        Number(permi?.id)
+                                      )
+                                    )
+                                  }
                                   isDisabled={edit ? false : true}
                                 />
                                 <AccordionButton

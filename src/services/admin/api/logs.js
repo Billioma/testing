@@ -49,9 +49,7 @@ export const editServiceLogs = async ({ query, body }) => {
 };
 
 export const retrieveTickets = async (id) => {
-  const response = await axiosInstance.get(
-    `${API.ADMIN_SERVICE_TICKET}/${id}`
-  );
+  const response = await axiosInstance.get(`${API.ADMIN_SERVICE_TICKET}/${id}`);
   return response.data;
 };
 

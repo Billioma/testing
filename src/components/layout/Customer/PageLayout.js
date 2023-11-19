@@ -19,13 +19,20 @@ export const AuthLayout = ({ children }) => {
   window?.fcWidget?.user?.setEmail(userData?.email);
 
   return (
-    <Box color="#000" fontFamily="Sailec" h="100vh" p="15px">
+    <Box
+      color="#000"
+      fontFamily="Sailec"
+      bg="#fff"
+      h="100vh"
+      p="15px"
+      py="24px"
+    >
       <Box
-        py="24px"
+        pt="24px"
         px={isMobile ? "5px" : "24px"}
         bg="#F4F6F8"
         overflowX="hidden"
-        minH="96vh"
+        h="full"
         borderRadius="40px"
       >
         <Box mx={!isMobile ? "310px" : "20px"}>
@@ -37,7 +44,7 @@ export const AuthLayout = ({ children }) => {
             w="100%"
             pt={isMobile ? "150px" : "95px"}
             color="#828282"
-            maxHeight="89vh"
+            maxHeight="87vh"
             pl={!isMobile ? "310px" : "20px"}
             pr={!isMobile ? "" : "20px"}
             pb={10}

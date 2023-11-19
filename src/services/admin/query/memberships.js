@@ -21,6 +21,14 @@ import {
   getCorporatePlans,
   renewCorporateSubscription,
   cancelCorporateSubscription,
+  getAdminMembershipPlans,
+  getAdminMembershipPlan,
+  getAdminMembershipPlanFeatures,
+  getAdminMembershipPlanFeature,
+  getAdminCustomerSubs,
+  getAdminCustomerSub,
+  getAdminCorpSubs,
+  getAdminCorpSub,
 } from "../api/memberships";
 
 export const useCreateMembershipPlan = (options = {}) => {
@@ -56,6 +64,76 @@ export const useGetMembershipPlans = (
   );
 
   return { isLoading, data, refetch };
+};
+
+export const useGetAdminMembershipPlans = (options = {}) => {
+  const { mutate, isLoading, data } = useMutation(getAdminMembershipPlans, {
+    mutationKey: "GET_ADMIN_MembershipPlanS_LIST",
+    ...options,
+  });
+  return { mutate, isLoading, data };
+};
+
+export const useGetAdminMembershipPlan = (options = {}) => {
+  const { mutate, isLoading, data } = useMutation(getAdminMembershipPlan, {
+    mutationKey: "GET_ADMIN_MembershipPlan",
+    ...options,
+  });
+  return { mutate, isLoading, data };
+};
+
+export const useGetAdminMembershipPlanFeatures = (options = {}) => {
+  const { mutate, isLoading, data } = useMutation(
+    getAdminMembershipPlanFeatures,
+    {
+      mutationKey: "getAdminMembershipPlanFeatures",
+      ...options,
+    }
+  );
+  return { mutate, isLoading, data };
+};
+
+export const useGetAdminMembershipPlanFeature = (options = {}) => {
+  const { mutate, isLoading, data } = useMutation(
+    getAdminMembershipPlanFeature,
+    {
+      mutationKey: "getAdminMembershipPlanFeature",
+      ...options,
+    }
+  );
+  return { mutate, isLoading, data };
+};
+
+export const useGetAdminCustomerSubs = (options = {}) => {
+  const { mutate, isLoading, data } = useMutation(getAdminCustomerSubs, {
+    mutationKey: "getAdminCustomerSubs",
+    ...options,
+  });
+  return { mutate, isLoading, data };
+};
+
+export const useGetAdminCustomerSub = (options = {}) => {
+  const { mutate, isLoading, data } = useMutation(getAdminCustomerSub, {
+    mutationKey: "getAdminCustomerSub",
+    ...options,
+  });
+  return { mutate, isLoading, data };
+};
+
+export const useGetAdminCorpSubs = (options = {}) => {
+  const { mutate, isLoading, data } = useMutation(getAdminCorpSubs, {
+    mutationKey: "getAdminCorpSubs",
+    ...options,
+  });
+  return { mutate, isLoading, data };
+};
+
+export const useGetAdminCorpSub = (options = {}) => {
+  const { mutate, isLoading, data } = useMutation(getAdminCorpSub, {
+    mutationKey: "getAdminCorpSub",
+    ...options,
+  });
+  return { mutate, isLoading, data };
 };
 
 export const useGetCorporatePlans = (options = {}) => {

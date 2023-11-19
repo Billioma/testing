@@ -25,14 +25,15 @@ const TableFormat = ({
   alignForthHeader,
   alignFifthHeader,
   alignSixthHeader,
+  newOpt,
   alignSeventhHeader,
 }) => {
   return (
     <Box
       bg="#fff"
       borderRadius="8px"
-      py={opt ? "" : "24px"}
-      px={opt ? "" : "23px"}
+      py={opt ? "" : newOpt ? "10px" : "24px"}
+      px={opt ? "" : newOpt ? "15px" : "23px"}
     >
       {!tab ? (
         <Flex

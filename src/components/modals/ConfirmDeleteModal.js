@@ -24,13 +24,13 @@ const ConfirmDeleteModal = ({
       <ModalOverlay backdropFilter="auto" backdropBlur="2px" />
       <ModalContent
         py="40px"
-        px="20px"
+        px="24px"
         overflowY="auto"
-        borderRadius="8px"
+        borderRadius="12px"
         bg="#fff"
         color="#000"
       >
-        <ModalBody>
+        <ModalBody px="0">
           <Flex justifyContent="center" align="center" flexDir="column">
             <Text
               mb="32px"

@@ -17,11 +17,11 @@ const ConfirmPaySubModal = ({ isOpen, dataa, onClose, isLoading, action }) => {
         px="24px"
         py="40px"
         overflowY="auto"
-        borderRadius="8px"
+        borderRadius="12px"
         bg="#fff"
         color="#000"
       >
-        <ModalBody>
+        <ModalBody px="0">
           <Text
             textAlign="center"
             color="#242628"

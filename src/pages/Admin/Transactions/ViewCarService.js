@@ -149,7 +149,7 @@ export default function AddCarService() {
       appointmentDate: data?.appointmentDate,
       status: selectedStatusOption,
     });
-  }, [data]);
+  }, [data, zones]);
 
   return (
     <Box minH="75vh">

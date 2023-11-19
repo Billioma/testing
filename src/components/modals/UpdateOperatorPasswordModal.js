@@ -165,11 +165,11 @@ const UpdateOperatorPasswordModal = ({
         py="32px"
         px="24px"
         overflowY="auto"
-        borderRadius="16px"
+        borderRadius="12px"
         bg="#fff"
         color="#000"
       >
-        <ModalBody>
+        <ModalBody px="0">
           <Text
             color="#242628"
             fontWeight={700}

@@ -109,8 +109,9 @@ const SideBar = () => {
                   color={
                     pathname.includes(item.path) || openSubItems[item.name]
                       ? "#fff"
-                      : "#242628"
+                      : "#646668"
                   }
+                  fontWeight={500}
                   _hover={{
                     bg: pathname.includes(item.path) ? "" : "transparent",
                     color: pathname.includes(item.path) ? "" : "#EE383A",
@@ -207,6 +208,7 @@ const SideBar = () => {
             lineHeight="100%"
             mb="39px"
             p={2}
+            fontWeight={500}
             pt={3}
           >
             {isLoading ? (
@@ -224,9 +226,9 @@ const SideBar = () => {
                 _hover={{ color: "#ee383a" }}
                 gap={3}
                 align="center"
-                color="#242628"
+                color="#646668"
               >
-                <LogoutIcon fill="#242628" /> Log Out
+                <LogoutIcon fill="#646668" /> Log Out
               </Flex>
             )}
           </Flex>

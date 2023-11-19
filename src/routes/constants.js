@@ -32,7 +32,6 @@ export const PUBLIC_PATHS = {
 export const PRIVATE_PATHS = {
   // CUSTOMER ROUTES
   CUST_DASHBOARD: "/customer/dashboard",
-  CUST_SERVICES: "/customer/services",
   CUST_SERVICES_PARK: "/customer/services/pay-to-park",
   CUST_SERVICES_PARK_DETAILS: "/customer/services/pay-to-park/:id",
   CUST_HISTORY_PARK_DETAILS: "/customer/history/pay-to-park/:id",
@@ -45,7 +44,9 @@ export const PRIVATE_PATHS = {
   CUST_SERVICES_CAR_SERVICE: "/customer/services/car-service",
   CUST_SUBSCRIPTION: "/customer/subscriptions",
   CUST_ADD_SUBSCRIPTION: "/customer/subscriptions/create",
-  CUST_HISTORY: "/customer/history",
+
+  CUST_HISTORY_USER: "/customer/history/user",
+  CUST_HISTORY_US: "/customer/history/company",
   CUST_HELP_CENTER: "/customer/help-center",
   CUST_HELP_CENTER_MAIL: "/customer/help-center/contact-us",
   CUST_HELP_CENTER_FAQ: "/customer/help-center/FAQs",

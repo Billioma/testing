@@ -19,9 +19,7 @@ import { useNavigate } from "react-router-dom";
 import AdminDeleteModal from "../../../modals/AdminDeleteModal";
 import useCustomToast from "../../../../utils/notifications";
 import { BsChevronDown } from "react-icons/bs";
-import {
-  useDeleteBankDetail,
-} from "../../../../services/admin/query/configurations";
+import { useDeleteBankDetail } from "../../../../services/admin/query/configurations";
 import TableLoader from "../../../loaders/TableLoader";
 import { clientListOption } from "../../../common/constants";
 import { PRIVATE_PATHS } from "../../../../routes/constants";

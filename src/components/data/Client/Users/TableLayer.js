@@ -1,13 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-  Box,
-  Button,
-  Flex,
-  Image,
-  Td,
-  Text,
-  Tr,
-} from "@chakra-ui/react";
+import { Box, Button, Flex, Image, Td, Text, Tr } from "@chakra-ui/react";
 import TableLoader from "../../../loaders/TableLoader";
 import { SecStatus, clientUserHeader } from "../../../common/constants";
 import { formatDate } from "../../../../utils/helpers";
@@ -148,8 +140,8 @@ const TableLayer = ({
                         bg="#fff"
                         borderRadius="4px"
                         pos="absolute"
-                        top={i < 3 ? "20px" : "unset"}
-                        bottom={i > 3 ? "0" : "unset"}
+                        top={i === data?.data?.length - 1 ? "" : "20px"}
+                        bottom={i === data?.data?.length - 1 ? "0" : ""}
                         right="0"
                         zIndex={5555555}
                         boxShadow="0px 8px 16px 0px rgba(0, 0, 0, 0.08)"

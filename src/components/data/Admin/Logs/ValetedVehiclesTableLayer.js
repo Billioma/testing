@@ -18,7 +18,10 @@ import { useNavigate } from "react-router-dom";
 import AdminDeleteModal from "../../../modals/AdminDeleteModal";
 import useCustomToast from "../../../../utils/notifications";
 import { BsChevronDown } from "react-icons/bs";
-import { useDeleteValetedVehicle, useRetrieveTickets } from "../../../../services/admin/query/logs";
+import {
+  useDeleteValetedVehicle,
+  useRetrieveTickets,
+} from "../../../../services/admin/query/logs";
 import TableLoader from "../../../loaders/TableLoader";
 import { LogStatus, viewClaimOption } from "../../../common/constants";
 import AdminRetrieveTicketModal from "../../../modals/AdminRetrieveTicketModal";
@@ -202,7 +205,9 @@ const TableLayer = ({
           />{" "}
           <AdminRetrieveTicketModal
             isOpen={selectedClaim.isOpen}
-            onClose={() => setSelectedClaim({ ...selectedClaim, isOpen: false })}
+            onClose={() =>
+              setSelectedClaim({ ...selectedClaim, isOpen: false })
+            }
             title="Claim ticket"
             subTitle="Are you sure you want to claim this ticket?"
             handleSubmit={handleClaim}

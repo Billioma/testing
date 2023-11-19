@@ -26,10 +26,8 @@ import { Form, Formik } from "formik";
 import { IoIosArrowDown } from "react-icons/io";
 import {
   initEventValues,
-  validateEventPriceSchema,
   validateEventSchema,
 } from "../../../utils/validation";
-import { formatDateToISOString } from "../../../utils/helpers";
 import { useGetZones } from "../../../services/admin/query/locations";
 
 export default function AddEvent() {

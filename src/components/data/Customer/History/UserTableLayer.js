@@ -28,12 +28,17 @@ import { FcCancel } from "react-icons/fc";
 import { TbListDetails } from "react-icons/tb";
 import { useNavigate } from "react-router-dom";
 
-const TableLayer = () => {
+const UserTableLayer = () => {
   const [page, setPage] = useState(1);
   const navigate = useNavigate();
-  const [tab, setTab] = useState("Valet Parking");
+  const [tab, setTab] = useState("Pay-To-Park");
   const [limit, setLimit] = useState(25);
-  const { isLoading, data: payToPark } = useGetPayToPark(limit, page);
+  const {
+    isLoading,
+    data: payToPark,
+    refetch: refetchpark,
+  } = useGetPayToPark(limit, page);
+
   const {
     isLoading: isReserving,
     data: reserveParking,
@@ -44,10 +49,18 @@ const TableLayer = () => {
     data: carService,
     refetch: refetchBook,
   } = useGetCarService(limit, page);
-  const { isLoading: isEvent, data: eventParking } = useGetEventParking(
-    limit,
-    page
-  );
+  const {
+    isLoading: isEvent,
+    data: eventParking,
+    refetch: refetchEvent,
+  } = useGetEventParking(limit, page);
+
+  useEffect(() => {
+    refetchpark();
+    refetch();
+    refetchBook();
+    refetchEvent();
+  }, []);
 
   const [show, setShow] = useState(false);
   const [showCancel, setShowCancel] = useState(false);
@@ -117,7 +130,7 @@ const TableLayer = () => {
       <TableFormat
         tab={
           <Flex flexWrap="wrap" rowGap={{ base: "20px", md: "unset" }}>
-            {serviceTabs.map((dat, i) => (
+            {serviceTabs?.slice(1, 5)?.map((dat, i) => (
               <Text
                 px={{ base: "30px", md: "30px" }}
                 pb="13px"
@@ -139,7 +152,7 @@ const TableLayer = () => {
           </Flex>
         }
         isLoading={
-          tab === "Pay-To-Park" || tab === "Valet Parking"
+          tab === "Pay-To-Park"
             ? isLoading
             : tab === "Reserve Parking"
             ? isReserving
@@ -148,7 +161,7 @@ const TableLayer = () => {
             : isCar
         }
         header={
-          tab === "Pay-To-Park" || tab === "Valet Parking"
+          tab === "Pay-To-Park"
             ? payToParkHeader
             : tab === "Reserve Parking"
             ? reserveHeader
@@ -171,7 +184,7 @@ const TableLayer = () => {
             >
               <Text fontSize="12px" color="#242628" lineHeight="100%">
                 Showing rows {page === 1 ? 1 : (page - 1) * limit + 1} to{" "}
-                {tab === "Pay-To-Park" || tab === "Valet Parking"
+                {tab === "Pay-To-Park"
                   ? payToPark?.pageCount === page
                     ? page * limit > payToPark?.total
                       ? payToPark?.total
@@ -195,7 +208,7 @@ const TableLayer = () => {
                     : page * limit
                   : page * limit}{" "}
                 of{" "}
-                {tab === "Pay-To-Park" || tab === "Valet Parking"
+                {tab === "Pay-To-Park"
                   ? payToPark?.total
                   : tab === "Reserve Parking"
                   ? reserveParking?.total
@@ -207,7 +220,7 @@ const TableLayer = () => {
               <Flex gap="16px" align="center" fontSize="12px">
                 <Flex
                   opacity={
-                    tab === "Pay-To-Park" || tab === "Valet Parking"
+                    tab === "Pay-To-Park"
                       ? payToPark?.page === 1
                         ? 0.5
                         : 1
@@ -224,7 +237,7 @@ const TableLayer = () => {
                       : 1
                   }
                   onClick={() =>
-                    tab === "Pay-To-Park" || tab === "Valet Parking"
+                    tab === "Pay-To-Park"
                       ? payToPark?.page !== 1
                         ? setPage(page - 1)
                         : ""
@@ -241,7 +254,7 @@ const TableLayer = () => {
                       : ""
                   }
                   cursor={
-                    tab === "Pay-To-Park" || tab === "Valet Parking"
+                    tab === "Pay-To-Park"
                       ? payToPark?.page === 1
                         ? ""
                         : "pointer"
@@ -267,7 +280,7 @@ const TableLayer = () => {
 
                 <Flex color="#242628" lineHeight="100%">
                   <Text>
-                    {tab === "Pay-To-Park" || tab === "Valet Parking"
+                    {tab === "Pay-To-Park"
                       ? payToPark?.page
                       : tab === "Reserve Parking"
                       ? reserveParking?.page
@@ -279,7 +292,7 @@ const TableLayer = () => {
 
                 <Flex
                   opacity={
-                    tab === "Pay-To-Park" || tab === "Valet Parking"
+                    tab === "Pay-To-Park"
                       ? payToPark?.page === payToPark?.pageCount
                         ? 0.5
                         : 1
@@ -297,7 +310,7 @@ const TableLayer = () => {
                       : 1
                   }
                   onClick={() =>
-                    tab === "Pay-To-Park" || tab === "Valet Parking"
+                    tab === "Pay-To-Park"
                       ? payToPark?.page !== payToPark?.pageCount
                         ? setPage(page + 1)
                         : ""
@@ -315,7 +328,7 @@ const TableLayer = () => {
                       : ""
                   }
                   cursor={
-                    tab === "Pay-To-Park" || tab === "Valet Parking"
+                    tab === "Pay-To-Park"
                       ? payToPark?.page === payToPark?.pageCount
                         ? ""
                         : "pointer"
@@ -361,7 +374,7 @@ const TableLayer = () => {
           </Flex>
         }
       >
-        {tab === "Pay-To-Park" || tab === "Valet Parking" ? (
+        {tab === "Pay-To-Park" ? (
           payToPark?.data?.length ? (
             payToPark?.data?.map((dat, i) => (
               <Tr
@@ -412,7 +425,8 @@ const TableLayer = () => {
                         pos="absolute"
                         right="0"
                         zIndex={5555555}
-                        top="20px"
+                        top={i === payToPark?.data?.length - 1 ? "" : "20px"}
+                        bottom={i === payToPark?.data?.length - 1 ? "0" : ""}
                         boxShadow="0px 8px 16px 0px rgba(0, 0, 0, 0.08)"
                       >
                         <Flex
@@ -540,7 +554,8 @@ const TableLayer = () => {
                         pos="absolute"
                         right="0"
                         zIndex={5555555}
-                        top="20px"
+                        top={i === payToPark?.data?.length - 1 ? "" : "20px"}
+                        bottom={i === payToPark?.data?.length - 1 ? "0" : ""}
                         boxShadow="0px 8px 16px 0px rgba(0, 0, 0, 0.08)"
                       >
                         <Flex
@@ -679,7 +694,12 @@ const TableLayer = () => {
                         pos="absolute"
                         right="0"
                         zIndex={5555555}
-                        top="20px"
+                        top={
+                          i === reserveParking?.data?.length - 1 ? "" : "20px"
+                        }
+                        bottom={
+                          i === reserveParking?.data?.length - 1 ? "0" : ""
+                        }
                         boxShadow="0px 8px 16px 0px rgba(0, 0, 0, 0.08)"
                       >
                         {["View Details", "Cancel Reservation"].map(
@@ -836,7 +856,8 @@ const TableLayer = () => {
                         pos="absolute"
                         right="0"
                         zIndex={5555555}
-                        top="20px"
+                        top={i === eventParking?.data?.length - 1 ? "" : "20px"}
+                        bottom={i === eventParking?.data?.length - 1 ? "0" : ""}
                         boxShadow="0px 8px 16px 0px rgba(0, 0, 0, 0.08)"
                       >
                         <Flex
@@ -982,7 +1003,8 @@ const TableLayer = () => {
                       pos="absolute"
                       right="0"
                       zIndex={5555555}
-                      top="20px"
+                      top={i === carService?.data?.length - 1 ? "" : "20px"}
+                      bottom={i === carService?.data?.length - 1 ? "0" : ""}
                       boxShadow="0px 8px 16px 0px rgba(0, 0, 0, 0.08)"
                     >
                       <Flex
@@ -1076,4 +1098,4 @@ const TableLayer = () => {
   );
 };
 
-export default TableLayer;
+export default UserTableLayer;

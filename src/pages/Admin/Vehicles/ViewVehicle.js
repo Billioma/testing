@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Box, Flex, Text, Button, Spinner } from "@chakra-ui/react";
 import CustomInput from "../../../components/common/CustomInput";
-import { allStates, colors } from "../../../components/common/constants";
+import { allStates, colorTypes } from "../../../components/common/constants";
 import Select from "react-select";
 import { customStyles } from "../../../components/common/constants";
 import { useNavigate, useParams } from "react-router-dom";
@@ -66,9 +66,9 @@ export default function AddOperator() {
     label: state,
   }));
 
-  const colorOptions = colors.map((color) => ({
-    value: color,
-    label: color,
+  const colorOptions = colorTypes.map((color) => ({
+    value: color.color,
+    label: color.label,
   }));
   const modelToMap = models?.data?.filter(
     (item) => Number(item?.make?.id) === values?.make?.value
@@ -110,6 +110,44 @@ export default function AddOperator() {
     });
   };
 
+  const [menuIsOpen, setMenuIsOpen] = useState(false);
+  const getOptionValue = (option) => option.value;
+  const getOptionLabel = (option) => (
+    <Flex gap="8px" align="center">
+      <Box
+        width="28px"
+        height="20px"
+        backgroundColor={option.value}
+        borderRadius="4px"
+      />
+      {option.label}
+    </Flex>
+  );
+
+  const ColorOption = ({ data }) => (
+    <Flex
+      mt="-5px"
+      onClick={() => {
+        setValues({ ...values, color: data });
+        setMenuIsOpen(false);
+      }}
+      px="10px"
+      cursor="pointer"
+      _hover={{ bg: "#fff" }}
+      gap="8px"
+      align="center"
+      h="40px"
+    >
+      <Flex
+        width="28px"
+        height="20px"
+        backgroundColor={data?.value}
+        borderRadius="4px"
+      ></Flex>
+      {data?.label}
+    </Flex>
+  );
+
   const ColorOptio = ({ data }) => (
     <Flex mt="-30px" gap="8px" align="center" h="40px">
       <Flex
@@ -127,7 +165,8 @@ export default function AddOperator() {
       (option) => option.value === Number(data?.customer?.id)
     );
     const selectedColorOption = colorOptions?.find(
-      (option) => option.value === data?.color
+      (option) =>
+        option?.value?.toLocaleLowerCase() === data?.color?.toLocaleLowerCase()
     );
     const selectedStateOption = stateOptions?.find(
       (option) => option.value === data?.state
@@ -148,7 +187,7 @@ export default function AddOperator() {
       make: selectedMakeOption,
       model: selectedModelOption,
     });
-  }, [data]);
+  }, [data, customers, makes, model]);
 
   return (
     <Box minH="75vh">
@@ -246,15 +285,12 @@ export default function AddOperator() {
                   </Text>
                   <Select
                     styles={customStyles}
-                    onChange={(selectedOption) =>
-                      handleSelectChange(selectedOption, { name: "color" })
-                    }
-                    options={colorOptions}
-                    placeholder="Select vehicle color"
-                    value={values?.color}
-                    isDisabled={!isEdit}
+                    onMenuOpen={() => setMenuIsOpen(true)}
+                    menuIsOpen={menuIsOpen}
+                    onMenuClose={() => setMenuIsOpen(false)}
                     components={{
                       SingleValue: ColorOptio,
+                      Option: ColorOption,
                       IndicatorSeparator: () => (
                         <div style={{ display: "none" }}></div>
                       ),
@@ -264,6 +300,14 @@ export default function AddOperator() {
                         </div>
                       ),
                     }}
+                    isDisabled={edit ? false : true}
+                    onChange={(selectedOption) =>
+                      handleSelectChange(selectedOption, { name: "color" })
+                    }
+                    value={values?.color}
+                    options={colorOptions}
+                    getOptionLabel={getOptionLabel}
+                    getOptionValue={getOptionValue}
                   />
                 </Box>
 

@@ -3,9 +3,7 @@ import ZonesTableLayer from "../../../components/data/Admin/Locations/ZonesTable
 import { Box, Button, Flex, Image, Text } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import { PRIVATE_PATHS } from "../../../routes/constants";
-import {
-  useGetAdminZones,
-} from "../../../services/admin/query/locations";
+import { useGetAdminZones } from "../../../services/admin/query/locations";
 import Filter from "../../../components/common/Filter";
 import { zonesOptions } from "../../../components/common/constants";
 import { MdAdd } from "react-icons/md";

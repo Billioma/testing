@@ -20,7 +20,7 @@ import useCustomToast from "../../../../utils/notifications";
 import { BsChevronDown } from "react-icons/bs";
 import { useDeletePayToPark } from "../../../../services/admin/query/transactions";
 import TableLoader from "../../../loaders/TableLoader";
-import { SecStatus, Status, viewDeleteOption } from "../../../common/constants";
+import { Status, viewDeleteOption } from "../../../common/constants";
 
 const TableLayer = ({
   data,

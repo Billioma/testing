@@ -55,7 +55,7 @@ const EventParking = () => {
 
   useEffect(() => {
     setStep(1);
-    startChange("")
+    startChange("");
     setValues({
       event: "",
       service: "",
@@ -100,7 +100,6 @@ const EventParking = () => {
   const initializePayment = usePaystackPayment(config);
 
   const [event, setEvent] = useState({});
-
 
   const start = formatDate(startValue);
 
@@ -171,8 +170,8 @@ const EventParking = () => {
   const navigate = useNavigate();
   const { mutate: eventMutate, isLoading: isEventing } = useCreateEventParking({
     onSuccess: () => {
-      navigate("/customer/services");
-      successToast("Payment Successful");
+      navigate("/customer/history/user");
+      successToast("Parking spot reserved");
       onClose();
       refetch();
       refetchEvent();
@@ -280,6 +279,7 @@ const EventParking = () => {
                     cardId: "",
                     paymentMethod: "",
                   });
+                  startChange("");
                 }}
                 size="24px"
               />
@@ -688,7 +688,7 @@ const EventParking = () => {
                 >
                   <Text
                     cursor="pointer"
-                    onClick={(onOp) => setShowVehicle(true)}
+                    onClick={() => setShowVehicle(true)}
                     textDecor="underline"
                   >
                     Add a Vehicle
@@ -884,7 +884,9 @@ const EventParking = () => {
                 : step === 2
                 ? values?.paymentMethod === "0"
                   ? !values?.cardId
-                  : !values?.service || !values?.vehicle || !values?.paymentMethod
+                  : !values?.service ||
+                    !values?.vehicle ||
+                    !values?.paymentMethod
                 : ""
             }
             fontSize="14px"

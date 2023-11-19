@@ -208,11 +208,12 @@ const Cards = ({ vehicles, isLoading, refetchVehicle }) => {
                 mt="20px"
                 w="full"
                 lineHeight="100%"
-                bg="#242628"
                 borderRadius="8px"
+                bg="transparent"
                 py="14px"
                 onClick={() => setShowFunds(true)}
-                color="#fff"
+                color="#242628"
+                border="1px solid #242628"
                 fontSize="12px"
                 fontWeight={500}
               >
@@ -245,59 +246,65 @@ const Cards = ({ vehicles, isLoading, refetchVehicle }) => {
                   </Text>
                 </Flex>
 
-                <Flex
-                  flexDir="column"
-                  justifyContent="flex-end"
-                  align="flex-end"
-                  gap="4px"
-                  w="100%"
-                >
+                {subscriptions?.data?.length ? (
                   <Flex
                     flexDir="column"
-                    justifyContent="center"
-                    align="center"
+                    justifyContent="flex-end"
+                    align="flex-end"
                     gap="4px"
-                    w="30%"
+                    w="100%"
                   >
-                    <Text
-                      fontSize="10px"
-                      color="#848688"
-                      fontWeight={700}
-                      lineHeight="100%"
+                    <Flex
+                      flexDir="column"
+                      justifyContent="center"
+                      align="center"
+                      gap="4px"
+                      w="30%"
                     >
-                      {subIndex + 1} of {subscriptions?.data?.length}
-                    </Text>
-                    <Flex align="center" gap="16px">
-                      <Flex
-                        cursor="pointer"
-                        border="1px solid #242628"
-                        opacity={subIndex !== 0 ? 1 : 0.4}
-                        onClick={() =>
-                          subIndex !== 0 && setSubIndex(subIndex - 1)
-                        }
-                        rounded="full"
-                        p="2px"
+                      <Text
+                        fontSize="10px"
+                        color="#848688"
+                        fontWeight={700}
+                        lineHeight="100%"
                       >
-                        <IoIosArrowBack size="13px" />
-                      </Flex>
-                      <Flex
-                        cursor="pointer"
-                        opacity={
-                          subscriptions?.data?.length !== subIndex + 1 ? 1 : 0.4
-                        }
-                        onClick={() =>
-                          subscriptions?.data?.length !== subIndex + 1 &&
-                          setSubIndex(subIndex + 1)
-                        }
-                        border="1px solid #242628"
-                        rounded="full"
-                        p="2px"
-                      >
-                        <IoIosArrowForward size="13px" />
+                        {subIndex + 1} of {subscriptions?.data?.length}
+                      </Text>
+                      <Flex align="center" gap="16px">
+                        <Flex
+                          cursor="pointer"
+                          border="1px solid #242628"
+                          opacity={subIndex !== 0 ? 1 : 0.4}
+                          onClick={() =>
+                            subIndex !== 0 && setSubIndex(subIndex - 1)
+                          }
+                          rounded="full"
+                          p="2px"
+                        >
+                          <IoIosArrowBack size="13px" />
+                        </Flex>
+                        <Flex
+                          cursor="pointer"
+                          opacity={
+                            subscriptions?.data?.length !== subIndex + 1
+                              ? 1
+                              : 0.4
+                          }
+                          onClick={() =>
+                            subscriptions?.data?.length !== subIndex + 1 &&
+                            setSubIndex(subIndex + 1)
+                          }
+                          border="1px solid #242628"
+                          rounded="full"
+                          p="2px"
+                        >
+                          <IoIosArrowForward size="13px" />
+                        </Flex>
                       </Flex>
                     </Flex>
                   </Flex>
-                </Flex>
+                ) : (
+                  ""
+                )}
               </Flex>
               {subscriptions?.data?.length ? (
                 currentSub?.map((data, i) => (
@@ -408,6 +415,7 @@ const Cards = ({ vehicles, isLoading, refetchVehicle }) => {
                           color="#0B841D"
                           cursor="pointer"
                           align="center"
+                          justifyContent="flex-end"
                           onClick={() =>
                             renew < 5
                               ? openOption(data)
@@ -443,6 +451,10 @@ const Cards = ({ vehicles, isLoading, refetchVehicle }) => {
                     onClick={() => navigate("/customer/subscriptions/create")}
                     borderRadius="8px"
                     w="full"
+                    color="red"
+                    fontSize="12px"
+                    bg="transparent"
+                    border="1px solid red"
                   >
                     Add a Subscription
                   </Button>
@@ -463,7 +475,7 @@ const Cards = ({ vehicles, isLoading, refetchVehicle }) => {
               w="full"
             >
               <Flex align="center" justifyContent="space-between" w="full">
-                <Flex align="center" gap="16px">
+                <Flex align="center" gap="16px" w="full">
                   <Image src="/assets/car.png" w="56px" h="40px" />
                   <Text
                     color="red"
@@ -475,55 +487,65 @@ const Cards = ({ vehicles, isLoading, refetchVehicle }) => {
                   </Text>
                 </Flex>
 
-                <Flex
-                  flexDir="column"
-                  justifyContent="flex-end"
-                  align="flex-end"
-                  gap="4px"
-                  w="100%"
-                >
+                {vehicles?.data?.length ? (
                   <Flex
                     flexDir="column"
-                    justifyContent="center"
-                    align="center"
+                    justifyContent="flex-end"
+                    align="flex-end"
                     gap="4px"
-                    w="30%"
+                    w="100%"
                   >
-                    <Text
-                      fontSize="10px"
-                      color="#848688"
-                      fontWeight={700}
-                      lineHeight="100%"
+                    <Flex
+                      flexDir="column"
+                      justifyContent="center"
+                      align="center"
+                      gap="4px"
+                      w="30%"
                     >
-                      {index + 1} of {vehicles?.data?.length}
-                    </Text>
-                    <Flex align="center" gap="16px">
-                      <Flex
-                        cursor="pointer"
-                        border="1px solid #242628"
-                        opacity={index !== 0 ? 1 : 0.4}
-                        onClick={() => index !== 0 && setIndex(index - 1)}
-                        rounded="full"
-                        p="2px"
+                      <Text
+                        fontSize="10px"
+                        color="#848688"
+                        fontWeight={700}
+                        lineHeight="100%"
                       >
-                        <IoIosArrowBack size="13px" />
-                      </Flex>
-                      <Flex
-                        cursor="pointer"
-                        opacity={vehicles?.data?.length !== index + 1 ? 1 : 0.4}
-                        onClick={() =>
-                          vehicles?.data?.length !== index + 1 &&
-                          setIndex(index + 1)
-                        }
-                        border="1px solid #242628"
-                        rounded="full"
-                        p="2px"
-                      >
-                        <IoIosArrowForward size="13px" />
+                        {index + 1} of {vehicles?.data?.length}
+                      </Text>
+                      <Flex align="center" gap="16px">
+                        <Flex
+                          cursor={index !== 0 ? "pointer" : ""}
+                          border="1px solid #242628"
+                          opacity={index !== 0 ? 1 : 0.4}
+                          onClick={() => index !== 0 && setIndex(index - 1)}
+                          rounded="full"
+                          p="2px"
+                        >
+                          <IoIosArrowBack size="13px" />
+                        </Flex>
+                        <Flex
+                          cursor={
+                            vehicles?.data?.length !== index + 1
+                              ? "pointer"
+                              : ""
+                          }
+                          opacity={
+                            vehicles?.data?.length !== index + 1 ? 1 : 0.4
+                          }
+                          onClick={() =>
+                            vehicles?.data?.length !== index + 1 &&
+                            setIndex(index + 1)
+                          }
+                          border="1px solid #242628"
+                          rounded="full"
+                          p="2px"
+                        >
+                          <IoIosArrowForward size="13px" />
+                        </Flex>
                       </Flex>
                     </Flex>
                   </Flex>
-                </Flex>
+                ) : (
+                  ""
+                )}
               </Flex>
               {vehicles?.data?.length ? (
                 currentVehicle?.map((data, i) => (
@@ -638,15 +660,16 @@ const Cards = ({ vehicles, isLoading, refetchVehicle }) => {
                           justifyContent="center"
                           align="center"
                           gap="4px"
-                          w="100%"
+                          w="80%"
                         >
                           <Button
                             bg="transparent"
                             border="1px solid #242628"
                             rounded="full"
                             px="24px"
-                            py="7px"
-                            w="full"
+                            borderRadius="4px"
+                            size="sm"
+                            w="100%"
                             color="#242628"
                             onClick={() => openMenu(data)}
                             lineHeight="100%"

@@ -66,7 +66,7 @@ const UpdateOperatorModal = ({ isOpen, refetch, userData, onClose }) => {
         bg="#fff"
         color="#000"
       >
-        <ModalBody>
+        <ModalBody px="0">
           <Text
             color="#242628"
             fontWeight={500}

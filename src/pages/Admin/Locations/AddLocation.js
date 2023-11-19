@@ -25,9 +25,7 @@ import {
   useGetOperators,
 } from "../../../services/admin/query/users";
 import { useGetAmenities } from "../../../services/admin/query/amenities";
-import {
-  useAddLocation,
-} from "../../../services/admin/query/locations";
+import { useAddLocation } from "../../../services/admin/query/locations";
 import { useCustomerUploadPic } from "../../../services/customer/query/user";
 import { Form, Formik } from "formik";
 import { IoIosArrowDown } from "react-icons/io";
@@ -524,7 +522,6 @@ export default function AddLocation() {
                       variant="adminPrimary"
                     />
                   </Flex>
-                  
                   <Flex gap="24px" mt="24px">
                     <Button
                       variant="adminSecondary"

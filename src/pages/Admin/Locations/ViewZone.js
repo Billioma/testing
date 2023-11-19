@@ -130,7 +130,7 @@ export default function ViewZone() {
       billingType: selectedBillingOption,
       status: selectedStatusOption,
     });
-  }, [data]);
+  }, [data, locations, services, amenities]);
 
   const handleSubmit = () => {
     updateMutate({

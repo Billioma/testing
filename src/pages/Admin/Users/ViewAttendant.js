@@ -180,7 +180,7 @@ export default function AddAttendants() {
       operator: selectedOperatorOption,
       locations: selectedLocationsOption,
     });
-  }, [data]);
+  }, [data, operators, locationsData]);
 
   const handleSubmit = () => {
     updateMutate({

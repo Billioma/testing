@@ -12,7 +12,7 @@ const Settings = () => {
           bg="#fff"
           borderRadius="12px"
           py="40px"
-          px={{ base: "25px", md: "62px" }}
+          px={{ base: "24px", md: "32px" }}
           w={{ base: "full", md: "30rem" }}
           flexDir="column"
         >

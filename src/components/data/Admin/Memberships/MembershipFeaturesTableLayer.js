@@ -9,18 +9,21 @@ import {
   MenuButton,
   MenuList,
   MenuItem,
+  Button,
+  Image,
+  Icon,
 } from "@chakra-ui/react";
 import TableFormat from "../../../common/TableFormat";
-import { FiEdit, FiTrash2 } from "react-icons/fi";
-import NoData from "../../../common/NoData";
 import { formatDate } from "../../../../utils/helpers";
 import { useNavigate } from "react-router-dom";
-import { HiOutlineInformationCircle } from "react-icons/hi";
 import AdminDeleteModal from "../../../modals/AdminDeleteModal";
 import useCustomToast from "../../../../utils/notifications";
 import { PRIVATE_PATHS } from "../../../../routes/constants";
 import { BsChevronDown } from "react-icons/bs";
 import { useDeleteMembershipFeature } from "../../../../services/admin/query/memberships";
+import TableLoader from "../../../loaders/TableLoader";
+import { clientListOption } from "../../../common/constants";
+import { Add } from "../../../common/images";
 
 const TableLayer = ({
   data,
@@ -66,133 +69,151 @@ const TableLayer = ({
     "User Limit",
   ].map((feature, index) => ({ label: feature, value: index }));
 
+  const openOption = (i, feature) => {
+    i === 0
+      ? navigate(`/admin/memberships/features/details/${feature?.id}`)
+      : i === 1
+      ? (navigate(`/admin/memberships/features/details/${feature?.id}`),
+        sessionStorage.setItem("edit", "edit"))
+      : i === 2 && setSelectedRow({ isOpen: true, id: feature.id });
+  };
+
   return (
     <Box>
-      <TableFormat
-        isLoading={isLoading}
-        minH="25vh"
-        maxH="65vh"
-        header={headers}
-        opt
-        alignFirstHeader
-        alignSecondHeader
-        alignThirdHeader
-        paginationValues={{
-          startRow,
-          endRow,
-          total: data?.total,
-          page: data?.page,
-          pageCount: data?.pageCount,
-          onNext: () =>
-            data?.page !== data?.pageCount ? setPage(page + 1) : null,
-          onPrevious: () => (data?.page !== 1 ? setPage(page - 1) : null),
-          setLimit,
-          limit,
-        }}
-        useDefaultPagination
-      >
-        {data?.data?.length ? (
-          data?.data?.map((plan, i) => (
-            <Tr
-              key={i}
-              color="#646668"
-              fontWeight={500}
-              fontSize="12px"
-              lineHeight="100%"
-            >
-              <Td>{plan?.name}</Td>
-              <Td>{plan?.membershipPlan?.name || "N/A"}</Td>
+      {isLoading ? (
+        <TableLoader />
+      ) : data?.data?.length ? (
+        <>
+          <TableFormat
+            header={headers}
+            opt
+            alignFirstHeader
+            alignSecondHeader
+            paginationValues={{
+              startRow,
+              endRow,
+              total: data?.total,
+              page: data?.page,
+              pageCount: data?.pageCount,
+              onNext: () =>
+                data?.page !== data?.pageCount ? setPage(page + 1) : null,
+              onPrevious: () => (data?.page !== 1 ? setPage(page - 1) : null),
+              setLimit,
+              limit,
+            }}
+            useDefaultPagination
+          >
+            {data?.data?.map((plan, i) => (
+              <Tr
+                key={i}
+                color="#646668"
+                fontWeight={500}
+                fontSize="12px"
+                lineHeight="100%"
+              >
+                <Td>{plan?.name}</Td>
+                <Td>{plan?.membershipPlan?.name || "N/A"}</Td>
 
-              <Td textAlign={"center"}>
-                {plan.featureType === null ? (
-                  <Box p={3} w="200px">
-                    N/A
-                  </Box>
-                ) : (
-                  <Box bg="#F4F6F8" borderRadius={"4px"} p={3} w="200px">
-                    {
-                      featureTypes?.find(
-                        (feature) => feature.value == plan.featureType
-                      )?.label
-                    }
-                  </Box>
-                )}
-              </Td>
+                <Td textAlign={"center"}>
+                  {plan?.featureType === null ? (
+                    <Box p={3} w="200px">
+                      N/A
+                    </Box>
+                  ) : (
+                    <Flex align="center" w="full" justifyContent="center">
+                      <Flex
+                        bg="#F4F6F8"
+                        justifyContent="center"
+                        align="center"
+                        py="5px"
+                        px="16px"
+                        borderRadius="4px"
+                      >
+                        {
+                          featureTypes?.find(
+                            (feature) => feature?.value == plan?.featureType
+                          )?.label
+                        }
+                      </Flex>
+                    </Flex>
+                  )}
+                </Td>
 
-              <Td textAlign="center">{formatDate(plan?.createdAt)}</Td>
-              <Td textAlign="center">
-                <Flex justifyContent="center" align="center">
-                  <Menu>
-                    <MenuButton as={Text} cursor="pointer">
-                      <BsChevronDown />
-                    </MenuButton>
-                    <MenuList>
-                      <MenuItem
-                        gap="12px"
-                        alignItems="center"
-                        fontWeight="500"
-                        onClick={() =>
-                          navigate(
-                            `${PRIVATE_PATHS.ADMIN_MEMBERSHIP_FEATURES}/details/${plan.id}`,
-                            { state: { ...plan, isEdit: false } }
-                          )
-                        }
+                <Td textAlign="center">{formatDate(plan?.createdAt)}</Td>
+                <Td textAlign="center">
+                  <Flex justifyContent="center" align="center">
+                    <Menu>
+                      <MenuButton as={Text} cursor="pointer">
+                        <BsChevronDown />
+                      </MenuButton>
+                      <MenuList
+                        borderRadius="4px"
+                        p="10px"
+                        border="1px solid #F4F6F8"
+                        boxShadow="0px 8px 16px 0px rgba(0, 0, 0, 0.08)"
                       >
-                        <HiOutlineInformationCircle size={14} />
-                        View
-                      </MenuItem>
-                      <MenuItem
-                        gap="12px"
-                        alignItems="center"
-                        fontWeight="500"
-                        onClick={() =>
-                          navigate(
-                            `${PRIVATE_PATHS.ADMIN_MEMBERSHIP_FEATURES}/details/${plan.id}`,
-                            { state: { ...plan, isEdit: true } }
-                          )
-                        }
-                      >
-                        <FiEdit />
-                        Edit
-                      </MenuItem>
-                      <MenuItem
-                        gap="12px"
-                        alignItems="center"
-                        fontWeight="500"
-                        color="red"
-                        onClick={() =>
-                          setSelectedRow({ isOpen: true, id: plan.id })
-                        }
-                      >
-                        <FiTrash2 />
-                        Delete
-                      </MenuItem>
-                    </MenuList>
-                  </Menu>
-                </Flex>
-              </Td>
-            </Tr>
-          ))
-        ) : (
-          <Tr>
-            <Td colSpan={7} rowSpan={2}>
-              <NoData
-                title="No Membership Feature"
-                desc="You have not added an membership feature"
-              />
-            </Td>
-          </Tr>
-        )}
-      </TableFormat>
+                        {clientListOption.map((dat, i) => (
+                          <MenuItem
+                            gap="12px"
+                            borderRadius="2px"
+                            mb="8px"
+                            py="6px"
+                            px="8px"
+                            _hover={{ bg: "#F4F6F8" }}
+                            align="center"
+                            fontWeight="500"
+                            onClick={() => openOption(i, plan)}
+                          >
+                            <Icon as={dat.icon} />
+                            {dat?.name}
+                          </MenuItem>
+                        ))}
+                      </MenuList>
+                    </Menu>
+                  </Flex>
+                </Td>
+              </Tr>
+            ))}
+          </TableFormat>
+          <AdminDeleteModal
+            isOpen={selectedRow.isOpen}
+            onClose={() => setSelectedRow({ ...selectedRow, isOpen: false })}
+            title="Delete Feature"
+            subTitle="Are you sure you want to delete this feature?"
+            handleSubmit={handleSubmit}
+            isLoading={isDeleting}
+          />{" "}
+        </>
+      ) : (
+        <Flex
+          gap="16px"
+          justifyContent="center"
+          align="center"
+          my="38px"
+          flexDir="column"
+        >
+          <Image src="/assets/no-log-rep.jpg" w="64px" h="64px" />
+          <Text
+            color="#848688"
+            fontSize="12px"
+            lineHeight="100%"
+            fontWeight={500}
+          >
+            No Membership Feature
+          </Text>
 
-      <AdminDeleteModal
-        isOpen={selectedRow.isOpen}
-        onClose={() => setSelectedRow({ ...selectedRow, isOpen: false })}
-        title="Delete Feature"
-        subTitle="Are you sure you want to delete this feature?"
-        handleSubmit={handleSubmit}
-        isLoading={isDeleting}
-      />
+          <Button
+            onClick={() => navigate(PRIVATE_PATHS.ADMIN_ADD_MEMBERSHIP_FEATURE)}
+            display="flex"
+            bg="#000"
+            gap="8px"
+            fontSize="12px"
+          >
+            <Text>Add a Feature</Text>
+            <Add fill="#fff" />
+          </Button>
+        </Flex>
+      )}
     </Box>
   );
 };

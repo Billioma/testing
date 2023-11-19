@@ -1,35 +1,20 @@
-import React, { useState } from "react";
-import {
-  Box,
-  Flex,
-  Text,
-  Button,
-  Image,
-  Spinner,
-  Input,
-} from "@chakra-ui/react";
+import React from "react";
+import { Box, Flex, Text, Button } from "@chakra-ui/react";
 import CustomInput from "../../../components/common/CustomInput";
 import { useNavigate } from "react-router-dom";
 import { PRIVATE_PATHS } from "../../../routes/constants";
-import { useAddClient } from "../../../services/admin/query/clients";
 import { Form, Formik } from "formik";
 import useCustomToast from "../../../utils/notifications";
-import Select from "react-select";
 import GoBackTab from "../../../components/data/Admin/GoBackTab";
-import { useGetManagers } from "../../../services/admin/query/users";
-import { useCustomerUploadPic } from "../../../services/customer/query/user";
 import {
   initPermisisonValues,
   validatePermissionSchema,
 } from "../../../utils/validation";
-import { IoIosArrowDown } from "react-icons/io";
-import { allStates, statusType } from "../../../components/common/constants";
 import { useAddPermission } from "../../../services/admin/query/configurations";
 
 export default function AddPermissions() {
   const navigate = useNavigate();
   const { errorToast, successToast } = useCustomToast();
-  const [show, setShow] = useState(false);
 
   const { mutate, isLoading } = useAddPermission({
     onSuccess: () => {
@@ -44,56 +29,6 @@ export default function AddPermissions() {
     },
   });
 
-  const {
-    mutate: uploadMutate,
-    isLoading: isUploading,
-    data: profilePicData,
-  } = useCustomerUploadPic({
-    onError: (err) => {
-      errorToast(
-        err?.response?.data?.message || err?.message || "An Error occurred"
-      );
-    },
-  });
-
-  const [fileType, setFileType] = useState("");
-
-  const handleUpload = (e) => {
-    const selectedFile = e.target.files[0];
-    if (!selectedFile) {
-      return;
-    }
-
-    setFileType(URL.createObjectURL(selectedFile));
-    const formData = new FormData();
-    formData.append("file", selectedFile);
-    uploadMutate({
-      fileType: "image",
-      entityType: "client",
-      file: formData.get("file"),
-    });
-  };
-
-  const { data: managers } = useGetManagers();
-
-  const managerOptions = managers?.map((manager) => ({
-    label: `${manager.firstName} ${manager.lastName}`,
-    value: manager.id,
-  }));
-
-  const accountTypes = ["BUSINESS", "EVENT_PLANNER", "CORPORATE", "OTHERS"].map(
-    (type, index) => ({ label: type, value: index })
-  );
-
-  const stateOptions = allStates?.map((state) => ({
-    value: state,
-    label: state,
-  }));
-  const statusOptions = statusType?.map((status, i) => ({
-    value: i,
-    label: status,
-  }));
-
   const handleSubmit = (values = "") => {
     const { accountType, state, status, phone, managers, ...rest } = values;
     mutate({
@@ -103,7 +38,6 @@ export default function AddPermissions() {
       phone: `+234${Number(phone)}`,
       state: state?.value,
       managers: managers?.map((dat) => dat?.value),
-      logo: profilePicData?.path,
     });
   };
 
@@ -134,7 +68,6 @@ export default function AddPermissions() {
                 handleChange,
                 handleBlur,
                 handleSubmit,
-                setValues,
                 isValid,
                 dirty,
               }) => (
@@ -209,7 +142,9 @@ export default function AddPermissions() {
                     <Button
                       variant="adminSecondary"
                       w="100%"
-                      onClick={() => navigate(PRIVATE_PATHS.ADMIN_CONFIG_PERMISSIONS)}
+                      onClick={() =>
+                        navigate(PRIVATE_PATHS.ADMIN_CONFIG_PERMISSIONS)
+                      }
                     >
                       Cancel
                     </Button>

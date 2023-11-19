@@ -195,7 +195,7 @@ export default function ViewValetedVehicle() {
   };
 
   const handlePay = () => {
-    console.log({
+    payMutate({
       query: id,
       body: {
         amount: Number(values?.amount),

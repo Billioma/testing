@@ -119,7 +119,7 @@ export default function ViewPayToPark() {
       departure: data?.departure,
       status: selectedStatusOption,
     });
-  }, [data]);
+  }, [data, zones]);
 
   return (
     <Box minH="75vh">

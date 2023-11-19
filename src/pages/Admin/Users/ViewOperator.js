@@ -83,7 +83,6 @@ export default function ViewOperator() {
     const selectedStateOption = stateOptions?.find(
       (option) => option.value === data?.state
     );
-    console.log(selectedStateOption);
     const selectedStatusOption = statusOptions?.find(
       (option) => option.value === data?.status
     );

@@ -110,7 +110,7 @@ const AttendantDetails = () => {
       img: data?.avatar,
       status: selectedStatusOption,
     });
-  }, [data, edit]);
+  }, [data, edit, location]);
 
   const { errorToast, successToast } = useCustomToast();
   const {

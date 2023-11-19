@@ -25,14 +25,14 @@ const ConfirmReserveModal = ({
     <Modal isCentered trapFocus={false} isOpen={isOpen} onClose={onClose}>
       <ModalOverlay backdropFilter="auto" backdropBlur="2px" />
       <ModalContent
-        px="32px"
+        px="24px"
         py="40px"
         overflowY="auto"
-        borderRadius="8px"
+        borderRadius="12px"
         bg="#fff"
         color="#000"
       >
-        <ModalBody>
+        <ModalBody px="0">
           <Flex
             border="1px solid #D4D6D8"
             borderRadius="8px"

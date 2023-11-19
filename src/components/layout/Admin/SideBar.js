@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Box, Flex, Text, VStack, Collapse, Image } from "@chakra-ui/react";
+import { Box, Flex, Text, VStack, Collapse } from "@chakra-ui/react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { ChevronDownIcon, ChevronRightIcon } from "@chakra-ui/icons";
 import { sidebarItems } from "../../common/constants";
@@ -39,7 +39,7 @@ const SideBar = () => {
       flexDir="column"
       justifyContent="space-between"
       position={"fixed"}
-      zIndex="5"
+      zIndex={66}
       pt="32px"
       h="full"
       overflowY="scroll"
@@ -48,7 +48,7 @@ const SideBar = () => {
       bg="#fff"
       boxShadow="4px 0px 24px 0px rgba(0, 0, 0, 0.25)"
     >
-      <Box pos="relative" flex="1">
+      <Box flex="1">
         <Box
           pb="30px"
           mx="-16px"
@@ -319,32 +319,7 @@ const SideBar = () => {
             );
           })}
         </Box>
-
       </Box>
-        <Flex
-          pos="sticky"
-          bg="#fff"
-          left="0"
-          right="0"
-          justifyContent="center"
-          zIndex={55555}
-          h="7rem"
-          pt="10px"
-          pb="20px"
-          w="full"
-          bottom="0"
-        >
-          <Flex
-            flexDir="column"
-            justifyContent="center"
-            align="center"
-          >
-            <Text fontSize="12px" color="#000" lineHeight="100%" mb="8px">
-              Powered by
-            </Text>
-            <Image src="/assets/ezlogo.svg" objectFit="cover" />
-          </Flex>
-        </Flex>
     </Flex>
   );
 };

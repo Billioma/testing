@@ -1,17 +1,19 @@
 import React, { useState, useEffect } from "react";
-import { Box, Flex, Text, Button } from "@chakra-ui/react";
+import { Box, Flex, Text, Button, Spinner } from "@chakra-ui/react";
 import CustomInput from "../../../components/common/CustomInput";
 import Select from "react-select";
 import { customStyles } from "../../../components/common/constants";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { PRIVATE_PATHS } from "../../../routes/constants";
 import useCustomToast from "../../../utils/notifications";
 import GoBackTab from "../../../components/data/Admin/GoBackTab";
 
 import {
   useEditMembershipFeature,
+  useGetAdminMembershipPlanFeature,
   useGetMembershipPlans,
 } from "../../../services/admin/query/memberships";
+import { IoIosArrowDown } from "react-icons/io";
 
 export default function AddOperator() {
   const [state, setState] = useState({
@@ -19,25 +21,42 @@ export default function AddOperator() {
     value: "",
     featureType: null,
     membershipPlan: "",
-    status: 1,
   });
-  const [isEdit, setIsEdit] = useState(false);
-  const location = useLocation();
+  const { id } = useParams();
+
+  const isEdit = sessionStorage.getItem("edit");
+  const [edit, setEdit] = useState(false);
+
+  useEffect(() => {
+    if (isEdit !== null) {
+      setEdit(true);
+    }
+  }, [isEdit]);
+
+  const { mutate, data, isLoading } = useGetAdminMembershipPlanFeature();
+
+  useEffect(() => {
+    mutate({ id: id });
+  }, []);
+
   const navigate = useNavigate();
-  const [isDisabled, setIsDisabled] = useState(true);
   const { errorToast, successToast } = useCustomToast();
 
-  const { mutate, isLoading } = useEditMembershipFeature({
-    onSuccess: () => {
-      successToast("Membership feature updated successfully!");
-      navigate(PRIVATE_PATHS.ADMIN_MEMBERSHIP_FEATURES);
-    },
-    onError: (error) => {
-      errorToast(
-        error?.response?.data?.message || error?.message || "An Error occurred"
-      );
-    },
-  });
+  const { mutate: updateMutate, isLoading: isUpdating } =
+    useEditMembershipFeature({
+      onSuccess: () => {
+        successToast("Membership feature updated successfully!");
+        sessionStorage.removeItem("edit");
+        navigate(PRIVATE_PATHS.ADMIN_MEMBERSHIP_FEATURES);
+      },
+      onError: (error) => {
+        errorToast(
+          error?.response?.data?.message ||
+            error?.message ||
+            "An Error occurred"
+        );
+      },
+    });
 
   const { data: membershipPlans } = useGetMembershipPlans({}, 1, 100000);
 
@@ -56,19 +75,6 @@ export default function AddOperator() {
     "User Limit",
   ].map((feature, index) => ({ label: feature, value: index }));
 
-  const isFormValid = () => {
-    return (
-      !state.name ||
-      !state.value ||
-      !state.membershipPlan ||
-      state.featureType === null
-    );
-  };
-
-  useEffect(() => {
-    setIsDisabled(isFormValid);
-  }, [state]);
-
   const handleSelectChange = (selectedOption, { name }) => {
     setState({
       ...state,
@@ -77,119 +83,200 @@ export default function AddOperator() {
   };
 
   const handleSubmit = () => {
-    mutate({ ...state });
+    updateMutate({
+      query: id,
+      body: {
+        featureType: state?.featureType?.value,
+        membershipPlan: state?.membershipPlan?.value,
+        name: state?.name,
+        value: state?.value,
+        status: 1,
+      },
+    });
   };
 
   useEffect(() => {
+    const selectedPlanOption = membershipPlanOptions?.find(
+      (option) => option?.value === Number(data?.membershipPlan?.id)
+    );
+    const selectedFeatureOption = featureTypes?.find(
+      (option) => option?.value === Number(data?.featureType)
+    );
     setState({
       ...state,
-      ...location.state,
-      membershipPlan: parseInt(location.state.membershipPlan.id),
+      membershipPlan: selectedPlanOption,
+      featureType: selectedFeatureOption,
+      name: data?.name,
+      value: Number(data?.value),
     });
-
-    setIsEdit(location?.state?.isEdit);
-  }, [location.state]);
+  }, [data, membershipPlans]);
 
   return (
     <Box minH="75vh">
-      <Flex justifyContent="center" align="center" w="full" flexDir="column">
-        <GoBackTab />
-        <Flex
-          bg="#fff"
-          borderRadius="16px"
-          py="24px"
-          px="28px"
-          justifyContent="center"
-          w="30rem"
-          flexDir="column"
-          border="1px solid #E4E6E8"
-        >
-          <Box w="full" mb={4}>
-            <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
-              Select Membership Plan
-            </Text>
-            <Select
-              styles={customStyles}
-              onChange={({ value }) =>
-                handleSelectChange(value, { name: "membershipPlan" })
-              }
-              options={membershipPlanOptions}
-              placeholder="Select membership plan"
-              value={membershipPlanOptions?.find(
-                (feature) => feature.value === state.membershipPlan
-              )}
-              isDisabled={!isEdit}
-            />
-          </Box>
-
-          <Box w="full" mb={4}>
-            <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
-              Name
-            </Text>
-            <CustomInput
-              auth
-              value={state.name}
-              mb
-              holder="Enter name of feature"
-              onChange={(e) => setState({ ...state, name: e.target.value })}
-              isDisabled={!isEdit}
-            />
-          </Box>
-
-          <Box w="full" mb={4}>
-            <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
-              Feature Type
-            </Text>
-            <Select
-              styles={customStyles}
-              onChange={({ value }) =>
-                handleSelectChange(value, { name: "featureType" })
-              }
-              options={featureTypes}
-              placeholder="Select feature type"
-              value={featureTypes.find(
-                (feature) => feature.value === state.featureType
-              )}
-              isDisabled={!isEdit}
-            />
-          </Box>
-
-          <Box w="full" mb={4}>
-            <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
-              Value Limit
-            </Text>
-            <CustomInput
-              auth
-              mb
-              type="number"
-              holder="Enter limit"
-              onChange={(e) =>
-                setState({ ...state, value: e.target.value.toString() })
-              }
-              value={state.value}
-              isDisabled={!isEdit}
-            />
-          </Box>
-
-          <Flex gap={4} mt={4}>
-            <Button
-              variant="adminSecondary"
-              w="45%"
-              onClick={() => navigate(PRIVATE_PATHS.ADMIN_MEMBERSHIP_FEATURES)}
-            >
-              Cancel
-            </Button>
-            <Button
-              variant={isEdit ? "adminPrimary" : "adminPrimary"}
-              w="55%"
-              isDisabled={isEdit && isDisabled}
-              isLoading={isLoading}
-              onClick={() => (!isEdit ? setIsEdit(!isEdit) : handleSubmit())}
-            >
-              {!isEdit ? "Edit" : "Save"}
-            </Button>
+      <Flex
+        align="flex-start"
+        flexDir={{ md: "row", base: "column" }}
+        gap={{ base: "", md: "30px" }}
+      >
+        <Box w="fit-content">
+          <GoBackTab />
+        </Box>
+        {isLoading ? (
+          <Flex minH="60vh" w="full" justifyContent="center" align="center">
+            <Spinner />
           </Flex>
-        </Flex>
+        ) : (
+          <>
+            <Flex
+              justifyContent="center"
+              align="center"
+              w="full"
+              flexDir="column"
+            >
+              <Flex
+                bg="#fff"
+                borderRadius="8px"
+                py="32px"
+                px="24px"
+                justifyContent="center"
+                w={{ base: "100%", md: "30rem" }}
+                flexDir="column"
+                border="1px solid #E4E6E8"
+              >
+                <Box w="full" mb={4}>
+                  <Text
+                    mb="8px"
+                    fontSize="10px"
+                    fontWeight={500}
+                    color="#444648"
+                  >
+                    Select Membership Plan
+                  </Text>
+                  <Select
+                    styles={customStyles}
+                    onChange={(selectedOption) =>
+                      handleSelectChange(selectedOption, {
+                        name: "membershipPlan",
+                      })
+                    }
+                    components={{
+                      IndicatorSeparator: () => (
+                        <div style={{ display: "none" }}></div>
+                      ),
+                      DropdownIndicator: () => (
+                        <div>
+                          <IoIosArrowDown size="15px" color="#646668" />
+                        </div>
+                      ),
+                    }}
+                    options={membershipPlanOptions}
+                    placeholder="Select membership plan"
+                    value={state?.membershipPlan}
+                    isDisabled={edit ? false : true}
+                  />
+                </Box>
+
+                <Box w="full" mb={4}>
+                  <Text
+                    mb="8px"
+                    fontSize="10px"
+                    fontWeight={500}
+                    color="#444648"
+                  >
+                    Name
+                  </Text>
+                  <CustomInput
+                    auth
+                    value={state.name}
+                    mb
+                    holder="Enter name of feature"
+                    onChange={(e) =>
+                      setState({ ...state, name: e.target.value })
+                    }
+                    dis={edit ? false : true}
+                  />
+                </Box>
+
+                <Box w="full" mb={4}>
+                  <Text
+                    mb="8px"
+                    fontSize="10px"
+                    fontWeight={500}
+                    color="#444648"
+                  >
+                    Feature Type
+                  </Text>
+                  <Select
+                    styles={customStyles}
+                    onChange={(selectedOption) =>
+                      handleSelectChange(selectedOption, {
+                        name: "featureType",
+                      })
+                    }
+                    components={{
+                      IndicatorSeparator: () => (
+                        <div style={{ display: "none" }}></div>
+                      ),
+                      DropdownIndicator: () => (
+                        <div>
+                          <IoIosArrowDown size="15px" color="#646668" />
+                        </div>
+                      ),
+                    }}
+                    options={featureTypes}
+                    placeholder="Select feature type"
+                    value={state?.featureType}
+                    isDisabled={edit ? false : true}
+                  />
+                </Box>
+
+                <Box w="full" mb={4}>
+                  <Text
+                    mb="8px"
+                    fontSize="10px"
+                    fontWeight={500}
+                    color="#444648"
+                  >
+                    Value Limit
+                  </Text>
+                  <CustomInput
+                    auth
+                    mb
+                    type="number"
+                    holder="Enter limit"
+                    onChange={(e) =>
+                      setState({ ...state, value: e.target.value })
+                    }
+                    value={state.value}
+                    dis={edit ? false : true}
+                  />
+                </Box>
+
+                <Flex gap={4} mt={4}>
+                  <Button
+                    variant="adminSecondary"
+                    w="100%"
+                    onClick={() =>
+                      edit
+                        ? setEdit(false)
+                        : navigate(PRIVATE_PATHS.ADMIN_MEMBERSHIP_FEATURES)
+                    }
+                  >
+                    Cancel
+                  </Button>
+                  <Button
+                    variant="adminPrimary"
+                    w="100%"
+                    isLoading={isUpdating}
+                    onClick={() => (!edit ? setEdit(true) : handleSubmit())}
+                  >
+                    {!edit ? "Edit" : "Save"}
+                  </Button>
+                </Flex>
+              </Flex>
+            </Flex>
+          </>
+        )}
       </Flex>
     </Box>
   );

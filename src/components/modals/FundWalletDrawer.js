@@ -85,13 +85,13 @@ const FundWalletDrawer = ({
       <ModalOverlay backdropFilter="auto" backdropBlur="2px" />
       <ModalContent
         py="32px"
-        px="5px"
+        px="24px"
         overflowY="auto"
-        borderRadius="8px"
+        borderRadius="12px"
         bg="#fff"
         color="#000"
       >
-        <ModalBody>
+        <ModalBody px="0">
           <Box>
             <Flex align="center" flexDirection="column">
               <Image w="40px" h="40px" src="/assets/purse.png" />

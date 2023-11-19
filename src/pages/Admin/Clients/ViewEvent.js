@@ -554,7 +554,6 @@ export default function ViewEvent() {
                     variant="adminPrimary"
                     isDisabled={edit ? false : true}
                   />
-                  {console.log(values?.paymentRequired)}
                 </Flex>
 
                 {values?.paymentRequired ? (

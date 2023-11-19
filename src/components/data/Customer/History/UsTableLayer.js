@@ -28,7 +28,7 @@ import { FcCancel } from "react-icons/fc";
 import { TbListDetails } from "react-icons/tb";
 import { useNavigate } from "react-router-dom";
 
-const TableLayer = () => {
+const UsTableLayer = () => {
   const [page, setPage] = useState(1);
   const navigate = useNavigate();
   const [tab, setTab] = useState("Valet Parking");
@@ -113,10 +113,7 @@ const TableLayer = () => {
   }, []);
 
   return (
-    <Box mt="24px">
-      <Text color="#242628" fontWeight={500} lineHeight="100%" mb="12px">
-        Recent Activity
-      </Text>
+    <Box>
       <TableFormat
         tab={
           <Flex flexWrap="wrap" rowGap={{ base: "20px", md: "unset" }}>
@@ -1079,4 +1076,4 @@ const TableLayer = () => {
   );
 };
 
-export default TableLayer;
+export default UsTableLayer;

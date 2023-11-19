@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Box, Flex, Text, Button } from "@chakra-ui/react";
 import CustomInput from "../../../components/common/CustomInput";
-import { allStates, colors } from "../../../components/common/constants";
+import { allStates, colorTypes } from "../../../components/common/constants";
 import Select from "react-select";
 import { customStyles } from "../../../components/common/constants";
 import { useNavigate } from "react-router-dom";
@@ -44,9 +44,9 @@ export default function AddOperator() {
     label: state,
   }));
 
-  const colorOptions = colors?.map((color) => ({
-    value: color,
-    label: color,
+  const colorOptions = colorTypes?.map((color) => ({
+    value: color.color,
+    label: color.label,
   }));
 
   const [make, setMake] = useState("");
@@ -68,6 +68,44 @@ export default function AddOperator() {
     value: parseInt(customer?.id),
     label: `${customer?.profile.firstName} ${customer?.profile.lastName}`,
   }));
+
+  const [menuIsOpen, setMenuIsOpen] = useState(false);
+  const getOptionValue = (option) => option.value;
+  const getOptionLabel = (option) => (
+    <Flex gap="8px" align="center">
+      <Box
+        width="28px"
+        height="20px"
+        backgroundColor={option.value}
+        borderRadius="4px"
+      />
+      {option.label}
+    </Flex>
+  );
+
+  const ColorOption = ({ data, setValues, values }) => (
+    <Flex
+      mt="-5px"
+      onClick={() => {
+        setValues({ ...values, color: data });
+        setMenuIsOpen(false);
+      }}
+      px="10px"
+      cursor="pointer"
+      _hover={{ bg: "#fff" }}
+      gap="8px"
+      align="center"
+      h="40px"
+    >
+      <Flex
+        width="28px"
+        height="20px"
+        backgroundColor={data?.value}
+        borderRadius="4px"
+      ></Flex>
+      {data?.label}
+    </Flex>
+  );
 
   const ColorOptio = ({ data }) => (
     <Flex mt="-30px" gap="8px" align="center" h="40px">
@@ -95,7 +133,6 @@ export default function AddOperator() {
 
   return (
     <Box minH="75vh">
-      {" "}
       <Flex align="flex-start" flexDir={{ md: "row", base: "column" }}>
         <GoBackTab />
         <Flex justifyContent="center" align="center" w="full" flexDir="column">
@@ -205,6 +242,9 @@ export default function AddOperator() {
                     <Select
                       styles={customStyles}
                       name="color"
+                      onMenuOpen={() => setMenuIsOpen(true)}
+                      menuIsOpen={menuIsOpen}
+                      onMenuClose={() => setMenuIsOpen(false)}
                       onChange={(selectedOption) =>
                         setValues({
                           ...values,
@@ -215,6 +255,13 @@ export default function AddOperator() {
                       value={values?.color}
                       components={{
                         SingleValue: ColorOptio,
+                        Option: (props) => (
+                          <ColorOption
+                            {...props}
+                            setValues={setValues}
+                            values={values}
+                          />
+                        ),
                         IndicatorSeparator: () => (
                           <div style={{ display: "none" }}></div>
                         ),
@@ -224,6 +271,8 @@ export default function AddOperator() {
                           </div>
                         ),
                       }}
+                      getOptionLabel={getOptionLabel}
+                      getOptionValue={getOptionValue}
                       options={colorOptions}
                       placeholder="Select vehicle color"
                     />

@@ -191,7 +191,7 @@ export default function ViewLocation() {
       enableTips: data?.enableTips,
       managers: selectedManagersOption,
     });
-  }, [data]);
+  }, [data, operators, amenities, managers]);
 
   const handleSubmit = () => {
     updateMutate({

@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from "react";
 import FaqsTableLayer from "../../../components/data/Admin/Config/FaqsTableLayer";
 import { Box, Button, Flex, Image, Text } from "@chakra-ui/react";
-import { FiPlus } from "react-icons/fi";
-import { VscDebugRestart } from "react-icons/vsc";
 import { useNavigate } from "react-router-dom";
 import { PRIVATE_PATHS } from "../../../routes/constants";
-import { useGetAdminFaqs, useGetFaqs } from "../../../services/admin/query/configurations";
+import { useGetAdminFaqs } from "../../../services/admin/query/configurations";
 import Filter from "../../../components/common/Filter";
 import { faqsOptions } from "../../../components/common/constants";
 import { MdAdd } from "react-icons/md";
@@ -25,7 +23,6 @@ export default function () {
   });
 
   const query = convertedFilters?.join("&");
-
 
   const { mutate, data, isLoading } = useGetAdminFaqs();
 
@@ -53,7 +50,6 @@ export default function () {
     setEndRow(currentEndRow);
   }, [data, page, limit]);
 
-
   return (
     <Box border="1px solid #d4d6d8" borderRadius="8px" p="16px 23px 24px">
       <Filter
@@ -63,44 +59,48 @@ export default function () {
         handleSearch={() =>
           mutate({ filterString: query, limit: limit, page: page })
         }
-        title={<Text 
-          fontSize="14px"
-          fontWeight={500}
-          lineHeight="100%"
-          color="#242628">All FAQs</Text>}
-          gap
-          main={
-            <>
-              <Button
-                onClick={() => navigate(PRIVATE_PATHS.ADMIN_CONFIG_ADD_FAQ)}
-                display="flex"
-                bg="#000"
-                gap="8px"
-              >
-                <Text fontSize="12px">Add FAQ</Text>
-                <MdAdd size="20px" />
-              </Button>
-              <Flex
-                justifyContent="center"
-                align="center"
-                cursor="pointer"
-                transition=".3s ease-in-out"
-                _hover={{ bg: "#F4F6F8" }}
-                onClick={() => mutate({ filterString: query, limit, page: page })}
-                borderRadius="8px"
-                border="1px solid #848688"
-                p="10px"
-              >
-                <Image
-                  src="/assets/refresh.svg"
-                  className={isLoading && "mirrored-icon"}
-                  w="20px"
-                  h="20px"
-                />
-              </Flex>
-            </>
-          }
-        
+        title={
+          <Text
+            fontSize="14px"
+            fontWeight={500}
+            lineHeight="100%"
+            color="#242628"
+          >
+            All FAQs
+          </Text>
+        }
+        gap
+        main={
+          <>
+            <Button
+              onClick={() => navigate(PRIVATE_PATHS.ADMIN_CONFIG_ADD_FAQ)}
+              display="flex"
+              bg="#000"
+              gap="8px"
+            >
+              <Text fontSize="12px">Add FAQ</Text>
+              <MdAdd size="20px" />
+            </Button>
+            <Flex
+              justifyContent="center"
+              align="center"
+              cursor="pointer"
+              transition=".3s ease-in-out"
+              _hover={{ bg: "#F4F6F8" }}
+              onClick={() => mutate({ filterString: query, limit, page: page })}
+              borderRadius="8px"
+              border="1px solid #848688"
+              p="10px"
+            >
+              <Image
+                src="/assets/refresh.svg"
+                className={isLoading && "mirrored-icon"}
+                w="20px"
+                h="20px"
+              />
+            </Flex>
+          </>
+        }
       />
       <FaqsTableLayer
         data={data}

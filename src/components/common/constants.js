@@ -8,7 +8,6 @@ import {
   HelpIcon,
   HistoryIcon,
   LocateIcon,
-  ServiceIcon,
   SubscriptionIcon,
   VehicleIcon,
 } from "./images";
@@ -338,10 +337,20 @@ export const general = [
   },
   {
     id: 1,
-    name: "Services",
-    path: "/customer/services",
-    icon: <ServiceIcon fill="#242628" />,
-    sec: <ServiceIcon fill="#EE383A" />,
+    name: "History",
+    path: "/customer/history",
+    icon: <HistoryIcon fill="#242628" />,
+    sec: <HistoryIcon fill="#EE383A" />,
+    subItems: [
+      {
+        name: "Created by You",
+        path: "/customer/history/user",
+      },
+      {
+        name: "Created by Us",
+        path: "/customer/history/company",
+      },
+    ],
   },
   {
     id: 2,
@@ -357,15 +366,9 @@ export const general = [
     icon: <SubscriptionIcon fill="#242628" />,
     sec: <SubscriptionIcon fill="#EE383A" />,
   },
+
   {
     id: 4,
-    name: "History",
-    path: "/customer/history",
-    icon: <HistoryIcon fill="#242628" />,
-    sec: <HistoryIcon fill="#EE383A" />,
-  },
-  {
-    id: 5,
     name: "Help Center",
     path: "/customer/help-center",
     icon: <HelpIcon fill="#242628" />,
@@ -1116,6 +1119,16 @@ export const TransactionTypes = [
   "MEMBERSHIP_SUBSCRIPTION_RENEWAL",
 ];
 
+export const FeatureType = [
+  "Vehicle Limit",
+  "Parking Limit",
+  "Valet Limit",
+  "Location Limit",
+  "Car Service Limit",
+  "Applicable Locations",
+  "User Limit",
+];
+
 export const PaymentMethods = [
   "CASH",
   "TRANSFER",
@@ -1140,6 +1153,7 @@ export const SecStatus = [
 
 export const ReservedStatus = ["Pending", "Completed", "Cancelled"];
 export const LogsStatus = ["In Service", "Completed", "Cancelled"];
+export const ServicesStatus = ["In Progress", "Completed", "Cancelled"];
 
 export const Status = [
   { color: "#F9A11E", name: "Pending", bg: "#FDF6E7" },
@@ -1430,7 +1444,7 @@ export const opLocFieldOption = [
   { label: "Name", value: "name" },
   { label: "Operator", value: "operator.name" },
   { label: "State", value: "state" },
-  { label: "Status", value: "status" }
+  { label: "Status", value: "status" },
 ];
 
 export const opLogServiceFieldOption = [
@@ -1478,7 +1492,7 @@ export const opZoneFieldOption = [
   { label: "Capacity", value: "capacity" },
   { label: "Minimum Duration", value: "minimumDuration" },
   { label: "Duration Type", value: "durationType" },
-  { label: "Status", value: "status" }
+  { label: "Status", value: "status" },
 ];
 
 export const opRateFieldOption = [
@@ -1487,13 +1501,13 @@ export const opRateFieldOption = [
   { label: "Duration Start", value: "durationStart" },
   { label: "Duration Limit", value: "durationLimit" },
   { label: "Amount", value: "amount" },
-  { label: "Status", value: "status" }
+  { label: "Status", value: "status" },
 ];
 
 export const opPolicyFieldOption = [
   { label: "Title", value: "title" },
   { label: "Location", value: "location.name" },
-  { label: "Status", value: "status" }
+  { label: "Status", value: "status" },
 ];
 
 export const clientEventFieldOption = [
@@ -1730,20 +1744,16 @@ export const customerSubOptions = [
   { label: "Customer First Name", value: "customer.profile.firstName" },
   { label: "Customer Last Name", value: "customer.profile.lastName" },
   { label: "Plan", value: "membershipPlan.name" },
-  { label: "Amount (₦)", value: "amount" },
+  { label: "Amount (₦)", value: "membershipPlan.amount" },
   { label: "Duration", value: "membershipPlan.interval" },
-  { label: "Start Date", value: "startDate" },
-  { label: "Next Payment Date", value: "nextPaymentDate" },
   { label: "Status", value: "status" },
 ];
 
 export const corporateSubOptions = [
   { label: "Client", value: "client.name" },
   { label: "Plan", value: "membershipPlan.name" },
-  { label: "Amount (₦)", value: "amount" },
+  { label: "Amount (₦)", value: "membershipPlan.amount" },
   { label: "Duration", value: "membershipPlan.interval" },
-  { label: "Start Date", value: "startDate" },
-  { label: "Next Payment Date", value: "nextPaymentDate" },
   { label: "Status", value: "status" },
 ];
 

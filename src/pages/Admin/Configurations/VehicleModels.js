@@ -3,9 +3,7 @@ import ModelsTableLayer from "../../../components/data/Admin/Config/ModelsTableL
 import { Box, Button, Flex, Image, Text } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import { PRIVATE_PATHS } from "../../../routes/constants";
-import {
-  useGetAdminVehicleModels,
-} from "../../../services/admin/query/configurations";
+import { useGetAdminVehicleModels } from "../../../services/admin/query/configurations";
 import Filter from "../../../components/common/Filter";
 import { modelsOptions } from "../../../components/common/constants";
 import { MdAdd } from "react-icons/md";

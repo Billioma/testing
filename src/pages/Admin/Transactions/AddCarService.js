@@ -5,7 +5,6 @@ import { useNavigate } from "react-router-dom";
 import { PRIVATE_PATHS } from "../../../routes/constants";
 import useCustomToast from "../../../utils/notifications";
 import GoBackTab from "../../../components/data/Admin/GoBackTab";
-import { useGetZones } from "../../../services/admin/query/locations";
 import { useGetAllCustomers } from "../../../services/admin/query/customers";
 import Select from "react-select";
 import {
@@ -39,13 +38,6 @@ export default function AddCarService() {
   const customerOptions = customers?.data?.map((customer) => ({
     label: `${customer.profile.firstName} ${customer.profile.lastName}`,
     value: customer.id,
-  }));
-
-  const { data: zones } = useGetZones({}, 1, 10000);
-
-  const zoneOptions = zones?.data?.map((zone) => ({
-    label: `${zone.name} - ${zone?.location?.name}`,
-    value: zone.id,
   }));
 
   const billingTypeOptions = BillingTypes.map((type, i) => ({

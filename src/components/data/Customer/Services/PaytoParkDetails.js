@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   Box,
   Button,
@@ -9,7 +9,6 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import {
-  useCreateTips,
   useGetPayToParkDetails,
   useGetTips,
 } from "../../../../services/customer/query/services";
@@ -17,7 +16,6 @@ import { useParams } from "react-router-dom";
 import { formatDate } from "../../../../utils/helpers";
 import { Status } from "../../../common/constants";
 import MakeTipModal from "../../../modals/MakeTipModal";
-import useCustomToast from "../../../../utils/notifications";
 
 export const Layout = ({ label, data }) => {
   return (

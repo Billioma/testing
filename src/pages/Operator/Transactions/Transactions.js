@@ -60,7 +60,7 @@ const Transactions = () => {
                     key={i}
                     pos="sticky"
                     top="0"
-                    textAlign={i !== 0 ? "center" : ""}
+                    textAlign={i !== 0 ? "center" : "start"}
                     bg="#F4F6F8"
                     fontFamily="Sailec"
                     zIndex="2"

@@ -5,6 +5,9 @@ export const CHANGE_PASSWORD = (id = "", hash = "") =>
   `auth/update-password/${id}/${hash}`;
 export const CHANGE_USER_PASSWORD = "update-password";
 
+export const CUSTOMER_SERVICE_LOGS_LIST = (limit = "", page = "") =>
+  `customer/service-logs?limit=${limit}&page=${page}&sort=id,DESC`;
+
 export const GET_VEHICLES = "vehicles";
 export const DEL_VEHICLES = (id = "") => `vehicles/${id}`;
 export const DEL_CARDS = (id = "") => `cards/${id}`;

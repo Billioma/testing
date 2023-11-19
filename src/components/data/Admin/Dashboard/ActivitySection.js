@@ -237,8 +237,8 @@ export default function ActivitySection() {
                 isLoaded={notLoading}
               ></Skeleton>
             ))
-          : state?.length &&
-            state?.map((card) => (
+          : state?.length
+          ? state?.map((card) => (
               <StatCard
                 key={card.id}
                 title={card.title}
@@ -252,7 +252,8 @@ export default function ActivitySection() {
                 paid={card.paid || 0}
                 large
               />
-            ))}
+            ))
+          : ""}
       </SimpleGrid>
     </Box>
   );
