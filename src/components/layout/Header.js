@@ -51,10 +51,15 @@ const Header = () => {
                               <div
                                 key={i}
                                 style={{ transition: ".3s ease-in-out" }}
-                                onClick={() => dat.route && navigate(dat.route)}
                                 className="hover:text-red mb-[21px] cursor-pointer text-[#444648] text-sm font-normal"
                               >
-                                {dat?.name}
+                                <a
+                                  target="_blank"
+                                  rel="noreferrer"
+                                  href={dat?.route ? dat?.route : ""}
+                                >
+                                  {dat?.name}
+                                </a>
                               </div>
                             ))}
                           </div>

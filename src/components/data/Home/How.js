@@ -11,13 +11,13 @@ const How = () => {
   const [tab, setTab] = useState("Pay-to-Park");
   return (
     <div id="how" className="full_width">
-      <div className="bg-[#fff] py-[56px] lg:py-[100px] flex flex-col justify-center items-center w-full">
+      <div className="bg-[#fff] py-[56px] lg:py-[70px] flex flex-col justify-center items-center w-full">
         <div className="px-[20px] lg:px-[unset] lg:w-[1256px]">
-          <div className="text-center font-[Cooper] text-black text-[32px] md:text-[45px] lg:text-[64px] font-[900] ">
+          <div className="text-center font-[Cooper] text-black text-[32px] md:text-[45px] lg:text-[54px] font-[900]">
             How It Works
           </div>
 
-          <div className="flex mt-[32px] md:mt-[40px] mb-[56px] justify-center items-center w-full">
+          <div className="flex mt-[32px] md:mt-[30px] mb-[46px] justify-center items-center w-full">
             <div className="flex flex-wrap md:flex-nowrap gap-y-[16px] md:gap-y-[unset] justify-center md:justify-normal items-center w-fit border border-[#d4d6d8] rounded-[21px] md:rounded-[30px] p-[4px]">
               {howTabs.map((data, i) => (
                 <div

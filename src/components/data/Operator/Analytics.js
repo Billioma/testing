@@ -10,7 +10,7 @@ const Analytics = () => {
             <div className="mt-[32px] mb-[24px] font-[Cooper] text-[32px] font-[900]">
               Analytics for you
             </div>
-            <div className="text-[20px] leading-[150%]">
+            <div className="lg:text-[20px] leading-[180%] lg:leading-[150%]">
               Stay informed on your business with the different tools and
               functionalities including Analytics, Reporting, Rates & Policy
               Management, Payments and Administration.
@@ -29,7 +29,7 @@ const Analytics = () => {
             <div className="mt-[32px] text-[#242424] mb-[24px] font-[Cooper] text-[32px] font-[900]">
               Simple but flexible
             </div>
-            <div className="text-[20px] text-[#101410] leading-[150%]">
+            <div className="lg:text-[20px] leading-[180%] lg:leading-[150%] text-[#101410] ">
               Stay informed on your business with the different tools and
               functionalities including Analytics, Reporting, Rates & Policy
               Management, Payments and Administration.

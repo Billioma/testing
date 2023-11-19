@@ -1,9 +1,35 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { companies, company, connect, information } from "../common/constants";
 import { useNavigate } from "react-router-dom";
+import { Link } from "react-scroll";
 
 const Footer = () => {
   const navigate = useNavigate();
+  const [activeSection, setActiveSection] = useState("");
+
+  const handleScroll = () => {
+    const divs = document.querySelectorAll("div");
+    let currentSection = "";
+
+    divs.forEach((div) => {
+      const divTop = div.offsetTop;
+      const divHeight = div.clientHeight;
+      const scrollPosition = window.scrollY + window.innerHeight / 2;
+
+      if (scrollPosition >= divTop && scrollPosition <= divTop + divHeight) {
+        currentSection = div.id;
+      }
+    });
+
+    setActiveSection(currentSection);
+  };
+
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  const today = new Date();
 
   return (
     <div className="bg-[#242628] px-[20px] flex flex-col justify-center items-center w-full">
@@ -30,7 +56,9 @@ const Footer = () => {
             <div>
               {companies.map((dat, i) => (
                 <div className="mb-[21px] cursor-pointer" key={i}>
-                  <a href={dat?.id}>{dat?.name}</a>
+                  <Link to={dat?.id} smooth={true} duration={500}>
+                    {dat?.name}
+                  </Link>
                 </div>
               ))}
             </div>
@@ -40,12 +68,14 @@ const Footer = () => {
             <div className="font-medium">INFORMATION</div>
             <div>
               {information.map((dat, i) => (
-                <div
-                  onClick={() => (i === 0 ? navigate(dat?.link) : "")}
-                  className="cursor-pointer mb-[21px]"
-                  key={i}
-                >
-                  {dat?.name}
+                <div className="cursor-pointer mb-[21px]" key={i}>
+                  <a
+                    target="_blank"
+                    rel="noreferrer"
+                    href={dat?.link ? dat?.link : ""}
+                  >
+                    {dat?.name}
+                  </a>
                 </div>
               ))}
             </div>
@@ -68,10 +98,7 @@ const Footer = () => {
               {connect.map((dat, i) => (
                 <div key={i}>
                   <a href={dat?.link} target="_blank" rel="noreferrer">
-                    <img
-                      src={dat?.icon}
-                      className="cursor-pointer w-[20px] h-[20px]"
-                    />
+                    <div>{dat?.img}</div>
                   </a>
                 </div>
               ))}
@@ -127,7 +154,7 @@ const Footer = () => {
       <div className="flex flex-col justify-center items-center w-full">
         <div className="flex justify-center items-center  border-t border-[#545658] w-[100%] lg:w-[50%] pt-[40px] pb-[64px]">
           <div className="text-white text-sm leading-[100%]">
-            ©2023 EZPark Limited. All rights reserved
+            ©{today.getFullYear()} EZPark Limited. All rights reserved
           </div>
         </div>
       </div>

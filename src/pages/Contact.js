@@ -24,8 +24,8 @@ export const Layout = ({ label, placeholder }) => {
 const Contact = () => {
   return (
     <div className="full_width">
-      <div className="relative bg-white px-[20px] lg:px-[120px] pt-[100px] pb-[56px] lg:pb-[60px] lg:pt-[150px]">
-        <div className="text-center font-[Cooper] text-[#242628] text-[40px] lg:text-[64px] font-[900]">
+      <div className="relative bg-white px-[20px] lg:px-[120px] pt-[100px] pb-[56px] lg:pb-[60px] lg:pt-[130px]">
+        <div className="text-center font-[Cooper] text-[#242628] text-[40px] lg:text-[56px] font-[900]">
           Contact us
         </div>
         <div className="flex flex-col justify-center items-center">

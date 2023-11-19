@@ -18,7 +18,7 @@ const Solution = () => {
               {benefits.map((dat, i) => (
                 <div key={i} className="flex gap-[8px] items-center">
                   <img src={dat.img} />
-                  <div className="text-[20px]">{dat.name}</div>
+                  <div className="lg:text-[20px]">{dat.name}</div>
                 </div>
               ))}
             </div>

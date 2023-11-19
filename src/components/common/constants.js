@@ -2,6 +2,8 @@ import { FaRegComment } from "react-icons/fa";
 import { AiOutlineRetweet } from "react-icons/ai";
 import { MdOutlineFavoriteBorder } from "react-icons/md";
 import { GoUpload } from "react-icons/go";
+import { BsTwitter, BsLinkedin } from "react-icons/bs";
+import { RiInstagramFill, RiFacebookFill } from "react-icons/ri";
 
 export const headers = [
   {
@@ -143,23 +145,23 @@ export const company = ["Lagos", "Abuja"];
 export const companies = [
   {
     name: "About ParkinSpace",
-    id: "/#about",
+    id: "about",
   },
   {
     name: "Services",
-    id: "/#services",
+    id: "services",
   },
   {
     name: "ParkinSpace PLUS",
-    id: "/#plus",
+    id: "plus",
   },
   {
     name: "Getting Started",
-    id: "/#start",
+    id: "start",
   },
   {
     name: "How it Work",
-    id: "/#how",
+    id: "how",
   },
 ];
 
@@ -169,24 +171,28 @@ export const connect = [
     name: "Facebook",
     link: "https://web.facebook.com/EZParkLimited/?_rdc=1&_rdr",
     icon: "/assets/facebook_icon.png",
+    img: <RiFacebookFill color="white" size={20} />,
   },
   {
     id: 2,
     name: "Twitter",
     link: "https://twitter.com/EZParkLimited",
     icon: "/assets/twitter_icon.png",
+    img: <BsTwitter color="white" size={20} />,
   },
   {
     id: 3,
     name: "Instagram",
     link: "https://www.instagram.com/ezparklimited/",
     icon: "/assets/instagram_icon.png",
+    img: <RiInstagramFill color="white" size={20} />,
   },
   {
     id: 4,
     name: "LinkedIn",
     link: "https://www.linkedin.com/company/ezpark-limited/",
     icon: "/assets/linkedin_icon.png",
+    img: <BsLinkedin color="white" size={20} />,
   },
 ];
 

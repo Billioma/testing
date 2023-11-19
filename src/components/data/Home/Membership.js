@@ -3,18 +3,19 @@ import React from "react";
 const Membership = () => {
   return (
     <div className="full_width" id="about">
-      <div className="py-[56px] pb-0 lg:pt-[100px] flex flex-col justify-center items-center">
+      <div className="py-[56px] pb-0 lg:pt-[90px] flex flex-col justify-center items-center">
         <div className="px-[20px] lg:px-[unset] w-full lg:w-[48%]">
           <div className="flex flex-col justify-center items-center">
-            <div className="text-[#242424] text-center text-[40px] lg:text-[54px] leading-[150%] font-[Cooper]">
+            <div className="text-[#242424] text-center text-[40px] lg:text-[54px] leading-[120%] lg:leading-[150%] font-[Cooper]">
               About <span className="text-red">Parkin</span>Space
             </div>
           </div>
 
           <div className="w-[100%] flex flex-col justify-center items-center mt-[20px] text-center text-[#101410] text-sm leading-[150%]">
-            <div className="w-[88%] mt-[20px] text-center text-[#101410] text-base lg:text-[20px] leading-[150%]">
+            <div className="w-[88%] mt-[20px] text-center text-[#101410] text-sm md:text-base leading-[150%]">
               ParkinSpace is powered by EZPark, a premier parking management
-              company. <br />
+              company.
+              <br />
               <br />
               Our technology is the easy, fast and stress-free way to find,
               reserve and pay for parking services. <br />
