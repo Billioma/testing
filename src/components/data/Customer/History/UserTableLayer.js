@@ -443,7 +443,7 @@ const UserTableLayer = () => {
                           w="full"
                           onClick={() =>
                             navigate(
-                              `/customer/services/pay-to-park/${dat?.id}`
+                              `/customer/history/user/pay-to-park/${dat?.id}`
                             )
                           }
                           color="#646668"
@@ -572,7 +572,7 @@ const UserTableLayer = () => {
                           w="full"
                           onClick={() =>
                             navigate(
-                              `/customer/services/pay-to-park/${dat?.id}`
+                              `/customer/history/user/pay-to-park/${dat?.id}`
                             )
                           }
                           color="#646668"
@@ -715,7 +715,7 @@ const UserTableLayer = () => {
                               onClick={() =>
                                 i == 0
                                   ? navigate(
-                                      `/customer/services/reserve-parking/${dat?.id}`
+                                      `/customer/history/user/reserve-parking/${dat?.id}`
                                     )
                                   : setShowCancel(true)
                               }
@@ -874,7 +874,7 @@ const UserTableLayer = () => {
                           w="full"
                           onClick={() =>
                             navigate(
-                              `/customer/services/event-parking/${dat?.id}`
+                              `/customer/history/user/event-parking/${dat?.id}`
                             )
                           }
                           color="#646668"

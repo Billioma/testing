@@ -38,7 +38,7 @@ const {
   // CUSTOMER ROUTES
   CUST_DASHBOARD,
   CUST_SERVICES_PARK,
-  CUST_SERVICES_PARK_DETAILS,
+  CUST_SERVICE_PARK_DETAILS,
   CUST_HISTORY_PARK_DETAILS,
   CUST_HISTORY_USER,
   CUST_HISTORY_US,
@@ -208,15 +208,15 @@ const CustServicesPark = WithSuspense(
   lazy(() => import("../pages/Customer/Services/Park"))
 );
 const CustServicesParkDetails = WithSuspense(
-  lazy(() => import("../components/data/Customer/Services/PaytoParkDetails"))
+  lazy(() => import("../components/data/Customer/History/Us/PaytoParkDetails"))
 );
 const CustServicesReserveParkDetails = WithSuspense(
   lazy(() =>
-    import("../components/data/Customer/Services/ReserveParkingDetails")
+    import("../components/data/Customer/History/Us/ReserveParkingDetails")
   )
 );
 const CustServicesEventParkDetails = WithSuspense(
-  lazy(() => import("../components/data/Customer/Services/EventParkingDetails"))
+  lazy(() => import("../components/data/Customer/History/Us/EventParkingDetails"))
 );
 const CustServicesCar = WithSuspense(
   lazy(() => import("../pages/Customer/Services/CarServices"))
@@ -885,7 +885,7 @@ export const PRIVATE_ROUTES = [
   // CUSTOMER ROUTES
   { path: CUST_DASHBOARD, element: <CustDashboard /> },
   { path: CUST_SERVICES_PARK, element: <CustServicesPark /> },
-  { path: CUST_SERVICES_PARK_DETAILS, element: <CustServicesParkDetails /> },
+  { path: CUST_SERVICE_PARK_DETAILS, element: <CustServicesParkDetails /> },
   { path: CUST_HISTORY_PARK_DETAILS, element: <CustServicesParkDetails /> },
   {
     path: CUST_SERVICES_RESERVE_PARK_DETAILS,

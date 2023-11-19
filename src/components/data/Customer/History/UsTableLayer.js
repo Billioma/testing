@@ -429,7 +429,7 @@ const UsTableLayer = () => {
                           w="full"
                           onClick={() =>
                             navigate(
-                              `/customer/services/pay-to-park/${dat?.id}`
+                              `/customer/history/company/pay-to-park/${dat?.id}`
                             )
                           }
                           color="#646668"
@@ -557,7 +557,7 @@ const UsTableLayer = () => {
                           w="full"
                           onClick={() =>
                             navigate(
-                              `/customer/services/pay-to-park/${dat?.id}`
+                              `/customer/history/company/pay-to-park/${dat?.id}`
                             )
                           }
                           color="#646668"
@@ -695,7 +695,7 @@ const UsTableLayer = () => {
                               onClick={() =>
                                 i == 0
                                   ? navigate(
-                                      `/customer/services/reserve-parking/${dat?.id}`
+                                      `/customer/history/company/reserve-parking/${dat?.id}`
                                     )
                                   : setShowCancel(true)
                               }
@@ -853,7 +853,7 @@ const UsTableLayer = () => {
                           w="full"
                           onClick={() =>
                             navigate(
-                              `/customer/services/event-parking/${dat?.id}`
+                              `/customer/history/company/event-parking/${dat?.id}`
                             )
                           }
                           color="#646668"
