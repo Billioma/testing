@@ -91,19 +91,19 @@ export const NonAuthLayout = ({ children }) => {
       <Flex
         flexDir="column"
         justifyContent={
-          location.pathname === "/customer/pay-to-park"
+          location.pathname === "/customer/scan-qr"
             ? "flex-start"
             : "center"
         }
         align={
-          location.pathname === "/customer/pay-to-park"
+          location.pathname === "/customer/scan-qr"
             ? "flex-start"
             : "center"
         }
         minH={
           location.pathname === "/customer/pay-to-park"
             ? "unset"
-            : location.pathname === "/customer/pay-to-park"
+            : location.pathname === "/customer/scan-qr"
             ? "70vh"
             : "90vh"
         }
