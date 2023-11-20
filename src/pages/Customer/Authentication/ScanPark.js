@@ -70,7 +70,13 @@ const ScanPark = () => {
             ""
           )}
           {error ? (
-            <Text color="red" fontSize="13px" mt="25px">
+            <Text
+              color="red"
+              fontSize="13px"
+              mt="25px"
+              textAlign="center"
+              fontWeight={500}
+            >
               Zone was not found! Try search another zone.{error}
             </Text>
           ) : (
