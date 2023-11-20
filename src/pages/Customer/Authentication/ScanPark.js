@@ -45,7 +45,7 @@ const ScanPark = () => {
   const [isMobile] = useMediaQuery("(max-width: 820px)");
 
   return (
-    <Box mt="-50px" w="full">
+    <Box w="full">
       <Image mb="24px" src="/assets/park-logo.jpg" w="134px" h="28px" />
       {isMobile ? (
         <>
