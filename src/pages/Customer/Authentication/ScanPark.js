@@ -3,7 +3,7 @@ import { Box, Flex, Heading, useMediaQuery } from "@chakra-ui/react";
 import BarcodeScannerComponent from "react-qr-barcode-scanner";
 
 const ScanPark = () => {
-  const [data, setData] = React.useState("Not Found");
+  const [data, setData] = React.useState("");
 
   const [isMobile] = useMediaQuery("(max-width: 820px)");
 
