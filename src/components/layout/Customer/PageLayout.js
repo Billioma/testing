@@ -70,7 +70,7 @@ export const NonAuthLayout = ({ children }) => {
         location.pathname === "/customer/scan-qr" ? "flex-start" : "center"
       }
       pos="relative"
-      minH="100vh"
+      minH={location.pathname === "/customer/scan-qr" ? "75vh" : "100vh"}
     >
       {location.pathname !== "/pay-to-park" ||
         (location.pathname !== "/scan-qr" && (
