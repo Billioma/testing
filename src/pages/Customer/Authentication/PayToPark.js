@@ -131,33 +131,33 @@ const PayToPark = () => {
               flexDir="column"
               minH="80vh"
             >
-              {step !== 1 && (
-                <Flex
-                  align="center"
-                  justifyContent="space-between"
-                  w="full"
-                  mb="32px"
-                  onClick={() => {
-                    setStep(step - 1);
-                  }}
-                  cursor="pointer"
-                >
+              <Flex
+                align="center"
+                justifyContent="space-between"
+                w="full"
+                mb="32px"
+                onClick={() => {
+                  setStep(step - 1);
+                }}
+                cursor="pointer"
+              >
+                {step !== 1 && (
                   <Box w="full">
                     <HiOutlineArrowNarrowLeft size="24px" color="#242628" />
                   </Box>
-                  <Box w="full">
-                    <Text
-                      lineHeight="100%"
-                      color="#444648"
-                      fontSize="14px"
-                      fontWeight={500}
-                    >
-                      Make Payment
-                    </Text>
-                  </Box>
-                  <Box w="full"></Box>
-                </Flex>
-              )}
+                )}
+                <Box w="full">
+                  <Text
+                    lineHeight="100%"
+                    color="#444648"
+                    fontSize="14px"
+                    fontWeight={500}
+                  >
+                    {step === 2 ? "Provide Information" : "Make Payment"}
+                  </Text>
+                </Box>
+                <Box w="full"></Box>
+              </Flex>
 
               {step !== 3 && (
                 <Box
@@ -264,82 +264,6 @@ const PayToPark = () => {
 
               {step === 1 && (
                 <Box>
-                  <Box mt="16px">
-                    <Text
-                      color="#444648"
-                      fontSize="10px"
-                      lineHeight="100%"
-                      mb="8px"
-                    >
-                      Enter Your Phone Number
-                    </Text>
-                    <CustomInput
-                      auth
-                      ngn
-                      mb
-                      handleKeyPress={(e) => handleKeyPress(e, 10)}
-                      value={values.phone}
-                      type="number"
-                      onChange={(e) =>
-                        setValues({
-                          ...values,
-                          phone: e.target.value,
-                        })
-                      }
-                    />
-                  </Box>
-                </Box>
-              )}
-
-              {step === 2 && (
-                <Flex flexDir="column" mb="30px">
-                  <Box my="16px">
-                    <Text
-                      color="#444648"
-                      fontSize="10px"
-                      lineHeight="100%"
-                      mb="8px"
-                    >
-                      Name
-                    </Text>
-                    <CustomInput
-                      auth
-                      holder="Enter Your Name"
-                      mb
-                      value={values.name}
-                      onChange={(e) =>
-                        setValues({
-                          ...values,
-                          name: e.target.value,
-                        })
-                      }
-                    />
-                  </Box>
-
-                  <Box>
-                    <Text
-                      color="#444648"
-                      fontSize="10px"
-                      lineHeight="100%"
-                      mb="8px"
-                    >
-                      Enter Your Email
-                    </Text>
-                    <CustomInput
-                      auth
-                      mb
-                      type="email"
-                      holder="Email address"
-                      value={values.email}
-                      onChange={(e) =>
-                        setValues({
-                          ...values,
-                          email: e.target.value,
-                        })
-                      }
-                    />
-                  </Box>
-
                   <Box my="16px">
                     <Text
                       color="#444648"
@@ -442,6 +366,59 @@ const PayToPark = () => {
                         handleSelectChange(selectedOption, { name: "color" })
                       }
                       options={colorOptions}
+                    />
+                  </Box>
+                </Box>
+              )}
+
+              {step === 2 && (
+                <Flex flexDir="column" mb="30px">
+                  <Box my="16px">
+                    <Text
+                      color="#444648"
+                      fontSize="10px"
+                      lineHeight="100%"
+                      mb="8px"
+                    >
+                      Enter Your Phone Number
+                    </Text>
+                    <CustomInput
+                      auth
+                      ngn
+                      mb
+                      handleKeyPress={(e) => handleKeyPress(e, 10)}
+                      value={values.phone}
+                      type="number"
+                      onChange={(e) =>
+                        setValues({
+                          ...values,
+                          phone: e.target.value,
+                        })
+                      }
+                    />
+                  </Box>
+
+                  <Box>
+                    <Text
+                      color="#444648"
+                      fontSize="10px"
+                      lineHeight="100%"
+                      mb="8px"
+                    >
+                      Enter Your Email
+                    </Text>
+                    <CustomInput
+                      auth
+                      mb
+                      type="email"
+                      holder="Email address"
+                      value={values.email}
+                      onChange={(e) =>
+                        setValues({
+                          ...values,
+                          email: e.target.value,
+                        })
+                      }
                     />
                   </Box>
                 </Flex>
