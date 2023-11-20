@@ -63,8 +63,12 @@ export const NonAuthLayout = ({ children }) => {
   return (
     <Flex
       flexDir="column"
-      justifyContent="center"
-      align="center"
+      justifyContent={
+        location.pathname === "/customer/scan-qr" ? "flex-start" : "center"
+      }
+      align={
+        location.pathname === "/customer/scan-qr" ? "flex-start" : "center"
+      }
       pos="relative"
       minH="100vh"
     >
@@ -91,20 +95,16 @@ export const NonAuthLayout = ({ children }) => {
       <Flex
         flexDir="column"
         justifyContent={
-          location.pathname === "/customer/scan-qr"
-            ? "flex-start"
-            : "center"
+          location.pathname === "/customer/scan-qr" ? "flex-start" : "center"
         }
         align={
-          location.pathname === "/customer/scan-qr"
-            ? "flex-start"
-            : "center"
+          location.pathname === "/customer/scan-qr" ? "flex-start" : "center"
         }
         minH={
           location.pathname === "/customer/pay-to-park"
             ? "unset"
             : location.pathname === "/customer/scan-qr"
-            ? "55vh"
+            ? "unset"
             : "90vh"
         }
         pt={
@@ -118,17 +118,19 @@ export const NonAuthLayout = ({ children }) => {
       >
         {children}
       </Flex>
-      <Flex
-        mt="auto"
-        mb="20px"
-        flexDir="column"
-        justifyContent="center"
-        align="center"
-      >
-        <Text fontSize="12px" lineHeight="100%" mb="8px">
-          Powered by
-        </Text>
-        <Image src="/assets/ezlogo.png" />
+      <Flex w="full" pos="absolute" bottom="0" flexDir="column" justifyContent="center" align="center">
+        <Flex
+          mt={location.pathname === "/customer/scan-qr" ? "" : "auto"}
+          mb="20px"
+          flexDir="column"
+          justifyContent="center"
+          align="center"
+        >
+          <Text fontSize="12px" lineHeight="100%" mb="8px">
+            Powered by
+          </Text>
+          <Image src="/assets/ezlogo.png" />
+        </Flex>
       </Flex>
     </Flex>
   );
