@@ -64,16 +64,10 @@ export const NonAuthLayout = ({ children }) => {
     <Flex
       flexDir="column"
       justifyContent={
-        location.pathname === "/customer/scan-qr" ||
-        location.pathname !== "/pay-to-park"
-          ? "flex-start"
-          : "center"
+        location.pathname === "/customer/scan-qr" ? "flex-start" : "center"
       }
       align={
-        location.pathname === "/customer/scan-qr" ||
-        location.pathname !== "/pay-to-park"
-          ? "flex-start"
-          : "center"
+        location.pathname === "/customer/scan-qr" ? "flex-start" : "center"
       }
       pos="relative"
       minH={
@@ -106,16 +100,10 @@ export const NonAuthLayout = ({ children }) => {
       <Flex
         flexDir="column"
         justifyContent={
-          location.pathname === "/customer/scan-qr" ||
-          location.pathname !== "/pay-to-park"
-            ? "flex-start"
-            : "center"
+          location.pathname === "/customer/scan-qr" ? "flex-start" : "center"
         }
         align={
-          location.pathname === "/customer/scan-qr" ||
-          location.pathname !== "/pay-to-park"
-            ? "flex-start"
-            : "center"
+          location.pathname === "/customer/scan-qr" ? "flex-start" : "center"
         }
         minH={
           location.pathname === "/customer/pay-to-park"
