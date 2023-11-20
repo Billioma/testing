@@ -6,6 +6,7 @@ import { Navigate } from "react-router-dom";
 const {
   // CUSTOMER ROUTES
   CUST_LOGIN,
+  CUST_LOGIN_REDIRECT,
   CUST_SIGNUP,
   CUST_RESET_PASS,
   CUST_RESET_SENT,
@@ -207,6 +208,10 @@ const CustDashboard = WithSuspense(
 const CustServicesPark = WithSuspense(
   lazy(() => import("../pages/Customer/Services/Park"))
 );
+
+// const CustServicesReservePark = WithSuspense(
+//   lazy(() => import("../pages/Customer/Services/Park"))
+// );
 const CustServicesParkDetails = WithSuspense(
   lazy(() => import("../components/data/Customer/History/Us/PaytoParkDetails"))
 );
@@ -835,6 +840,7 @@ const AdminConfigQrCode = WithSuspense(
 export const PUBLIC_ROUTES = [
   //CUSTOMER ROUTES
   { path: CUST_LOGIN, element: <CustLogin /> },
+  { path: CUST_LOGIN_REDIRECT, element: <CustLogin /> },
   { path: CUST_RESET_PASS, element: <CustResetPassword /> },
   { path: CUST_CHANGE_PASS, element: <CustChangePassword /> },
   { path: CUST_CHANGE_SUCCESS, element: <CustChangeSuccess /> },

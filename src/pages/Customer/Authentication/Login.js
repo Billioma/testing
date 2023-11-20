@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Image } from "@chakra-ui/image";
 import { Box, Flex, Text } from "@chakra-ui/layout";
 import CustomInput from "../../../components/common/CustomInput";
@@ -7,10 +7,15 @@ import { Button } from "@chakra-ui/button";
 import { initValues, validateSchema } from "../../../utils/validation";
 import { Form, Formik } from "formik";
 import { useNavigate } from "react-router";
+import { useParams } from "react-router-dom";
 import useCustomToast from "../../../utils/notifications";
 import { useCustomerLogin } from "../../../services/customer/query/auth";
 
 const Login = () => {
+  const { redirect } = useParams();
+
+  console.log(redirect);
+
   const [show, setShow] = useState(false);
   const navigate = useNavigate();
 
@@ -19,7 +24,17 @@ const Login = () => {
     onSuccess: (res) => {
       localStorage.setItem("customer", JSON.stringify(res));
       localStorage.setItem("login", "login");
-      navigate("/customer/dashboard");
+      if (redirect?.includes("pay-to-park")) {
+        navigate("/customer/services/pay-to-park");
+      } else if (redirect?.includes("reserve")) {
+        navigate("/customer/services/reserve-parking");
+      } else if (redirect?.includes("event")) {
+        navigate("/customer/services/event-parking");
+      } else if (redirect?.includes("car")) {
+        navigate("/customer/services/car-service");
+      } else {
+        navigate("/customer/dashboard");
+      }
     },
     onError: (err) => {
       errorToast(
@@ -145,7 +160,10 @@ const Login = () => {
         <Text textAlign="center" mt="32px" color="#646668" fontSize="14px">
           Don't have an account ?{" "}
           <span
-            onClick={() => navigate("/customer/auth/signup")}
+            onClick={() => {
+              navigate("/customer/auth/signup");
+              sessionStorage.setItem("redirect", redirect);
+            }}
             style={{ color: "red", fontWeight: 500, cursor: "pointer" }}
           >
             Sign Up

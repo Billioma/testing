@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Image } from "@chakra-ui/image";
 import { Box, Flex, Text } from "@chakra-ui/layout";
 import { useLocation } from "react-router-dom";
@@ -17,6 +17,10 @@ export const AuthLayout = ({ children }) => {
   window?.fcWidget?.user?.setLastName(userData?.profile?.lastName);
 
   window?.fcWidget?.user?.setEmail(userData?.email);
+
+  useEffect(() => {
+    sessionStorage.removeItem("redirect");
+  }, []);
 
   return (
     <Box

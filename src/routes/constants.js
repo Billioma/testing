@@ -1,6 +1,7 @@
 export const PUBLIC_PATHS = {
   // CUSTOMER ROUTES
   CUST_LOGIN: "/customer/auth/login",
+  CUST_LOGIN_REDIRECT: "/customer/auth/login/:redirect",
   CUST_RESET_PASS: "/customer/auth/forgot-password",
   CUST_CHANGE_PASS: "/customer/auth/password-reset/:id/:hash",
   CUST_CHANGE_SUCCESS: "/customer/auth/password-success",
@@ -35,7 +36,7 @@ export const PRIVATE_PATHS = {
   CUST_SERVICES_PARK: "/customer/services/pay-to-park",
   CUST_HISTORY_PARK_DETAILS: "/customer/history/user/pay-to-park/:id",
   CUST_SERVICE_PARK_DETAILS: "/customer/history/company/pay-to-park/:id",
-  CUST_SERVICES_RESERVE_PARK: "/customer/history/company/reserve-parking",
+  CUST_SERVICES_RESERVE_PARK: "/customer/services/reserve-parking",
   CUST_SERVICES_RESERVE_PARK_DETAILS: "/customer/history/company/reserve-parking/:id",
   CUST_HISTORY_RESERVE_PARK_DETAILS: "/customer/history/user/reserve-parking/:id",
   CUST_SERVICES_EVENT_PARK: "/customer/services/event-parking",

@@ -13,13 +13,23 @@ import useCustomToast from "../../../utils/notifications";
 const Signup = () => {
   const [show, setShow] = useState(false);
   const navigate = useNavigate();
+  const redirectUrl = sessionStorage.getItem("redirect");
 
   const { successToast, errorToast } = useCustomToast();
   const { mutate, isLoading } = useCustomerRegister({
     onSuccess: () => {
       successToast("User created");
       setTimeout(() => {
-        navigate("/customer/auth/login");
+        if (
+          redirectUrl !== "undefined" ||
+          redirectUrl !== undefined ||
+          redirectUrl !== null ||
+          redirectUrl !== "null"
+        ) {
+          navigate(`/customer/auth/login/${redirectUrl}`);
+        } else {
+          navigate("/customer/auth/login");
+        }
       }, 200);
     },
     onError: (err) => {
