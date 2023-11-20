@@ -104,7 +104,7 @@ export const NonAuthLayout = ({ children }) => {
           location.pathname === "/customer/pay-to-park"
             ? "unset"
             : location.pathname === "/customer/scan-qr"
-            ? "70vh"
+            ? "75vh"
             : "90vh"
         }
         pt={
@@ -120,7 +120,7 @@ export const NonAuthLayout = ({ children }) => {
       </Flex>
       <Flex w="full" flexDir="column" justifyContent="center" align="center">
         <Flex
-          mt={location.pathname === "/customer/scan-qr" ? "" : "auto"}
+          mt="auto"
           mb="20px"
           flexDir="column"
           justifyContent="center"
