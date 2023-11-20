@@ -513,33 +513,7 @@ const PayToPark = () => {
                     </Flex>
 
                     <Box>
-                      <Flex
-                        mb="24px"
-                        align="center"
-                        justifyContent="space-between"
-                        w="full"
-                      >
-                        <Text
-                          color="#848688"
-                          w="full"
-                          fontSize="14px"
-                          lineHeight="100%"
-                          fontWeight={500}
-                        >
-                          Name
-                        </Text>
-                        <Text
-                          color="#242628"
-                          textAlign="end"
-                          w="full"
-                          fontSize="14px"
-                          lineHeight="100%"
-                          fontWeight={500}
-                        >
-                          Bilal Omari
-                        </Text>
-                      </Flex>
-
+                      
                       <Flex
                         mb="24px"
                         align="center"
