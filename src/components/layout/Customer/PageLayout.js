@@ -64,41 +64,58 @@ export const NonAuthLayout = ({ children }) => {
     <Flex
       flexDir="column"
       justifyContent={
-        location.pathname === "/customer/scan-qr" ? "flex-start" : "center"
+        location.pathname === "/customer/scan-qr" ||
+        location.pathname !== "/pay-to-park"
+          ? "flex-start"
+          : "center"
       }
       align={
-        location.pathname === "/customer/scan-qr" ? "flex-start" : "center"
+        location.pathname === "/customer/scan-qr" ||
+        location.pathname !== "/pay-to-park"
+          ? "flex-start"
+          : "center"
       }
       pos="relative"
-      minH={location.pathname === "/customer/scan-qr" ? "75vh" : "100vh"}
+      minH={
+        location.pathname === "/customer/scan-qr" ||
+        location.pathname !== "/pay-to-park"
+          ? "75vh"
+          : "100vh"
+      }
     >
-      {location.pathname !== "/pay-to-park" ||
-        (location.pathname !== "/scan-qr" && (
-          <>
-            <Image
-              display={{ base: "none", md: "unset" }}
-              pos="fixed"
-              bottom="0"
-              right="0"
-              src="/assets/park-right.png"
-            />
-            <Image
-              display={{ base: "none", md: "unset" }}
-              w={{ base: "144px", md: "unset" }}
-              pos="fixed"
-              bottom="0"
-              left="0"
-              src="/assets/park-left.png"
-            />
-          </>
-        ))}
+      {(location.pathname !== "/pay-to-park" ||
+        location.pathname !== "/scan-qr") && (
+        <>
+          <Image
+            display={{ base: "none", md: "unset" }}
+            pos="fixed"
+            bottom="0"
+            right="0"
+            src="/assets/park-right.png"
+          />
+          <Image
+            display={{ base: "none", md: "unset" }}
+            w={{ base: "144px", md: "unset" }}
+            pos="fixed"
+            bottom="0"
+            left="0"
+            src="/assets/park-left.png"
+          />
+        </>
+      )}
       <Flex
         flexDir="column"
         justifyContent={
-          location.pathname === "/customer/scan-qr" ? "flex-start" : "center"
+          location.pathname === "/customer/scan-qr" ||
+          location.pathname !== "/pay-to-park"
+            ? "flex-start"
+            : "center"
         }
         align={
-          location.pathname === "/customer/scan-qr" ? "flex-start" : "center"
+          location.pathname === "/customer/scan-qr" ||
+          location.pathname !== "/pay-to-park"
+            ? "flex-start"
+            : "center"
         }
         minH={
           location.pathname === "/customer/pay-to-park"

@@ -130,35 +130,78 @@ const PayToPark = () => {
               justifyContent="center"
               w={{ base: "full", md: "30rem" }}
               flexDir="column"
-              minH="80vh"
+              // minH="80vh"
             >
-              <Flex
-                align="center"
-                justifyContent="space-between"
-                w="full"
-                mb="32px"
-                onClick={() => {
-                  setStep(step - 1);
-                }}
-                cursor="pointer"
-              >
-                {step !== 1 && (
-                  <Box w="full">
+              {step === 3 ? (
+                <Flex
+                  align="center"
+                  gap="32px"
+                  w="full"
+                  mb="25px"
+                  mt="20px"
+                  onClick={() => {
+                    setStep(step - 1);
+                  }}
+                  cursor="pointer"
+                >
+                  <Box>
                     <HiOutlineArrowNarrowLeft size="24px" color="#242628" />
                   </Box>
-                )}
-                <Box w="full">
-                  <Text
-                    lineHeight="100%"
-                    color="#444648"
-                    fontSize="14px"
-                    fontWeight={500}
-                  >
-                    {step === 2 ? "Provide Information" : "Make Payment"}
-                  </Text>
-                </Box>
-                <Box w="full"></Box>
-              </Flex>
+
+                  <Box w="full">
+                    <Text
+                      lineHeight="100%"
+                      color="#444648"
+                      fontSize="14px"
+                      fontWeight={500}
+                    >
+                      Make Payment
+                    </Text>
+                  </Box>
+                </Flex>
+              ) : step === 1 ? (
+                <Text
+                  lineHeight="100%"
+                  color="#444648"
+                  mb="25px"
+                  mt="20px"
+                  textAlign="center"
+                  fontSize="14px"
+                  fontWeight={500}
+                >
+                  Provide Information
+                </Text>
+              ) : (
+                <Flex
+                  align="center"
+                  gap="32px"
+                  w="full"
+                  mb="25px"
+                  mt="20px"
+                  onClick={() => {
+                    setStep(step - 1);
+                  }}
+                  cursor="pointer"
+                >
+                  {step === 1 ? (
+                    <Box w="full"></Box>
+                  ) : (
+                    <Box>
+                      <HiOutlineArrowNarrowLeft size="24px" color="#242628" />
+                    </Box>
+                  )}
+                  <Box>
+                    <Text
+                      lineHeight="100%"
+                      color="#444648"
+                      fontSize="14px"
+                      fontWeight={500}
+                    >
+                      Provide Information
+                    </Text>
+                  </Box>
+                </Flex>
+              )}
 
               {step !== 3 && (
                 <Box
@@ -693,14 +736,8 @@ const PayToPark = () => {
                     </Box>
                   </Flex>
 
-                  <Flex mt="auto" w="100%" gap="24px" align="center">
-                    <Button
-                      w="full"
-                      bg="red"
-                      mt="auto"
-                      py="17px"
-                      fontSize="14px"
-                    >
+                  <Flex mt="24px" mb="30px" w="100%" gap="24px" align="center">
+                    <Button w="full" bg="red" py="17px" fontSize="14px">
                       Make Payment
                     </Button>
                   </Flex>
@@ -712,13 +749,18 @@ const PayToPark = () => {
                   onClick={() => setStep(step + 1)}
                   w="full"
                   bg="red"
-                  mt="auto"
+                  mt="24px"
+                  mb="30px"
                   py="17px"
                   isDisabled={
                     step === 1
-                      ? values.phone?.length < 10
+                      ? !values?.plate ||
+                        !values?.make ||
+                        !values?.model ||
+                        !values?.color ||
+                        values?.plate?.length < 8
                       : step === 2
-                      ? isDisabled || values?.plate?.length < 8
+                      ? !values?.email || !values?.phone
                       : false
                   }
                   fontSize="14px"
