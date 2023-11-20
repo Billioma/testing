@@ -128,12 +128,10 @@ const VehicleCards = () => {
                       Color
                     </Text>
                     <Text fontSize="14px" color="#242628" fontWeight={500}>
-                      {
-                        colorTypes.find(
-                          (item) =>
-                            item?.color?.toLocaleLowerCase() === data?.color
-                        )?.label
-                      }
+                      {colorTypes.find(
+                        (item) =>
+                          item?.color?.toLocaleLowerCase() === data?.color
+                      )?.label || data?.color}
                     </Text>
                   </Flex>
                 </Flex>

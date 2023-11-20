@@ -126,7 +126,7 @@ export default function AddOperator() {
       make: Number(make?.value),
       model: Number(model?.value),
       customer: Number(customer?.value),
-      color: color?.value,
+      color: color?.label,
       state: state?.value,
     });
   };

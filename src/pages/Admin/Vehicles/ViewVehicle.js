@@ -102,7 +102,7 @@ export default function AddOperator() {
       body: {
         licensePlate: values?.licensePlate,
         customer: values?.customer?.value,
-        color: values?.color?.value,
+        color: values?.color?.label,
         state: values?.state?.value,
         make: values?.make?.value,
         model: values?.model?.value,
@@ -128,6 +128,7 @@ export default function AddOperator() {
     <Flex
       mt="-5px"
       onClick={() => {
+        console.log("ff");
         setValues({ ...values, color: data });
         setMenuIsOpen(false);
       }}
@@ -164,10 +165,17 @@ export default function AddOperator() {
     const selectedCustomerOption = customerOptions?.find(
       (option) => option.value === Number(data?.customer?.id)
     );
-    const selectedColorOption = colorOptions?.find(
-      (option) =>
-        option?.value?.toLocaleLowerCase() === data?.color?.toLocaleLowerCase()
-    );
+    const selectedColorOption = data?.color?.includes("#")
+      ? colorOptions?.find(
+          (option) =>
+            option?.value?.toLocaleLowerCase() ===
+            data?.color?.toLocaleLowerCase()
+        )
+      : colorOptions?.find(
+          (option) =>
+            option?.label?.toLocaleLowerCase() ===
+            data?.color?.toLocaleLowerCase()
+        );
     const selectedStateOption = stateOptions?.find(
       (option) => option.value === data?.state
     );
@@ -187,7 +195,7 @@ export default function AddOperator() {
       make: selectedMakeOption,
       model: selectedModelOption,
     });
-  }, [data, customers, makes, model]);
+  }, [data, customers, makes, models]);
 
   return (
     <Box minH="75vh">
@@ -300,10 +308,6 @@ export default function AddOperator() {
                         </div>
                       ),
                     }}
-                    isDisabled={edit ? false : true}
-                    onChange={(selectedOption) =>
-                      handleSelectChange(selectedOption, { name: "color" })
-                    }
                     value={values?.color}
                     options={colorOptions}
                     getOptionLabel={getOptionLabel}

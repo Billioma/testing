@@ -14,8 +14,6 @@ import { useCustomerLogin } from "../../../services/customer/query/auth";
 const Login = () => {
   const { redirect } = useParams();
 
-  console.log(redirect);
-
   const [show, setShow] = useState(false);
   const navigate = useNavigate();
 

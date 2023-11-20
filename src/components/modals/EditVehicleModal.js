@@ -70,10 +70,17 @@ const EditVehicleModal = ({
       (option) =>
         option?.label?.toLocaleLowerCase() === dataa?.state?.toLocaleLowerCase()
     );
-    const selectedColorOption = colorOptions?.find(
-      (option) =>
-        option?.value?.toLocaleLowerCase() === dataa?.color?.toLocaleLowerCase()
-    );
+    const selectedColorOption = dataa?.color?.includes("#")
+      ? colorOptions?.find(
+          (option) =>
+            option?.value?.toLocaleLowerCase() ===
+            dataa?.color?.toLocaleLowerCase()
+        )
+      : colorOptions?.find(
+          (option) =>
+            option?.label?.toLocaleLowerCase() ===
+            dataa?.color?.toLocaleLowerCase()
+        );
     const selectedMakeOption = makeOptions?.find(
       (option) =>
         option?.label?.toLocaleLowerCase() ===
@@ -148,7 +155,7 @@ const EditVehicleModal = ({
         licensePlate: values.plate,
         make: values.make?.value,
         model: values.model?.value,
-        color: values?.color?.value,
+        color: values?.color?.label,
         state: values.state?.value,
       },
     });
@@ -309,9 +316,6 @@ const EditVehicleModal = ({
                   </div>
                 ),
               }}
-              onChange={(selectedOption) =>
-                handleSelectChange(selectedOption, { name: "color" })
-              }
               value={values?.color}
               options={colorOptions}
               getOptionLabel={getOptionLabel}

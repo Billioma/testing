@@ -126,7 +126,7 @@ const AddVehicleModal = ({
       licensePlate: values.plate,
       make: values.make?.value,
       model: values.model?.value,
-      color: values?.color?.value,
+      color: values?.color?.label,
       state: values.state,
     });
   };
