@@ -291,7 +291,7 @@ const Park = () => {
 
           {error && (
             <Text color="red" fontSize="13px" mt="8px">
-              Zone '{zone}' was not found! Try search another zone.
+              Zone '{zone}' was not found! Try searching another zone.
             </Text>
           )}
 

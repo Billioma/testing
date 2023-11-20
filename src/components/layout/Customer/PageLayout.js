@@ -93,9 +93,10 @@ export const NonAuthLayout = ({ children }) => {
         justifyContent="center"
         align="center"
         minH={
-          location.pathname === "/customer/pay-to-park" ||
-          location.pathname === "/customer/scan-qr"
+          location.pathname === "/customer/pay-to-park"
             ? "unset"
+            : location.pathname === "/customer/pay-to-park"
+            ? "80vh"
             : "90vh"
         }
         pt={

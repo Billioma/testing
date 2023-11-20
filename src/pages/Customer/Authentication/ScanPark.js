@@ -46,7 +46,7 @@ const ScanPark = () => {
 
   return (
     <Box w="full">
-      <Image mb="24px" src="/assets/park-logo.jpg" w="134px" h="28px" />
+      <Image my="24px" src="/assets/park-logo.jpg" w="134px" h="28px" />
       {isMobile ? (
         <>
           <BarcodeScannerComponent
@@ -77,7 +77,7 @@ const ScanPark = () => {
               textAlign="center"
               fontWeight={500}
             >
-              Zone was not found! Try search another zone.{error}
+              Zone was not found! Try searching another zone.{error}
             </Text>
           ) : (
             ""
