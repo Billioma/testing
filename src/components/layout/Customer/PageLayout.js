@@ -118,7 +118,7 @@ export const NonAuthLayout = ({ children }) => {
       >
         {children}
       </Flex>
-      <Flex w="full" pos="absolute" bottom="0" flexDir="column" justifyContent="center" align="center">
+      <Flex w="full" flexDir="column" justifyContent="center" align="center">
         <Flex
           mt={location.pathname === "/customer/scan-qr" ? "" : "auto"}
           mb="20px"
