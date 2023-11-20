@@ -45,8 +45,8 @@ const ScanPark = () => {
   const [isMobile] = useMediaQuery("(max-width: 820px)");
 
   return (
-    <Box border="1px solid red" w="full">
-      <Image my="24px" src="/assets/park-logo.jpg" w="134px" h="28px" />
+    <Box mt="-50px" w="full">
+      <Image mb="24px" src="/assets/park-logo.jpg" w="134px" h="28px" />
       {isMobile ? (
         <>
           <BarcodeScannerComponent
@@ -63,14 +63,14 @@ const ScanPark = () => {
           />
 
           {isLoading ? (
-            <Flex mt="10px" justifyContent="center" align="center">
-              <Spinner />
+            <Flex mt="25px" justifyContent="center" align="center">
+              <Spinner color="red" />
             </Flex>
           ) : (
             ""
           )}
           {error ? (
-            <Text color="red" fontSize="13px" mt="8px">
+            <Text color="red" fontSize="13px" mt="25px">
               Zone was not found! Try search another zone.{error}
             </Text>
           ) : (
