@@ -64,7 +64,7 @@ const ScanPark = () => {
 
           {isLoading ? (
             <Flex mt="25px" justifyContent="center" align="center">
-              <Spinner color="red" />
+              <Spinner />
             </Flex>
           ) : (
             ""
