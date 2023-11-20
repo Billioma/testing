@@ -7,6 +7,7 @@
     "no-unsafe-optional-chaining": "off",
     "react/no-unescaped-entities": "off",
     "react/no-children-prop": "off",
+    "no-prototype-builtins":"off",
     "react/jsx-key": "off",
     "react/display-name": "off",
     "jsx-a11y/no-autofocus": "off",
@@ -17,7 +18,8 @@
     "jsx-a11y/click-events-have-key-events": "off",
     "jsx-a11y/alt-text": "off",
     "react/react-in-jsx-scope": "off",
-    "react/prop-types": "off"
+    "react/prop-types": "off",
+    "jsx-a11y/media-has-caption": "off"
   },
   "parser": "@babel/eslint-parser",
   "parserOptions": {
