@@ -96,21 +96,40 @@ const PayToPark = () => {
         <>
           <Image my="24px" src="/assets/park-logo.jpg" w="134px" h="28px" />
 
-          <Flex align="center" justifyContent="space-between" w="full">
+          <Flex align="center" w="full">
             {step === 1 ? (
-              <Image src="/assets/fill.svg" />
+              <Flex align="center" w="full">
+                <Image src="/assets/fill.svg" />
+                <Box h="2px" bg="transparent" w="full"></Box>
+              </Flex>
             ) : (
               step !== 1 &&
-              values.phone?.length === 10 && (
-                <Image src="/assets/complete.svg" />
+              values?.plate &&
+              values?.make &&
+              values?.model &&
+              values?.plate?.length === 8 &&
+              values?.color && (
+                <Flex align="center" w="full">
+                  <Image src="/assets/complete.svg" />
+                  <Box h="2px" bg="red" w="full"></Box>
+                </Flex>
               )
             )}
             {step === 2 ? (
-              <Image src="/assets/fill.svg" />
-            ) : step !== 2 && !isDisabled && values.plate?.length === 8 ? (
-              <Image src="/assets/complete.svg" />
+              <Flex align="center" w="full">
+                <Image src="/assets/fill.svg" />
+                <Box h="2px" bg="transparent" w="full"></Box>
+              </Flex>
+            ) : step !== 2 && step !== 1 && values?.email && values.phone ? (
+              <Flex align="center" w="full">
+                <Image src="/assets/complete.svg" />
+                <Box h="2px" bg="red" w="full"></Box>
+              </Flex>
             ) : (
-              <Image src="/assets/empty.svg" />
+              <Flex align="center" w="full">
+                <Image src="/assets/empty.svg" />
+                <Box h="2px" bg="transparent" w="full"></Box>
+              </Flex>
             )}
             {step === 3 ? (
               <Image src="/assets/fill.svg" />
