@@ -15,6 +15,7 @@ import { colorTypes } from "../../../components/common/constants";
 
 const PayToPark = () => {
   const [step, setStep] = useState(1);
+  const zone = JSON.parse(sessionStorage.getItem("zone"));
 
   const [values, setValues] = useState({
     phone: "",
@@ -182,7 +183,7 @@ const PayToPark = () => {
                             lineHeight="100%"
                             fontWeight={500}
                           >
-                            Zone T10003
+                            Zone {zone?.name}
                           </Text>
                           <Text
                             mt="8px"
@@ -190,7 +191,7 @@ const PayToPark = () => {
                             color="#242628"
                             lineHeight="100%"
                           >
-                            Landmark Beach
+                            {zone?.location?.name}
                           </Text>
                         </Box>
                         <Box>
@@ -209,7 +210,7 @@ const PayToPark = () => {
                             color="#242628"
                             lineHeight="100%"
                           >
-                            ₦ 20,000
+                            ₦ {zone?.rates[0]?.amount?.toLocaleString()}
                           </Text>
                         </Box>
                       </Flex>
