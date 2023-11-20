@@ -46,7 +46,13 @@ const ScanPark = () => {
 
   return (
     <Box w="full">
-      <Image my="24px" src="/assets/park-logo.jpg" w="134px" h="28px" />
+      <Image
+        mt="5px"
+        mb="24px"
+        src="/assets/park-logo.jpg"
+        w="134px"
+        h="28px"
+      />
       {isMobile ? (
         <>
           <BarcodeScannerComponent
