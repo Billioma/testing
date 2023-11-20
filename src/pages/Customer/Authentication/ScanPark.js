@@ -1,6 +1,6 @@
 import React from "react";
 import { Box, Flex, Heading, useMediaQuery } from "@chakra-ui/react";
-import { QrReader } from "react-qr-reader";
+import BarcodeScannerComponent from "react-qr-barcode-scanner";
 
 const ScanPark = () => {
   const [data, setData] = React.useState("Not Found");
@@ -11,18 +11,15 @@ const ScanPark = () => {
     <Box>
       {isMobile ? (
         <>
-          <QrReader
-            // width="100vw"
-            // height="100vh"
-            onResult={(result, error) => {
-              if (result) {
-                setData(result.text);
-              } else setData("Not Found");
+          <BarcodeScannerComponent
+            width="100vw"
+            height="100vh"
+            onUpdate={(err, result) => {
+              if (result) setData(result.text);
+              else setData("Not Found");
             }}
-            style={{ width: "100%" }}
           />
-
-          <p>{data}</p>
+          {data ? <p>{data}</p> : ""}
         </>
       ) : (
         <Flex justifyContent="center" align="center" h="75vh">
