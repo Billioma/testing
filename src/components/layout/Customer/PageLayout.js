@@ -104,7 +104,7 @@ export const NonAuthLayout = ({ children }) => {
           location.pathname === "/customer/pay-to-park"
             ? "unset"
             : location.pathname === "/customer/scan-qr"
-            ? "70vh"
+            ? "55vh"
             : "90vh"
         }
         pt={
