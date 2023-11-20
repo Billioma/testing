@@ -33,12 +33,15 @@ const ConfirmVehicleModal = ({
           <Flex justifyContent="center" align="center" flexDir="column">
             <Image w="56px" h="40px" src="/assets/car.png" />
             <Text
-              mt="32px"
-              mb="24px"
+              mt="25px"
               color="#444648"
               fontWeight={700}
+              textAlign="center"
               lineHeight="100%"
             >
+              Record Exists!
+            </Text>
+            <Text mt="8px" fontSize="14px" mb="24px">
               Confirm this is your vehicle?
             </Text>
 
@@ -80,7 +83,7 @@ const ConfirmVehicleModal = ({
                     lineHeight="100%"
                     fontWeight={500}
                   >
-                    {values?.color?.value}
+                    {values?.color?.label}
                   </Text>
                 </Box>
               </Flex>

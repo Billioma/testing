@@ -1,5 +1,6 @@
 import { useMutation, useQuery } from "react-query";
 import {
+  claimVehicles,
   createVehicles,
   deleteVehicles,
   getMakes,
@@ -19,6 +20,14 @@ export const useGetVehicles = (options = {}) => {
 export const useCreateVehicles = (options = {}) => {
   const { mutate, isLoading } = useMutation(createVehicles, {
     mutationKey: "CREATE_VEHICLES",
+    ...options,
+  });
+  return { mutate, isLoading };
+};
+
+export const useClaimVehicles = (options = {}) => {
+  const { mutate, isLoading } = useMutation(claimVehicles, {
+    mutationKey: "CLAIM_VEHICLES",
     ...options,
   });
   return { mutate, isLoading };

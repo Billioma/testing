@@ -19,6 +19,11 @@ export const updateVehicles = async ({ query, body }) => {
   return res.data;
 };
 
+export const claimVehicles = async (query) => {
+  const res = await axiosInstance.get("customer/" + API.CLAIM_VEHICLES(query));
+  return res.data;
+};
+
 export const deleteVehicles = async (query) => {
   const res = await axiosInstance.delete("customer/" + API.DEL_VEHICLES(query));
   return res.data;

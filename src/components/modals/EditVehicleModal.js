@@ -13,9 +13,13 @@ import {
 import Select from "react-select";
 import CustomInput from "../common/CustomInput";
 import { allStates, colorTypes } from "../common/constants";
-import { useUpdateVehicles } from "../../services/customer/query/vehicles";
+import {
+  useClaimVehicles,
+  useUpdateVehicles,
+} from "../../services/customer/query/vehicles";
 import useCustomToast from "../../utils/notifications";
 import { IoIosArrowDown } from "react-icons/io";
+import ConfirmVehicleModal from "./ConfirmVehicleModal";
 
 const EditVehicleModal = ({
   isOpen,
@@ -32,6 +36,7 @@ const EditVehicleModal = ({
     make: "",
     model: "",
   });
+  const [show, setShow] = useState(false);
   const stateOptions = allStates?.map((state) => ({
     value: state,
     label: state,
@@ -147,6 +152,24 @@ const EditVehicleModal = ({
       );
     },
   });
+
+  const { mutate: claimMutate, isLoading: isClaim } = useClaimVehicles({
+    onSuccess: (res) => {
+      refetch();
+      successToast(res?.message);
+      setShow(false);
+      localStorage.removeItem("login");
+    },
+    onError: (err) => {
+      errorToast(
+        err?.response?.data?.message || err?.message || "An Error occurred"
+      );
+    },
+  });
+
+  const handleClaim = () => {
+    claimMutate(values.plate);
+  };
 
   const handleSubmit = () => {
     mutate({
@@ -409,6 +432,13 @@ const EditVehicleModal = ({
           </Flex>
         </ModalBody>
       </ModalContent>
+      <ConfirmVehicleModal
+        action={handleClaim}
+        isLoading={isClaim}
+        values={values}
+        isOpen={show}
+        onClose={() => setShow(false)}
+      />
     </Modal>
   );
 };

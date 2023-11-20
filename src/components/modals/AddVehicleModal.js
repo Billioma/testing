@@ -10,10 +10,15 @@ import {
   Box,
   Button,
 } from "@chakra-ui/react";
+import ConfirmVehicleModal from "./ConfirmVehicleModal";
+
 import Select from "react-select";
 import CustomInput from "../common/CustomInput";
 import { allStates, colorTypes } from "../common/constants";
-import { useCreateVehicles } from "../../services/customer/query/vehicles";
+import {
+  useClaimVehicles,
+  useCreateVehicles,
+} from "../../services/customer/query/vehicles";
 import useCustomToast from "../../utils/notifications";
 import { IoIosArrowDown } from "react-icons/io";
 
@@ -107,10 +112,36 @@ const AddVehicleModal = ({
     onClose();
     setValues({ state: "", plate: "", color: "", make: "", model: "" });
   };
+
+  const [show, setShow] = useState(false);
+
   const { mutate, isLoading } = useCreateVehicles({
     onSuccess: (res) => {
       refetch();
       successToast(res?.message);
+      setShow(false);
+      close();
+      localStorage.removeItem("login");
+    },
+    onError: (err) => {
+      const errors = err?.response?.data?.errors;
+      for (const key in errors) {
+        if (errors?.hasOwnProperty(key)) {
+          setShow(true);
+        } else {
+          errorToast(
+            err?.response?.data?.message || err?.message || "An Error occurred"
+          );
+        }
+      }
+    },
+  });
+
+  const { mutate: claimMutate, isLoading: isClaim } = useClaimVehicles({
+    onSuccess: (res) => {
+      refetch();
+      successToast(res?.message);
+      setShow(false);
       close();
       localStorage.removeItem("login");
     },
@@ -120,6 +151,10 @@ const AddVehicleModal = ({
       );
     },
   });
+
+  const handleClaim = () => {
+    claimMutate(values.plate);
+  };
 
   const handleSubmit = () => {
     mutate({
@@ -410,6 +445,13 @@ const AddVehicleModal = ({
           )}
         </ModalBody>
       </ModalContent>
+      <ConfirmVehicleModal
+        action={handleClaim}
+        isLoading={isClaim}
+        values={values}
+        isOpen={show}
+        onClose={() => setShow(false)}
+      />
     </Modal>
   );
 };

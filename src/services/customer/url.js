@@ -10,6 +10,8 @@ export const CUSTOMER_SERVICE_LOGS_LIST = (limit = "", page = "") =>
 
 export const GET_VEHICLES = "vehicles";
 export const DEL_VEHICLES = (id = "") => `vehicles/${id}`;
+export const CLAIM_VEHICLES = (id = "") =>
+  `vehicles/claim-vehicle?licenseNumber=${id}`;
 export const DEL_CARDS = (id = "") => `cards/${id}`;
 export const GET_MAKE = "vehicles/get-makes";
 export const GET_CARDS = "cards";
