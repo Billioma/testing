@@ -1,125 +1,71 @@
-import { Link } from "react-scroll";
+import React from "react";
+import { headers } from "../common/constants";
 import { HiOutlineMenuAlt3 } from "react-icons/hi";
-import { useEffect, useState } from "react";
-import MobileNav from "./MobileNav";
+import Menu from "./Menu";
 
-export default function Header() {
-  const [activeSection, setActiveSection] = useState("");
-
-  const [isOpen, setIsOpen] = useState(false);
-
-  const toggleNav = () => {
-    setIsOpen(!isOpen);
-  };
-
-  const handleScroll = () => {
-    const sections = document.querySelectorAll("section");
-    let currentSection = "";
-
-    sections.forEach((section) => {
-      const sectionTop = section.offsetTop;
-      const sectionHeight = section.clientHeight;
-      const scrollPosition = window.scrollY + window.innerHeight / 2;
-
-      if (
-        scrollPosition >= sectionTop &&
-        scrollPosition <= sectionTop + sectionHeight
-      ) {
-        currentSection = section.id;
-      }
-    });
-
-    setActiveSection(currentSection);
-  };
-
-  useEffect(() => {
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
+const Header = () => {
+  const [show, setShow] = React.useState(false);
   return (
-    <div className="bg-neutral-900 text-white top-0 left-0 right-0 z-10 h-[75px] flex justify-center items-center fixed bg-opacity-70 backdrop-filter backdrop-blur">
-      <div className="w-[1296px] md:px-0 px-4 items-center flex justify-between">
-        <img
-          src="/assets/ezpark-light.svg"
-          alt="ezpark-logo"
-          className="md:w-[170px] w-[146px]"
-        />
+    <div
+      style={{ boxShadow: "0px 2px 24px 0px rgba(100, 102, 104, 0.15)" }}
+      className="w-full flex justify-center items-center font-medium fixed top-0 bg-[#fff] z-10"
+    >
+      <div className="w-[1326px] px-[20px] py-[24px] lg:py-[16px]">
+        <div className="flex items-center w-full justify-between">
+          <div className="w-[100%] lg:w-[55%]">
+            <img
+              src="/assets/logo.png"
+              className="flex lg:hidden w-[134px] h-[28px]"
+            />
+            <img
+              src="/assets/logo.png"
+              className="hidden lg:flex w-[268px] h-[56px]"
+            />
+          </div>
 
-        <div className="w-full flex justify-end lg:hidden">
-          <HiOutlineMenuAlt3 size="30px" onClick={toggleNav} />
-        </div>
+          <div
+            onClick={() => setShow((prev) => !prev)}
+            className="w-full flex justify-end lg:hidden"
+          >
+            <HiOutlineMenuAlt3 size="24px" />
+          </div>
 
-        <div className="md:flex gap-9 hidden items-center">
-          <Link
-            to="aboutus"
-            className={`hover-underline-animation cursor-pointer border-b-2 pb-1 transition-all duration-700 ${
-              activeSection === "aboutus"
-                ? "border-[#fff]"
-                : " border-transparent"
-            }`}
-            smooth={true}
-            duration={500}
-          >
-            About Us
-          </Link>
-          <Link
-            to="services"
-            className={`hover-underline-animation cursor-pointer border-b-2 pb-1 transition-all duration-700 ${
-              activeSection === "services"
-                ? "border-[#fff]"
-                : " border-transparent"
-            }`}
-            smooth={true}
-            duration={500}
-          >
-            Services
-          </Link>
+          <div className="w-[100%] sm:hidden lg:flex mt-[15px] text-sm">
+            <div className=" flex w-full items-center gap-[32px] text-[#444648]">
+              {headers.map((data, i) => (
+                <div key={i} className="dropdown hover-underline-animation cursor-pointer">
+                  <a href={data?.path} target="_blank" rel="noreferrer">
+                    {data?.name}
+                  </a>
+                </div>
+              ))}
+            </div>
+          </div>
 
-          <Link
-            to="clients"
-            className={`hover-underline-animation cursor-pointer border-b-2 pb-1 transition-all duration-700 ${
-              activeSection === "clients"
-                ? "border-[#fff]"
-                : " border-transparent"
-            }`}
-            smooth={true}
-            duration={500}
-          >
-            Clients
-          </Link>
-          <Link
-            to="parkinspace"
-            className={`hover-underline-animation cursor-pointer border-b-2 pb-1 transition-all duration-700 ${
-              activeSection === "parkinspace"
-                ? "border-[#fff]"
-                : " border-transparent"
-            }`}
-            smooth={true}
-            duration={500}
-          >
-            ParkinSpace
-          </Link>
-          <Link
-            to="contact"
-            className={`hover-underline-animation cursor-pointer border-b-2 pb-1 transition-all duration-700 ${
-              activeSection === "contact"
-                ? "border-[#fff]"
-                : " border-transparent"
-            }`}
-            smooth={true}
-            duration={500}
-          >
-            Contact
-          </Link>
+          <div className="mt-[15px] sm:hidden lg:flex gap-[24px] items-center w-[30%]">
+            <a
+              target="_blank"
+              rel="noreferrer"
+              href="https://parkinspace-webapp.netlify.app/customer/auth/login"
+            >
+              <button className="text-[#EE383A] bg-transparent">Login</button>
+            </a>
+            <a
+              target="_blank"
+              rel="noreferrer"
+              href="https://parkinspace-webapp.netlify.app/customer/auth/signup"
+            >
+              <button className="text-white bg-red rounded-[4px] w-[156px] py-[12px]">
+                Sign Up
+              </button>
+            </a>
+          </div>
         </div>
       </div>
 
-      <MobileNav
-        isOpen={isOpen}
-        toggleNav={toggleNav}
-        activeSection={activeSection}
-      />
+      <Menu isOpen={show} onClose={() => setShow(false)} />
     </div>
   );
-}
+};
+
+export default Header;
