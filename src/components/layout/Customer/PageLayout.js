@@ -93,10 +93,9 @@ export const NonAuthLayout = ({ children }) => {
         justifyContent="center"
         align="center"
         minH={
+          location.pathname === "/customer/pay-to-park" ||
           location.pathname === "/customer/pay-to-park"
             ? "unset"
-            : location.pathname === "/customer/pay-to-park"
-            ? "80vh"
             : "90vh"
         }
         pt={
@@ -111,7 +110,7 @@ export const NonAuthLayout = ({ children }) => {
         {children}
       </Flex>
       <Flex
-        mt="auto"
+        mt={location.pathname === "/customer/pay-to-park" ? "30px" : "auto"}
         mb="20px"
         flexDir="column"
         justifyContent="center"
