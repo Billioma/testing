@@ -2,8 +2,12 @@ import { FaRegComment } from "react-icons/fa";
 import { AiOutlineRetweet } from "react-icons/ai";
 import { MdOutlineFavoriteBorder } from "react-icons/md";
 import { GoUpload } from "react-icons/go";
-import { BsTwitter, BsLinkedin } from "react-icons/bs";
-import { RiInstagramFill, RiFacebookFill } from "react-icons/ri";
+import { BsLinkedin } from "react-icons/bs";
+import {
+  RiInstagramFill,
+  RiFacebookFill,
+  RiTwitterXLine,
+} from "react-icons/ri";
 
 export const headers = [
   {
@@ -169,7 +173,7 @@ export const connect = [
     name: "Twitter",
     link: "https://twitter.com/EZParkLimited",
     icon: "/assets/twitter_icon.png",
-    img: <BsTwitter color="white" size={20} />,
+    img: <RiTwitterXLine color="white" size={20} />,
   },
   {
     id: 3,
