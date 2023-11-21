@@ -1,14 +1,20 @@
 import { Box, Flex, Image, Text, useMediaQuery } from "@chakra-ui/react";
 import React from "react";
 
-const Footer = () => {
+const Footer = ({ showSidebar }) => {
   const [isMobile] = useMediaQuery("(max-width: 991px)");
   return (
     <Box
       pos="fixed"
       pt="24px"
       bottom="0"
-      w={isMobile ? "calc(100% - 2.4rem)" : "calc(100% - 342px)"}
+      w={
+        isMobile
+          ? "calc(100% - 2.rem)"
+          : !showSidebar
+          ? "calc(100% - 120px)"
+          : "calc(100% - 342px)"
+      }
       mr="20px"
       bg="#fff"
     >
@@ -16,6 +22,7 @@ const Footer = () => {
         borderTop="1px solid #E4E6E8"
         align="center"
         justifyContent="space-between"
+        w="full"
         py="24px"
       >
         <Flex align="center" gap="4px">

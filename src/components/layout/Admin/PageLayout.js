@@ -15,7 +15,7 @@ export const AuthLayout = ({ children }) => {
         {!isMobile && <SideBar show={show} setShow={setShow} />}
         <Box h="2.3rem" w="full" bg="#fff" zIndex={55} pos="fixed" top="0">
           <Box pt="32px" px={!isMobile ? (show ? "310px" : "88px") : "20px"}>
-            <Header show={show} />
+            <Header showSidebar={show} />
           </Box>
         </Box>
         <Box overflow="auto" className="no_scroller">
@@ -32,8 +32,8 @@ export const AuthLayout = ({ children }) => {
           </Box>
         </Box>
         <Box h="10vh" w="full"></Box>
-        <Box mt="20px" px="310px">
-          <Footer />
+        <Box mt="20px" px={!isMobile ? (show ? "310px" : "88px") : "20px"}>
+          <Footer showSidebar={show} />
         </Box>
       </Box>
     </Box>

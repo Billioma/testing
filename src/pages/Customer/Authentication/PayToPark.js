@@ -12,6 +12,7 @@ import CustomInput from "../../../components/common/CustomInput";
 import { HiOutlineArrowNarrowLeft } from "react-icons/hi";
 import Select from "react-select";
 import { colorTypes } from "../../../components/common/constants";
+import { IoIosArrowDown } from "react-icons/io";
 
 const PayToPark = () => {
   const [step, setStep] = useState(1);
@@ -27,10 +28,6 @@ const PayToPark = () => {
     color: "",
   });
 
-  const isDisabled = Object.keys(values)
-    .filter((key) => key !== "phone")
-    .some((key) => !values[key]);
-
   const colorOptions = colorTypes.map((color) => ({
     value: color.color,
     label: color.label,
@@ -41,6 +38,45 @@ const PayToPark = () => {
       e.preventDefault();
     }
   };
+
+  const getOptionLabel = (option) => (
+    <Flex gap="8px" align="center">
+      <Box
+        width="28px"
+        height="20px"
+        backgroundColor={option.value}
+        borderRadius="4px"
+      />
+      {option.label}
+    </Flex>
+  );
+
+  const [menuIsOpen, setMenuIsOpen] = useState(false);
+  const getOptionValue = (option) => option.value;
+
+  const ColorOption = ({ data }) => (
+    <Flex
+      mt="-5px"
+      onClick={() => {
+        setValues({ ...values, color: data });
+        setMenuIsOpen(false);
+      }}
+      px="10px"
+      cursor="pointer"
+      _hover={{ bg: "#fff" }}
+      gap="8px"
+      align="center"
+      h="40px"
+    >
+      <Flex
+        width="28px"
+        height="20px"
+        backgroundColor={data?.value}
+        borderRadius="4px"
+      ></Flex>
+      {data?.label}
+    </Flex>
+  );
 
   const ColorOptio = ({ data }) => (
     <Flex mt="-30px" gap="8px" align="center" h="40px">
@@ -65,20 +101,18 @@ const PayToPark = () => {
     control: (provided, state) => ({
       ...provided,
       width: "100%",
-      height: "44px",
+      minHeight: "44px",
       color: "#646668",
       fontSize: "14px",
       cursor: "pointer",
       borderRadius: "4px",
-      border: "1px solid #D4D6D8",
-      background: state.selectProps.menuIsOpen
-        ? "unset"
-        : state.hasValue
-        ? "#F4F6F8"
-        : "unset",
+      border: state.hasValue ? "none" : "1px solid #D4D6D8",
+      paddingRight: "16px",
+      background: state.hasValue ? "#f4f6f8" : "unset",
     }),
     menu: (provided) => ({
       ...provided,
+      fontSize: "13px",
       backgroundColor: "#f4f6f8",
     }),
     option: (provided, state) => ({
@@ -149,7 +183,6 @@ const PayToPark = () => {
               justifyContent="center"
               w={{ base: "full", md: "30rem" }}
               flexDir="column"
-              // minH="80vh"
             >
               {step === 3 ? (
                 <Flex
@@ -188,7 +221,7 @@ const PayToPark = () => {
                   fontSize="14px"
                   fontWeight={500}
                 >
-                  Provide Information
+                  Enter Vehicle Details
                 </Text>
               ) : (
                 <Flex
@@ -216,7 +249,7 @@ const PayToPark = () => {
                       fontSize="14px"
                       fontWeight={500}
                     >
-                      Provide Information
+                      Enter Contact Details
                     </Text>
                   </Box>
                 </Flex>
@@ -369,6 +402,11 @@ const PayToPark = () => {
                         IndicatorSeparator: () => (
                           <div style={{ display: "none" }}></div>
                         ),
+                        DropdownIndicator: () => (
+                          <div>
+                            <IoIosArrowDown size="15px" color="#646668" />
+                          </div>
+                        ),
                       }}
                       defaultValue={values.vehicle}
                       onChange={(selectedOption) =>
@@ -397,6 +435,11 @@ const PayToPark = () => {
                         IndicatorSeparator: () => (
                           <div style={{ display: "none" }}></div>
                         ),
+                        DropdownIndicator: () => (
+                          <div>
+                            <IoIosArrowDown size="15px" color="#646668" />
+                          </div>
+                        ),
                       }}
                       defaultValue={values.vehicle}
                       onChange={(selectedOption) =>
@@ -419,10 +462,19 @@ const PayToPark = () => {
                     <Select
                       styles={customStyles}
                       value={values.color}
+                      onMenuOpen={() => setMenuIsOpen(true)}
+                      menuIsOpen={menuIsOpen}
+                      onMenuClose={() => setMenuIsOpen(false)}
                       components={{
                         SingleValue: ColorOptio,
+                        Option: ColorOption,
                         IndicatorSeparator: () => (
                           <div style={{ display: "none" }}></div>
+                        ),
+                        DropdownIndicator: () => (
+                          <div>
+                            <IoIosArrowDown size="15px" color="#646668" />
+                          </div>
                         ),
                       }}
                       onChange={(selectedOption) =>

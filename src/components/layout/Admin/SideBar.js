@@ -360,9 +360,6 @@ const SideBar = ({ show, setShow }) => {
         ""
       ) : (
         <Flex flexDir="column" justifyContent="center" align="center" mb="40px">
-          <Text mb="8px" fontSize="10px" color="#000" lineHeight="100%">
-            Expand
-          </Text>
           <Image
             onClick={() => setShow(true)}
             cursor="pointer"

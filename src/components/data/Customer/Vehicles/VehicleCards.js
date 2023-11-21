@@ -205,15 +205,19 @@ const VehicleCards = () => {
           <Flex
             minH="11.75rem"
             w="full"
-            cursor="pointer"
+            cursor={vehicles?.data?.length >= 3 ? "" : "pointer"}
             bg="#fff"
             flexDir="column"
             justifyContent="center"
             align="center"
-            onClick={onOpen}
+            onClick={() => (vehicles?.data?.length >= 3 ? "" : onOpen())}
             borderRadius="8px"
           >
-            <Image src="/assets/add-icon.svg" />
+            {vehicles?.data?.length >= 3 ? (
+              ""
+            ) : (
+              <Image src="/assets/add-icon.svg" />
+            )}
             <Text
               mt="10px"
               lineHeight="100%"
@@ -221,7 +225,9 @@ const VehicleCards = () => {
               fontWeight={500}
               fontSize="10px"
             >
-              Add New Vehicle
+              {vehicles?.data?.length >= 3
+                ? "You have reached your vehicle limit"
+                : "Add New Vehicle"}
             </Text>
           </Flex>
         </GridItem>
