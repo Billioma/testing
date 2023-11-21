@@ -5,8 +5,7 @@ import { Link } from "react-scroll";
 
 const Footer = () => {
   const navigate = useNavigate();
-  const [activeSection, setActiveSection] = useState("");
-
+  
   const handleScroll = () => {
     const divs = document.querySelectorAll("div");
     let currentSection = "";
@@ -20,8 +19,6 @@ const Footer = () => {
         currentSection = div.id;
       }
     });
-
-    setActiveSection(currentSection);
   };
 
   useEffect(() => {
