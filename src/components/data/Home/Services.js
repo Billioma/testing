@@ -24,10 +24,12 @@ const Services = () => {
                 <div className="text-[#f4f6f8] text-sm leading-[150%]">
                   {data.desc}
                 </div>
-                <button className="text-black flex justify-center text-sm gap-[10px] items-center mt-[16px] bg-white rounded-[4px] py-[17px] w-full">
-                  {data?.button}
-                  <img src="/assets/arrow-right.png" />
-                </button>
+                <a href={data?.path} target="_blank" rel="noreferrer">
+                  <button className="text-black flex justify-center text-sm gap-[10px] items-center mt-[16px] bg-white rounded-[4px] py-[17px] w-full">
+                    {data?.button}
+                    <img src="/assets/arrow-right.png" />
+                  </button>
+                </a>
               </div>
             </div>
           ))}
