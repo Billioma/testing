@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Box, Flex, Text } from "@chakra-ui/layout";
 import { Image, useMediaQuery } from "@chakra-ui/react";
 import Header from "./Header";
@@ -7,14 +7,15 @@ import Footer from "./Footer";
 
 export const AuthLayout = ({ children }) => {
   const [isMobile] = useMediaQuery("(max-width: 991px)");
+  const [show, setShow] = useState(true);
 
   return (
     <Box color="#000" fontFamily="Sailec" h="100vh">
       <Box overflowX="hidden">
-        {!isMobile && <SideBar />}
+        {!isMobile && <SideBar show={show} setShow={setShow} />}
         <Box h="2.3rem" w="full" bg="#fff" zIndex={55} pos="fixed" top="0">
-          <Box pt="32px" px={!isMobile ? "310px" : "20px"}>
-            <Header />
+          <Box pt="32px" px={!isMobile ? (show ? "310px" : "88px") : "20px"}>
+            <Header show={show} />
           </Box>
         </Box>
         <Box overflow="auto" className="no_scroller">
@@ -23,7 +24,7 @@ export const AuthLayout = ({ children }) => {
             pt={isMobile ? "130px" : "125px"}
             color="#828282"
             maxHeight="92vh"
-            pl={!isMobile ? "310px" : "20px"}
+            pl={!isMobile ? (show ? "310px" : "88px") : "20px"}
             pr={!isMobile ? "32px" : "20px"}
             pb={10}
           >
