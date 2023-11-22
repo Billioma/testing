@@ -15,14 +15,6 @@ const Header = ({ showSidebar }) => {
   const [isMobile] = useMediaQuery("(max-width: 991px)");
   const [show, setShow] = useState(false);
 
-  const action = () => {
-    setIsLoading(true);
-    setTimeout(() => {
-      logout();
-      setIsLoading(false);
-    }, 1000);
-  };
-
   const { data: userData, isLoading: isUser } = useGetProfile();
   const { isOpen, onClose, onOpen } = useDisclosure();
   const [title, setTitle] = useState("");
@@ -510,7 +502,7 @@ const Header = ({ showSidebar }) => {
                       py="10px"
                       onClick={() =>
                         i === 1
-                          ? action()
+                          ? logout()
                           : (navigate(data?.link), setShow(false))
                       }
                       px="20px"
