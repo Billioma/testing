@@ -6,8 +6,9 @@ import { useLogOut } from "../../../../utils/helpers";
 import { LogoutIcon } from "../../../common/images";
 import { Spinner } from "@chakra-ui/react";
 import { ChevronDownIcon, ChevronRightIcon } from "@chakra-ui/icons";
+import { FiChevronsLeft } from "react-icons/fi";
 
-const SideBar = () => {
+const SideBar = ({ show, setShow }) => {
   const logout = useLogOut();
   const [isLoading, setIsLoading] = useState(false);
 
@@ -56,17 +57,18 @@ const SideBar = () => {
       zIndex="5"
       pt="32px"
       h="full"
-      px="16px"
-      w="275px"
+      px={show ? "16px" : "4px"}
+      w={show ? "275px" : "fit-content"}
       bg="#fff"
       boxShadow="4px 0px 24px 0px rgba(0, 0, 0, 0.10)"
     >
       <Box flex="1">
-        <Box pb="48px">
+        <Box>
           <Text
             fontSize="28px"
             lineHeight="120%"
             textAlign="center"
+            display={show ? "block" : "none"}
             fontWeight={900}
             fontFamily="Cooper"
           >
@@ -76,13 +78,33 @@ const SideBar = () => {
           <Text
             textAlign="center"
             fontSize="12px"
+            display={show ? "block" : "none"}
             fontWeight={700}
             mt="16px"
             color="#646668"
           >
             Operator
           </Text>
+
+          <Flex
+            display={show ? "flex" : "none"}
+            pr="16px"
+            pb="30px"
+            justifyContent="flex-end"
+            w="full"
+          >
+            <FiChevronsLeft cursor="pointer" onClick={() => setShow(false)} />
+          </Flex>
         </Box>
+
+        <Flex
+          pb="20px"
+          display={!show ? "flex" : "none"}
+          justifyContent="center"
+          w="full"
+        >
+          <Image w="50px" h="50px" src="/assets/small-logo.jpg" />
+        </Flex>
 
         <Box>
           {operatorSidebar?.map((item, i) => {
@@ -91,15 +113,27 @@ const SideBar = () => {
                 key={i}
                 align="stretch"
                 className={!pathname.includes(item?.path) && "parent_nav"}
+                 my={
+                  show
+                    ? i !== 0 && pathname.includes(item?.path)
+                      ? "5px"
+                      : "unset"
+                    : "12px"
+                }
                 gap={0}
               >
                 <Flex
                   align="center"
-                  p={2}
-                  pt={3}
+                  p={show ? 2 : "unset"}
+                  w={show ? "unset" : "fit-content"}
+                  pt={show ? 3 : "5px"}
+                  px={show ? 2 : "16px"}
+                  pb={show ? 2 : "5px"}
                   cursor="pointer"
                   onClick={() =>
-                    item.sub ? navigate(item.sub[0].path) : navigate(item.path)
+                    item.sub
+                      ? (navigate(item.sub[0].path), setShow(true))
+                      : navigate(item.path)
                   }
                   bg={
                     openSubItems[item.name] || pathname.includes(item.path)
@@ -129,7 +163,7 @@ const SideBar = () => {
                       ? item.hover
                       : item.icon}
                   </Box>
-                  <Box>
+                  <Box display={show ? "box" : "none"}>
                     <Text fontSize="13px" ml={4} mb={0}>
                       {item.name}
                     </Text>
@@ -140,6 +174,7 @@ const SideBar = () => {
                       position="absolute"
                       top="50%"
                       right={2}
+                      display={show ? "box" : "none"}
                       transform="translateY(-50%)"
                       w="3px"
                       h="25px"
@@ -151,6 +186,7 @@ const SideBar = () => {
                       <Box
                         flex="1"
                         textAlign="right"
+                        display={show ? "box" : "none"}
                         pb={1}
                         color={openSubItems[item.name] ? "#fff" : "black"}
                       >
@@ -164,7 +200,7 @@ const SideBar = () => {
                   )}
                 </Flex>
 
-                {item.sub && (
+                {item.sub && show && (
                   <Collapse in={openSubItems[item.name]}>
                     <VStack
                       pl={3}
@@ -207,9 +243,12 @@ const SideBar = () => {
             gap="8px"
             lineHeight="100%"
             mb="39px"
-            p={2}
+            p={show ? 2 : "unset"}
+            w={show ? "unset" : "fit-content"}
+            pt={show ? 3 : "5px"}
+            px={show ? 2 : "16px"}
+            pb={show ? 2 : "5px"}
             fontWeight={500}
-            pt={3}
           >
             {isLoading ? (
               <Flex
@@ -219,7 +258,8 @@ const SideBar = () => {
                 align="center"
                 fontWeight={500}
               >
-                <Spinner size="sm" /> Logging Out
+                <Spinner size="sm" />{" "}
+                <Text display={show ? "box" : "none"}>Logging Out</Text>
               </Flex>
             ) : (
               <Flex
@@ -228,18 +268,34 @@ const SideBar = () => {
                 align="center"
                 color="#646668"
               >
-                <LogoutIcon fill="#646668" /> Log Out
+                <LogoutIcon fill="#646668" />
+                <Text display={show ? "box" : "none"}>Log Out</Text>
               </Flex>
             )}
           </Flex>
         </Box>
       </Box>
 
+      {show ? (
+        ""
+      ) : (
+        <Flex flexDir="column" justifyContent="center" align="center" mb="40px">
+          <Image
+            onClick={() => setShow(true)}
+            cursor="pointer"
+            src="/assets/expand-arrow.svg"
+            w="24px"
+            h="24px"
+          />
+        </Flex>
+      )}
+
       <Flex
         pos="sticky"
         bg="#fff"
         left="0"
         right="0"
+        display={show ? "flex" : "none"}
         justifyContent="center"
         zIndex={55555}
         h="7rem"

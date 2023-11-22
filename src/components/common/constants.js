@@ -692,7 +692,7 @@ export const businessSidebar = [
     icon: <ClientLogIcon fill="#444648" />,
     sec: <ClientLogIcon fill="#fff" />,
     hover: <ClientLogIcon fill="#ee383a" />,
-    sub: [
+    subItems: [
       {
         id: 1,
         name: "Pay-To-Park",
@@ -704,14 +704,6 @@ export const businessSidebar = [
         path: "/client/logs/valet-park",
       },
     ],
-  },
-  {
-    id: 2,
-    name: "Transactions",
-    path: "/client/transactions",
-    icon: <ClientTranIcon fill="#444648" />,
-    sec: <ClientTranIcon fill="#fff" />,
-    hover: <ClientTranIcon fill="#ee383a" />,
   },
 ];
 
@@ -1139,11 +1131,7 @@ export const PaymentMethods = [
   "CARD",
 ];
 
-export const OnlinePaymentMethods = [
-  "CARD",
-  "WALLET",
-  "TRANSFER",
-];
+export const OnlinePaymentMethods = ["CARD", "WALLET", "TRANSFER"];
 
 export const cardImg = [
   { img: "/assets/mastercard.svg", name: "mastercard" },

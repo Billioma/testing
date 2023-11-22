@@ -5,8 +5,9 @@ import { general } from "../../../common/constants";
 import { useLogOut } from "../../../../utils/helpers";
 import { LogoutIcon } from "../../../common/images";
 import { Image, VStack, Spinner, Collapse } from "@chakra-ui/react";
+import { FiChevronsLeft } from "react-icons/fi";
 
-const SideBar = () => {
+const SideBar = ({ show, setShow }) => {
   const logout = useLogOut();
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
@@ -54,13 +55,13 @@ const SideBar = () => {
       zIndex="5"
       pt="40px"
       h="calc(100% - 100px)"
-      px="24px"
-      w="275px"
+      px={show ? "24px" : "4px"}
+      w={show ? "275px" : "fit-content"}
       borderRadius="16px"
       bg="#fff"
     >
       <Box flex="1">
-        <Box pb="58px">
+        <Box display={show ? "block" : "none"}>
           <Text
             fontSize="24px"
             lineHeight="120%"
@@ -74,28 +75,55 @@ const SideBar = () => {
           </Text>
         </Box>
 
-        <Box mx="20px">
+        <Flex
+          display={show ? "flex" : "none"}
+          pr="16px"
+          pb="30px"
+          pt="10px"
+          justifyContent="flex-end"
+          w="full"
+        >
+          <FiChevronsLeft cursor="pointer" onClick={() => setShow(false)} />
+        </Flex>
+
+        <Flex
+          pb="20px"
+          display={!show ? "flex" : "none"}
+          justifyContent="center"
+          w="full"
+        >
+          <Image w="50px" h="50px" src="/assets/small-logo.jpg" />
+        </Flex>
+
+        <Box>
           {general?.map((item, i) => {
             return (
               <VStack
                 key={i}
                 align="stretch"
+                my={
+                  show
+                    ? i !== 0 && pathname.includes(item?.path)
+                      ? "5px"
+                      : "unset"
+                    : "12px"
+                }
                 className={!pathname.includes(item?.path) && "parent_nav"}
               >
                 <Flex
                   align="center"
-                  pr="2px"
-                  pl="16px"
-                  py="10px"
-                  mx="-20px"
+                  p={show ? 2 : "unset"}
+                  w={show ? "unset" : "fit-content"}
+                  py={show ? "10px" : "5px"}
+                  pl={show ? "16px" : "16px"}
+                  pr={show ? "2px" : "16px"}
+                  mb="12px"
                   fontSize="13px"
-                  mt="0px"
-                  mb={"12px"}
                   lineHeight="100%"
                   cursor="pointer"
                   onClick={() =>
                     item.subItems
-                      ? navigate(item.subItems[0].path)
+                      ? (navigate(item.subItems[0].path), setShow(true))
                       : navigate(item.path)
                   }
                   bg={
@@ -125,7 +153,7 @@ const SideBar = () => {
                       ? item.sec
                       : item.icon}
                   </Box>
-                  <Box>
+                  <Box display={show ? "box" : "none"}>
                     <Text ml="8px">{item.name}</Text>
                   </Box>
 
@@ -134,6 +162,7 @@ const SideBar = () => {
                       position="absolute"
                       top="50%"
                       right={2}
+                      display={show ? "box" : "none"}
                       transform="translateY(-50%)"
                       w="3px"
                       h="28px"
@@ -145,6 +174,7 @@ const SideBar = () => {
                       <Box
                         flex="1"
                         textAlign="right"
+                        display={show ? "box" : "none"}
                         pb={1}
                         color={openSubItems[item.name] ? "#fff" : "black"}
                       ></Box>
@@ -152,7 +182,7 @@ const SideBar = () => {
                   )}
                 </Flex>
 
-                {item.subItems && (
+                {item.subItems && show && (
                   <Collapse in={openSubItems[item.name]}>
                     <VStack align="stretch">
                       {item.subItems.map((subItems, i) => (
@@ -192,8 +222,11 @@ const SideBar = () => {
             lineHeight="100%"
             mb="39px"
             fontWeight={500}
-            margin="0 -20px 12px"
-            padding="5px 2px 5px 16px"
+            p={show ? 2 : "unset"}
+            w={show ? "unset" : "fit-content"}
+            pt={show ? 3 : "5px"}
+            px={show ? "16px" : "16px"}
+            pb={show ? 2 : "5px"}
           >
             {isLoading ? (
               <Flex
@@ -203,7 +236,8 @@ const SideBar = () => {
                 align="center"
                 fontWeight={500}
               >
-                <Spinner size="sm" /> Logging Out
+                <Spinner size="sm" />{" "}
+                <Text display={show ? "box" : "none"}>Logging Out</Text>
               </Flex>
             ) : (
               <Flex
@@ -212,17 +246,33 @@ const SideBar = () => {
                 align="center"
                 color="#646668"
               >
-                <LogoutIcon fill="#646668" /> Log Out
+                <LogoutIcon fill="#646668" />{" "}
+                <Text display={show ? "box" : "none"}>Log Out</Text>
               </Flex>
             )}
           </Flex>
         </Box>
       </Box>
 
+      {show ? (
+        ""
+      ) : (
+        <Flex flexDir="column" justifyContent="center" align="center" mb="40px">
+          <Image
+            onClick={() => setShow(true)}
+            cursor="pointer"
+            src="/assets/expand-arrow.svg"
+            w="24px"
+            h="24px"
+          />
+        </Flex>
+      )}
+
       <Flex
         mt="auto"
         mb="39px"
         flexDir="column"
+        display={show ? "flex" : "none"}
         justifyContent="center"
         align="center"
       >

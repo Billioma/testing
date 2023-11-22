@@ -8,7 +8,7 @@ import { useGetUser } from "../../../../services/customer/query/user";
 import { accountDrop } from "../../../common/constants";
 import { useLogOut } from "../../../../utils/helpers";
 
-const Header = () => {
+const Header = ({ showSidebar }) => {
   const navigate = useNavigate();
 
   const [isMobile] = useMediaQuery("(max-width: 991px)");
@@ -131,7 +131,13 @@ const Header = () => {
       flexDirection="column"
       bg={"#fff"}
       pos="fixed"
-      w={isMobile ? "calc(100% - 85px)" : "calc(100% - 390px)"}
+      w={
+        isMobile
+          ? "calc(100% - 5rem)"
+          : !showSidebar
+          ? "calc(100% - 168px)"
+          : "calc(100% - 390px)"
+      }
       borderRadius="16px"
       zIndex="5"
       py={isMobile ? "30px" : "20px"}

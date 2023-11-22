@@ -6,7 +6,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import SideDrawer from "./SideDrawer";
 import { useGetClientDetails } from "../../../../services/client/query/user";
 
-const Header = () => {
+const Header = ({ showSidebar }) => {
   const navigate = useNavigate();
 
   const [isMobile] = useMediaQuery("(max-width: 991px)");
@@ -97,7 +97,13 @@ const Header = () => {
       flexDirection="column"
       bg={"#f4f6f8"}
       pos="fixed"
-      w={isMobile ? "calc(100% - 85px)" : "calc(100% - 343px)"}
+      w={
+        isMobile
+          ? "calc(100% - 2.4rem)"
+          : !showSidebar
+          ? "calc(100% - 120px)"
+          : "calc(100% - 342px)"
+      }
       borderRadius="8px"
       zIndex="5"
       py={isMobile ? "30px" : "8px"}

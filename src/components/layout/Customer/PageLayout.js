@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Image } from "@chakra-ui/image";
 import { Box, Flex, Text } from "@chakra-ui/layout";
 import { useLocation } from "react-router-dom";
@@ -9,6 +9,7 @@ import { useGetUser } from "../../../services/customer/query/user";
 
 export const AuthLayout = ({ children }) => {
   const [isMobile] = useMediaQuery("(max-width: 991px)");
+  const [show, setShow] = useState(true);
 
   const { data: userData } = useGetUser();
   window?.fcWidget?.setExternalId(userData?.profile?.id);
@@ -39,17 +40,17 @@ export const AuthLayout = ({ children }) => {
         h="full"
         borderRadius="40px"
       >
-        <Box mx={!isMobile ? "310px" : "20px"}>
-          <Header />
-        </Box>
-        {!isMobile && <SideBar />}
+        <Box px={!isMobile ? (show ? "310px" : "88px") : "20px"}>
+        <Header showSidebar={show} />
+        </Box> {!isMobile && <SideBar show={show} setShow={setShow} />}
+      
         <Box overflow="auto" className="no_scroller">
           <Box
             w="100%"
             pt={isMobile ? "150px" : "95px"}
             color="#828282"
             maxHeight="87vh"
-            pl={!isMobile ? "310px" : "20px"}
+            pl={!isMobile ? (show ? "310px" : "88px") : "20px"}
             pr={!isMobile ? "" : "20px"}
             pb={10}
           >

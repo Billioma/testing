@@ -25,6 +25,7 @@ const PayToPark = () => {
   const [step, setStep] = useState(1);
   const { isOpen, onClose, onOpen } = useDisclosure();
   const [showCreate, setShowCreate] = useState(false);
+  const [create, setCreate] = useState(false);
 
   const { mutate, isLoading, data } = useGetZone({
     onError: (err) => {
@@ -904,6 +905,8 @@ const PayToPark = () => {
           />
           <CreateAccountModal
             values={values}
+            setCreate={setCreate}
+            create={create}
             isOpen={showCreate}
             onClose={() => setShowCreate(false)}
           />

@@ -11,10 +11,12 @@ import {
   Text,
 } from "@chakra-ui/react";
 import CustomInput from "../common/CustomInput";
+import { useNavigate } from "react-router-dom";
 
-const CreateAccountModal = ({ isOpen, onClose, values }) => {
+const CreateAccountModal = ({ isOpen, onClose, setCreate, create, values }) => {
   const [field, setField] = useState({ name: "", password: "" });
   const [show, setShow] = useState(false);
+  const navigate = useNavigate();
 
   return (
     <Modal isCentered trapFocus={false} isOpen={isOpen} onClose={onClose}>
@@ -86,55 +88,63 @@ const CreateAccountModal = ({ isOpen, onClose, values }) => {
               </Flex>
             </Box>
 
-            <Box mb="16px">
-              <Text
-                color="#444648"
-                fontWeight={500}
-                mb="8px"
-                lineHeight="100%"
-                fontSize="10px"
-              >
-                Name
-              </Text>
+            {create ? (
+              <>
+                <Box mb="16px">
+                  <Text
+                    color="#444648"
+                    fontWeight={500}
+                    mb="8px"
+                    lineHeight="100%"
+                    fontSize="10px"
+                  >
+                    Name
+                  </Text>
 
-              <CustomInput
-                auth
-                holder="Enter Name"
-                value={field?.name}
-                mb
-                onChange={(e) => setField({ ...field, name: e.target.value })}
-              />
-            </Box>
+                  <CustomInput
+                    auth
+                    holder="Enter Name"
+                    value={field?.name}
+                    mb
+                    onChange={(e) =>
+                      setField({ ...field, name: e.target.value })
+                    }
+                  />
+                </Box>
 
-            <Box>
-              <Text
-                color="#444648"
-                fontWeight={500}
-                mb="8px"
-                lineHeight="100%"
-                fontSize="10px"
-              >
-                Password
-              </Text>
+                <Box>
+                  <Text
+                    color="#444648"
+                    fontWeight={500}
+                    mb="8px"
+                    lineHeight="100%"
+                    fontSize="10px"
+                  >
+                    Password
+                  </Text>
 
-              <CustomInput
-                mb
-                holder="Enter Password"
-                value={field?.password}
-                onChange={(e) =>
-                  setField({ ...field, password: e.target.value })
-                }
-                name="password"
-                onClick={() => setShow((prev) => !prev)}
-                password={show ? false : true}
-                show
-                type={show ? "text" : "password"}
-              />
-            </Box>
-
+                  <CustomInput
+                    mb
+                    holder="Enter Password"
+                    value={field?.password}
+                    onChange={(e) =>
+                      setField({ ...field, password: e.target.value })
+                    }
+                    name="password"
+                    onClick={() => setShow((prev) => !prev)}
+                    password={show ? false : true}
+                    show
+                    type={show ? "text" : "password"}
+                  />
+                </Box>
+              </>
+            ) : (
+              ""
+            )}
             <Flex mt="32px" w="full">
               <Button
                 w="full"
+                onClick={() => (create ? "" : setCreate(true))}
                 fontSize="13px"
                 borderRadius="4px"
                 py="17px"
@@ -147,7 +157,7 @@ const CreateAccountModal = ({ isOpen, onClose, values }) => {
               <Text
                 fontSize="12px"
                 fontWeight={500}
-                onClick={onClose}
+                onClick={() => navigate("/customer/auth/login")}
                 textAlign="center"
                 lineHeight="100%"
                 color="#848688"
