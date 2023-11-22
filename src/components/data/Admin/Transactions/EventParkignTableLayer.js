@@ -89,7 +89,6 @@ const TableLayer = ({
             header={headers}
             opt
             alignFirstHeader
-            alignSecondHeader
             paginationValues={{
               startRow,
               endRow,
@@ -113,13 +112,17 @@ const TableLayer = ({
                 lineHeight="100%"
               >
                 <Td>{transaction?.ticketNumber}</Td>
-                <Td>{transaction?.event?.name}</Td>
-                <Td>{transaction?.vehicle?.licensePlate}</Td>
-                <Td>{transaction?.zone?.location?.name || "N/A"}</Td>
-                <Td>
+                <Td textAlign="center">{transaction?.event?.name}</Td>
+                <Td textAlign="center">{transaction?.vehicle?.licensePlate}</Td>
+                <Td textAlign="center">
+                  {transaction?.zone?.location?.name || "N/A"}
+                </Td>
+                <Td textAlign="center">
                   {formatDateTimes(transaction?.event?.eventStartDateTime)}
                 </Td>
-                <Td>{formatDateTimes(transaction?.event?.eventEndDateTime)}</Td>
+                <Td textAlign="center">
+                  {formatDateTimes(transaction?.event?.eventEndDateTime)}
+                </Td>
                 <Td textAlign="center">
                   ₦{transaction?.amount?.toLocaleString()}
                 </Td>

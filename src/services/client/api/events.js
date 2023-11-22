@@ -8,6 +8,25 @@ export const getEvents = async (query) => {
   return res.data;
 };
 
+export const getEventParkingList = async (query) => {
+  const res = await axiosInstance.get(
+    API.CLIENT_EVENT_PARKING_LIST(query.filterString, query.limit, query.page)
+  );
+  return res.data;
+};
+
+export const cancelClientSub = async (query) => {
+  const res = await axiosInstance.get(API.CANCEL_CLIENT_EVENT(query));
+  return res.data;
+};
+
+export const getEventParkingDetails = async (query) => {
+  const res = await axiosInstance.get(
+    API.CLIENT_EVENT_PARKING_DETAIL(query.id)
+  );
+  return res.data;
+};
+
 export const getEventDetails = async (query) => {
   const res = await axiosInstance.get(API.DEL_EVENTS(query));
   return res.data;

@@ -129,6 +129,23 @@ export const formatTimeMinute = (date, fallback = "") => {
   });
 };
 
+export const formatFullDate = (date, fallback = "") => {
+  if (!date) return fallback;
+
+  const formattedDate = new Date(date);
+  const options = {
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+    hour: "numeric",
+    minute: "numeric",
+    hour12: true,
+    timeZone: "UTC",
+  };
+
+  return formattedDate.toLocaleString("default", options);
+};
+
 export const formatDateTime = (date, fallback = "") => {
   if (!date) return fallback;
 

@@ -7,7 +7,7 @@ export const PUBLIC_PATHS = {
   CUST_CHANGE_SUCCESS: "/customer/auth/password-success",
   CUST_RESET_SENT: "/customer/auth/reset-success",
   CUST_SIGNUP: "/customer/auth/signup",
-  CUST_PARK: "/customer/pay-to-park",
+  CUST_PARK: "/customer/pay-to-park/:zoneCode",
   CUST_SCAN_PARK: "/customer/scan-qr",
 
   // CLIENT ROUTES
@@ -68,7 +68,7 @@ export const PRIVATE_PATHS = {
   CLIENT_LOGS_VALET: "/client/logs/valet-park",
   CLIENT_LOGS_VALET_DETAILS: "/client/logs/valet-park/details",
   CLIENT_TRAN: "/client/transactions",
-  CLIENT_TRAN_DETAILS: "/client/transactions/transaction-details",
+  CLIENT_TRAN_DETAILS: "/client/transactions/details/:id",
   CLIENT_ADD_EVENT: "/client/events/create",
   CLIENT_EDIT_EVENT: "/client/events/:id",
   CLIENT_ADD_SUB: "/client/subscriptions/create",

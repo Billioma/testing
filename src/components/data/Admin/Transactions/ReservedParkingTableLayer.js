@@ -91,7 +91,6 @@ const TableLayer = ({
             header={headers}
             opt
             alignFirstHeader
-            alignSecondHeader
             paginationValues={{
               startRow,
               endRow,
@@ -115,7 +114,7 @@ const TableLayer = ({
                 lineHeight="100%"
               >
                 <Td>{transaction?.reservationId}</Td>
-                <Td>
+                <Td textAlign="center">
                   {transaction?.customer?.profile?.firstName}{" "}
                   {transaction?.customer?.profile?.lastName}
                 </Td>

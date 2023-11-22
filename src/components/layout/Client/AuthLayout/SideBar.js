@@ -64,6 +64,11 @@ const SideBar = () => {
             Space
           </Text>
           <Text textAlign="center" fontSize="12px" mt="10px" color="#646668">
+            {userData?.accountType === "CORPORATE"
+              ? "Corporate"
+              : userData?.accountType === "EVENT_PLANNER"
+              ? "Event"
+              : userData?.accountType === "BUSINESS" && "Business"}{" "}
             Client
           </Text>
         </Box>

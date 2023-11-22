@@ -63,7 +63,7 @@ const Header = () => {
         return setSecTitle("Pay-To-Park");
 
       case locationRoute.includes("transaction"):
-        return setSecTitle("Pay-To-Park");
+        return setSecTitle("Event Parking");
 
       case locationRoute.includes("events/create"):
         return setSecTitle("Add Event");

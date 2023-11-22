@@ -1,7 +1,13 @@
-import React from "react";
-import { Box, Flex, Text } from "@chakra-ui/react";
+import React, { useEffect } from "react";
+import { Box, Flex, Spinner, Text } from "@chakra-ui/react";
 import { HiOutlineArrowNarrowLeft } from "react-icons/hi";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { useGetClientEventParkingDetails } from "../../../services/client/query/events";
+import {
+  OnlinePaymentMethods,
+  Status,
+} from "../../../components/common/constants";
+import { formatNewDate } from "../../../utils/helpers";
 
 export const Layout = ({ label, data }) => {
   return (
@@ -17,7 +23,15 @@ export const Layout = ({ label, data }) => {
       </Text>
       <Text
         lineHeight="100%"
-        color={data === "Active" ? "#008000" : data === "Inactive" ? "red" : ""}
+        color={
+          data === "PAID" || data === "Completed"
+            ? "#008000"
+            : data === "UNPAID" || data === "Failed"
+            ? "red"
+            : data === "Pending"
+            ? "#F9A11E"
+            : ""
+        }
         fontSize="14px"
         fontWeight={500}
       >
@@ -29,6 +43,14 @@ export const Layout = ({ label, data }) => {
 
 const TransactionDetails = () => {
   const navigate = useNavigate();
+  const { id } = useParams();
+
+  const { mutate, data, isLoading } = useGetClientEventParkingDetails();
+
+  useEffect(() => {
+    mutate({ id: id });
+  }, []);
+
   return (
     <Box minH="75vh">
       <Flex align="flex-start">
@@ -48,33 +70,70 @@ const TransactionDetails = () => {
             Back
           </Text>
         </Flex>
-
-        <Flex justifyContent="center" align="center" w="full" flexDir="column">
-          <Flex
-            bg="#fff"
-            borderRadius="12px"
-            border="1px solid #D4D6D8"
-            py="40px"
-            px="32px"
-            justifyContent="center"
-            align="center"
-            w={{ base: "full", md: "30rem" }}
-            flexDir="column"
-          >
-            <Layout label="Ticket Number" data="927484" />
-            <Layout label="License" data="SJD83HD" />
-            <Layout label="First Name" data="Bilal" />
-            <Layout label="Last Name" data="Omari" />
-            <Layout label="Amount" data="1000" />
-            <Layout label="Location" data="Landmark Beach" />
-            <Layout label="Zone" data="T01113" />
-            <Layout label="Attendant" data="Bilal Omari" />
-            <Layout label="Service" data="Self Parking" />
-            <Layout label="Payment Status" data="Unpaid" />
-            <Layout label="Status" data="Completed" />
-            <Layout label="Date" data="2023-03-20" />
+        {isLoading ? (
+          <Flex minH="60vh" w="full" justifyContent="center" align="center">
+            <Spinner />
           </Flex>
-        </Flex>
+        ) : (
+          <>
+            <Flex
+              justifyContent="center"
+              align="center"
+              w="full"
+              flexDir="column"
+            >
+              <Flex
+                bg="#fff"
+                borderRadius="12px"
+                border="1px solid #D4D6D8"
+                py="40px"
+                px="32px"
+                justifyContent="center"
+                align="center"
+                w={{ base: "full", md: "30rem" }}
+                flexDir="column"
+              >
+                <Layout label="Ticket Number" data={data?.ticketNumber} />
+
+                <Layout label="Event" data={data?.event?.name} />
+                <Layout
+                  label="Amount"
+                  data={`₦ ${data?.amount?.toLocaleString()}`}
+                />
+                <Layout label="Location" data={data?.zone?.location?.name} />
+                <Layout label="Zone" data={data?.zone?.name} />
+                <Layout label="Service" data={data?.service?.name} />
+                <Layout
+                  label="Payment Status"
+                  data={
+                    data?.paymentStatus === 0
+                      ? "UNPAID"
+                      : data?.paymentStatus === 1
+                      ? "PAID"
+                      : ""
+                  }
+                />
+                <Layout
+                  label="Transaction Type"
+                  data={OnlinePaymentMethods?.find(
+                    (dat, i) => i === data?.transaction?.paymentMethod
+                  )}
+                />
+                <Layout
+                  label="Status"
+                  data={
+                    data?.status === 0
+                      ? "Pending"
+                      : data?.status === 1
+                      ? "Completed"
+                      : data?.status === 2 && "Pending"
+                  }
+                />
+                <Layout label="Date" data={formatNewDate(data?.createdAt)} />
+              </Flex>
+            </Flex>
+          </>
+        )}
       </Flex>
     </Box>
   );

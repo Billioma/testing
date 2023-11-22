@@ -10,7 +10,7 @@ const Footer = ({ showSidebar }) => {
       bottom="0"
       w={
         isMobile
-          ? "calc(100% - 2.rem)"
+          ? "calc(100% - 2.4rem)"
           : !showSidebar
           ? "calc(100% - 120px)"
           : "calc(100% - 342px)"

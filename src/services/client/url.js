@@ -7,6 +7,17 @@ export const CHANGE_USER_PASSWORD = "update-password";
 export const GET_CLIENT_DETAILS = "auth/profile";
 export const GET_USERS = (filterString = "", limit = "", page = "") =>
   `client/users?${filterString}&limit=${limit}&page=${page}&sort=id,DESC`;
+export const CLIENT_EVENT_PARKING_LIST = (
+  filterString = "",
+  limit = "",
+  page = ""
+) =>
+  `client/event-parking?${filterString}&limit=${limit}&page=${page}&sort=id,DESC`;
+export const CLIENT_EVENT_PARKING_DETAIL = (id = "") =>
+  `client/event-parking/${id}`;
+
+export const CANCEL_CLIENT_EVENT = (id = "") =>
+  `client/event-parking/cancel/${id}`;
 export const GET_CLIENT_USERS = "client/users/?";
 export const GET_USERS_COUNT = "client/dashboard/users";
 export const FUND_WALLET = "cards/fund-wallet";

@@ -1139,6 +1139,12 @@ export const PaymentMethods = [
   "CARD",
 ];
 
+export const OnlinePaymentMethods = [
+  "CARD",
+  "WALLET",
+  "TRANSFER",
+];
+
 export const cardImg = [
   { img: "/assets/mastercard.svg", name: "mastercard" },
   { img: "/assets/visa.svg", name: "visa" },
@@ -1764,6 +1770,14 @@ export const payToParkOptions = [
   { label: "Vehicle", value: "vehicle.licensePlate" },
   { label: "Customer First Name", value: "customer.profile.firstName" },
   { label: "Customer Last Name", value: "customer.profile.lastName" },
+  { label: "Status", value: "status" },
+];
+
+export const clientEventParkingOptions = [
+  { label: "Ticket Number", value: "ticketNumber" },
+  { label: "Event Name", value: "event.name" },
+  { label: "Location", value: "zone.location.name" },
+  { label: "Amount (₦)", value: "amount" },
   { label: "Status", value: "status" },
 ];
 

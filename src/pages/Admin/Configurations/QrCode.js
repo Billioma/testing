@@ -122,7 +122,7 @@ export default function QrCode() {
             >
               <QRCodeCanvas
                 size={200}
-                value={state?.ticketNumber}
+                value={`https://parkinspace-webapp.netlify.app/customer/pay-to-park/${state?.ticketNumber}`}
                 viewBox={`0 0 200 200`}
                 renderAs="canvas"
                 id="qrcode"

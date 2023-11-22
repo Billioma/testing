@@ -21,9 +21,8 @@ const ScanPark = () => {
   const [success, setSuccess] = useState("");
   const { errorToast } = useCustomToast();
   const { mutate, isLoading } = useGetZone({
-    onSuccess: (res) => {
-      sessionStorage.setItem("zone", JSON.stringify(res));
-      navigate("/customer/pay-to-park");
+    onSuccess: () => {
+      navigate(`/customer/pay-to-park/${zone}`);
     },
     onError: (err) => {
       if (err?.response?.data?.message) {
