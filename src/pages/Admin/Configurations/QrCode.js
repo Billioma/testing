@@ -62,9 +62,11 @@ export default function QrCode() {
               value={state?.ticketNumber}
               mb
               holder="Enter ticket number"
-              onChange={(e) =>
-                setState({ ...state, ticketNumber: e.target.value })
-              }
+              onChange={(e) => {
+                setState({ ...state, ticketNumber: e.target.value });
+                setClaim(false);
+                setShowQr(false);
+              }}
             />
           </Box>
 
