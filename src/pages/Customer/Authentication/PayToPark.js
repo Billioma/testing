@@ -872,17 +872,17 @@ const PayToPark = () => {
                       mt="24px"
                       mb="30px"
                       py="17px"
-                      // isDisabled={
-                      //   step === 1
-                      //     ? !values?.plate ||
-                      //       !values?.make ||
-                      //       !values?.model ||
-                      //       !values?.color ||
-                      //       values?.plate?.length < 8
-                      //     : step === 2
-                      //     ? !values?.email || !values?.phone
-                      //     : false
-                      // }
+                      isDisabled={
+                        step === 1
+                          ? !values?.plate ||
+                            !values?.make ||
+                            !values?.model ||
+                            !values?.color ||
+                            values?.plate?.length < 8
+                          : step === 2
+                          ? !values?.email || !values?.phone
+                          : false
+                      }
                       fontSize="14px"
                     >
                       {step !== 3 ? "Proceed" : "Park Now"}
