@@ -11,6 +11,7 @@ export default function QrCode() {
   const [isDisabled, setIsDisabled] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const [showQr, setShowQr] = useState(false);
+  const [claim, setClaim] = useState(false);
 
   const downloadQRCode = () => {
     const canvas = document.getElementById("qrcode");
@@ -78,13 +79,8 @@ export default function QrCode() {
               Claim Tickets
             </Text>
             <Switch
-              onChange={() =>
-                setState({
-                  ...state,
-                  claim: state?.claim === 1 ? 0 : 1,
-                })
-              }
-              isChecked={state?.claim}
+              onChange={() => setClaim((prev) => !prev)}
+              isChecked={claim}
               size="sm"
               variant="adminPrimary"
             />
@@ -122,7 +118,11 @@ export default function QrCode() {
             >
               <QRCodeCanvas
                 size={200}
-                value={`https://parkinspace-webapp.netlify.app/customer/pay-to-park/${state?.ticketNumber}`}
+                value={
+                  claim
+                    ? `https://parkinspace-webapp.netlify.app/customer/pay-to-park/${state?.ticketNumber}`
+                    : state?.ticketNumber
+                }
                 viewBox={`0 0 200 200`}
                 renderAs="canvas"
                 id="qrcode"
