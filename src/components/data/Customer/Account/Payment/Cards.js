@@ -304,13 +304,18 @@ const Cards = () => {
                 borderRadius="8px"
                 py="14px"
                 color="#fff"
+                isDisabled={cards?.data?.length === 3 ? true : false}
                 onClick={() => {
                   initializePayment(onSuccess, onClose);
                 }}
                 fontSize="12px"
                 fontWeight={500}
               >
-                {cards?.data?.length ? "Add Another Card" : "Add a Card"}
+                {cards?.data?.length === 3
+                  ? "You have reached your card limit"
+                  : cards?.data?.length
+                  ? "Add Another Card"
+                  : "Add a Card"}
               </Button>
             </Flex>
           </Skeleton>
