@@ -110,7 +110,11 @@ const TableLayer = ({
                 fontSize="12px"
                 lineHeight="100%"
               >
-                <Td>{vehicle?.customerName}</Td>
+                <Td>
+                  {vehicle?.customer === null
+                    ? vehicle?.customerName
+                    : `${vehicle?.customer?.profile?.firstName} ${vehicle?.customer?.profile?.lastName}`}
+                </Td>
                 <Td>{vehicle?.licensePlate}</Td>
                 <Td textAlign="center">
                   {vehicle?.color?.includes("#")

@@ -22,7 +22,7 @@ export const AuthLayout = ({ children }) => {
   useEffect(() => {
     sessionStorage.removeItem("redirect");
   }, []);
-
+   
   return (
     <Box
       color="#000"

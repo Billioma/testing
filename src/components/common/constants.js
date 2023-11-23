@@ -1,4 +1,4 @@
-import { MdAutorenew } from "react-icons/md";
+import { MdAutorenew, MdSend } from "react-icons/md";
 import {
   ClientEventIcon,
   ClientLogIcon,
@@ -1233,6 +1233,29 @@ export const clientListOption = [
   },
 ];
 
+export const clientInvoiceListOption = [
+  {
+    name: "Send",
+    id: 0,
+    icon: MdSend,
+  },
+  {
+    name: "View",
+    id: 1,
+    icon: HiOutlineInformationCircle,
+  },
+  {
+    name: "Edit",
+    id: 2,
+    icon: FiEdit,
+  },
+  {
+    name: "Delete",
+    id: 3,
+    icon: BsTrash,
+  },
+];
+
 export const viewDeleteOption = [
   {
     name: "View",
@@ -1300,6 +1323,16 @@ export const payToParkHeader = [
   "STATUS",
   "DATE",
   "",
+];
+
+export const companyPayToParkHeader = [
+  "TICKET NUMBER",
+  "ATTENDANT",
+  "VEHICLE",
+  "SERVICE TYPE",
+  "STATUS",
+  "DATE",
+  "ACTIONS",
 ];
 
 export const operatorDashCards = [
@@ -1386,6 +1419,17 @@ export const reserveHeader = [
   "ACTIONS",
 ];
 
+export const companyReserveHeader = [
+  "TICKET NUMBER",
+  "ATTENDANT",
+  "AMOUNT",
+  "VEHICLE",
+  "ARRIVAL",
+  "DEPARTURE",
+  "STATUS",
+  "ACTIONS",
+];
+
 export const eventHeader = [
   "TICKET NUMBER",
   "AMOUNT",
@@ -1395,6 +1439,17 @@ export const eventHeader = [
   "STATUS",
   "DATE",
   "",
+];
+
+export const companyEventHeader = [
+  "TICKET NUMBER",
+  "ATTENDANT",
+  "AMOUNT",
+  "VEHICLE",
+  "SERVICE TYPE",
+  "STATUS",
+  "DATE",
+  "ACTIONS",
 ];
 
 export const carHeader = [

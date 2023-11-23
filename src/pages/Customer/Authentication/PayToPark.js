@@ -19,6 +19,10 @@ import SuccessfulPaymentModal from "../../../components/modals/SuccessfulPayment
 import CreateAccountModal from "../../../components/modals/CreateAccountModal";
 import { useParams } from "react-router-dom";
 import { useGetZone } from "../../../services/customer/query/locations";
+import {
+  useGetPublicMakes,
+  useGetPublicModels,
+} from "../../../services/customer/query/auth";
 
 const PayToPark = () => {
   const { zoneCode } = useParams();
@@ -56,10 +60,40 @@ const PayToPark = () => {
     color: "",
   });
 
+  const { data: models } = useGetPublicModels();
+  const { data: makes } = useGetPublicMakes();
+
+  const modelToMap = models?.filter(
+    (item) => item?.make?.name === values?.make?.label
+  );
+  const modelOptions = modelToMap?.map((model) => ({
+    value: model?.id,
+    label: model?.name,
+  }));
+  const makeOptions = makes?.map((make) => ({
+    value: make?.id,
+    label: make?.name,
+  }));
+
   const colorOptions = colorTypes.map((color) => ({
     value: color.color,
     label: color.label,
   }));
+
+  const handleSelectChange = (selectedOption, { name }) => {
+    if (name === "make") {
+      setValues((prevValues) => ({
+        ...prevValues,
+        make: selectedOption,
+        model: "",
+      }));
+    } else {
+      setValues((prevValues) => ({
+        ...prevValues,
+        [name]: selectedOption,
+      }));
+    }
+  };
 
   const handleKeyPress = (e, limit) => {
     if (limit && e.target.value.length >= limit) {
@@ -117,13 +151,6 @@ const PayToPark = () => {
       {data?.label}
     </Flex>
   );
-
-  const handleSelectChange = (selectedOption, { name }) => {
-    setValues({
-      ...values,
-      [name]: selectedOption,
-    });
-  };
 
   const customStyles = {
     control: (provided, state) => ({
@@ -436,7 +463,7 @@ const PayToPark = () => {
                         <Select
                           styles={customStyles}
                           placeholder="Select Make"
-                          options={colorOptions}
+                          options={makeOptions}
                           value={values.make}
                           components={{
                             IndicatorSeparator: () => (
@@ -448,11 +475,8 @@ const PayToPark = () => {
                               </div>
                             ),
                           }}
-                          defaultValue={values.vehicle}
                           onChange={(selectedOption) =>
-                            handleSelectChange(selectedOption, {
-                              name: "make",
-                            })
+                            handleSelectChange(selectedOption, { name: "make" })
                           }
                         />
                       </Box>
@@ -469,7 +493,7 @@ const PayToPark = () => {
                         <Select
                           styles={customStyles}
                           placeholder="Select Model"
-                          options={colorOptions}
+                          options={modelOptions}
                           value={values.model}
                           components={{
                             IndicatorSeparator: () => (
@@ -481,7 +505,6 @@ const PayToPark = () => {
                               </div>
                             ),
                           }}
-                          defaultValue={values.vehicle}
                           onChange={(selectedOption) =>
                             handleSelectChange(selectedOption, {
                               name: "model",

@@ -4,12 +4,11 @@ import TableFormat from "../../../common/TableFormat";
 import { FiMoreVertical } from "react-icons/fi";
 import {
   Status,
-  payToParkHeader,
+  companyPayToParkHeader,
   serviceTabs,
-  reserveHeader,
-  eventHeader,
+  companyEventHeader,
   carHeader,
-  BookingSlots,
+  companyReserveHeader,
 } from "../../../common/constants";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import {
@@ -27,6 +26,7 @@ import { useEffect } from "react";
 import { FcCancel } from "react-icons/fc";
 import { TbListDetails } from "react-icons/tb";
 import { useNavigate } from "react-router-dom";
+import { useGetCustomerServiceLog } from "../../../../services/customer/query/logs";
 
 const UsTableLayer = () => {
   const [page, setPage] = useState(1);
@@ -39,6 +39,43 @@ const UsTableLayer = () => {
     data: reserveParking,
     refetch,
   } = useGetReserveParking(limit, page);
+  const { data: parkingLog } = useGetCustomerServiceLog(
+    {
+      refetchOnWindowFocus: true,
+    },
+    "PARKING",
+    page,
+    limit
+  );
+  const { data: valetLog } = useGetCustomerServiceLog(
+    {
+      refetchOnWindowFocus: true,
+    },
+    "VALET",
+    page,
+    limit
+  );
+  const { data: serviceLog } = useGetCustomerServiceLog(
+    {
+      refetchOnWindowFocus: true,
+    },
+    "SERVICE",
+    page,
+    limit
+  );
+
+  const tabMap =
+    tab === "Pay-To-Park"
+      ? parkingLog?.data?.filter((item) => item?.ticketNumber?.includes("PTP"))
+      : tab === "Valet Parking"
+      ? valetLog?.data
+      : tab === "Car Parking"
+      ? serviceLog?.data
+      : tab === "Event Parking"
+      ? parkingLog?.data?.filter((item) => item?.ticketNumber?.includes("EV"))
+      : tab === "Reserve Parking" &&
+        parkingLog?.data?.filter((item) => item?.ticketNumber?.includes("RP"));
+  console.log(tabMap);
   const {
     isLoading: isCar,
     data: carService,
@@ -149,11 +186,11 @@ const UsTableLayer = () => {
         }
         header={
           tab === "Pay-To-Park" || tab === "Valet Parking"
-            ? payToParkHeader
+            ? companyPayToParkHeader
             : tab === "Reserve Parking"
-            ? reserveHeader
+            ? companyReserveHeader
             : tab === "Event Parking"
-            ? eventHeader
+            ? companyEventHeader
             : carHeader
         }
         paginate={
@@ -361,9 +398,9 @@ const UsTableLayer = () => {
           </Flex>
         }
       >
-        {tab === "Pay-To-Park" || tab === "Valet Parking" ? (
-          payToPark?.data?.length ? (
-            payToPark?.data?.map((dat, i) => (
+        {tab === "Valet Parking" ? (
+          tabMap?.length ? (
+            tabMap?.map((dat, i) => (
               <Tr
                 key={i}
                 color="#646668"
@@ -372,6 +409,7 @@ const UsTableLayer = () => {
                 lineHeight="100%"
               >
                 <Td textAlign="center">{dat?.ticketNumber}</Td>
+                <Td textAlign="center">{dat?.attendant?.name}</Td>
                 <Td textAlign="center">{dat?.vehicle?.licensePlate}</Td>
                 <Td textAlign="center">{dat?.service?.name}</Td>
                 <Td>
@@ -489,9 +527,9 @@ const UsTableLayer = () => {
               </Td>
             </Tr>
           )
-        ) : tab === "Valet Parking" ? (
-          payToPark?.data?.length ? (
-            payToPark?.data?.map((dat, i) => (
+        ) : tab === "Pay-To-Park" ? (
+          tabMap?.length ? (
+            tabMap?.map((dat, i) => (
               <Tr
                 key={i}
                 color="#646668"
@@ -500,6 +538,7 @@ const UsTableLayer = () => {
                 lineHeight="100%"
               >
                 <Td textAlign="center">{dat?.ticketNumber}</Td>
+                <Td textAlign="center">{dat?.attendant?.name}</Td>
                 <Td textAlign="center">{dat?.vehicle?.licensePlate}</Td>
                 <Td textAlign="center">{dat?.service?.name}</Td>
                 <Td>
@@ -618,8 +657,8 @@ const UsTableLayer = () => {
             </Tr>
           )
         ) : tab === "Reserve Parking" ? (
-          reserveParking?.data?.length ? (
-            reserveParking?.data?.map((dat, i) => (
+          tabMap?.length ? (
+            tabMap?.map((dat, i) => (
               <Tr
                 key={i}
                 color="#646668"
@@ -627,21 +666,160 @@ const UsTableLayer = () => {
                 fontSize="12px"
                 lineHeight="100%"
               >
+                <Td textAlign="center">{dat?.ticketNumber}</Td>
+                <Td textAlign="center">{dat?.attendant?.name}</Td>
+                <Td textAlign="center">{dat?.vehicle?.licensePlate}</Td>
+                <Td textAlign="center">
+                  {formatDateTime(dat?.timeIn) || "N/A"}
+                </Td>
+                <Td textAlign="center">
+                  {formatDateTime(dat?.timeOut) || "N/A"}
+                </Td>
+                <Td textAlign="center">{formatDate(dat?.createdAt)}</Td>
+                <Td>
+                  <Flex justifyContent="center" align="center" w="full">
+                    <Flex
+                      color={Object.values(Status[dat?.status])[0]}
+                      bg={Object.values(Status[dat?.status])[2]}
+                      py="5px"
+                      px="16px"
+                      w="fit-content"
+                      justifyContent="center"
+                      borderRadius="4px"
+                      align="center"
+                    >
+                      {Object.values(Status[dat?.status])[1]}
+                    </Flex>
+                  </Flex>
+                </Td>
+                <Td>
+                  <Flex
+                    pos="relative"
+                    cursor="pointer"
+                    onClick={() => open(dat)}
+                    justifyContent="center"
+                    className="box"
+                    align="center"
+                  >
+                    <FiMoreVertical />
+
+                    {show && currentItem === dat && (
+                      <Box
+                        border="1px solid #F4F6F8"
+                        px="4px"
+                        py="8px"
+                        bg="#fff"
+                        borderRadius="4px"
+                        pos="absolute"
+                        right="0"
+                        zIndex={5555555}
+                        top="20px"
+                        boxShadow="0px 8px 16px 0px rgba(0, 0, 0, 0.08)"
+                      >
+                        <Flex
+                          mb="8px"
+                          py="6px"
+                          px="8px"
+                          borderRadius="2px"
+                          justifyContent="center"
+                          align="center"
+                          _hover={{ bg: "#F4F6F8" }}
+                          cursor="pointer"
+                          fontSize="10px"
+                          gap="12px"
+                          w="full"
+                          onClick={() =>
+                            navigate(
+                              `/customer/history/company/pay-to-park/${dat?.id}`
+                            )
+                          }
+                          color="#646668"
+                          lineHeight="100%"
+                          fontWeight={500}
+                        >
+                          <Icon as={TbListDetails} w="20px" h="20px" />
+                          View Details
+                        </Flex>
+                      </Box>
+                    )}
+                  </Flex>
+                </Td>
+              </Tr>
+            ))
+          ) : (
+            <Tr>
+              <Td colSpan={7} rowSpan={2}>
+                <Flex
+                  textAlign="center"
+                  justifyContent="center"
+                  mt="30px"
+                  align="center"
+                  w="full"
+                >
+                  <Flex
+                    textAlign="center"
+                    justifyContent="center"
+                    align="center"
+                    flexDir="column"
+                    border="1px solid #e4e6e8"
+                    borderRadius="8px"
+                    py="16px"
+                    px="24px"
+                    w="fit-content"
+                  >
+                    <Image src="/assets/no-sub.jpg" w="48px" h="48px" />
+
+                    <Text
+                      my="16px"
+                      color="#646668"
+                      lineHeight="100%"
+                      fontWeight={700}
+                    >
+                      No Recent Activity
+                    </Text>
+                    <Text
+                      fontSize="11px"
+                      color="#A4A6A8"
+                      fontWeight={500}
+                      lineHeight="100%"
+                    >
+                      Make use of any of our parking services
+                    </Text>
+                  </Flex>
+                </Flex>
+              </Td>
+            </Tr>
+          )
+        ) : tab === "Event Parking" ? (
+          tabMap?.length ? (
+            tabMap?.map((dat, i) => (
+              <Tr
+                key={i}
+                color="#646668"
+                fontWeight={500}
+                fontSize="12px"
+                lineHeight="100%"
+              >
+                <Td textAlign="center">{dat?.ticketNumber}</Td>
+                <Td textAlign="center">{dat?.attendant?.name}</Td>
                 <Td textAlign="center">
                   ₦{" "}
                   {dat?.amount?.toLocaleString(undefined, {
                     maximumFractionDigits: 2,
                   }) || "0.00"}
                 </Td>
-                <Td textAlign="center">{dat?.vehicle?.licensePlate}</Td>
+                <Td textAlign="center">{dat?.vehicle?.licensePlate}</Td>{" "}
                 <Td textAlign="center">
-                  {formatDateTime(dat?.arrival) || "N/A"}
+                  <Flex
+                    flexDir="column"
+                    bg="#F4F6F8"
+                    borderRadius="4px"
+                    px="16px"
+                    py="8px"
+                  >
+                    {dat?.service?.serviceType}
+                  </Flex>
                 </Td>
-                <Td textAlign="center">
-                  {formatDateTime(dat?.departure) || "N/A"}
-                </Td>
-                <Td textAlign="center">{formatDate(dat?.createdAt)}</Td>
-
                 <Td>
                   <Flex justifyContent="center" align="center" w="full">
                     <Flex
@@ -658,6 +836,7 @@ const UsTableLayer = () => {
                     </Flex>
                   </Flex>
                 </Td>
+                <Td textAlign="center">{formatDate(dat?.createdAt)}</Td>
                 <Td>
                   <Flex
                     pos="relative"
@@ -768,9 +947,10 @@ const UsTableLayer = () => {
               </Td>
             </Tr>
           )
-        ) : tab === "Event Parking" ? (
-          eventParking?.data?.length ? (
-            eventParking?.data?.map((dat, i) => (
+        ) : (
+          tab === "Car Services" &&
+          (tabMap?.length ? (
+            tabMap?.map((dat, i) => (
               <Tr
                 key={i}
                 color="#646668"
@@ -912,147 +1092,7 @@ const UsTableLayer = () => {
                 </Flex>
               </Td>
             </Tr>
-          )
-        ) : carService?.data?.length ? (
-          carService?.data?.map((dat, i) => (
-            <Tr
-              key={i}
-              color="#646668"
-              fontWeight={500}
-              fontSize="12px"
-              lineHeight="100%"
-            >
-              <Td textAlign="center">{dat?.serviceType}</Td>
-              <Td textAlign="center">
-                {" "}
-                ₦{" "}
-                {dat?.amount?.toLocaleString(undefined, {
-                  maximumFractionDigits: 2,
-                }) || "0.00"}
-              </Td>
-              <Td textAlign="center">
-                <Flex
-                  flexDir="column"
-                  bg="#F4F6F8"
-                  borderRadius="4px"
-                  px="16px"
-                  py="8px"
-                >
-                  {BookingSlots.find((time, i) => i === dat?.appointmentSlot)}
-                </Flex>
-              </Td>
-
-              <Td textAlign="center">{dat?.appointmentDate}</Td>
-
-              <Td textAlign="center">{formatDate(dat?.createdAt)}</Td>
-              <Td>
-                <Flex justifyContent="center" align="center" w="full">
-                  <Flex
-                    color={Object.values(Status[dat?.status])[0]}
-                    bg={Object.values(Status[dat?.status])[2]}
-                    py="5px"
-                    w="fit-content"
-                    px="16px"
-                    justifyContent="center"
-                    borderRadius="4px"
-                    align="center"
-                  >
-                    {Object.values(Status[dat?.status])[1]}
-                  </Flex>
-                </Flex>
-              </Td>
-              <Td>
-                <Flex
-                  pos="relative"
-                  cursor="pointer"
-                  onClick={() => open(dat)}
-                  justifyContent="center"
-                  className="box"
-                  align="center"
-                >
-                  <FiMoreVertical />
-
-                  {show && currentItem === dat && (
-                    <Box
-                      border="1px solid #F4F6F8"
-                      px="4px"
-                      py="8px"
-                      bg="#fff"
-                      borderRadius="4px"
-                      pos="absolute"
-                      right="0"
-                      zIndex={5555555}
-                      top="20px"
-                      boxShadow="0px 8px 16px 0px rgba(0, 0, 0, 0.08)"
-                    >
-                      <Flex
-                        py="6px"
-                        px="8px"
-                        borderRadius="2px"
-                        justifyContent="center"
-                        align="center"
-                        onClick={() => setShowCancel(true)}
-                        _hover={{ bg: "#F4F6F8" }}
-                        cursor="pointer"
-                        fontSize="10px"
-                        color="red"
-                        gap="12px"
-                        w="full"
-                        lineHeight="100%"
-                        fontWeight={500}
-                      >
-                        <FcCancel size="15px" />
-                        Cancel Reservation
-                      </Flex>
-                    </Box>
-                  )}
-                </Flex>
-              </Td>
-            </Tr>
           ))
-        ) : (
-          <Tr>
-            <Td colSpan={7} rowSpan={2}>
-              <Flex
-                textAlign="center"
-                justifyContent="center"
-                mt="30px"
-                align="center"
-                w="full"
-              >
-                <Flex
-                  textAlign="center"
-                  justifyContent="center"
-                  align="center"
-                  flexDir="column"
-                  border="1px solid #e4e6e8"
-                  borderRadius="8px"
-                  py="16px"
-                  px="24px"
-                  w="fit-content"
-                >
-                  <Image src="/assets/no-sub.jpg" w="48px" h="48px" />
-
-                  <Text
-                    my="16px"
-                    color="#646668"
-                    lineHeight="100%"
-                    fontWeight={700}
-                  >
-                    No Recent Activity
-                  </Text>
-                  <Text
-                    fontSize="11px"
-                    color="#A4A6A8"
-                    fontWeight={500}
-                    lineHeight="100%"
-                  >
-                    Make use of any of our parking services
-                  </Text>
-                </Flex>
-              </Flex>
-            </Td>
-          </Tr>
         )}
       </TableFormat>
 

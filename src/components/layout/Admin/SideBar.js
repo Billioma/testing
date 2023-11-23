@@ -33,8 +33,6 @@ const SideBar = ({ show, setShow }) => {
     handleToggleSubItem(null);
   }, [pathname]);
 
-  console.log(openSubItems);
-
   const navigate = useNavigate();
 
   return (

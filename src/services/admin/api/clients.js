@@ -103,6 +103,13 @@ export const deleteClientInvoice = async (id) => {
   return response.data;
 };
 
+export const sendClientInvoice = async (id) => {
+  const response = await axiosInstance.get(
+    `${API.ADMIN_CLIENT_INVOICE(id)}/send`
+  );
+  return response.data;
+};
+
 export const addClientInvoice = async (data) => {
   const response = await axiosInstance.post(
     `${API.ADMIN_CLIENTS_INVOICES}`,

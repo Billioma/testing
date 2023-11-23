@@ -128,7 +128,6 @@ export default function AddOperator() {
     <Flex
       mt="-5px"
       onClick={() => {
-        console.log("ff");
         setValues({ ...values, color: data });
         setMenuIsOpen(false);
       }}

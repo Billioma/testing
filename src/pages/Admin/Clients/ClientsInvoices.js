@@ -6,7 +6,7 @@ import { PRIVATE_PATHS } from "../../../routes/constants";
 import Filter from "../../../components/common/Filter";
 import { clientInvoiceOptions } from "../../../components/common/constants";
 import { MdAdd } from "react-icons/md";
-import { useGetAdminClientsInvoicesList } from "../../../services/admin/query/clients";
+import { useGetClientsInvoices } from "../../../services/admin/query/clients";
 
 export default function () {
   const [page, setPage] = useState(1);
@@ -14,6 +14,7 @@ export default function () {
   const [startRow, setStartRow] = useState(1);
   const [endRow, setEndRow] = useState(25);
   const navigate = useNavigate();
+  const [isRefetch, setIsRefetch] = useState(false);
 
   const [filtArray, setFiltArray] = useState([]);
 
@@ -25,11 +26,23 @@ export default function () {
 
   const query = convertedFilters?.join("&");
 
-  const { mutate, data, isLoading } = useGetAdminClientsInvoicesList();
-
-  useEffect(() => {
-    mutate({ filterString: query, limit, page: page });
-  }, [page, query, limit]);
+  const { data, isLoading, refetch } = useGetClientsInvoices(
+    {
+      refetchOnWindowFocus: true,
+      onSuccess: () => {
+        setIsRefetch(false);
+      },
+      onError: () => {
+        setIsRefetch(false);
+      },
+      onSettled: () => {
+        setIsRefetch(false);
+      },
+    },
+    page,
+    limit,
+    query
+  );
 
   useEffect(() => {
     setPage(1);
@@ -51,15 +64,22 @@ export default function () {
     setEndRow(currentEndRow);
   }, [data, page, limit]);
 
+  useEffect(() => {
+    refetch();
+  }, []);
+
+  const handleRefreshClick = async () => {
+    setIsRefetch(true);
+    await refetch();
+  };
+
   return (
     <Box border="1px solid #d4d6d8" borderRadius="8px" p="16px 23px 24px">
       <Filter
         setFiltArray={setFiltArray}
         filtArray={filtArray}
         fieldToCompare={clientInvoiceOptions}
-        handleSearch={() =>
-          mutate({ filterString: query, limit: limit, page: page })
-        }
+        handleSearch={refetch}
         title={
           <Text
             fontSize="14px"
@@ -88,14 +108,14 @@ export default function () {
               cursor="pointer"
               transition=".3s ease-in-out"
               _hover={{ bg: "#F4F6F8" }}
-              onClick={() => mutate({ filterString: query, limit, page: page })}
+              onClick={handleRefreshClick}
               borderRadius="8px"
               border="1px solid #848688"
               p="10px"
             >
               <Image
                 src="/assets/refresh.svg"
-                className={isLoading && "mirrored-icon"}
+                className={isRefetch && "mirrored-icon"}
                 w="20px"
                 h="20px"
               />
@@ -112,7 +132,7 @@ export default function () {
         setPage={setPage}
         startRow={startRow}
         endRow={endRow}
-        refetch={() => mutate({ filterString: query, limit, page: page })}
+        refetch={refetch}
       />
     </Box>
   );

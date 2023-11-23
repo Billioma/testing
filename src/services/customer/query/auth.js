@@ -1,9 +1,11 @@
-import { useMutation } from "react-query";
+import { useMutation, useQuery } from "react-query";
 import {
   customerLogin,
   customerRegister,
   customerResetPassword,
   customerUpdatePassword,
+  getPublicMakes,
+  getPublicModels,
 } from "../api/auth";
 
 export const useCustomerLogin = (options = {}) => {
@@ -36,4 +38,28 @@ export const useCustomerRegister = (options = {}) => {
     ...options,
   });
   return { mutate, isLoading };
+};
+
+export const useGetPublicMakes = (options = {}) => {
+  const { data, isLoading, refetch } = useQuery(
+    "PUBLCI_MAKES",
+    getPublicMakes,
+    {
+      ...options,
+    }
+  );
+
+  return { data, isLoading, refetch };
+};
+
+export const useGetPublicModels = (options = {}) => {
+  const { data, isLoading, refetch } = useQuery(
+    "PUBLCI_MODELS",
+    getPublicModels,
+    {
+      ...options,
+    }
+  );
+
+  return { data, isLoading, refetch };
 };

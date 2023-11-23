@@ -12,6 +12,7 @@ import {
   Image,
   Button,
   Icon,
+  Spinner,
 } from "@chakra-ui/react";
 import TableFormat from "../../../common/TableFormat";
 import { formatDate } from "../../../../utils/helpers";
@@ -19,11 +20,14 @@ import { useNavigate } from "react-router-dom";
 import AdminDeleteModal from "../../../modals/AdminDeleteModal";
 import useCustomToast from "../../../../utils/notifications";
 import { BsChevronDown } from "react-icons/bs";
-import { useDeleteClientInvoice } from "../../../../services/admin/query/clients";
+import {
+  useDeleteClientInvoice,
+  useSendClientInvoice,
+} from "../../../../services/admin/query/clients";
 import TableLoader from "../../../loaders/TableLoader";
 import { PRIVATE_PATHS } from "../../../../routes/constants";
 import { Add } from "../../../common/images";
-import { clientListOption } from "../../../common/constants";
+import { clientInvoiceListOption } from "../../../common/constants";
 
 const TableLayer = ({
   data,
@@ -62,21 +66,36 @@ const TableLayer = ({
     },
   });
 
+  const [currentInvoice, setCurrentInvoice] = useState("");
+  const { mutate: sendMutate, isLoading: isSending } = useSendClientInvoice({
+    onSuccess: () => {
+      successToast("Invoice sent");
+      refetch();
+    },
+    onError: (err) => {
+      errorToast(
+        err?.response?.data?.message || err?.message || "An Error occurred"
+      );
+    },
+  });
+
   const handleSubmit = (e) => {
     e.preventDefault();
     mutate(selectedRow.id);
   };
 
-  const openOption = (i, invoice) => {
-    i === 0
+  const openOption = (dat, invoice) => {
+    dat?.id === 0
+      ? (setCurrentInvoice(invoice), sendMutate(invoice?.id))
+      : dat?.id === 1
       ? window.open(
-          `https://pisapi.ezpark.ng/public/client-invoices/${invoice.id}/view`,
+          `https://pisapi.ezpark.ng/public/client-invoices/${invoice?.id}/view`,
           "_blank"
         )
-      : i === 1
+      : dat?.id === 2
       ? (navigate(`/admin/clients/invoices/details/${invoice?.id}`),
         sessionStorage.setItem("edit", "edit"))
-      : i === 2 && setSelectedRow({ isOpen: true, id: invoice.id });
+      : dat?.id === 3 && setSelectedRow({ isOpen: true, id: invoice?.id });
   };
 
   return (
@@ -138,34 +157,45 @@ const TableLayer = ({
                 <Td textAlign={"center"}>{formatDate(invoice?.createdAt)}</Td>
                 <Td>
                   <Flex justifyContent="center" align="center">
-                    <Menu>
-                      <MenuButton as={Text} cursor="pointer">
-                        <BsChevronDown />
-                      </MenuButton>
-                      <MenuList
-                        borderRadius="4px"
-                        p="10px"
-                        border="1px solid #F4F6F8"
-                        boxShadow="0px 8px 16px 0px rgba(0, 0, 0, 0.08)"
-                      >
-                        {clientListOption.map((dat, i) => (
-                          <MenuItem
-                            gap="12px"
-                            borderRadius="2px"
-                            mb="8px"
-                            py="6px"
-                            px="8px"
-                            _hover={{ bg: "#F4F6F8" }}
-                            align="center"
-                            fontWeight="500"
-                            onClick={() => openOption(i, invoice)}
-                          >
-                            <Icon as={dat.icon} />
-                            {dat?.name}
-                          </MenuItem>
-                        ))}
-                      </MenuList>
-                    </Menu>
+                    {currentInvoice === invoice && isSending ? (
+                      <Spinner />
+                    ) : (
+                      <Menu>
+                        <MenuButton as={Text} cursor="pointer">
+                          <BsChevronDown />
+                        </MenuButton>
+                        <MenuList
+                          borderRadius="4px"
+                          p="10px"
+                          border="1px solid #F4F6F8"
+                          boxShadow="0px 8px 16px 0px rgba(0, 0, 0, 0.08)"
+                        >
+                          {(invoice?.client?.accountType === "BUSINESS"
+                            ? clientInvoiceListOption
+                            : clientInvoiceListOption?.slice(1, 5)
+                          ).map((dat, i) => (
+                            <MenuItem
+                              gap="12px"
+                              borderRadius="2px"
+                              mb="8px"
+                              py="6px"
+                              px="8px"
+                              _hover={{ bg: "#F4F6F8" }}
+                              align="center"
+                              fontWeight="500"
+                              onClick={() => openOption(dat, invoice)}
+                            >
+                              <Icon as={dat.icon} />
+                              {dat?.id === 0
+                                ? invoice?.sent === 1
+                                  ? "Resend"
+                                  : "Send"
+                                : dat?.name}
+                            </MenuItem>
+                          ))}
+                        </MenuList>
+                      </Menu>
+                    )}
                   </Flex>
                 </Td>
               </Tr>

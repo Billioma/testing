@@ -1,17 +1,39 @@
+import { refreshInstance } from "../services/axiosInstance";
+import { REFRESH_TOKEN } from "../services/customer/url";
+
+const baseURL = process.env.REACT_APP_BASE_URL;
 export const useLogOut = () => {
   return () => {
-    sessionStorage.clear();
-    localStorage.clear();
-    setTimeout(() => {
-      window.location.href = location.pathname.includes("operator")
-        ? "/operator/auth/login"
-        : (window.location.href = location.pathname.includes("admin")
-            ? "/admin/auth/login"
-            : (window.location.href = location.pathname.includes("client")
-                ? "/client/auth/login"
-                : "/customer/auth/login"));
-    }, 500);
+    const clearAndRedirect = (path) => {
+      localStorage.removeItem(path);
+      window.location.href = `/${path}/auth/login`;
+    };
+
+    const pathPrefix =
+      location.pathname.match(/(operator|admin|client)\//)?.[0] || "customer";
+    const newPath = pathPrefix?.replace("/", "");
+
+    if (pathPrefix) {
+      clearAndRedirect(newPath);
+    } else {
+      clearAndRedirect("customer");
+    }
   };
+};
+
+export const getAccessToken = async () => {
+  const pathPrefix =
+    location.pathname.match(/(operator|admin|client)\//)?.[0] || "customer";
+  const newPath = pathPrefix?.replace("/", "");
+  try {
+    const res = await refreshInstance.get(
+      `${baseURL}${`${newPath}` + REFRESH_TOKEN}`
+    );
+    return res;
+  } catch (error) {
+    localStorage.removeItem(newPath);
+    window.location.href = `/${newPath}/auth/login`;
+  }
 };
 
 export const trim = (str) => {

@@ -1,9 +1,9 @@
 import axiosInstance from "../../axiosInstance";
 import * as API from "../url";
 
-export const getCustomerServiceLogs = async () => {
-  const res = await axiosInstance.get(
-    API.CUSTOMER_SERVICE_LOGS_LIST(query.limit, query.page)
+export const getCustomerServiceLogs = async (type, page, limit) => {
+  const response = await axiosInstance.get(
+    `${API.CUSTOMER_SERVICE_LOGS}?filter=service.serviceType||$cont||${type}&page=${page}`
   );
-  return res.data;
+  return response.data;
 };

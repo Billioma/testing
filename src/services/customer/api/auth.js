@@ -16,6 +16,16 @@ export const customerResetPassword = async (body) => {
   return res.data;
 };
 
+export const getPublicMakes = async () => {
+  const res = await axios.get(BASE_URL + API.PUBLIC_MAKES);
+  return res.data;
+};
+
+export const getPublicModels = async () => {
+  const res = await axios.get(BASE_URL + API.PUBLIC_MODELS);
+  return res.data;
+};
+
 export const customerRegister = async (body) => {
   const res = await axios.post(BASE_URL + "customer/" + API.REGISTER, body);
   return res.data;

@@ -3,12 +3,12 @@ import ClientsTableLayer from "../../../components/data/Admin/Clients/ClientsLis
 import { Box, Button, Flex, Image, Text } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import { PRIVATE_PATHS } from "../../../routes/constants";
-import { useGetAdminClients } from "../../../services/admin/query/clients";
+import { useGetClients } from "../../../services/admin/query/clients";
 import Filter from "../../../components/common/Filter";
 import { clientListOptions } from "../../../components/common/constants";
 import { MdAdd } from "react-icons/md";
 
-export default function () {
+const ClientList = () => {
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(25);
   const [startRow, setStartRow] = useState(1);
@@ -24,11 +24,34 @@ export default function () {
 
   const query = convertedFilters?.join("&");
 
-  const { mutate, data, isLoading } = useGetAdminClients();
+  const [isRefetch, setIsRefetch] = useState(false);
+
+  const { data, isLoading, refetch } = useGetClients(
+    {
+      refetchOnWindowFocus: true,
+      onSuccess: () => {
+        setIsRefetch(false);
+      },
+      onError: () => {
+        setIsRefetch(false);
+      },
+      onSettled: () => {
+        setIsRefetch(false);
+      },
+    },
+    page,
+    limit,
+    query
+  );
 
   useEffect(() => {
-    mutate({ filterString: query, limit, page: page });
-  }, [page, query, limit]);
+    refetch();
+  }, []);
+
+  const handleRefreshClick = async () => {
+    setIsRefetch(true);
+    await refetch();
+  };
 
   useEffect(() => {
     setPage(1);
@@ -57,9 +80,7 @@ export default function () {
         setFiltArray={setFiltArray}
         filtArray={filtArray}
         fieldToCompare={clientListOptions}
-        handleSearch={() =>
-          mutate({ filterString: query, limit: limit, page: page })
-        }
+        handleSearch={refetch}
         title={
           <Text
             fontSize="14px"
@@ -88,14 +109,14 @@ export default function () {
               cursor="pointer"
               transition=".3s ease-in-out"
               _hover={{ bg: "#F4F6F8" }}
-              onClick={() => mutate({ filterString: query, limit, page: page })}
+              onClick={handleRefreshClick}
               borderRadius="8px"
               border="1px solid #848688"
               p="10px"
             >
               <Image
                 src="/assets/refresh.svg"
-                className={isLoading && "mirrored-icon"}
+                className={isRefetch && "mirrored-icon"}
                 w="20px"
                 h="20px"
               />
@@ -113,8 +134,10 @@ export default function () {
         setPage={setPage}
         startRow={startRow}
         endRow={endRow}
-        refetch={() => mutate({ filterString: query, limit, page: page })}
+        refetch={refetch}
       />
     </Box>
   );
-}
+};
+
+export default ClientList;

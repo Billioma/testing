@@ -23,6 +23,7 @@ import {
   getEntityCustomers,
   attachAdminClientUser,
   getAdminEventsList,
+  sendClientInvoice,
 } from "../api/clients";
 
 export const useGetClients = (options = {}, page = 1, limit = 25, query) => {
@@ -204,7 +205,32 @@ export const useGetAdminEvents = (options = {}) => {
   return { mutate, isLoading, data };
 };
 
+export const useSendClientInvoice = (options = {}) => {
+  const { mutate, isLoading, data } = useMutation(sendClientInvoice, {
+    mutationKey: "sendClientInvoice",
+    ...options,
+  });
+  return { mutate, isLoading, data };
+};
+
 export const useGetClientsEvents = (
+  options = {},
+  page = 1,
+  limit = 25,
+  query
+) => {
+  const { data, isLoading, refetch } = useQuery(
+    ["GET_CLIENTS_EVENTS", limit, page, query],
+    () => getClientsEvents(page, limit, query),
+    {
+      ...options,
+    }
+  );
+
+  return { isLoading, data, refetch };
+};
+
+export const usesendClientInvoice = (
   options = {},
   page = 1,
   limit = 25,
