@@ -107,14 +107,6 @@ const Vehicles = () => {
           setFiltArray={setFiltArray}
           filtArray={filtArray}
           fieldToCompare={vehiclesReportOptions}
-          handleSearch={() =>
-            mutate({
-              type: "vehicles",
-              filterString: query,
-              limit,
-              page: page,
-            })
-          }
           title={
             <Text
               mt="24px"

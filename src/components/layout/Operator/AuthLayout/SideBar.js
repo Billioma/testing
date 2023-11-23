@@ -113,7 +113,7 @@ const SideBar = ({ show, setShow }) => {
                 key={i}
                 align="stretch"
                 className={!pathname.includes(item?.path) && "parent_nav"}
-                 my={
+                my={
                   show
                     ? i !== 0 && pathname.includes(item?.path)
                       ? "5px"

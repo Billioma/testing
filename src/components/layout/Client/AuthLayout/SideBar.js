@@ -241,7 +241,7 @@ const SideBar = ({ show, setShow }) => {
                               : "400",
                           }}
                         >
-                          <Box fontSize="11px" ml="26px" >
+                          <Box fontSize="11px" ml="26px">
                             <Link key={subItem.name} to={subItem.path}>
                               {subItem.name}
                             </Link>

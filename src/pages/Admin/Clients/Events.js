@@ -79,7 +79,6 @@ export default function () {
         setFiltArray={setFiltArray}
         filtArray={filtArray}
         fieldToCompare={eventsOptions}
-        handleSearch={refetch}
         title={
           <Text
             fontSize="14px"

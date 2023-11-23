@@ -217,7 +217,6 @@ const Park = () => {
     }),
   };
 
-
   return (
     <Box minH="75vh">
       <Flex justifyContent="center" align="center" w="full" flexDir="column">

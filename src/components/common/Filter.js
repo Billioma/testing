@@ -33,7 +33,6 @@ const Filter = ({
   filtArray,
   gap,
   fieldToCompare,
-  handleSearch,
   client,
   title,
 }) => {
@@ -43,7 +42,7 @@ const Filter = ({
     dropFilter: "",
     filter: "",
   });
-  
+
   const { data: makes } = useGetMakes(1, 1, 100000);
   const { data: models } = useGetModels(1, 1, 100000);
   const searchOptions = searchOption.map((search) => ({
@@ -233,7 +232,7 @@ const Filter = ({
   };
 
   return (
-    <Box pos="relative" zIndex="3" py={3} px={{base: 0, md:5}}>
+    <Box pos="relative" zIndex="3" py={3} px={{ base: 0, md: 5 }}>
       <Flex
         align={{ base: "flex-start", md: "center" }}
         gap={{ base: "20px", md: "unset" }}

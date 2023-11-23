@@ -56,9 +56,6 @@ const Users = () => {
           setFiltArray={setFiltArray}
           filtArray={filtArray}
           fieldToCompare={clientUserFieldOption}
-          handleSearch={() =>
-            mutate({ filterString: query, limit: limit, page: page })
-          }
           title={
             <Text
               fontSize="14px"

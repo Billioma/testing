@@ -1,10 +1,7 @@
 import React, { useState, useEffect } from "react";
 import AdministratorsTableLayer from "../../../components/data/Admin/Users/AdministratorsTableLayer";
 import { Box, Button, Flex, Image, Text } from "@chakra-ui/react";
-import {
-  useGetAdministrators,
-  useGetAdministratorsList,
-} from "../../../services/admin/query/users";
+import { useGetAdministrators } from "../../../services/admin/query/users";
 import { useNavigate } from "react-router-dom";
 import { PRIVATE_PATHS } from "../../../routes/constants";
 import Filter from "../../../components/common/Filter";
@@ -82,7 +79,6 @@ export default function () {
         setFiltArray={setFiltArray}
         filtArray={filtArray}
         fieldToCompare={administratorsOptions}
-        handleSearch={refetch}
         title={
           <Text
             fontSize="14px"

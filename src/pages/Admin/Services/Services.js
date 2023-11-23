@@ -65,9 +65,6 @@ export default function Services() {
           setFiltArray={setFiltArray}
           filtArray={filtArray}
           fieldToCompare={servicesOptions}
-          handleSearch={() =>
-            mutate({ filterString: query, limit: limit, page: page })
-          }
           title={
             <Text
               fontSize="14px"

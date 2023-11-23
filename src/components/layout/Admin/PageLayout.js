@@ -21,7 +21,7 @@ export const AuthLayout = ({ children }) => {
         <Box overflow="auto" className="no_scroller">
           <Box
             w="100%"
-            pt={isMobile ? "130px" : "125px"}
+            pt={isMobile ? "150px" : "125px"}
             color="#828282"
             maxHeight="92vh"
             pl={!isMobile ? (show ? "310px" : "88px") : "20px"}

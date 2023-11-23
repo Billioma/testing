@@ -13,29 +13,15 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import { useLocation, Link, useNavigate } from "react-router-dom";
-import { useLogOut } from "../../../../utils/helpers";
+import { useLogOut } from "../../../utils/helpers";
 import { useState } from "react";
-import { LogoutIcon, UserIcon } from "../../../common/images";
-import {
-  businessSidebar,
-  corpSidebar,
-  eventSidebar,
-} from "../../../common/constants";
+import { LogoutIcon, UserIcon } from "../../common/images";
 import { AiOutlineClose } from "react-icons/ai";
-import { useGetClientDetails } from "../../../../services/client/query/user";
+import { sidebarItems } from "../../common/constants";
 
 const SideDrawer = ({ isOpen, onClose }) => {
   const logout = useLogOut();
-  const { data: userData } = useGetClientDetails();
 
-  const sideBarMap =
-    userData?.accountType === "CORPORATE"
-      ? corpSidebar
-      : userData?.accountType === "EVENT_PLANNER"
-      ? eventSidebar
-      : userData?.accountType === "BUSINESS"
-      ? businessSidebar
-      : corpSidebar;
   const [isLoading, setIsLoading] = useState(false);
 
   const [openSubItems, setOpenSubItems] = useState({});
@@ -50,7 +36,7 @@ const SideDrawer = ({ isOpen, onClose }) => {
         newOpenSubItems[item] = false;
       });
 
-      const activeParentItem = sideBarMap.find((item) =>
+      const activeParentItem = sidebarItems.find((item) =>
         pathname.includes(item.path)
       )?.name;
 
@@ -85,8 +71,17 @@ const SideDrawer = ({ isOpen, onClose }) => {
       <DrawerOverlay />
       <DrawerContent bgColor="#fff" color="#000">
         <DrawerBody p={0} overflowY="scroll">
-          <Flex h="100vh" pt="40px" px="24px" flexDir="column">
-            <Flex pb="58px" justifyContent="space-between" align="center">
+          <Flex h="100vh" flexDir="column">
+            <Flex
+              pos="sticky"
+              px="24px"
+              top="0"
+              bg="#fff"
+              zIndex={555}
+              py="20px"
+              justifyContent="space-between"
+              align="center"
+            >
               <Box>
                 <Text
                   fontSize="24px"
@@ -112,8 +107,8 @@ const SideDrawer = ({ isOpen, onClose }) => {
               </Box>
             </Flex>
 
-            <Box>
-              {sideBarMap?.map((item, i) => {
+            <Box pt="40px" px="24px">
+              {sidebarItems?.map((item, i) => {
                 return (
                   <VStack
                     key={i}
@@ -222,7 +217,7 @@ const SideDrawer = ({ isOpen, onClose }) => {
               })}
             </Box>
 
-            <Box mt="30px">
+            <Box mt="30px" px="24px">
               <Text
                 color="#444648"
                 lineHeight="100%"
@@ -237,9 +232,7 @@ const SideDrawer = ({ isOpen, onClose }) => {
               <VStack
                 onClick={onClose}
                 align="stretch"
-                className={
-                  !pathname.includes("/client/profile") && "parent_nav"
-                }
+                className={!pathname.includes("/admin/profile") && "parent_nav"}
               >
                 <Flex
                   align="center"
@@ -251,21 +244,21 @@ const SideDrawer = ({ isOpen, onClose }) => {
                   fontSize="13px"
                   lineHeight="100%"
                   cursor="pointer"
-                  onClick={() => navigate("/client/profile")}
+                  onClick={() => navigate("/admin/profile")}
                   bg={
-                    pathname.includes("/client/profile")
+                    pathname.includes("/admin/profile")
                       ? "#EE383A"
                       : "transparent"
                   }
                   color={
-                    pathname.includes("/client/profile") ? "#fff" : "#646668"
+                    pathname.includes("/admin/profile") ? "#fff" : "#646668"
                   }
                   fontWeight={500}
                   _hover={{
-                    bg: pathname.includes("/client/profile")
+                    bg: pathname.includes("/admin/profile")
                       ? ""
                       : "transparent",
-                    color: pathname.includes("/client/profile") ? "" : "#fff",
+                    color: pathname.includes("/admin/profile") ? "" : "#fff",
                   }}
                   borderRadius={4}
                   position="relative"
@@ -275,7 +268,7 @@ const SideDrawer = ({ isOpen, onClose }) => {
                   </Box>
 
                   <Box className="initial_image" w="16px" h="16px">
-                    {pathname.includes("/client/profile") ? (
+                    {pathname.includes("/admin/profile") ? (
                       <UserIcon fill="#EE383A" stroke="#fff" />
                     ) : (
                       <UserIcon fill={"#fff"} stroke="#000" />
@@ -285,7 +278,7 @@ const SideDrawer = ({ isOpen, onClose }) => {
                     <Text ml="8px">Profile</Text>
                   </Box>
 
-                  {pathname.includes("/client/profile") ? (
+                  {pathname.includes("/admin/profile") ? (
                     <Box
                       position="absolute"
                       top="50%"
@@ -341,7 +334,12 @@ const SideDrawer = ({ isOpen, onClose }) => {
 
             <Flex
               mt="auto"
+              pt="20px"
+              bg="#fff"
+              zIndex={55}
               mb="39px"
+              pos="sticky"
+              bottom="0"
               flexDir="column"
               justifyContent="center"
               align="center"

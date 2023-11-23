@@ -107,14 +107,6 @@ const Zones = () => {
           setFiltArray={setFiltArray}
           filtArray={filtArray}
           fieldToCompare={adminZonesReportOptions}
-          handleSearch={() =>
-            mutate({
-              type: "locations",
-              filterString: query,
-              limit,
-              page: page,
-            })
-          }
           title={
             <Text
               fontSize="14px"

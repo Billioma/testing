@@ -82,7 +82,6 @@ const AddRate = () => {
     }),
   };
 
-
   const { errorToast, successToast } = useCustomToast();
 
   const { mutate: createMutate, isLoading: isCreating } = useCreateRate({
@@ -137,7 +136,8 @@ const AddRate = () => {
 
   return (
     <Box minH="75vh">
-      <Flex align="flex-start">
+      {" "}
+      <Flex align="flex-start" flexDir={{ md: "row", base: "column" }}>
         <Box w="full">
           <Flex
             onClick={() => navigate(-1)}

@@ -60,9 +60,6 @@ const Policies = () => {
           gap
           setFiltArray={setFiltArray}
           filtArray={filtArray}
-          handleSearch={() =>
-            mutate({ filterString: query, limit: limit, page: page })
-          }
           fieldToCompare={opPolicyFieldOption}
           title={
             <Text

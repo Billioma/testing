@@ -84,7 +84,6 @@ const ZoneDetails = () => {
     }),
   };
 
-
   const [reservable, setReservable] = useState(false);
 
   const handleSelectChange = (selectedOption, { name }) => {
@@ -190,7 +189,8 @@ const ZoneDetails = () => {
 
   return (
     <Box minH="75vh">
-      <Flex align="flex-start">
+      {" "}
+      <Flex align="flex-start" flexDir={{ md: "row", base: "column" }}>
         <Flex
           onClick={() => navigate(-1)}
           color="#242628"

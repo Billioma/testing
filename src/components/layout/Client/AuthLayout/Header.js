@@ -145,10 +145,9 @@ const Header = ({ showSidebar }) => {
             {secTitle && (
               <Text
                 fontSize="10px"
-                display={isMobile ? "none" : "flex"}
                 color="#848688"
                 fontWeight={500}
-                pb="3px"
+                pb={{ base: "2px", md: "1px" }}
                 lineHeight="100%"
               >
                 {">"} {secTitle}
@@ -158,10 +157,9 @@ const Header = ({ showSidebar }) => {
             {finTitle && (
               <Text
                 fontSize="10px"
-                display={isMobile ? "none" : "flex"}
                 color="#848688"
                 fontWeight={500}
-                pb="3px"
+                pb={{ base: "2px", md: "1px" }}
                 lineHeight="100%"
               >
                 {">"} {finTitle}
@@ -170,7 +168,12 @@ const Header = ({ showSidebar }) => {
           </Flex>
 
           <Flex align="center">
-            <Flex align="center" gap="18px" w={isMobile ? "" : "fit-content"}>
+            <Flex
+              align="center"
+              display={isMobile ? "none" : "flex"}
+              gap="18px"
+              w={isMobile ? "" : "fit-content"}
+            >
               <Flex
                 gap="12px"
                 bg="#fff"

@@ -56,9 +56,6 @@ export default function () {
         setFiltArray={setFiltArray}
         filtArray={filtArray}
         fieldToCompare={membershipPlansOptions}
-        handleSearch={() =>
-          mutate({ filterString: query, limit: limit, page: page })
-        }
         gap
         title={
           <Text

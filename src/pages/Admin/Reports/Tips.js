@@ -107,14 +107,6 @@ const Tips = () => {
           setFiltArray={setFiltArray}
           filtArray={filtArray}
           fieldToCompare={adminTipReportOptions}
-          handleSearch={() =>
-            mutate({
-              type: "tips",
-              filterString: query,
-              limit,
-              page: page,
-            })
-          }
           title={
             <Text
               fontSize="14px"

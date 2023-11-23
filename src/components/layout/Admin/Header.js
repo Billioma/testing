@@ -3,7 +3,7 @@ import { Flex, Text, Box } from "@chakra-ui/layout";
 import { IoIosArrowDown, IoMdMenu } from "react-icons/io";
 import { Image, useDisclosure, useMediaQuery } from "@chakra-ui/react";
 import { useLocation, useNavigate } from "react-router-dom";
-// import SideDrawer from "./SideDrawer";
+import SideDrawer from "./SideDrawer";
 import { adminHeaderOptions } from "../../common/constants";
 import { useGetProfile } from "../../../services/admin/query/auth";
 import { useLogOut } from "../../../utils/helpers";
@@ -403,7 +403,6 @@ const Header = ({ showSidebar }) => {
             {secTitle && (
               <Text
                 fontSize="10px"
-                display={isMobile ? "none" : "flex"}
                 color="#646668"
                 pb="3px"
                 fontWeight={700}
@@ -416,7 +415,6 @@ const Header = ({ showSidebar }) => {
             {finTitle && (
               <Text
                 fontSize="10px"
-                display={isMobile ? "none" : "flex"}
                 color="#646668"
                 pb="3px"
                 fontWeight={700}
@@ -431,6 +429,7 @@ const Header = ({ showSidebar }) => {
             <Flex
               align="center"
               gap="18px"
+              display={isMobile ? "none" : "flex"}
               w={isMobile ? "" : "fit-content"}
               pos="relative"
             >
@@ -539,7 +538,7 @@ const Header = ({ showSidebar }) => {
         </Flex>
       </Flex>
 
-      {/* <SideDrawer isOpen={isOpen} onClose={onClose} /> */}
+      <SideDrawer isOpen={isOpen} onClose={onClose} />
     </Flex>
   );
 };

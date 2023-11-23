@@ -80,7 +80,6 @@ const ClientList = () => {
         setFiltArray={setFiltArray}
         filtArray={filtArray}
         fieldToCompare={clientListOptions}
-        handleSearch={refetch}
         title={
           <Text
             fontSize="14px"

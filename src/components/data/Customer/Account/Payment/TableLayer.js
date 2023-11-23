@@ -51,11 +51,6 @@ const TableLayer = () => {
           tab === "Tips" ? custTipFieldOption : custPayFieldOption
         }
         filtArray={filtArray}
-        handleSearch={() =>
-          tab === "Payments"
-            ? payMutate({ filterString: query, limit: limit, page: page })
-            : tipsMutate({ filterString: query, limit: limit, page: page })
-        }
         title={
           <Flex
             align="center"

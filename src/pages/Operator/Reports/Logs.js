@@ -106,9 +106,6 @@ const Logs = () => {
           gap
           setFiltArray={setFiltArray}
           filtArray={filtArray}
-          handleSearch={() =>
-            mutate({ filterString: query, limit: limit, page: page })
-          }
           fieldToCompare={opRepLogFieldOption}
           title={
             <Text

@@ -22,7 +22,7 @@ export const AuthLayout = ({ children }) => {
   useEffect(() => {
     sessionStorage.removeItem("redirect");
   }, []);
-   
+
   return (
     <Box
       color="#000"
@@ -41,9 +41,9 @@ export const AuthLayout = ({ children }) => {
         borderRadius="40px"
       >
         <Box px={!isMobile ? (show ? "310px" : "88px") : "20px"}>
-        <Header showSidebar={show} />
-        </Box> {!isMobile && <SideBar show={show} setShow={setShow} />}
-      
+          <Header showSidebar={show} />
+        </Box>{" "}
+        {!isMobile && <SideBar show={show} setShow={setShow} />}
         <Box overflow="auto" className="no_scroller">
           <Box
             w="100%"

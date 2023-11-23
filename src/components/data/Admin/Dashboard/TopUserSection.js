@@ -103,7 +103,6 @@ export default function TopUserSection() {
     }),
   };
 
-
   const notLoading = from !== "" ? !isGetting : !isLoading;
 
   const [state, setState] = useState([]);

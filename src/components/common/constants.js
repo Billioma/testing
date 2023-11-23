@@ -1656,7 +1656,7 @@ export const serviceTabs = [
   "Car Services",
 ];
 
-export   const customStyles = {
+export const customStyles = {
   control: (provided, state) => ({
     ...provided,
     width: "100%",
@@ -1680,7 +1680,6 @@ export   const customStyles = {
     backgroundColor: state.isFocused ? "#f4f6f8" : "",
   }),
 };
-
 
 export const clientListOptions = [
   { label: "Name", value: "name" },

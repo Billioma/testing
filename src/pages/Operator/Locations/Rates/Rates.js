@@ -59,9 +59,6 @@ const Rates = () => {
           gap
           setFiltArray={setFiltArray}
           filtArray={filtArray}
-          handleSearch={() =>
-            mutate({ filterString: query, limit: limit, page: page })
-          }
           fieldToCompare={opRateFieldOption}
           title={
             <Text

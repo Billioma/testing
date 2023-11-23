@@ -105,7 +105,6 @@ const AddVehicleModal = ({
     }),
   };
 
-
   const { errorToast, successToast } = useCustomToast();
 
   const close = () => {

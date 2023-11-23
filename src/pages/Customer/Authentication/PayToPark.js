@@ -150,7 +150,8 @@ const PayToPark = () => {
       ></Flex>
       {data?.label}
     </Flex>
-  );  const customStyles = {
+  );
+  const customStyles = {
     control: (provided, state) => ({
       ...provided,
       width: "100%",
@@ -174,7 +175,6 @@ const PayToPark = () => {
       backgroundColor: state.isFocused ? "#f4f6f8" : "",
     }),
   };
-
 
   const [isMobile] = useMediaQuery("(max-width: 820px)");
 

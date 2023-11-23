@@ -236,7 +236,6 @@ const AddEvent = () => {
     }),
   };
 
-
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (event.target.closest(".box") === null) {

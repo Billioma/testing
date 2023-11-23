@@ -107,7 +107,6 @@ export default function AddAttendants() {
     }),
   };
 
-
   const accountOptions = accountType?.map((account) => ({
     value: account,
     label: account,

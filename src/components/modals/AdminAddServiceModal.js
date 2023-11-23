@@ -50,7 +50,6 @@ const AdminAddServiceModal = ({ isOpen, refetch, onClose }) => {
     }),
   };
 
-
   const selectOptions = [
     { label: "PARKING", value: "PARKING" },
     { label: "VALET", value: "VALET" },

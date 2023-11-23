@@ -176,6 +176,7 @@ const TableLayer = ({
                           ).map((dat, i) => (
                             <MenuItem
                               gap="12px"
+                              key={i}
                               borderRadius="2px"
                               mb="8px"
                               py="6px"

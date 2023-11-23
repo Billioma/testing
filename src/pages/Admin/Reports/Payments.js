@@ -142,9 +142,6 @@ const Payments = () => {
           setFiltArray={setFiltArray}
           filtArray={filtArray}
           fieldToCompare={paymentsOptions}
-          handleSearch={() =>
-            mutate({ type: "payments", filterString: query, limit, page: page })
-          }
           title={
             <Text
               fontSize="14px"

@@ -52,9 +52,6 @@ const Transactions = () => {
         setFiltArray={setFiltArray}
         filtArray={filtArray}
         fieldToCompare={clientEventParkingOptions}
-        handleSearch={() =>
-          mutate({ filterString: query, limit: limit, page: page })
-        }
         title={
           <Text
             fontSize="14px"

@@ -52,14 +52,6 @@ export default function () {
         setFiltArray={setFiltArray}
         filtArray={filtArray}
         fieldToCompare={valetedVehiclesOptions}
-        handleSearch={() =>
-          mutate({
-            type: "PARKING",
-            ilterString: query,
-            limit: limit,
-            page: page,
-          })
-        }
         gap
         title={
           <Text

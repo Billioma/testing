@@ -37,10 +37,13 @@ export const PRIVATE_PATHS = {
   CUST_HISTORY_PARK_DETAILS: "/customer/history/user/pay-to-park/:id",
   CUST_SERVICE_PARK_DETAILS: "/customer/history/company/pay-to-park/:id",
   CUST_SERVICES_RESERVE_PARK: "/customer/services/reserve-parking",
-  CUST_SERVICES_RESERVE_PARK_DETAILS: "/customer/history/company/reserve-parking/:id",
-  CUST_HISTORY_RESERVE_PARK_DETAILS: "/customer/history/user/reserve-parking/:id",
+  CUST_SERVICES_RESERVE_PARK_DETAILS:
+    "/customer/history/company/reserve-parking/:id",
+  CUST_HISTORY_RESERVE_PARK_DETAILS:
+    "/customer/history/user/reserve-parking/:id",
   CUST_SERVICES_EVENT_PARK: "/customer/services/event-parking",
-  CUST_SERVICES_EVENT_PARK_DETAILS: "/customer/history/company/event-parking/:id",
+  CUST_SERVICES_EVENT_PARK_DETAILS:
+    "/customer/history/company/event-parking/:id",
   CUST_HISTORY_EVENT_PARK_DETAILS: "/customer/history/user/event-parking/:id",
   CUST_SERVICES_CAR_SERVICE: "/customer/services/car-service",
   CUST_SUBSCRIPTION: "/customer/subscriptions",

@@ -141,9 +141,6 @@ const Invoices = () => {
           setFiltArray={setFiltArray}
           filtArray={filtArray}
           fieldToCompare={invoicesReportOptions}
-          handleSearch={() =>
-            mutate({ type: "invoices", filterString: query, limit, page: page })
-          }
           title={
             <Text
               fontSize="14px"

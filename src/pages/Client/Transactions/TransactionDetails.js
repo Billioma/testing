@@ -3,10 +3,7 @@ import { Box, Flex, Spinner, Text } from "@chakra-ui/react";
 import { HiOutlineArrowNarrowLeft } from "react-icons/hi";
 import { useNavigate, useParams } from "react-router-dom";
 import { useGetClientEventParkingDetails } from "../../../services/client/query/events";
-import {
-  OnlinePaymentMethods,
-  Status,
-} from "../../../components/common/constants";
+import { OnlinePaymentMethods } from "../../../components/common/constants";
 import { formatNewDate } from "../../../utils/helpers";
 
 export const Layout = ({ label, data }) => {

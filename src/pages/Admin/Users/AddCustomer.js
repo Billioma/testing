@@ -109,7 +109,6 @@ export default function AddCustomer() {
     }),
   };
 
-
   return (
     <Box minH="75vh">
       <Flex align="flex-start" flexDir={{ md: "row", base: "column" }}>

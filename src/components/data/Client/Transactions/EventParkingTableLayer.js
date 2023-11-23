@@ -4,7 +4,6 @@ import TableFormat from "../../../common/TableFormat";
 import { formatDate, formatFullDate } from "../../../../utils/helpers";
 import { useNavigate } from "react-router-dom";
 import useCustomToast from "../../../../utils/notifications";
-import { useDeleteEventParking } from "../../../../services/admin/query/transactions";
 import TableLoader from "../../../loaders/TableLoader";
 import { Status } from "../../../common/constants";
 import { HiOutlineInformationCircle } from "react-icons/hi";

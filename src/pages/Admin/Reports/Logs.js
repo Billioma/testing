@@ -107,14 +107,6 @@ const Logs = () => {
           setFiltArray={setFiltArray}
           filtArray={filtArray}
           fieldToCompare={logsReportOptions}
-          handleSearch={() =>
-            mutate({
-              type: "parking",
-              filterString: query,
-              limit,
-              page: page,
-            })
-          }
           title={
             <Text
               fontSize="14px"

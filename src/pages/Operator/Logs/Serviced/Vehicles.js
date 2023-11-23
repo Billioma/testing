@@ -47,9 +47,6 @@ const Vehicles = () => {
         <Filter
           gap
           setFiltArray={setFiltArray}
-          handleSearch={() =>
-            mutate({ filterString: query, limit: limit, page: page })
-          }
           filtArray={filtArray}
           fieldToCompare={opLogServiceFieldOption}
           title={

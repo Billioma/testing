@@ -107,14 +107,6 @@ const Subs = () => {
           setFiltArray={setFiltArray}
           filtArray={filtArray}
           fieldToCompare={adminSubsReportOptions}
-          handleSearch={() =>
-            mutate({
-              type: "subscriptions",
-              filterString: query,
-              limit,
-              page: page,
-            })
-          }
           title={
             <Text
               fontSize="14px"

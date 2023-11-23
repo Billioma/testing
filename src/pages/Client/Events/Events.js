@@ -35,9 +35,6 @@ const Events = () => {
           setFiltArray={setFiltArray}
           fieldToCompare={clientEventFieldOption}
           filtArray={filtArray}
-          handleSearch={() =>
-            mutate({ filterString: query, limit: limit, page: page })
-          }
           gap
           title={
             <Text

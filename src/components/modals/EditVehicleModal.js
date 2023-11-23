@@ -138,7 +138,6 @@ const EditVehicleModal = ({
     }),
   };
 
-
   const { errorToast, successToast } = useCustomToast();
 
   const { mutate, isLoading } = useUpdateVehicles({
@@ -188,7 +187,7 @@ const EditVehicleModal = ({
   const [menuIsOpen, setMenuIsOpen] = useState(false);
   const getOptionValue = (option) => option.value;
   const getOptionLabel = (option) => (
-    <Flex gap="8px" align="center" >
+    <Flex gap="8px" align="center">
       <Box
         width="28px"
         height="20px"

@@ -53,9 +53,6 @@ const History = () => {
           setFiltArray={setFiltArray}
           filtArray={filtArray}
           fieldToCompare={paymentHistoryReportOptions}
-          handleSearch={() =>
-            mutate({ filterString: query, limit: limit, page: page })
-          }
           title={
             <Text
               fontSize="14px"

@@ -56,9 +56,6 @@ const Subscriptions = () => {
           setFiltArray={setFiltArray}
           filtArray={filtArray}
           fieldToCompare={subFieldOption}
-          handleSearch={() =>
-            subMutate({ filterString: query, limit: limit, page: page })
-          }
           title={
             <Text
               fontSize="14px"

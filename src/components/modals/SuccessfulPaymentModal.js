@@ -11,7 +11,7 @@ import {
   Text,
 } from "@chakra-ui/react";
 
-const SuccessfulPaymentModal = ({ isOpen,setShowCreate, onClose }) => {
+const SuccessfulPaymentModal = ({ isOpen, setShowCreate, onClose }) => {
   return (
     <Modal isCentered trapFocus={false} isOpen={isOpen} onClose={onClose}>
       <ModalOverlay backdropFilter="auto" backdropBlur="2px" />

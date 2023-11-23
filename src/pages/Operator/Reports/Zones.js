@@ -106,9 +106,6 @@ const Zones = () => {
           gap
           setFiltArray={setFiltArray}
           filtArray={filtArray}
-          handleSearch={() =>
-            mutate({ filterString: query, limit: limit, page: page })
-          }
           fieldToCompare={opRepZoneFieldOption}
           title={
             <Text

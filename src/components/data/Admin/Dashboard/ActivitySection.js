@@ -104,7 +104,6 @@ export default function ActivitySection() {
     }),
   };
 
-
   const notLoading = from !== "" ? !isGetting : !isLoading;
 
   const [state, setState] = useState([]);

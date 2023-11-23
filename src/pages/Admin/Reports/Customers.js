@@ -107,14 +107,6 @@ const Customers = () => {
           setFiltArray={setFiltArray}
           filtArray={filtArray}
           fieldToCompare={customersReportOptions}
-          handleSearch={() =>
-            mutate({
-              type: "customers",
-              filterString: query,
-              limit,
-              page: page,
-            })
-          }
           title={
             <Text
               mt="24px"

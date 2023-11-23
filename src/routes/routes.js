@@ -218,7 +218,9 @@ const CustServicesReserveParkDetails = WithSuspense(
   )
 );
 const CustServicesEventParkDetails = WithSuspense(
-  lazy(() => import("../components/data/Customer/History/Us/EventParkingDetails"))
+  lazy(() =>
+    import("../components/data/Customer/History/Us/EventParkingDetails")
+  )
 );
 const CustServicesCar = WithSuspense(
   lazy(() => import("../pages/Customer/Services/CarServices"))

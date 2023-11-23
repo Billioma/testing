@@ -65,7 +65,6 @@ export default function AddAttendants() {
     }),
   };
 
-
   const { data: operators } = useGetAllOperators();
 
   const { data: locationsData } = useGetAllLocations();

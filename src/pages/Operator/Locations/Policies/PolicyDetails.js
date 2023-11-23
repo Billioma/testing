@@ -62,7 +62,6 @@ const PolicyDetails = () => {
     }),
   };
 
-
   const handleSelectChange = (selectedOption, { name }) => {
     setValues({
       ...values,
@@ -125,7 +124,8 @@ const PolicyDetails = () => {
 
   return (
     <Box minH="75vh">
-      <Flex align="flex-start">
+      {" "}
+      <Flex align="flex-start" flexDir={{ md: "row", base: "column" }}>
         <Flex
           onClick={() => navigate(-1)}
           color="#242628"

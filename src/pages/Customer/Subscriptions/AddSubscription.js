@@ -124,7 +124,6 @@ const AddSubscription = () => {
     }),
   };
 
-
   const [showFunds, setShowFunds] = useState(false);
 
   const config = {

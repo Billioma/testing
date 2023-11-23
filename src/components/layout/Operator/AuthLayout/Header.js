@@ -103,6 +103,12 @@ const Header = ({ showSidebar }) => {
       case locationRoute.includes("attendants/"):
         return setFinTitle("Attendant Details");
 
+      case locationRoute.includes("locations/rates/create"):
+        return setFinTitle("Add Rate");
+
+      case locationRoute.includes("locations/rates/"):
+        return setFinTitle("Rate Details");
+
       case locationRoute.includes("locations/policies/create"):
         return setFinTitle("Add Policy");
 
@@ -184,9 +190,8 @@ const Header = ({ showSidebar }) => {
             {secTitle && (
               <Text
                 fontSize="10px"
-                display={isMobile ? "none" : "flex"}
                 color="#848688"
-                pb="3px"
+                pb={{ base: "2px", md: "1px" }}
                 fontWeight={500}
                 lineHeight="100%"
               >
@@ -197,9 +202,8 @@ const Header = ({ showSidebar }) => {
             {finTitle && (
               <Text
                 fontSize="10px"
-                display={isMobile ? "none" : "flex"}
                 color="#848688"
-                pb="3px"
+                pb={{ base: "2px", md: "1px" }}
                 fontWeight={500}
                 lineHeight="100%"
               >
@@ -209,7 +213,12 @@ const Header = ({ showSidebar }) => {
           </Flex>
 
           <Flex align="center">
-            <Flex align="center" gap="18px" w={isMobile ? "" : "fit-content"}>
+            <Flex
+              align="center"
+              gap="18px"
+              display={isMobile ? "none" : "flex"}
+              w={isMobile ? "" : "fit-content"}
+            >
               <Flex
                 gap="12px"
                 bg="#fff"
