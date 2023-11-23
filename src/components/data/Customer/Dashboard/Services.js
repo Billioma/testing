@@ -17,7 +17,7 @@ const Services = ({ opt }) => {
         gap="20px"
         templateColumns={[
           "repeat(1,1fr)",
-          "repeat(2,1fr)",
+          "repeat(1,1fr)",
           "repeat(2,1fr)",
           "repeat(4,1fr)",
         ]}

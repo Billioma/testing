@@ -41,14 +41,15 @@ const AdminAddServiceModal = ({ isOpen, refetch, onClose }) => {
     menu: (provided) => ({
       ...provided,
       fontSize: "13px",
-      backgroundColor: "#f4f6f8",
+      backgroundColor: "#fff",
     }),
     option: (provided, state) => ({
       ...provided,
       color: state.isFocused ? "" : "",
-      backgroundColor: state.isFocused ? "#d4d6d8" : "",
+      backgroundColor: state.isFocused ? "#f4f6f8" : "",
     }),
   };
+
 
   const selectOptions = [
     { label: "PARKING", value: "PARKING" },

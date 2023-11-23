@@ -152,7 +152,7 @@ export default function AddLocation() {
             py="32px"
             px="28px"
             justifyContent="center"
-            w={{ md: "30rem", base: "100%" }}
+            w={{ md: "30rem", base: "100%", "3xl": "35rem" }}
             flexDir="column"
             border="1px solid #E4E6E8"
           >
@@ -163,7 +163,7 @@ export default function AddLocation() {
                 color="#444648"
                 textAlign="center"
               >
-                Location IMage
+                Location Image
               </Text>
               <Input
                 id="image_upload"

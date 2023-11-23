@@ -11,19 +11,8 @@ import {
   companyReserveHeader,
 } from "../../../common/constants";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
-import {
-  useCancelBooking,
-  useCancelReserve,
-  useGetCarService,
-  useGetEventParking,
-  useGetPayToPark,
-  useGetReserveParking,
-} from "../../../../services/customer/query/services";
 import { formatDate, formatDateTime } from "../../../../utils/helpers";
-import ConfirmDeleteModal from "../../../modals/ConfirmDeleteModal";
-import useCustomToast from "../../../../utils/notifications";
 import { useEffect } from "react";
-import { FcCancel } from "react-icons/fc";
 import { TbListDetails } from "react-icons/tb";
 import { useNavigate } from "react-router-dom";
 import { useGetCustomerServiceLog } from "../../../../services/customer/query/logs";
@@ -33,13 +22,8 @@ const UsTableLayer = () => {
   const navigate = useNavigate();
   const [tab, setTab] = useState("Valet Parking");
   const [limit, setLimit] = useState(25);
-  const { isLoading, data: payToPark } = useGetPayToPark(limit, page);
-  const {
-    isLoading: isReserving,
-    data: reserveParking,
-    refetch,
-  } = useGetReserveParking(limit, page);
-  const { data: parkingLog } = useGetCustomerServiceLog(
+
+  const { data: parkingLog, isLoading } = useGetCustomerServiceLog(
     {
       refetchOnWindowFocus: true,
     },
@@ -47,7 +31,7 @@ const UsTableLayer = () => {
     page,
     limit
   );
-  const { data: valetLog } = useGetCustomerServiceLog(
+  const { data: valetLog, isLoading: isValet } = useGetCustomerServiceLog(
     {
       refetchOnWindowFocus: true,
     },
@@ -55,7 +39,7 @@ const UsTableLayer = () => {
     page,
     limit
   );
-  const { data: serviceLog } = useGetCustomerServiceLog(
+  const { data: serviceLog, isLoading: isService } = useGetCustomerServiceLog(
     {
       refetchOnWindowFocus: true,
     },
@@ -75,65 +59,13 @@ const UsTableLayer = () => {
       ? parkingLog?.data?.filter((item) => item?.ticketNumber?.includes("EV"))
       : tab === "Reserve Parking" &&
         parkingLog?.data?.filter((item) => item?.ticketNumber?.includes("RP"));
-  console.log(tabMap);
-  const {
-    isLoading: isCar,
-    data: carService,
-    refetch: refetchBook,
-  } = useGetCarService(limit, page);
-  const { isLoading: isEvent, data: eventParking } = useGetEventParking(
-    limit,
-    page
-  );
 
   const [show, setShow] = useState(false);
-  const [showCancel, setShowCancel] = useState(false);
   const [currentItem, setCurrentItem] = useState("");
-
-  useEffect(() => {
-    if (showCancel) {
-      setShow(false);
-    }
-  }, [showCancel]);
 
   const open = (dat) => {
     setShow(true);
     setCurrentItem(dat);
-  };
-
-  const { errorToast, successToast } = useCustomToast();
-
-  const { mutate: bookCancel, isLoading: isCancelBook } = useCancelBooking({
-    onSuccess: () => {
-      setShowCancel(false);
-      successToast("Reservation Cancelled");
-      refetchBook();
-    },
-    onError: (err) => {
-      errorToast(
-        err?.response?.data?.message || err?.message || "An Error occurred"
-      );
-    },
-  });
-  const { mutate, isLoading: isCancel } = useCancelReserve({
-    onSuccess: () => {
-      setShowCancel(false);
-      successToast("Reservation Cancelled");
-      refetch();
-    },
-    onError: (err) => {
-      errorToast(
-        err?.response?.data?.message || err?.message || "An Error occurred"
-      );
-    },
-  });
-
-  const handleCancel = () => {
-    bookCancel(currentItem?.id);
-  };
-
-  const handleSubmit = () => {
-    mutate(currentItem?.id);
   };
 
   useEffect(() => {
@@ -176,13 +108,15 @@ const UsTableLayer = () => {
           </Flex>
         }
         isLoading={
-          tab === "Pay-To-Park" || tab === "Valet Parking"
+          tab === "Pay-To-Park"
             ? isLoading
+            : tab === "Valet Parking"
+            ? isValet
             : tab === "Reserve Parking"
-            ? isReserving
+            ? isLoading
             : tab === "Event Parking"
-            ? isEvent
-            : isCar
+            ? isLoading
+            : isService
         }
         header={
           tab === "Pay-To-Park" || tab === "Valet Parking"
@@ -208,89 +142,79 @@ const UsTableLayer = () => {
             >
               <Text fontSize="12px" color="#242628" lineHeight="100%">
                 Showing rows {page === 1 ? 1 : (page - 1) * limit + 1} to{" "}
-                {tab === "Pay-To-Park" || tab === "Valet Parking"
-                  ? payToPark?.pageCount === page
-                    ? page * limit > payToPark?.total
-                      ? payToPark?.total
+                {tab === "Pay-To-Park" ||
+                tab === "Reserve Parking" ||
+                tab === "Event Parking"
+                  ? parkingLog?.pageCount === page
+                    ? page * limit > parkingLog?.total
+                      ? parkingLog?.total
                       : page * limit
                     : page * limit
-                  : tab === "Reserve Parking"
-                  ? reserveParking?.pageCount === page
-                    ? page * limit > reserveParking?.total
-                      ? reserveParking?.total
+                  : tab === "Car Services"
+                  ? serviceLog?.pageCount === page
+                    ? page * limit > serviceLog?.total
+                      ? serviceLog?.total
                       : page * limit
                     : page * limit
-                  : tab === "Event Parking"
-                  ? eventParking?.pageCount === page
-                    ? page * limit > eventParking?.total
-                      ? eventParking?.total
-                      : page * limit
-                    : page * limit
-                  : tab === "Car Services" && carService?.pageCount === page
-                  ? page * limit > carService?.total
-                    ? carService?.total
+                  : tab === "Valet Parking" && valetLog?.pageCount === page
+                  ? page * limit > valetLog?.total
+                    ? valetLog?.total
                     : page * limit
                   : page * limit}{" "}
                 of{" "}
-                {tab === "Pay-To-Park" || tab === "Valet Parking"
-                  ? payToPark?.total
-                  : tab === "Reserve Parking"
-                  ? reserveParking?.total
-                  : tab === "Event Parking"
-                  ? eventParking?.total
-                  : tab === "Car Services" && carService?.total}
+                {tab === "Pay-To-Park" ||
+                tab === "Reserve Parking" ||
+                tab === "Event Parking"
+                  ? parkingLog?.total
+                  : tab === "Valet Parking"
+                  ? valetLog?.total
+                  : tab === "Car Services" && serviceLog?.total}
               </Text>
 
               <Flex gap="16px" align="center" fontSize="12px">
                 <Flex
                   opacity={
-                    tab === "Pay-To-Park" || tab === "Valet Parking"
-                      ? payToPark?.page === 1
+                    tab === "Pay-To-Park" ||
+                    tab === "Reserve Parking" ||
+                    tab === "Event Parking"
+                      ? parkingLog?.page === 1
                         ? 0.5
                         : 1
-                      : tab === "Reserve Parking"
-                      ? reserveParking?.page === 1
+                      : tab === "Valet Parking"
+                      ? valetLog?.page === 1
                         ? 0.5
                         : 1
-                      : tab === "Event Parking"
-                      ? eventParking?.page === 1
-                        ? 0.5
-                        : 1
-                      : tab === "Car Services" && carService?.page === 1
+                      : tab === "Car Services" && serviceLog?.page === 1
                       ? 0.5
                       : 1
                   }
                   onClick={() =>
-                    tab === "Pay-To-Park" || tab === "Valet Parking"
-                      ? payToPark?.page !== 1
+                    tab === "Pay-To-Park" ||
+                    tab === "Reserve Parking" ||
+                    tab === "Event Parking"
+                      ? parkingLog?.page !== 1
                         ? setPage(page - 1)
                         : ""
-                      : tab === "Reserve Parking"
-                      ? reserveParking?.page !== 1
+                      : tab === "Valet Parking"
+                      ? valetLog?.page !== 1
                         ? setPage(page - 1)
                         : ""
-                      : tab === "Event Parking"
-                      ? eventParking?.page !== 1
-                        ? setPage(page - 1)
-                        : ""
-                      : tab === "Car Services" && carService?.page !== 1
+                      : tab === "Car Services" && serviceLog?.page !== 1
                       ? setPage(page - 1)
                       : ""
                   }
                   cursor={
-                    tab === "Pay-To-Park" || tab === "Valet Parking"
-                      ? payToPark?.page === 1
+                    tab === "Pay-To-Park" ||
+                    tab === "Valet Parking" ||
+                    tab === "Event Parking"
+                      ? parkingLog?.page === 1
                         ? ""
                         : "pointer"
-                      : tab === "Reserve Parking"
-                      ? reserveParking?.page === 1
+                      : tab === "Valet Parking"
+                      ? valetLog?.page === 1
                         ? ""
                         : "pointer"
-                      : tab === "Event Parking"
-                      ? eventParking?.page === 1
-                        ? ""
-                        : "pointer"
-                      : tab === "Car Services" && carService?.page === 1
+                      : tab === "Car Services" && serviceLog?.page === 1
                       ? ""
                       : "pointer"
                   }
@@ -304,68 +228,62 @@ const UsTableLayer = () => {
 
                 <Flex color="#242628" lineHeight="100%">
                   <Text>
-                    {tab === "Pay-To-Park" || tab === "Valet Parking"
-                      ? payToPark?.page
-                      : tab === "Reserve Parking"
-                      ? reserveParking?.page
-                      : tab === "Event Parking"
-                      ? eventParking?.page
-                      : tab === "Car Services" && carService?.page}
+                    {tab === "Pay-To-Park" ||
+                    tab === "Reserve Parking" ||
+                    tab === "Event Parking"
+                      ? parkingLog?.page
+                      : tab === "Valet Parking"
+                      ? valetLog?.page
+                      : tab === "Car Services" && serviceLog?.page}
                   </Text>
                 </Flex>
 
                 <Flex
                   opacity={
-                    tab === "Pay-To-Park" || tab === "Valet Parking"
-                      ? payToPark?.page === payToPark?.pageCount
+                    tab === "Pay-To-Park" ||
+                    tab === "Reserve Parking" ||
+                    tab === "Event Parking"
+                      ? parkingLog?.page === parkingLog?.pageCount
                         ? 0.5
                         : 1
-                      : tab === "Reserve Parking"
-                      ? reserveParking?.page === reserveParking?.pageCount
-                        ? 0.5
-                        : 1
-                      : tab === "Event Parking"
-                      ? eventParking?.page === eventParking?.pageCount
+                      : tab === "Valet Parking"
+                      ? valetLog?.page === valetLog?.pageCount
                         ? 0.5
                         : 1
                       : tab === "Car Services" &&
-                        carService?.page === carService?.pageCount
+                        serviceLog?.page === serviceLog?.pageCount
                       ? 0.5
                       : 1
                   }
                   onClick={() =>
-                    tab === "Pay-To-Park" || tab === "Valet Parking"
-                      ? payToPark?.page !== payToPark?.pageCount
+                    tab === "Pay-To-Park" ||
+                    tab === "Reserve Parking" ||
+                    tab === "Event Parking"
+                      ? parkingLog?.page !== parkingLog?.pageCount
                         ? setPage(page + 1)
                         : ""
-                      : tab === "Reserve Parking"
-                      ? reserveParking?.page !== reserveParking?.pageCount
-                        ? setPage(page + 1)
-                        : ""
-                      : tab === "Event Parking"
-                      ? eventParking?.page !== eventParking?.pageCount
+                      : tab === "Valet Parking"
+                      ? valetLog?.page !== valetLog?.pageCount
                         ? setPage(page + 1)
                         : ""
                       : tab === "Car Services" &&
-                        carService?.page !== carService?.pageCount
+                        serviceLog?.page !== serviceLog?.pageCount
                       ? setPage(page + 1)
                       : ""
                   }
                   cursor={
-                    tab === "Pay-To-Park" || tab === "Valet Parking"
-                      ? payToPark?.page === payToPark?.pageCount
+                    tab === "Pay-To-Park" ||
+                    tab === "Reserve Parking" ||
+                    tab === "Event Parking"
+                      ? parkingLog?.page === parkingLog?.pageCount
                         ? ""
                         : "pointer"
-                      : tab === "Reserve Parking"
-                      ? reserveParking?.page === reserveParking?.pageCount
-                        ? ""
-                        : "pointer"
-                      : tab === "Event Parking"
-                      ? eventParking?.page === eventParking?.pageCount
+                      : tab === "Valet Parking"
+                      ? valetLog?.page === valetLog?.pageCount
                         ? ""
                         : "pointer"
                       : tab === "Car Services" &&
-                        carService?.page === carService?.pageCount
+                        serviceLog?.page === serviceLog?.pageCount
                       ? ""
                       : "pointer"
                   }
@@ -861,42 +779,30 @@ const UsTableLayer = () => {
                         top="20px"
                         boxShadow="0px 8px 16px 0px rgba(0, 0, 0, 0.08)"
                       >
-                        {["View Details", "Cancel Reservation"].map(
-                          (item, i) => (
-                            <Flex
-                              key={i}
-                              w="full"
-                              px="8px"
-                              borderRadius="2px"
-                              mb="5px"
-                              py="9px"
-                              align="center"
-                              onClick={() =>
-                                i == 0
-                                  ? navigate(
-                                      `/customer/history/company/reserve-parking/${dat?.id}`
-                                    )
-                                  : setShowCancel(true)
-                              }
-                              _hover={{ bg: "#F4F6F8" }}
-                              cursor="pointer"
-                              fontSize="10px"
-                              color={i === 0 ? "" : "red"}
-                              lineHeight="100%"
-                              gap="12px"
-                              fontWeight={500}
-                            >
-                              <Box>
-                                {i === 0 ? (
-                                  <TbListDetails size="15px" />
-                                ) : (
-                                  <FcCancel size="15px" />
-                                )}
-                              </Box>
-                              <Box>{item}</Box>
-                            </Flex>
-                          )
-                        )}
+                        <Flex
+                          w="full"
+                          px="8px"
+                          borderRadius="2px"
+                          mb="5px"
+                          py="9px"
+                          align="center"
+                          onClick={() =>
+                            navigate(
+                              `/customer/history/company/reserve-parking/${dat?.id}`
+                            )
+                          }
+                          _hover={{ bg: "#F4F6F8" }}
+                          cursor="pointer"
+                          fontSize="10px"
+                          lineHeight="100%"
+                          gap="12px"
+                          fontWeight={500}
+                        >
+                          <Box>
+                            <TbListDetails size="15px" />
+                          </Box>
+                          <Box>View Details</Box>
+                        </Flex>
                       </Box>
                     )}
                   </Flex>
@@ -1095,23 +1001,6 @@ const UsTableLayer = () => {
           ))
         )}
       </TableFormat>
-
-      <ConfirmDeleteModal
-        title="Reservation"
-        isOpen={showCancel}
-        action={() =>
-          tab === "Reserve Parking"
-            ? handleSubmit()
-            : tab === "Car Services" && handleCancel()
-        }
-        isLoading={
-          tab === "Reserve Parking"
-            ? isCancel
-            : tab === "Car Services" && isCancelBook
-        }
-        cancel
-        onClose={() => setShowCancel(false)}
-      />
     </Box>
   );
 };

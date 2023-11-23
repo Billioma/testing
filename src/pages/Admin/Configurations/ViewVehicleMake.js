@@ -87,7 +87,7 @@ export default function AddVehicleMake() {
                 py="32px"
                 px="24px"
                 justifyContent="center"
-                w={{ base: "100%", md: "30rem" }}
+                w={{ md: "30rem", base: "100%", "3xl": "35rem" }}
                 flexDir="column"
                 border="1px solid #E4E6E8"
               >

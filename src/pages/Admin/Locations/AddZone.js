@@ -92,7 +92,7 @@ export default function AddZone() {
             py="32px"
             px="28px"
             justifyContent="center"
-            w={{ md: "30rem", base: "100%" }}
+            w={{ md: "30rem", base: "100%", "3xl": "35rem" }}
             flexDir="column"
             border="1px solid #E4E6E8"
           >
@@ -329,7 +329,7 @@ export default function AddZone() {
                     />
                   </Flex>
                   {values?.reservable ? (
-                    <Box w="full" mb={4}>
+                    <Box w="full" mb={4} className="opt-input">
                       <Text
                         mb="8px"
                         fontSize="10px"
@@ -342,7 +342,7 @@ export default function AddZone() {
                         auth
                         type="number"
                         mb
-                        holder="Enter reservable space"
+                        holder="e.g 1-100"
                         name="reservableSpace"
                         value={values?.reservableSpace}
                         onChange={handleChange}

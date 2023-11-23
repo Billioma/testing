@@ -57,11 +57,18 @@ const TableLayer = () => {
             : tipsMutate({ filterString: query, limit: limit, page: page })
         }
         title={
-          <Flex align="center" justifyContent="space-between" w="full">
+          <Flex
+            align="center"
+            justifyContent="space-between"
+            flexDir={{ base: "column", md: "row" }}
+            gap={{ base: "15px", md: "" }}
+            w="full"
+          >
             <Box w="full">
               <Text
                 color="#242628"
                 fontSize="14px"
+                textAlign={{ base: "center", md: "start" }}
                 lineHeight="100%"
                 fontWeight={500}
               >

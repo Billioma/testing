@@ -150,9 +150,7 @@ const PayToPark = () => {
       ></Flex>
       {data?.label}
     </Flex>
-  );
-
-  const customStyles = {
+  );  const customStyles = {
     control: (provided, state) => ({
       ...provided,
       width: "100%",
@@ -168,14 +166,15 @@ const PayToPark = () => {
     menu: (provided) => ({
       ...provided,
       fontSize: "13px",
-      backgroundColor: "#f4f6f8",
+      backgroundColor: "#fff",
     }),
     option: (provided, state) => ({
       ...provided,
       color: state.isFocused ? "" : "",
-      backgroundColor: state.isFocused ? "#d4d6d8" : "",
+      backgroundColor: state.isFocused ? "#f4f6f8" : "",
     }),
   };
+
 
   const [isMobile] = useMediaQuery("(max-width: 820px)");
 
@@ -245,7 +244,7 @@ const PayToPark = () => {
                   bg="#fff"
                   borderRadius="12px"
                   justifyContent="center"
-                  w={{ base: "full", md: "30rem" }}
+                  w={{ md: "30rem", base: "100%", "3xl": "35rem" }}
                   flexDir="column"
                 >
                   {step === 3 ? (

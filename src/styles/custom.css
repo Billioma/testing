@@ -213,6 +213,9 @@ abbr[title] {
   width: 100%;
 }
 
+.opt-input input::placeholder {
+  text-transform: lowercase !important;
+}
 input::placeholder,
 select::placeholder,
 .css-1jqq78o-placeholder,

@@ -52,7 +52,7 @@ export default function AddPermissions() {
             py="32px"
             px="28px"
             justifyContent="center"
-            w={{ md: "30rem", base: "100%" }}
+            w={{ md: "30rem", base: "100%", "3xl": "35rem" }}
             flexDir="column"
             border="1px solid #D4D6D8"
           >

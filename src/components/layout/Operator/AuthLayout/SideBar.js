@@ -207,12 +207,12 @@ const SideBar = ({ show, setShow }) => {
                       align="stretch"
                       borderBottomRadius={4}
                       pb="2"
-                      gap={3}
-                      pt={4}
+                      gap={0}
                     >
                       {item.sub.map((subItem) => (
                         <Flex
                           align="center"
+                          mt="15px"
                           style={{
                             textDecoration: "none",
                             color: "#444648",
@@ -221,7 +221,7 @@ const SideBar = ({ show, setShow }) => {
                               : "400",
                           }}
                         >
-                          <Box fontSize="11px" ml="29px" mb={0}>
+                          <Box fontSize="11px" ml="29px">
                             <Link key={subItem.name} to={subItem.path}>
                               {subItem.name}
                             </Link>

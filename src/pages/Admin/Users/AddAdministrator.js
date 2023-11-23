@@ -104,7 +104,7 @@ export default function AddAttendants() {
             py="32px"
             px="28px"
             justifyContent="center"
-            w={{ md: "30rem", base: "100%" }}
+            w={{ md: "30rem", base: "100%", "3xl": "35rem" }}
             flexDir="column"
             border="1px solid #E4E6E8"
           >
@@ -405,7 +405,6 @@ export default function AddAttendants() {
     </Box>
   );
 }
-
 const customStyles = {
   control: (provided, state) => ({
     ...provided,
@@ -422,11 +421,11 @@ const customStyles = {
   menu: (provided) => ({
     ...provided,
     fontSize: "13px",
-    backgroundColor: "#f4f6f8",
+    backgroundColor: "#fff",
   }),
   option: (provided, state) => ({
     ...provided,
     color: state.isFocused ? "" : "",
-    backgroundColor: state.isFocused ? "#d4d6d8" : "",
+    backgroundColor: state.isFocused ? "#f4f6f8" : "",
   }),
 };

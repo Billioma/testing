@@ -91,7 +91,7 @@ const ContactUs = () => {
 
   return (
     <Box minH="75vh">
-      <Flex align="flex-start">
+      <Flex align="flex-start" flexDir={{ md: "row", base: "column" }}>
         <Flex
           onClick={() => navigate(-1)}
           color="#242628"
@@ -99,7 +99,7 @@ const ContactUs = () => {
           cursor="pointer"
           mb="23px"
           w="fit-content"
-          pos="sticky"
+          pos={{ base: "", md: "sticky" }}
           top="6rem"
           gap="8px"
         >
@@ -116,7 +116,7 @@ const ContactUs = () => {
             py="32px"
             px="24px"
             justifyContent="center"
-            w={{ base: "full", md: "30rem" }}
+            w={{ md: "30rem", base: "100%", "3xl": "35rem" }}
             flexDir="column"
           >
             <Text

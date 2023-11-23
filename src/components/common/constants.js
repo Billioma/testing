@@ -1307,6 +1307,30 @@ export const accountDrop = [
   },
 ];
 
+export const sideAccountDrop = [
+  {
+    name: "Profile",
+    link: "/customer/account/profile",
+    icon: <UserIcon fill={"#fff"} stroke="#000" />,
+    hover: <UserIcon fill="#EE383A" stroke="#EE383A" />,
+    sec: <UserIcon fill="#EE383A" stroke="#EE383A" />,
+  },
+  {
+    name: "Payments",
+    link: "/customer/account/payment",
+    icon: <CustomerIcon fill={"#fff"} stroke="#000" />,
+    hover: <CustomerIcon fill="#EE383A" stroke="#EE383A" />,
+    sec: <CustomerIcon fill="#EE383A" stroke="#EE383A" />,
+  },
+  {
+    name: "Settings",
+    link: "/customer/account/settings",
+    icon: <ConfigIcon fill={"#fff"} stroke="#000" />,
+    hover: <ConfigIcon fill="#EE383A" stroke="#EE383A" />,
+    sec: <ConfigIcon fill="#EE383A" stroke="#EE383A" />,
+  },
+];
+
 export const servicesHeader = [
   "TICKET NUMBER",
   "ZONE",
@@ -1632,7 +1656,7 @@ export const serviceTabs = [
   "Car Services",
 ];
 
-export const customStyles = {
+export   const customStyles = {
   control: (provided, state) => ({
     ...provided,
     width: "100%",
@@ -1648,14 +1672,15 @@ export const customStyles = {
   menu: (provided) => ({
     ...provided,
     fontSize: "13px",
-    backgroundColor: "#f4f6f8",
+    backgroundColor: "#fff",
   }),
   option: (provided, state) => ({
     ...provided,
     color: state.isFocused ? "" : "",
-    backgroundColor: state.isFocused ? "#d4d6d8" : "",
+    backgroundColor: state.isFocused ? "#f4f6f8" : "",
   }),
 };
+
 
 export const clientListOptions = [
   { label: "Name", value: "name" },

@@ -100,7 +100,7 @@ const Details = () => {
               py="40px"
               px="32px"
               justifyContent="center"
-              w={{ base: "full", md: "30rem" }}
+              w={{ md: "30rem", base: "100%", "3xl": "35rem" }}
               flexDir="column"
             >
               <Flex

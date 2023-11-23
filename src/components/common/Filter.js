@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Box, Button, Flex, Text } from "@chakra-ui/react";
 import { BsFilter, BsSearch } from "react-icons/bs";
 import Select from "react-select";
-import { MdAdd, MdClose } from "react-icons/md";
+import { MdClose } from "react-icons/md";
 import CustomInput from "./CustomInput";
 import {
   PaymentMethods,
@@ -43,6 +43,7 @@ const Filter = ({
     dropFilter: "",
     filter: "",
   });
+  
   const { data: makes } = useGetMakes(1, 1, 100000);
   const { data: models } = useGetModels(1, 1, 100000);
   const searchOptions = searchOption.map((search) => ({
@@ -166,22 +167,22 @@ const Filter = ({
       width: "100%",
       minHeight: "44px",
       color: "#646668",
-      fontSize: "12px",
+      fontSize: "14px",
       cursor: "pointer",
       borderRadius: "4px",
-      border: "1px solid #D4D6D8",
-      background: state.selectProps.menuIsOpen
-        ? "unset"
-        : state.hasValue
-        ? "#F4F6F8"
-        : "unset",
+      border: state.hasValue ? "none" : "1px solid #D4D6D8",
+      paddingRight: "16px",
+      background: state.hasValue ? "#f4f6f8" : "unset",
     }),
-    placeholder: (provided) => ({
+    menu: (provided) => ({
       ...provided,
-      fontWeight: 500,
-      lineHeight: "100%",
-      fontSize: "12px",
-      color: "#646668",
+      fontSize: "13px",
+      backgroundColor: "#fff",
+    }),
+    option: (provided, state) => ({
+      ...provided,
+      color: state.isFocused ? "" : "",
+      backgroundColor: state.isFocused ? "#f4f6f8" : "",
     }),
   };
 
@@ -193,19 +194,20 @@ const Filter = ({
       color: "#646668",
       fontSize: "14px",
       cursor: "pointer",
+      borderRadius: "4px",
       border: "none",
-      background: state.selectProps.menuIsOpen
-        ? "unset"
-        : state.hasValue
-        ? "#F4F6F8"
-        : "unset",
+      paddingRight: "16px",
+      background: state.hasValue ? "#f4f6f8" : "unset",
     }),
-    placeholder: (provided) => ({
+    menu: (provided) => ({
       ...provided,
-      fontWeight: 500,
-      lineHeight: "100%",
-      fontSize: "12px",
-      color: "#646668",
+      fontSize: "13px",
+      backgroundColor: "#fff",
+    }),
+    option: (provided, state) => ({
+      ...provided,
+      color: state.isFocused ? "" : "",
+      backgroundColor: state.isFocused ? "#f4f6f8" : "",
     }),
   };
 
@@ -231,7 +233,7 @@ const Filter = ({
   };
 
   return (
-    <Box pos="relative" zIndex="3" py={3} px={5}>
+    <Box pos="relative" zIndex="3" py={3} px={{base: 0, md:5}}>
       <Flex
         align={{ base: "flex-start", md: "center" }}
         gap={{ base: "20px", md: "unset" }}
@@ -361,10 +363,14 @@ const Filter = ({
                   <Flex
                     width="100%"
                     color="#646668"
-                    cursor="pointer"
+                    cursor={
+                      values?.filter === "" || values?.dropFilter === ""
+                        ? ""
+                        : "pointer"
+                    }
                     align="center"
                     borderRadius="4px"
-                    border="1px solid #D4D6D8"
+                    border={values?.filter ? "none" : "1px solid #D4D6D8"}
                     background={values?.filter ? "#F4F6F8" : "unset"}
                   >
                     <Box w="full">
@@ -435,15 +441,17 @@ const Filter = ({
                       align="center"
                       h="44px"
                       onClick={() => {
-                        setFiltArray((prevFiltArray) => [
-                          ...prevFiltArray,
-                          values,
-                        ]);
-                        resetValues();
+                        values?.filter === "" || values?.dropFilter === ""
+                          ? ""
+                          : (setFiltArray((prevFiltArray) => [
+                              ...prevFiltArray,
+                              values,
+                            ]),
+                            resetValues());
                       }}
-                      w="15%"
+                      w="10%"
                     >
-                      <MdAdd />
+                      <BsSearch fill="#646668" size="15px" />
                     </Flex>
                   </Flex>
                 ) : (
@@ -458,6 +466,7 @@ const Filter = ({
                       resetValues();
                     }}
                     mb
+                    values={values}
                     holder="Add search item"
                     value={values?.filter}
                     onChange={(e) =>
@@ -489,7 +498,6 @@ const Filter = ({
             py="8px"
             justifyContent="space-between"
             w="full"
-            gap="10px"
             align="center"
             px="16px"
           >
@@ -556,12 +564,6 @@ const Filter = ({
                 />
               </Flex>
             ))}
-            <BsSearch
-              cursor="pointer"
-              onClick={handleSearch}
-              fill="#646668"
-              size="20px"
-            />
           </Flex>
         </Box>
       ) : (

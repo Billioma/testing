@@ -368,10 +368,7 @@ const AddUser = () => {
               borderRadius="8px"
               border="1px solid #e4e6e8"
               justifyContent="center"
-              w={{
-                base: "full",
-                sm: "30rem",
-              }}
+              w={{ md: "30rem", base: "100%", "3xl": "35rem" }}
               flexDir="column"
             >
               <Text
@@ -614,10 +611,7 @@ const AddUser = () => {
               borderRadius="8px"
               border="1px solid #e4e6e8"
               justifyContent="center"
-              w={{
-                base: "full",
-                sm: "30rem",
-              }}
+              w={{ md: "30rem", base: "100%", "3xl": "35rem" }}
               flexDir="column"
             >
               <Box p="16px" borderRadius="8px" bg="#000" color="#fff">

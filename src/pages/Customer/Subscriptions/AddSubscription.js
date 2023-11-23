@@ -99,7 +99,6 @@ const AddSubscription = () => {
       [name]: selectedOption,
     });
   };
-
   const customStyles = {
     control: (provided, state) => ({
       ...provided,
@@ -109,14 +108,22 @@ const AddSubscription = () => {
       fontSize: "14px",
       cursor: "pointer",
       borderRadius: "4px",
-      border: "1px solid #D4D6D8",
-      background: state.selectProps.menuIsOpen
-        ? "unset"
-        : state.hasValue
-        ? "#F4F6F8"
-        : "unset",
+      border: state.hasValue ? "none" : "1px solid #D4D6D8",
+      paddingRight: "16px",
+      background: state.hasValue ? "#f4f6f8" : "unset",
+    }),
+    menu: (provided) => ({
+      ...provided,
+      fontSize: "13px",
+      backgroundColor: "#fff",
+    }),
+    option: (provided, state) => ({
+      ...provided,
+      color: state.isFocused ? "" : "",
+      backgroundColor: state.isFocused ? "#f4f6f8" : "",
     }),
   };
+
 
   const [showFunds, setShowFunds] = useState(false);
 
@@ -234,6 +241,7 @@ const AddSubscription = () => {
             base: "full",
             sm: "30rem",
             lg: step === 2 || !plans?.length ? "30rem" : "unset",
+            "3xl": step === 2 || !plans?.length ? "35rem" : "unset",
           }}
           flexDir="column"
         >

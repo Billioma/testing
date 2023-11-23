@@ -58,7 +58,7 @@ const ValetDetails = () => {
             px="32px"
             justifyContent="center"
             align="center"
-            w={{ base: "full", md: "30rem" }}
+            w={{ md: "30rem", base: "100%", "3xl": "35rem" }}
             flexDir="column"
           >
             <Layout label="Ticket Number" data="927484" />

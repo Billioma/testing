@@ -22,7 +22,7 @@ const FAQ = ({ label, data, i }) => {
               <Box
                 pt="24px"
                 pb={isExpanded ? "" : "24px"}
-                fontSize="20px"
+                fontSize={{ base: "15px", md: "20px" }}
                 fontWeight={500}
                 flex="1"
                 textAlign="left"
@@ -40,7 +40,7 @@ const FAQ = ({ label, data, i }) => {
             <Box
               whiteSpace="pre-wrap"
               lineHeight="150%"
-              fontSize="16px"
+              fontSize={{ base: "14px", md: "16px" }}
               color="#646668"
             >
               {data}

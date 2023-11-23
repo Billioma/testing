@@ -92,30 +92,31 @@ const Dashboard = () => {
       });
     }
   }, [from, to]);
-
   const customStyles = {
-    control: (provided) => ({
+    control: (provided, state) => ({
       ...provided,
       width: "100%",
+      minHeight: "44px",
       color: "#646668",
-      fontWeight: 500,
-      fontSize: "10px",
+      fontSize: "14px",
       cursor: "pointer",
       borderRadius: "4px",
-      border: "1px solid #646668",
-      padding: "2px 10px",
-      background: "unset",
+      border: state.hasValue ? "none" : "1px solid #D4D6D8",
+      paddingRight: "16px",
+      background: state.hasValue ? "#f4f6f8" : "unset",
     }),
     menu: (provided) => ({
       ...provided,
-      backgroundColor: "#f4f6f8",
+      fontSize: "13px",
+      backgroundColor: "#fff",
     }),
     option: (provided, state) => ({
       ...provided,
       color: state.isFocused ? "" : "",
-      backgroundColor: state.isFocused ? "#d4d6d8" : "",
+      backgroundColor: state.isFocused ? "#f4f6f8" : "",
     }),
   };
+
 
   return (
     <Box minH="75vh">

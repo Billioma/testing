@@ -129,14 +129,15 @@ const EditVehicleModal = ({
     menu: (provided) => ({
       ...provided,
       fontSize: "13px",
-      backgroundColor: "#f4f6f8",
+      backgroundColor: "#fff",
     }),
     option: (provided, state) => ({
       ...provided,
       color: state.isFocused ? "" : "",
-      backgroundColor: state.isFocused ? "#d4d6d8" : "",
+      backgroundColor: state.isFocused ? "#f4f6f8" : "",
     }),
   };
+
 
   const { errorToast, successToast } = useCustomToast();
 
@@ -187,7 +188,7 @@ const EditVehicleModal = ({
   const [menuIsOpen, setMenuIsOpen] = useState(false);
   const getOptionValue = (option) => option.value;
   const getOptionLabel = (option) => (
-    <Flex gap="8px" align="center">
+    <Flex gap="8px" align="center" >
       <Box
         width="28px"
         height="20px"
@@ -207,8 +208,8 @@ const EditVehicleModal = ({
       }}
       px="10px"
       cursor="pointer"
-      _hover={{ bg: "#fff" }}
       gap="8px"
+      _hover={{ backgroundColor: "#f4f6f8" }}
       align="center"
       h="40px"
     >

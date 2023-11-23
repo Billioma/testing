@@ -9,10 +9,10 @@ import {
 import { Text, Flex } from "@chakra-ui/layout";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { BsSearch } from "react-icons/bs";
-import { MdAdd } from "react-icons/md";
 
 const CustomInput = ({
   value,
+  values,
   opt,
   onClick,
   auth,
@@ -100,7 +100,10 @@ const CustomInput = ({
           h={opt ? "60px" : "44px"}
           type={type ? type : "text"}
           fontSize="13px"
-          _placeholder={{ fontSize: "13px", color: "#646668" }}
+          _placeholder={{
+            fontSize: "13px",
+            color: "#646668",
+          }}
           placeholder={holder}
           autoComplete="new-password"
         />
@@ -114,11 +117,17 @@ const CustomInput = ({
           </InputRightElement>
         ) : add ? (
           <InputRightElement
-            onClick={onAdd}
-            cursor="pointer"
+            onClick={() =>
+              values?.filter === "" || values?.dropFilter === "" ? "" : onAdd()
+            }
+            cursor={
+              values?.filter === "" || values?.dropFilter === ""
+                ? ""
+                : "pointer"
+            }
             h={opt ? "60px" : "44px"}
           >
-            <MdAdd />
+            <BsSearch fill="#646668" size="15px" />
           </InputRightElement>
         ) : (
           <InputRightElement

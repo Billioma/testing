@@ -11,7 +11,7 @@ const Faq = () => {
 
   return (
     <Box minH="75vh">
-      <Flex align="flex-start">
+      <Flex align="flex-start" flexDir={{ md: "row", base: "column" }}>
         <Flex
           onClick={() => navigate(-1)}
           color="#242628"
@@ -19,7 +19,7 @@ const Faq = () => {
           cursor="pointer"
           mb="23px"
           w="fit-content"
-          pos="sticky"
+          pos={{ base: "", md: "sticky" }}
           top="6rem"
           gap="8px"
         >
@@ -42,8 +42,8 @@ const Faq = () => {
               textAlign="center"
               color="#242628"
               fontWeight={700}
-              fontSize="32px"
-              lineHeight="100%"
+              fontSize={{ base: "25px", md: "32px" }}
+              lineHeight={{ base: "150%", md: "100%" }}
             >
               Frequently Asked Questions
             </Text>

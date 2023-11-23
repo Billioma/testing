@@ -194,6 +194,7 @@ const Header = ({ showSidebar }) => {
               align="center"
               pos="relative"
               gap="18px"
+              display={isMobile ? "none" : "flex"}
               w={isMobile ? "" : "fit-content"}
             >
               <Flex

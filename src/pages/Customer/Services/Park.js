@@ -192,33 +192,31 @@ const Park = () => {
       [name]: selectedOption,
     });
   };
-
   const customStyles = {
     control: (provided, state) => ({
       ...provided,
       width: "100%",
-      height: "44px",
+      minHeight: "44px",
       color: "#646668",
       fontSize: "14px",
       cursor: "pointer",
       borderRadius: "4px",
-      border: "1px solid #D4D6D8",
-      background: state.selectProps.menuIsOpen
-        ? "unset"
-        : state.hasValue
-        ? "#F4F6F8"
-        : "unset",
+      border: state.hasValue ? "none" : "1px solid #D4D6D8",
+      paddingRight: "16px",
+      background: state.hasValue ? "#f4f6f8" : "unset",
     }),
     menu: (provided) => ({
       ...provided,
-      backgroundColor: "#f4f6f8",
+      fontSize: "13px",
+      backgroundColor: "#fff",
     }),
     option: (provided, state) => ({
       ...provided,
       color: state.isFocused ? "" : "",
-      backgroundColor: state.isFocused ? "#d4d6d8" : "",
+      backgroundColor: state.isFocused ? "#f4f6f8" : "",
     }),
   };
+
 
   return (
     <Box minH="75vh">
@@ -229,7 +227,7 @@ const Park = () => {
           py="40px"
           px="32px"
           justifyContent="center"
-          w={{ base: "full", md: "30rem" }}
+          w={{ md: "30rem", base: "100%", "3xl": "35rem" }}
           flexDir="column"
         >
           {step !== 1 && (

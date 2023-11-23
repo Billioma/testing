@@ -82,7 +82,6 @@ export default function AddAttendants() {
     label: operator?.name,
     value: operator?.id,
   }));
-
   const customStyles = {
     control: (provided, state) => ({
       ...provided,
@@ -99,14 +98,15 @@ export default function AddAttendants() {
     menu: (provided) => ({
       ...provided,
       fontSize: "13px",
-      backgroundColor: "#f4f6f8",
+      backgroundColor: "#fff",
     }),
     option: (provided, state) => ({
       ...provided,
       color: state.isFocused ? "" : "",
-      backgroundColor: state.isFocused ? "#d4d6d8" : "",
+      backgroundColor: state.isFocused ? "#f4f6f8" : "",
     }),
   };
+
 
   const accountOptions = accountType?.map((account) => ({
     value: account,
@@ -223,7 +223,7 @@ export default function AddAttendants() {
                 py="32px"
                 px="24px"
                 justifyContent="center"
-                w={{ base: "100%", md: "30rem" }}
+                w={{ md: "30rem", base: "100%", "3xl": "35rem" }}
                 flexDir="column"
                 border="1px solid #E4E6E8"
               >

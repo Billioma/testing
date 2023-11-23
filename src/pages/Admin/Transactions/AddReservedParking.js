@@ -90,7 +90,7 @@ export default function AddReservedParking() {
           py="24px"
           px="28px"
           justifyContent="center"
-          w="30rem"
+          w={{ md: "30rem", base: "100%", "3xl": "35rem" }}
           flexDir="column"
           border="1px solid #E4E6E8"
         >

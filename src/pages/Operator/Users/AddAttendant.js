@@ -38,9 +38,8 @@ const AddAttendant = () => {
     value: location?.id,
     label: location?.name,
   }));
-
   const customStyles = {
-    control: (provided) => ({
+    control: (provided, state) => ({
       ...provided,
       width: "100%",
       minHeight: "44px",
@@ -48,20 +47,22 @@ const AddAttendant = () => {
       fontSize: "14px",
       cursor: "pointer",
       borderRadius: "4px",
-      border: "1px solid #d4d6d8",
+      border: state.hasValue ? "none" : "1px solid #D4D6D8",
       paddingRight: "16px",
-      background: "unset",
+      background: state.hasValue ? "#f4f6f8" : "unset",
     }),
     menu: (provided) => ({
       ...provided,
-      backgroundColor: "#f4f6f8",
+      fontSize: "13px",
+      backgroundColor: "#fff",
     }),
     option: (provided, state) => ({
       ...provided,
       color: state.isFocused ? "" : "",
-      backgroundColor: state.isFocused ? "#d4d6d8" : "",
+      backgroundColor: state.isFocused ? "#f4f6f8" : "",
     }),
   };
+
 
   const { errorToast, successToast } = useCustomToast();
   const {

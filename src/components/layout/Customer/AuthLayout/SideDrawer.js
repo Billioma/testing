@@ -1,24 +1,26 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Box,
+  Collapse,
   Drawer,
   DrawerBody,
   DrawerContent,
   DrawerOverlay,
   Flex,
+  Image,
   Spinner,
   Text,
+  VStack,
 } from "@chakra-ui/react";
-import { NavLink, useLocation } from "react-router-dom";
+import { useLocation, Link, useNavigate } from "react-router-dom";
 import { useLogOut } from "../../../../utils/helpers";
 import { useState } from "react";
 import { LogoutIcon } from "../../../common/images";
-import { activeStyle, general } from "../../../common/constants";
+import { sideAccountDrop, general } from "../../../common/constants";
 import { AiOutlineClose } from "react-icons/ai";
 
 const SideDrawer = ({ isOpen, onClose }) => {
   const logout = useLogOut();
-  const location = useLocation();
   const [isLoading, setIsLoading] = useState(false);
 
   const action = () => {
@@ -28,6 +30,34 @@ const SideDrawer = ({ isOpen, onClose }) => {
       setIsLoading(false);
     }, 1000);
   };
+
+  const [openSubItems, setOpenSubItems] = useState({});
+  const { pathname } = useLocation();
+  const navigate = useNavigate();
+
+  const handleToggleSubItem = (name) => {
+    setOpenSubItems((prevState) => {
+      const newOpenSubItems = {};
+
+      Object.keys(prevState).forEach((item) => {
+        newOpenSubItems[item] = false;
+      });
+
+      const activeParentItem = general.find((item) =>
+        pathname.includes(item.path)
+      )?.name;
+
+      newOpenSubItems[activeParentItem] = true;
+
+      if (name) newOpenSubItems[name] = !prevState[name];
+
+      return newOpenSubItems;
+    });
+  };
+
+  useEffect(() => {
+    handleToggleSubItem(null);
+  }, [pathname]);
 
   return (
     <Drawer
@@ -51,7 +81,7 @@ const SideDrawer = ({ isOpen, onClose }) => {
                   className="font-bold font-[Cooper]"
                 >
                   <span style={{ color: "red" }}>Parkin</span>
-                  Space Plus
+                  Space
                 </Text>
               </Box>
               <Box
@@ -67,76 +97,240 @@ const SideDrawer = ({ isOpen, onClose }) => {
               </Box>
             </Flex>
 
-            <Box mx="20px">
-              {general?.map((item, i) => (
-                <Box
-                  key={i}
-                  onClick={onClose}
-                  className={location.pathname !== item.path && "parent_nav"}
-                >
-                  <NavLink
-                    to={item.path}
-                    style={({ isActive }) =>
-                      isActive
-                        ? { ...activeStyle }
-                        : {
-                            ...activeStyle,
-                            background: "transparent",
-                            fontWeight: 400,
-                            borderRight: "",
-                            color: "#242628",
-                          }
-                    }
+            <Box>
+              {general?.map((item, i) => {
+                return (
+                  <VStack
+                    key={i}
+                    onClick={onClose}
+                    align="stretch"
+                    className={!pathname.includes(item?.path) && "parent_nav"}
                   >
                     <Flex
                       align="center"
-                      justifyContent="space-between"
-                      w="full"
+                      p={2}
+                      py="10px"
+                      pl="16px"
+                      pr="2px"
+                      mb="12px"
+                      fontSize="13px"
+                      lineHeight="100%"
+                      cursor="pointer"
+                      onClick={() =>
+                        item.subItems
+                          ? navigate(item.subItems[0].path)
+                          : navigate(item.path)
+                      }
+                      bg={
+                        openSubItems[item.name] || pathname.includes(item.path)
+                          ? "#FDE8E8"
+                          : "transparent"
+                      }
+                      color={
+                        pathname.includes(item.path) || openSubItems[item.name]
+                          ? "#EE383A"
+                          : "#646668"
+                      }
+                      fontWeight={500}
+                      _hover={{
+                        bg: pathname.includes(item.path) ? "" : "transparent",
+                        color: pathname.includes(item.path) ? "" : "#EE383A",
+                      }}
+                      borderRadius={4}
+                      position="relative"
                     >
-                      <Flex
-                        transition=".3s ease-in-out"
-                        align="center"
-                        className="child_nav"
-                        gap="11px"
-                      >
-                        <Box w="20px" h="20px" className="hovered_image">
-                          {item.hover}
-                        </Box>
+                      <Box className="hovered_image">{item.sec}</Box>
 
-                        <Box w="20px" h="20px" className="initial_image">
-                          {location.pathname === item.path
-                            ? item.sec
-                            : item.icon}
-                        </Box>
+                      <Box className="initial_image" w="16px" h="16px">
+                        {pathname.includes(item.path)
+                          ? item.sec
+                          : openSubItems[item.name]
+                          ? item.sec
+                          : item.icon}
+                      </Box>
+                      <Box>
+                        <Text ml="8px">{item.name}</Text>
+                      </Box>
 
-                        {item.name}
-                      </Flex>
+                      {pathname.includes(item.path) ? (
+                        <Box
+                          position="absolute"
+                          top="50%"
+                          right={2}
+                          transform="translateY(-50%)"
+                          w="3px"
+                          h="28px"
+                          bg="#EE383A"
+                          borderRadius={4}
+                        />
+                      ) : (
+                        item.subItems && (
+                          <Box
+                            flex="1"
+                            textAlign="right"
+                            pb={1}
+                            color={openSubItems[item.name] ? "#fff" : "black"}
+                          ></Box>
+                        )
+                      )}
                     </Flex>
-                  </NavLink>
-                </Box>
-              ))}
+
+                    {item.subItems && (
+                      <Collapse in={openSubItems[item.name]}>
+                        <VStack align="stretch">
+                          {item.subItems.map((subItems, i) => (
+                            <Flex
+                              align="center"
+                              key={i}
+                              style={{
+                                textDecoration: "none",
+                                fontWeight: pathname.includes(subItems.path)
+                                  ? "700"
+                                  : "400",
+                                color: pathname.includes(subItems.path)
+                                  ? "#444648"
+                                  : "#848688",
+                              }}
+                            >
+                              <Box fontSize="11px" pb="12px" ml="20px">
+                                <Link key={subItems.name} to={subItems.path}>
+                                  {subItems.name}
+                                </Link>
+                              </Box>
+                            </Flex>
+                          ))}
+                        </VStack>
+                      </Collapse>
+                    )}
+                  </VStack>
+                );
+              })}
+            </Box>
+
+            <Box mt="30px">
+              <Text
+                color="#444648"
+                lineHeight="100%"
+                ml="19px"
+                fontSize="12px"
+                fontWeight={700}
+                pb="15px"
+              >
+                ACCOUNT
+              </Text>
+              {sideAccountDrop?.map((item, i) => {
+                return (
+                  <VStack
+                    key={i}
+                    onClick={onClose}
+                    align="stretch"
+                    className={!pathname.includes(item?.link) && "parent_nav"}
+                  >
+                    <Flex
+                      align="center"
+                      p={2}
+                      py="10px"
+                      pl="16px"
+                      pr="2px"
+                      mb="12px"
+                      fontSize="13px"
+                      lineHeight="100%"
+                      cursor="pointer"
+                      onClick={() => navigate(item.link)}
+                      bg={
+                        pathname.includes(item.link) ? "#FDE8E8" : "transparent"
+                      }
+                      color={
+                        pathname.includes(item.link) ? "#EE383A" : "#646668"
+                      }
+                      fontWeight={500}
+                      _hover={{
+                        bg: pathname.includes(item.link) ? "" : "transparent",
+                        color: pathname.includes(item.link) ? "" : "#EE383A",
+                      }}
+                      borderRadius={4}
+                      position="relative"
+                    >
+                      <Box className="hovered_image">{item.sec}</Box>
+
+                      <Box className="initial_image" w="16px" h="16px">
+                        {pathname.includes(item.link)
+                          ? item.sec
+                          : openSubItems[item.name]
+                          ? item.sec
+                          : item.icon}
+                      </Box>
+                      <Box>
+                        <Text ml="8px">{item.name}</Text>
+                      </Box>
+
+                      {pathname.includes(item.link) ? (
+                        <Box
+                          position="absolute"
+                          top="50%"
+                          right={2}
+                          transform="translateY(-50%)"
+                          w="3px"
+                          h="28px"
+                          bg="#EE383A"
+                          borderRadius={4}
+                        />
+                      ) : (
+                        ""
+                      )}
+                    </Flex>
+                  </VStack>
+                );
+              })}
+
+              <Flex
+                fontSize="13px"
+                cursor="pointer"
+                onClick={action}
+                align="center"
+                gap="8px"
+                lineHeight="100%"
+                mb="39px"
+                fontWeight={500}
+                p={2}
+                pt={3}
+                px={"16px"}
+                pb={2}
+              >
+                {isLoading ? (
+                  <Flex
+                    _hover={{ color: "#ee383a" }}
+                    gap="5px"
+                    color="red"
+                    align="center"
+                    fontWeight={500}
+                  >
+                    <Spinner size="sm" /> <Text>Logging Out</Text>
+                  </Flex>
+                ) : (
+                  <Flex
+                    _hover={{ color: "#ee383a" }}
+                    gap="5px"
+                    align="center"
+                    color="#646668"
+                  >
+                    <LogoutIcon fill="#646668" /> <Text>Log Out</Text>
+                  </Flex>
+                )}
+              </Flex>
             </Box>
 
             <Flex
               mt="auto"
-              fontSize="14px"
-              fontWeight={400}
-              mx="13px"
-              cursor="pointer"
-              onClick={action}
-              align="center"
-              gap="8px"
               mb="39px"
+              flexDir="column"
+              justifyContent="center"
+              align="center"
             >
-              {isLoading ? (
-                <Flex gap="8px" color="red" align="center">
-                  <Spinner size="sm" /> Loggin Out
-                </Flex>
-              ) : (
-                <Flex gap="8px" align="center" color="#242628">
-                  <LogoutIcon fill="#242628" /> Log Out
-                </Flex>
-              )}
+              <Text fontSize="12px" color="#000" lineHeight="100%" mb="8px">
+                Powered by
+              </Text>
+              <Image src="/assets/ezlogo.svg" objectFit="cover" />
             </Flex>
           </Flex>
         </DrawerBody>

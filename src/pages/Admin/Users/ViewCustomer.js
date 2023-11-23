@@ -169,7 +169,11 @@ export default function ViewCustomer() {
                 py="32px"
                 px="24px"
                 justifyContent="center"
-                w={{ base: "100%", md: edit ? "30rem" : "100%" }}
+                w={{
+                  base: "100%",
+                  md: edit ? "30rem" : "100%",
+                  "3xl": edit ? "35rem" : "100%",
+                }}
                 flexDir="column"
                 border="1px solid #E4E6E8"
               >
@@ -520,7 +524,6 @@ export default function ViewCustomer() {
     </Box>
   );
 }
-
 const customStyles = {
   control: (provided, state) => ({
     ...provided,
@@ -537,11 +540,11 @@ const customStyles = {
   menu: (provided) => ({
     ...provided,
     fontSize: "13px",
-    backgroundColor: "#f4f6f8",
+    backgroundColor: "#fff",
   }),
   option: (provided, state) => ({
     ...provided,
     color: state.isFocused ? "" : "",
-    backgroundColor: state.isFocused ? "#d4d6d8" : "",
+    backgroundColor: state.isFocused ? "#f4f6f8" : "",
   }),
 };

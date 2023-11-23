@@ -188,7 +188,7 @@ export default function ViewZone() {
                 py="32px"
                 px="24px"
                 justifyContent="center"
-                w={{ base: "100%", md: "30rem" }}
+                w={{ md: "30rem", base: "100%", "3xl": "35rem" }}
                 flexDir="column"
                 border="1px solid #E4E6E8"
               >
@@ -402,7 +402,7 @@ export default function ViewZone() {
                 </Flex>
 
                 {values?.reservable ? (
-                  <Box w="full" mb={4}>
+                  <Box w="full" mb={4} className="opt-input">
                     <Text
                       mb="8px"
                       fontSize="10px"
@@ -415,7 +415,7 @@ export default function ViewZone() {
                       auth
                       value={values?.reservableSpace}
                       mb
-                      holder="Enter reservable space"
+                      holder="e.g 1-100"
                       onChange={(e) =>
                         setValues({
                           ...values,

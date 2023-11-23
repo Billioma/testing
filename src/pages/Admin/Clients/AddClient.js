@@ -117,7 +117,7 @@ export default function AddClient() {
             py="32px"
             px="28px"
             justifyContent="center"
-            w={{ md: "30rem", base: "100%" }}
+            w={{ md: "30rem", base: "100%", "3xl": "35rem" }}
             flexDir="column"
             border="1px solid #D4D6D8"
           >
@@ -537,7 +537,6 @@ export default function AddClient() {
     </Box>
   );
 }
-
 const customStyles = {
   control: (provided, state) => ({
     ...provided,
@@ -548,16 +547,17 @@ const customStyles = {
     cursor: "pointer",
     borderRadius: "4px",
     border: state.hasValue ? "none" : "1px solid #D4D6D8",
-    background: state.hasValue ? "#f4f6f8" : "unset",
     paddingRight: "16px",
+    background: state.hasValue ? "#f4f6f8" : "unset",
   }),
   menu: (provided) => ({
     ...provided,
     fontSize: "13px",
+    backgroundColor: "#fff",
   }),
   option: (provided, state) => ({
     ...provided,
     color: state.isFocused ? "" : "",
-    backgroundColor: state.isFocused ? "#d4d6d8" : "",
+    backgroundColor: state.isFocused ? "#f4f6f8" : "",
   }),
 };

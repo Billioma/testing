@@ -45,9 +45,8 @@ const AddZone = () => {
     value: i,
     label: status,
   }));
-
   const customStyles = {
-    control: (provided) => ({
+    control: (provided, state) => ({
       ...provided,
       width: "100%",
       minHeight: "44px",
@@ -55,18 +54,19 @@ const AddZone = () => {
       fontSize: "14px",
       cursor: "pointer",
       borderRadius: "4px",
-      border: "1px solid #d4d6d8",
+      border: state.hasValue ? "none" : "1px solid #D4D6D8",
       paddingRight: "16px",
-      background: "unset",
+      background: state.hasValue ? "#f4f6f8" : "unset",
     }),
     menu: (provided) => ({
       ...provided,
-      backgroundColor: "#f4f6f8",
+      fontSize: "13px",
+      backgroundColor: "#fff",
     }),
     option: (provided, state) => ({
       ...provided,
       color: state.isFocused ? "" : "",
-      backgroundColor: state.isFocused ? "#d4d6d8" : "",
+      backgroundColor: state.isFocused ? "#f4f6f8" : "",
     }),
   };
 
@@ -410,7 +410,7 @@ const AddZone = () => {
                     </Flex>
 
                     {reservable && (
-                      <Box my="16px">
+                      <Box my="16px" className="opt-input">
                         <Text
                           color="#444648"
                           fontSize="10px"
@@ -430,7 +430,7 @@ const AddZone = () => {
                             touched?.reservableSpace &&
                             errors?.reservableSpace
                           }
-                          holder="Enter a number"
+                          holder="e.g 1-100"
                         />
                       </Box>
                     )}
