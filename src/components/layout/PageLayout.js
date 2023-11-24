@@ -34,19 +34,29 @@ const PageLayout = ({ children }) => {
       <div className="flex justify-center items-center">
         <div className="w-full lg:w-[1326px] px-[20px]">{children}</div>
       </div>
-      <div className="mt-auto">
-        <Link to="top" smooth={true} duration={500}>
-          <div className="flex justify-center cursor-pointer items-center w-full mb-[48px]">
-            <div className="flex items-center gap-2 justify-end w-full lg:w-[1326px] px-[20px]">
-              <div className="text-[#646668] text-sm font-medium leading-[100%]">
-                Back to Top
+
+      {location.pathname !== "/redirect=" ? (
+        <>
+          <div className="mt-auto">
+            <Link to="top" smooth={true} duration={500}>
+              <div className="flex justify-center cursor-pointer items-center w-full mb-[48px]">
+                <div className="flex items-center gap-2 justify-end w-full lg:w-[1326px] px-[20px]">
+                  <div className="text-[#646668] text-sm font-medium leading-[100%]">
+                    Back to Top
+                  </div>
+                  <img
+                    src="/assets/up-arrow.svg"
+                    className="w-[16px] h-[16px]"
+                  />
+                </div>
               </div>
-              <img src="/assets/up-arrow.svg" className="w-[16px] h-[16px]" />
-            </div>
+            </Link>{" "}
+            <Footer />
           </div>
-        </Link>
-        <Footer />
-      </div>
+        </>
+      ) : (
+        ""
+      )}
     </div>
   );
 };

@@ -2,8 +2,11 @@ import React from "react";
 import { headers } from "../common/constants";
 import { HiOutlineMenuAlt3 } from "react-icons/hi";
 import Menu from "./Menu";
+import Auth from "../../pages/Auth";
+import { useNavigate } from "react-router-dom";
 
 const Header = () => {
+  const navigate = useNavigate();
   const [show, setShow] = React.useState(false);
   return (
     <div
@@ -33,7 +36,10 @@ const Header = () => {
           <div className="w-[100%] sm:hidden lg:flex mt-[15px] text-sm">
             <div className=" flex w-full items-center gap-[32px] text-[#444648]">
               {headers.map((data, i) => (
-                <div key={i} className="dropdown hover-underline-animation cursor-pointer">
+                <div
+                  key={i}
+                  className="dropdown hover-underline-animation cursor-pointer"
+                >
                   <a href={data?.path} target="_blank" rel="noreferrer">
                     {data?.name}
                   </a>
@@ -42,14 +48,12 @@ const Header = () => {
             </div>
           </div>
 
-          <div className="mt-[15px] sm:hidden lg:flex gap-[24px] items-center w-[30%]">
-            <a
-              target="_blank"
-              rel="noreferrer"
-              href="https://parkinspace-webapp.netlify.app/customer/auth/login"
-            >
-              <button className="text-[#EE383A] bg-transparent">Login</button>
-            </a>
+          <div
+            onClick={() => navigate("/redirect=")}
+            className="mt-[15px] sm:hidden lg:flex gap-[24px] items-center w-[30%]"
+          >
+            <button className="text-[#EE383A] bg-transparent">Login</button>
+
             <a
               target="_blank"
               rel="noreferrer"

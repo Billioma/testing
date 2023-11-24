@@ -33,15 +33,23 @@ const Menu = ({ isOpen, onClose }) => {
               {data?.name}
             </div>
           ))}
-          <button onClick={onClose} className="text-red bg-transparent">
+          <button
+            onClick={() => (navigate("/redirect="), onClose())}
+            className="text-red bg-transparent"
+          >
             Login
           </button>
-          <button
-            onClick={onClose}
-            className="w-full text-white bg-red rounded-[4px] py-[12px]"
+
+          <a
+            target="_blank"
+            className="w-full"
+            rel="noreferrer"
+            href="https://parkinspace-webapp.netlify.app/customer/auth/signup"
           >
-            Sign Up
-          </button>
+            <button className="w-full text-white bg-red rounded-[4px] py-[12px]">
+              Sign Up
+            </button>
+          </a>
         </div>
       </div>
     </Drawer>

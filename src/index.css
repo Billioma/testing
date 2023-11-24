@@ -131,6 +131,22 @@ button {
   transition: transform 0.25s ease-out;
 }
 
+.hover-fin-child {
+  display: none;
+}
+
+.hover-parent:hover .hover-fin-child {
+  display: flex;
+}
+
+.hover-parent:hover .hover-text {
+  color: #EE383A;
+}
+
+.hover-parent:hover .hover-child {
+  display: none;
+}
+
 .hover-underline-animation:hover:after {
   transform: scaleX(1);
   transform-origin: bottom left;

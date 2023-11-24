@@ -1,6 +1,8 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 const Membership = () => {
+  const navigate = useNavigate();
   return (
     <div className="full_width" id="about">
       <div className="py-[56px] pb-0 lg:pt-[90px] flex flex-col justify-center items-center">
@@ -36,15 +38,11 @@ const Membership = () => {
               Sign Up
             </button>
           </a>
-          <a
-            target="_blank"
-            rel="noreferrer"
-            href="https://parkinspace-webapp.netlify.app/customer/auth/login"
-          >
+          <div onClick={() => navigate("/redirect=")}>
             <button className="bg-transparent rounded-[4px] border border-black hover:bg-black hover:text-white px-[26px] py-[10px] text-black ">
               Login
             </button>
-          </a>
+          </div>
         </div>
 
         <div className="mt-[40px] lg:mt-[50px]">
