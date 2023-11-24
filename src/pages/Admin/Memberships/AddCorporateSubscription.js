@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   Box,
   Flex,
@@ -10,16 +10,17 @@ import {
 } from "@chakra-ui/react";
 
 import Select from "react-select";
-import { customStyles } from "../../../components/common/constants";
+import {
+  customStyles,
+  errorCustomStyles,
+} from "../../../components/common/constants";
 import { useNavigate } from "react-router-dom";
 import { PRIVATE_PATHS } from "../../../routes/constants";
 import useCustomToast from "../../../utils/notifications";
 import GoBackTab from "../../../components/data/Admin/GoBackTab";
-
 import {
   useCreateCorporateSubscription,
   useGetCorporatePlans,
-  useGetCorporateSubscriptions,
 } from "../../../services/admin/query/memberships";
 import {
   useGetClientUsers,
@@ -43,13 +44,16 @@ export default function AddCorporateSubscription() {
   });
 
   const navigate = useNavigate();
-  const [isDisabled, setIsDisabled] = useState(true);
   const { errorToast, successToast } = useCustomToast();
-  const { refetch } = useGetCorporateSubscriptions();
 
+  const { data: clients, refetch: refetchClient } = useGetClients(
+    {},
+    1,
+    100000
+  );
   const { mutate, isLoading } = useCreateCorporateSubscription({
     onSuccess: () => {
-      refetch();
+      refetchClient();
       successToast("Corporate subscription created successfully!");
       navigate(PRIVATE_PATHS.ADMIN_CORPORATE_SUBSCRIPTIONS);
     },
@@ -59,8 +63,6 @@ export default function AddCorporateSubscription() {
       );
     },
   });
-
-  const { data: clients } = useGetClients({}, 1, 100000);
 
   const {
     data: clientUsers,
@@ -89,15 +91,7 @@ export default function AddCorporateSubscription() {
     "Annually",
   ];
 
-  const isFormValid = () => {
-    return !state?.client || !state?.subscriptionOptions[0]?.data?.length;
-  };
-
   const { data: plans } = useGetCorporatePlans({});
-
-  useEffect(() => {
-    setIsDisabled(isFormValid);
-  }, [state]);
 
   const handlePlanSelection = (plan) => {
     const tempFeatureTypes = [];
@@ -154,16 +148,10 @@ export default function AddCorporateSubscription() {
     setState({ ...state, subscriptionOptions: temp });
   };
 
+  const [formSubmitted, setFormSubmitted] = useState(false);
   const handleSubmit = (e) => {
     e.preventDefault();
     mutate({ ...state });
-  };
-
-  const handleSelectChange = (selectedOption, { name }) => {
-    setState({
-      ...state,
-      [name]: selectedOption,
-    });
   };
 
   return (
@@ -190,7 +178,23 @@ export default function AddCorporateSubscription() {
               lineHeight="100%"
               cursor="pointer"
               gap="8px"
-              onClick={() => setState({ ...state, membershipPlan: "" })}
+              onClick={() => {
+                setState({
+                  ...state,
+                  client: "",
+                  membershipPlan: "",
+                  subscriptionOptions: [
+                    {
+                      planFeature: 0,
+                      data: "",
+                    },
+                  ],
+                  autoRenewal: 0,
+                  paymentMethod: 2,
+                });
+                setFormSubmitted(false);
+                setFeatureTypes([]);
+              }}
             >
               <HiOutlineArrowNarrowLeft size={20} />
               Back
@@ -245,144 +249,189 @@ export default function AddCorporateSubscription() {
                   </Flex>
                 </Flex>
               </Box>
-
-              <Box w="full" mb={4}>
-                <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
-                  Select a Client
-                </Text>
-                <Select
-                  components={{
-                    IndicatorSeparator: () => (
-                      <div style={{ display: "none" }}></div>
-                    ),
-                    DropdownIndicator: () => (
-                      <div>
-                        <IoIosArrowDown size="15px" color="#646668" />
-                      </div>
-                    ),
-                  }}
-                  styles={customStyles}
-                  onChange={({ value, wallet }) => {
-                    setState({ ...state, client: value, wallet });
-                    getClientUsers(value);
-                  }}
-                  options={clientOptions}
-                  placeholder="Select a Client"
-                />
-              </Box>
-              {isUser ? (
-                <Flex justifyContent="center" align="center" w="full">
-                  <Spinner />
-                </Flex>
-              ) : clientUsers?.length ? (
-                <>
-                  <Box w="full" mb={4}>
-                    <Text
-                      mb="8px"
-                      fontSize="10px"
-                      fontWeight={500}
-                      color="#444648"
-                    >
-                      Select up to 2 Users
-                    </Text>
-                    <Select
-                      components={{
-                        IndicatorSeparator: () => (
-                          <div style={{ display: "none" }}></div>
-                        ),
-                        DropdownIndicator: () => (
-                          <div>
-                            <IoIosArrowDown size="15px" color="#646668" />
-                          </div>
-                        ),
-                      }}
-                      styles={customStyles}
-                      onChange={handleUsersSelect}
-                      options={userOptions}
-                      isMulti
-                      placeholder="Select users"
-                    />
-                  </Box>
+              <form
+                onSubmit={(e) => {
+                  (featureTypes?.length &&
+                    !state?.subscriptionOptions[0]?.data?.length) ||
+                  !state?.client
+                    ? setFormSubmitted(true)
+                    : (setFormSubmitted(true), handleSubmit(e));
+                  e.preventDefault();
+                }}
+              >
+                <Box w="full" mb={4}>
                   <Text
                     mb="8px"
                     fontSize="10px"
                     fontWeight={500}
                     color="#444648"
                   >
-                    Corporate Payment Method
+                    Select a Client
                   </Text>
-                  <Flex
-                    bg="#fff"
-                    borderRadius="4px"
-                    p="15px"
-                    justifyContent="between"
-                    w="100%"
-                    flexDir="column"
-                    border="1px solid #D4D6D8"
-                    mb={5}
-                  >
-                    <Flex flexDir={"column"}>
-                      <Text fontSize={"12px"}>Wallet</Text>
-                      <Text fontWeight={"500"} fontSize={12}>
-                        Balance: ₦ {state?.wallet?.toLocaleString() || 0}
-                      </Text>
-                    </Flex>
-                  </Flex>
-                  <Flex
-                    align="center"
-                    justifyContent={"space-between"}
-                    gap="15px"
-                    mb="16px"
-                  >
-                    <Text fontSize="12px" fontWeight={500} color="#444648">
-                      Renew Automatically
+                  <Select
+                    components={{
+                      IndicatorSeparator: () => (
+                        <div style={{ display: "none" }}></div>
+                      ),
+                      DropdownIndicator: () => (
+                        <div>
+                          <IoIosArrowDown size="15px" color="#646668" />
+                        </div>
+                      ),
+                    }}
+                    styles={
+                      formSubmitted && !state?.client
+                        ? errorCustomStyles
+                        : customStyles
+                    }
+                    onChange={({ value, wallet }) => {
+                      setState({ ...state, client: value, wallet });
+                      featureTypes?.length && getClientUsers(value);
+                    }}
+                    options={clientOptions}
+                    placeholder="Select a Client"
+                  />
+                  {formSubmitted && !state?.client && (
+                    <Text mt="5px" fontSize="10px" color="tomato">
+                      Client is required
                     </Text>
-                    <Switch
-                      onChange={() =>
-                        setState({
-                          ...state,
-                          autoRenewal: state?.autoRenewal ? 0 : 1,
-                        })
-                      }
-                      size="sm"
-                      variant="adminPrimary"
-                    />
-                  </Flex>{" "}
-                </>
-              ) : (
-                state.client &&
-                !clientUsers?.length && (
-                  <Text
-                    textAlign="center"
-                    color="#646668"
-                    fontWeight={500}
-                    fontSize="13px"
-                  >
-                    This client has no users
-                  </Text>
-                )
-              )}
+                  )}
+                </Box>
+                {isUser ? (
+                  <Flex justifyContent="center" align="center" w="full">
+                    <Spinner />
+                  </Flex>
+                ) : clientUsers?.length && featureTypes?.length ? (
+                  <>
+                    <Box w="full" mb={4}>
+                      <Text
+                        mb="8px"
+                        fontSize="10px"
+                        fontWeight={500}
+                        color="#444648"
+                      >
+                        Select up to 2 Users
+                      </Text>
+                      <Select
+                        components={{
+                          IndicatorSeparator: () => (
+                            <div style={{ display: "none" }}></div>
+                          ),
+                          DropdownIndicator: () => (
+                            <div>
+                              <IoIosArrowDown size="15px" color="#646668" />
+                            </div>
+                          ),
+                        }}
+                        styles={
+                          featureTypes?.length &&
+                          formSubmitted &&
+                          !state?.subscriptionOptions[0]?.data?.length
+                            ? errorCustomStyles
+                            : customStyles
+                        }
+                        onChange={handleUsersSelect}
+                        options={userOptions}
+                        isMulti
+                        placeholder="Select users"
+                      />
 
-              <Flex gap={4} mt={4}>
-                <Button
-                  variant="adminSecondary"
-                  w="45%"
-                  onClick={() =>
-                    navigate(PRIVATE_PATHS.ADMIN_CORPORATE_SUBSCRIPTIONS)
-                  }
+                      {featureTypes?.length
+                        ? formSubmitted &&
+                          !state?.subscriptionOptions[0]?.data?.length && (
+                            <Text mt="5px" fontSize="10px" color="tomato">
+                              Select at least one user
+                            </Text>
+                          )
+                        : ""}
+                    </Box>
+                  </>
+                ) : featureTypes?.length ? (
+                  state.client &&
+                  !clientUsers?.length && (
+                    <Text
+                      textAlign="center"
+                      color="tomato"
+                      fontWeight={500}
+                      fontSize="13px"
+                    >
+                      This client has no users
+                    </Text>
+                  )
+                ) : (
+                  ""
+                )}
+                {state?.client ? (
+                  <>
+                    <Text
+                      mb="8px"
+                      fontSize="10px"
+                      fontWeight={500}
+                      color="#444648"
+                    >
+                      Corporate Payment Method
+                    </Text>
+                    <Flex
+                      bg="#fff"
+                      borderRadius="4px"
+                      p="15px"
+                      justifyContent="between"
+                      w="100%"
+                      flexDir="column"
+                      border="1px solid #D4D6D8"
+                      mb={5}
+                    >
+                      <Flex flexDir={"column"}>
+                        <Text fontSize={"12px"}>Wallet</Text>
+                        <Text fontWeight={"500"} fontSize={12}>
+                          Balance: ₦ {state?.wallet?.toLocaleString() || 0}
+                        </Text>
+                      </Flex>
+                    </Flex>
+                  </>
+                ) : (
+                  ""
+                )}
+                <Flex
+                  align="center"
+                  justifyContent={"space-between"}
+                  gap="15px"
+                  mb="16px"
                 >
-                  Cancel
-                </Button>
-                <Button
-                  variant="adminPrimary"
-                  w="55%"
-                  isDisabled={isDisabled}
-                  isLoading={isLoading}
-                  onClick={handleSubmit}
-                >
-                  Add Subscription
-                </Button>
-              </Flex>
+                  <Text fontSize="12px" fontWeight={500} color="#444648">
+                    Renew Automatically
+                  </Text>
+                  <Switch
+                    onChange={() =>
+                      setState({
+                        ...state,
+                        autoRenewal: state?.autoRenewal ? 0 : 1,
+                      })
+                    }
+                    size="sm"
+                    variant="adminPrimary"
+                  />
+                </Flex>{" "}
+                <Flex gap={4} mt={4}>
+                  <Button
+                    variant="adminSecondary"
+                    w="45%"
+                    onClick={() =>
+                      navigate(PRIVATE_PATHS.ADMIN_CORPORATE_SUBSCRIPTIONS)
+                    }
+                  >
+                    Cancel
+                  </Button>
+                  <Button
+                    variant="adminPrimary"
+                    w="55%"
+                    isLoading={isLoading}
+                    type="submit"
+                  >
+                    Add Subscription
+                  </Button>
+                </Flex>
+              </form>
             </Flex>
           ) : (
             <Box border="1px solid #E4E6E8" w="full" p={5} borderRadius="8px">

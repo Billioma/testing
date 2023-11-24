@@ -5,7 +5,10 @@ import { useNavigate } from "react-router-dom";
 import { PRIVATE_PATHS } from "../../../routes/constants";
 import useCustomToast from "../../../utils/notifications";
 import GoBackTab from "../../../components/data/Admin/GoBackTab";
-import { customStyles } from "../../../components/common/constants";
+import {
+  customStyles,
+  errorCustomStyles,
+} from "../../../components/common/constants";
 import Select from "react-select";
 import {
   useAddModel,
@@ -18,7 +21,6 @@ export default function AddVehicleMake() {
     name: "",
     model: "",
   });
-
   const handleSelectChange = (selectedOption, { name }) => {
     setValues({
       ...values,
@@ -27,6 +29,7 @@ export default function AddVehicleMake() {
   };
 
   const navigate = useNavigate();
+  const [formSubmitted, setFormSubmitted] = useState(false);
   const { errorToast, successToast } = useCustomToast();
   const { data: makes } = useGetMakes({}, 1, 10000);
   const { mutate: updateMutate, isLoading: isUpdating } = useAddModel({
@@ -73,65 +76,107 @@ export default function AddVehicleMake() {
             flexDir="column"
             border="1px solid #E4E6E8"
           >
-            <Box w="full" mb={4}>
-              <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
-                Model Name
-              </Text>
-              <CustomInput
-                auth
-                value={values?.name}
-                mb
-                holder="Enter model name"
-                onChange={(e) => setValues({ ...values, name: e.target.value })}
-              />
-            </Box>
+            <form
+              onSubmit={(e) => {
+                !values?.name || !values?.make
+                  ? setFormSubmitted(true)
+                  : (setFormSubmitted(true), handleSubmit(e));
+                e.preventDefault();
+              }}
+            >
+              <Box w="full" mb={4}>
+                <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
+                  Model Name{" "}
+                  <span
+                    style={{
+                      color: "tomato",
+                      fontSize: "13px",
+                    }}
+                  >
+                    *
+                  </span>
+                </Text>
+                <CustomInput
+                  auth
+                  value={values?.name}
+                  mb
+                  holder="Enter model name"
+                  onChange={(e) =>
+                    setValues({ ...values, name: e.target.value })
+                  }
+                  error={formSubmitted && !values?.name ? true : false}
+                />
+                {formSubmitted && !values?.name && (
+                  <Text mt="-3px" fontSize="10px" color="tomato">
+                    Name is required
+                  </Text>
+                )}
+              </Box>
 
-            <Box w="full" mb={4}>
-              <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
-                Make
-              </Text>
-              <Select
-                styles={customStyles}
-                placeholder="Select make"
-                options={makeOptions}
-                onChange={(selectedOption) =>
-                  handleSelectChange(selectedOption, {
-                    name: "make",
-                  })
-                }
-                components={{
-                  IndicatorSeparator: () => (
-                    <div style={{ display: "none" }}></div>
-                  ),
-                  DropdownIndicator: () => (
-                    <div>
-                      <IoIosArrowDown size="15px" color="#646668" />
-                    </div>
-                  ),
-                }}
-                value={values?.make}
-              />
-            </Box>
+              <Box w="full" mb={4}>
+                <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
+                  Make{" "}
+                  <span
+                    style={{
+                      color: "tomato",
+                      fontSize: "13px",
+                    }}
+                  >
+                    *
+                  </span>
+                </Text>
+                <Select
+                  styles={
+                    formSubmitted && !values?.make
+                      ? errorCustomStyles
+                      : customStyles
+                  }
+                  placeholder="Select make"
+                  options={makeOptions}
+                  onChange={(selectedOption) =>
+                    handleSelectChange(selectedOption, {
+                      name: "make",
+                    })
+                  }
+                  components={{
+                    IndicatorSeparator: () => (
+                      <div style={{ display: "none" }}></div>
+                    ),
+                    DropdownIndicator: () => (
+                      <div>
+                        <IoIosArrowDown size="15px" color="#646668" />
+                      </div>
+                    ),
+                  }}
+                  value={values?.make}
+                />
+                {formSubmitted && !values?.make && (
+                  <Text mt="3px" fontSize="10px" color="tomato">
+                    Make is required
+                  </Text>
+                )}
+              </Box>
 
-            <Flex gap={4} mt={4}>
-              <Button
-                variant="adminSecondary"
-                w="100%"
-                onClick={() =>
-                  navigate(PRIVATE_PATHS.ADMIN_CONFIG_VEHICLE_MODELS)
-                }
-              >
-                Cancel
-              </Button>
-              <Button
-                variant="adminPrimary"
-                w="100%"
-                isLoading={isUpdating}
-                onClick={() => handleSubmit()}
-              >
-                Save
-              </Button>
-            </Flex>
+              <Flex gap={4} mt={4}>
+                <Button
+                  variant="adminSecondary"
+                  w="100%"
+                  onClick={() =>
+                    navigate(PRIVATE_PATHS.ADMIN_CONFIG_VEHICLE_MODELS)
+                  }
+                >
+                  Cancel
+                </Button>
+                <Button
+                  variant="adminPrimary"
+                  w="100%"
+                  isLoading={isUpdating}
+                  type="submit"
+                >
+                  Save
+                </Button>
+              </Flex>
+            </form>
           </Flex>
         </Flex>
       </Flex>

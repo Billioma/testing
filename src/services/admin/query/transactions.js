@@ -21,12 +21,44 @@ import {
   editEventParking,
   getTipsList,
   getTipsDetails,
+  getEventParking,
+  getTips,
+  deleteTip,
 } from "../api/transactions";
 
 export const useGetPayToPark = (options = {}, page = 1, limit = 25, query) => {
   const { data, isLoading, refetch } = useQuery(
     ["GET_PAY_TO_PARK", page, limit, query],
     () => getPayToPark(page, limit, query),
+    {
+      ...options,
+    }
+  );
+
+  return { isLoading, data, refetch };
+};
+
+export const useGetEventParking = (
+  options = {},
+  page = 1,
+  limit = 25,
+  query
+) => {
+  const { data, isLoading, refetch } = useQuery(
+    ["GET_PEVENT_PARKING", page, limit, query],
+    () => getEventParking(page, limit, query),
+    {
+      ...options,
+    }
+  );
+
+  return { isLoading, data, refetch };
+};
+
+export const useGetTips = (options = {}, page = 1, limit = 25, query) => {
+  const { data, isLoading, refetch } = useQuery(
+    ["GET_PTIPS", page, limit, query],
+    () => getTips(page, limit, query),
     {
       ...options,
     }
@@ -192,6 +224,15 @@ export const useGetCarServices = (
   );
 
   return { isLoading, data, refetch };
+};
+
+export const useDeleteTip = (options = {}) => {
+  const { isLoading, mutate } = useMutation(deleteTip, {
+    mutationKey: ["DELETE_TIP"],
+    ...options,
+  });
+
+  return { isLoading, mutate };
 };
 
 export const useDeleteCarService = (options = {}) => {

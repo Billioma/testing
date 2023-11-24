@@ -402,6 +402,26 @@ export const operatorLogHeader = [
   "ACTIONS",
 ];
 
+export const operatorPtpHeader = [
+  "TICKET NUMBER",
+  "LOCATION",
+  "ZONE",
+  "PAYMENT METHOD",
+  "DATE CREATED",
+  "STATUS",
+  "ACTIONS",
+];
+
+export const operatorRpHeader = [
+  "RESERVATION ID",
+  "LOCATION",
+  "ZONE",
+  "PAYMENT METHOD",
+  "DATE CREATED",
+  "STATUS",
+  "ACTIONS",
+];
+
 export const adminTipsHeader = [
   "TICKET NUMBER",
   "CUSTOMER",
@@ -848,6 +868,28 @@ export const operatorSidebar = [
     icon: <CustomerIcon fill="#444648" />,
     sec: <CustomerIcon fill="#fff" />,
     hover: <CustomerIcon fill="#ee383a" />,
+    sub: [
+      {
+        id: 1,
+        name: "Pay To Park",
+        path: "/operator/transactions/pay-to-park",
+      },
+      {
+        id: 2,
+        name: "Reserve Parking",
+        path: "/operator/transactions/reservations",
+      },
+      {
+        id: 3,
+        name: "Event Parking",
+        path: "/operator/transactions/event-parking",
+      },
+      {
+        id: 4,
+        name: "Car Services",
+        path: "/operator/transactions/car-services",
+      },
+    ],
   },
   {
     id: 4,
@@ -1656,6 +1698,8 @@ export const serviceTabs = [
   "Car Services",
 ];
 
+export const usServiceTabs = ["Valet Parking", "Pay-To-Park", "Car Services"];
+
 export const customStyles = {
   control: (provided, state) => ({
     ...provided,
@@ -1681,12 +1725,53 @@ export const customStyles = {
   }),
 };
 
+export const errorCustomStyles = {
+  control: (provided) => ({
+    ...provided,
+    width: "100%",
+    minHeight: "44px",
+    color: "red",
+    fontSize: "14px",
+    cursor: "pointer",
+    borderRadius: "4px",
+    border: "1px solid red",
+    paddingRight: "16px",
+    background: "#FDE8E8",
+  }),
+  menu: (provided) => ({
+    ...provided,
+    fontSize: "13px",
+    backgroundColor: "#fff",
+  }),
+  option: (provided, state) => ({
+    ...provided,
+    color: state.isFocused ? "" : "",
+    backgroundColor: state.isFocused ? "#f4f6f8" : "",
+  }),
+};
+
 export const clientListOptions = [
   { label: "Name", value: "name" },
   { label: "Contact Person", value: "contactPerson" },
   { label: "Phone", value: "phone" },
   { label: "State", value: "state" },
   { label: "Account Type", value: "accountType" },
+  { label: "Status", value: "status" },
+];
+
+export const opPtpOptions = [
+  { label: "Ticket Number", value: "ticketNumber" },
+  { label: "Location", value: "zone.location.name" },
+  { label: "Zone", value: "zone.name" },
+  { label: "Payment Type", value: "transaction.paymentMethod" },
+  { label: "Status", value: "status" },
+];
+
+export const opRpOptions = [
+  { label: "Reservation ID", value: "reservationId" },
+  { label: "Location", value: "zone.location.name" },
+  { label: "Zone", value: "zone.name" },
+  { label: "Payment Type", value: "paymentMethod" },
   { label: "Status", value: "status" },
 ];
 

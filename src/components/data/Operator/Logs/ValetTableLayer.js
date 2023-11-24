@@ -46,7 +46,7 @@ const ValetTableLayer = ({
             {data?.data?.map((item, i) => (
               <Tr fontSize="12px" fontWeight={500} color="#646668" key={i}>
                 <Td>{item?.ticketNumber}</Td>
-                <Td textAlign="center">{item?.location?.name}</Td>
+                <Td textAlign="center">{item?.location?.name || "N/A"}</Td>
                 <Td textAlign="center">{item?.zone?.name}</Td>
                 <Td textAlign="center">{item?.attendant?.name}</Td>
                 <Td textAlign="center">{formatDateTimes(item?.createdAt)}</Td>

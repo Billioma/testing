@@ -3,13 +3,11 @@ import { Box, Button, Flex, Image, Text } from "@chakra-ui/react";
 import { MdAdd } from "react-icons/md";
 import TableLayer from "../../../components/data/Operator/Users/TableLayer";
 import { useNavigate } from "react-router-dom";
-import { useGetAttendants } from "../../../services/operator/query/attendants";
+import { useGetOpAttendant } from "../../../services/operator/query/attendants";
 import Filter from "../../../components/common/Filter";
 import { opUserFieldOption } from "../../../components/common/constants";
 
 const Attendants = () => {
-  const { mutate, data, isLoading } = useGetAttendants();
-
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(25);
   const [startRow, setStartRow] = useState(1);
@@ -24,9 +22,34 @@ const Attendants = () => {
   const query = convertedFilters?.join("&");
   const navigate = useNavigate();
 
+  const [isRefetch, setIsRefetch] = useState(false);
+
+  const { data, isLoading, refetch } = useGetOpAttendant(
+    {
+      refetchOnWindowFocus: true,
+      onSuccess: () => {
+        setIsRefetch(false);
+      },
+      onError: () => {
+        setIsRefetch(false);
+      },
+      onSettled: () => {
+        setIsRefetch(false);
+      },
+    },
+    page,
+    limit,
+    query
+  );
+
   useEffect(() => {
-    mutate({ filterString: query, limit, page: page });
-  }, [page, query, limit]);
+    refetch();
+  }, []);
+
+  const handleRefreshClick = async () => {
+    setIsRefetch(true);
+    await refetch();
+  };
 
   useEffect(() => {
     sessionStorage.removeItem("edit");
@@ -87,16 +110,14 @@ const Attendants = () => {
                 cursor="pointer"
                 transition=".3s ease-in-out"
                 _hover={{ bg: "#F4F6F8" }}
-                onClick={() =>
-                  mutate({ filterString: query, limit, page: page })
-                }
+                onClick={handleRefreshClick}
                 borderRadius="8px"
                 border="1px solid #848688"
                 p="10px"
               >
                 <Image
                   src="/assets/refresh.svg"
-                  className={isLoading && "mirrored-icon"}
+                  className={isRefetch && "mirrored-icon"}
                   w="20px"
                   h="20px"
                 />

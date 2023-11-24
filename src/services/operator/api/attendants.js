@@ -8,6 +8,14 @@ export const getAttendants = async (query) => {
   return res.data;
 };
 
+export const getOpAttendants = async (page, limit, query) => {
+  const response = await axiosInstance.get(
+    API.GET_OP_ATTENDANTS +
+      `?page=${page}&limit=${limit}&sort=id,DESC&${query || ""}`
+  );
+  return response.data;
+};
+
 export const deleteAttendant = async (query) => {
   const res = await axiosInstance.delete(API.UPDATE_ATTENDANT(query));
   return res.data;

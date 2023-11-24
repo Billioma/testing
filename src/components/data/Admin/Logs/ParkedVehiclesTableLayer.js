@@ -172,7 +172,10 @@ const TableLayer = ({
                         border="1px solid #F4F6F8"
                         boxShadow="0px 8px 16px 0px rgba(0, 0, 0, 0.08)"
                       >
-                        {viewClaimOption.map((dat, i) => (
+                        {(item?.status
+                          ? viewClaimOption?.slice(0, 2)
+                          : viewClaimOption
+                        ).map((dat, i) => (
                           <MenuItem
                             gap="12px"
                             borderRadius="2px"

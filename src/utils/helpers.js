@@ -1,7 +1,3 @@
-import { refreshInstance } from "../services/axiosInstance";
-import { REFRESH_TOKEN } from "../services/customer/url";
-
-const baseURL = process.env.REACT_APP_BASE_URL;
 export const useLogOut = () => {
   return () => {
     const clearAndRedirect = (path) => {
@@ -19,21 +15,6 @@ export const useLogOut = () => {
       clearAndRedirect("customer");
     }
   };
-};
-
-export const getAccessToken = async () => {
-  const pathPrefix =
-    location.pathname.match(/(operator|admin|client)\//)?.[0] || "customer";
-  const newPath = pathPrefix?.replace("/", "");
-  try {
-    const res = await refreshInstance.get(
-      `${baseURL}${`${newPath}` + REFRESH_TOKEN}`
-    );
-    return res;
-  } catch (error) {
-    localStorage.removeItem(newPath);
-    window.location.href = `/${newPath}/auth/login`;
-  }
 };
 
 export const trim = (str) => {

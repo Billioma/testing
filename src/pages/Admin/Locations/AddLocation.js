@@ -14,6 +14,7 @@ import {
   customStyles,
   allStates,
   statusType,
+  errorCustomStyles,
 } from "../../../components/common/constants";
 import Select from "react-select";
 import { useNavigate } from "react-router-dom";
@@ -36,6 +37,7 @@ import {
 
 export default function AddLocation() {
   const navigate = useNavigate();
+  const [formSubmitted, setFormSubmitted] = useState(false);
   const { errorToast, successToast } = useCustomToast();
   const { mutate, isLoading } = useAddLocation({
     onSuccess: () => {
@@ -209,10 +211,14 @@ export default function AddLocation() {
                 handleBlur,
                 handleSubmit,
                 setValues,
-                isValid,
-                dirty,
               }) => (
-                <Form onSubmit={handleSubmit}>
+                <Form
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                    setFormSubmitted(true);
+                    handleSubmit(e);
+                  }}
+                >
                   <Box w="full" mb={4}>
                     <Text
                       mb="8px"
@@ -220,7 +226,15 @@ export default function AddLocation() {
                       fontWeight={500}
                       color="#444648"
                     >
-                      Location Name
+                      Location Name{" "}
+                      <span
+                        style={{
+                          color: "tomato",
+                          fontSize: "13px",
+                        }}
+                      >
+                        *
+                      </span>
                     </Text>
                     <CustomInput
                       auth
@@ -230,7 +244,7 @@ export default function AddLocation() {
                       value={values?.name}
                       onChange={handleChange}
                       onBlur={handleBlur}
-                      error={errors?.name && touched?.name && errors?.name}
+                      error={(formSubmitted || touched?.name) && errors?.name}
                     />
                   </Box>
                   <Box w="full" mb={4}>
@@ -240,7 +254,15 @@ export default function AddLocation() {
                       fontWeight={500}
                       color="#444648"
                     >
-                      Location Description
+                      Location Description{" "}
+                      <span
+                        style={{
+                          color: "tomato",
+                          fontSize: "13px",
+                        }}
+                      >
+                        *
+                      </span>
                     </Text>
                     <CustomInput
                       auth
@@ -251,8 +273,7 @@ export default function AddLocation() {
                       onChange={handleChange}
                       onBlur={handleBlur}
                       error={
-                        errors?.description &&
-                        touched?.description &&
+                        (formSubmitted || touched?.description) &&
                         errors?.description
                       }
                     />
@@ -275,8 +296,7 @@ export default function AddLocation() {
                       onChange={handleChange}
                       onBlur={handleBlur}
                       error={
-                        errors?.geoLocation &&
-                        touched?.geoLocation &&
+                        (formSubmitted || touched?.geoLocation) &&
                         errors?.geoLocation
                       }
                     />
@@ -288,7 +308,15 @@ export default function AddLocation() {
                       fontWeight={500}
                       color="#444648"
                     >
-                      Location Address
+                      Location Address{" "}
+                      <span
+                        style={{
+                          color: "tomato",
+                          fontSize: "13px",
+                        }}
+                      >
+                        *
+                      </span>
                     </Text>
                     <CustomInput
                       auth
@@ -299,7 +327,7 @@ export default function AddLocation() {
                       onChange={handleChange}
                       onBlur={handleBlur}
                       error={
-                        errors?.address && touched?.address && errors?.address
+                        (formSubmitted || touched?.address) && errors?.address
                       }
                     />
                   </Box>
@@ -310,19 +338,31 @@ export default function AddLocation() {
                       fontWeight={500}
                       color="#444648"
                     >
-                      State
+                      State{" "}
+                      <span
+                        style={{
+                          color: "tomato",
+                          fontSize: "13px",
+                        }}
+                      >
+                        *
+                      </span>
                     </Text>
                     <Select
-                      styles={customStyles}
+                      styles={
+                        formSubmitted && !values?.state
+                          ? errorCustomStyles
+                          : customStyles
+                      }
                       placeholder="Select state"
                       options={stateOptions}
                       name="state"
-                      onChange={(selectedOption) =>
+                      onChange={(selectedOption) => {
                         setValues({
                           ...values,
                           state: selectedOption,
-                        })
-                      }
+                        });
+                      }}
                       onBlur={handleBlur}
                       components={{
                         IndicatorSeparator: () => (
@@ -335,6 +375,11 @@ export default function AddLocation() {
                         ),
                       }}
                     />
+                    {formSubmitted && !values?.state && (
+                      <Text mt="8px" fontSize="10px" color="tomato">
+                        State is required
+                      </Text>
+                    )}
                   </Box>
                   <Box w="full" mb={4}>
                     <Text
@@ -343,19 +388,31 @@ export default function AddLocation() {
                       fontWeight={500}
                       color="#444648"
                     >
-                      Operator
+                      Operator{" "}
+                      <span
+                        style={{
+                          color: "tomato",
+                          fontSize: "13px",
+                        }}
+                      >
+                        *
+                      </span>
                     </Text>
                     <Select
-                      styles={customStyles}
+                      styles={
+                        formSubmitted && !values?.operator
+                          ? errorCustomStyles
+                          : customStyles
+                      }
                       placeholder="Select operator"
                       options={operatorOptions}
                       name="operator"
-                      onChange={(selectedOption) =>
+                      onChange={(selectedOption) => {
                         setValues({
                           ...values,
                           operator: selectedOption,
-                        })
-                      }
+                        });
+                      }}
                       onBlur={handleBlur}
                       components={{
                         IndicatorSeparator: () => (
@@ -368,6 +425,11 @@ export default function AddLocation() {
                         ),
                       }}
                     />
+                    {formSubmitted && !values?.operator && (
+                      <Text mt="8px" fontSize="10px" color="tomato">
+                        Operator is required
+                      </Text>
+                    )}
                   </Box>
                   <Box w="full" mb={4}>
                     <Text
@@ -376,19 +438,31 @@ export default function AddLocation() {
                       fontWeight={500}
                       color="#444648"
                     >
-                      Location Type
+                      Location Type{" "}
+                      <span
+                        style={{
+                          color: "tomato",
+                          fontSize: "13px",
+                        }}
+                      >
+                        *
+                      </span>
                     </Text>
                     <Select
-                      styles={customStyles}
+                      styles={
+                        formSubmitted && !values?.locationType
+                          ? errorCustomStyles
+                          : customStyles
+                      }
                       placeholder="Select location type"
                       options={locationTypeOptions}
                       name="locationType"
-                      onChange={(selectedOption) =>
+                      onChange={(selectedOption) => {
                         setValues({
                           ...values,
                           locationType: selectedOption,
-                        })
-                      }
+                        });
+                      }}
                       onBlur={handleBlur}
                       components={{
                         IndicatorSeparator: () => (
@@ -401,6 +475,11 @@ export default function AddLocation() {
                         ),
                       }}
                     />
+                    {formSubmitted && !values?.locationType && (
+                      <Text mt="8px" fontSize="10px" color="tomato">
+                        Location Type is required
+                      </Text>
+                    )}
                   </Box>
                   <Box w="full" mb={4}>
                     <Text
@@ -409,20 +488,32 @@ export default function AddLocation() {
                       fontWeight={500}
                       color="#444648"
                     >
-                      Assign Amenities
+                      Assign Amenities{" "}
+                      <span
+                        style={{
+                          color: "tomato",
+                          fontSize: "13px",
+                        }}
+                      >
+                        *
+                      </span>
                     </Text>
                     <Select
                       isMulti
-                      styles={customStyles}
+                      styles={
+                        formSubmitted && !values?.amenities?.length
+                          ? errorCustomStyles
+                          : customStyles
+                      }
                       placeholder="Select amenities"
                       options={amenitiesOptions}
                       name="amenities"
-                      onChange={(selectedOption) =>
+                      onChange={(selectedOption) => {
                         setValues({
                           ...values,
                           amenities: selectedOption,
-                        })
-                      }
+                        });
+                      }}
                       onBlur={handleBlur}
                       components={{
                         IndicatorSeparator: () => (
@@ -435,6 +526,11 @@ export default function AddLocation() {
                         ),
                       }}
                     />
+                    {formSubmitted && !values?.amenities?.length && (
+                      <Text mt="8px" fontSize="10px" color="tomato">
+                        Select at least one amenity
+                      </Text>
+                    )}
                   </Box>
                   <Box w="full" mb={4}>
                     <Text
@@ -443,19 +539,31 @@ export default function AddLocation() {
                       fontWeight={500}
                       color="#444648"
                     >
-                      Assign Manager
+                      Assign Manager{" "}
+                      <span
+                        style={{
+                          color: "tomato",
+                          fontSize: "13px",
+                        }}
+                      >
+                        *
+                      </span>
                     </Text>
                     <Select
                       isMulti
-                      styles={customStyles}
+                      styles={
+                        formSubmitted && !values?.managers?.length
+                          ? errorCustomStyles
+                          : customStyles
+                      }
                       options={managerOptions}
                       name="managers"
-                      onChange={(selectedOption) =>
+                      onChange={(selectedOption) => {
                         setValues({
                           ...values,
                           managers: selectedOption,
-                        })
-                      }
+                        });
+                      }}
                       onBlur={handleBlur}
                       components={{
                         IndicatorSeparator: () => (
@@ -468,6 +576,11 @@ export default function AddLocation() {
                         ),
                       }}
                     />
+                    {formSubmitted && !values?.managers?.length && (
+                      <Text mt="8px" fontSize="10px" color="tomato">
+                        Select at least one manager
+                      </Text>
+                    )}
                   </Box>
                   <Box>
                     <Text
@@ -476,18 +589,30 @@ export default function AddLocation() {
                       fontWeight={500}
                       color="#444648"
                     >
-                      Status
+                      Status{" "}
+                      <span
+                        style={{
+                          color: "tomato",
+                          fontSize: "13px",
+                        }}
+                      >
+                        *
+                      </span>
                     </Text>
                     <Select
-                      styles={customStyles}
+                      styles={
+                        formSubmitted && !values?.status
+                          ? errorCustomStyles
+                          : customStyles
+                      }
                       options={statusOptions}
                       name="status"
-                      onChange={(selectedOption) =>
+                      onChange={(selectedOption) => {
                         setValues({
                           ...values,
                           status: selectedOption,
-                        })
-                      }
+                        });
+                      }}
                       onBlur={handleBlur}
                       components={{
                         IndicatorSeparator: () => (
@@ -500,6 +625,11 @@ export default function AddLocation() {
                         ),
                       }}
                     />
+                    {formSubmitted && !values?.status && (
+                      <Text mt="8px" fontSize="10px" color="tomato">
+                        Status is required
+                      </Text>
+                    )}
                   </Box>
                   <Flex
                     align="center"
@@ -533,7 +663,6 @@ export default function AddLocation() {
                     <Button
                       variant="adminPrimary"
                       w="100%"
-                      isDisabled={!isValid || !dirty}
                       isLoading={isLoading}
                       type="submit"
                     >

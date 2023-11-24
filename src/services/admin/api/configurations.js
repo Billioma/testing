@@ -89,7 +89,7 @@ export const editRole = async ({ query, body }) => {
 export const getPermissions = async (page, limit, query) => {
   const response = await axiosInstance.get(
     API.ADMIN_ROLES_PERMISSIONS +
-      `?page=${page}&limit=${limit}&sort=id,ASC&${query || ""}`
+      `?page=${page}&limit=${limit}&sort=id,DESC&${query || ""}`
   );
   return response.data;
 };

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import ParkedVehiclesTableLayer from "../../../components/data/Admin/Logs/ParkedVehiclesTableLayer";
 import { Box, Flex, Image, Text } from "@chakra-ui/react";
-import { useGetAdminServiceLogs } from "../../../services/admin/query/logs";
+import { useGetParkedVehicles } from "../../../services/admin/query/logs";
 import { valetedVehiclesOptions } from "../../../components/common/constants";
 import Filter from "../../../components/common/Filter";
 
@@ -20,11 +20,34 @@ export default function () {
 
   const query = convertedFilters?.join("&");
 
-  const { mutate, data, isLoading } = useGetAdminServiceLogs();
+  const [isRefetch, setIsRefetch] = useState(false);
+
+  const { data, isLoading, refetch } = useGetParkedVehicles(
+    {
+      refetchOnWindowFocus: true,
+      onSuccess: () => {
+        setIsRefetch(false);
+      },
+      onError: () => {
+        setIsRefetch(false);
+      },
+      onSettled: () => {
+        setIsRefetch(false);
+      },
+    },
+    page,
+    limit,
+    query
+  );
 
   useEffect(() => {
-    mutate({ type: "PARKING", filterString: query, limit, page: page });
-  }, [page, query, limit]);
+    refetch();
+  }, []);
+
+  const handleRefreshClick = async () => {
+    setIsRefetch(true);
+    await refetch();
+  };
 
   useEffect(() => {
     setPage(1);
@@ -71,21 +94,14 @@ export default function () {
               cursor="pointer"
               transition=".3s ease-in-out"
               _hover={{ bg: "#F4F6F8" }}
-              onClick={() =>
-                mutate({
-                  type: "PARKING",
-                  filterString: query,
-                  limit,
-                  page: page,
-                })
-              }
+              onClick={handleRefreshClick}
               borderRadius="8px"
               border="1px solid #848688"
               p="10px"
             >
               <Image
                 src="/assets/refresh.svg"
-                className={isLoading && "mirrored-icon"}
+                className={isRefetch && "mirrored-icon"}
                 w="20px"
                 h="20px"
               />
@@ -102,9 +118,7 @@ export default function () {
         setPage={setPage}
         startRow={startRow}
         endRow={endRow || 25}
-        refetch={() =>
-          mutate({ type: "PARKING", filterString: query, limit, page: page })
-        }
+        refetch={refetch}
         setLimit={setLimit}
       />
     </Box>

@@ -1,7 +1,11 @@
 import React, { useState } from "react";
 import { Box, Flex, Text, Button } from "@chakra-ui/react";
 import CustomInput from "../../../components/common/CustomInput";
-import { allStates, colorTypes } from "../../../components/common/constants";
+import {
+  allStates,
+  colorTypes,
+  errorCustomStyles,
+} from "../../../components/common/constants";
 import Select from "react-select";
 import { customStyles } from "../../../components/common/constants";
 import { useNavigate } from "react-router-dom";
@@ -48,6 +52,7 @@ export default function AddOperator() {
     value: color.color,
     label: color.label,
   }));
+  const [formSubmitted, setFormSubmitted] = useState(false);
 
   const [make, setMake] = useState("");
   const modelToMap = models?.data?.filter(
@@ -92,7 +97,7 @@ export default function AddOperator() {
       }}
       px="10px"
       cursor="pointer"
-      _hover={{ bg: "#fff" }}
+      _hover={{ bg: "#f4f6f8" }}
       gap="8px"
       align="center"
       h="40px"
@@ -159,10 +164,14 @@ export default function AddOperator() {
                 handleBlur,
                 handleSubmit,
                 setValues,
-                isValid,
-                dirty,
               }) => (
-                <Form onSubmit={handleSubmit}>
+                <Form
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                    setFormSubmitted(true);
+                    handleSubmit(e);
+                  }}
+                >
                   <Box w="full" mb={4}>
                     <Text
                       mb="8px"
@@ -170,7 +179,15 @@ export default function AddOperator() {
                       fontWeight={500}
                       color="#444648"
                     >
-                      License Plate
+                      License Plate{" "}
+                      <span
+                        style={{
+                          color: "tomato",
+                          fontSize: "13px",
+                        }}
+                      >
+                        *
+                      </span>
                     </Text>
                     <CustomInput
                       auth
@@ -189,8 +206,7 @@ export default function AddOperator() {
                       }}
                       onBlur={handleBlur}
                       error={
-                        errors?.licensePlate &&
-                        touched?.licensePlate &&
+                        (formSubmitted || touched?.licensePlate) &&
                         errors?.licensePlate
                       }
                     />
@@ -202,10 +218,22 @@ export default function AddOperator() {
                       fontWeight={500}
                       color="#444648"
                     >
-                      Assign Customer
+                      Assign Customer{" "}
+                      <span
+                        style={{
+                          color: "tomato",
+                          fontSize: "13px",
+                        }}
+                      >
+                        *
+                      </span>
                     </Text>
                     <Select
-                      styles={customStyles}
+                      styles={
+                        formSubmitted && !values?.customer
+                          ? errorCustomStyles
+                          : customStyles
+                      }
                       placeholder="Select customer"
                       options={customerOptions}
                       name="customer"
@@ -228,8 +256,13 @@ export default function AddOperator() {
                         ),
                       }}
                     />
+                    {formSubmitted && !values?.customer && (
+                      <Text mt="8px" fontSize="10px" color="tomato">
+                        Customer is required
+                      </Text>
+                    )}
                   </Box>
-                  <Box mb="24px">
+                  <Box mb={4}>
                     <Text
                       color="#444648"
                       lineHeight="100%"
@@ -237,10 +270,22 @@ export default function AddOperator() {
                       fontWeight={500}
                       mb="8px"
                     >
-                      Vehicle Color
+                      Vehicle Color{" "}
+                      <span
+                        style={{
+                          color: "tomato",
+                          fontSize: "13px",
+                        }}
+                      >
+                        *
+                      </span>
                     </Text>
                     <Select
-                      styles={customStyles}
+                      styles={
+                        formSubmitted && !values?.color
+                          ? errorCustomStyles
+                          : customStyles
+                      }
                       name="color"
                       onMenuOpen={() => setMenuIsOpen(true)}
                       menuIsOpen={menuIsOpen}
@@ -276,6 +321,11 @@ export default function AddOperator() {
                       options={colorOptions}
                       placeholder="Select vehicle color"
                     />
+                    {formSubmitted && !values?.color && (
+                      <Text mt="8px" fontSize="10px" color="tomato">
+                        Color is required
+                      </Text>
+                    )}
                   </Box>
 
                   <Box w="full" mb={4}>
@@ -285,10 +335,22 @@ export default function AddOperator() {
                       fontWeight={500}
                       color="#444648"
                     >
-                      Vehicle State
+                      Vehicle State{" "}
+                      <span
+                        style={{
+                          color: "tomato",
+                          fontSize: "13px",
+                        }}
+                      >
+                        *
+                      </span>
                     </Text>
                     <Select
-                      styles={customStyles}
+                      styles={
+                        formSubmitted && !values?.state
+                          ? errorCustomStyles
+                          : customStyles
+                      }
                       placeholder="Select vehicle state"
                       options={stateOptions}
                       name="state"
@@ -311,8 +373,13 @@ export default function AddOperator() {
                         ),
                       }}
                     />
+                    {formSubmitted && !values?.state && (
+                      <Text mt="8px" fontSize="10px" color="tomato">
+                        State is required
+                      </Text>
+                    )}
                   </Box>
-                  <Box mb="24px">
+                  <Box mb={4}>
                     <Text
                       color="#444648"
                       lineHeight="100%"
@@ -320,10 +387,22 @@ export default function AddOperator() {
                       fontWeight={500}
                       mb="8px"
                     >
-                      Vehicle Make
+                      Vehicle Make{" "}
+                      <span
+                        style={{
+                          color: "tomato",
+                          fontSize: "13px",
+                        }}
+                      >
+                        *
+                      </span>
                     </Text>
                     <Select
-                      styles={customStyles}
+                      styles={
+                        formSubmitted && !values?.make
+                          ? errorCustomStyles
+                          : customStyles
+                      }
                       options={makeOptions}
                       name="make"
                       onChange={(selectedOption) => {
@@ -348,8 +427,13 @@ export default function AddOperator() {
                       }}
                       placeholder="Select vehicle make"
                     />
+                    {formSubmitted && !values?.make && (
+                      <Text mt="8px" fontSize="10px" color="tomato">
+                        Make is required
+                      </Text>
+                    )}
                   </Box>
-                  <Box mb="24px">
+                  <Box mb={4}>
                     <Text
                       color="#444648"
                       lineHeight="100%"
@@ -357,10 +441,22 @@ export default function AddOperator() {
                       fontWeight={500}
                       mb="8px"
                     >
-                      Select Vehicle Model
+                      Vehicle Model{" "}
+                      <span
+                        style={{
+                          color: "tomato",
+                          fontSize: "13px",
+                        }}
+                      >
+                        *
+                      </span>
                     </Text>
                     <Select
-                      styles={customStyles}
+                      styles={
+                        formSubmitted && !values?.model
+                          ? errorCustomStyles
+                          : customStyles
+                      }
                       options={modelOptions}
                       name="model"
                       onChange={(selectedOption) =>
@@ -383,6 +479,12 @@ export default function AddOperator() {
                       }}
                       placeholder="Select vehicle model"
                     />
+
+                    {formSubmitted && !values?.model && (
+                      <Text mt="8px" fontSize="10px" color="tomato">
+                        Model is required
+                      </Text>
+                    )}
                   </Box>
                   <Flex gap={4} mt={4}>
                     <Button
@@ -395,7 +497,6 @@ export default function AddOperator() {
                     <Button
                       variant="adminPrimary"
                       w="100%"
-                      isDisabled={!isValid || !dirty}
                       isLoading={isLoading}
                       type="submit"
                     >

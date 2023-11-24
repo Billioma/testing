@@ -11,6 +11,7 @@ export default function AddVehicleMake() {
   const [values, setValues] = useState({
     name: "",
   });
+  const [formSubmitted, setFormSubmitted] = useState(false);
 
   const navigate = useNavigate();
   const { errorToast, successToast } = useCustomToast();
@@ -32,6 +33,8 @@ export default function AddVehicleMake() {
     });
   };
 
+  const isDisabled = Object.values(values).some((value) => !value);
+
   return (
     <Box minH="75vh">
       <Flex
@@ -52,36 +55,61 @@ export default function AddVehicleMake() {
             flexDir="column"
             border="1px solid #E4E6E8"
           >
-            <Box w="full" mb={4}>
-              <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
-                Vehicle Make
-              </Text>
-              <CustomInput
-                auth
-                value={values?.name}
-                mb
-                holder="Enter vehicle make"
-                onChange={(e) => setValues({ ...values, name: e.target.value })}
-              />
-            </Box>
+            <form
+              onSubmit={(e) => {
+                isDisabled
+                  ? setFormSubmitted(true)
+                  : (setFormSubmitted(true), handleSubmit(e));
+                e.preventDefault();
+              }}
+            >
+              <Box w="full" mb={4}>
+                <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
+                  Vehicle Make{" "}
+                  <span
+                    style={{
+                      color: "tomato",
+                      fontSize: "13px",
+                    }}
+                  >
+                    *
+                  </span>
+                </Text>
+                <CustomInput
+                  auth
+                  value={values?.name}
+                  mb
+                  holder="Enter vehicle make"
+                  onChange={(e) =>
+                    setValues({ ...values, name: e.target.value })
+                  }
+                  error={formSubmitted && !values?.name ? true : false}
+                />
+                {formSubmitted && !values?.name && (
+                  <Text fontSize="10px" color="tomato">
+                    Name is required
+                  </Text>
+                )}
+              </Box>
 
-            <Flex gap={4} mt={4}>
-              <Button
-                variant="adminSecondary"
-                w="100%"
-                onClick={() => navigate(ADMIN_CONFIG_VEHICLE_MAKES)}
-              >
-                Cancel
-              </Button>
-              <Button
-                variant="adminPrimary"
-                w="100%"
-                isLoading={isUpdating}
-                onClick={() => handleSubmit()}
-              >
-                Save
-              </Button>
-            </Flex>
+              <Flex gap={4} mt={4}>
+                <Button
+                  variant="adminSecondary"
+                  w="100%"
+                  onClick={() => navigate(ADMIN_CONFIG_VEHICLE_MAKES)}
+                >
+                  Cancel
+                </Button>
+                <Button
+                  variant="adminPrimary"
+                  w="100%"
+                  isLoading={isUpdating}
+                  type="submit"
+                >
+                  Save
+                </Button>
+              </Flex>
+            </form>
           </Flex>
         </Flex>
       </Flex>

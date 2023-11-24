@@ -94,7 +94,15 @@ export default function AddOperator() {
                       fontWeight={500}
                       color="#444648"
                     >
-                      Name
+                      Name{" "}
+                      <span
+                        style={{
+                          color: "tomato",
+                          fontSize: "13px",
+                        }}
+                      >
+                        *
+                      </span>
                     </Text>
                     <CustomInput
                       auth
@@ -115,7 +123,15 @@ export default function AddOperator() {
                       fontWeight={500}
                       color="#444648"
                     >
-                      Email Address
+                      Email Address{" "}
+                      <span
+                        style={{
+                          color: "tomato",
+                          fontSize: "13px",
+                        }}
+                      >
+                        *
+                      </span>
                     </Text>
                     <CustomInput
                       auth
@@ -136,7 +152,15 @@ export default function AddOperator() {
                       color="#444648"
                       fontSize="10px"
                     >
-                      Phone Number
+                      Phone Number{" "}
+                      <span
+                        style={{
+                          color: "tomato",
+                          fontSize: "13px",
+                        }}
+                      >
+                        *
+                      </span>
                     </Text>
                     <CustomInput
                       mb
@@ -167,7 +191,15 @@ export default function AddOperator() {
                       fontWeight={500}
                       color="#444648"
                     >
-                      Address
+                      Address{" "}
+                      <span
+                        style={{
+                          color: "tomato",
+                          fontSize: "13px",
+                        }}
+                      >
+                        *
+                      </span>
                     </Text>
                     <CustomInput
                       auth
@@ -189,7 +221,15 @@ export default function AddOperator() {
                       fontWeight={500}
                       color="#444648"
                     >
-                      State
+                      State{" "}
+                      <span
+                        style={{
+                          color: "tomato",
+                          fontSize: "13px",
+                        }}
+                      >
+                        *
+                      </span>
                     </Text>
                     <Select
                       styles={customStyles}
@@ -224,7 +264,15 @@ export default function AddOperator() {
                       fontWeight={500}
                       color="#444648"
                     >
-                      Contact Person
+                      Contact Person{" "}
+                      <span
+                        style={{
+                          color: "tomato",
+                          fontSize: "13px",
+                        }}
+                      >
+                        *
+                      </span>
                     </Text>
                     <CustomInput
                       auth
@@ -249,7 +297,15 @@ export default function AddOperator() {
                       fontWeight={500}
                       color="#444648"
                     >
-                      Password
+                      Password{" "}
+                      <span
+                        style={{
+                          color: "tomato",
+                          fontSize: "13px",
+                        }}
+                      >
+                        *
+                      </span>
                     </Text>
                     <CustomInput
                       mb
@@ -277,7 +333,15 @@ export default function AddOperator() {
                       fontWeight={500}
                       color="#444648"
                     >
-                      Confirm Password
+                      Confirm Password{" "}
+                      <span
+                        style={{
+                          color: "tomato",
+                          fontSize: "13px",
+                        }}
+                      >
+                        *
+                      </span>
                     </Text>
                     <CustomInput
                       mb
@@ -329,7 +393,15 @@ export default function AddOperator() {
                       fontWeight={500}
                       color="#444648"
                     >
-                      Status
+                      Status{" "}
+                      <span
+                        style={{
+                          color: "tomato",
+                          fontSize: "13px",
+                        }}
+                      >
+                        *
+                      </span>
                     </Text>
                     <Select
                       styles={customStyles}

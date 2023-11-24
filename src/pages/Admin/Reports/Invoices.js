@@ -13,7 +13,7 @@ import {
   adminInvoiceGrid,
   invoicesReportOptions,
 } from "../../../components/common/constants";
-import { useGetAdminRep } from "../../../services/admin/query/reports";
+import { useGetReports } from "../../../services/admin/query/reports";
 import InvoiceExport from "../../../components/data/Admin/Reports/InvoiceExport";
 import Filter from "../../../components/common/Filter";
 
@@ -31,11 +31,34 @@ const Invoices = () => {
   });
 
   const query = convertedFilters?.join("&");
-  const { mutate, data, isLoading } = useGetAdminRep();
+  const [isRefetch, setIsRefetch] = useState(false);
+  const { data, isLoading, refetch } = useGetReports(
+    {
+      refetchOnWindowFocus: true,
+      onSuccess: () => {
+        setIsRefetch(false);
+      },
+      onError: () => {
+        setIsRefetch(false);
+      },
+      onSettled: () => {
+        setIsRefetch(false);
+      },
+    },
+    "invoices",
+    page,
+    limit,
+    query
+  );
 
   useEffect(() => {
-    mutate({ type: "invoices", filterString: query, limit, page: page });
-  }, [page, query, limit]);
+    refetch();
+  }, []);
+
+  const handleRefreshClick = async () => {
+    setIsRefetch(true);
+    await refetch();
+  };
 
   useEffect(() => {
     setPage(1);
@@ -161,21 +184,14 @@ const Invoices = () => {
                 cursor="pointer"
                 transition=".3s ease-in-out"
                 _hover={{ bg: "#F4F6F8" }}
-                onClick={() =>
-                  mutate({
-                    type: "invoices",
-                    filterString: query,
-                    limit,
-                    page: page,
-                  })
-                }
+                onClick={handleRefreshClick}
                 borderRadius="8px"
                 border="1px solid #848688"
                 p="10px"
               >
                 <Image
                   src="/assets/refresh.svg"
-                  className={isLoading && "mirrored-icon"}
+                  className={isRefetch && "mirrored-icon"}
                   w="20px"
                   h="20px"
                 />

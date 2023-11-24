@@ -55,7 +55,15 @@ export default function QrCode() {
         >
           <Box w="full" mb={4}>
             <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
-              Ticket Number
+              Ticket Number{" "}
+              <span
+                style={{
+                  color: "tomato",
+                  fontSize: "13px",
+                }}
+              >
+                *
+              </span>
             </Text>
             <CustomInput
               auth

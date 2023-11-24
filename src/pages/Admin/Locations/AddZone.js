@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import { Box, Flex, Text, Button, Switch } from "@chakra-ui/react";
 import CustomInput from "../../../components/common/CustomInput";
 import {
   customStyles,
   BillingTypes,
   statusType,
+  errorCustomStyles,
 } from "../../../components/common/constants";
 import Select from "react-select";
 import { useNavigate } from "react-router-dom";
@@ -68,6 +69,7 @@ export default function AddZone() {
     value: index,
   }));
 
+  const [formSubmitted, setFormSubmitted] = useState(false);
   const handleSubmit = (values = "") => {
     const { location, service, amenities, billingType, status, ...rest } =
       values;
@@ -109,10 +111,14 @@ export default function AddZone() {
                 handleBlur,
                 handleSubmit,
                 setValues,
-                isValid,
-                dirty,
               }) => (
-                <Form onSubmit={handleSubmit}>
+                <Form
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                    setFormSubmitted(true);
+                    handleSubmit(e);
+                  }}
+                >
                   <Box w="full" mb={4}>
                     <Text
                       mb="8px"
@@ -120,7 +126,15 @@ export default function AddZone() {
                       fontWeight={500}
                       color="#444648"
                     >
-                      Zone Name
+                      Zone Name{" "}
+                      <span
+                        style={{
+                          color: "tomato",
+                          fontSize: "13px",
+                        }}
+                      >
+                        *
+                      </span>
                     </Text>
                     <CustomInput
                       auth
@@ -130,7 +144,7 @@ export default function AddZone() {
                       value={values?.name}
                       onChange={handleChange}
                       onBlur={handleBlur}
-                      error={errors?.name && touched?.name && errors?.name}
+                      error={(formSubmitted || touched?.name) && errors?.name}
                     />
                   </Box>
                   <Box w="full" mb={4}>
@@ -140,7 +154,15 @@ export default function AddZone() {
                       fontWeight={500}
                       color="#444648"
                     >
-                      Zone Description
+                      Zone Description{" "}
+                      <span
+                        style={{
+                          color: "tomato",
+                          fontSize: "13px",
+                        }}
+                      >
+                        *
+                      </span>
                     </Text>
                     <CustomInput
                       auth
@@ -151,8 +173,7 @@ export default function AddZone() {
                       onChange={handleChange}
                       onBlur={handleBlur}
                       error={
-                        errors?.description &&
-                        touched?.description &&
+                        (formSubmitted || touched?.description) &&
                         errors?.description
                       }
                     />
@@ -164,7 +185,15 @@ export default function AddZone() {
                       fontWeight={500}
                       color="#444648"
                     >
-                      Zone Capacity
+                      Zone Capacity{" "}
+                      <span
+                        style={{
+                          color: "tomato",
+                          fontSize: "13px",
+                        }}
+                      >
+                        *
+                      </span>
                     </Text>
                     <CustomInput
                       auth
@@ -176,9 +205,7 @@ export default function AddZone() {
                       onChange={handleChange}
                       onBlur={handleBlur}
                       error={
-                        errors?.capacity &&
-                        touched?.capacity &&
-                        errors?.capacity
+                        (formSubmitted || touched?.capacity) && errors?.capacity
                       }
                     />
                   </Box>
@@ -189,10 +216,22 @@ export default function AddZone() {
                       fontWeight={500}
                       color="#444648"
                     >
-                      Location
+                      Location{" "}
+                      <span
+                        style={{
+                          color: "tomato",
+                          fontSize: "13px",
+                        }}
+                      >
+                        *
+                      </span>
                     </Text>
                     <Select
-                      styles={customStyles}
+                      styles={
+                        formSubmitted && !values?.location
+                          ? errorCustomStyles
+                          : customStyles
+                      }
                       placeholder="Select location"
                       options={locationOptions}
                       name="location"
@@ -214,6 +253,11 @@ export default function AddZone() {
                         ),
                       }}
                     />
+                    {formSubmitted && !values?.location && (
+                      <Text mt="8px" fontSize="10px" color="tomato">
+                        Location is required
+                      </Text>
+                    )}
                   </Box>
                   <Box w="full" mb={4}>
                     <Text
@@ -222,7 +266,15 @@ export default function AddZone() {
                       fontWeight={500}
                       color="#444648"
                     >
-                      Minimum Duration (In Minutes)
+                      Minimum Duration (In Minutes){" "}
+                      <span
+                        style={{
+                          color: "tomato",
+                          fontSize: "13px",
+                        }}
+                      >
+                        *
+                      </span>
                     </Text>
                     <CustomInput
                       auth
@@ -234,8 +286,7 @@ export default function AddZone() {
                       onChange={handleChange}
                       onBlur={handleBlur}
                       error={
-                        errors?.minimumDuration &&
-                        touched?.minimumDuration &&
+                        (formSubmitted || touched?.minimumDuration) &&
                         errors?.minimumDuration
                       }
                     />
@@ -247,10 +298,22 @@ export default function AddZone() {
                       fontWeight={500}
                       color="#444648"
                     >
-                      Service
+                      Service{" "}
+                      <span
+                        style={{
+                          color: "tomato",
+                          fontSize: "13px",
+                        }}
+                      >
+                        *
+                      </span>
                     </Text>
                     <Select
-                      styles={customStyles}
+                      styles={
+                        formSubmitted && !values?.service
+                          ? errorCustomStyles
+                          : customStyles
+                      }
                       placeholder="Select service"
                       options={serviceOptions}
                       name="service"
@@ -272,6 +335,11 @@ export default function AddZone() {
                         ),
                       }}
                     />
+                    {formSubmitted && !values?.service && (
+                      <Text mt="8px" fontSize="10px" color="tomato">
+                        Service is required
+                      </Text>
+                    )}
                   </Box>
                   <Box w="full" mb={4}>
                     <Text
@@ -280,11 +348,23 @@ export default function AddZone() {
                       fontWeight={500}
                       color="#444648"
                     >
-                      Assign Amenities
+                      Assign Amenities{" "}
+                      <span
+                        style={{
+                          color: "tomato",
+                          fontSize: "13px",
+                        }}
+                      >
+                        *
+                      </span>
                     </Text>
                     <Select
                       isMulti
-                      styles={customStyles}
+                      styles={
+                        formSubmitted && !values?.amenities?.length
+                          ? errorCustomStyles
+                          : customStyles
+                      }
                       placeholder="Select amenities"
                       options={amenitiesOptions}
                       name="amenities"
@@ -305,6 +385,12 @@ export default function AddZone() {
                         ),
                       }}
                     />
+
+                    {formSubmitted && !values?.amenities?.length && (
+                      <Text mt="8px" fontSize="10px" color="tomato">
+                        Select at least one amenity
+                      </Text>
+                    )}
                   </Box>
                   <Flex
                     align="center"
@@ -419,10 +505,22 @@ export default function AddZone() {
                       fontWeight={500}
                       color="#444648"
                     >
-                      Select Status
+                      Select Status{" "}
+                      <span
+                        style={{
+                          color: "tomato",
+                          fontSize: "13px",
+                        }}
+                      >
+                        *
+                      </span>
                     </Text>
                     <Select
-                      styles={customStyles}
+                      styles={
+                        formSubmitted && !values?.status
+                          ? errorCustomStyles
+                          : customStyles
+                      }
                       options={statusOptions}
                       name="status"
                       onChange={(selectedOption) =>
@@ -443,6 +541,11 @@ export default function AddZone() {
                         ),
                       }}
                     />
+                    {formSubmitted && !values?.status && (
+                      <Text mt="8px" fontSize="10px" color="tomato">
+                        Status is required
+                      </Text>
+                    )}
                   </Box>
                   <Flex gap="24px" mt="24px">
                     <Button
@@ -455,13 +558,12 @@ export default function AddZone() {
                     <Button
                       variant="adminPrimary"
                       w="100%"
-                      isDisabled={!isValid || !dirty}
                       isLoading={isLoading}
                       type="submit"
                     >
                       Save
                     </Button>
-                  </Flex>{" "}
+                  </Flex>
                 </Form>
               )}
             </Formik>

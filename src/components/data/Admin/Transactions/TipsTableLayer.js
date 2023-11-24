@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   Box,
   Flex,
@@ -15,10 +15,7 @@ import {
 import TableFormat from "../../../common/TableFormat";
 import { formatDate } from "../../../../utils/helpers";
 import { useNavigate } from "react-router-dom";
-import AdminDeleteModal from "../../../modals/AdminDeleteModal";
-import useCustomToast from "../../../../utils/notifications";
 import { BsChevronDown } from "react-icons/bs";
-import { useDeleteCarService } from "../../../../services/admin/query/transactions";
 import TableLoader from "../../../loaders/TableLoader";
 import { viewDeleteOption } from "../../../common/constants";
 
@@ -29,7 +26,6 @@ const TableLayer = ({
   setPage,
   startRow,
   endRow,
-  refetch,
   limit,
   setLimit,
 }) => {
@@ -42,34 +38,8 @@ const TableLayer = ({
     "DATE",
     "ACTIONS",
   ];
-  const { errorToast, successToast } = useCustomToast();
 
   const navigate = useNavigate();
-  const [selectedRow, setSelectedRow] = useState({ isOpen: false, id: null });
-
-  const { mutate, isLoading: isDeleting } = useDeleteCarService({
-    onSuccess: (res) => {
-      successToast(res?.message);
-      refetch();
-      setSelectedRow({ isOen: false, id: null });
-    },
-    onError: (err) => {
-      errorToast(
-        err?.response?.data?.message || err?.message || "An Error occurred"
-      );
-    },
-  });
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    mutate(selectedRow.id);
-  };
-
-  const openOption = (i, transaction) => {
-    i === 0
-      ? navigate(`/admin/transactions/tips/${transaction?.id}`)
-      : i === 1 && setSelectedRow({ isOpen: true, id: transaction.id });
-  };
 
   return (
     <Box>
@@ -131,8 +101,9 @@ const TableLayer = ({
                         border="1px solid #F4F6F8"
                         boxShadow="0px 8px 16px 0px rgba(0, 0, 0, 0.08)"
                       >
-                        {viewDeleteOption.map((dat, i) => (
+                        {viewDeleteOption?.slice(0, 1).map((dat, i) => (
                           <MenuItem
+                            key={i}
                             gap="12px"
                             borderRadius="2px"
                             mb="8px"
@@ -141,7 +112,11 @@ const TableLayer = ({
                             _hover={{ bg: "#F4F6F8" }}
                             align="center"
                             fontWeight="500"
-                            onClick={() => openOption(i, transaction)}
+                            onClick={() =>
+                              navigate(
+                                `/admin/transactions/tips/${transaction?.id}`
+                              )
+                            }
                           >
                             <Icon as={dat.icon} />
                             {dat?.name}
@@ -154,15 +129,6 @@ const TableLayer = ({
               </Tr>
             ))}
           </TableFormat>
-
-          <AdminDeleteModal
-            isOpen={selectedRow.isOpen}
-            onClose={() => setSelectedRow({ ...selectedRow, isOpen: false })}
-            title="Delete Transaction"
-            subTitle="Are you sure you want to delete this transaction?"
-            handleSubmit={handleSubmit}
-            isLoading={isDeleting}
-          />
         </>
       ) : (
         <Flex

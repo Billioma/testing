@@ -426,6 +426,8 @@ export const validateAdminRateSchema = Yup.object().shape({
   service: Yup.object().required("Service is required"),
   rateType: Yup.object().required("Rate Type is required"),
   amount: Yup.string().required("Amount is required"),
+  durationStart: Yup.string().required("Duration Start is required"),
+  durationLimit: Yup.string().required("Duration Limit is required"),
   status: Yup.object().required("Status is required"),
 });
 

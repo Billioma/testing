@@ -13,6 +13,7 @@ export const METRICS_FILTER = (from = "", to = "") =>
   `operator/dashboard/metrics/?from=${from}&to=${to}`;
 export const OPERATOR_PROFILE = "operator/auth/profile";
 export const CREATE_ATTENDANT = "operator/attendants";
+export const GET_OP_ATTENDANTS = "operator/attendants";
 export const GET_ATTENDANTS = (filterString = "", limit = "", page = "") =>
   `operator/attendants?${filterString}&limit=${limit}&page=${page}&sort=id,DESC`;
 export const GET_LOCATIONS = (filterString = "", limit = "", page = "") =>
@@ -49,3 +50,17 @@ export const GET_ZONE = "operator/zones";
 export const GET_POLICY = "operator/policies";
 export const GET_RATE = "operator/rates";
 export const GET_AMENITIES = "public/amenities";
+
+export const OP_PTP = "operator/pay-to-park";
+export const OP_RP = "operator/reservations";
+export const OP_EV = "operator/event-parking";
+export const OP_SERVICE = "operator/service-bookings";
+export const CANCEL_OP_RP = (id = "") => `operator/reservations/cancel/${id}`;
+export const CANCEL_OP_EV = (id = "") => `operator/event-parking/cancel/${id}`;
+export const CANCEL_OP_SERVICE = (id = "") =>
+  `operator/service-bookings/cancel/${id}`;
+
+export const OP_PTP_DETAILS = (id = "") => `operator/pay-to-park/${id}`;
+export const OP_RP_DETAILS = (id = "") => `operator/reservations/${id}`;
+export const OP_EV_DETAILS = (id = "") => `operator/event-parking/${id}`;
+export const OP_SERVICE_DETAILS = (id = "") => `admin/service-bookings/${id}`;

@@ -23,12 +23,17 @@ import {
   validateClientSchema,
 } from "../../../utils/validation";
 import { IoIosArrowDown } from "react-icons/io";
-import { allStates, statusType } from "../../../components/common/constants";
+import {
+  allStates,
+  errorCustomStyles,
+  statusType,
+} from "../../../components/common/constants";
 
 export default function AddClient() {
   const navigate = useNavigate();
   const { errorToast, successToast } = useCustomToast();
   const [show, setShow] = useState(false);
+  const [formSubmitted, setFormSubmitted] = useState(false);
 
   const { mutate, isLoading } = useAddClient({
     onSuccess: () => {
@@ -175,10 +180,14 @@ export default function AddClient() {
                 handleBlur,
                 handleSubmit,
                 setValues,
-                isValid,
-                dirty,
               }) => (
-                <Form onSubmit={handleSubmit}>
+                <Form
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                    setFormSubmitted(true);
+                    handleSubmit(e);
+                  }}
+                >
                   <Box w="full" mb="16px">
                     <Text
                       mb="8px"
@@ -186,7 +195,15 @@ export default function AddClient() {
                       fontWeight={500}
                       color="#444648"
                     >
-                      Name
+                      Name{" "}
+                      <span
+                        style={{
+                          color: "tomato",
+                          fontSize: "13px",
+                        }}
+                      >
+                        *
+                      </span>
                     </Text>
                     <CustomInput
                       mb
@@ -195,7 +212,7 @@ export default function AddClient() {
                       value={values?.name}
                       onChange={handleChange}
                       onBlur={handleBlur}
-                      error={errors?.name && touched?.name && errors?.name}
+                      error={(formSubmitted || touched?.name) && errors?.name}
                     />
                   </Box>
                   <Box w="full" mb="16px">
@@ -205,7 +222,15 @@ export default function AddClient() {
                       fontWeight={500}
                       color="#444648"
                     >
-                      Email Address
+                      Email Address{" "}
+                      <span
+                        style={{
+                          color: "tomato",
+                          fontSize: "13px",
+                        }}
+                      >
+                        *
+                      </span>
                     </Text>
                     <CustomInput
                       mb
@@ -214,7 +239,7 @@ export default function AddClient() {
                       value={values?.email}
                       onChange={handleChange}
                       onBlur={handleBlur}
-                      error={errors?.email && touched?.email && errors?.email}
+                      error={(formSubmitted || touched?.email) && errors?.email}
                     />
                   </Box>
                   <Box w="full" mb="16px">
@@ -224,7 +249,15 @@ export default function AddClient() {
                       fontWeight={500}
                       color="#444648"
                     >
-                      Billing Email(s)
+                      Billing Email(s){" "}
+                      <span
+                        style={{
+                          color: "tomato",
+                          fontSize: "13px",
+                        }}
+                      >
+                        *
+                      </span>
                     </Text>
                     <CustomInput
                       mb
@@ -234,8 +267,7 @@ export default function AddClient() {
                       onChange={handleChange}
                       onBlur={handleBlur}
                       error={
-                        errors?.billingEmail &&
-                        touched?.billingEmail &&
+                        (formSubmitted || touched?.billingEmail) &&
                         errors?.billingEmail
                       }
                     />
@@ -247,7 +279,15 @@ export default function AddClient() {
                       fontWeight={500}
                       color="#444648"
                     >
-                      Contact Person
+                      Contact Person{" "}
+                      <span
+                        style={{
+                          color: "tomato",
+                          fontSize: "13px",
+                        }}
+                      >
+                        *
+                      </span>
                     </Text>
                     <CustomInput
                       mb
@@ -257,8 +297,7 @@ export default function AddClient() {
                       onChange={handleChange}
                       onBlur={handleBlur}
                       error={
-                        errors?.contactPerson &&
-                        touched?.contactPerson &&
+                        (formSubmitted || touched?.contactPerson) &&
                         errors?.contactPerson
                       }
                     />
@@ -270,7 +309,15 @@ export default function AddClient() {
                       color="#444648"
                       fontSize="10px"
                     >
-                      Phone Number
+                      Phone Number{" "}
+                      <span
+                        style={{
+                          color: "tomato",
+                          fontSize: "13px",
+                        }}
+                      >
+                        *
+                      </span>
                     </Text>
                     <CustomInput
                       mb
@@ -289,7 +336,7 @@ export default function AddClient() {
                         });
                       }}
                       onBlur={handleBlur}
-                      error={errors?.phone && touched?.phone && errors?.phone}
+                      error={(formSubmitted || touched?.phone) && errors?.phone}
                       holder="Enter Phone Number"
                     />
                   </Box>
@@ -301,7 +348,15 @@ export default function AddClient() {
                       fontWeight={500}
                       color="#444648"
                     >
-                      Address
+                      Address{" "}
+                      <span
+                        style={{
+                          color: "tomato",
+                          fontSize: "13px",
+                        }}
+                      >
+                        *
+                      </span>
                     </Text>
                     <CustomInput
                       mb
@@ -311,7 +366,7 @@ export default function AddClient() {
                       onChange={handleChange}
                       onBlur={handleBlur}
                       error={
-                        errors?.address && touched?.address && errors?.address
+                        (formSubmitted || touched?.address) && errors?.address
                       }
                     />
                   </Box>
@@ -323,10 +378,22 @@ export default function AddClient() {
                       fontWeight={500}
                       color="#444648"
                     >
-                      State
+                      State{" "}
+                      <span
+                        style={{
+                          color: "tomato",
+                          fontSize: "13px",
+                        }}
+                      >
+                        *
+                      </span>
                     </Text>
                     <Select
-                      styles={customStyles}
+                      styles={
+                        formSubmitted && !values?.state
+                          ? errorCustomStyles
+                          : customStyles
+                      }
                       placeholder="Select state"
                       options={stateOptions}
                       value={values.state}
@@ -349,6 +416,11 @@ export default function AddClient() {
                       }
                       onBlur={handleBlur}
                     />
+                    {formSubmitted && !values?.state && (
+                      <Text mt="8px" fontSize="10px" color="tomato">
+                        State is required
+                      </Text>
+                    )}
                   </Box>
 
                   <Box w="full" mb="16px">
@@ -358,7 +430,15 @@ export default function AddClient() {
                       fontWeight={500}
                       color="#444648"
                     >
-                      Password
+                      Password{" "}
+                      <span
+                        style={{
+                          color: "tomato",
+                          fontSize: "13px",
+                        }}
+                      >
+                        *
+                      </span>
                     </Text>
                     <CustomInput
                       mb
@@ -367,9 +447,7 @@ export default function AddClient() {
                       onChange={handleChange}
                       onBlur={handleBlur}
                       error={
-                        errors?.password &&
-                        touched?.password &&
-                        errors?.password
+                        (formSubmitted || touched?.password) && errors?.password
                       }
                       holder="Enter Password"
                       onClick={() => setShow((prev) => !prev)}
@@ -386,7 +464,15 @@ export default function AddClient() {
                       fontWeight={500}
                       color="#444648"
                     >
-                      Confirm Password
+                      Confirm Password{" "}
+                      <span
+                        style={{
+                          color: "tomato",
+                          fontSize: "13px",
+                        }}
+                      >
+                        *
+                      </span>
                     </Text>
                     <CustomInput
                       mb
@@ -395,8 +481,7 @@ export default function AddClient() {
                       onChange={handleChange}
                       onBlur={handleBlur}
                       error={
-                        errors?.passwordConfirmation &&
-                        touched?.passwordConfirmation &&
+                        (formSubmitted || touched?.passwordConfirmation) &&
                         errors?.passwordConfirmation
                       }
                       holder="Confirm Password"
@@ -414,10 +499,22 @@ export default function AddClient() {
                       fontWeight={500}
                       color="#444648"
                     >
-                      Account Type
+                      Account Type{" "}
+                      <span
+                        style={{
+                          color: "tomato",
+                          fontSize: "13px",
+                        }}
+                      >
+                        *
+                      </span>
                     </Text>
                     <Select
-                      styles={customStyles}
+                      styles={
+                        formSubmitted && !values?.accountType
+                          ? errorCustomStyles
+                          : customStyles
+                      }
                       placeholder="Select account type"
                       options={accountTypes}
                       value={values.accountType}
@@ -440,6 +537,11 @@ export default function AddClient() {
                       }
                       onBlur={handleBlur}
                     />
+                    {formSubmitted && !values?.accountType && (
+                      <Text mt="8px" fontSize="10px" color="tomato">
+                        Account Type is required
+                      </Text>
+                    )}
                   </Box>
 
                   <Box mb="16px">
@@ -449,11 +551,23 @@ export default function AddClient() {
                       fontWeight={500}
                       color="#444648"
                     >
-                      Managers
+                      Managers{" "}
+                      <span
+                        style={{
+                          color: "tomato",
+                          fontSize: "13px",
+                        }}
+                      >
+                        *
+                      </span>
                     </Text>
                     <Select
                       isMulti
-                      styles={customStyles}
+                      styles={
+                        formSubmitted && !values?.managers?.length
+                          ? errorCustomStyles
+                          : customStyles
+                      }
                       placeholder="Select managers"
                       options={managerOptions}
                       value={values.managers}
@@ -474,6 +588,12 @@ export default function AddClient() {
                       }
                       onBlur={handleBlur}
                     />
+
+                    {formSubmitted && !values?.managers?.length && (
+                      <Text mt="8px" fontSize="10px" color="tomato">
+                        Select at least one manager
+                      </Text>
+                    )}
                   </Box>
 
                   <Box>
@@ -483,10 +603,22 @@ export default function AddClient() {
                       fontWeight={500}
                       color="#444648"
                     >
-                      Status
+                      Status{" "}
+                      <span
+                        style={{
+                          color: "tomato",
+                          fontSize: "13px",
+                        }}
+                      >
+                        *
+                      </span>
                     </Text>
                     <Select
-                      styles={customStyles}
+                      styles={
+                        formSubmitted && !values?.status
+                          ? errorCustomStyles
+                          : customStyles
+                      }
                       options={statusOptions}
                       value={values.status}
                       components={{
@@ -508,6 +640,11 @@ export default function AddClient() {
                       }
                       onBlur={handleBlur}
                     />
+                    {formSubmitted && !values?.status && (
+                      <Text mt="8px" fontSize="10px" color="tomato">
+                        Status is required
+                      </Text>
+                    )}
                   </Box>
 
                   <Flex gap="24px" mt="24px">
@@ -521,7 +658,6 @@ export default function AddClient() {
                     <Button
                       variant="adminPrimary"
                       w="100%"
-                      isDisabled={!isValid || !dirty || !values.managers.length}
                       isLoading={isLoading}
                       type="submit"
                     >

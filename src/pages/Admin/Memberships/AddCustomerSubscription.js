@@ -1,7 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Box, Flex, Text, Button, SimpleGrid, Switch } from "@chakra-ui/react";
 import Select from "react-select";
-import { customStyles } from "../../../components/common/constants";
+import {
+  customStyles,
+  errorCustomStyles,
+} from "../../../components/common/constants";
 import { useNavigate } from "react-router-dom";
 import { PRIVATE_PATHS } from "../../../routes/constants";
 import useCustomToast from "../../../utils/notifications";
@@ -16,6 +19,7 @@ import { useGetAllCustomers } from "../../../services/admin/query/customers";
 import { useGetAllLocations } from "../../../services/admin/query/locations";
 import { HiOutlineArrowNarrowLeft } from "react-icons/hi";
 import { IoIosArrowDown } from "react-icons/io";
+import { useGetVehicles } from "../../../services/admin/query/vehicles";
 
 export default function AddCustomerSubscription() {
   const [state, setState] = useState({
@@ -34,7 +38,6 @@ export default function AddCustomerSubscription() {
   const [featureTypes, setFeatureTypes] = useState([]);
 
   const navigate = useNavigate();
-  const [isDisabled, setIsDisabled] = useState(true);
   const { errorToast, successToast } = useCustomToast();
   const { refetch } = useGetCustomerSubscriptions();
 
@@ -51,18 +54,29 @@ export default function AddCustomerSubscription() {
     },
   });
 
+  const convertedFilters = `filter=customer.id||${"cont"}||"${
+    state?.customer
+  }"`;
+
   const { data: customers } = useGetAllCustomers();
   const { data: locations } = useGetAllLocations();
-
+  const { data: vehicles } = useGetVehicles({}, 1, 1000, convertedFilters);
   const customerOptions = customers?.data?.map((customer) => ({
-    label: `${customer.profile?.firstName} ${customer.profile?.lastName}`,
-    value: customer.id,
+    label: `${customer?.profile?.firstName} ${customer?.profile?.lastName}`,
+    value: customer?.id,
   }));
 
   const locationOptions = locations?.data?.map((location) => ({
-    label: location.name,
-    value: parseInt(location.id),
+    label: location?.name,
+    value: parseInt(location?.id),
   }));
+  const vehicleOptions =
+    state.customer === 0
+      ? []
+      : vehicles?.data?.map((car) => ({
+          label: `${car?.licensePlate} - ${car?.make?.name} ${car?.model?.name}`,
+          value: parseInt(car?.id),
+        }));
 
   const intervalOptions = [
     "Hourly",
@@ -76,10 +90,6 @@ export default function AddCustomerSubscription() {
 
   const { data: plans } = useGetMembershipPlans({}, 1, 100000);
 
-  useEffect(() => {
-    setIsDisabled(false);
-  }, [state]);
-
   const handleSelectChange = (selectedOption, { name }) => {
     if (name === "customer") {
       setState({
@@ -90,22 +100,43 @@ export default function AddCustomerSubscription() {
     }
 
     let temp = state?.subscriptionOptions;
-    let tempType;
-    if (name === "vehicle") {
-      tempType = temp?.find((feature) => feature.type === "vehicle");
-      tempType.data = [selectedOption];
+    let tempTypeIndex = temp?.findIndex((feature) => feature.type === name);
+
+    if (tempTypeIndex !== -1) {
+      const objectsWithSameType = temp.filter(
+        (feature) => feature.type === name
+      );
+
+      if (name === "vehicle" || name === "location") {
+        const newData = Array.isArray(selectedOption)
+          ? selectedOption.map((dat) => dat?.value)
+          : selectedOption
+          ? [selectedOption.value]
+          : [];
+
+        objectsWithSameType.forEach((obj) => {
+          obj.data = [...new Set(newData)];
+        });
+      }
+
+      setState({ ...state, subscriptionOptions: [...temp] });
+    } else {
+      const newEntry = {
+        type: name,
+        data:
+          (name === "vehicle" || name === "location") &&
+          (Array.isArray(selectedOption)
+            ? selectedOption.map((dat) => dat?.value)
+            : selectedOption
+            ? [selectedOption.value]
+            : []),
+      };
+
+      setState({
+        ...state,
+        subscriptionOptions: [...temp, newEntry],
+      });
     }
-
-    if (name === "location") {
-      tempType = temp?.find((feature) => feature.type === "location");
-      tempType.data = [selectedOption];
-    }
-
-    const index = temp?.findIndex((el) => el.type === name);
-    temp.splice(index, 1);
-    temp.push(tempType);
-
-    setState({ ...state, subscriptionOptions: temp });
   };
 
   const handleSubmit = (e) => {
@@ -139,7 +170,6 @@ export default function AddCustomerSubscription() {
       subscriptionOptions: temp,
     });
   };
-
   const getFeatureType = (type, limit) => {
     switch (type) {
       case 0:
@@ -155,6 +185,8 @@ export default function AddCustomerSubscription() {
         break;
     }
   };
+
+  const [formSubmitted, setFormSubmitted] = useState(false);
 
   return (
     <Box minH="75vh">
@@ -180,7 +212,23 @@ export default function AddCustomerSubscription() {
             lineHeight="100%"
             cursor="pointer"
             gap="8px"
-            onClick={() => setState({ ...state, membershipPlan: "" })}
+            onClick={() => {
+              setState({
+                ...state,
+                customer: 0,
+                membershipPlan: "",
+                subscriptionOptions: [
+                  {
+                    planFeature: 0,
+                    data: [],
+                  },
+                ],
+                autoRenewal: 0,
+                paymentMethod: 2,
+              });
+              setFormSubmitted(false);
+              setFeatureTypes([]);
+            }}
           >
             <HiOutlineArrowNarrowLeft size={20} />
             Back
@@ -236,74 +284,19 @@ export default function AddCustomerSubscription() {
               </Flex>
             </Box>
 
-            <Box w="full" mb={4}>
-              <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
-                Select a customer
-              </Text>
-              <Select
-                components={{
-                  IndicatorSeparator: () => (
-                    <div style={{ display: "none" }}></div>
-                  ),
-                  DropdownIndicator: () => (
-                    <div>
-                      <IoIosArrowDown size="15px" color="#646668" />
-                    </div>
-                  ),
-                }}
-                styles={customStyles}
-                onChange={({ value }) =>
-                  handleSelectChange(value, { name: "customer" })
-                }
-                options={customerOptions}
-                placeholder="Select customer"
-              />
-            </Box>
-
-            {/* {featureTypes?.find((type) => type["vehicle"]) && (
+            <form
+              onSubmit={(e) => {
+                (featureTypes?.length &&
+                  !state?.subscriptionOptions[0]?.data?.length) ||
+                !state?.customer
+                  ? setFormSubmitted(true)
+                  : (setFormSubmitted(true), handleSubmit(e));
+                e.preventDefault();
+              }}
+            >
               <Box w="full" mb={4}>
                 <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
-                  {featureTypes?.find((type) => type["vehicle"]).limit > 1
-                    ? `Select up to ${limit} vehicles`
-                    : "Select a vehicle"}
-                </Text>
-                <Select
-                 components={{
-                    IndicatorSeparator: () => (
-                      <div style={{ display: "none" }}></div>
-                    ),
-                    DropdownIndicator: () => (
-                      <div>
-                        <IoIosArrowDown size="15px" color="#646668" />
-                      </div>
-                    ),
-                  }}
-                  styles={customStyles}
-                  onChange={({ value }) =>
-                    handleSelectChange(value, { name: "vehicle" })
-                  }
-                  isMulti={
-                    featureTypes?.find((type) => type["vehicle"]).limit > 1
-                  }
-                  options={vehicles?.data
-                    ?.filter(
-                      (vehicle) => vehicle?.customer?.id == state?.customer
-                    )
-                    ?.map((vehicle) => ({
-                      label: `${vehicle.color} - ${vehicle?.make?.name} - ${vehicle?.model?.name}`,
-                      value: parseInt(vehicle.id),
-                    }))}
-                  placeholder="Select vehicles"
-                />
-              </Box>
-            )} */}
-
-            {featureTypes?.find((type) => type["location"]) && (
-              <Box w="full" mb={4}>
-                <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
-                  {featureTypes?.find((type) => type["location"]).limit > 1
-                    ? `Select up to ${limit} locations`
-                    : " Select a location"}
+                  Select a customer
                 </Text>
                 <Select
                   components={{
@@ -316,60 +309,205 @@ export default function AddCustomerSubscription() {
                       </div>
                     ),
                   }}
-                  styles={customStyles}
+                  styles={
+                    formSubmitted && !state?.customer
+                      ? errorCustomStyles
+                      : customStyles
+                  }
                   onChange={({ value }) =>
-                    handleSelectChange(value, { name: "location" })
+                    handleSelectChange(value, { name: "customer" })
                   }
-                  isMulti={
-                    featureTypes?.find((type) => type["location"]).limit > 1
-                  }
-                  options={locationOptions}
-                  placeholder="Select location"
+                  options={customerOptions}
+                  placeholder="Select customer"
                 />
+                {formSubmitted && !state?.customer && (
+                  <Text mt="5px" fontSize="10px" color="tomato">
+                    Customer is required
+                  </Text>
+                )}
               </Box>
-            )}
 
-            <Flex
-              align="center"
-              justifyContent={"space-between"}
-              gap="15px"
-              mb="16px"
-            >
-              <Text fontSize="12px" fontWeight={500} color="#444648">
-                Renew Automatically
-              </Text>
-              <Switch
-                onChange={() =>
-                  setState({
-                    ...state,
-                    autoRenewal: state?.autoRenewal ? 0 : 1,
-                  })
-                }
-                size="sm"
-                variant="adminPrimary"
-              />
-            </Flex>
+              {state?.customer !== 0 &&
+                featureTypes?.find((type) => type["vehicle"]) && (
+                  <Box w="full" mb={4}>
+                    <Text
+                      mb="8px"
+                      fontSize="10px"
+                      fontWeight={500}
+                      color="#444648"
+                    >
+                      {featureTypes?.find((type) => type["vehicle"])?.vehicle >
+                      1
+                        ? `Select up to ${
+                            featureTypes?.find((type) => type["vehicle"])
+                              ?.vehicle
+                          } vehicles`
+                        : "Select a vehicle"}
+                    </Text>
 
-            <Flex gap={4} mt={4}>
-              <Button
-                variant="adminSecondary"
-                w="45%"
-                onClick={() =>
-                  navigate(PRIVATE_PATHS.ADMIN_CUSTOMER_SUBSCRIPTIONS)
-                }
+                    <Select
+                      components={{
+                        IndicatorSeparator: () => (
+                          <div style={{ display: "none" }}></div>
+                        ),
+                        DropdownIndicator: () => (
+                          <div>
+                            <IoIosArrowDown size="15px" color="#646668" />
+                          </div>
+                        ),
+                      }}
+                      isOptionDisabled={() =>
+                        state.subscriptionOptions?.find(
+                          (item) => item?.type === "vehicle"
+                        )?.data?.length ===
+                        featureTypes?.find((type) => type["vehicle"])?.vehicle
+                          ? true
+                          : false
+                      }
+                      styles={
+                        featureTypes?.length &&
+                        featureTypes?.find((type) => type["vehicle"]) &&
+                        formSubmitted &&
+                        !state?.subscriptionOptions?.find(
+                          (item) => item?.type === "vehicle"
+                        )?.data?.length
+                          ? errorCustomStyles
+                          : customStyles
+                      }
+                      onChange={(selectedOption) =>
+                        handleSelectChange(selectedOption, {
+                          name: "vehicle",
+                        })
+                      }
+                      isMulti={
+                        featureTypes?.find((type) => type["vehicle"])?.vehicle >
+                        1
+                      }
+                      options={vehicleOptions}
+                      placeholder="Select vehicles"
+                    />
+                    {formSubmitted &&
+                      featureTypes?.find((type) => type["vehicle"]) &&
+                      !state?.subscriptionOptions?.find(
+                        (item) => item?.type === "vehicle"
+                      )?.data?.length && (
+                        <Text mt="5px" fontSize="10px" color="tomato">
+                          Select at least one vehicle
+                        </Text>
+                      )}
+                  </Box>
+                )}
+              {state?.customer !== 0 &&
+                featureTypes?.find((type) => type["location"]) && (
+                  <Box w="full" mb={4}>
+                    <Text
+                      mb="8px"
+                      fontSize="10px"
+                      fontWeight={500}
+                      color="#444648"
+                    >
+                      {featureTypes?.find((type) => type["location"])
+                        ?.location > 1
+                        ? `Select up to ${
+                            featureTypes?.find((type) => type["location"])
+                              ?.location
+                          } locations`
+                        : " Select a location"}
+                    </Text>
+                    <Select
+                      components={{
+                        IndicatorSeparator: () => (
+                          <div style={{ display: "none" }}></div>
+                        ),
+                        DropdownIndicator: () => (
+                          <div>
+                            <IoIosArrowDown size="15px" color="#646668" />
+                          </div>
+                        ),
+                      }}
+                      isOptionDisabled={() =>
+                        state.subscriptionOptions?.find(
+                          (item) => item?.type === "location"
+                        )?.data?.length ===
+                        featureTypes?.find((type) => type["location"])?.location
+                          ? true
+                          : false
+                      }
+                      styles={
+                        featureTypes?.length &&
+                        featureTypes?.find((type) => type["location"]) &&
+                        formSubmitted &&
+                        !state?.subscriptionOptions?.find(
+                          (item) => item?.type === "location"
+                        )?.data?.length
+                          ? errorCustomStyles
+                          : customStyles
+                      }
+                      onChange={(selectedOption) =>
+                        handleSelectChange(selectedOption, {
+                          name: "location",
+                        })
+                      }
+                      isMulti={
+                        featureTypes?.find((type) => type["location"])
+                          ?.location > 1
+                      }
+                      options={locationOptions}
+                      placeholder="Select location"
+                    />
+                    {formSubmitted &&
+                      featureTypes?.find((type) => type["location"]) &&
+                      !state?.subscriptionOptions?.find(
+                        (item) => item?.type === "location"
+                      )?.data?.length && (
+                        <Text mt="5px" fontSize="10px" color="tomato">
+                          Select at least one location
+                        </Text>
+                      )}
+                  </Box>
+                )}
+
+              <Flex
+                align="center"
+                justifyContent={"space-between"}
+                gap="15px"
+                mb="16px"
               >
-                Cancel
-              </Button>
-              <Button
-                variant="adminPrimary"
-                w="55%"
-                isDisabled={isDisabled}
-                isLoading={isLoading}
-                onClick={handleSubmit}
-              >
-                Save
-              </Button>
-            </Flex>
+                <Text fontSize="12px" fontWeight={500} color="#444648">
+                  Renew Automatically
+                </Text>
+                <Switch
+                  onChange={() =>
+                    setState({
+                      ...state,
+                      autoRenewal: state?.autoRenewal ? 0 : 1,
+                    })
+                  }
+                  size="sm"
+                  variant="adminPrimary"
+                />
+              </Flex>
+
+              <Flex gap={4} mt={4}>
+                <Button
+                  variant="adminSecondary"
+                  w="45%"
+                  onClick={() =>
+                    navigate(PRIVATE_PATHS.ADMIN_CUSTOMER_SUBSCRIPTIONS)
+                  }
+                >
+                  Cancel
+                </Button>
+                <Button
+                  variant="adminPrimary"
+                  w="55%"
+                  isLoading={isLoading}
+                  type="submit"
+                >
+                  Save
+                </Button>
+              </Flex>
+            </form>
           </Flex>
         ) : (
           <Box border="1px solid #E4E6E8" w="full" p={5} borderRadius="8px">

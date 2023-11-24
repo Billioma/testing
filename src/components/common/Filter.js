@@ -5,7 +5,7 @@ import Select from "react-select";
 import { MdClose } from "react-icons/md";
 import CustomInput from "./CustomInput";
 import {
-  PaymentMethods,
+  OnlinePaymentMethods,
   TransactionTypes,
   IntervalType,
   searchOption,
@@ -92,7 +92,7 @@ const Filter = ({
     "OTHERS",
   ].map((type) => ({ label: type, value: type }));
 
-  const payOptions = PaymentMethods.map((payment, i) => ({
+  const payOptions = OnlinePaymentMethods.map((payment, i) => ({
     value: i,
     label: payment,
   }));
@@ -531,7 +531,9 @@ const Filter = ({
                   {dat?.dropFilter === "Payment_Method"
                     ? ["CARD", "WALLET"]?.find((item, i) => i === dat?.filter)
                     : dat?.title === "paymentMethod"
-                    ? PaymentMethods?.find((item, i) => i === dat?.filter)
+                    ? OnlinePaymentMethods?.find((item, i) => i === dat?.filter)
+                    : dat?.title === "transaction.paymentMethod"
+                    ? OnlinePaymentMethods?.find((item, i) => i === dat?.filter)
                     : dat?.title === "transactionType"
                     ? TransactionTypes?.find((item, i) => i === dat?.filter)
                     : dat?.title === "featureType"

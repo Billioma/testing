@@ -44,6 +44,7 @@ export default function ViewRole() {
       );
     },
   });
+  const [formSubmitted, setFormSubmitted] = useState(false);
   const main = permissionList?.data;
 
   const handleSubmit = () => {
@@ -100,6 +101,8 @@ export default function ViewRole() {
     setValues({ ...values, permissions: temp });
   };
 
+  const isDisabled = Object.values(values).some((value) => !value);
+
   return (
     <Box minH="75vh">
       {" "}
@@ -132,53 +135,92 @@ export default function ViewRole() {
             flexDir="column"
             border="1px solid #E4E6E8"
           >
-            <Box w="full" mb={4}>
-              <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
-                Name
-              </Text>
-              <CustomInput
-                auth
-                value={values?.name}
-                mb
-                holder="Enter role name"
-                onChange={(e) => setValues({ ...values, name: e.target.value })}
-              />
-            </Box>
+            <form
+              onSubmit={(e) => {
+                isDisabled
+                  ? setFormSubmitted(true)
+                  : (setFormSubmitted(true), handleSubmit(e));
+                e.preventDefault();
+              }}
+            >
+              <Box w="full" mb={4}>
+                <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
+                  Name{" "}
+                  <span
+                    style={{
+                      color: "tomato",
+                      fontSize: "13px",
+                    }}
+                  >
+                    *
+                  </span>
+                </Text>
+                <CustomInput
+                  auth
+                  value={values?.name}
+                  mb
+                  holder="Enter role name"
+                  onChange={(e) =>
+                    setValues({ ...values, name: e.target.value })
+                  }
+                  error={formSubmitted && !values?.name ? true : false}
+                />
 
-            <Box w="full" mb={4}>
-              <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
-                Display Name
-              </Text>
+                {formSubmitted && !values?.name && (
+                  <Text mt="-3px" fontSize="10px" color="tomato">
+                    Name is required
+                  </Text>
+                )}
+              </Box>
 
-              <CustomInput
-                auth
-                value={values?.displayName}
-                mb
-                holder="Enter display name"
-                onChange={(e) =>
-                  setValues({ ...values, displayName: e.target.value })
-                }
-              />
-            </Box>
+              <Box w="full" mb={4}>
+                <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
+                  Display Name{" "}
+                  <span
+                    style={{
+                      color: "tomato",
+                      fontSize: "13px",
+                    }}
+                  >
+                    *
+                  </span>
+                </Text>
 
-            <Flex gap={4} mt={4}>
-              <Button
-                variant="adminSecondary"
-                w="100%"
-                onClick={() => navigate(PRIVATE_PATHS.ADMIN_CONFIG_ROLES)}
-              >
-                Cancel
-              </Button>
-              <Button
-                variant="adminPrimary"
-                w="100%"
-                isDisabled={!values?.name || !values?.displayName}
-                isLoading={isUpdating}
-                onClick={() => handleSubmit()}
-              >
-                Save
-              </Button>
-            </Flex>
+                <CustomInput
+                  auth
+                  value={values?.displayName}
+                  mb
+                  error={formSubmitted && !values?.displayName ? true : false}
+                  holder="Enter display name"
+                  onChange={(e) =>
+                    setValues({ ...values, displayName: e.target.value })
+                  }
+                />
+                {formSubmitted && !values?.displayName && (
+                  <Text mt="-3px" fontSize="10px" color="tomato">
+                    Display Name is required
+                  </Text>
+                )}
+              </Box>
+
+              <Flex gap={4} mt={4}>
+                <Button
+                  variant="adminSecondary"
+                  w="100%"
+                  onClick={() => navigate(PRIVATE_PATHS.ADMIN_CONFIG_ROLES)}
+                >
+                  Cancel
+                </Button>
+                <Button
+                  variant="adminPrimary"
+                  w="100%"
+                  type="submit"
+                  isLoading={isUpdating}
+                >
+                  Save
+                </Button>
+              </Flex>
+            </form>
           </Flex>
 
           <Flex flexDir={"column"} w="100%">

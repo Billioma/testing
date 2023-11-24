@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Box, Button, Flex, Image, Text } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import { PRIVATE_PATHS } from "../../../routes/constants";
-import { useGetVehicleList } from "../../../services/admin/query/vehicles";
+import { useGetVehicles } from "../../../services/admin/query/vehicles";
 import TableLayer from "../../../components/data/Admin/Vehicles/TableLayer";
 import Filter from "../../../components/common/Filter";
 import { vehiclesOptions } from "../../../components/common/constants";
@@ -24,12 +24,34 @@ export default function () {
 
   const query = convertedFilters?.join("&");
 
-  const { mutate, data, isLoading } = useGetVehicleList();
+  const [isRefetch, setIsRefetch] = useState(false);
+
+  const { data, isLoading, refetch } = useGetVehicles(
+    {
+      refetchOnWindowFocus: true,
+      onSuccess: () => {
+        setIsRefetch(false);
+      },
+      onError: () => {
+        setIsRefetch(false);
+      },
+      onSettled: () => {
+        setIsRefetch(false);
+      },
+    },
+    page,
+    limit,
+    query
+  );
 
   useEffect(() => {
-    mutate({ filterString: query, limit, page: page });
-  }, [page, query, limit]);
+    refetch();
+  }, []);
 
+  const handleRefreshClick = async () => {
+    setIsRefetch(true);
+    await refetch();
+  };
   useEffect(() => {
     setPage(1);
   }, [limit]);
@@ -84,14 +106,14 @@ export default function () {
               cursor="pointer"
               transition=".3s ease-in-out"
               _hover={{ bg: "#F4F6F8" }}
-              onClick={() => mutate({ filterString: query, limit, page: page })}
+              onClick={handleRefreshClick}
               borderRadius="8px"
               border="1px solid #848688"
               p="10px"
             >
               <Image
                 src="/assets/refresh.svg"
-                className={isLoading && "mirrored-icon"}
+                className={isRefetch && "mirrored-icon"}
                 w="20px"
                 h="20px"
               />
@@ -108,7 +130,7 @@ export default function () {
         setPage={setPage}
         startRow={startRow}
         endRow={endRow}
-        refetch={() => mutate({ filterString: query, limit, page: page })}
+        refetch={refetch}
         setLimit={setLimit}
       />
     </Box>

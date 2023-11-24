@@ -9,7 +9,7 @@ import {
   Text,
 } from "@chakra-ui/react";
 import CustomerTableLayer from "../../../components/data/Admin/Reports/CustomerTableLayer";
-import { useGetAdminRep } from "../../../services/admin/query/reports";
+import { useGetReports } from "../../../services/admin/query/reports";
 import CustomerExport from "../../../components/data/Admin/Reports/CustomerExport";
 import Filter from "../../../components/common/Filter";
 import { customersReportOptions } from "../../../components/common/constants";
@@ -28,11 +28,34 @@ const Customers = () => {
   });
 
   const query = convertedFilters?.join("&");
-  const { mutate, data, isLoading } = useGetAdminRep();
+  const [isRefetch, setIsRefetch] = useState(false);
+  const { data, isLoading, refetch } = useGetReports(
+    {
+      refetchOnWindowFocus: true,
+      onSuccess: () => {
+        setIsRefetch(false);
+      },
+      onError: () => {
+        setIsRefetch(false);
+      },
+      onSettled: () => {
+        setIsRefetch(false);
+      },
+    },
+    "customers",
+    page,
+    limit,
+    query
+  );
 
   useEffect(() => {
-    mutate({ type: "customers", filterString: query, limit, page: page });
-  }, [page, query, limit]);
+    refetch();
+  }, []);
+
+  const handleRefreshClick = async () => {
+    setIsRefetch(true);
+    await refetch();
+  };
 
   useEffect(() => {
     setPage(1);
@@ -129,21 +152,14 @@ const Customers = () => {
                 cursor="pointer"
                 transition=".3s ease-in-out"
                 _hover={{ bg: "#F4F6F8" }}
-                onClick={() =>
-                  mutate({
-                    type: "customers",
-                    filterString: query,
-                    limit,
-                    page: page,
-                  })
-                }
+                onClick={handleRefreshClick}
                 borderRadius="8px"
                 border="1px solid #848688"
                 p="10px"
               >
                 <Image
                   src="/assets/refresh.svg"
-                  className={isLoading && "mirrored-icon"}
+                  className={isRefetch && "mirrored-icon"}
                   w="20px"
                   h="20px"
                 />

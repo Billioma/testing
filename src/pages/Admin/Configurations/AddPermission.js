@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Box, Flex, Text, Button } from "@chakra-ui/react";
 import CustomInput from "../../../components/common/CustomInput";
 import { useNavigate } from "react-router-dom";
@@ -15,7 +15,7 @@ import { useAddPermission } from "../../../services/admin/query/configurations";
 export default function AddPermissions() {
   const navigate = useNavigate();
   const { errorToast, successToast } = useCustomToast();
-
+  const [formSubmitted, setFormSubmitted] = useState(false);
   const { mutate, isLoading } = useAddPermission({
     onSuccess: () => {
       successToast("Permission added successfully!");
@@ -68,10 +68,14 @@ export default function AddPermissions() {
                 handleChange,
                 handleBlur,
                 handleSubmit,
-                isValid,
-                dirty,
               }) => (
-                <Form onSubmit={handleSubmit}>
+                <Form
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                    setFormSubmitted(true);
+                    handleSubmit(e);
+                  }}
+                >
                   <Box w="full" mb="16px">
                     <Text
                       mb="8px"
@@ -79,7 +83,15 @@ export default function AddPermissions() {
                       fontWeight={500}
                       color="#444648"
                     >
-                      Name
+                      Name{" "}
+                      <span
+                        style={{
+                          color: "tomato",
+                          fontSize: "13px",
+                        }}
+                      >
+                        *
+                      </span>
                     </Text>
                     <CustomInput
                       mb
@@ -88,7 +100,7 @@ export default function AddPermissions() {
                       value={values?.name}
                       onChange={handleChange}
                       onBlur={handleBlur}
-                      error={errors?.name && touched?.name && errors?.name}
+                      error={(formSubmitted || touched?.name) && errors?.name}
                     />
                   </Box>
                   <Box w="full" mb="16px">
@@ -98,7 +110,15 @@ export default function AddPermissions() {
                       fontWeight={500}
                       color="#444648"
                     >
-                      Display Name
+                      Display Name{" "}
+                      <span
+                        style={{
+                          color: "tomato",
+                          fontSize: "13px",
+                        }}
+                      >
+                        *
+                      </span>
                     </Text>
                     <CustomInput
                       mb
@@ -108,8 +128,7 @@ export default function AddPermissions() {
                       onChange={handleChange}
                       onBlur={handleBlur}
                       error={
-                        errors?.displayName &&
-                        touched?.displayName &&
+                        (formSubmitted || touched?.displayName) &&
                         errors?.displayName
                       }
                     />
@@ -121,7 +140,15 @@ export default function AddPermissions() {
                       fontWeight={500}
                       color="#444648"
                     >
-                      Group Name
+                      Group Name{" "}
+                      <span
+                        style={{
+                          color: "tomato",
+                          fontSize: "13px",
+                        }}
+                      >
+                        *
+                      </span>
                     </Text>
                     <CustomInput
                       mb
@@ -131,8 +158,7 @@ export default function AddPermissions() {
                       onChange={handleChange}
                       onBlur={handleBlur}
                       error={
-                        errors?.tableName &&
-                        touched?.tableName &&
+                        (formSubmitted || touched?.tableName) &&
                         errors?.tableName
                       }
                     />
@@ -151,7 +177,6 @@ export default function AddPermissions() {
                     <Button
                       variant="adminPrimary"
                       w="100%"
-                      isDisabled={!isValid || !dirty}
                       isLoading={isLoading}
                       type="submit"
                     >

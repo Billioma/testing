@@ -13,7 +13,7 @@ import {
   operatorPayGrid,
   paymentsOptions,
 } from "../../../components/common/constants";
-import { useGetAdminRep } from "../../../services/admin/query/reports";
+import { useGetReports } from "../../../services/admin/query/reports";
 import PayExport from "../../../components/data/Admin/Reports/PayExport";
 import Filter from "../../../components/common/Filter";
 
@@ -31,11 +31,34 @@ const Payments = () => {
   });
 
   const query = convertedFilters?.join("&");
-  const { mutate, data, isLoading } = useGetAdminRep();
+  const [isRefetch, setIsRefetch] = useState(false);
+  const { data, isLoading, refetch } = useGetReports(
+    {
+      refetchOnWindowFocus: true,
+      onSuccess: () => {
+        setIsRefetch(false);
+      },
+      onError: () => {
+        setIsRefetch(false);
+      },
+      onSettled: () => {
+        setIsRefetch(false);
+      },
+    },
+    "payments",
+    page,
+    limit,
+    query
+  );
 
   useEffect(() => {
-    mutate({ type: "payments", filterString: query, limit, page: page });
-  }, [page, query, limit]);
+    refetch();
+  }, []);
+
+  const handleRefreshClick = async () => {
+    setIsRefetch(true);
+    await refetch();
+  };
 
   useEffect(() => {
     setPage(1);
@@ -162,21 +185,14 @@ const Payments = () => {
                 cursor="pointer"
                 transition=".3s ease-in-out"
                 _hover={{ bg: "#F4F6F8" }}
-                onClick={() =>
-                  mutate({
-                    type: "payments",
-                    filterString: query,
-                    limit,
-                    page: page,
-                  })
-                }
+                onClick={handleRefreshClick}
                 borderRadius="8px"
                 border="1px solid #848688"
                 p="10px"
               >
                 <Image
                   src="/assets/refresh.svg"
-                  className={isLoading && "mirrored-icon"}
+                  className={isRefetch && "mirrored-icon"}
                   w="20px"
                   h="20px"
                 />

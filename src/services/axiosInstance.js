@@ -1,5 +1,5 @@
 import axios from "axios";
-import { getAccessToken } from "../utils/helpers";
+import { REFRESH_TOKEN } from "./customer/url";
 
 const baseURL = process.env.REACT_APP_BASE_URL;
 
@@ -74,6 +74,30 @@ const onRequestError = (error) => {
 const onResponse = (response) => {
   return response;
 };
+
+const pathPrefix =
+  location.pathname.match(/(operator|admin|client)\//)?.[0] || "customer";
+const newPath = pathPrefix?.replace("/", "");
+const refreshAccessToken = async (refreshToken) => {
+  try {
+    const response = await refreshInstance.get(
+      `${`${newPath}` + REFRESH_TOKEN}`,
+      {
+        headers: {
+          Authorization: `Bearer ${refreshToken}`,
+        },
+      }
+    );
+
+    const newAccessToken = response.data;
+
+    localStorage.setItem(newPath, JSON.stringify(newAccessToken));
+  } catch (error) {
+    console.error("Error refreshing access token:", error);
+    throw error;
+  }
+};
+
 const onResponseError = async (error) => {
   const userTypes = ["operator", "admin", "client", "customer"];
   const user = userTypes
@@ -83,21 +107,12 @@ const onResponseError = async (error) => {
         : null
     )
     .find((user) => user !== null);
-
   const statusCode = error.response?.status;
-  const originalRequest = error.config;
-
   if (statusCode === 401 && user) {
     try {
-      const { data } = await getAccessToken();
-      const newData = { ...user, access_token: data.access_token };
+      await refreshAccessToken(user.refresh_token);
 
-      localStorage.setItem(
-        userTypes.find((type) => location.pathname.includes(type)),
-        JSON.stringify(newData)
-      );
-
-      return axiosInstance(originalRequest);
+      return axiosInstance(error.config);
     } catch (refreshError) {
       console.error("Error refreshing token:", refreshError);
     }

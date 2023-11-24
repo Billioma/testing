@@ -10,7 +10,11 @@ import {
   Image,
 } from "@chakra-ui/react";
 import CustomInput from "../../../components/common/CustomInput";
-import { customStyles, statusType } from "../../../components/common/constants";
+import {
+  customStyles,
+  errorCustomStyles,
+  statusType,
+} from "../../../components/common/constants";
 import Select from "react-select";
 import { useNavigate } from "react-router-dom";
 import { PRIVATE_PATHS } from "../../../routes/constants";
@@ -32,6 +36,7 @@ import { useGetZones } from "../../../services/admin/query/locations";
 
 export default function AddEvent() {
   const navigate = useNavigate();
+  const [formSubmitted, setFormSubmitted] = useState(false);
   const { errorToast, successToast } = useCustomToast();
   const { mutate, isLoading } = useAddClientEvent({
     onSuccess: () => {
@@ -181,10 +186,14 @@ export default function AddEvent() {
                 handleBlur,
                 handleSubmit,
                 setValues,
-                isValid,
-                dirty,
               }) => (
-                <Form onSubmit={handleSubmit}>
+                <Form
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                    setFormSubmitted(true);
+                    handleSubmit(e);
+                  }}
+                >
                   <Box w="full" mb={4}>
                     <Text
                       mb="8px"
@@ -192,7 +201,15 @@ export default function AddEvent() {
                       fontWeight={500}
                       color="#444648"
                     >
-                      Event Name
+                      Event Name{" "}
+                      <span
+                        style={{
+                          color: "tomato",
+                          fontSize: "13px",
+                        }}
+                      >
+                        *
+                      </span>
                     </Text>
                     <CustomInput
                       auth
@@ -202,7 +219,7 @@ export default function AddEvent() {
                       value={values?.name}
                       onChange={handleChange}
                       onBlur={handleBlur}
-                      error={errors?.name && touched?.name && errors?.name}
+                      error={(formSubmitted || touched?.name) && errors?.name}
                     />
                   </Box>
 
@@ -213,7 +230,15 @@ export default function AddEvent() {
                       fontWeight={500}
                       color="#444648"
                     >
-                      Event Description
+                      Event Description{" "}
+                      <span
+                        style={{
+                          color: "tomato",
+                          fontSize: "13px",
+                        }}
+                      >
+                        *
+                      </span>
                     </Text>
                     <CustomInput
                       auth
@@ -224,8 +249,7 @@ export default function AddEvent() {
                       onChange={handleChange}
                       onBlur={handleBlur}
                       error={
-                        errors?.description &&
-                        touched?.description &&
+                        (formSubmitted || touched?.description) &&
                         errors?.description
                       }
                     />
@@ -238,7 +262,15 @@ export default function AddEvent() {
                       fontWeight={500}
                       color="#444648"
                     >
-                      Event Address
+                      Event Address{" "}
+                      <span
+                        style={{
+                          color: "tomato",
+                          fontSize: "13px",
+                        }}
+                      >
+                        *
+                      </span>
                     </Text>
                     <CustomInput
                       auth
@@ -249,7 +281,7 @@ export default function AddEvent() {
                       onChange={handleChange}
                       onBlur={handleBlur}
                       error={
-                        errors?.address && touched?.address && errors?.address
+                        (formSubmitted || touched?.address) && errors?.address
                       }
                     />
                   </Box>
@@ -272,7 +304,7 @@ export default function AddEvent() {
                       onChange={handleChange}
                       onBlur={handleBlur}
                       error={
-                        errors?.website && touched?.website && errors?.website
+                        (formSubmitted || touched?.website) && errors?.website
                       }
                     />
                   </Box>
@@ -284,7 +316,15 @@ export default function AddEvent() {
                       color="#444648"
                       fontSize="10px"
                     >
-                      Event Start Date & Timee
+                      Event Start Date & Time{" "}
+                      <span
+                        style={{
+                          color: "tomato",
+                          fontSize: "13px",
+                        }}
+                      >
+                        *
+                      </span>
                     </Text>
                     <DateTimePicker
                       selectedDate={values?.eventStartDateTime}
@@ -293,6 +333,12 @@ export default function AddEvent() {
                       }}
                       hasTime
                     />
+
+                    {formSubmitted && !values?.eventStartDateTime && (
+                      <Text mt="8px" fontSize="10px" color="tomato">
+                        Start Date is required
+                      </Text>
+                    )}
                   </Box>
 
                   <Box mb={4}>
@@ -302,7 +348,15 @@ export default function AddEvent() {
                       color="#444648"
                       fontSize="10px"
                     >
-                      Event End Date & Timee
+                      Event End Date & Time{" "}
+                      <span
+                        style={{
+                          color: "tomato",
+                          fontSize: "13px",
+                        }}
+                      >
+                        *
+                      </span>
                     </Text>
                     <DateTimePicker
                       selectedDate={values?.eventEndDateTime}
@@ -311,6 +365,12 @@ export default function AddEvent() {
                       }}
                       hasTime
                     />
+
+                    {formSubmitted && !values?.eventEndDateTime && (
+                      <Text mt="8px" fontSize="10px" color="tomato">
+                        End Date is required
+                      </Text>
+                    )}
                   </Box>
 
                   {values?.eventEndDateTime < values?.eventStartDateTime && (
@@ -331,10 +391,22 @@ export default function AddEvent() {
                       fontWeight={500}
                       color="#444648"
                     >
-                      Client
+                      Client{" "}
+                      <span
+                        style={{
+                          color: "tomato",
+                          fontSize: "13px",
+                        }}
+                      >
+                        *
+                      </span>
                     </Text>
                     <Select
-                      styles={customStyles}
+                      styles={
+                        formSubmitted && !values?.client
+                          ? errorCustomStyles
+                          : customStyles
+                      }
                       placeholder="Select client"
                       options={clientOptions}
                       name="client"
@@ -356,6 +428,12 @@ export default function AddEvent() {
                         ),
                       }}
                     />
+
+                    {formSubmitted && !values?.client && (
+                      <Text mt="8px" fontSize="10px" color="tomato">
+                        Client is required
+                      </Text>
+                    )}
                   </Box>
                   <Box w="full" mb={4}>
                     <Text
@@ -364,11 +442,23 @@ export default function AddEvent() {
                       fontWeight={500}
                       color="#444648"
                     >
-                      Assign Zones
+                      Assign Zones{" "}
+                      <span
+                        style={{
+                          color: "tomato",
+                          fontSize: "13px",
+                        }}
+                      >
+                        *
+                      </span>
                     </Text>
                     <Select
                       isMulti
-                      styles={customStyles}
+                      styles={
+                        formSubmitted && !values?.zones?.length
+                          ? errorCustomStyles
+                          : customStyles
+                      }
                       placeholder="Select zone"
                       options={zoneOptions}
                       name="zones"
@@ -390,6 +480,12 @@ export default function AddEvent() {
                         ),
                       }}
                     />
+
+                    {formSubmitted && !values?.zones?.length && (
+                      <Text mt="8px" fontSize="10px" color="tomato">
+                        Select at least one zone
+                      </Text>
+                    )}
                   </Box>
 
                   <Box mb={4}>
@@ -399,10 +495,22 @@ export default function AddEvent() {
                       fontWeight={500}
                       color="#444648"
                     >
-                      Event Status
+                      Event Status{" "}
+                      <span
+                        style={{
+                          color: "tomato",
+                          fontSize: "13px",
+                        }}
+                      >
+                        *
+                      </span>
                     </Text>
                     <Select
-                      styles={customStyles}
+                      styles={
+                        formSubmitted && !values?.status
+                          ? errorCustomStyles
+                          : customStyles
+                      }
                       options={statusOptions}
                       name="status"
                       onChange={(selectedOption) =>
@@ -423,6 +531,11 @@ export default function AddEvent() {
                         ),
                       }}
                     />
+                    {formSubmitted && !values?.status && (
+                      <Text mt="8px" fontSize="10px" color="tomato">
+                        Status is required
+                      </Text>
+                    )}
                   </Box>
 
                   <Flex
@@ -467,7 +580,10 @@ export default function AddEvent() {
                         value={values?.price}
                         onChange={handleChange}
                         onBlur={handleBlur}
-                        error={errors?.price && touched?.price && errors?.price}
+                        error={
+                          (formSubmitted || touched?.paymentRequired) &&
+                          errors?.paymentRequired
+                        }
                       />
                     </Box>
                   ) : null}
@@ -483,15 +599,6 @@ export default function AddEvent() {
                     <Button
                       variant="adminPrimary"
                       w="100%"
-                      isDisabled={
-                        values?.paymentRequired
-                          ? !values?.price
-                          : "" ||
-                            !isValid ||
-                            !dirty ||
-                            values?.eventEndDateTime <
-                              values?.eventStartDateTime
-                      }
                       isLoading={isLoading}
                       type="submit"
                     >

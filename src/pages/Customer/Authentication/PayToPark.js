@@ -125,7 +125,7 @@ const PayToPark = () => {
       }}
       px="10px"
       cursor="pointer"
-      _hover={{ bg: "#fff" }}
+      _hover={{ bg: "#f4f6f8" }}
       gap="8px"
       align="center"
       h="40px"

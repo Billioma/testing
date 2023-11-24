@@ -9,7 +9,7 @@ import {
   Text,
 } from "@chakra-ui/react";
 import TipsTableLayer from "../../../components/data/Operator/Reports/TipsTableLayer";
-import { useGetAdminRep } from "../../../services/admin/query/reports";
+import { useGetReports } from "../../../services/admin/query/reports";
 import TipsExport from "../../../components/data/Admin/Reports/TipsExport";
 import Filter from "../../../components/common/Filter";
 import { adminTipReportOptions } from "../../../components/common/constants";
@@ -28,11 +28,34 @@ const Tips = () => {
   });
 
   const query = convertedFilters?.join("&");
-  const { mutate, data, isLoading } = useGetAdminRep();
+  const [isRefetch, setIsRefetch] = useState(false);
+  const { data, isLoading, refetch } = useGetReports(
+    {
+      refetchOnWindowFocus: true,
+      onSuccess: () => {
+        setIsRefetch(false);
+      },
+      onError: () => {
+        setIsRefetch(false);
+      },
+      onSettled: () => {
+        setIsRefetch(false);
+      },
+    },
+    "tips",
+    page,
+    limit,
+    query
+  );
 
   useEffect(() => {
-    mutate({ type: "tips", filterString: query, limit, page: page });
-  }, [page, query, limit]);
+    refetch();
+  }, []);
+
+  const handleRefreshClick = async () => {
+    setIsRefetch(true);
+    await refetch();
+  };
 
   useEffect(() => {
     setPage(1);
@@ -127,21 +150,14 @@ const Tips = () => {
                 cursor="pointer"
                 transition=".3s ease-in-out"
                 _hover={{ bg: "#F4F6F8" }}
-                onClick={() =>
-                  mutate({
-                    type: "tips",
-                    filterString: query,
-                    limit,
-                    page: page,
-                  })
-                }
+                onClick={handleRefreshClick}
                 borderRadius="8px"
                 border="1px solid #848688"
                 p="10px"
               >
                 <Image
                   src="/assets/refresh.svg"
-                  className={isLoading && "mirrored-icon"}
+                  className={isRefetch && "mirrored-icon"}
                   w="20px"
                   h="20px"
                 />

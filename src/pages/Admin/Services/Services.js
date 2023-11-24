@@ -2,7 +2,7 @@ import { Box, Button, Flex, Image, Text } from "@chakra-ui/react";
 import React, { useState, useEffect } from "react";
 import TableLayer from "../../../components/data/Admin/Services/TableLayer";
 import AdminAddServiceModal from "../../../components/modals/AdminAddServiceModal";
-import { useGetAdminServicesList } from "../../../services/admin/query/services";
+import { useGetServices } from "../../../services/admin/query/services";
 import AdminEditServiceModal from "../../../components/modals/AdminEditServiceModal";
 import Filter from "../../../components/common/Filter";
 import { servicesOptions } from "../../../components/common/constants";
@@ -28,11 +28,34 @@ export default function Services() {
 
   const query = convertedFilters?.join("&");
 
-  const { mutate, data, isLoading } = useGetAdminServicesList();
+  const [isRefetch, setIsRefetch] = useState(false);
+
+  const { data, isLoading, refetch } = useGetServices(
+    {
+      refetchOnWindowFocus: true,
+      onSuccess: () => {
+        setIsRefetch(false);
+      },
+      onError: () => {
+        setIsRefetch(false);
+      },
+      onSettled: () => {
+        setIsRefetch(false);
+      },
+    },
+    page,
+    limit,
+    query
+  );
 
   useEffect(() => {
-    mutate({ filterString: query, limit, page: page });
-  }, [page, query, limit]);
+    refetch();
+  }, []);
+
+  const handleRefreshClick = async () => {
+    setIsRefetch(true);
+    await refetch();
+  };
 
   useEffect(() => {
     setPage(1);
@@ -93,16 +116,14 @@ export default function Services() {
                 cursor="pointer"
                 transition=".3s ease-in-out"
                 _hover={{ bg: "#F4F6F8" }}
-                onClick={() =>
-                  mutate({ filterString: query, limit, page: page })
-                }
+                onClick={handleRefreshClick}
                 borderRadius="8px"
                 border="1px solid #848688"
                 p="10px"
               >
                 <Image
                   src="/assets/refresh.svg"
-                  className={isLoading && "mirrored-icon"}
+                  className={isRefetch && "mirrored-icon"}
                   w="20px"
                   h="20px"
                 />
@@ -122,20 +143,20 @@ export default function Services() {
           setLimit={setLimit}
           startRow={startRow}
           endRow={endRow}
-          refetch={() => mutate({ filterString: query, limit, page: page })}
+          refetch={refetch}
         />
       </Box>
 
       <AdminAddServiceModal
         isOpen={isOpen}
-        refetch={() => mutate({ filterString: query, limit, page: page })}
+        refetch={refetch}
         onClose={() => setIsOpen(false)}
       />
 
       <AdminEditServiceModal
         isOpen={isEditOpen.isOpen}
         service={isEditOpen.selectedService}
-        refetch={() => mutate({ filterString: query, limit, page: page })}
+        refetch={refetch}
         onClose={() => setIsEditOpen(false)}
       />
     </Box>

@@ -99,18 +99,6 @@ export const useGetUserSub = (
   return { isLoading, data, refetch };
 };
 
-// export const useGetUserSub = (limit = "", page = "", options = {}) => {
-//   const { isLoading, data, refetch } = useQuery(
-//     ["GET_SUBSCRIPTIONS", limit, page],
-//     getUserSub,
-//     {
-//       ...options,
-//     }
-//   );
-
-//   return { isLoading, data, refetch };
-// };
-
 export const useCancelSub = (options = {}) => {
   const { mutate, isLoading, data } = useMutation(cancelSub, {
     mutationKey: "CANCEL_SUB",

@@ -1,9 +1,10 @@
-import { useMutation } from "react-query";
+import { useMutation, useQuery } from "react-query";
 import {
   createAttendant,
   deleteAttendant,
   getAttendant,
   getAttendants,
+  getOpAttendants,
   updateAttendants,
 } from "../api/attendants";
 
@@ -13,6 +14,18 @@ export const useGetAttendants = (options = {}) => {
     ...options,
   });
   return { mutate, isLoading, data };
+};
+
+export const useGetOpAttendant = (options = {}, page, limit, query) => {
+  const { data, isLoading, refetch } = useQuery(
+    ["GET_OP_ATTENDANTS", page, limit, query],
+    () => getOpAttendants(page, limit, query),
+    {
+      ...options,
+    }
+  );
+
+  return { isLoading, data, refetch };
 };
 
 export const useDeleteAttendant = (options = {}) => {

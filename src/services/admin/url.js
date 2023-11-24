@@ -202,6 +202,8 @@ export const ADMIN_EVENT_PARKING_LIST = (
   `admin/event-parking?${filterString}&limit=${limit}&page=${page}&sort=id,DESC`;
 
 export const ADMIN_EVENT_PARKING = "admin/event-parking";
+export const ADMIN_TIPS = "admin/tips";
+export const ADMIN_REPORTS = "admin/reports";
 
 export const ADMIN_RESERVED_PARKING = "admin/reservations";
 export const ADMIN_RESERVED_PARKING_LIST = (
@@ -257,8 +259,12 @@ export const GET_ADMIN_REPORTS = (
 ) =>
   `admin/reports/${type}?${filterString}&limit=${limit}&page=${page}&sort=id,DESC`;
 
+export const GET_REPORTS = "admin/reports";
+
 export const GET_ADMIN_TRAN = (filterString = "", limit = "", page = "") =>
   `admin/transactions?${filterString}&limit=${limit}&page=${page}&sort=id,DESC`;
+
+export const GET_TRAN = "admin/transactions";
 
 export const ADMIN_RATES = "admin/rates";
 export const ADMIN_RATES_LIST = (filterString = "", limit = "", page = "") =>

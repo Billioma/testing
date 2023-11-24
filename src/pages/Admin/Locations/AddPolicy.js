@@ -1,11 +1,15 @@
-import React from "react";
+import React, { useState } from "react";
 import { Box, Flex, Text, Button } from "@chakra-ui/react";
 import CustomInput from "../../../components/common/CustomInput";
 import { useNavigate } from "react-router-dom";
 import { PRIVATE_PATHS } from "../../../routes/constants";
 import useCustomToast from "../../../utils/notifications";
 import GoBackTab from "../../../components/data/Admin/GoBackTab";
-import { customStyles, statusType } from "../../../components/common/constants";
+import {
+  customStyles,
+  errorCustomStyles,
+  statusType,
+} from "../../../components/common/constants";
 import {
   useAddPolicy,
   useGetLocations,
@@ -33,6 +37,7 @@ export default function AddPolicy() {
     },
   });
 
+  const [formSubmitted, setFormSubmitted] = useState(false);
   const { data: locations } = useGetLocations({}, 1, 1000);
 
   const locationOptions = locations?.data?.map((location) => ({
@@ -83,10 +88,14 @@ export default function AddPolicy() {
                 handleBlur,
                 handleSubmit,
                 setValues,
-                isValid,
-                dirty,
               }) => (
-                <Form onSubmit={handleSubmit}>
+                <Form
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                    setFormSubmitted(true);
+                    handleSubmit(e);
+                  }}
+                >
                   <Box w="full" mb={4}>
                     <Text
                       mb="8px"
@@ -94,7 +103,15 @@ export default function AddPolicy() {
                       fontWeight={500}
                       color="#444648"
                     >
-                      Title
+                      Title{" "}
+                      <span
+                        style={{
+                          color: "tomato",
+                          fontSize: "13px",
+                        }}
+                      >
+                        *
+                      </span>
                     </Text>
                     <CustomInput
                       auth
@@ -104,7 +121,7 @@ export default function AddPolicy() {
                       value={values?.title}
                       onChange={handleChange}
                       onBlur={handleBlur}
-                      error={errors?.title && touched?.title && errors?.title}
+                      error={(formSubmitted || touched?.title) && errors?.title}
                     />
                   </Box>
 
@@ -115,7 +132,15 @@ export default function AddPolicy() {
                       fontWeight={500}
                       color="#444648"
                     >
-                      Description
+                      Description{" "}
+                      <span
+                        style={{
+                          color: "tomato",
+                          fontSize: "13px",
+                        }}
+                      >
+                        *
+                      </span>
                     </Text>
                     <CustomInput
                       auth
@@ -125,7 +150,7 @@ export default function AddPolicy() {
                       value={values?.body}
                       onChange={handleChange}
                       onBlur={handleBlur}
-                      error={errors?.body && touched?.body && errors?.body}
+                      error={(formSubmitted || touched?.body) && errors?.body}
                     />
                   </Box>
 
@@ -136,10 +161,22 @@ export default function AddPolicy() {
                       fontWeight={500}
                       color="#444648"
                     >
-                      Location
+                      Location{" "}
+                      <span
+                        style={{
+                          color: "tomato",
+                          fontSize: "13px",
+                        }}
+                      >
+                        *
+                      </span>
                     </Text>
                     <Select
-                      styles={customStyles}
+                      styles={
+                        formSubmitted && !values?.location
+                          ? errorCustomStyles
+                          : customStyles
+                      }
                       placeholder="Select location"
                       options={locationOptions}
                       name="location"
@@ -161,6 +198,11 @@ export default function AddPolicy() {
                         ),
                       }}
                     />
+                    {formSubmitted && !values?.location && (
+                      <Text mt="8px" fontSize="10px" color="tomato">
+                        Location is required
+                      </Text>
+                    )}
                   </Box>
                   <Box w="full" mb={4}>
                     <Text
@@ -169,10 +211,22 @@ export default function AddPolicy() {
                       fontWeight={500}
                       color="#444648"
                     >
-                      Status
+                      Status{" "}
+                      <span
+                        style={{
+                          color: "tomato",
+                          fontSize: "13px",
+                        }}
+                      >
+                        *
+                      </span>
                     </Text>
                     <Select
-                      styles={customStyles}
+                      styles={
+                        formSubmitted && !values?.status
+                          ? errorCustomStyles
+                          : customStyles
+                      }
                       options={statusOptions}
                       name="status"
                       onChange={(selectedOption) =>
@@ -193,6 +247,11 @@ export default function AddPolicy() {
                         ),
                       }}
                     />
+                    {formSubmitted && !values?.status && (
+                      <Text mt="8px" fontSize="10px" color="tomato">
+                        Status is required
+                      </Text>
+                    )}
                   </Box>
 
                   <Flex gap="24px" mt="24px">
@@ -206,7 +265,6 @@ export default function AddPolicy() {
                     <Button
                       variant="adminPrimary"
                       w="100%"
-                      isDisabled={!isValid || !dirty}
                       isLoading={isLoading}
                       type="submit"
                     >

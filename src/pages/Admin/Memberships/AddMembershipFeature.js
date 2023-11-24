@@ -2,7 +2,10 @@ import React, { useState } from "react";
 import { Box, Flex, Text, Button } from "@chakra-ui/react";
 import CustomInput from "../../../components/common/CustomInput";
 import Select from "react-select";
-import { customStyles } from "../../../components/common/constants";
+import {
+  customStyles,
+  errorCustomStyles,
+} from "../../../components/common/constants";
 import { useNavigate } from "react-router-dom";
 import { PRIVATE_PATHS } from "../../../routes/constants";
 import useCustomToast from "../../../utils/notifications";
@@ -40,6 +43,9 @@ export default function AddOperator() {
         );
       },
     });
+  const [formSubmitted, setFormSubmitted] = useState(false);
+  const isDisabled =
+    !state.name || !state.value || !state.featureType || !state.membershipPlan;
 
   const { data: membershipPlans } = useGetMembershipPlans({}, 1, 100000);
 
@@ -97,112 +103,181 @@ export default function AddOperator() {
             flexDir="column"
             border="1px solid #E4E6E8"
           >
-            <Box w="full" mb={4}>
-              <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
-                Select Membership Plan
-              </Text>
-              <Select
-                styles={customStyles}
-                onChange={(selectedOption) =>
-                  handleSelectChange(selectedOption, {
-                    name: "membershipPlan",
-                  })
-                }
-                components={{
-                  IndicatorSeparator: () => (
-                    <div style={{ display: "none" }}></div>
-                  ),
-                  DropdownIndicator: () => (
-                    <div>
-                      <IoIosArrowDown size="15px" color="#646668" />
-                    </div>
-                  ),
-                }}
-                options={membershipPlanOptions}
-                placeholder="Select membership plan"
-                value={state?.membershipPlan}
-              />
-            </Box>
+            <form
+              onSubmit={(e) => {
+                isDisabled
+                  ? setFormSubmitted(true)
+                  : (setFormSubmitted(true), handleSubmit(e));
+                e.preventDefault();
+              }}
+            >
+              <Box w="full" mb={4}>
+                <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
+                  Select Membership Plan{" "}
+                  <span
+                    style={{
+                      color: "tomato",
+                      fontSize: "13px",
+                    }}
+                  >
+                    *
+                  </span>
+                </Text>
+                <Select
+                  styles={
+                    formSubmitted && !state?.membershipPlan
+                      ? errorCustomStyles
+                      : customStyles
+                  }
+                  onChange={(selectedOption) =>
+                    handleSelectChange(selectedOption, {
+                      name: "membershipPlan",
+                    })
+                  }
+                  components={{
+                    IndicatorSeparator: () => (
+                      <div style={{ display: "none" }}></div>
+                    ),
+                    DropdownIndicator: () => (
+                      <div>
+                        <IoIosArrowDown size="15px" color="#646668" />
+                      </div>
+                    ),
+                  }}
+                  options={membershipPlanOptions}
+                  placeholder="Select membership plan"
+                  value={state?.membershipPlan}
+                />
+                {formSubmitted && !state?.membershipPlan && (
+                  <Text mt="3px" fontSize="10px" color="tomato">
+                    Membership Plan is required
+                  </Text>
+                )}
+              </Box>
 
-            <Box w="full" mb={4}>
-              <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
-                Name
-              </Text>
-              <CustomInput
-                auth
-                value={state.name}
-                mb
-                holder="Enter name of feature"
-                onChange={(e) => setState({ ...state, name: e.target.value })}
-              />
-            </Box>
+              <Box w="full" mb={4}>
+                <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
+                  Name{" "}
+                  <span
+                    style={{
+                      color: "tomato",
+                      fontSize: "13px",
+                    }}
+                  >
+                    *
+                  </span>
+                </Text>
+                <CustomInput
+                  auth
+                  value={state.name}
+                  mb
+                  error={formSubmitted && !state?.name ? true : false}
+                  holder="Enter name of feature"
+                  onChange={(e) => setState({ ...state, name: e.target.value })}
+                />
 
-            <Box w="full" mb={4}>
-              <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
-                Feature Type
-              </Text>
-              <Select
-                styles={customStyles}
-                onChange={(selectedOption) =>
-                  handleSelectChange(selectedOption, {
-                    name: "featureType",
-                  })
-                }
-                components={{
-                  IndicatorSeparator: () => (
-                    <div style={{ display: "none" }}></div>
-                  ),
-                  DropdownIndicator: () => (
-                    <div>
-                      <IoIosArrowDown size="15px" color="#646668" />
-                    </div>
-                  ),
-                }}
-                options={featureTypes}
-                placeholder="Select feature type"
-                value={state?.featureType}
-              />
-            </Box>
+                {formSubmitted && !state?.name && (
+                  <Text mt="-2px" fontSize="10px" color="tomato">
+                    Feature Name is required
+                  </Text>
+                )}
+              </Box>
 
-            <Box w="full" mb={4}>
-              <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
-                Value Limit
-              </Text>
-              <CustomInput
-                auth
-                mb
-                type="number"
-                holder="Enter limit"
-                onChange={(e) => setState({ ...state, value: e.target.value })}
-                value={state.value}
-              />
-            </Box>
+              <Box w="full" mb={4}>
+                <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
+                  Feature Type{" "}
+                  <span
+                    style={{
+                      color: "tomato",
+                      fontSize: "13px",
+                    }}
+                  >
+                    *
+                  </span>
+                </Text>
+                <Select
+                  styles={
+                    formSubmitted && !state?.featureType
+                      ? errorCustomStyles
+                      : customStyles
+                  }
+                  onChange={(selectedOption) =>
+                    handleSelectChange(selectedOption, {
+                      name: "featureType",
+                    })
+                  }
+                  components={{
+                    IndicatorSeparator: () => (
+                      <div style={{ display: "none" }}></div>
+                    ),
+                    DropdownIndicator: () => (
+                      <div>
+                        <IoIosArrowDown size="15px" color="#646668" />
+                      </div>
+                    ),
+                  }}
+                  options={featureTypes}
+                  placeholder="Select feature type"
+                  value={state?.featureType}
+                />
 
-            <Flex gap={4} mt={4}>
-              <Button
-                variant="adminSecondary"
-                w="100%"
-                onClick={() =>
-                  navigate(PRIVATE_PATHS.ADMIN_MEMBERSHIP_FEATURES)
-                }
-              >
-                Cancel
-              </Button>
-              <Button
-                variant="adminPrimary"
-                w="100%"
-                isDisabled={
-                  !state.name ||
-                  !state.value ||
-                  !state.featureType ||
-                  !state.membershipPlan
-                }
-                isLoading={isUpdating}
-                onClick={() => handleSubmit()}
-              >
-                Save
-              </Button>
-            </Flex>
+                {formSubmitted && !state?.featureType && (
+                  <Text mt="3px" fontSize="10px" color="tomato">
+                    Feature Type is required
+                  </Text>
+                )}
+              </Box>
+
+              <Box w="full" mb={4}>
+                <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
+                  Value Limit{" "}
+                  <span
+                    style={{
+                      color: "tomato",
+                      fontSize: "13px",
+                    }}
+                  >
+                    *
+                  </span>
+                </Text>
+                <CustomInput
+                  auth
+                  mb
+                  type="number"
+                  holder="Enter limit"
+                  onChange={(e) =>
+                    setState({ ...state, value: e.target.value })
+                  }
+                  error={formSubmitted && !state?.value ? true : false}
+                  value={state.value}
+                />
+                {formSubmitted && !state?.value && (
+                  <Text mt="-2px" fontSize="10px" color="tomato">
+                    Value Limit is required
+                  </Text>
+                )}
+              </Box>
+
+              <Flex gap={4} mt={4}>
+                <Button
+                  variant="adminSecondary"
+                  w="100%"
+                  onClick={() =>
+                    navigate(PRIVATE_PATHS.ADMIN_MEMBERSHIP_FEATURES)
+                  }
+                >
+                  Cancel
+                </Button>
+                <Button
+                  variant="adminPrimary"
+                  w="100%"
+                  isLoading={isUpdating}
+                  type="submit"
+                >
+                  Save
+                </Button>
+              </Flex>
+            </form>
           </Flex>
         </Flex>
       </Flex>

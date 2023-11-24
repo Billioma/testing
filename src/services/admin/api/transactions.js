@@ -10,6 +10,22 @@ export const getPayToPark = async (page, limit, query) => {
   return response.data;
 };
 
+export const getEventParking = async (page, limit, query) => {
+  const response = await axiosInstance.get(
+    `${API.ADMIN_EVENT_PARKING}?page=${page}&limit=${limit}&sort=id,DESC&${
+      query || ""
+    }`
+  );
+  return response.data;
+};
+
+export const getTips = async (page, limit, query) => {
+  const response = await axiosInstance.get(
+    `${API.ADMIN_TIPS}?page=${page}&limit=${limit}&sort=id,DESC&${query || ""}`
+  );
+  return response.data;
+};
+
 export const getPayToParkList = async (query) => {
   const res = await axiosInstance.get(
     API.ADMIN_PAY_TO_PARK_LIST(query.filterString, query.limit, query.page)
@@ -131,6 +147,11 @@ export const addReservedParking = async (data) => {
     data
   );
 
+  return response.data;
+};
+
+export const deleteTip = async (id) => {
+  const response = await axiosInstance.delete(`${API.ADMIN_TIPS}/${id}`);
   return response.data;
 };
 

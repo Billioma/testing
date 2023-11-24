@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { Box, Flex, Text, Button, Image } from "@chakra-ui/react";
 import CustomInput from "../../../components/common/CustomInput";
-import { customStyles } from "../../../components/common/constants";
+import {
+  customStyles,
+  errorCustomStyles,
+} from "../../../components/common/constants";
 import Select from "react-select";
 import { useNavigate } from "react-router-dom";
 import { PRIVATE_PATHS } from "../../../routes/constants";
@@ -28,6 +31,7 @@ export default function AddClientInvoice() {
   const [fields, setFields] = useState({
     invoiceItems: [],
   });
+  const [formSubmitted, setFormSubmitted] = useState(false);
 
   const [showInvoiceDate, setShowInvoiceDate] = useState(false);
   const [showDueDate, setShowDueDate] = useState(false);
@@ -135,10 +139,14 @@ export default function AddClientInvoice() {
           handleBlur,
           handleSubmit,
           setValues,
-          isValid,
-          dirty,
         }) => (
-          <Form onSubmit={handleSubmit}>
+          <Form
+            onSubmit={(e) => {
+              e.preventDefault();
+              setFormSubmitted(true);
+              handleSubmit(e);
+            }}
+          >
             <Flex align="flex-start" flexDir={{ md: "row", base: "column" }}>
               <GoBackTab />
               <Flex
@@ -175,10 +183,22 @@ export default function AddClientInvoice() {
                       fontWeight={500}
                       color="#444648"
                     >
-                      Client
+                      Client{" "}
+                      <span
+                        style={{
+                          color: "tomato",
+                          fontSize: "13px",
+                        }}
+                      >
+                        *
+                      </span>
                     </Text>
                     <Select
-                      styles={customStyles}
+                      styles={
+                        formSubmitted && !values?.client
+                          ? errorCustomStyles
+                          : customStyles
+                      }
                       placeholder="Add client"
                       options={clientOptions}
                       components={{
@@ -200,6 +220,11 @@ export default function AddClientInvoice() {
                       }
                       onBlur={handleBlur}
                     />
+                    {formSubmitted && !values?.client && (
+                      <Text mt="8px" fontSize="10px" color="tomato">
+                        Client is required
+                      </Text>
+                    )}
                   </Box>
 
                   <Box w="full" mb="16px">
@@ -209,7 +234,15 @@ export default function AddClientInvoice() {
                       fontWeight={500}
                       color="#444648"
                     >
-                      Tax Rate (%)
+                      Tax Rate (%){" "}
+                      <span
+                        style={{
+                          color: "tomato",
+                          fontSize: "13px",
+                        }}
+                      >
+                        *
+                      </span>
                     </Text>
                     <CustomInput
                       auth
@@ -221,7 +254,7 @@ export default function AddClientInvoice() {
                       onChange={handleChange}
                       onBlur={handleBlur}
                       error={
-                        errors?.taxRate && touched?.taxRate && errors?.taxRate
+                        (formSubmitted || touched?.taxRate) && errors?.taxRate
                       }
                     />
                   </Box>
@@ -233,7 +266,15 @@ export default function AddClientInvoice() {
                       color="#444648"
                       fontSize="10px"
                     >
-                      Invoice Date
+                      Invoice Date{" "}
+                      <span
+                        style={{
+                          color: "tomato",
+                          fontSize: "13px",
+                        }}
+                      >
+                        *
+                      </span>
                     </Text>
                     <Box pos="relative" w="full" className="box">
                       <Flex
@@ -242,12 +283,22 @@ export default function AddClientInvoice() {
                         align="center"
                         justifyContent="space-between"
                         w="full"
-                        bg={values.invoiceDate ? "#F4F6F8" : "transparent"}
+                        bg={
+                          formSubmitted && !values?.invoiceDate
+                            ? "#FDE8E8"
+                            : values.invoiceDate
+                            ? "#F4F6F8"
+                            : "transparent"
+                        }
                         color={values.invoiceDate ? "#000" : ""}
                         h="44px"
                         cursor="pointer"
                         borderRadius="4px"
-                        border="1px solid #D4D6D8"
+                        border={
+                          formSubmitted && !values?.invoiceDate
+                            ? "1px solid red"
+                            : "1px solid #D4D6D8"
+                        }
                         py="12px"
                         px="16px"
                       >
@@ -270,6 +321,12 @@ export default function AddClientInvoice() {
                         </Box>
                       )}
                     </Box>
+
+                    {formSubmitted && !values?.invoiceDate && (
+                      <Text mt="8px" fontSize="10px" color="tomato">
+                        Invoice Date is required
+                      </Text>
+                    )}
                   </Box>
 
                   <Box mb="16px">
@@ -279,7 +336,15 @@ export default function AddClientInvoice() {
                       color="#444648"
                       fontSize="10px"
                     >
-                      Due Date
+                      Due Date{" "}
+                      <span
+                        style={{
+                          color: "tomato",
+                          fontSize: "13px",
+                        }}
+                      >
+                        *
+                      </span>
                     </Text>
                     <Box pos="relative" w="full" className="box">
                       <Flex
@@ -288,12 +353,22 @@ export default function AddClientInvoice() {
                         align="center"
                         justifyContent="space-between"
                         w="full"
-                        bg={values.dueDate ? "#F4F6F8" : "transparent"}
+                        bg={
+                          formSubmitted && !values?.dueDate
+                            ? "#FDE8E8"
+                            : values.dueDate
+                            ? "#F4F6F8"
+                            : "transparent"
+                        }
                         color={values.dueDate ? "#000" : ""}
                         h="44px"
                         cursor="pointer"
                         borderRadius="4px"
-                        border="1px solid #D4D6D8"
+                        border={
+                          formSubmitted && !values?.dueDate
+                            ? "1px solid red"
+                            : "1px solid #D4D6D8"
+                        }
                         py="12px"
                         px="16px"
                       >
@@ -316,6 +391,12 @@ export default function AddClientInvoice() {
                         </Box>
                       )}
                     </Box>
+
+                    {formSubmitted && !values?.dueDate && (
+                      <Text mt="8px" fontSize="10px" color="tomato">
+                        Due Date is required
+                      </Text>
+                    )}
                   </Box>
                 </Flex>
               </Flex>
@@ -338,7 +419,15 @@ export default function AddClientInvoice() {
                 fontWeight={700}
                 lineHeight="100%"
               >
-                Invoice items
+                Invoice items{" "}
+                <span
+                  style={{
+                    color: "tomato",
+                    fontSize: "16px",
+                  }}
+                >
+                  *
+                </span>
               </Text>
 
               {fields.invoiceItems?.map((item, index) => (
@@ -586,6 +675,21 @@ export default function AddClientInvoice() {
                   )}
                 </Flex>
               ))}
+
+              {((formSubmitted && !fields.invoiceItems.length) ||
+                !fields.invoiceItems?.every(
+                  (item) =>
+                    item?.date &&
+                    item?.description &&
+                    item?.period &&
+                    item?.rate &&
+                    item?.serviceType &&
+                    item?.unit
+                )) && (
+                <Text mt="8px" fontSize="10px" color="tomato">
+                  Invoice Item is required
+                </Text>
+              )}
             </Flex>
 
             <Flex gap={4} my={7} justifyContent="center" align="center">
@@ -622,20 +726,6 @@ export default function AddClientInvoice() {
                 bg="#000"
                 w={{ base: "100%", lg: "250px" }}
                 isLoading={isLoading}
-                isDisabled={
-                  !isValid ||
-                  !dirty ||
-                  !fields.invoiceItems.length ||
-                  !fields.invoiceItems?.every(
-                    (item) =>
-                      item?.date &&
-                      item?.description &&
-                      item?.period &&
-                      item?.rate &&
-                      item?.serviceType &&
-                      item?.unit
-                  )
-                }
                 type="submit"
               >
                 Save{" "}

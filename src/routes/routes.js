@@ -108,6 +108,14 @@ const {
   OP_RATE_DETAILS,
   OP_ADD_RATE,
   OP_PROFILE,
+  OP_PTP_TRANSACTION,
+  OP_PTP_TRANSACTION_DETAILS,
+  OP_RP_TRANSACTION,
+  OP_RP_TRANSACTION_DETAILS,
+  OP_EV_TRANSACTION,
+  OP_EV_TRANSACTION_DETAILS,
+  OP_SERVICE_TRANSACTION,
+  OP_SERVICE_TRANSACTION_DETAILS,
 
   ADMIN_CUSTOMERS,
   ADMIN_DASHBOARD,
@@ -366,6 +374,30 @@ const OpTransactions = WithSuspense(
 );
 const OpTransactionDetails = WithSuspense(
   lazy(() => import("../pages/Operator/Transactions/TransactionDetails"))
+);
+const OpPtpTransactions = WithSuspense(
+  lazy(() => import("../pages/Operator/Transactions/PayToPark"))
+);
+const OpPtpTransactionDetails = WithSuspense(
+  lazy(() => import("../pages/Operator/Transactions/ViewPayToPark"))
+);
+const OpRpTransactions = WithSuspense(
+  lazy(() => import("../pages/Operator/Transactions/ReserveParking"))
+);
+const OpRpTransactionDetails = WithSuspense(
+  lazy(() => import("../pages/Operator/Transactions/ViewReserveParking"))
+);
+const OpEvTransactions = WithSuspense(
+  lazy(() => import("../pages/Operator/Transactions/EventParking"))
+);
+const OpEvTransactionDetails = WithSuspense(
+  lazy(() => import("../pages/Operator/Transactions/ViewEventParking"))
+);
+const OpServiceTransactions = WithSuspense(
+  lazy(() => import("../pages/Operator/Transactions/ServiceBooking"))
+);
+const OpServiceTransactionDetails = WithSuspense(
+  lazy(() => import("../pages/Operator/Transactions/ViewServiceBookings"))
 );
 const OpZoneDetails = WithSuspense(
   lazy(() => import("../pages/Operator/Locations/Zones/ZoneDetails"))
@@ -973,6 +1005,17 @@ export const PRIVATE_ROUTES = [
   { path: OP_REP_ZONES, element: <OpRepZone /> },
   { path: OP_REP_LOGS, element: <OpRepLog /> },
   { path: OP_PROFILE, element: <OpProfile /> },
+  { path: OP_PTP_TRANSACTION, element: <OpPtpTransactions /> },
+  { path: OP_PTP_TRANSACTION_DETAILS, element: <OpPtpTransactionDetails /> },
+  { path: OP_RP_TRANSACTION, element: <OpRpTransactions /> },
+  { path: OP_RP_TRANSACTION_DETAILS, element: <OpRpTransactionDetails /> },
+  { path: OP_EV_TRANSACTION, element: <OpEvTransactions /> },
+  { path: OP_EV_TRANSACTION_DETAILS, element: <OpEvTransactionDetails /> },
+  { path: OP_SERVICE_TRANSACTION, element: <OpServiceTransactions /> },
+  {
+    path: OP_SERVICE_TRANSACTION_DETAILS,
+    element: <OpServiceTransactionDetails />,
+  },
 
   // ADMIN ROUTES
   { path: ADMIN_DASHBOARD, element: <AdminDashboard /> },

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Box, Flex, Text, Button } from "@chakra-ui/react";
 import CustomInput from "../../../components/common/CustomInput";
 import { useNavigate } from "react-router-dom";
@@ -6,7 +6,11 @@ import { PRIVATE_PATHS } from "../../../routes/constants";
 import useCustomToast from "../../../utils/notifications";
 import GoBackTab from "../../../components/data/Admin/GoBackTab";
 import { useAddAmenity } from "../../../services/admin/query/amenities";
-import { customStyles, statusType } from "../../../components/common/constants";
+import {
+  customStyles,
+  errorCustomStyles,
+  statusType,
+} from "../../../components/common/constants";
 import { IoIosArrowDown } from "react-icons/io";
 import Select from "react-select";
 import { Formik, Form } from "formik";
@@ -29,6 +33,7 @@ export default function AddAmenity() {
       );
     },
   });
+  const [formSubmitted, setFormSubmitted] = useState(false);
 
   const statusOptions = statusType?.map((status, i) => ({
     value: i,
@@ -71,10 +76,14 @@ export default function AddAmenity() {
                 handleBlur,
                 handleSubmit,
                 setValues,
-                isValid,
-                dirty,
               }) => (
-                <Form onSubmit={handleSubmit}>
+                <Form
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                    setFormSubmitted(true);
+                    handleSubmit(e);
+                  }}
+                >
                   <Box w="full" mb={4}>
                     <Text
                       mb="8px"
@@ -82,7 +91,15 @@ export default function AddAmenity() {
                       fontWeight={500}
                       color="#444648"
                     >
-                      Name
+                      Name{" "}
+                      <span
+                        style={{
+                          color: "tomato",
+                          fontSize: "13px",
+                        }}
+                      >
+                        *
+                      </span>
                     </Text>
                     <CustomInput
                       auth
@@ -92,7 +109,7 @@ export default function AddAmenity() {
                       value={values?.name}
                       onChange={handleChange}
                       onBlur={handleBlur}
-                      error={errors?.name && touched?.name && errors?.name}
+                      error={(formSubmitted || touched?.name) && errors?.name}
                     />
                   </Box>
                   <Box w="full" mb={4}>
@@ -102,7 +119,15 @@ export default function AddAmenity() {
                       fontWeight={500}
                       color="#444648"
                     >
-                      Description
+                      Description{" "}
+                      <span
+                        style={{
+                          color: "tomato",
+                          fontSize: "13px",
+                        }}
+                      >
+                        *
+                      </span>
                     </Text>
                     <CustomInput
                       auth
@@ -113,8 +138,7 @@ export default function AddAmenity() {
                       onChange={handleChange}
                       onBlur={handleBlur}
                       error={
-                        errors?.description &&
-                        touched?.description &&
+                        (formSubmitted || touched?.description) &&
                         errors?.description
                       }
                     />
@@ -126,10 +150,22 @@ export default function AddAmenity() {
                       fontWeight={500}
                       color="#444648"
                     >
-                      Select Status
+                      Select Status{" "}
+                      <span
+                        style={{
+                          color: "tomato",
+                          fontSize: "13px",
+                        }}
+                      >
+                        *
+                      </span>
                     </Text>
                     <Select
-                      styles={customStyles}
+                      styles={
+                        formSubmitted && !values?.status
+                          ? errorCustomStyles
+                          : customStyles
+                      }
                       options={statusOptions}
                       name="status"
                       onChange={(selectedOption) =>
@@ -150,6 +186,11 @@ export default function AddAmenity() {
                         ),
                       }}
                     />
+                    {formSubmitted && !values?.status && (
+                      <Text mt="8px" fontSize="10px" color="tomato">
+                        Status is required
+                      </Text>
+                    )}
                   </Box>
                   <Flex gap="24px" mt="24px">
                     <Button
@@ -162,7 +203,6 @@ export default function AddAmenity() {
                     <Button
                       variant="adminPrimary"
                       w="100%"
-                      isDisabled={!isValid || !dirty}
                       isLoading={isLoading}
                       type="submit"
                     >
