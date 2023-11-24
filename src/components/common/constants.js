@@ -1,448 +1,2105 @@
-import { FaRegComment } from "react-icons/fa";
-import { AiOutlineRetweet } from "react-icons/ai";
-import { MdOutlineFavoriteBorder } from "react-icons/md";
-import { GoUpload } from "react-icons/go";
-import { BsLinkedin } from "react-icons/bs";
+import { MdAutorenew, MdSend } from "react-icons/md";
 import {
-  RiInstagramFill,
-  RiFacebookFill,
-  RiTwitterXLine,
-} from "react-icons/ri";
+  ClientEventIcon,
+  ClientLogIcon,
+  ClientTranIcon,
+  ClientUserIcon,
+  DashboardIcon,
+  HelpIcon,
+  HistoryIcon,
+  LocateIcon,
+  SubscriptionIcon,
+  VehicleIcon,
+} from "./images";
 
-export const BusinessIcon = ({ fill }) => {
-  return (
-    <svg
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <path
-        opacity="0.2"
-        d="M12 14.25C8.83955 14.2582 5.73363 13.4267 3 11.8406V19.5C3 19.6989 3.07902 19.8896 3.21967 20.0303C3.36032 20.1709 3.55109 20.25 3.75 20.25H20.25C20.4489 20.25 20.6397 20.1709 20.7803 20.0303C20.921 19.8896 21 19.6989 21 19.5V11.8406C18.2646 13.4225 15.1599 14.2537 12 14.25Z"
-        fill={fill}
-      />
-      <path
-        d="M20.25 6.75H3.75C3.33579 6.75 3 7.08579 3 7.5V19.5C3 19.9142 3.33579 20.25 3.75 20.25H20.25C20.6642 20.25 21 19.9142 21 19.5V7.5C21 7.08579 20.6642 6.75 20.25 6.75Z"
-        stroke={fill}
-        strokeWidth="1.2"
-      />
-      <path
-        d="M15.75 6.75V5.25C15.75 4.85218 15.592 4.47064 15.3107 4.18934C15.0294 3.90804 14.6478 3.75 14.25 3.75H9.75C9.35218 3.75 8.97064 3.90804 8.68934 4.18934C8.40804 4.47064 8.25 4.85218 8.25 5.25V6.75"
-        stroke={fill}
-        strokeWidth="1.2"
-      />
-      <path
-        d="M21 11.8406C18.2646 13.4225 15.1599 14.2537 12 14.25C8.83955 14.2582 5.73363 13.4267 3 11.8406"
-        stroke={fill}
-        strokeWidth="1.2"
-      />
-      <path d="M10.875 11.25H13.125" stroke={fill} strokeWidth="1.2" />
-    </svg>
-  );
-};
+import {
+  AdminDashboardIcon,
+  ServicesIcon,
+  UserIcon,
+  CustomerIcon,
+  LocationIcon,
+  AdminVehicleIcon,
+  MembershipsIcon,
+  ClientsIcon,
+  LogsIcon,
+  ReportsIcon,
+  ConfigIcon,
+} from "./images";
+import { FcCancel } from "react-icons/fc";
+import { BsTrash } from "react-icons/bs";
+import { AiOutlineEdit } from "react-icons/ai";
+import { TbListDetails, TbCalendarEvent } from "react-icons/tb";
+import { HiOutlineInformationCircle } from "react-icons/hi";
+import { FiEdit } from "react-icons/fi";
 
-export const CustomerIcon = ({ fill }) => {
-  return (
-    <svg
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <path
-        d="M18 19C18 16.7909 15.3137 15 12 15C8.68629 15 6 16.7909 6 19M12 12C9.79086 12 8 10.2091 8 8C8 5.79086 9.79086 4 12 4C14.2091 4 16 5.79086 16 8C16 10.2091 14.2091 12 12 12Z"
-        stroke={fill}
-        strokeWidth="1.2"
-      />
-    </svg>
-  );
-};
+export const sidebarItems = [
+  {
+    id: 0,
+    name: "Dashboard",
+    path: "/admin/dashboard",
+    icon: <AdminDashboardIcon fill={"#fff"} stroke="#000" />,
+    hover: <AdminDashboardIcon fill="#fff" stroke="#EE383A" />,
+    sec: <AdminDashboardIcon fill="#EE383A" stroke="#fff" />,
+  },
 
-export const OperatorIcon = ({ fill }) => {
-  return (
-    <svg
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <path
-        d="M2.40002 13.6999H3.23641M3.23641 13.6999H15.9636M3.23641 13.6999C3.24531 13.6587 3.25584 13.6179 3.26799 13.5776C3.297 13.4814 3.33796 13.3888 3.42034 13.2035L4.65735 10.4202C4.90192 9.86993 5.02441 9.59462 5.2177 9.39287C5.38856 9.21453 5.59813 9.07831 5.83049 8.9946C6.09336 8.8999 6.39471 8.8999 6.9969 8.8999H12.2029C12.8051 8.8999 13.1067 8.8999 13.3696 8.9946C13.6019 9.07831 13.8112 9.21453 13.9821 9.39287C14.1752 9.59449 14.2975 9.86957 14.5417 10.4191L15.7837 13.2136C15.8631 13.3922 15.9035 13.4831 15.932 13.5776C15.9441 13.6179 15.9547 13.6587 15.9636 13.6999M3.23641 13.6999C3.22644 13.746 3.2185 13.7926 3.2126 13.8394C3.20002 13.9391 3.20002 14.0404 3.20002 14.2433V18.4999M15.9636 13.6999H16.8M15.9636 13.6999C15.9736 13.746 15.9816 13.7926 15.9875 13.8394C16 13.9385 16 14.0392 16 14.2396V18.5M16 18.5L12.8 18.5M16 18.5V19.2998C16 20.1835 15.2837 20.8999 14.4 20.8999C13.5164 20.8999 12.8 20.1836 12.8 19.2999V18.5M12.8 18.5L6.40002 18.4999M6.40002 18.4999H3.20002M6.40002 18.4999V19.2999C6.40002 20.1836 5.68368 20.8999 4.80002 20.8999C3.91637 20.8999 3.20002 20.1836 3.20002 19.2999V18.4999"
-        stroke={fill}
-        strokeWidth="1.2"
-      />
-      <path
-        d="M19.8 20.4001V5.7914M19.8 5.7914H19C18.4477 5.7914 18 5.34369 18 4.7914V4.6001C18 4.04781 18.4477 3.6001 19 3.6001H20.6C21.1523 3.6001 21.6 4.04781 21.6 4.6001V4.7914C21.6 5.34369 21.1523 5.7914 20.6 5.7914H19.8Z"
-        stroke={fill}
-        strokeWidth="1.2"
-      />
-    </svg>
-  );
-};
-
-export const ArrowIcon = ({ fill }) => {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="16"
-      height="12"
-      viewBox="0 0 16 12"
-      fill="none"
-    >
-      <path
-        d="M3 6H13M13 6L10.2881 3M13 6L10.2881 9"
-        stroke={fill}
-        strokeWidth="1.33333"
-      />
-    </svg>
-  );
-};
-
-export const loginAs = [
   {
     id: 1,
-    title: "Customer",
-    img: <CustomerIcon fill="#444648" />,
-    hover: <CustomerIcon fill={"#EE383A"} />,
-    path: "https://parkinspace-webapp.netlify.app/customer/auth/login",
-  },
-  {
-    id: 2,
-    title: "Business",
-    img: <BusinessIcon fill="#444648" />,
-    hover: <BusinessIcon fill={"#EE383A"} />,
-    path: "https://parkinspace-webapp.netlify.app/client/auth/login",
-  },
-  {
-    id: 3,
-    title: "Operator",
-    img: <OperatorIcon fill="#444648" />,
-    hover: <OperatorIcon fill={"#EE383A"} />,
-    path: "https://parkinspace-webapp.netlify.app/operator/auth/login",
-  },
-];
-
-export const headers = [
-  {
-    id: 1,
-    name: "Park Now",
-    path: "https://parkinspace-webapp.netlify.app/customer/auth/login/redirect_pay-to-park",
-  },
-  {
-    id: 2,
-    name: "Reserve & Park Later",
-    path: "https://parkinspace-webapp.netlify.app/customer/auth/login/redirect_reserve-parking",
-  },
-  {
-    id: 3,
-    name: "Reserve Event Parking",
-    path: "https://parkinspace-webapp.netlify.app/customer/auth/login/redirect_event-parking",
-  },
-  {
-    id: 5,
-    name: "Solutions for Businesses",
-    path: "/operators",
-  },
-];
-
-export const plus = [
-  {
-    id: 1,
-    title: "Benefits",
-    subs: [
-      "Free Account Sign Up",
-      "Access all ParkinSpace Services",
-      "Fund & Pay with Wallet",
-      "Discounted Parking Fees",
-      "Priority Access to reserved parking spaces",
-      "Reward Points redeemable at select vendors",
-      "Exclusive Deals on vehicle maintenance services",
-      "Expedited Entry to major events",
+    name: "Clients",
+    path: "/admin/clients",
+    icon: <ClientsIcon fill={"#fff"} stroke="#000" />,
+    hover: <ClientsIcon fill="#fff" stroke="#EE383A" />,
+    sec: <ClientsIcon fill="#EE383A" stroke="#fff" />,
+    subItems: [
+      {
+        name: "Client Lists",
+        path: "/admin/clients/all",
+      },
+      {
+        name: "Client Invoices",
+        path: "/admin/clients/invoices",
+      },
     ],
   },
   {
     id: 2,
-    title: "",
+    name: "Users",
+    icon: <UserIcon fill={"#fff"} stroke="#000" />,
+    hover: <UserIcon fill="#fff" stroke="#EE383A" />,
+    sec: <UserIcon fill="#EE383A" stroke="#fff" />,
+    path: "/admin/users",
+    subItems: [
+      {
+        name: "Customers",
+        path: "/admin/users/customers",
+      },
+      {
+        name: "Attendants",
+        path: "/admin/users/attendants",
+      },
+      {
+        name: "Administrators",
+        path: "/admin/users/administrators",
+      },
+      {
+        name: "Operators",
+        path: "/admin/users/operators",
+      },
+    ],
   },
+
   {
     id: 3,
-    title: "",
+    name: "Events",
+    icon: <TbCalendarEvent fill={"#fff"} stroke="#000" />,
+    hover: <TbCalendarEvent fill="#fff" stroke="#EE383A" />,
+    sec: <TbCalendarEvent fill="#EE383A" stroke="#fff" />,
+    path: "/admin/events",
+  },
+
+  {
+    id: 4,
+    name: "Locations",
+    path: "/admin/locations",
+    icon: <LocationIcon fill={"#fff"} stroke="#000" />,
+    hover: <LocationIcon fill="#fff" stroke="#EE383A" />,
+    sec: <LocationIcon fill="#EE383A" stroke="#fff" />,
+    subItems: [
+      {
+        name: "Locations",
+        path: "admin/locations/all",
+      },
+      {
+        name: "Zones",
+        path: "admin/locations/zones",
+      },
+      {
+        name: "Rates",
+        path: "admin/locations/rates",
+      },
+      {
+        name: "Amenities",
+        path: "admin/locations/amenities",
+      },
+      {
+        name: "Policies",
+        path: "admin/locations/policies",
+      },
+    ],
+  },
+
+  {
+    id: 5,
+    name: "Services",
+    path: "/admin/services",
+    icon: <ServicesIcon fill={"#fff"} stroke="#000" />,
+    hover: <ServicesIcon fill="#fff" stroke="#EE383A" />,
+    sec: <ServicesIcon fill="#EE383A" stroke="#fff" />,
+  },
+
+  {
+    id: 6,
+    name: "Vehicles",
+    path: "/admin/vehicles",
+    icon: <AdminVehicleIcon fill={"#fff"} stroke="#000" />,
+    hover: <AdminVehicleIcon fill="#fff" stroke="#EE383A" />,
+    sec: <AdminVehicleIcon fill="#EE383A" stroke="#fff" />,
+  },
+
+  {
+    id: 7,
+    name: "Memberships",
+    path: "/admin/memberships",
+    icon: <MembershipsIcon fill={"#fff"} stroke="#000" />,
+    hover: <MembershipsIcon fill="#fff" stroke="#EE383A" />,
+    sec: <MembershipsIcon fill="#EE383A" stroke="#fff" />,
+    subItems: [
+      {
+        name: "Membership Plans",
+        path: "/admin/memberships/plans",
+      },
+      {
+        name: "Membership Features",
+        path: "/admin/memberships/features",
+      },
+      {
+        name: "Customer Subscriptions",
+        path: "/admin/memberships/customer-subscriptions",
+      },
+      {
+        name: "Corporate Subscriptions",
+        path: "/admin/memberships/corporate-subscriptions",
+      },
+    ],
+  },
+
+  {
+    id: 8,
+    name: "Transactions",
+    path: "/admin/transactions",
+    icon: <CustomerIcon fill={"#fff"} stroke="#000" />,
+    hover: <CustomerIcon fill="#fff" stroke="#EE383A" />,
+    sec: <CustomerIcon fill="#EE383A" stroke="#fff" />,
+    subItems: [
+      {
+        name: "Pay-To-Park",
+        path: "/admin/transactions/pay-to-park",
+      },
+      {
+        name: "Reserved Parking",
+        path: "/admin/transactions/reserved-parking",
+      },
+
+      {
+        name: "Event Parking",
+        path: "/admin/transactions/event-parking",
+      },
+      {
+        name: "Car Services",
+        path: "/admin/transactions/car-services",
+      },
+      {
+        name: "Tips",
+        path: "/admin/transactions/tips",
+      },
+    ],
+  },
+
+  {
+    id: 10,
+    name: "Logs",
+    path: "/admin/logs",
+    icon: <LogsIcon fill={"#fff"} stroke="#000" />,
+    hover: <LogsIcon fill="#fff" stroke="#EE383A" />,
+    sec: <LogsIcon fill="#EE383A" stroke="#fff" />,
+    subItems: [
+      {
+        name: "Valeted Vehicles",
+        path: "/admin/logs/valeted-vehicles",
+      },
+      {
+        name: "Parked Vehicles",
+        path: "/admin/logs/parked-vehicles",
+      },
+      {
+        name: "Serviced Vehicles",
+        path: "/admin/logs/serviced-vehicles",
+      },
+    ],
+  },
+  {
+    id: 11,
+    name: "Reports",
+    path: "/admin/reports",
+    icon: <ReportsIcon fill={"#fff"} stroke="#000" />,
+    hover: <ReportsIcon fill="#fff" stroke="#EE383A" />,
+    sec: <ReportsIcon fill="#EE383A" stroke="#fff" />,
+    subItems: [
+      {
+        name: "Payments",
+        path: "/admin/reports/payments",
+      },
+      {
+        name: "Locations",
+        path: "/admin/reports/locations",
+      },
+      {
+        name: "Zones",
+        path: "/admin/reports/zones",
+      },
+      {
+        name: "Vehicles",
+        path: "/admin/reports/vehicles",
+      },
+      {
+        name: "Customers",
+        path: "/admin/reports/customers",
+      },
+      {
+        name: "Invoices",
+        path: "/admin/reports/invoices",
+      },
+      {
+        name: "Subscriptions",
+        path: "/admin/reports/subscriptions",
+      },
+      {
+        name: "Logs",
+        path: "/admin/reports/logs",
+      },
+      {
+        name: "Payment History",
+        path: "/admin/reports/payment-history",
+      },
+      {
+        name: "Tips",
+        path: "/admin/reports/tips",
+      },
+    ],
+  },
+  {
+    id: 12,
+    name: "Configurations",
+    path: "/admin/configurations",
+    icon: <ConfigIcon fill={"#fff"} stroke="#000" />,
+    hover: <ConfigIcon fill="#fff" stroke="#EE383A" />,
+    sec: <ConfigIcon fill="#EE383A" stroke="#fff" />,
+    subItems: [
+      {
+        name: "Roles",
+        path: "/admin/configurations/roles",
+      },
+      {
+        name: "Permissions",
+        path: "/admin/configurations/permissions",
+      },
+      {
+        name: "Vehicle Makes",
+        path: "/admin/configurations/vehicle-makes",
+      },
+      {
+        name: "Vehicle Models",
+        path: "/admin/configurations/vehicle-models",
+      },
+      {
+        name: "FAQs",
+        path: "/admin/configurations/faqs",
+      },
+      {
+        name: "Bank Details",
+        path: "/admin/configurations/bank-details",
+      },
+      {
+        name: "Create QR Code",
+        path: "/admin/configurations/qr-code/create",
+      },
+    ],
   },
 ];
 
-export const services = [
+export const adminHeaderOptions = [
+  {
+    name: "Profile",
+    link: "/admin/dashboard",
+  },
+
+  {
+    name: "Logout",
+  },
+];
+
+export const general = [
+  {
+    id: 0,
+    name: "Dashboard",
+    path: "/customer/dashboard",
+    icon: <DashboardIcon fill="#242628" />,
+    sec: <DashboardIcon fill="#EE383A" />,
+  },
   {
     id: 1,
-    title: "Pay-to-Park",
-    desc: "Search, find and pay for valet or self parking services on demand",
-    pic: "/assets/pay-to-park.png",
-    button: "Park Now",
-    path: "https://parkinspace-webapp.netlify.app/customer/auth/login/redirect_pay-to-park",
+    name: "History",
+    path: "/customer/history",
+    icon: <HistoryIcon fill="#242628" />,
+    sec: <HistoryIcon fill="#EE383A" />,
+    subItems: [
+      {
+        name: "Created by You",
+        path: "/customer/history/user",
+      },
+      {
+        name: "Created by Us",
+        path: "/customer/history/company",
+      },
+    ],
   },
   {
     id: 2,
-    title: "Reserve Parking",
-    desc: "Reserve a parkins space in advance and avoid any delays when you arrive",
-    pic: "/assets/reserve-parking.png",
-    button: "Reserve and Park Later",
-    path: "https://parkinspace-webapp.netlify.app/customer/auth/login/redirect_reserve-parking",
+    name: "Vehicles",
+    path: "/customer/vehicles",
+    icon: <VehicleIcon fill="#242628" />,
+    sec: <VehicleIcon fill="#EE383A" />,
   },
   {
     id: 3,
-    title: "Event Parking",
-    desc: "Arrive an event and drive to your reserved parking space",
-    pic: "/assets/event-parking.png",
-    button: "Reserve Event Parking",
-    path: "https://parkinspace-webapp.netlify.app/customer/auth/login/redirect_event-parking",
+    name: "Subscriptions",
+    path: "/customer/subscriptions",
+    icon: <SubscriptionIcon fill="#242628" />,
+    sec: <SubscriptionIcon fill="#EE383A" />,
+  },
+
+  {
+    id: 4,
+    name: "Help Center",
+    path: "/customer/help-center",
+    icon: <HelpIcon fill="#242628" />,
+    sec: <HelpIcon fill="#EE383A" />,
+  },
+];
+
+export const operatorUsersHeader = [
+  "NAME",
+  "USER ID",
+  "ACCOUNT TYPE",
+  "STATUS",
+  "DATE CREATED",
+  "ACTIONS",
+];
+
+export const operatorPoliciesHeader = [
+  "TITLE",
+  "LOCATION",
+  "STATUS",
+  "DATE CREATED",
+  "ACTIONS",
+];
+
+export const operatorLogHeader = [
+  "TICKET NUMBER",
+  "LOCATION",
+  "ZONE",
+  "ATTENDANT",
+  "DATE CREATED",
+  "ACTIONS",
+];
+
+export const operatorPtpHeader = [
+  "TICKET NUMBER",
+  "LOCATION",
+  "ZONE",
+  "PAYMENT METHOD",
+  "DATE CREATED",
+  "STATUS",
+  "ACTIONS",
+];
+
+export const operatorRpHeader = [
+  "RESERVATION ID",
+  "LOCATION",
+  "ZONE",
+  "PAYMENT METHOD",
+  "DATE CREATED",
+  "STATUS",
+  "ACTIONS",
+];
+
+export const adminTipsHeader = [
+  "TICKET NUMBER",
+  "CUSTOMER",
+  "ATTENDANT",
+  "AMOUNT",
+  "LOCATION",
+  "LICENSE PLATE",
+  "DATE",
+];
+
+export const adminRepLocationHeader = [
+  "NAME",
+  "STATE",
+  "ZONES",
+  "LOCATION TYPE",
+  "STATUS",
+  "DATE CREATED",
+];
+
+export const operatorRepLocationHeader = [
+  "NAME",
+  "STATE",
+  "ZONES",
+  "LOCATION TYPE",
+  "DATE CREATED",
+];
+
+export const adminRepZoneHeader = [
+  "NAME",
+  "LOCATION",
+  "CAPACITY",
+  "RESERVABLE",
+  "RESERVABLE SPACE",
+  "SERVICE",
+  "STATUS",
+  "DATE CREATED",
+];
+
+export const operatorRepZoneHeader = [
+  "NAME",
+  "LOCATION",
+  "CAPACITY",
+  "RESERVABLE",
+  "RESERVABLE SPACE",
+  "SERVICE",
+  "DATE CREATED",
+];
+
+export const adminRepVehicleHeader = [
+  "CUSTOMER",
+  "LICENSE PLATE",
+  "MAKE",
+  "MODEL",
+  "COLOR",
+  "STATE",
+  "DATE CREATED",
+];
+
+export const adminRepInvoiceeHeader = [
+  "CLIENT",
+  "CREATED BY",
+  "CONFIRMED BY",
+  "TAX (%)",
+  "AMOUNT PAYABLE",
+  "AMOUNT PAID",
+  "DATE PAID",
+  "STATUS",
+  "DATE CREATED",
+];
+
+export const adminRepTranHeader = [
+  "TRANSACTION ID",
+  "AMOUNT",
+  "PAYMENT METHOD",
+  "TRANSACTION TYPE",
+  "CUSTOMER EMAIL",
+  "DATE",
+  "STATUS",
+];
+
+export const adminRepCustomerHeader = [
+  "FIRST NAME",
+  "LAST NAME",
+  "EMAIL",
+  "PHONE",
+  "DATE CREATED",
+];
+
+export const adminRepSubHeader = [
+  "CUSTOMER",
+  "PLAN",
+  "START DATE",
+  "NEXT RENEWAL",
+  "AUTORENEW",
+  "CANCELLED",
+  "STATUS",
+  "DATE CREATED",
+];
+
+export const operatorPayGrid = [
+  "Total Amount Due",
+  "Total Amount Received",
+  "Total Payments",
+];
+
+export const adminInvoiceGrid = [
+  "Total Invoices",
+  "Total Amount Payable",
+  "Total Amount Paid",
+];
+
+export const adminRepPaymentHeader = [
+  "LOCATION",
+  "ZONE",
+  "ATTENDANT",
+  "AMOUNT",
+  "AMOUNT PAID",
+  "CUSTOMER",
+  "VEHICLE",
+  "SERVICE",
+  "PAYMENT METHOD",
+  "DATE CREATED",
+];
+
+export const operatorRepPaymentHeader = [
+  "LOCATION",
+  "ZONE",
+  "ATTENDANT",
+  "AMOUNT",
+  "AMOUNT PAID",
+  "SERVICE",
+  "DATE CREATED",
+];
+
+export const adminRepLogHeader = [
+  "TICKET NO",
+  "CUSTOMER",
+  "VEHICLE",
+  "SERVICE",
+  "BILLING TYPE",
+  "AMOUNT",
+  "AMOUNT PAID",
+  "LOCATION",
+  "STATUS",
+  "DATE CREATED",
+];
+
+export const operatorRepLogHeader = [
+  "TICKET NO",
+  "SERVICE",
+  "LOCATION",
+  "ZONE",
+  "AMOUNT PAID",
+  "STATUS",
+  "DATE CREATED",
+];
+
+export const operatorLocationsHeader = [
+  "NAME",
+  "OPERATOR",
+  "STATE",
+  "STATUS",
+  "DATE CREATED",
+  "ACTIONS",
+];
+
+export const operatorRatesHeader = [
+  "NAME",
+  "DURATION TYPE",
+  "DURATION START",
+  "DURATION LIMIT",
+  "AMOUNT",
+  "STATUS",
+  "DATE CREATED",
+  "ACTIONS",
+];
+
+export const operatorZonesHeader = [
+  "NAME",
+  "LOCATION",
+  "CAPACITY",
+  "MIN DURATION",
+  "DURATION TYPE",
+  "STATUS",
+  "DATE CREATED",
+  "ACTIONS",
+];
+
+export const LocationTypes = [
+  "RESTAURANT_CAFE",
+  "BAR_LOUNGE_NIGHTCLUB",
+  "OFFICE_BUILDING",
+  "RESORT_LEISURE_CENTER",
+  "EVENT_CENTER",
+  "SPORTING_CENTER",
+  "HOTEL_CONFERENCE_CENTER",
+  "HALL_SHOPPING_CENTER",
+  "GARAGE_PARKING_LOT",
+];
+
+export const cities = ["Ikoyi", "VI", "Ikeja", "Lekki", "Wuse", "Maitama"];
+
+export const allStates = [
+  "Abia",
+  "Adamawa",
+  "Akwa Ibom",
+  "Anambra",
+  "Bauchi",
+  "Bayelsa",
+  "Benue",
+  "Borno",
+  "Cross River",
+  "Delta",
+  "Ebonyi",
+  "Edo",
+  "Ekiti",
+  "Enugu",
+  "FCT",
+  "Gombe",
+  "Imo",
+  "Jigawa",
+  "Kaduna",
+  "Kano",
+  "Katsina",
+  "Kebbi",
+  "Kogi",
+  "Kwara",
+  "Lagos",
+  "Nasarawa",
+  "Niger",
+  "Ogun",
+  "Ondo",
+  "Osun",
+  "Oyo",
+  "Plateau",
+  "Rivers",
+  "Sokoto",
+  "Taraba",
+  "Yobe",
+  "Zamfara",
+];
+
+export const clientEventHeader = [
+  "Name",
+  "Website",
+  "Event Start Date",
+  "Event End Date",
+  "Status",
+  "Date",
+  "Actions",
+];
+
+export const clientUserHeader = [
+  "Full Name",
+  "Phone",
+  "Company Name",
+  "Email Address",
+  "Status",
+  "Date Created",
+  "Actions",
+];
+
+export const clientSubHeader = [
+  "Plan",
+  "Amount",
+  "Duration",
+  "Next Payment Date",
+  "Status",
+  "Date Created",
+];
+
+export const operatorDashboardFilter = ["All Time", "Year", "Month", "Week"];
+
+export const businessSidebar = [
+  {
+    id: 0,
+    name: "Dashboard",
+    path: "/client/dashboard",
+    icon: <DashboardIcon fill="#444648" />,
+    sec: <DashboardIcon fill="#fff" />,
+    hover: <DashboardIcon fill="#ee383a" />,
+  },
+
+  {
+    id: 1,
+    name: "Logs",
+    path: "/client/logs",
+    icon: <ClientLogIcon fill="#444648" />,
+    sec: <ClientLogIcon fill="#fff" />,
+    hover: <ClientLogIcon fill="#ee383a" />,
+    subItems: [
+      {
+        id: 1,
+        name: "Pay-To-Park",
+        path: "/client/logs/pay-to-park",
+      },
+      {
+        id: 2,
+        name: "Valet Parking",
+        path: "/client/logs/valet-park",
+      },
+    ],
+  },
+];
+
+export const corpSidebar = [
+  {
+    id: 0,
+    name: "Dashboard",
+    path: "/client/dashboard",
+    icon: <DashboardIcon fill="#444648" />,
+    sec: <DashboardIcon fill="#fff" />,
+    hover: <DashboardIcon fill="#ee383a" />,
+  },
+  {
+    id: 1,
+    name: "Users",
+    path: "/client/users",
+    icon: <ClientUserIcon fill="#444648" />,
+    sec: <ClientUserIcon fill="#fff" />,
+    hover: <ClientUserIcon fill="#ee383a" />,
+  },
+
+  {
+    id: 2,
+    name: "Subscriptions",
+    path: "/client/subscriptions",
+    icon: <SubscriptionIcon fill="#444648" />,
+    sec: <SubscriptionIcon fill="#fff" />,
+    hover: <SubscriptionIcon fill="#ee383a" />,
+  },
+];
+
+export const eventSidebar = [
+  {
+    id: 0,
+    name: "Dashboard",
+    path: "/client/dashboard",
+    icon: <DashboardIcon fill="#444648" />,
+    sec: <DashboardIcon fill="#fff" />,
+    hover: <DashboardIcon fill="#ee383a" />,
+  },
+  {
+    id: 3,
+    name: "Transactions",
+    path: "/client/transactions",
+    icon: <ClientTranIcon fill="#444648" />,
+    sec: <ClientTranIcon fill="#fff" />,
+    hover: <ClientTranIcon fill="#ee383a" />,
   },
   {
     id: 4,
-    title: "Car Services",
-    desc: "Access vehicle maintenance services with ease",
-    pic: "/assets/car-service.png",
-    button: "Book a Car Service",
-    path: "https://parkinspace-webapp.netlify.app/customer/auth/login/redirect_car-service",
+    name: "Events",
+    path: "/client/events",
+    icon: <ClientEventIcon fill="#444648" />,
+    sec: <ClientEventIcon fill="#fff" />,
+    hover: <ClientEventIcon fill="#ee383a" />,
   },
 ];
 
-export const plusGrid = [
+export const operatorSidebar = [
+  {
+    id: 0,
+    name: "Dashboard",
+    path: "/operator/dashboard",
+    icon: <DashboardIcon fill="#444648" />,
+    sec: <DashboardIcon fill="#fff" />,
+    hover: <DashboardIcon fill="#ee383a" />,
+  },
   {
     id: 1,
-    title: "Priority Access",
-    text1: "Membership benefits redeemable on up to 2 vehicles",
-    text2: "AccessReserved Parking Spaces at select locations & events ",
+    name: "Users",
+    path: "/operator/users",
+    icon: <ClientUserIcon fill="#444648" />,
+    sec: <ClientUserIcon fill="#fff" />,
+    hover: <ClientUserIcon fill="#ee383a" />,
+    sub: [
+      {
+        id: 1,
+        name: "Attendants",
+        path: "/operator/users/attendants",
+      },
+    ],
   },
   {
     id: 2,
-    title: "Exclusive Discounts",
-    text1: "Discounted Parking Fees every time you park with EZPark",
-    text2: "Discounted Transaction Fees at select locations",
+    name: "Locations",
+    path: "/operator/location",
+    icon: <LocateIcon fill="#444648" />,
+    sec: <LocateIcon fill="#fff" />,
+    hover: <LocateIcon fill="#ee383a" />,
+    sub: [
+      {
+        id: 1,
+        name: "Locations",
+        path: "/operator/locations/all",
+      },
+      {
+        id: 2,
+        name: "Zones",
+        path: "/operator/locations/zones",
+      },
+      {
+        id: 3,
+        name: "Rates",
+        path: "/operator/locations/rates",
+      },
+      {
+        id: 4,
+        name: "Policies",
+        path: "/operator/locations/policies",
+      },
+    ],
   },
   {
     id: 3,
-    title: "Special Offers",
-    text1: "Discounted Car Wash & Auto Detailing services ",
-    text2:
-      "Discounted Vehicle Maintenance services (i.e.oil change & tire replacement)",
+    name: "Logs",
+    path: "/operator/logs",
+    icon: <ClientLogIcon fill="#444648" />,
+    sec: <ClientLogIcon fill="#fff" />,
+    hover: <ClientLogIcon fill="#ee383a" />,
+    sub: [
+      {
+        id: 1,
+        name: "Valeted Vehicles",
+        path: "/operator/logs/valeted-vehicles",
+      },
+      {
+        id: 2,
+        name: "Parked Vehicles",
+        path: "/operator/logs/parked-vehicles",
+      },
+      {
+        id: 3,
+        name: "Serviced Vehicles",
+        path: "/operator/logs/serviced-vehicles",
+      },
+    ],
+  },
+  {
+    id: 3,
+    name: "Transactions",
+    path: "/operator/transactions",
+    icon: <CustomerIcon fill="#444648" />,
+    sec: <CustomerIcon fill="#fff" />,
+    hover: <CustomerIcon fill="#ee383a" />,
+    sub: [
+      {
+        id: 1,
+        name: "Pay To Park",
+        path: "/operator/transactions/pay-to-park",
+      },
+      {
+        id: 2,
+        name: "Reserve Parking",
+        path: "/operator/transactions/reservations",
+      },
+      {
+        id: 3,
+        name: "Event Parking",
+        path: "/operator/transactions/event-parking",
+      },
+      {
+        id: 4,
+        name: "Car Services",
+        path: "/operator/transactions/car-services",
+      },
+    ],
+  },
+  {
+    id: 4,
+    name: "Reports",
+    path: "/operator/reports",
+    icon: <ClientLogIcon fill="#444648" />,
+    sec: <ClientLogIcon fill="#fff" />,
+    hover: <ClientLogIcon fill="#ee383a" />,
+    sub: [
+      {
+        id: 1,
+        name: "Payments",
+        path: "/operator/reports/payments",
+      },
+      {
+        id: 2,
+        name: "Locations",
+        path: "/operator/reports/locations",
+      },
+      {
+        id: 3,
+        name: "Zones",
+        path: "/operator/reports/zones",
+      },
+      {
+        id: 3,
+        name: "Logs",
+        path: "/operator/reports/logs",
+      },
+    ],
   },
 ];
 
-export const howTabs = [
-  "Pay-to-Park",
+export const optTranHeader = [
+  "TICKET NUMBER",
+  "AMOUNT",
+  "ZONE",
+  "VEHICLE",
+  "SERVICE",
+  "STATUS",
+  "DATE",
+  "ACTIONS",
+];
+
+export const clientTranHeader = [
+  "TICKET NUMBER",
+  "FULL NAME",
+  "AMOUNT",
+  "ZONE",
+  "VEHICLE",
+  "SERVICE",
+  "STATUS",
+  "DATE",
+  "ACTIONS",
+];
+
+export const clientLogPayHeader = [
+  "TICKET NUMBER",
+  "LICENSE PLATE",
+  "CUSTOMER",
+  "LOCATION",
+  "ZONE",
+  "ATTENDANT",
+  "AMOUNT",
+  "STATUS",
+  "DATE",
+  "ACTIONS",
+];
+
+export const clientTranBody = [
+  {
+    ticket: "003832",
+    amount: "3000",
+    zone: "V10098",
+    plate: "ABJD833H",
+    type: "Pay-To-Park",
+    status: 1,
+    date: "24-07-2023 7:00 AM",
+  },
+];
+
+export const clientLogPayBody = [
+  {
+    ticket: "003832",
+    plate: "ABJD833H",
+    customer: "Bilal Omari",
+    location: "Regno Sei / EZPark Car Park",
+    zone: "V10098",
+    attendant: "Bilal Omari",
+    amount: "3000",
+    status: 1,
+    date: "24-07-2023 7:00 AM",
+  },
+];
+
+export const colorTypes = [
+  { value: "Blue", label: "Blue", color: "#00629F", fontColor: "#FFFFFF" },
+  {
+    value: "Maroon",
+    label: "Maroon",
+    color: "#6D191B",
+    fontColor: "#FFFFFF",
+  },
+  {
+    value: "Yellow",
+    label: "Yellow",
+    color: "#FFEE36",
+    fontColor: "#000000",
+  },
+  {
+    value: "Silver",
+    label: "Silver",
+    color: "#D1D2D1",
+    fontColor: "#000000",
+  },
+  {
+    value: "Purple",
+    label: "Purple",
+    color: "#683276",
+    fontColor: "#FFFFFF",
+  },
+  {
+    value: "Orange",
+    label: "Orange",
+    color: "#E86D34",
+    fontColor: "#FFFFFF",
+  },
+  { value: "Green", label: "Green", color: "#00744E", fontColor: "#FFFFFF" },
+  { value: "Gray", label: "Gray", color: "#7C7C7C", fontColor: "#FFFFFF" },
+  { value: "Pink", label: "Pink", color: "#EA7B88", fontColor: "#000000" },
+  { value: "Tan", label: "Tan", color: "#BE9A6D", fontColor: "#000000" },
+  { value: "Brown", label: "Brown", color: "#3C271C", fontColor: "#FFFFFF" },
+  { value: "Black", label: "Black", color: "#000000", fontColor: "#FFFFFF" },
+  { value: "Red", label: "Red", color: "#AB1A30", fontColor: "#FFFFFF" },
+  { value: "Gold", label: "Gold", color: "#D1A631", fontColor: "#000000" },
+  { value: "Beige", label: "Beige", color: "#EADBBA", fontColor: "#000000" },
+  { value: "White", label: "White", color: "#FFFFFF", fontColor: "#000000" },
+  {
+    value: "Claret",
+    label: "Claret",
+    color: "#7f1734",
+    fontColor: "#FFFFFF",
+  },
+  {
+    value: "Copper",
+    label: "Copper",
+    color: "#b87333",
+    fontColor: "#FFFFFF",
+  },
+  { value: "Cream", label: "Cream", color: "#fffdd0", fontColor: "#000000" },
+];
+
+export const colors = [
+  "White",
+  "Black",
+  "Red",
+  "Silver",
+  "Gray",
+  "Gold",
+  "Orange",
+  "Yellow",
+  "Green",
+  "Blue",
+  "Indigo",
+  "Violet",
+  "Purple",
+];
+
+export const clientSubStyle = {
+  alignItems: "center",
+  display: "flex",
+  color: "#444648",
+  fontWeight: 700,
+  borderRadius: "4px",
+  fontSize: "10px",
+  lineHeight: "100%",
+  margin: "0 -20px 12px",
+  padding: "5px 2px 5px 16px",
+};
+
+export const clientStyle = {
+  background: "#EE383A",
+  alignItems: "center",
+  display: "flex",
+  color: "#fff",
+  fontWeight: 500,
+  borderRadius: "4px",
+  fontSize: "13px",
+  lineHeight: "100%",
+  margin: "0 -20px 12px",
+  padding: "5px 2px 5px 16px",
+};
+
+export const activeStyle = {
+  background: "#FDE8E8",
+  alignItems: "center",
+  display: "flex",
+  color: "#EE383A",
+  fontWeight: 500,
+  borderRadius: "4px",
+  fontSize: "13px",
+  lineHeight: "100%",
+  margin: "0 -20px 12px",
+  padding: "5px 2px 5px 16px",
+};
+
+export const dashServices = [
+  {
+    img: "/assets/park.png",
+    title: "Park Now",
+    link: "/customer/services/pay-to-park",
+  },
+  {
+    img: "/assets/calendar.png",
+    title: "Reserve & Park Later",
+    link: "/customer/services/reserve-parking",
+  },
+  {
+    img: "/assets/park-spot.png",
+    title: "Reserve Event Parking",
+    link: "/customer/services/event-parking",
+  },
+  {
+    img: "/assets/service.png",
+    title: "Car Services",
+    link: "/customer/services/car-service",
+  },
+];
+
+export const carServiceIcon = [
+  "/assets/wash.png",
+  "/assets/fuel.png",
+  "/assets/gauge.png",
+  "/assets/tow.png",
+];
+
+export const carServiceDesc = [
+  "Car Wash",
+  "Car Fueling",
+  "Tyre gauge",
+  "Car Tow",
+];
+
+export const DurationTypes = ["MINUTE", "HOUR", "DAY", "MONTH", "YEAR"];
+
+export const RateTypes = ["ADHOC", "COMPLEMENTARY", "SUBSCRIPTION", "EVENT"];
+
+export const BillingTypes = ["ADHOC", "COMPLEMENTARY", "SUBSCRIPTION", "EVENT"];
+
+export const BookingTypes = ["ONETIME", "SUBSCRIPTION"];
+
+export const TransactionTypes = [
+  "FUND_WALLET",
+  "SERVICE_PAYMENT",
+  "RESERVE_PARKING",
+  "EVENT_PARKING",
+  "PAY_TO_PARK",
+  "TOKENIZATION",
+  "TOKENIZATION_REFUND",
+  "MEMBERSHIP_SUBSCRIPTION",
+  "MEMBERSHIP_SUBSCRIPTION_RENEWAL",
+];
+
+export const FeatureType = [
+  "Vehicle Limit",
+  "Parking Limit",
+  "Valet Limit",
+  "Location Limit",
+  "Car Service Limit",
+  "Applicable Locations",
+  "User Limit",
+];
+
+export const PaymentMethods = [
+  "CASH",
+  "TRANSFER",
+  "WALLET",
+  "POS",
+  "UNPAID",
+  "SUBSCRIPTION",
+  "CARD",
+];
+
+export const OnlinePaymentMethods = ["CARD", "WALLET", "TRANSFER"];
+
+export const cardImg = [
+  { img: "/assets/mastercard.svg", name: "mastercard" },
+  { img: "/assets/visa.svg", name: "visa" },
+  { img: "/assets/verve.svg", name: "verve" },
+];
+
+export const SecStatus = [
+  { color: "#E81313", name: "Inactive", bg: "#F9D0CD" },
+  { color: "#008000", name: "Active", bg: "#E5FFE5" },
+  { color: "#F9A11E", name: "Pending", bg: "#FDF6E7" },
+];
+
+export const ReservedStatus = ["Pending", "Completed", "Cancelled"];
+export const LogsStatus = ["In Service", "Completed", "Cancelled"];
+export const ServicesStatus = ["In Progress", "Completed", "Cancelled"];
+
+export const Status = [
+  { color: "#F9A11E", name: "Pending", bg: "#FDF6E7" },
+  { color: "#008000", name: "Completed", bg: "#E5FFE5" },
+  { color: "#E81313", name: "Cancelled", bg: "#F9D0CD" },
+];
+
+export const LogStatus = [
+  { color: "#F9A11E", name: "In Service", bg: "#FDF6E7" },
+  { color: "#008000", name: "Completed", bg: "#E5FFE5" },
+  { color: "#E81313", name: "Cancelled", bg: "#F9D0CD" },
+];
+
+export const AppointmentDateTypes = ["Date", "WeekDay"];
+
+export const BookingSlots = [
+  "7:00 - 8:30",
+  "8:30 - 10:00",
+  "10:00 - 11:30",
+  "11:30 - 13:00",
+  "13:00 - 14:30",
+  "14:30 - 16:00",
+  "16:00 - 17:30",
+  "17:30 - 19:00",
+];
+
+export const subOption = [
+  {
+    name: "Renew Subscription",
+    icon: MdAutorenew,
+  },
+  {
+    name: "Cancel Subscription",
+    icon: FcCancel,
+  },
+];
+
+export const eventOption = [
+  {
+    name: "Edit Event",
+    icon: AiOutlineEdit,
+  },
+  {
+    name: "Delete Event",
+    icon: BsTrash,
+  },
+];
+
+export const rateOption = [
+  {
+    name: "View Rate",
+    icon: TbListDetails,
+  },
+  {
+    name: "Edit Rate",
+    icon: AiOutlineEdit,
+  },
+];
+
+export const zoneOption = [
+  {
+    name: "View Zone",
+    icon: TbListDetails,
+  },
+  {
+    name: "Edit Zone",
+    icon: AiOutlineEdit,
+  },
+];
+
+export const clientListOption = [
+  {
+    name: "View",
+    icon: HiOutlineInformationCircle,
+  },
+  {
+    name: "Edit",
+    icon: FiEdit,
+  },
+  {
+    name: "Delete",
+    icon: BsTrash,
+  },
+];
+
+export const clientInvoiceListOption = [
+  {
+    name: "Send",
+    id: 0,
+    icon: MdSend,
+  },
+  {
+    name: "View",
+    id: 1,
+    icon: HiOutlineInformationCircle,
+  },
+  {
+    name: "Edit",
+    id: 2,
+    icon: FiEdit,
+  },
+  {
+    name: "Delete",
+    id: 3,
+    icon: BsTrash,
+  },
+];
+
+export const viewDeleteOption = [
+  {
+    name: "View",
+    icon: HiOutlineInformationCircle,
+  },
+  {
+    name: "Delete",
+    icon: BsTrash,
+  },
+];
+
+export const viewClaimOption = [
+  {
+    name: "View",
+    icon: HiOutlineInformationCircle,
+  },
+  {
+    name: "Delete",
+    icon: BsTrash,
+  },
+  {
+    name: "Claim",
+    icon: FiEdit,
+  },
+];
+
+export const accountType = ["VALET", "PARKING", "GENERAL", "SERVICE"];
+export const statusType = ["Inactive", "Active"];
+export const newStatusType = ["Inactive", "Active", "Pending"];
+export const invoiceStatusType = ["Unpaid", "Paid", "Pending"];
+
+export const eventOptions = ["Edit Event", "Delete Event"];
+
+export const accountDrop = [
+  {
+    name: "Profile",
+    link: "/customer/account/profile",
+  },
+  {
+    name: "Payments",
+    link: "/customer/account/payment",
+  },
+  {
+    name: "Settings",
+    link: "/customer/account/settings",
+  },
+  {
+    name: "Logout",
+  },
+];
+
+export const sideAccountDrop = [
+  {
+    name: "Profile",
+    link: "/customer/account/profile",
+    icon: <UserIcon fill={"#fff"} stroke="#000" />,
+    hover: <UserIcon fill="#EE383A" stroke="#EE383A" />,
+    sec: <UserIcon fill="#EE383A" stroke="#EE383A" />,
+  },
+  {
+    name: "Payments",
+    link: "/customer/account/payment",
+    icon: <CustomerIcon fill={"#fff"} stroke="#000" />,
+    hover: <CustomerIcon fill="#EE383A" stroke="#EE383A" />,
+    sec: <CustomerIcon fill="#EE383A" stroke="#EE383A" />,
+  },
+  {
+    name: "Settings",
+    link: "/customer/account/settings",
+    icon: <ConfigIcon fill={"#fff"} stroke="#000" />,
+    hover: <ConfigIcon fill="#EE383A" stroke="#EE383A" />,
+    sec: <ConfigIcon fill="#EE383A" stroke="#EE383A" />,
+  },
+];
+
+export const servicesHeader = [
+  "TICKET NUMBER",
+  "ZONE",
+  "VEHICLE",
+  "SERVICE TYPE",
+  "STATUS",
+  "DATE",
+];
+
+export const payToParkHeader = [
+  "TICKET NUMBER",
+  "VEHICLE",
+  "SERVICE TYPE",
+  "STATUS",
+  "DATE",
+  "",
+];
+
+export const companyPayToParkHeader = [
+  "TICKET NUMBER",
+  "ATTENDANT",
+  "VEHICLE",
+  "SERVICE TYPE",
+  "STATUS",
+  "DATE",
+  "ACTIONS",
+];
+
+export const operatorDashCards = [
+  {
+    title: "Locations",
+    img: "/assets/locationn.jpg",
+  },
+  {
+    title: "Zones",
+    img: "/assets/zones.jpg",
+  },
+  {
+    title: "Attendants",
+    img: "/assets/attendant.jpg",
+  },
+  {
+    title: "Transactions",
+    img: "/assets/trans.jpg",
+  },
+];
+
+export const operatorDahboard = [
+  {
+    title: "Valeted Vehicles",
+    color: "#EE383A",
+    img: "/assets/valeted.jpg",
+  },
+  {
+    title: "Parked Vehicles",
+    color: "#0B841D",
+    img: "/assets/park-confirm.png",
+  },
+  {
+    title: "Serviced Vehicles",
+    color: "#242628",
+    img: "/assets/service.png",
+  },
+];
+
+export const clientDahboard = [
+  {
+    title: "Subscriptions",
+    opt: "Inactive",
+    color: "#EE383A",
+    secOpt: "Active",
+    img: "/assets/subs.jpg",
+  },
+  {
+    title: "Users",
+    opt: "Inactive",
+    color: "#0B841D",
+    secOpt: "Active",
+    img: "/assets/users.jpg",
+  },
+  {
+    title: "Events",
+    color: "#242628",
+    opt: "Upcoming",
+    secOpt: "Past",
+    img: "/assets/events.jpg",
+  },
+];
+
+export const customerHelp = [
+  {
+    title: "Frequently Asked Questions",
+    img: "/assets/faq.jpg",
+    link: "/customer/help-center/FAQs",
+  },
+  {
+    title: "Send us an email",
+    img: "/assets/help.jpg",
+    link: "/customer/help-center/contact-us",
+  },
+];
+
+export const reserveHeader = [
+  "AMOUNT",
+  "VEHICLE",
+  "ARRIVAL",
+  "DEPARTURE",
+  "DATE CREATED",
+  "STATUS",
+  "ACTIONS",
+];
+
+export const companyReserveHeader = [
+  "TICKET NUMBER",
+  "ATTENDANT",
+  "AMOUNT",
+  "VEHICLE",
+  "ARRIVAL",
+  "DEPARTURE",
+  "STATUS",
+  "ACTIONS",
+];
+
+export const eventHeader = [
+  "TICKET NUMBER",
+  "AMOUNT",
+  "VEHICLE",
+  "SERVICE TYPE",
+  "EVENT",
+  "STATUS",
+  "DATE",
+  "",
+];
+
+export const companyEventHeader = [
+  "TICKET NUMBER",
+  "ATTENDANT",
+  "AMOUNT",
+  "VEHICLE",
+  "SERVICE TYPE",
+  "STATUS",
+  "DATE",
+  "ACTIONS",
+];
+
+export const carHeader = [
+  "SERVICE TYPE",
+  "AMOUNT",
+  "APPOINTMENT SLOT",
+  "APPOINTMENT DATE",
+  "DATE CREATED",
+  "STATUS",
+  "ACTIONS",
+];
+
+export const searchOption = [
+  { label: "Contains", value: "cont" },
+  { label: "Equals to", value: "eq" },
+];
+
+export const subFieldOption = [
+  { label: "Plan", value: "membershipPlan.name" },
+  { label: "Amount", value: "membershipPlan.amount" },
+  { label: "Duration", value: "membershipPlan.interval" },
+  { label: "Status", value: "status" },
+];
+
+export const clientUserFieldOption = [
+  { label: "First Name", value: "profile.name" },
+  { label: "Last Name", value: "profile.lastName" },
+  { label: "Email", value: "email" },
+  { label: "Company", value: "profile.companyName" },
+  { label: "Status", value: "status" },
+];
+
+export const opUserFieldOption = [
+  { label: "Full Name", value: "name" },
+  { label: "User ID", value: "userId" },
+  { label: "Account Type", value: "accountType" },
+  { label: "Status", value: "status" },
+];
+
+export const opLocFieldOption = [
+  { label: "Name", value: "name" },
+  { label: "Operator", value: "operator.name" },
+  { label: "State", value: "state" },
+  { label: "Status", value: "status" },
+];
+
+export const opLogServiceFieldOption = [
+  { label: "Ticket", value: "ticketNumber" },
+  { label: "Location", value: "location.name" },
+  { label: "Zone", value: "zone.name" },
+  { label: "Attendant", value: "attendant.name" },
+];
+
+export const opRepPayFieldOption = [
+  { label: "Location", value: "serviceLog.location.name" },
+  { label: "Zone", value: "serviceLog.zone.name" },
+  { label: "Attendant", value: "attendant.name" },
+  { label: "Amount", value: "amount" },
+  { label: "Amount Paid", value: "amountPaid" },
+  { label: "Service", value: "serviceLog.service.name" },
+];
+
+export const opRepLocFieldOption = [
+  { label: "Name", value: "name" },
+  { label: "State", value: "state" },
+  { label: "Zones", value: "zones" },
+  { label: "Location Type", value: "locationType" },
+];
+
+export const opRepZoneFieldOption = [
+  { label: "Name", value: "name" },
+  { label: "Location", value: "location" },
+  { label: "Capacity", value: "capacity" },
+  { label: "Reservable", value: "reservable" },
+  { label: "Reservable Space", value: "reservableSpace" },
+  { label: "Service", value: "service.name" },
+];
+
+export const opRepLogFieldOption = [
+  { label: "Ticket", value: "ticketNumber" },
+  { label: "Service", value: "service.name" },
+  { label: "Location", value: "location.name" },
+  { label: "Zone", value: "zone.name" },
+];
+
+export const opZoneFieldOption = [
+  { label: "Name", value: "name" },
+  { label: "Location", value: "location.name" },
+  { label: "Capacity", value: "capacity" },
+  { label: "Minimum Duration", value: "minimumDuration" },
+  { label: "Duration Type", value: "durationType" },
+  { label: "Status", value: "status" },
+];
+
+export const opRateFieldOption = [
+  { label: "Name", value: "name" },
+  { label: "Duration Type", value: "durationType" },
+  { label: "Duration Start", value: "durationStart" },
+  { label: "Duration Limit", value: "durationLimit" },
+  { label: "Amount", value: "amount" },
+  { label: "Status", value: "status" },
+];
+
+export const opPolicyFieldOption = [
+  { label: "Title", value: "title" },
+  { label: "Location", value: "location.name" },
+  { label: "Status", value: "status" },
+];
+
+export const clientEventFieldOption = [
+  { label: "Name", value: "name" },
+  { label: "Website", value: "website" },
+  { label: "Status", value: "status" },
+];
+
+export const custPayFieldOption = [
+  { label: "Transaction ID", value: "transactionId" },
+  { label: "Amount", value: "amount" },
+  { label: "Payment Type", value: "paymentMethod" },
+  { label: "Transaction Type", value: "transactionType" },
+];
+
+export const custTipFieldOption = [
+  { label: "Transaction ID", value: "serviceLog.id" },
+  { label: "Amount", value: "amount" },
+];
+
+export const subHeader = [
+  "Plan",
+  "Amount",
+  "Duration",
+  "Next Payment Date",
+  "Status",
+  "Date Created",
+  "Actions",
+];
+
+export const paymentHeader = [
+  "TRANSACTION ID",
+  "AMOUNT",
+  "PAYMENT METHOD",
+  "TRANSACTION TYPE",
+  "STATUS",
+  "DATE",
+];
+
+export const tipsHeader = [
+  "TRANSACTION ID",
+  "TIP AMOUNT",
+  "PAYMENT METHOD",
+  "STATUS",
+  "DATE",
+];
+
+export const IntervalType = [
+  "Hourly",
+  "Daily",
+  "Weekly",
+  "Monthly",
+  "Quarterly",
+  "Biannually",
+  "Annually",
+];
+
+export const intervals = [
+  { 0: "Hourly" }, // 60 minutes
+  { 1: "Daily" }, // 1 Day
+  { 2: "Weekly" }, // 7 Days
+  { 3: "Monthly" }, // 30 Days
+  { 4: "Quarterly" }, // 3 Months
+  { 5: "Biannually" }, // 6 Months
+  { 6: "Annually" }, // 12 Months
+];
+
+export const serviceTabs = [
+  "Valet Parking",
+  "Pay-To-Park",
   "Reserve Parking",
   "Event Parking",
   "Car Services",
 ];
-export const connectTabs = ["Twitter", "Facebook", "Instagram"];
 
-export const twitterActions = [
-  <FaRegComment size="20px" />,
-  <AiOutlineRetweet size="20px" />,
-  <MdOutlineFavoriteBorder size="20px" />,
-  <GoUpload size="20px" />,
+export const usServiceTabs = ["Valet Parking", "Pay-To-Park", "Car Services"];
+
+export const customStyles = {
+  control: (provided, state) => ({
+    ...provided,
+    width: "100%",
+    minHeight: "44px",
+    color: "#646668",
+    fontSize: "14px",
+    cursor: "pointer",
+    borderRadius: "4px",
+    border: state.hasValue ? "none" : "1px solid #D4D6D8",
+    paddingRight: "16px",
+    background: state.hasValue ? "#f4f6f8" : "unset",
+  }),
+  menu: (provided) => ({
+    ...provided,
+    fontSize: "13px",
+    backgroundColor: "#fff",
+  }),
+  option: (provided, state) => ({
+    ...provided,
+    color: state.isFocused ? "" : "",
+    backgroundColor: state.isFocused ? "#f4f6f8" : "",
+  }),
+};
+
+export const errorCustomStyles = {
+  control: (provided) => ({
+    ...provided,
+    width: "100%",
+    minHeight: "44px",
+    color: "red",
+    fontSize: "14px",
+    cursor: "pointer",
+    borderRadius: "4px",
+    border: "1px solid red",
+    paddingRight: "16px",
+    background: "#FDE8E8",
+  }),
+  menu: (provided) => ({
+    ...provided,
+    fontSize: "13px",
+    backgroundColor: "#fff",
+  }),
+  option: (provided, state) => ({
+    ...provided,
+    color: state.isFocused ? "" : "",
+    backgroundColor: state.isFocused ? "#f4f6f8" : "",
+  }),
+};
+
+export const clientListOptions = [
+  { label: "Name", value: "name" },
+  { label: "Contact Person", value: "contactPerson" },
+  { label: "Phone", value: "phone" },
+  { label: "State", value: "state" },
+  { label: "Account Type", value: "accountType" },
+  { label: "Status", value: "status" },
 ];
 
-export const mobileTwitterActions = [
-  <FaRegComment size="10px" />,
-  <AiOutlineRetweet size="10px" />,
-  <MdOutlineFavoriteBorder size="10px" />,
-  <GoUpload size="10px" />,
+export const opPtpOptions = [
+  { label: "Ticket Number", value: "ticketNumber" },
+  { label: "Location", value: "zone.location.name" },
+  { label: "Zone", value: "zone.name" },
+  { label: "Payment Type", value: "transaction.paymentMethod" },
+  { label: "Status", value: "status" },
 ];
 
-export const company = ["Lagos", "Abuja"];
-export const companies = [
-  {
-    name: "About ParkinSpace",
-    id: "about",
-  },
-  {
-    name: "Services",
-    id: "services",
-  },
-  {
-    name: "ParkinSpace PLUS",
-    id: "plus",
-  },
-  {
-    name: "Getting Started",
-    id: "start",
-  },
-  {
-    name: "How it Work",
-    id: "how",
-  },
+export const opRpOptions = [
+  { label: "Reservation ID", value: "reservationId" },
+  { label: "Location", value: "zone.location.name" },
+  { label: "Zone", value: "zone.name" },
+  { label: "Payment Type", value: "paymentMethod" },
+  { label: "Status", value: "status" },
 ];
 
-export const connect = [
-  {
-    id: 1,
-    name: "Facebook",
-    link: "https://web.facebook.com/EZParkLimited/?_rdc=1&_rdr",
-    icon: "/assets/facebook_icon.png",
-    img: <RiFacebookFill color="white" size={20} />,
-  },
-  {
-    id: 2,
-    name: "Twitter",
-    link: "https://twitter.com/EZParkLimited",
-    icon: "/assets/twitter_icon.png",
-    img: <RiTwitterXLine color="white" size={20} />,
-  },
-  {
-    id: 3,
-    name: "Instagram",
-    link: "https://www.instagram.com/ezparklimited/",
-    icon: "/assets/instagram_icon.png",
-    img: <RiInstagramFill color="white" size={20} />,
-  },
-  {
-    id: 4,
-    name: "LinkedIn",
-    link: "https://www.linkedin.com/company/ezpark-limited/",
-    icon: "/assets/linkedin_icon.png",
-    img: <BsLinkedin color="white" size={20} />,
-  },
+export const clientInvoiceOptions = [
+  { label: "Client", value: "client.name" },
+  { label: "Amount Payable", value: "amount" },
+  { label: "Created By", value: "createdBy" },
+  { label: "Payment Status", value: "paymentStatus" },
 ];
 
-export const information = [
-  { name: "Contact Us", link: "/contact-us" },
-  { name: "Terms & Conditions", link: "" },
-  { name: "Frequently Asked Questions", link: "" },
-  { name: "Careers", link: "" },
+export const customersOptions = [
+  { label: "First Name", value: "profile.firstName" },
+  { label: "Last Name", value: "profile.lastName" },
+  { label: "Phone", value: "profile.phone" },
+  { label: "Company Name", value: "profile.companyName" },
+  { label: "Email", value: "email" },
+  { label: "Status", value: "status" },
 ];
 
-export const operatorMenu = [
-  "About Us",
-  "Services",
-  "ParkinSpace",
-  "Clients",
-  "Contact",
+export const attendantsOptions = [
+  { label: "Name", value: "name" },
+  { label: "User ID", value: "userId" },
+  { label: "Account Type", value: "accountType" },
+  { label: "Status", value: "status" },
 ];
 
-export const started = [
-  {
-    id: 1,
-    img: "/assets/download.png",
-    text: "Download app or visit our website",
-  },
-  {
-    id: 2,
-    img: "/assets/sign.png",
-    text: "Sign Up for a free account",
-  },
-  {
-    id: 3,
-    img: "/assets/car.png",
-    text: "Enter your Vehicle details",
-  },
-  {
-    id: 4,
-    img: "/assets/wallet.png",
-    text: "Start parking",
-  },
+export const administratorsOptions = [
+  { label: "First Name", value: "firstName" },
+  { label: "Last Name", value: "lastName" },
+  { label: "Email", value: "email" },
+  { label: "Role", value: "role.displayName" },
+  { label: "Status", value: "status" },
 ];
 
-export const benefits = [
-  { id: 1, name: "Grow Revenue", img: "/assets/ben1.png" },
-  { id: 2, name: "Decrease Costs", img: "/assets/ben2.png" },
-  { id: 3, name: "Attract More Customers", img: "/assets/ben3.png" },
-  { id: 4, name: "Improve Operational Efficiency", img: "/assets/ben4.png" },
-  { id: 5, name: "Solve Multiple Parking Needs", img: "/assets/ben5.png" },
-  { id: 6, name: "Enhance Customer Experience", img: "/assets/ben6.png" },
+export const operatorOptions = [
+  { label: "Name", value: "name" },
+  { label: "Email", value: "email" },
+  { label: "Contact Person", value: "contactPerson" },
+  { label: "Phone", value: "phone" },
+  { label: "State", value: "state" },
+  { label: "Status", value: "status" },
 ];
 
-export const payPark = [
-  {
-    id: 1,
-    pic: "/assets/scan.png",
-    text: "Scan the QR code or enter the zone number",
-  },
-  {
-    id: 2,
-    pic: "/assets/time.png",
-    text: "Select time",
-  },
-  {
-    id: 3,
-    pic: "/assets/wallet.png",
-    text: "Confirm payment",
-  },
-  {
-    id: 4,
-    pic: "/assets/alerts.png",
-    text: "Get alerts on your parking status",
-  },
+export const eventsOptions = [
+  { label: "Name", value: "name" },
+  { label: "Client", value: "client.name" },
+  { label: "Website", value: "website" },
+  { label: "Status", value: "status" },
 ];
 
-export const reservePark = [
-  {
-    id: 1,
-    pic: "/assets/search.png",
-    text: "Search parking options at your planned destination",
-  },
-  {
-    id: 2,
-    pic: "/assets/bus.png",
-    text: "Choose parking facility of your preference",
-  },
-  {
-    id: 3,
-    pic: "/assets/spot.png",
-    text: "Book and pay to reserve your parking spot",
-  },
-  {
-    id: 4,
-    pic: "/assets/instruction.png",
-    text: "Receive confirmation of your reservation",
-  },
+export const locationsOptions = [
+  { label: "Name", value: "name" },
+  { label: "Operator", value: "operator.name" },
+  { label: "State", value: "state" },
+  { label: "Status", value: "status" },
 ];
 
-export const carService = [
-  {
-    id: 1,
-    pic: "/assets/bus.png",
-    text: "Select Car Services",
-  },
-  {
-    id: 2,
-    pic: "/assets/message.png",
-    text: "Choose a car service",
-  },
-  {
-    id: 3,
-    pic: "/assets/wallet.png",
-    text: "Book and pay for car service",
-  },
-  {
-    id: 4,
-    pic: "/assets/notification.png",
-    text: "Receive confirmation",
-  },
+export const valetedVehiclesOptions = [
+  { label: "Ticket Number", value: "ticketNumber" },
+  { label: "License Plate", value: "vehicle.licensePlate" },
+  { label: "Customer Name", value: "vehicle.customerName" },
+  { label: "Location", value: "location.name" },
+  { label: "Zone", value: "zone.name" },
+  { label: "Attendant", value: "attendant.name" },
+  { label: "Amount", value: "amount" },
+  { label: "Status", value: "status" },
 ];
 
-export const eventPark = [
+export const zonesOptions = [
+  { label: "Name", value: "name" },
+  { label: "Code", value: "code" },
+  { label: "Location", value: "location.name" },
+  { label: "Description", value: "description" },
+  { label: "Capacity", value: "capacity" },
+  { label: "Status", value: "status" },
+];
+
+export const ratesOptions = [
+  { label: "Name", value: "name" },
+  { label: "Duration Type", value: "durationType" },
+  { label: "Duration Start", value: "durationStart" },
+  { label: "Duration Limit", value: "durationLimit" },
+  { label: "Amount", value: "amount" },
+  { label: "Status", value: "status" },
+];
+
+export const amenitiesOptions = [
+  { label: "Name", value: "name" },
+  { label: "Description", value: "description" },
+];
+
+export const policiesOptions = [
+  { label: "Title", value: "title" },
+  { label: "Location", value: "location.name" },
+];
+
+export const servicesOptions = [
+  { label: "Name", value: "name" },
+  { label: "Description", value: "description" },
+  { label: "Service Type", value: "serviceType" },
+];
+
+export const vehiclesOptions = [
+  { label: "Customer Name", value: "customerName" },
+  { label: "License Plate", value: "licensePlate" },
+  { label: "Color", value: "color" },
+  { label: "Make", value: "make.name" },
+  { label: "Model", value: "model.name" },
+  { label: "Created By", value: "createdBy" },
+];
+
+export const membershipPlansOptions = [
+  { label: "Name", value: "name" },
+  { label: "Amount (₦)", value: "amount" },
+  { label: "Interval", value: "interval" },
+  { label: "Corporate", value: "isCorporate" },
+  { label: "Upgradeable", value: "isUpgradable" },
+  { label: "Status", value: "status" },
+];
+
+export const membershipFeaturesOptions = [
+  { label: "Name", value: "name" },
+  { label: "Plan", value: "membershipPlan.name" },
+  { label: "Feature Type", value: "featureType" },
+];
+
+export const customerSubOptions = [
+  { label: "Customer First Name", value: "customer.profile.firstName" },
+  { label: "Customer Last Name", value: "customer.profile.lastName" },
+  { label: "Plan", value: "membershipPlan.name" },
+  { label: "Amount (₦)", value: "membershipPlan.amount" },
+  { label: "Duration", value: "membershipPlan.interval" },
+  { label: "Status", value: "status" },
+];
+
+export const corporateSubOptions = [
+  { label: "Client", value: "client.name" },
+  { label: "Plan", value: "membershipPlan.name" },
+  { label: "Amount (₦)", value: "membershipPlan.amount" },
+  { label: "Duration", value: "membershipPlan.interval" },
+  { label: "Status", value: "status" },
+];
+
+export const payToParkOptions = [
+  { label: "Ticket Number", value: "ticketNumber" },
+  { label: "Amount (₦)", value: "amount" },
+  { label: "Zone", value: "zone.code" },
+  { label: "Vehicle", value: "vehicle.licensePlate" },
+  { label: "Customer First Name", value: "customer.profile.firstName" },
+  { label: "Customer Last Name", value: "customer.profile.lastName" },
+  { label: "Status", value: "status" },
+];
+
+export const clientEventParkingOptions = [
+  { label: "Ticket Number", value: "ticketNumber" },
+  { label: "Event Name", value: "event.name" },
+  { label: "Location", value: "zone.location.name" },
+  { label: "Amount (₦)", value: "amount" },
+  { label: "Status", value: "status" },
+];
+
+export const eventParkingOptions = [
+  { label: "Ticket Number", value: "ticketNumber" },
+  { label: "Event Name", value: "event.name" },
+  { label: "License Plate", value: "vehicle.licensePlate" },
+  { label: "Location", value: "zone.location.name" },
+  { label: "Amount (₦)", value: "amount" },
+  { label: "Status", value: "status" },
+];
+
+export const carServiceOptions = [
+  { label: "Booking ID", value: "bookingId" },
+  { label: "Booking Type", value: "bookingType" },
+  { label: "Service-Type", value: "serviceType" },
+  { label: "Amount (₦)", value: "amount" },
+  { label: "Customer First Name", value: "customer.profile.firstName" },
+  { label: "Customer Last Name", value: "customer.profile.lastName" },
+  { label: "Status", value: "status" },
+];
+
+export const tipsOptions = [
+  { label: "Ticket Number", value: "serviceLog.ticketNumber" },
+  { label: "Amount (₦)", value: "amount" },
   {
-    id: 1,
-    pic: "/assets/search.png",
-    text: "Browse or Search for Event",
+    label: "Customer First Name",
+    value: "serviceLog.customer.profile.firstName",
   },
   {
-    id: 2,
-    pic: "/assets/message.png",
-    text: "Choose from available parking options",
+    label: "Customer Last Name",
+    value: "serviceLog.customer.profile.lastName",
   },
-  {
-    id: 3,
-    pic: "/assets/arrive.png",
-    text: "Confirm selection and make payment",
-  },
-  {
-    id: 4,
-    pic: "/assets/instruction.png",
-    text: "Receive e-mail confirmation",
-  },
+  { label: "Attendant", value: "serviceLog.attendant.name" },
+  { label: "Payment_Method", value: "paymentMethod" },
+  { label: "Status", value: "status" },
+];
+
+export const reservedParkingOptions = [
+  { label: "Reservation ID", value: "reservationId" },
+  { label: "Amount (₦)", value: "amount" },
+  { label: "Zone", value: "zone.code" },
+  { label: "Vehicle", value: "vehicle.licensePlate" },
+  { label: "Arrival", value: "arrival" },
+  { label: "Customer First Name", value: "customer.profile.firstName" },
+  { label: "Customer Last Name", value: "customer.profile.lastName" },
+  { label: "Status", value: "status" },
+];
+
+export const rolesOptions = [
+  { label: "Name", value: "name" },
+  { label: "Display Name", value: "displayName" },
+];
+
+export const makesOptions = [{ label: "Name", value: "name" }];
+
+export const modelsOptions = [
+  { label: "Name", value: "name" },
+  { label: "Make", value: "make.name" },
+];
+
+export const faqsOptions = [
+  { label: "Title", value: "title" },
+  { label: "Status", value: "status" },
+];
+
+export const serviceType = ["BASIC", "PREMIUM"];
+
+export const bankDetailsOptions = [
+  { label: "Bank Name", value: "bankName" },
+  { label: "Account Name", value: "accountName" },
+  { label: "Account Number", value: "accountNumber" },
+  { label: "Sort Code", value: "sortCode" },
+  { label: "Service", value: "service.name" },
+];
+
+export const paymentsOptions = [
+  { label: "Location", value: "serviceLog.location.name" },
+  { label: "Zone", value: "serviceLog.zone.name" },
+  { label: "Attendant", value: "attendant.name" },
+  { label: "Amount", value: "amount" },
+  { label: "Amount Paid", value: "amountPaid" },
+  { label: "Customer", value: "serviceLog.vehicle.customerName" },
+  { label: "Vehicle", value: "serviceLog.vehicle.licensePlate" },
+  { label: "Service", value: "serviceLog.service.name" },
+  { label: "Payment Type", value: "paymentMethod" },
+];
+
+export const adminLocationsReportOptions = [
+  { label: "Name", value: "name" },
+  { label: "State", value: "state" },
+  { label: "Location Type", value: "locationType" },
+  { label: "Status", value: "status" },
+];
+
+export const locationsReportOptions = [
+  { label: "Name", value: "name" },
+  { label: "State", value: "state" },
+  { label: "Zone", value: "zone.name" },
+  { label: "Location Type", value: "locationType" },
+];
+
+export const adminTipReportOptions = [
+  { label: "Customer First Name", value: "customer.profile.firstName" },
+  { label: "Customer Last Name", value: "customer.profile.lastName" },
+  { label: "Attendant", value: "attendant.name" },
+  { label: "License Plate", value: "serviceLog.vehicle.licensePlate" },
+  { label: "Location", value: "serviceLog.location.name" },
+  { label: "Ticket Number", value: "serviceLog.ticketNumber" },
+];
+
+export const zonesReportOptions = [
+  { label: "Name", value: "name" },
+  { label: "Location", value: "location.name" },
+  { label: "Service", value: "service" },
+];
+
+export const adminZonesReportOptions = [
+  { label: "Name", value: "name" },
+  { label: "Location", value: "location.name" },
+  { label: "Status", value: "status" },
+];
+
+export const vehiclesReportOptions = [
+  { label: "Customer", value: "customerName" },
+  { label: "License Plate", value: "licensePlate" },
+  { label: "Make", value: "make.name" },
+  { label: "Model", value: "model.name" },
+  { label: "Color", value: "color" },
+  { label: "State", value: "state" },
+];
+
+export const customersReportOptions = [
+  { label: "First Name", value: "profile.firstName" },
+  { label: "Last Name", value: "profile.lastName" },
+  { label: "Email", value: "email" },
+  { label: "Phone", value: "profile.phone" },
+];
+
+export const invoicesReportOptions = [
+  { label: "Client", value: "client" },
+  { label: "Created By", value: "createdBy" },
+  { label: "Confirmed By", value: "confirmedBy" },
+];
+
+export const subsReportOptions = [
+  { label: "Customer", value: "customer" },
+  { label: "Plan", value: "membershipPlan" },
+  { label: "Start Date", value: "startDate" },
+  { label: "Next Renewal", value: "nextRenewal" },
+];
+
+export const adminSubsReportOptions = [
+  { label: "Customer First Name", value: "customer.profile.firstName" },
+  { label: "Customer Last Name", value: "customer.profile.lastName" },
+  { label: "Plan", value: "membershipPlan.name" },
+];
+
+export const logsReportOptions = [
+  { label: "Ticket Number", value: "ticketNumber" },
+  { label: "Customer", value: "customer" },
+  { label: "Vehicle", value: "vehicle" },
+  { label: "Service", value: "service" },
+  { label: "Location", value: "location" },
+];
+
+export const paymentHistoryReportOptions = [
+  { label: "Transaction ID", value: "transactionId" },
+  { label: "Amount (₦)", value: "amount" },
+  { label: "Payment Type", value: "paymentMethod" },
+  { label: "Transaction Type", value: "transactionType" },
+  { label: "Customer Email", value: "customer.email" },
 ];
