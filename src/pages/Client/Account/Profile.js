@@ -41,7 +41,7 @@ const Profile = () => {
           px="32px"
           justifyContent="center"
           align="center"
-          w={{ base: "full", md: "27rem" }}
+          w={{ md: "27rem", base: "100%", "3xl": "30rem" }}
           flexDir="column"
         >
           <Text

@@ -50,6 +50,9 @@ const Header = ({ showSidebar }) => {
       case locationRoute.includes("vehicles"):
         return setTitle("Vehicles");
 
+      case locationRoute.includes("profile"):
+        return setTitle("Profile");
+
       case locationRoute.includes("locations"):
         return setTitle("Locations");
 
@@ -83,6 +86,9 @@ const Header = ({ showSidebar }) => {
 
       case locationRoute.includes("configurations/faq"):
         return setSecTitle("FAQs");
+
+      case locationRoute.includes("update-profile"):
+        return setSecTitle("Update Profile");
 
       case locationRoute.includes("configurations/permissions"):
         return setSecTitle("Permissions");

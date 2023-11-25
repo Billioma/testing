@@ -9,11 +9,15 @@ import {
   useGetModel,
   useGetVehicles,
 } from "../../../services/customer/query/vehicles";
+import {
+  useGetProfile,
+} from "../../../services/admin/query/auth";
 
 const Dashboard = () => {
   const login = localStorage.getItem("login");
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { data: models } = useGetModel();
+  // const { data: dd } = useGetProfile();
   const {
     data: vehicles,
     isLoading,

@@ -6,6 +6,11 @@ export const createPayToPark = async (body) => {
   return res.data;
 };
 
+export const createNonUserPayToPark = async (body) => {
+  const res = await axiosInstance.post(API.NON_USER_PAY_TO_PARK, body);
+  return res.data;
+};
+
 export const createReserveParking = async (body) => {
   const res = await axiosInstance.post("customer/" + API.RESERVE_PARKING, body);
   return res.data;

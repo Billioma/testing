@@ -319,7 +319,7 @@ export const sidebarItems = [
 export const adminHeaderOptions = [
   {
     name: "Profile",
-    link: "/admin/dashboard",
+    link: "/admin/profile",
   },
 
   {

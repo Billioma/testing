@@ -17,6 +17,7 @@ import {
   createTips,
   getReserveParkDetails,
   getEventParkDetails,
+  createNonUserPayToPark,
 } from "../api/services";
 
 export const useGetPayToPark = (limit = "", page = "", options = {}) => {
@@ -174,6 +175,14 @@ export const useGetBookingRate = (id = "", type = "", options = {}) => {
 export const useCreatePayToPark = (options = {}) => {
   const { mutate, isLoading } = useMutation(createPayToPark, {
     mutationKey: "CREATE_PAY_TO_PARK",
+    ...options,
+  });
+  return { mutate, isLoading };
+};
+
+export const useCreateNonUserPayToPark = (options = {}) => {
+  const { mutate, isLoading } = useMutation(createNonUserPayToPark, {
+    mutationKey: "CREATE_NON_USER_PAY_TO_PARK",
     ...options,
   });
   return { mutate, isLoading };

@@ -10,26 +10,27 @@ import {
   useDisclosure,
   useMediaQuery,
 } from "@chakra-ui/react";
+import { usePaystackPayment } from "react-paystack";
 import CustomInput from "../../../components/common/CustomInput";
 import { HiOutlineArrowNarrowLeft } from "react-icons/hi";
 import Select from "react-select";
-import { colorTypes } from "../../../components/common/constants";
+import { allStates, colorTypes } from "../../../components/common/constants";
 import { IoIosArrowDown } from "react-icons/io";
 import SuccessfulPaymentModal from "../../../components/modals/SuccessfulPaymentModal";
-import CreateAccountModal from "../../../components/modals/CreateAccountModal";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useGetZone } from "../../../services/customer/query/locations";
 import {
   useGetPublicMakes,
   useGetPublicModels,
 } from "../../../services/customer/query/auth";
+import { useCreateNonUserPayToPark } from "../../../services/customer/query/services";
+import useCustomToast from "../../../utils/notifications";
 
 const PayToPark = () => {
   const { zoneCode } = useParams();
   const [step, setStep] = useState(1);
   const { isOpen, onClose, onOpen } = useDisclosure();
-  const [showCreate, setShowCreate] = useState(false);
-  const [create, setCreate] = useState(false);
+  const navigate = useNavigate();
 
   const { mutate, isLoading, data } = useGetZone({
     onError: (err) => {
@@ -45,12 +46,6 @@ const PayToPark = () => {
     }
   }, [zoneCode]);
 
-  useEffect(() => {
-    if (showCreate) {
-      onClose();
-    }
-  }, [showCreate]);
-
   const [values, setValues] = useState({
     phone: "",
     email: "",
@@ -58,7 +53,88 @@ const PayToPark = () => {
     make: "",
     model: "",
     color: "",
+    firstName: "",
+    lastName: "",
+    serviceType: "",
+    state: "",
   });
+
+  const serviceOptions = data?.rates?.map((service) => ({
+    value: service?.id,
+    label: service?.name,
+    amount: service?.amount,
+  }));
+  const [isError, setIsError] = useState(false);
+  const { errorToast } = useCustomToast();
+  const { mutate: parkMutate, isLoading: isCreating } =
+    useCreateNonUserPayToPark({
+      onSuccess: () => {
+        setValues({
+          phone: "",
+          email: "",
+          plate: "",
+          make: "",
+          model: "",
+          color: "",
+          state: "",
+          firstName: "",
+          lastName: "",
+          serviceType: "",
+        });
+      },
+      onError: (err) => {
+        errorToast(
+          err?.response?.data?.message || err?.message || "An Error occurred"
+        );
+        setIsError(true)
+      },
+    });
+
+  const stateOptions = allStates?.map((state) => ({
+    value: state,
+    label: state,
+  }));
+
+  const config = {
+    reference: new Date().getTime().toString(),
+    email: values?.email,
+    amount:
+      data?.rates?.length === 1
+        ? Number(`${data?.rates[0]?.amount}00`)
+        : Number(`${values?.serviceType?.amount}00`),
+    publicKey: process.env.REACT_APP_PAYSTACK_KEY,
+    metadata: {
+      custom_fields: [
+        {
+          display_name: "Transaction Type",
+          variable_name: "transaction_type",
+          value: "GUEST_PAY_TO_PARK",
+        },
+      ],
+    },
+  };
+
+  const initializePayment = usePaystackPayment(config);
+
+  const onSuccess = () => {
+    onOpen();
+    const phoneNumber = `+234${values.phone}`;
+    parkMutate({
+      firstName: values?.firstName,
+      lastName: values?.lastName,
+      email: values?.email,
+      phone: phoneNumber,
+      vehicle: values?.plate,
+      vehicleColor: values?.color?.label,
+      vehicleMake: values?.make?.value,
+      vehicleModel: values?.model?.value,
+      vehicleState: values?.state?.value,
+      zone: data?.id,
+      service: data?.service?.id,
+      amount: Number(values?.serviceType?.amount),
+      rate: Number(values?.serviceType?.value),
+    });
+  };
 
   const { data: models } = useGetPublicModels();
   const { data: makes } = useGetPublicMakes();
@@ -110,6 +186,26 @@ const PayToPark = () => {
         borderRadius="4px"
       />
       {option.label}
+    </Flex>
+  );
+
+  const ServiceType = ({ data }) => (
+    <Flex
+      mt="-30px"
+      h="40px"
+      align="center"
+      justifyContent="space-between"
+      w="full"
+      backgroundColor={data?.value}
+      borderRadius="4px"
+    >
+      <Text>{data?.label}</Text>
+      <Text>
+        Price: ₦{" "}
+        {data?.amount?.toLocaleString(undefined, {
+          maximumFractionDigits: 2,
+        }) || "0.00"}
+      </Text>
     </Flex>
   );
 
@@ -176,6 +272,21 @@ const PayToPark = () => {
     }),
   };
 
+  useEffect(() => {
+    if (data?.rates?.length === 1) {
+      setValues({
+        ...values,
+        serviceType: {
+          amount: data?.rates[0]?.amount,
+          value: data?.rates[0]?.id,
+          label: data?.rates[0]?.name,
+        },
+      });
+    } else {
+      setValues({ ...values, serviceType: "" });
+    }
+  }, [data]);
+
   const [isMobile] = useMediaQuery("(max-width: 820px)");
 
   return (
@@ -189,7 +300,6 @@ const PayToPark = () => {
           {isMobile ? (
             <>
               <Image my="24px" src="/assets/park-logo.jpg" w="134px" h="28px" />
-
               <Flex align="center" w="full">
                 {step === 1 ? (
                   <Flex align="center" w="full">
@@ -198,8 +308,10 @@ const PayToPark = () => {
                   </Flex>
                 ) : (
                   step !== 1 &&
+                  values?.serviceType &&
                   values?.plate &&
                   values?.make &&
+                  values?.state &&
                   values?.model &&
                   values?.plate?.length === 8 &&
                   values?.color && (
@@ -217,6 +329,8 @@ const PayToPark = () => {
                 ) : step !== 2 &&
                   step !== 1 &&
                   values?.email &&
+                  values?.firstName &&
+                  values?.lastName &&
                   values.phone ? (
                   <Flex align="center" w="full">
                     <Image src="/assets/complete.svg" />
@@ -371,7 +485,8 @@ const PayToPark = () => {
                                 color="#242628"
                                 lineHeight="100%"
                               >
-                                ₦ {data?.rates[0]?.amount?.toLocaleString()}
+                                ₦{" "}
+                                {values?.serviceType?.amount?.toLocaleString()}
                               </Text>
                             </Box>
                           </Flex>
@@ -426,6 +541,65 @@ const PayToPark = () => {
 
                   {step === 1 && (
                     <Box>
+                      {data?.rates?.length > 1 ? (
+                        <Box mt="16px">
+                          <Text
+                            color="#444648"
+                            fontSize="10px"
+                            lineHeight="100%"
+                            mb="8px"
+                          >
+                            Service Type
+                          </Text>
+                          <Select
+                            styles={customStyles}
+                            components={{
+                              SingleValue: ServiceType,
+                              IndicatorSeparator: () => (
+                                <div style={{ display: "none" }}></div>
+                              ),
+                            }}
+                            options={serviceOptions}
+                            onChange={(selectedOption) =>
+                              handleSelectChange(selectedOption, {
+                                name: "serviceType",
+                              })
+                            }
+                          />
+                        </Box>
+                      ) : (
+                        ""
+                      )}
+                      <Box mt="16px">
+                        <Text
+                          color="#444648"
+                          fontSize="10px"
+                          lineHeight="100%"
+                          mb="8px"
+                        >
+                          Select Vehicle State
+                        </Text>
+                        <Select
+                          styles={customStyles}
+                          options={stateOptions}
+                          components={{
+                            IndicatorSeparator: () => (
+                              <div style={{ display: "none" }}></div>
+                            ),
+                            DropdownIndicator: () => (
+                              <div>
+                                <IoIosArrowDown size="15px" color="#646668" />
+                              </div>
+                            ),
+                          }}
+                          onChange={(selectedOption) =>
+                            handleSelectChange(selectedOption, {
+                              name: "state",
+                            })
+                          }
+                        />
+                      </Box>
+
                       <Box my="16px">
                         <Text
                           color="#444648"
@@ -597,6 +771,54 @@ const PayToPark = () => {
                           }
                         />
                       </Box>
+
+                      <Box my="16px">
+                        <Text
+                          color="#444648"
+                          fontSize="10px"
+                          lineHeight="100%"
+                          mb="8px"
+                        >
+                          Enter Your First Name
+                        </Text>
+                        <CustomInput
+                          auth
+                          mb
+                          type="email"
+                          holder="Enter First Name"
+                          value={values.firstName}
+                          onChange={(e) =>
+                            setValues({
+                              ...values,
+                              firstName: e.target.value,
+                            })
+                          }
+                        />
+                      </Box>
+
+                      <Box>
+                        <Text
+                          color="#444648"
+                          fontSize="10px"
+                          lineHeight="100%"
+                          mb="8px"
+                        >
+                          Enter Your Last Name
+                        </Text>
+                        <CustomInput
+                          auth
+                          mb
+                          type="email"
+                          holder="Enter Last Name"
+                          value={values.lastName}
+                          onChange={(e) =>
+                            setValues({
+                              ...values,
+                              lastName: e.target.value,
+                            })
+                          }
+                        />
+                      </Box>
                     </Flex>
                   )}
 
@@ -653,7 +875,7 @@ const PayToPark = () => {
                               lineHeight="100%"
                               fontWeight={500}
                             >
-                              Bilal Omari
+                              {values?.firstName} {values?.lastName}
                             </Text>
                           </Flex>
 
@@ -680,7 +902,7 @@ const PayToPark = () => {
                               lineHeight="100%"
                               fontWeight={500}
                             >
-                              balablu@gmail.com
+                              {values?.email}
                             </Text>
                           </Flex>
 
@@ -707,7 +929,7 @@ const PayToPark = () => {
                               lineHeight="100%"
                               fontWeight={500}
                             >
-                              +2349028944933
+                              +234{values?.phone}
                             </Text>
                           </Flex>
 
@@ -760,7 +982,7 @@ const PayToPark = () => {
                               lineHeight="100%"
                               fontWeight={500}
                             >
-                              ₦ 20,000
+                              ₦ {Number(values?.serviceType?.amount)}
                             </Text>
                           </Flex>
 
@@ -786,7 +1008,7 @@ const PayToPark = () => {
                               lineHeight="100%"
                               fontWeight={500}
                             >
-                              Landmark Towers
+                              {data?.location?.name}
                             </Text>
                           </Flex>
 
@@ -813,7 +1035,7 @@ const PayToPark = () => {
                               lineHeight="100%"
                               fontWeight={500}
                             >
-                              T10003
+                              {data?.name}
                             </Text>
                           </Flex>
 
@@ -839,7 +1061,7 @@ const PayToPark = () => {
                               lineHeight="100%"
                               fontWeight={500}
                             >
-                              BT02383J
+                              {values?.plate}
                             </Text>
                           </Flex>
 
@@ -866,14 +1088,16 @@ const PayToPark = () => {
                               lineHeight="100%"
                               fontWeight={500}
                             >
-                              Toyota Corrola
+                              {values?.make?.label} {values?.model?.label}
                             </Text>
                           </Flex>
                         </Box>
                       </Flex>
 
                       <Flex
-                        onClick={() => onOpen()}
+                        onClick={() => {
+                          initializePayment(onSuccess);
+                        }}
                         mt="24px"
                         mb="30px"
                         w="100%"
@@ -886,7 +1110,6 @@ const PayToPark = () => {
                       </Flex>
                     </Flex>
                   )}
-
                   {step !== 3 && (
                     <Button
                       onClick={() => setStep(step + 1)}
@@ -897,13 +1120,18 @@ const PayToPark = () => {
                       py="17px"
                       isDisabled={
                         step === 1
-                          ? !values?.plate ||
+                          ? !values?.serviceType?.value ||
+                            !values?.plate ||
                             !values?.make ||
+                            !values?.state ||
                             !values?.model ||
                             !values?.color ||
                             values?.plate?.length < 8
                           : step === 2
-                          ? !values?.email || !values?.phone
+                          ? !values?.email ||
+                            !values?.phone ||
+                            !values?.firstName ||
+                            !values?.lastName
                           : false
                       }
                       fontSize="14px"
@@ -921,17 +1149,19 @@ const PayToPark = () => {
           )}
 
           <SuccessfulPaymentModal
-            setShowCreate={setShowCreate}
+            setShowCreate={() => navigate("/customer/auth/login")}
             isOpen={isOpen}
+            isCreating={isCreating}
             onClose={onClose}
+            isError={isError}
           />
-          <CreateAccountModal
+          {/* <CreateAccountModal
             values={values}
             setCreate={setCreate}
             create={create}
             isOpen={showCreate}
             onClose={() => setShowCreate(false)}
-          />
+          /> */}
         </>
       )}
     </Box>

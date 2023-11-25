@@ -1,5 +1,6 @@
 import { useMutation, useQuery } from "react-query";
 import {
+  adminUpdateUser,
   cancelSub,
   customerCreateSubscription,
   customerFundWallet,
@@ -61,6 +62,14 @@ export const useGetUserSubscriptions = (options = {}) => {
 export const useCustomerUpdateUser = (options = {}) => {
   const { mutate, isLoading } = useMutation(customerUpdateUser, {
     mutationKey: "CUSTOMER_UPDATE_USER",
+    ...options,
+  });
+  return { mutate, isLoading };
+};
+
+export const useAdminUpdateUser = (options = {}) => {
+  const { mutate, isLoading } = useMutation(adminUpdateUser, {
+    mutationKey: "ADMIN_UPDATE_USER",
     ...options,
   });
   return { mutate, isLoading };

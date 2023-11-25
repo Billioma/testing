@@ -8,12 +8,25 @@ import {
   ModalBody,
   ModalContent,
   ModalOverlay,
+  Spinner,
   Text,
 } from "@chakra-ui/react";
 
-const SuccessfulPaymentModal = ({ isOpen, setShowCreate, onClose }) => {
+const SuccessfulPaymentModal = ({
+  isOpen,
+  isCreating,
+  setShowCreate,
+  isError,
+  onClose,
+}) => {
   return (
-    <Modal isCentered trapFocus={false} isOpen={isOpen} onClose={onClose}>
+    <Modal
+      isCentered
+      closeOnOverlayClick={false}
+      trapFocus={false}
+      isOpen={isOpen}
+      onClose={onClose}
+    >
       <ModalOverlay backdropFilter="auto" backdropBlur="2px" />
       <ModalContent
         pt="70px"
@@ -47,10 +60,19 @@ const SuccessfulPaymentModal = ({ isOpen, setShowCreate, onClose }) => {
                 w="full"
                 onClick={() => setShowCreate(true)}
                 fontSize="13px"
+                isDisabled={isCreating || isError}
                 borderRadius="4px"
                 py="17px"
               >
-                Done
+                {isCreating ? (
+                  <Flex align="center" gap="8px">
+                    <Spinner size="sm" /> Inititing Pay-To-Park
+                  </Flex>
+                ) : isError ? (
+                  "Session Failed"
+                ) : (
+                  "Done"
+                )}
               </Button>
             </Flex>
           </Box>

@@ -70,6 +70,11 @@ export const customerUpdateUser = async (body) => {
   return res.data;
 };
 
+export const adminUpdateUser = async (body) => {
+  const res = await axiosInstance.post("admin/" + API.UPDATE_USER, body);
+  return res.data;
+};
+
 export const sendMail = async (body) => {
   const res = await axiosInstance.post(API.SEND_MAIL, body);
   return res.data;

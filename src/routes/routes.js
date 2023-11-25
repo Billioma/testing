@@ -134,6 +134,8 @@ const {
   ADMIN_ADD_VEHICLE,
   ADMIN_VEHICLES,
   ADMIN_VIEW_VEHICLE,
+  ADMIN_PROFILE,
+  ADMIN_EDIT_PROFILE,
 
   ADMIN_MEMBERSHIP_PLANS,
   ADMIN_ADD_MEMBERSHIP_PLAN,
@@ -488,6 +490,14 @@ const AdminCustomers = WithSuspense(
 
 const AdminAddAttendant = WithSuspense(
   lazy(() => import("../pages/Admin/Users/AddAttendant"))
+);
+
+const AdminProfile = WithSuspense(
+  lazy(() => import("../pages/Admin/Profile/Profile"))
+);
+
+const AdminUpdateProfile = WithSuspense(
+  lazy(() => import("../pages/Admin/Profile/EditProfile"))
 );
 
 const AdminViewAttendant = WithSuspense(
@@ -1038,6 +1048,8 @@ export const PRIVATE_ROUTES = [
   { path: ADMIN_MEMBERSHIP_PLANS, element: <AdminMembershipPlans /> },
   { path: ADMIN_ADD_MEMBERSHIP_PLAN, element: <AdminAddMembershipPlan /> },
   { path: ADMIN_VIEW_MEMBERSHIP_PLAN, element: <AdminViewMembershipPlan /> },
+  { path: ADMIN_PROFILE, element: <AdminProfile /> },
+  { path: ADMIN_EDIT_PROFILE, element: <AdminUpdateProfile /> },
   { path: ADMIN_MEMBERSHIP_FEATURES, element: <AdminMembershipFeatures /> },
   {
     path: ADMIN_ADD_MEMBERSHIP_FEATURE,

@@ -91,6 +91,7 @@ const refreshAccessToken = async (refreshToken) => {
 
     const newAccessToken = response.data;
 
+    window.location.reload();
     localStorage.setItem(newPath, JSON.stringify(newAccessToken));
   } catch (error) {
     console.error("Error refreshing access token:", error);
