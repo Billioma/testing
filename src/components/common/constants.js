@@ -108,21 +108,21 @@ export const loginAs = [
     title: "Customer",
     img: <CustomerIcon fill="#444648" />,
     hover: <CustomerIcon fill={"#EE383A"} />,
-    path: "https://parkinspace-webapp.netlify.app/customer/auth/login",
+    path: "https://app.parkinspace.ng//customer/auth/login",
   },
   {
     id: 2,
     title: "Business",
     img: <BusinessIcon fill="#444648" />,
     hover: <BusinessIcon fill={"#EE383A"} />,
-    path: "https://parkinspace-webapp.netlify.app/client/auth/login",
+    path: "https://app.parkinspace.ng//client/auth/login",
   },
   {
     id: 3,
     title: "Operator",
     img: <OperatorIcon fill="#444648" />,
     hover: <OperatorIcon fill={"#EE383A"} />,
-    path: "https://parkinspace-webapp.netlify.app/operator/auth/login",
+    path: "https://app.parkinspace.ng//operator/auth/login",
   },
 ];
 
@@ -130,17 +130,17 @@ export const headers = [
   {
     id: 1,
     name: "Park Now",
-    path: "https://parkinspace-webapp.netlify.app/customer/auth/login/redirect_pay-to-park",
+    path: "https://app.parkinspace.ng//customer/auth/login/redirect_pay-to-park",
   },
   {
     id: 2,
     name: "Reserve & Park Later",
-    path: "https://parkinspace-webapp.netlify.app/customer/auth/login/redirect_reserve-parking",
+    path: "https://app.parkinspace.ng//customer/auth/login/redirect_reserve-parking",
   },
   {
     id: 3,
     name: "Reserve Event Parking",
-    path: "https://parkinspace-webapp.netlify.app/customer/auth/login/redirect_event-parking",
+    path: "https://app.parkinspace.ng//customer/auth/login/redirect_event-parking",
   },
   {
     id: 5,
@@ -181,7 +181,7 @@ export const services = [
     desc: "Search, find and pay for valet or self parking services on demand",
     pic: "/assets/pay-to-park.png",
     button: "Park Now",
-    path: "https://parkinspace-webapp.netlify.app/customer/auth/login/redirect_pay-to-park",
+    path: "https://app.parkinspace.ng//customer/auth/login/redirect_pay-to-park",
   },
   {
     id: 2,
@@ -189,7 +189,7 @@ export const services = [
     desc: "Reserve a parkins space in advance and avoid any delays when you arrive",
     pic: "/assets/reserve-parking.png",
     button: "Reserve and Park Later",
-    path: "https://parkinspace-webapp.netlify.app/customer/auth/login/redirect_reserve-parking",
+    path: "https://app.parkinspace.ng//customer/auth/login/redirect_reserve-parking",
   },
   {
     id: 3,
@@ -197,7 +197,7 @@ export const services = [
     desc: "Arrive an event and drive to your reserved parking space",
     pic: "/assets/event-parking.png",
     button: "Reserve Event Parking",
-    path: "https://parkinspace-webapp.netlify.app/customer/auth/login/redirect_event-parking",
+    path: "https://app.parkinspace.ng//customer/auth/login/redirect_event-parking",
   },
   {
     id: 4,
@@ -205,7 +205,7 @@ export const services = [
     desc: "Access vehicle maintenance services with ease",
     pic: "/assets/car-service.png",
     button: "Book a Car Service",
-    path: "https://parkinspace-webapp.netlify.app/customer/auth/login/redirect_car-service",
+    path: "https://app.parkinspace.ng//customer/auth/login/redirect_car-service",
   },
 ];
 

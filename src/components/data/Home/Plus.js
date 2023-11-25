@@ -109,7 +109,7 @@ const Plus = () => {
           <a
             target="_blank"
             rel="noreferrer"
-            href="https://parkinspace-webapp.netlify.app/customer/auth/signup"
+            href="https://app.parkinspace.ng/customer/auth/signup"
           >
             <button>Subscribe Now</button>
           </a>

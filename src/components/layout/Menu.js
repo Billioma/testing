@@ -44,7 +44,7 @@ const Menu = ({ isOpen, onClose }) => {
             target="_blank"
             className="w-full"
             rel="noreferrer"
-            href="https://parkinspace-webapp.netlify.app/customer/auth/signup"
+            href="https://app.parkinspace.ng/customer/auth/signup"
           >
             <button className="w-full text-white bg-red rounded-[4px] py-[12px]">
               Sign Up

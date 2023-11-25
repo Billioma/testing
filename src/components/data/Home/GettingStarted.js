@@ -24,7 +24,7 @@ const GettingStarted = () => {
                   <a
                     target="_blank"
                     rel="noreferrer"
-                    href="https://parkinspace-webapp.netlify.app/customer/auth/signup"
+                    href="https://app.parkinspace.ng/customer/auth/signup"
                   >
                     <button className="bg-red rounded-[4px] px-[34px] py-[10px] text-white ">
                       Sign Up

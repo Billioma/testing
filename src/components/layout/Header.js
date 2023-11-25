@@ -56,7 +56,7 @@ const Header = () => {
             <a
               target="_blank"
               rel="noreferrer"
-              href="https://parkinspace-webapp.netlify.app/customer/auth/signup"
+              href="https://app.parkinspace.ng/customer/auth/signup"
             >
               <button className="text-white bg-red rounded-[4px] w-[156px] py-[12px]">
                 Sign Up
