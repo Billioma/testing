@@ -17,7 +17,13 @@ const Auth = () => {
 
         <div className="flex sm:flex-col md:flex-row gap-[64px] items-center">
           {loginAs.map((dat, i) => (
-            <a key={i} target="_blank" rel="noreferrer" href={dat?.path}>
+            <a
+              key={i}
+              target="_blank"
+              rel="noreferrer"
+              onClick={() => navigate(-1)}
+              href={dat?.path}
+            >
               <div className="hover-parent border cursor-pointer hover:border-red hover:text-red border-[#444648] rounded-[4px] py-[8px] px-[20px] flex justify-center items-center gap-[8px]">
                 <div className="hover-child">{dat?.img}</div>
                 <div className="hover-fin-child">{dat?.hover}</div>

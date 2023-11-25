@@ -48,11 +48,10 @@ const Header = () => {
             </div>
           </div>
 
-          <div
-            onClick={() => navigate("/redirect=")}
-            className="mt-[15px] sm:hidden lg:flex gap-[24px] items-center w-[30%]"
-          >
-            <button className="text-[#EE383A] bg-transparent">Login</button>
+          <div className="mt-[15px] sm:hidden lg:flex gap-[24px] items-center w-[30%]">
+            <div onClick={() => navigate("/redirect=")}>
+              <button className="text-[#EE383A] bg-transparent">Login</button>
+            </div>
 
             <a
               target="_blank"

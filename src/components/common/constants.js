@@ -272,7 +272,7 @@ export const companies = [
     id: "start",
   },
   {
-    name: "How it Work",
+    name: "How it Works",
     id: "how",
   },
 ];

@@ -5,7 +5,7 @@ import { Link } from "react-scroll";
 
 const Footer = () => {
   const navigate = useNavigate();
-  
+
   const handleScroll = () => {
     const divs = document.querySelectorAll("div");
     let currentSection = "";
@@ -65,14 +65,17 @@ const Footer = () => {
             <div className="font-medium">INFORMATION</div>
             <div>
               {information.map((dat, i) => (
-                <div className="cursor-pointer mb-[21px]" key={i}>
-                  <a
-                    target="_blank"
-                    rel="noreferrer"
-                    href={dat?.link ? dat?.link : ""}
-                  >
-                    {dat?.name}
-                  </a>
+                <div
+                  className={`${i === 0 ? "cursor-pointer" : ""}  mb-[21px]`}
+                  key={i}
+                >
+                  {i === 0 ? (
+                    <a target="_blank" rel="noreferrer" href={dat.link}>
+                      {dat.name}
+                    </a>
+                  ) : (
+                    <span>{dat.name}</span>
+                  )}
                 </div>
               ))}
             </div>
