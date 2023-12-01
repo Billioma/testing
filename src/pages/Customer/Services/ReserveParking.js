@@ -150,7 +150,7 @@ const ReserveParking = () => {
     return null;
   };
 
-  const { data: locations } = useGetLocations();
+  const { data: locations, isLoading: isLocation } = useGetLocations();
   const [showVehicle, setShowVehicle] = useState(false);
   const { data: models } = useGetModel();
   const { data: vehicles, refetch: refetchVehicle } = useGetVehicles();
@@ -266,7 +266,6 @@ const ReserveParking = () => {
 
   const initializePayment = usePaystackPayment(config);
 
- 
   const navigate = useNavigate();
   const { successToast, errorToast } = useCustomToast();
   const { refetch: refetchParking } = useGetReserveParking(10, 1);
@@ -566,6 +565,8 @@ const ReserveParking = () => {
                         "repeat(2,1fr)",
                         "repeat(2,1fr)",
                       ]
+                    : isLocation
+                    ? "repeat(1,1fr)"
                     : "repeat(1,1fr)"
                 }
               >
@@ -691,6 +692,16 @@ const ReserveParking = () => {
                       </Box>
                     </GridItem>
                   ))
+                ) : isLocation ? (
+                  <Flex
+                    justifyContent="center"
+                    align="center"
+                    w="full"
+                    my="38px"
+                    flexDir="column"
+                  >
+                    <Spinner />
+                  </Flex>
                 ) : (
                   <Flex
                     gap="16px"
