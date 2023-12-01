@@ -1,5 +1,13 @@
 import React, { useState } from "react";
-import { Box, Flex, Text, Button, SimpleGrid, Switch } from "@chakra-ui/react";
+import {
+  Box,
+  Flex,
+  Text,
+  Button,
+  SimpleGrid,
+  Switch,
+  Spinner,
+} from "@chakra-ui/react";
 import Select from "react-select";
 import {
   customStyles,
@@ -60,7 +68,12 @@ export default function AddCustomerSubscription() {
 
   const { data: customers } = useGetAllCustomers();
   const { data: locations } = useGetAllLocations();
-  const { data: vehicles } = useGetVehicles({}, 1, 1000, convertedFilters);
+  const { data: vehicles, isLoading: isVehicle } = useGetVehicles(
+    {},
+    1,
+    1000,
+    convertedFilters
+  );
   const customerOptions = customers?.data?.map((customer) => ({
     label: `${customer?.profile?.firstName} ${customer?.profile?.lastName}`,
     value: customer?.id,
@@ -89,7 +102,10 @@ export default function AddCustomerSubscription() {
   ];
 
   const { data: plans } = useGetMembershipPlans({}, 1, 100000);
-
+  console.log(
+    featureTypes?.find((type) => type["vehicle"]) !== undefined ||
+      featureTypes?.find((type) => type["location"]) !== undefined
+  );
   const handleSelectChange = (selectedOption, { name }) => {
     if (name === "customer") {
       setState({
@@ -287,6 +303,10 @@ export default function AddCustomerSubscription() {
             <form
               onSubmit={(e) => {
                 (featureTypes?.length &&
+                  (featureTypes?.find((type) => type["vehicle"]) !==
+                    undefined ||
+                    featureTypes?.find((type) => type["location"]) !==
+                      undefined) &&
                   !state?.subscriptionOptions[0]?.data?.length) ||
                 !state?.customer
                   ? setFormSubmitted(true)
@@ -327,7 +347,12 @@ export default function AddCustomerSubscription() {
                 )}
               </Box>
 
-              {state?.customer !== 0 &&
+              {isVehicle ? (
+                <Flex justifyContent="center">
+                  <Spinner mb={4} />
+                </Flex>
+              ) : (
+                state?.customer !== 0 &&
                 featureTypes?.find((type) => type["vehicle"]) && (
                   <Box w="full" mb={4}>
                     <Text
@@ -396,7 +421,8 @@ export default function AddCustomerSubscription() {
                         </Text>
                       )}
                   </Box>
-                )}
+                )
+              )}
               {state?.customer !== 0 &&
                 featureTypes?.find((type) => type["location"]) && (
                   <Box w="full" mb={4}>
@@ -502,6 +528,7 @@ export default function AddCustomerSubscription() {
                   variant="adminPrimary"
                   w="55%"
                   isLoading={isLoading}
+                  isDisabled={isVehicle}
                   type="submit"
                 >
                   Save

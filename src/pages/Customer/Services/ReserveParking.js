@@ -3,18 +3,22 @@ import {
   Box,
   Button,
   Flex,
+  Grid,
+  GridItem,
   Image,
   Radio,
   RadioGroup,
+  Spinner,
   Text,
   useDisclosure,
 } from "@chakra-ui/react";
 import { HiOutlineArrowNarrowLeft } from "react-icons/hi";
-import { BsCheckCircle } from "react-icons/bs";
+import { BsCheck, BsCheckCircle } from "react-icons/bs";
 import Select from "react-select";
 import ConfirmReserveModal from "../../../components/modals/ConfirmReserveModal";
 import { useGetLocations } from "../../../services/customer/query/locations";
-import { CiLocationOn } from "react-icons/ci";
+import { CiLocationOn, CiMap } from "react-icons/ci";
+import { PiWarningCircleLight } from "react-icons/pi";
 import { Calendar } from "react-calendar";
 import {
   formatDate,
@@ -41,15 +45,23 @@ import { usePaystackPayment } from "react-paystack";
 import FundWalletDrawer from "../../../components/modals/FundWalletDrawer";
 import { allStates, cities } from "../../../components/common/constants";
 import AddVehicleModal from "../../../components/modals/AddVehicleModal";
+import CustomInput from "../../../components/common/CustomInput";
+import { FaListUl } from "react-icons/fa";
+import { MdCancel } from "react-icons/md";
+import { IoIosArrowDown } from "react-icons/io";
+import DatePicker from "react-multi-date-picker";
 
 const ReserveParking = () => {
   const [step, setStep] = useState(1);
   const { isOpen, onClose, onOpen } = useDisclosure();
   const [showFunds, setShowFunds] = useState(false);
+  const [tab, setTab] = useState("List");
   const [values, setValues] = useState({
     state: "",
     city: "",
     locations: "",
+    locationName: "",
+    location: "",
     arrivalTime: "",
     departureTime: "",
     paymentMethod: "",
@@ -63,25 +75,29 @@ const ReserveParking = () => {
   const [startDate, setStartDate] = useState(false);
   const [startValue, startChange] = useState("");
   const [endValue, endChange] = useState("");
+  const [space, setSpace] = useState("");
   const [endDate, setEndDate] = useState(false);
-  useEffect(() => {
-    setStep(1);
-    endChange("");
-    startChange("");
-    setValues({
-      state: "",
-      city: "",
-      locations: "",
-      arrivalTime: "",
-      departureTime: "",
-      paymentMethod: "",
-      cardId: "",
-      vehicle: "",
-      color: "",
-      make: "",
-      model: "",
-    });
-  }, []);
+  // useEffect(() => {
+  //   setStep(1);
+  //   endChange("");
+  //   startChange("");
+  //   setValues({
+  //     state: "",
+  //     city: "",
+  // reqeustReserve()
+  //     locations: "",
+  // setSpace("")
+  //     arrivalTime: "",
+  // location: "",
+  //     departureTime: "",
+  //     paymentMethod: "",
+  //     cardId: "",
+  //     vehicle: "",
+  //     color: "",
+  //     make: "",
+  //     model: "",
+  //   });
+  // }, []);
 
   const { data: cards, refetch: refetchCards } = useGetCards();
   const { data: userData, refetch } = useGetUser();
@@ -123,9 +139,21 @@ const ReserveParking = () => {
   const { data: models } = useGetModel();
   const { data: vehicles, refetch: refetchVehicle } = useGetVehicles();
   const { data: makes } = useGetMake();
-  const currentStateLocation = locations?.filter((dat) =>
-    dat?.address?.includes(values?.city?.value)
-  );
+  const [locationName, setLocationName] = useState("");
+  const colors = ["#F4F6F8", "#E3FDE7", "#FDE8E8"];
+  const currentStateLocation = locations?.filter((dat) => {
+    const lowercaseState = values?.state?.value?.toLowerCase();
+    const lowercaseLocationName = locationName?.toLowerCase();
+
+    const stateMatches =
+      !lowercaseState || dat?.state?.toLowerCase()?.includes(lowercaseState);
+
+    const nameMatches =
+      !lowercaseLocationName ||
+      dat?.name?.toLowerCase()?.includes(lowercaseLocationName);
+
+    return stateMatches && nameMatches;
+  });
 
   const today = new Date();
   const firstHour = formatHour(today);
@@ -164,21 +192,7 @@ const ReserveParking = () => {
     value: state,
     label: state,
   }));
-  const cityOptions = (
-    values?.state.value === "Lagos"
-      ? cities.slice(0, 4)
-      : values?.state.value === "FCT"
-      ? cities.slice(4, 6)
-      : []
-  )?.map((city) => ({
-    value: city,
-    label: city,
-  }));
-  const locationOptions = currentStateLocation?.map((city) => ({
-    value: city?.name,
-    label: city?.name,
-    id: city?.id,
-  }));
+
   const timeOption = timeArray?.map((time) => ({
     value: time,
     label: time,
@@ -236,8 +250,20 @@ const ReserveParking = () => {
 
   const initializePayment = usePaystackPayment(config);
 
-  const { mutate: reqeustReserve, data: requestData } =
-    useRequestReserveParking();
+  const {
+    mutate: reqeustReserve,
+    data: requestData,
+    isLoading: isRequesting,
+  } = useRequestReserveParking({
+    onSuccess: () => {
+      setSpace("space");
+    },
+    onError: (err) => {
+      if (err?.response?.status === 404) {
+        setSpace("noSpace");
+      }
+    },
+  });
   const navigate = useNavigate();
   const { successToast, errorToast } = useCustomToast();
   const { refetch: refetchParking } = useGetReserveParking(10, 1);
@@ -256,17 +282,26 @@ const ReserveParking = () => {
       },
     });
 
-  useEffect(() => {
-    if (start && end && values?.locations && values?.vehicle) {
-      reqeustReserve({
-        arrival: `${start}${formatTimeToHHMMSS(values?.arrivalTime?.value)}`,
-        departure: `${end}${formatTimeToHHMMSS(values?.departureTime?.value)}`,
-        location: Number(values?.locations?.id),
-        service: "3",
-        vehicle: values?.vehicle?.id,
-      });
-    }
-  }, [values, start, end]);
+  const handleRequest = () => {
+    reqeustReserve({
+      arrival: `${start}${formatTimeToHHMMSS(values?.arrivalTime?.value)}`,
+      departure: `${end}${formatTimeToHHMMSS(values?.departureTime?.value)}`,
+      location: Number(values?.location?.id),
+      service: "3",
+      vehicle: values?.vehicle?.id,
+    });
+  };
+  // useEffect(() => {
+  //   if (start && end && values?.locations && values?.vehicle) {
+  //     reqeustReserve({
+  //       arrival: `${start}${formatTimeToHHMMSS(values?.arrivalTime?.value)}`,
+  //       departure: `${end}${formatTimeToHHMMSS(values?.departureTime?.value)}`,
+  //       location: Number(values?.locations?.id),
+  //       service: "3",
+  //       vehicle: values?.vehicle?.id,
+  //     });
+  //   }
+  // }, [values, start, end]);
   const formattedDate = `${start.substr(6, 4)}-${start.substr(
     0,
     2
@@ -310,6 +345,7 @@ const ReserveParking = () => {
           zone: Number(requestData?.zone?.id),
         });
   };
+
   const customStyles = {
     control: (provided, state) => ({
       ...provided,
@@ -320,7 +356,6 @@ const ReserveParking = () => {
       cursor: "pointer",
       borderRadius: "4px",
       border: state.hasValue ? "none" : "1px solid #D4D6D8",
-      paddingRight: "16px",
       background: state.hasValue ? "#f4f6f8" : "unset",
     }),
     menu: (provided) => ({
@@ -332,6 +367,32 @@ const ReserveParking = () => {
       ...provided,
       color: state.isFocused ? "" : "",
       backgroundColor: state.isFocused ? "#f4f6f8" : "",
+    }),
+  };
+
+  const customFirstStyles = {
+    control: (provided) => ({
+      ...provided,
+      width: "100%",
+      minHeight: "40px",
+      paddingRight: "10px",
+      color: "#646668",
+      fontSize: "14px",
+      cursor: "pointer",
+      borderRadius: "8px",
+      border: "none",
+      background: "#f4f6f8",
+    }),
+    menu: (provided) => ({
+      ...provided,
+      fontSize: "13px",
+      backgroundColor: "#fff",
+    }),
+    option: (provided, state) => ({
+      ...provided,
+      color: state.isFocused ? "" : "",
+      cursor: "pointer",
+      backgroundColor: state.isFocused ? "#fff" : "#f4f6f8",
     }),
   };
 
@@ -356,9 +417,11 @@ const ReserveParking = () => {
           bg="#fff"
           borderRadius="12px"
           py="40px"
-          px="32px"
+          px={{ base: "20px", md: "32px" }}
           justifyContent="center"
-          w={{ md: "30rem", base: "100%", "3xl": "35rem" }}
+          w={
+            step === 1 ? "full" : { md: "30rem", base: "100%", "3xl": "35rem" }
+          }
           flexDir="column"
         >
           {step !== 1 && (
@@ -368,8 +431,10 @@ const ReserveParking = () => {
               mb="23px"
               onClick={() => {
                 setStep(step - 1);
+                reqeustReserve();
                 endChange("");
                 startChange("");
+                setSpace("");
                 setValues({
                   state: "",
                   city: "",
@@ -379,6 +444,7 @@ const ReserveParking = () => {
                   paymentMethod: "",
                   cardId: "",
                   vehicle: "",
+                  location: "",
                   color: "",
                   make: "",
                   model: "",
@@ -411,59 +477,238 @@ const ReserveParking = () => {
 
           {step === 1 && (
             <>
-              <Box w="full">
-                <Select
-                  styles={customStyles}
-                  placeholder="Select State"
-                  options={stateOptions}
-                  value={values?.state}
-                  defaultValue={values?.state}
-                  onChange={(selectedOption) => {
-                    handleSelectChange(selectedOption, { name: "state" });
-                  }}
-                  components={{
-                    IndicatorSeparator: () => (
-                      <div style={{ display: "none" }}></div>
-                    ),
-                  }}
-                />
-              </Box>
-              <Box w="full" my="24px">
-                <Select
-                  styles={customStyles}
-                  placeholder="Select City"
-                  options={cityOptions}
-                  isDisabled={!values?.state}
-                  value={values?.city}
-                  defaultValue={values?.city}
-                  onChange={(selectedOption) =>
-                    handleSelectChange(selectedOption, { name: "city" })
-                  }
-                  components={{
-                    IndicatorSeparator: () => (
-                      <div style={{ display: "none" }}></div>
-                    ),
-                  }}
-                />
-              </Box>
-              <Box w="full">
-                <Select
-                  styles={customStyles}
-                  placeholder="Select Location"
-                  options={locationOptions}
-                  value={values?.locations}
-                  isDisabled={!values?.state || !values?.city}
-                  defaultValue={values?.locations}
-                  onChange={(selectedOption) =>
-                    handleSelectChange(selectedOption, { name: "locations" })
-                  }
-                  components={{
-                    IndicatorSeparator: () => (
-                      <div style={{ display: "none" }}></div>
-                    ),
-                  }}
-                />
-              </Box>
+              <Flex
+                justifyContent="space-between"
+                flexDir={{ base: "column", md: "row" }}
+                align={{ base: "flex-start", md: "center" }}
+                gap={{ base: "24px", md: "unset" }}
+                mb="24px"
+              >
+                <Flex
+                  align={{ base: "flex-start", md: "center" }}
+                  gap={{ base: "15px", md: "24px" }}
+                  w={{ base: "100%", md: "60%" }}
+                  flexDir={{ base: "column", md: "row" }}
+                >
+                  <Box w={{ base: "100%", md: "60%" }}>
+                    <Select
+                      styles={customFirstStyles}
+                      placeholder="Select State"
+                      options={stateOptions}
+                      value={values?.state}
+                      defaultValue={values?.state}
+                      onChange={(selectedOption) => {
+                        handleSelectChange(selectedOption, { name: "state" });
+                      }}
+                      components={{
+                        IndicatorSeparator: () => (
+                          <div style={{ display: "none" }}></div>
+                        ),
+                        DropdownIndicator: () =>
+                          values?.state?.value !== undefined ? (
+                            <MdCancel
+                              onClick={() => {
+                                setValues({ ...values, state: "" });
+                              }}
+                            />
+                          ) : (
+                            <IoIosArrowDown size="15px" color="#646668" />
+                          ),
+                      }}
+                    />
+                  </Box>
+
+                  <Box w="full">
+                    <CustomInput
+                      onChange={(e) => setLocationName(e.target.value)}
+                      value={locationName}
+                      reserve
+                      mb
+                      holder="Search name"
+                    />
+                  </Box>
+                </Flex>
+
+                <Flex w={{ base: "full", md: "unset" }}>
+                  {["List", "Map"].map((dat, i) => (
+                    <Flex
+                      color={tab === dat ? "red" : "#646668"}
+                      gap="8px"
+                      px="10px"
+                      cursor="pointer"
+                      w={{ base: "full", md: "unset" }}
+                      _hover={{ color: "red" }}
+                      pb="8px"
+                      borderBottom={tab === dat ? "3px solid red" : "none"}
+                      fontWeight={tab === dat ? 700 : 400}
+                      key={i}
+                      onClick={() => setTab(dat)}
+                    >
+                      <Box>{i === 0 ? <FaListUl /> : <CiMap />}</Box>
+                      <Text fontSize="14px" lineHeight="100%">
+                        {dat}
+                      </Text>
+                    </Flex>
+                  ))}
+                </Flex>
+              </Flex>
+
+              <Grid
+                gap="35px"
+                templateColumns={
+                  currentStateLocation?.length
+                    ? [
+                        "repeat(1,1fr)",
+                        "repeat(1,1fr)",
+                        "repeat(2,1fr)",
+                        "repeat(2,1fr)",
+                      ]
+                    : "repeat(1,1fr)"
+                }
+              >
+                {currentStateLocation?.length ? (
+                  currentStateLocation?.map((dat, i) => (
+                    <GridItem key={i}>
+                      <Box
+                        borderRadius="8px"
+                        border="1px solid #d4d6d8"
+                        p="16px"
+                      >
+                        <Flex align="center" gap="24px">
+                          <Box display={{ base: "none", md: "block" }}>
+                            <Image
+                              src="/assets/loc.jpg"
+                              borderRadius="9px"
+                              maxW="125px"
+                              maxH="125px"
+                              objectFit="cover"
+                            />
+                          </Box>
+
+                          <Box w="full">
+                            <Flex
+                              align="center"
+                              w="full"
+                              gap="24px"
+                              justifyContent="space-between"
+                            >
+                              <Box w="full">
+                                <Text
+                                  fontSize="10px"
+                                  color="#242628"
+                                  lineHeight="100%"
+                                  mb="8px"
+                                >
+                                  Location
+                                </Text>
+                                <Text
+                                  fontSize="14px"
+                                  color="#848688"
+                                  lineHeight="100%"
+                                  fontWeight={500}
+                                >
+                                  {dat?.name}
+                                </Text>
+                              </Box>
+
+                              <Flex
+                                align="center"
+                                gap="4px"
+                                color="#FFA36D"
+                                fontWeight={500}
+                                fontSize="12px"
+                                lineHeight="100%"
+                              >
+                                <PiWarningCircleLight size="16px" />
+                                <Text>Details</Text>
+                              </Flex>
+                            </Flex>
+
+                            <Flex
+                              mt="22px"
+                              align="flex-end"
+                              w="full"
+                              gap="24px"
+                              justifyContent="space-between"
+                            >
+                              <Box w="full">
+                                <Text
+                                  mb="8px"
+                                  fontSize="10px"
+                                  color="#242628"
+                                  lineHeight="100%"
+                                >
+                                  Amenities
+                                </Text>
+                                <Flex
+                                  flexWrap="wrap"
+                                  align="center"
+                                  gap="12px"
+                                  rowGap="8px"
+                                >
+                                  {dat?.amenities?.map((amenity, i) => (
+                                    <Flex
+                                      key={i}
+                                      justifyContent="center"
+                                      align="center"
+                                      bg={colors[i % colors?.length]}
+                                      fontSize="10px"
+                                      color="#646668"
+                                      fontWeight={500}
+                                      lineHeight="100%"
+                                      borderRadius="4px"
+                                      py="7px"
+                                      px="10px"
+                                    >
+                                      {amenity?.name}
+                                    </Flex>
+                                  ))}
+                                </Flex>
+                              </Box>
+
+                              <Box>
+                                <Button
+                                  size="sm"
+                                  onClick={() => {
+                                    setValues({
+                                      ...values,
+                                      location: dat,
+                                    });
+                                    setStep(step + 1);
+                                  }}
+                                  fontSize="12px"
+                                  lineHeight="100%"
+                                >
+                                  Select
+                                </Button>
+                              </Box>
+                            </Flex>
+                          </Box>
+                        </Flex>
+                      </Box>
+                    </GridItem>
+                  ))
+                ) : (
+                  <Flex
+                    gap="16px"
+                    justifyContent="center"
+                    align="center"
+                    w="full"
+                    my="38px"
+                    flexDir="column"
+                  >
+                    <Image src="/assets/no-loc.jpg" w="64px" h="64px" />
+                    <Text
+                      color="#848688"
+                      fontSize="12px"
+                      lineHeight="100%"
+                      fontWeight={500}
+                    >
+                      No Location Data
+                    </Text>
+                  </Flex>
+                )}
+              </Grid>
             </>
           )}
 
@@ -495,7 +740,7 @@ const ReserveParking = () => {
                       lineHeight="100%"
                       mt="8px"
                     >
-                      {values?.locations?.value}
+                      {values?.location?.name}
                     </Text>
                   </Box>
 
@@ -510,28 +755,18 @@ const ReserveParking = () => {
                       lineHeight="100%"
                       mt="8px"
                     >
-                      {values?.state?.value}
-                    </Text>
-                  </Flex>
-
-                  <Flex flexDir="column" justifyContent="flex-end">
-                    <Text color="#fff" fontSize="10px" lineHeight="100%">
-                      City
-                    </Text>
-                    <Text
-                      color="#D4D6D8"
-                      fontWeight={500}
-                      fontSize="12px"
-                      lineHeight="100%"
-                      mt="8px"
-                    >
-                      {values?.city?.value}
+                      {values?.location?.state}
                     </Text>
                   </Flex>
                 </Flex>
               </Box>
 
-              <Flex align="center" gap="16px" my="16px">
+              <Flex
+                gap="16px"
+                my="16px"
+                flexDir={{ base: "column", md: "row" }}
+                align={{ base: "flex-start", md: "center" }}
+              >
                 <Box w="full">
                   <Text
                     mb="8px"
@@ -541,8 +776,20 @@ const ReserveParking = () => {
                   >
                     Arrival Date
                   </Text>
-
-                  <Box pos="relative" w="full" className="box">
+                  <Box display={{ base: "flex", md: "none" }}>
+                    <DatePicker
+                      placeholder="Select Date"
+                      value={startValue}
+                      minDate={startDateRange}
+                      onChange={startChange}
+                    />
+                  </Box>
+                  <Box
+                    pos="relative"
+                    display={{ base: "none", md: "flex" }}
+                    w="full"
+                    className="box"
+                  >
                     <Flex
                       fontSize="14px"
                       onClick={() => setStartDate((prev) => !prev)}
@@ -562,7 +809,7 @@ const ReserveParking = () => {
                       <Image src="/assets/cal.svg" w="20px" h="20px" />{" "}
                     </Flex>
                     {startDate && (
-                      <Box pos="absolute" top="50px" w="200%" zIndex="3">
+                      <Box pos="absolute" top="50px" w="100%" zIndex="3">
                         <Calendar
                           onChange={handleDateChange}
                           value={startValue}
@@ -611,7 +858,11 @@ const ReserveParking = () => {
                 </Box>
               </Flex>
 
-              <Flex align="center" gap="16px">
+              <Flex
+                flexDir={{ base: "column", md: "row" }}
+                align={{ base: "flex-start", md: "center" }}
+                gap="16px"
+              >
                 <Box w="full">
                   <Text
                     mb="8px"
@@ -622,7 +873,21 @@ const ReserveParking = () => {
                     Departure Date
                   </Text>
 
-                  <Box pos="relative" w="full" className="box">
+                  <Box display={{ base: "flex", md: "none" }}>
+                    <DatePicker
+                      placeholder="Select Date"
+                      value={endValue}
+                      minDate={startDateRange}
+                      onChange={endChange}
+                    />
+                  </Box>
+
+                  <Box
+                    pos="relative"
+                    display={{ base: "none", md: "flex" }}
+                    w="full"
+                    className="box"
+                  >
                     <Flex
                       fontSize="14px"
                       onClick={() => setEndDate((prev) => !prev)}
@@ -746,215 +1011,293 @@ const ReserveParking = () => {
                 ""
               )}
 
-              <Box>
-                <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
-                  Payment Method
-                </Text>
-                <Flex mt="17px" align="center">
-                  <RadioGroup
-                    value={values?.paymentMethod}
-                    onChange={(e) =>
-                      setValues({
-                        ...values,
-                        paymentMethod: e,
-                      })
-                    }
-                    align="center"
-                    display="grid"
-                    gridTemplateColumns={"repeat(2,1fr)"}
-                    rowGap="15px"
-                    w="full"
-                    justifyContent="space-between"
-                  >
-                    <Radio size="sm" value={"1"}>
-                      <Text fontSize="14px"> Pay with Wallet</Text>
-                    </Radio>
-                    <Radio size="sm" value={"0"}>
-                      <Text fontSize="14px">Pay with Card</Text>
-                    </Radio>
-                    <Radio size="sm" value={"2"}>
-                      <Text fontSize="14px">Pay with Points</Text>
-                    </Radio>
-                    <Radio size="sm" value={"3"}>
-                      <Text fontSize="14px">Pay with Transfer</Text>
-                    </Radio>
-                  </RadioGroup>
-                </Flex>
-              </Box>
-
-              {values?.paymentMethod === "1" && (
-                <Box
-                  mt="16px"
-                  border="1px solid #D4D6D8"
-                  borderRadius="4px"
-                  p="16px"
-                >
-                  <Flex align="center" w="full" justifyContent="space-between">
-                    <Box>
-                      <Text
-                        color="#444648"
-                        fontSize="10px"
-                        lineHeight="100%"
-                        mb="8px"
-                      >
-                        Wallet
-                      </Text>
-                      <Text fontSize="14px" color="#646668" lineHeight="100%">
-                        <span style={{ fontWeight: 500 }}> Balance: </span> ₦{" "}
-                        {userData?.wallet?.balance?.toLocaleString(undefined, {
-                          minimumFractionDigits: 2,
-                          maximumFractionDigits: 2,
-                        }) || "0.00"}
-                      </Text>
-                    </Box>
-
-                    <Box>
-                      <BsCheckCircle color="#0B841D" />
-                    </Box>
-                  </Flex>
-                </Box>
-              )}
-
-              {values?.paymentMethod === "0" && (
-                <Box>
-                  {cards?.data?.length ? (
-                    cards?.data?.map((dat, i) => (
-                      <Box key={i}>
-                        <Box
-                          mt="16px"
-                          cursor="pointer"
-                          border={
-                            values?.cardId === dat?.id
-                              ? "1px solid #0B841D"
-                              : "1px solid #D4D6D8"
-                          }
-                          onClick={() =>
-                            setValues({
-                              ...values,
-                              cardId: dat?.id,
-                            })
-                          }
-                          borderRadius="4px"
-                          p="16px"
-                        >
-                          <Flex
-                            align="center"
-                            w="full"
-                            justifyContent="space-between"
-                          >
-                            <Box>
-                              <Text
-                                color="#444648"
-                                fontSize="10px"
-                                lineHeight="100%"
-                                mb="8px"
-                              >
-                                Card Details
-                              </Text>
-                              <Text
-                                fontSize="14px"
-                                textTransform="capitalize"
-                                color="#646668"
-                                lineHeight="100%"
-                              >
-                                {dat?.cardType} Ending *****{dat?.last4}
-                              </Text>
-                            </Box>
-
-                            {values?.cardId === dat?.id && (
-                              <Box>
-                                <BsCheckCircle color="#0B841D" />
-                              </Box>
-                            )}
-                          </Flex>
-                        </Box>
-                      </Box>
-                    ))
-                  ) : (
-                    <Box fontSize="14px" fontWeight={500} mt="8px">
-                      No Card Available
-                    </Box>
-                  )}
-                  <Flex
-                    mt="8px"
-                    color="red"
-                    fontSize="12px"
-                    fontWeight={500}
-                    lineHeight="100%"
-                    justifyContent="flex-end"
-                    w="full"
-                  >
-                    <Text
-                      cursor="pointer"
-                      onClick={() => {
-                        initializePayment(onSuccess, onCloses);
-                      }}
-                      textDecor="underline"
-                    >
-                      Add a Card
-                    </Text>
-                  </Flex>
-                </Box>
-              )}
-
-              {values?.paymentMethod === "1" && (
+              {isRequesting ? (
                 <Flex
-                  mt="8px"
+                  align="center"
+                  gap="8px"
+                  color="#EE8F38"
+                  fontSize="12px"
+                  lineHeight="100%"
+                  fontWeight={500}
+                >
+                  <Spinner size="sm" />
+                  <Text>Checking Parking Availability</Text>
+                </Flex>
+              ) : space === "noSpace" ? (
+                <Flex
+                  align="center"
+                  gap="8px"
                   color="red"
                   fontSize="12px"
-                  fontWeight={500}
                   lineHeight="100%"
-                  justifyContent="flex-end"
-                  w="full"
+                  fontWeight={500}
                 >
-                  <Text
-                    cursor="pointer"
-                    onClick={() => setShowFunds(true)}
-                    textDecor="underline"
-                  >
-                    Top Up Wallet
-                  </Text>
+                  <BsCheckCircle size="16px" />
+                  <Text>Desired time unavailable.</Text>
                 </Flex>
+              ) : space === "space" ? (
+                <Flex
+                  align="center"
+                  gap="8px"
+                  color="#0B841D"
+                  fontSize="12px"
+                  lineHeight="100%"
+                  fontWeight={500}
+                >
+                  <BsCheckCircle size="16px" />
+                  <Text>Parking space is available at your desired time.</Text>
+                </Flex>
+              ) : (
+                ""
+              )}
+
+              {space === "space" ? (
+                <>
+                  <Box mt="24px">
+                    <Text
+                      mb="8px"
+                      fontSize="10px"
+                      fontWeight={500}
+                      color="#444648"
+                    >
+                      Payment Method
+                    </Text>
+                    <Flex mt="17px" align="center">
+                      <RadioGroup
+                        value={values?.paymentMethod}
+                        onChange={(e) =>
+                          setValues({
+                            ...values,
+                            paymentMethod: e,
+                          })
+                        }
+                        align="center"
+                        display="grid"
+                        gridTemplateColumns={{
+                          base: "repeat(1,1fr)",
+                          md: "repeat(2,1fr)",
+                        }}
+                        rowGap="15px"
+                        w="full"
+                        justifyContent="space-between"
+                      >
+                        <Radio size="sm" value={"1"}>
+                          <Text fontSize="14px"> Pay with Wallet</Text>
+                        </Radio>
+                        <Radio size="sm" value={"0"}>
+                          <Text fontSize="14px">Pay with Card</Text>
+                        </Radio>
+                        <Radio size="sm" value={"2"}>
+                          <Text fontSize="14px">Pay with Points</Text>
+                        </Radio>
+                        <Radio size="sm" value={"3"}>
+                          <Text fontSize="14px">Pay with Transfer</Text>
+                        </Radio>
+                      </RadioGroup>
+                    </Flex>
+                  </Box>
+                  {values?.paymentMethod === "1" && (
+                    <Box
+                      mt="16px"
+                      border="1px solid #0B841D"
+                      borderRadius="4px"
+                      p="16px"
+                    >
+                      <Flex
+                        align="center"
+                        w="full"
+                        justifyContent="space-between"
+                      >
+                        <Box>
+                          <Text
+                            color="#444648"
+                            fontSize="10px"
+                            lineHeight="100%"
+                            mb="8px"
+                          >
+                            Wallet
+                          </Text>
+                          <Text
+                            fontSize="14px"
+                            color="#646668"
+                            lineHeight="100%"
+                          >
+                            <span style={{ fontWeight: 500 }}> Balance: </span>{" "}
+                            ₦{" "}
+                            {userData?.wallet?.balance?.toLocaleString(
+                              undefined,
+                              {
+                                minimumFractionDigits: 2,
+                                maximumFractionDigits: 2,
+                              }
+                            ) || "0.00"}
+                          </Text>
+                        </Box>
+
+                        <Box>
+                          <BsCheckCircle color="#0B841D" />
+                        </Box>
+                      </Flex>
+                    </Box>
+                  )}
+                  {values?.paymentMethod === "0" && (
+                    <Box>
+                      {cards?.data?.length ? (
+                        cards?.data?.map((dat, i) => (
+                          <Box key={i}>
+                            <Box
+                              mt="16px"
+                              cursor="pointer"
+                              border={
+                                values?.cardId === dat?.id
+                                  ? "1px solid #0B841D"
+                                  : "1px solid #D4D6D8"
+                              }
+                              onClick={() =>
+                                setValues({
+                                  ...values,
+                                  cardId: dat?.id,
+                                })
+                              }
+                              borderRadius="4px"
+                              p="16px"
+                            >
+                              <Flex
+                                align="center"
+                                w="full"
+                                justifyContent="space-between"
+                              >
+                                <Box>
+                                  <Text
+                                    color="#444648"
+                                    fontSize="10px"
+                                    lineHeight="100%"
+                                    mb="8px"
+                                  >
+                                    Card Details
+                                  </Text>
+                                  <Text
+                                    fontSize="14px"
+                                    textTransform="capitalize"
+                                    color="#646668"
+                                    lineHeight="100%"
+                                  >
+                                    {dat?.cardType} Ending *****{dat?.last4}
+                                  </Text>
+                                </Box>
+
+                                {values?.cardId === dat?.id && (
+                                  <Box>
+                                    <BsCheckCircle color="#0B841D" />
+                                  </Box>
+                                )}
+                              </Flex>
+                            </Box>
+                          </Box>
+                        ))
+                      ) : (
+                        <Box fontSize="14px" fontWeight={500} mt="8px">
+                          No Card Available
+                        </Box>
+                      )}
+                      <Flex
+                        mt="8px"
+                        color="red"
+                        fontSize="12px"
+                        fontWeight={500}
+                        lineHeight="100%"
+                        justifyContent="flex-end"
+                        w="full"
+                      >
+                        <Text
+                          cursor="pointer"
+                          onClick={() => {
+                            initializePayment(onSuccess, onCloses);
+                          }}
+                          textDecor="underline"
+                        >
+                          Add a Card
+                        </Text>
+                      </Flex>
+                    </Box>
+                  )}
+                  {values?.paymentMethod === "1" && (
+                    <Flex
+                      mt="8px"
+                      color="red"
+                      fontSize="12px"
+                      fontWeight={500}
+                      lineHeight="100%"
+                      justifyContent="flex-end"
+                      w="full"
+                    >
+                      <Text
+                        cursor="pointer"
+                        onClick={() => setShowFunds(true)}
+                        textDecor="underline"
+                      >
+                        Top Up Wallet
+                      </Text>
+                    </Flex>
+                  )}{" "}
+                </>
+              ) : (
+                ""
               )}
             </Box>
           )}
-
-          <Button
-            onClick={() => (step === 2 ? onOpen() : setStep(step + 1))}
-            w="full"
-            bg="red"
-            mt="32px"
-            py="17px"
-            isDisabled={
-              step === 1
-                ? !values?.state || !values?.city || !values?.locations
-                : step === 2
-                ? values?.paymentMethod === "0"
-                  ? !values?.cardId ||
-                    (start &&
-                      end &&
-                      values?.arrivalTime &&
-                      values?.departureTime &&
-                      formattedDeparture < formattedDate) ||
+          {step !== 1 ? (
+            <Button
+              onClick={() =>
+                step === 2 && requestData === undefined
+                  ? handleRequest()
+                  : step === 2 && requestData !== undefined
+                  ? onOpen()
+                  : setStep(step + 1)
+              }
+              w="full"
+              bg="red"
+              mt="32px"
+              py="17px"
+              isDisabled={
+                step === 2 && requestData === undefined
+                  ? !end ||
+                    !start ||
                     !values?.arrivalTime ||
                     !values?.departureTime ||
-                    !values?.vehicle ||
-                    !values?.paymentMethod
-                  : (start &&
-                      end &&
-                      values?.arrivalTime &&
-                      values?.departureTime &&
-                      formattedDeparture < formattedDate) ||
+                    formattedDeparture < formattedDate ||
                     !values?.arrivalTime ||
                     !values?.departureTime ||
-                    !values?.vehicle ||
-                    !values?.paymentMethod
-                : ""
-            }
-            fontSize="14px"
-          >
-            {step === 1 ? "Select" : "Reserve and Park Later"}
-          </Button>
+                    !values?.vehicle
+                  : step === 2 && requestData !== undefined
+                  ? values?.paymentMethod === "0"
+                    ? !values?.cardId ||
+                      (start &&
+                        end &&
+                        values?.arrivalTime &&
+                        values?.departureTime &&
+                        formattedDeparture < formattedDate) ||
+                      !values?.arrivalTime ||
+                      !values?.departureTime ||
+                      !values?.vehicle ||
+                      !values?.paymentMethod
+                    : values?.paymentMethod === "2" ||
+                      values?.paymentMethod === "3"
+                    ? true
+                    : ""
+                  : ""
+              }
+              fontSize="14px"
+            >
+              {step === 1
+                ? "Select"
+                : step === 2 && requestData === undefined
+                ? "Request Reservation"
+                : "Reserve and Park Later"}
+            </Button>
+          ) : (
+            ""
+          )}
         </Flex>
       </Flex>
       <ConfirmReserveModal

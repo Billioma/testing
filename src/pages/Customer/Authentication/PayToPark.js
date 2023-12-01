@@ -543,16 +543,17 @@ const PayToPark = () => {
                     <Box>
                       {data?.rates?.length > 1 ? (
                         <Box mt="16px">
-                          <Text
+                          {/* <Text
                             color="#444648"
                             fontSize="10px"
                             lineHeight="100%"
                             mb="8px"
                           >
                             Service Type
-                          </Text>
+                          </Text> */}
                           <Select
                             styles={customStyles}
+                            placeholder="Select Service Type"
                             components={{
                               SingleValue: ServiceType,
                               IndicatorSeparator: () => (
@@ -571,17 +572,18 @@ const PayToPark = () => {
                         ""
                       )}
                       <Box mt="16px">
-                        <Text
+                        {/* <Text
                           color="#444648"
                           fontSize="10px"
                           lineHeight="100%"
                           mb="8px"
                         >
                           Select Vehicle State
-                        </Text>
+                        </Text> */}
                         <Select
                           styles={customStyles}
                           options={stateOptions}
+                          placeholder="Select Vehicle State"
                           components={{
                             IndicatorSeparator: () => (
                               <div style={{ display: "none" }}></div>
@@ -601,14 +603,14 @@ const PayToPark = () => {
                       </Box>
 
                       <Box my="16px">
-                        <Text
+                        {/* <Text
                           color="#444648"
                           fontSize="10px"
                           lineHeight="100%"
                           mb="8px"
                         >
                           Enter your Vehicle Licence Number
-                        </Text>
+                        </Text> */}
                         <CustomInput
                           auth
                           mb
@@ -625,17 +627,17 @@ const PayToPark = () => {
                       </Box>
 
                       <Box>
-                        <Text
+                        {/* <Text
                           color="#444648"
                           fontSize="10px"
                           lineHeight="100%"
                           mb="8px"
                         >
                           Select Vehicle Make
-                        </Text>
+                        </Text> */}
                         <Select
                           styles={customStyles}
-                          placeholder="Select Make"
+                          placeholder="Select Vehicle Make"
                           options={makeOptions}
                           value={values.make}
                           components={{
@@ -655,17 +657,17 @@ const PayToPark = () => {
                       </Box>
 
                       <Box my="16px">
-                        <Text
+                        {/* <Text
                           color="#444648"
                           fontSize="10px"
                           lineHeight="100%"
                           mb="8px"
                         >
                           Select Vehicle Model
-                        </Text>
+                        </Text> */}
                         <Select
                           styles={customStyles}
-                          placeholder="Select Model"
+                          placeholder="Select Vehicle Model"
                           options={modelOptions}
                           value={values.model}
                           components={{
@@ -687,16 +689,17 @@ const PayToPark = () => {
                       </Box>
 
                       <Box>
-                        <Text
+                        {/* <Text
                           color="#444648"
                           fontSize="10px"
                           lineHeight="100%"
                           mb="8px"
                         >
                           Select Vehicle Color
-                        </Text>
+                        </Text> */}
                         <Select
                           styles={customStyles}
+                          placeholder="Select Vehicle Color"
                           value={values.color}
                           onMenuOpen={() => setMenuIsOpen(true)}
                           menuIsOpen={menuIsOpen}
@@ -724,18 +727,19 @@ const PayToPark = () => {
                   {step === 2 && (
                     <Flex flexDir="column" mb="30px">
                       <Box my="16px">
-                        <Text
+                        {/* <Text
                           color="#444648"
                           fontSize="10px"
                           lineHeight="100%"
                           mb="8px"
                         >
                           Enter Your Phone Number
-                        </Text>
+                        </Text> */}
                         <CustomInput
                           auth
                           ngn
                           mb
+                          holder="Enter Phone Mumber"
                           handleKeyPress={(e) => handleKeyPress(e, 10)}
                           value={values.phone}
                           type="number"
@@ -749,19 +753,19 @@ const PayToPark = () => {
                       </Box>
 
                       <Box>
-                        <Text
+                        {/* <Text
                           color="#444648"
                           fontSize="10px"
                           lineHeight="100%"
                           mb="8px"
                         >
                           Enter Your Email
-                        </Text>
+                        </Text> */}
                         <CustomInput
                           auth
                           mb
                           type="email"
-                          holder="Email address"
+                          holder="Enter Email Address"
                           value={values.email}
                           onChange={(e) =>
                             setValues({
@@ -773,14 +777,14 @@ const PayToPark = () => {
                       </Box>
 
                       <Box my="16px">
-                        <Text
+                        {/* <Text
                           color="#444648"
                           fontSize="10px"
                           lineHeight="100%"
                           mb="8px"
                         >
                           Enter Your First Name
-                        </Text>
+                        </Text> */}
                         <CustomInput
                           auth
                           mb
@@ -797,14 +801,14 @@ const PayToPark = () => {
                       </Box>
 
                       <Box>
-                        <Text
+                        {/* <Text
                           color="#444648"
                           fontSize="10px"
                           lineHeight="100%"
                           mb="8px"
                         >
                           Enter Your Last Name
-                        </Text>
+                        </Text> */}
                         <CustomInput
                           auth
                           mb

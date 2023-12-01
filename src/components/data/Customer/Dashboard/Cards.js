@@ -271,7 +271,7 @@ const Cards = ({ vehicles, isLoading, refetchVehicle }) => {
                       </Text>
                       <Flex align="center" gap="16px">
                         <Flex
-                          cursor="pointer"
+                          cursor={subIndex !== 0 ? "pointer" : ""}
                           border="1px solid #242628"
                           opacity={subIndex !== 0 ? 1 : 0.4}
                           onClick={() =>
@@ -283,7 +283,11 @@ const Cards = ({ vehicles, isLoading, refetchVehicle }) => {
                           <IoIosArrowBack size="13px" />
                         </Flex>
                         <Flex
-                          cursor="pointer"
+                          cursor={
+                            subscriptions?.data?.length !== subIndex + 1
+                              ? "pointer"
+                              : ""
+                          }
                           opacity={
                             subscriptions?.data?.length !== subIndex + 1
                               ? 1
@@ -592,12 +596,10 @@ const Cards = ({ vehicles, isLoading, refetchVehicle }) => {
                           fontWeight={500}
                           lineHeight="100%"
                         >
-                          {
-                            colorTypes.find(
-                              (item) =>
-                                item?.color?.toLocaleLowerCase() === data?.color
-                            )?.label
-                          }
+                          {colorTypes.find(
+                            (item) =>
+                              item?.color?.toLocaleLowerCase() === data?.color
+                          )?.label || data?.color}
                         </Text>
                       </Box>
                     </Flex>

@@ -17,7 +17,7 @@ export const createReserveParking = async (body) => {
 };
 
 export const createEventParking = async (body) => {
-  const res = await axiosInstance.post("customer/" + API.EVENT_PARKING, body);
+  const res = await axiosInstance.post("customer/" + API.EVENT_PARKING_POST, body);
   return res.data;
 };
 

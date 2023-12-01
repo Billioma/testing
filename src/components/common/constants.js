@@ -1503,7 +1503,7 @@ export const eventHeader = [
   "SERVICE TYPE",
   "EVENT",
   "STATUS",
-  "DATE",
+  "RESERVED DATE",
   "",
 ];
 
@@ -1525,6 +1525,17 @@ export const carHeader = [
   "APPOINTMENT DATE",
   "DATE CREATED",
   "STATUS",
+  "ACTIONS",
+];
+
+export const companyCarHeader = [
+  "TICKET NUMBER",
+  "AMOUNT",
+  "ATTENDANT",
+  "VEHICLE",
+  "SERVICE TYPE",
+  "STATUS",
+  "DATE",
   "ACTIONS",
 ];
 

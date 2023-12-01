@@ -814,7 +814,7 @@ const CarServices = () => {
                 </Flex>
               </Box>
 
-              <Box mt="32px">
+              <Box mt="32px" mb="16px">
                 <Text
                   color="#444648"
                   fontSize="10px"
@@ -834,7 +834,10 @@ const CarServices = () => {
                     }
                     align="center"
                     display="grid"
-                    gridTemplateColumns={"repeat(2,1fr)"}
+                    gridTemplateColumns={{
+                      base: "repeat(1,1fr)",
+                      md: "repeat(2,1fr)",
+                    }}
                     rowGap="15px"
                     w="full"
                     justifyContent="space-between"

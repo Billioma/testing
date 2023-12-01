@@ -71,7 +71,7 @@ const ConfirmReserveModal = ({
                   lineHeight="100%"
                   fontWeight={500}
                 >
-                  {values?.locations?.value}
+                  {values?.location?.name}
                 </Text>
               </Flex>
 

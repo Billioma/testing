@@ -4,7 +4,7 @@ import { HiOutlineArrowNarrowLeft } from "react-icons/hi";
 import { useNavigate, useParams } from "react-router-dom";
 import {
   BillingTypes,
-  OnlinePaymentMethods,
+  PaymentMethods,
 } from "../../../components/common/constants";
 import { formatDate } from "../../../utils/helpers";
 import { useGetOpPtpDetails } from "../../../services/operator/query/transactions";
@@ -98,7 +98,7 @@ const ViewPayToPark = () => {
               />
               <Layout
                 label="Payment Method"
-                data={OnlinePaymentMethods?.find(
+                data={PaymentMethods?.find(
                   (dat, i) => i === data?.transaction?.paymentMethod
                 )}
               />

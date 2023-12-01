@@ -2,7 +2,7 @@ import React from "react";
 import { Box, Button, Flex, Image, Td, Text, Tr } from "@chakra-ui/react";
 import TableLoader from "../../../loaders/TableLoader";
 import {
-  OnlinePaymentMethods,
+  PaymentMethods,
   Status,
   operatorPtpHeader,
 } from "../../../common/constants";
@@ -64,7 +64,7 @@ const PtpTableLayer = ({
                       px="15px"
                       borderRadius="4px"
                     >
-                      {OnlinePaymentMethods?.find(
+                      {PaymentMethods?.find(
                         (dat, i) => i === item?.transaction?.paymentMethod
                       )}
                     </Flex>

@@ -20,6 +20,7 @@ import {
   ReservedStatus,
   LogsStatus,
   FeatureType,
+  PaymentMethods,
 } from "./constants";
 import {
   useGetMakes,
@@ -85,14 +86,18 @@ const Filter = ({
     value: account,
     label: account,
   }));
+  const { pathname } = useLocation();
   const clientAccountOptions = [
     "BUSINESS",
     "EVENT_PLANNER",
     "CORPORATE",
     "OTHERS",
   ].map((type) => ({ label: type, value: type }));
-
-  const payOptions = OnlinePaymentMethods.map((payment, i) => ({
+  const payOptions = (
+    pathname === "/operator/transactions/pay-to-park"
+      ? PaymentMethods
+      : OnlinePaymentMethods
+  ).map((payment, i) => ({
     value: i,
     label: payment,
   }));
@@ -116,7 +121,6 @@ const Filter = ({
     value: i,
     label: opt,
   }));
-  const { pathname } = useLocation();
 
   const statusOptions = (
     pathname.includes("/transactions")

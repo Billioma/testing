@@ -222,3 +222,46 @@ select::placeholder,
 textarea::placeholder {
   text-transform: capitalize !important;
 }
+
+.rmdp-container {
+  width: 100% !important;
+}
+.rmdp-day span {
+  border-radius: 4px !important;
+  font-size: 13px !important;
+}
+.rmdp-day.rmdp-today span {
+  background-color: #d4d6d8 !important;
+}
+
+.rmdp-day.rmdp-selected span:not(.highlight) {
+  background-color: #ee383a !important;
+  box-shadow: none !important;
+}
+.rmdp-day span:hover {
+  background-color: #f9d0cd !important;
+  box-shadow: none !important;
+}
+.rmdp-arrow {
+  border-color: #000 !important;
+}
+.rmdp-arrow-container:hover {
+  background-color: #f9d0cd !important;
+}
+.rmdp-week-day {
+  color: #000 !important;
+  font-weight: normal !important;
+}
+.rmdp-header-values {
+  font-weight: 500 !important;
+}
+.rmdp-input {
+  border: 1px solid #d4d6d8 !important;
+  border-radius: 4px !important;
+  width: 100% !important;
+  font-size: 14px !important;
+  color: #000;
+  cursor: pointer;
+  padding: 12px !important;
+  height: 44px !important;
+}

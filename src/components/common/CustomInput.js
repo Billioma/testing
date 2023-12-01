@@ -13,6 +13,7 @@ import { BsSearch } from "react-icons/bs";
 const CustomInput = ({
   value,
   values,
+  reserve,
   opt,
   onClick,
   auth,
@@ -77,12 +78,18 @@ const CustomInput = ({
   return (
     <FormControl mb={mb ? 0 : 5} isInvalid={error}>
       <InputGroup>
-        {ngn && (
+        {ngn ? (
           <InputLeftElement h="44px">
             <Text color="#646668" fontSize="13px">
               +234
             </Text>
           </InputLeftElement>
+        ) : reserve ? (
+          <InputLeftElement cursor="pointer" h="40px">
+            <BsSearch />
+          </InputLeftElement>
+        ) : (
+          ""
         )}
         <Input
           value={value}
@@ -93,11 +100,12 @@ const CustomInput = ({
           isReadOnly={isDisabled}
           onKeyPress={handleKeyPress}
           onChange={handleInputChange}
-          bg={getBackgroundColor()}
-          border={getBorderColor()}
+          bg={reserve ? "#f4f6f8" : getBackgroundColor()}
+          borderRadius={reserve ? "8px" : "4px"}
+          border={reserve ? "none" : getBorderColor()}
           onBlur={(e) => (!auth ? handleInputBlur(e) : setIsTyping(false))}
           onFocus={onFocus}
-          h={opt ? "60px" : "44px"}
+          h={opt ? "60px" : reserve ? "40px" : "44px"}
           type={type ? type : "text"}
           fontSize="13px"
           _placeholder={{

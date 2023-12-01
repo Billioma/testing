@@ -43,12 +43,14 @@ const {
   CUST_HISTORY_PARK_DETAILS,
   CUST_HISTORY_USER,
   CUST_HISTORY_US,
+  CUST_SERVICES_CAR_SERVICE_DETAILS,
   CUST_SERVICES_RESERVE_PARK,
   CUST_SERVICES_RESERVE_PARK_DETAILS,
   CUST_HISTORY_RESERVE_PARK_DETAILS,
   CUST_SERVICES_EVENT_PARK,
   CUST_SERVICES_EVENT_PARK_DETAILS,
   CUST_HISTORY_EVENT_PARK_DETAILS,
+  CUST_SERVICE_VALET_DETAILS,
   CUST_SUBSCRIPTION,
   CUST_ADD_SUBSCRIPTION,
   CUST_VEHICLES,
@@ -220,14 +222,38 @@ const CustServicesPark = WithSuspense(
 );
 
 const CustServicesParkDetails = WithSuspense(
+  lazy(() =>
+    import("../components/data/Customer/History/User/PaytoParkDetails")
+  )
+);
+
+const CustCompanyParkDetails = WithSuspense(
   lazy(() => import("../components/data/Customer/History/Us/PaytoParkDetails"))
 );
+const CustUsValetParking = WithSuspense(
+  lazy(() =>
+    import("../components/data/Customer/History/Us/ValetServiceDetails")
+  )
+);
 const CustServicesReserveParkDetails = WithSuspense(
+  lazy(() =>
+    import("../components/data/Customer/History/User/ReserveParkingDetails")
+  )
+);
+const CustUsReserveParkDetails = WithSuspense(
   lazy(() =>
     import("../components/data/Customer/History/Us/ReserveParkingDetails")
   )
 );
+const CustServicesCarServiceDetails = WithSuspense(
+  lazy(() => import("../components/data/Customer/History/Us/CarServiceDetails"))
+);
 const CustServicesEventParkDetails = WithSuspense(
+  lazy(() =>
+    import("../components/data/Customer/History/User/EventParkingDetails")
+  )
+);
+const CustUsEventParkDetails = WithSuspense(
   lazy(() =>
     import("../components/data/Customer/History/Us/EventParkingDetails")
   )
@@ -932,11 +958,16 @@ export const PRIVATE_ROUTES = [
   // CUSTOMER ROUTES
   { path: CUST_DASHBOARD, element: <CustDashboard /> },
   { path: CUST_SERVICES_PARK, element: <CustServicesPark /> },
-  { path: CUST_SERVICE_PARK_DETAILS, element: <CustServicesParkDetails /> },
+  { path: CUST_SERVICE_PARK_DETAILS, element: <CustCompanyParkDetails /> },
+  { path: CUST_SERVICE_VALET_DETAILS, element: <CustUsValetParking /> },
   { path: CUST_HISTORY_PARK_DETAILS, element: <CustServicesParkDetails /> },
   {
     path: CUST_SERVICES_RESERVE_PARK_DETAILS,
-    element: <CustServicesReserveParkDetails />,
+    element: <CustUsReserveParkDetails />,
+  },
+  {
+    path: CUST_SERVICES_CAR_SERVICE_DETAILS,
+    element: <CustServicesCarServiceDetails />,
   },
   {
     path: CUST_HISTORY_RESERVE_PARK_DETAILS,
@@ -944,7 +975,7 @@ export const PRIVATE_ROUTES = [
   },
   {
     path: CUST_SERVICES_EVENT_PARK_DETAILS,
-    element: <CustServicesEventParkDetails />,
+    element: <CustUsEventParkDetails />,
   },
   {
     path: CUST_HISTORY_EVENT_PARK_DETAILS,

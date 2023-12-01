@@ -95,6 +95,10 @@ const refreshAccessToken = async (refreshToken) => {
     localStorage.setItem(newPath, JSON.stringify(newAccessToken));
   } catch (error) {
     console.error("Error refreshing access token:", error);
+    localStorage.removeItem(newPath);
+    setTimeout(() => {
+      window.location.href = `${newPath}/auth/login`;
+    }, 500);
     throw error;
   }
 };
@@ -110,13 +114,7 @@ const onResponseError = async (error) => {
     .find((user) => user !== null);
   const statusCode = error.response?.status;
   if (statusCode === 401 && user) {
-    try {
-      await refreshAccessToken(user.refresh_token);
-
-      return axiosInstance(error.config);
-    } catch (refreshError) {
-      console.error("Error refreshing token:", refreshError);
-    }
+    refreshAccessToken(user.refresh_token);
   }
 
   return Promise.reject(error);

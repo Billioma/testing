@@ -13,10 +13,11 @@ import {
   useGetTips,
 } from "../../../../../services/customer/query/services";
 import { useParams } from "react-router-dom";
-import { formatDate } from "../../../../../utils/helpers";
+import { formatDate, formatDateTime } from "../../../../../utils/helpers";
 import { Status } from "../../../../common/constants";
 import GoBackTab from "../../../Admin/GoBackTab";
 import MakeTipModal from "../../../../modals/MakeTipModal";
+import { useGetServiceLog } from "../../../../../services/customer/query/logs";
 
 export const Layout = ({ label, data }) => {
   return (
@@ -74,7 +75,7 @@ const Details = () => {
     data,
     isLoading,
     refetch: refetchParking,
-  } = useGetPayToParkDetails(id);
+  } = useGetServiceLog(id);
   const { data: tips, refetch } = useGetTips();
   const { isOpen, onClose, onOpen } = useDisclosure();
 
@@ -143,8 +144,11 @@ const Details = () => {
 
                 <Box mt="28px" w="full">
                   <Layout label="Ticket Number" data={data?.ticketNumber} />
+                  <Layout label="Attendant" data={data?.attendant?.name} />
                   <Layout label="Zone" data={data?.zone?.name} />
-                  <Layout label="Location" data={data?.zone?.location?.name} />
+                  <Layout label="Location" data={data?.zone?.location?.name || "N/A"} />
+                  <Layout label="Arrival" data={formatDateTime(data?.timeIn) || "N/A"} />
+                  <Layout label="Departure" data={formatDateTime(data?.timeOut) || "N/A"} />
                   <Layout label="Date" data={formatDate(data?.createdAt)} />
                   <Layout
                     label="Selected Vehicle"

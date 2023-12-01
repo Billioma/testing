@@ -9,14 +9,15 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import {
-  useGetReserveParkDetails,
+  useGetPayToParkDetails,
   useGetTips,
 } from "../../../../../services/customer/query/services";
-import GoBackTab from "../../../Admin/GoBackTab";
 import { useParams } from "react-router-dom";
-import { formatDate, formatDateTime } from "../../../../../utils/helpers";
+import { formatDate, formatDateTime, formatTime } from "../../../../../utils/helpers";
 import { Status } from "../../../../common/constants";
+import GoBackTab from "../../../Admin/GoBackTab";
 import MakeTipModal from "../../../../modals/MakeTipModal";
+import { useGetServiceLog } from "../../../../../services/customer/query/logs";
 
 export const Layout = ({ label, data }) => {
   return (
@@ -68,13 +69,13 @@ export const Layout = ({ label, data }) => {
   );
 };
 
-const ReserveParkingDetails = () => {
+const Details = () => {
   const { id } = useParams();
   const {
     data,
     isLoading,
     refetch: refetchParking,
-  } = useGetReserveParkDetails(id);
+  } = useGetServiceLog(id);
   const { data: tips, refetch } = useGetTips();
   const { isOpen, onClose, onOpen } = useDisclosure();
 
@@ -113,7 +114,7 @@ const ReserveParkingDetails = () => {
                 borderRadius="8px"
               >
                 <Image
-                  src="/assets/calendar.png"
+                  src="/assets/park.png"
                   w="40px"
                   h="40px"
                   objectFit="cover"
@@ -126,7 +127,7 @@ const ReserveParkingDetails = () => {
                   lineHeight="100%"
                   color="#242628"
                 >
-                  Reservation Details
+                  Valet Details
                 </Text>
 
                 <Text
@@ -142,21 +143,13 @@ const ReserveParkingDetails = () => {
                 </Text>
 
                 <Box mt="28px" w="full">
-                  <Layout label="Reservation ID" data={data?.reservationId} />
+                  <Layout label="Ticket Number" data={data?.ticketNumber} />
+                  <Layout label="Attendant" data={data?.attendant?.name} />
                   <Layout label="Zone" data={data?.zone?.name} />
-                  <Layout
-                    label="Location"
-                    data={data?.zone?.location?.name || "N/A"}
-                  />
+                  <Layout label="Location" data={data?.zone?.location?.name || "N/A"} />
+                  <Layout label="Arrival" data={formatDateTime(data?.timeIn) || "N/A"} />
+                  <Layout label="Departure" data={formatDateTime(data?.timeOut) || "N/A"} />
                   <Layout label="Date" data={formatDate(data?.createdAt)} />
-                  <Layout
-                    label="Arrival Date/Time"
-                    data={formatDateTime(data?.arrival) || "N/A"}
-                  />
-                  <Layout
-                    label="Departure Date/Time"
-                    data={formatDateTime(data?.departure) || "N/A"}
-                  />
                   <Layout
                     label="Selected Vehicle"
                     data={data?.vehicle?.licensePlate}
@@ -164,10 +157,6 @@ const ReserveParkingDetails = () => {
                   <Layout
                     label="Status"
                     data={data && Object.values(Status[data?.status])[1]}
-                  />
-                  <Layout
-                    label="Payment"
-                    data={data?.paymentMethod === 0 ? "Card" : "Wallet"}
                   />
 
                   {data?.status === 1 && (
@@ -246,4 +235,4 @@ const ReserveParkingDetails = () => {
   );
 };
 
-export default ReserveParkingDetails;
+export default Details;

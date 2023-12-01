@@ -132,8 +132,9 @@ const UserTableLayer = () => {
           <Flex flexWrap="wrap" rowGap={{ base: "20px", md: "unset" }}>
             {serviceTabs?.slice(1, 5)?.map((dat, i) => (
               <Text
-                px={{ base: "30px", md: "30px" }}
+                px={{ base: "0px", md: "30px" }}
                 pb="13px"
+                textAlign={{ base: "center", md: "" }}
                 fontSize={{ base: "12px", md: "14px" }}
                 cursor="pointer"
                 onClick={() => {
@@ -141,6 +142,7 @@ const UserTableLayer = () => {
                   setPage(1);
                   setLimit(25);
                 }}
+                w={{ base: "50%", md: "unset" }}
                 fontWeight={tab === dat ? 500 : 400}
                 color={tab === dat ? "red" : "#646668"}
                 borderBottom={tab === dat ? "3px solid #EE383A" : ""}
@@ -807,14 +809,16 @@ const UserTableLayer = () => {
                 </Td>
                 <Td textAlign="center">{dat?.vehicle?.licensePlate}</Td>
                 <Td textAlign="center">
-                  <Flex
-                    flexDir="column"
-                    bg="#F4F6F8"
-                    borderRadius="4px"
-                    px="16px"
-                    py="8px"
-                  >
-                    {dat?.service?.serviceType}
+                  <Flex justifyContent="center" align="center" w="full">
+                    <Flex
+                      flexDir="column"
+                      bg="#F4F6F8"
+                      borderRadius="4px"
+                      px="16px"
+                      py="8px"
+                    >
+                      {dat?.service?.serviceType}
+                    </Flex>
                   </Flex>
                 </Td>
                 <Td textAlign="center">{dat?.event?.name}</Td>
@@ -834,7 +838,7 @@ const UserTableLayer = () => {
                     </Flex>
                   </Flex>
                 </Td>
-                <Td textAlign="center">{formatDate(dat?.createdAt)}</Td>
+                <Td textAlign="center">{formatDate(dat?.reservedDate)}</Td>
                 <Td>
                   <Flex
                     pos="relative"

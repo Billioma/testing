@@ -6,7 +6,7 @@ import {
   Status,
   companyPayToParkHeader,
   usServiceTabs,
-  carHeader,
+  companyCarHeader,
 } from "../../../common/constants";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import { formatDate } from "../../../../utils/helpers";
@@ -54,7 +54,7 @@ const UsTableLayer = () => {
       ? parkingLog?.data?.filter((item) => item?.ticketNumber?.includes("PTP"))
       : tab === "Valet Parking"
       ? valetLog?.data
-      : tab === "Car Parking" && serviceLog?.data;
+      : tab === "Car Services" && serviceLog?.data;
   const [show, setShow] = useState(false);
   const [currentItem, setCurrentItem] = useState("");
 
@@ -80,11 +80,16 @@ const UsTableLayer = () => {
     <Box>
       <TableFormat
         tab={
-          <Flex flexWrap="wrap" rowGap={{ base: "20px", md: "unset" }}>
+          <Flex
+            flexWrap="wrap"
+            justifyContent={{ base: "center", md: "" }}
+            rowGap={{ base: "20px", md: "unset" }}
+          >
             {usServiceTabs.map((dat, i) => (
               <Text
-                px={{ base: "30px", md: "30px" }}
+                px={{ base: "0px", md: "30px" }}
                 pb="13px"
+                textAlign={{ base: "center", md: "" }}
                 fontSize={{ base: "12px", md: "14px" }}
                 cursor="pointer"
                 onClick={() => {
@@ -92,6 +97,7 @@ const UsTableLayer = () => {
                   setPage(1);
                   setLimit(25);
                 }}
+                w={{ base: "50%", md: "unset" }}
                 fontWeight={tab === dat ? 500 : 400}
                 color={tab === dat ? "red" : "#646668"}
                 borderBottom={tab === dat ? "3px solid #EE383A" : ""}
@@ -112,7 +118,7 @@ const UsTableLayer = () => {
         header={
           tab === "Pay-To-Park" || tab === "Valet Parking"
             ? companyPayToParkHeader
-            : carHeader
+            : companyCarHeader
         }
         paginate={
           <Flex
@@ -364,7 +370,7 @@ const UsTableLayer = () => {
                           w="full"
                           onClick={() =>
                             navigate(
-                              `/customer/history/company/pay-to-park/${dat?.id}`
+                              `/customer/history/company/valet-parking/${dat?.id}`
                             )
                           }
                           color="#646668"
@@ -571,6 +577,7 @@ const UsTableLayer = () => {
                     maximumFractionDigits: 2,
                   }) || "0.00"}
                 </Td>
+                <Td textAlign="center">{dat?.attendant?.name}</Td>
                 <Td textAlign="center">{dat?.vehicle?.licensePlate}</Td>
                 <Td textAlign="center">
                   <Flex
@@ -583,7 +590,6 @@ const UsTableLayer = () => {
                     {dat?.service?.serviceType}
                   </Flex>
                 </Td>
-                <Td textAlign="center">{dat?.event?.name}</Td>
                 <Td>
                   <Flex justifyContent="center" align="center" w="full">
                     <Flex
@@ -639,7 +645,7 @@ const UsTableLayer = () => {
                           w="full"
                           onClick={() =>
                             navigate(
-                              `/customer/history/company/event-parking/${dat?.id}`
+                              `/customer/history/company/car-service/${dat?.id}`
                             )
                           }
                           color="#646668"

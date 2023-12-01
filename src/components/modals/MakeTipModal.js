@@ -62,13 +62,13 @@ const MakeTipModal = ({
   const handleSubmit = () => {
     Number(values?.paymentMethod) === 0
       ? mutate({
-          service: data?.serviceLog?.id,
+          service: data?.serviceLog?.id || data?.id,
           amount: values.amount,
           paymentMethod: 0,
           cardId: Number(values?.cardId),
         })
       : mutate({
-          service: data?.serviceLog?.id,
+          service: data?.serviceLog?.id || data?.id,
           amount: values.amount,
           paymentMethod: 1,
         });

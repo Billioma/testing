@@ -14,3 +14,10 @@ export const getCustomerParkingLogs = async (type, page, limit) => {
   );
   return response.data;
 };
+
+export const getServiceLog = async (id) => {
+  const response = await axiosInstance.get(
+    `${API.CUSTOMER_SERVICE_LOGS}/${id}`
+  );
+  return response.data;
+};

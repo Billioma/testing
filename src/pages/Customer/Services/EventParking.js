@@ -21,7 +21,6 @@ import {
   useGetEvents,
   useGetServices,
 } from "../../../services/customer/query/locations";
-import { Calendar } from "react-calendar";
 import { formatDate, formatTime } from "../../../utils/helpers";
 import {
   useGetMake,
@@ -39,6 +38,7 @@ import {
 import useCustomToast from "../../../utils/notifications";
 import { useNavigate } from "react-router-dom";
 import AddVehicleModal from "../../../components/modals/AddVehicleModal";
+import DatePicker from "react-multi-date-picker";
 
 const EventParking = () => {
   const [step, setStep] = useState(1);
@@ -50,12 +50,11 @@ const EventParking = () => {
     cardId: "",
     paymentMethod: "",
   });
-  const [startDate, setStartDate] = useState(false);
-  const [startValue, startChange] = useState("");
 
+  const [startValue, startChange] = useState([]);
   useEffect(() => {
     setStep(1);
-    startChange("");
+    startChange([]);
     setValues({
       event: "",
       service: "",
@@ -116,32 +115,6 @@ const EventParking = () => {
       new Date(item?.eventStartDateTime) > today
   );
 
-  const startDateRange = new Date(event?.eventStartDateTime);
-  const endDateRange = new Date(event?.eventEndDateTime);
-
-  const isDateDisabled = (date) => {
-    return date > endDateRange || date < startDateRange;
-  };
-
-  const handleDateChange = (date) => {
-    if (!isDateDisabled(date)) {
-      startChange(date);
-    }
-    setStartDate(false);
-  };
-
-  const tileClassName = ({ date }) => {
-    if (
-      date.getDate() === startDateRange.getDate() ||
-      date.getDate() === endDateRange.getDate()
-    ) {
-      return "selected-date";
-    }
-    if (isDateDisabled(date)) {
-      return "disabled-date";
-    }
-    return null;
-  };
   const mainService = services?.filter(
     (item) => item?.id === "1" || item?.id === "3" || item?.id === "5"
   );
@@ -190,21 +163,21 @@ const EventParking = () => {
       );
     },
   });
-
+  const arrayDates = startValue?.map((dat) => formatDate(new Date(dat)));
   const handleSubmit = () => {
     Number(values?.paymentMethod) === 0
       ? eventMutate({
           cardId: values?.cardId,
           event: event?.id,
           paymentMethod: Number(values?.paymentMethod),
-          reservedDate: start,
+          reservedDates: arrayDates,
           service: values?.service?.id,
           vehicle: values?.vehicle?.id,
         })
       : eventMutate({
           event: event?.id,
           paymentMethod: Number(values?.paymentMethod),
-          reservedDate: start,
+          reservedDates: arrayDates,
           service: values?.service?.id,
           vehicle: values?.vehicle?.id,
         });
@@ -233,19 +206,6 @@ const EventParking = () => {
       backgroundColor: state.isFocused ? "#f4f6f8" : "",
     }),
   };
-
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (event.target.closest(".box") === null) {
-        setStartDate(false);
-      }
-    };
-
-    document.addEventListener("click", handleClickOutside);
-    return () => {
-      document.removeEventListener("click", handleClickOutside);
-    };
-  }, []);
 
   return (
     <Box minH="75vh">
@@ -277,7 +237,7 @@ const EventParking = () => {
                     cardId: "",
                     paymentMethod: "",
                   });
-                  startChange("");
+                  startChange([]);
                 }}
                 size="24px"
               />
@@ -593,37 +553,15 @@ const EventParking = () => {
                   Select Date
                 </Text>
 
-                <Box pos="relative" w="full" className="box">
-                  <Flex
-                    fontSize="14px"
-                    onClick={() => setStartDate((prev) => !prev)}
-                    align="center"
-                    justifyContent="space-between"
-                    w="full"
-                    bg={start ? "#F4F6F8" : "transparent"}
-                    color={start ? "#000" : ""}
-                    h="44px"
-                    cursor="pointer"
-                    borderRadius="4px"
-                    border="1px solid #D4D6D8"
-                    py="12px"
-                    px="16px"
-                  >
-                    <Text>{start ? start : "Select Date"}</Text>
-                    <Image src="/assets/cal.svg" w="20px" h="20px" />{" "}
-                  </Flex>
-                  {startDate && (
-                    <Box pos="absolute" top="50px" w="full" zIndex="3">
-                      <Calendar
-                        onChange={handleDateChange}
-                        value={startValue}
-                        minDate={startDateRange}
-                        maxDate={endDateRange}
-                        tileClassName={tileClassName}
-                      />
-                    </Box>
-                  )}
-                </Box>
+                <DatePicker
+                  placeholder="Select Date"
+                  multiple
+                  value={startValue}
+                  minDate={formatDate(event?.eventStartDateTime)}
+                  maxDate={formatDate(event?.eventEndDateTime)}
+                  onChange={startChange}
+                />
+                {console.log(formatDate(event?.eventStartDateTime))}
               </Box>
 
               <Box w="full" my="16px">
@@ -711,7 +649,10 @@ const EventParking = () => {
                     }
                     align="center"
                     display="grid"
-                    gridTemplateColumns={"repeat(2,1fr)"}
+                    gridTemplateColumns={{
+                      base: "repeat(1,1fr)",
+                      md: "repeat(2,1fr)",
+                    }}
                     rowGap="15px"
                     w="full"
                     justifyContent="space-between"
