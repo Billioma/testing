@@ -809,7 +809,7 @@ const ReserveParking = () => {
                       <Image src="/assets/cal.svg" w="20px" h="20px" />{" "}
                     </Flex>
                     {startDate && (
-                      <Box pos="absolute" top="50px" w="100%" zIndex="3">
+                      <Box pos="absolute" top="50px" w="200%" zIndex="3">
                         <Calendar
                           onChange={handleDateChange}
                           value={startValue}
