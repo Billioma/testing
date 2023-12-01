@@ -41,6 +41,7 @@ import { useNavigate } from "react-router-dom";
 import FundWalletDrawer from "../../../components/modals/FundWalletDrawer";
 import { usePaystackPayment } from "react-paystack";
 import AddVehicleModal from "../../../components/modals/AddVehicleModal";
+import DatePicker from "react-multi-date-picker";
 
 const CarServices = () => {
   const [step, setStep] = useState(1);
@@ -300,7 +301,6 @@ const CarServices = () => {
       cursor: "pointer",
       borderRadius: "4px",
       border: state.hasValue ? "none" : "1px solid #D4D6D8",
-      paddingRight: "16px",
       background: state.hasValue ? "#f4f6f8" : "unset",
     }),
     menu: (provided) => ({
@@ -519,7 +519,11 @@ const CarServices = () => {
                 />
               </Box>
 
-              <Flex align="center" gap="16px">
+              <Flex
+                flexDir={{ base: "column", md: "row" }}
+                align={{ base: "flex-start", md: "center" }}
+                gap="16px"
+              >
                 <Box w="full">
                   <Text
                     mb="8px"
@@ -529,8 +533,21 @@ const CarServices = () => {
                   >
                     Select Day
                   </Text>
+                  <Box display={{ base: "flex", md: "none" }}>
+                    <DatePicker
+                      placeholder="Select Date"
+                      value={startValue}
+                      minDate={startDateRange}
+                      onChange={startChange}
+                    />
+                  </Box>
 
-                  <Box pos="relative" w="full" className="box">
+                  <Box
+                    display={{ base: "none", md: "flex" }}
+                    pos="relative"
+                    w="full"
+                    className="box"
+                  >
                     <Flex
                       fontSize="14px"
                       onClick={() => setStartDate((prev) => !prev)}

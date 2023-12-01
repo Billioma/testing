@@ -214,12 +214,10 @@ const EventParking = () => {
           bg="#fff"
           borderRadius="12px"
           py="40px"
-          px="32px"
+          px={{ base: "20px", md: "32px" }}
           justifyContent="center"
           w={{
-            base: "full",
-            sm: "30rem",
-            lg: !filteredEvent?.length || step !== 1 ? "30rem" : "unset",
+            md: !filteredEvent?.length || step !== 1 ? "30rem" : "unset",
             "3xl": !filteredEvent?.length || step !== 1 ? "35rem" : "unset",
           }}
           flexDir="column"
@@ -439,7 +437,12 @@ const EventParking = () => {
                 py="12px"
                 px="16px"
               >
-                <Flex align="center" w="full" justifyContent="space-between">
+                <Flex
+                  align="center"
+                  gap={{ base: "10px", md: "unset" }}
+                  w="full"
+                  justifyContent="space-between"
+                >
                   <Flex align="center" gap="16px" w="full">
                     <Image
                       display={{ base: "none", md: "flex" }}
@@ -482,12 +485,14 @@ const EventParking = () => {
 
                 <Flex
                   mt="16px"
-                  align="center"
+                  flexDir={{ base: "column", md: "row" }}
+                  align={{ base: "flex-start", md: "center" }}
+                  gap={{ base: "10px", md: "unset" }}
                   flexWrap={{ base: "wrap", md: "nowrap" }}
                   justifyContent="space-between"
                   w="full"
                 >
-                  <Box w={{ base: "40%", md: "80%" }}>
+                  <Box w={{ base: "100%", md: "80%" }}>
                     <Text color="#242628" fontSize="10px" lineHeight="100%">
                       Start
                     </Text>
@@ -506,7 +511,7 @@ const EventParking = () => {
                   <Flex
                     flexDir="column"
                     justifyContent="flex-start"
-                    w={{ base: "50%", md: "80%" }}
+                    w={{ base: "100%", md: "80%" }}
                   >
                     <Text color="#242628" fontSize="10px" lineHeight="100%">
                       End

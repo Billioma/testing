@@ -76,28 +76,44 @@ const ReserveParking = () => {
   const [startValue, startChange] = useState("");
   const [endValue, endChange] = useState("");
   const [space, setSpace] = useState("");
+
+  const {
+    mutate: reqeustReserve,
+    data: requestData,
+    isLoading: isRequesting,
+  } = useRequestReserveParking({
+    onSuccess: () => {
+      setSpace("space");
+    },
+    onError: (err) => {
+      if (err?.response?.status === 404) {
+        setSpace("noSpace");
+      }
+    },
+  });
+
   const [endDate, setEndDate] = useState(false);
-  // useEffect(() => {
-  //   setStep(1);
-  //   endChange("");
-  //   startChange("");
-  //   setValues({
-  //     state: "",
-  //     city: "",
-  // reqeustReserve()
-  //     locations: "",
-  // setSpace("")
-  //     arrivalTime: "",
-  // location: "",
-  //     departureTime: "",
-  //     paymentMethod: "",
-  //     cardId: "",
-  //     vehicle: "",
-  //     color: "",
-  //     make: "",
-  //     model: "",
-  //   });
-  // }, []);
+  useEffect(() => {
+    setStep(1);
+    endChange("");
+    startChange("");
+    reqeustReserve();
+    setSpace("");
+    setValues({
+      state: "",
+      city: "",
+      locations: "",
+      arrivalTime: "",
+      location: "",
+      departureTime: "",
+      paymentMethod: "",
+      cardId: "",
+      vehicle: "",
+      color: "",
+      make: "",
+      model: "",
+    });
+  }, []);
 
   const { data: cards, refetch: refetchCards } = useGetCards();
   const { data: userData, refetch } = useGetUser();
@@ -250,20 +266,7 @@ const ReserveParking = () => {
 
   const initializePayment = usePaystackPayment(config);
 
-  const {
-    mutate: reqeustReserve,
-    data: requestData,
-    isLoading: isRequesting,
-  } = useRequestReserveParking({
-    onSuccess: () => {
-      setSpace("space");
-    },
-    onError: (err) => {
-      if (err?.response?.status === 404) {
-        setSpace("noSpace");
-      }
-    },
-  });
+ 
   const navigate = useNavigate();
   const { successToast, errorToast } = useCustomToast();
   const { refetch: refetchParking } = useGetReserveParking(10, 1);
