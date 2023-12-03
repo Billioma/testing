@@ -5,7 +5,7 @@ import {
   SecStatus,
   operatorLocationsHeader,
 } from "../../../../common/constants";
-import { formatDateTimes } from "../../../../../utils/helpers";
+import { formatDate } from "../../../../../utils/helpers";
 import { useNavigate } from "react-router-dom";
 import { AiOutlineEdit } from "react-icons/ai";
 import { Add } from "../../../../common/images";
@@ -71,7 +71,7 @@ const TableLayer = ({
                     </Flex>
                   </Flex>
                 </Td>
-                <Td>{formatDateTimes(item?.createdAt)}</Td>
+                <Td>{formatDate(item?.createdAt)}</Td>
 
                 <Td>
                   <Flex gap="20px" align="center" justifyContent="center">

@@ -24,6 +24,8 @@ export const GET_RATES = (filterString = "", limit = "", page = "") =>
   `operator/rates?${filterString}&limit=${limit}&page=${page}&sort=id,DESC`;
 export const GET_POLICIES = (filterString = "", limit = "", page = "") =>
   `operator/policies?${filterString}&limit=${limit}&page=${page}&sort=id,DESC`;
+
+export const OP_SERVICE_LOGS = "operator/service-logs";
 export const GET_VALETED = (limit = "", page = "") =>
   `operator/service-logs?filter=service_log_service.serviceType%7C%7C%24eq%7C%7CVALET&limit=${limit}&page=${page}&sort=id,DESC`;
 export const GET_PARKED = (limit = "", page = "") =>

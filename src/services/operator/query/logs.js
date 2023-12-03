@@ -1,5 +1,13 @@
-import { useMutation } from "react-query";
-import { getLog, getParked, getServiced, getValeted } from "../api/logs";
+import { useMutation, useQuery } from "react-query";
+import {
+  getLog,
+  getOpParkedVehicles,
+  getOpServicedVehicles,
+  getOpValetedVehicles,
+  getParked,
+  getServiced,
+  getValeted,
+} from "../api/logs";
 
 export const useGetValeted = (options = {}) => {
   const { mutate, isLoading, data } = useMutation(getValeted, {
@@ -9,6 +17,56 @@ export const useGetValeted = (options = {}) => {
   return { mutate, isLoading, data };
 };
 
+export const useGetOpParkedVehicles = (
+  options = {},
+  page = 1,
+  limit = 25,
+  query
+) => {
+  const { data, isLoading, refetch } = useQuery(
+    ["GET_OP_PARKED_VEHICLES", page, limit, query],
+    () => getOpParkedVehicles(page, limit, query),
+    {
+      ...options,
+    }
+  );
+
+  return { isLoading, data, refetch };
+};
+
+export const useGetOpValetedVehicles = (
+  options = {},
+  page = 1,
+  limit = 25,
+  query
+) => {
+  const { data, isLoading, refetch } = useQuery(
+    ["GET_OP_VALETED_VEHICLES", page, limit, query],
+    () => getOpValetedVehicles(page, limit, query),
+    {
+      ...options,
+    }
+  );
+
+  return { isLoading, data, refetch };
+};
+
+export const useGetOpServicedVehicles = (
+  options = {},
+  page = 1,
+  limit = 25,
+  query
+) => {
+  const { data, isLoading, refetch } = useQuery(
+    ["GET_OP_SERVICED_VEHICLES", page, limit, query],
+    () => getOpServicedVehicles(page, limit, query),
+    {
+      ...options,
+    }
+  );
+
+  return { isLoading, data, refetch };
+};
 export const useGetParked = (options = {}) => {
   const { mutate, isLoading, data } = useMutation(getParked, {
     mutationKey: "GET_PARKED",

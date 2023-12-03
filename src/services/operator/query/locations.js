@@ -11,6 +11,7 @@ import {
   getAmenities,
   getLocation,
   getLocations,
+  getOpLocationUrl,
   getOperatorLocation,
   getPolicies,
   getPolicy,
@@ -30,6 +31,17 @@ export const useGetLocations = (options = {}) => {
     ...options,
   });
   return { mutate, isLoading, data };
+};
+
+export const useGetOpLocationUrl = (options = {}, type, page, limit, query) => {
+  const { data, isLoading, refetch } = useQuery(
+    ["GET_OP_LOCATION_URL", type, page, limit, query],
+    () => getOpLocationUrl(type, page, limit, query),
+    {
+      ...options,
+    }
+  );
+  return { isLoading, data, refetch };
 };
 
 export const useGetZones = (options = {}) => {

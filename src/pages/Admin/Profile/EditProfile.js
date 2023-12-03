@@ -14,7 +14,6 @@ import GoBackTab from "../../../components/data/Admin/GoBackTab";
 import {
   useAdminUpdateUser,
   useCustomerUploadPic,
-  useGetUser,
 } from "../../../services/customer/query/user";
 import useCustomToast from "../../../utils/notifications";
 import { useGetProfile } from "../../../services/admin/query/auth";

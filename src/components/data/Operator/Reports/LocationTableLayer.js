@@ -2,7 +2,7 @@ import React from "react";
 import { Box, Flex, Image, Td, Text, Tr } from "@chakra-ui/react";
 import TableLoader from "../../../loaders/TableLoader";
 import { operatorRepLocationHeader } from "../../../common/constants";
-import { formatDateTimes } from "../../../../utils/helpers";
+import { formatDate } from "../../../../utils/helpers";
 import TableFormat from "../../../common/TableFormat";
 
 const LocationTableLayer = ({
@@ -60,7 +60,7 @@ const LocationTableLayer = ({
                     </Flex>
                   </Flex>
                 </Td>
-                <Td textAlign="center">{formatDateTimes(item?.createdAt)}</Td>
+                <Td textAlign="center">{formatDate(item?.createdAt)}</Td>
               </Tr>
             ))}
           </TableFormat>

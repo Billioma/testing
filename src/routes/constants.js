@@ -47,7 +47,8 @@ export const PRIVATE_PATHS = {
     "/customer/history/company/event-parking/:id",
   CUST_HISTORY_EVENT_PARK_DETAILS: "/customer/history/user/event-parking/:id",
   CUST_SERVICES_CAR_SERVICE: "/customer/services/car-service",
-  CUST_SERVICES_CAR_SERVICE_DETAILS: "/customer/history/company/car-service/:id",
+  CUST_SERVICES_CAR_SERVICE_DETAILS:
+    "/customer/history/company/car-service/:id",
   CUST_SUBSCRIPTION: "/customer/subscriptions",
   CUST_ADD_SUBSCRIPTION: "/customer/subscriptions/create",
 
@@ -190,8 +191,8 @@ export const PRIVATE_PATHS = {
   ADMIN_VIEW_EVENT: "/admin/events/details/:id",
 
   ADMIN_LOCATIONS: "/admin/locations/all",
-  ADMIN_ADD_LOCATION: "/admin/locations/locations/create",
-  ADMIN_VIEW_LOCATION: "/admin/locations/locations/details/:id",
+  ADMIN_ADD_LOCATION: "/admin/locations/all/create",
+  ADMIN_VIEW_LOCATION: "/admin/locations/all/details/:id",
 
   ADMIN_ZONES: "/admin/locations/zones",
   ADMIN_VIEW_ZONE: "/admin/locations/zones/details/:id",

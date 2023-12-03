@@ -4,6 +4,7 @@ import { clientEventParkingOptions } from "../../../components/common/constants"
 import { useGetClientEventParkingList } from "../../../services/client/query/events";
 import TableLayer from "../../../components/data/Client/Transactions/EventParkingTableLayer";
 import Filter from "../../../components/common/Filter";
+import { formatDate } from "../../../utils/helpers";
 
 const Transactions = () => {
   const [page, setPage] = useState(1);
@@ -13,9 +14,13 @@ const Transactions = () => {
   const [filtArray, setFiltArray] = useState([]);
 
   const convertedFilters = filtArray?.map((filterObj) => {
-    return `filter=${filterObj?.title}||${filterObj?.type || "cont"}||"${
-      filterObj?.filter
-    }"`;
+    return filterObj?.gte
+      ? `filter=${filterObj?.title}||gte||"${formatDate(filterObj?.gte)}"`
+      : filterObj?.lte
+      ? `filter=${filterObj?.title}||lte||"${formatDate(filterObj?.lte)}"`
+      : `filter=${filterObj?.title}||${filterObj?.type || "cont"}||"${
+          filterObj?.filter
+        }"`;
   });
 
   const query = convertedFilters?.join("&");

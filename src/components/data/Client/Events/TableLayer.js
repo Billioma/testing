@@ -29,7 +29,7 @@ import { useNavigate } from "react-router-dom";
 import { useDelEvent } from "../../../../services/client/query/events";
 import { Add } from "../../../common/images";
 
-const TableLayer = ({ isLoading, limit, data, setPage, page, eventMutate }) => {
+const TableLayer = ({ isLoading, limit, data, setPage, page, refetch }) => {
   const [show, setShow] = useState(false);
   const [showDelete, setShowDelete] = useState(false);
   const [currentEvent, setCurrentEvent] = useState("");
@@ -72,7 +72,7 @@ const TableLayer = ({ isLoading, limit, data, setPage, page, eventMutate }) => {
   const { mutate: deleteMutate, isLoading: isDelete } = useDelEvent({
     onSuccess: () => {
       successToast("Event has been removed");
-      eventMutate({ limit: 10, page: 1 });
+      refetch();
       setShowDelete(false);
     },
     onError: (err) => {

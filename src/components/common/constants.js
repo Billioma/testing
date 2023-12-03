@@ -395,10 +395,12 @@ export const operatorPoliciesHeader = [
 
 export const operatorLogHeader = [
   "TICKET NUMBER",
+  "AMOUNT",
   "LOCATION",
   "ZONE",
   "ATTENDANT",
   "DATE CREATED",
+  "STATUS",
   "ACTIONS",
 ];
 
@@ -1548,7 +1550,9 @@ export const subFieldOption = [
   { label: "Plan", value: "membershipPlan.name" },
   { label: "Amount", value: "membershipPlan.amount" },
   { label: "Duration", value: "membershipPlan.interval" },
+  { label: "Next Payment", value: "nextPaymentDate" },
   { label: "Status", value: "status" },
+  { label: "Created At", value: "createdAt" },
 ];
 
 export const clientUserFieldOption = [
@@ -1557,6 +1561,7 @@ export const clientUserFieldOption = [
   { label: "Email", value: "email" },
   { label: "Company", value: "profile.companyName" },
   { label: "Status", value: "status" },
+  { label: "Created At", value: "createdAt" },
 ];
 
 export const opUserFieldOption = [
@@ -1564,6 +1569,7 @@ export const opUserFieldOption = [
   { label: "User ID", value: "userId" },
   { label: "Account Type", value: "accountType" },
   { label: "Status", value: "status" },
+  { label: "Created At", value: "createdAt" },
 ];
 
 export const opLocFieldOption = [
@@ -1571,6 +1577,7 @@ export const opLocFieldOption = [
   { label: "Operator", value: "operator.name" },
   { label: "State", value: "state" },
   { label: "Status", value: "status" },
+  { label: "Created At", value: "createdAt" },
 ];
 
 export const opLogServiceFieldOption = [
@@ -1578,6 +1585,7 @@ export const opLogServiceFieldOption = [
   { label: "Location", value: "location.name" },
   { label: "Zone", value: "zone.name" },
   { label: "Attendant", value: "attendant.name" },
+  { label: "Created At", value: "createdAt" },
 ];
 
 export const opRepPayFieldOption = [
@@ -1587,6 +1595,7 @@ export const opRepPayFieldOption = [
   { label: "Amount", value: "amount" },
   { label: "Amount Paid", value: "amountPaid" },
   { label: "Service", value: "serviceLog.service.name" },
+  { label: "Created At", value: "createdAt" },
 ];
 
 export const opRepLocFieldOption = [
@@ -1594,6 +1603,7 @@ export const opRepLocFieldOption = [
   { label: "State", value: "state" },
   { label: "Zones", value: "zones" },
   { label: "Location Type", value: "locationType" },
+  { label: "Created At", value: "createdAt" },
 ];
 
 export const opRepZoneFieldOption = [
@@ -1603,6 +1613,7 @@ export const opRepZoneFieldOption = [
   { label: "Reservable", value: "reservable" },
   { label: "Reservable Space", value: "reservableSpace" },
   { label: "Service", value: "service.name" },
+  { label: "Created At", value: "createdAt" },
 ];
 
 export const opRepLogFieldOption = [
@@ -1610,6 +1621,7 @@ export const opRepLogFieldOption = [
   { label: "Service", value: "service.name" },
   { label: "Location", value: "location.name" },
   { label: "Zone", value: "zone.name" },
+  { label: "Created At", value: "createdAt" },
 ];
 
 export const opZoneFieldOption = [
@@ -1619,6 +1631,7 @@ export const opZoneFieldOption = [
   { label: "Minimum Duration", value: "minimumDuration" },
   { label: "Duration Type", value: "durationType" },
   { label: "Status", value: "status" },
+  { label: "Created At", value: "createdAt" },
 ];
 
 export const opRateFieldOption = [
@@ -1628,18 +1641,23 @@ export const opRateFieldOption = [
   { label: "Duration Limit", value: "durationLimit" },
   { label: "Amount", value: "amount" },
   { label: "Status", value: "status" },
+  { label: "Created At", value: "createdAt" },
 ];
 
 export const opPolicyFieldOption = [
   { label: "Title", value: "title" },
   { label: "Location", value: "location.name" },
   { label: "Status", value: "status" },
+  { label: "Created At", value: "createdAt" },
 ];
 
 export const clientEventFieldOption = [
   { label: "Name", value: "name" },
   { label: "Website", value: "website" },
+  { label: "Start Date", value: "eventStartDateTime" },
+  { label: "End Date", value: "eventEndDateTime" },
   { label: "Status", value: "status" },
+  { label: "Created At", value: "createdAt" },
 ];
 
 export const custPayFieldOption = [
@@ -1647,11 +1665,13 @@ export const custPayFieldOption = [
   { label: "Amount", value: "amount" },
   { label: "Payment Type", value: "paymentMethod" },
   { label: "Transaction Type", value: "transactionType" },
+  { label: "Created At", value: "createdAt" },
 ];
 
 export const custTipFieldOption = [
   { label: "Transaction ID", value: "serviceLog.id" },
   { label: "Amount", value: "amount" },
+  { label: "Created At", value: "createdAt" },
 ];
 
 export const subHeader = [
@@ -1768,6 +1788,7 @@ export const clientListOptions = [
   { label: "State", value: "state" },
   { label: "Account Type", value: "accountType" },
   { label: "Status", value: "status" },
+  { label: "Created At", value: "createdAt" },
 ];
 
 export const opPtpOptions = [
@@ -1776,6 +1797,7 @@ export const opPtpOptions = [
   { label: "Zone", value: "zone.name" },
   { label: "Payment Type", value: "transaction.paymentMethod" },
   { label: "Status", value: "status" },
+  { label: "Created At", value: "createdAt" },
 ];
 
 export const opRpOptions = [
@@ -1784,13 +1806,16 @@ export const opRpOptions = [
   { label: "Zone", value: "zone.name" },
   { label: "Payment Type", value: "paymentMethod" },
   { label: "Status", value: "status" },
+  { label: "Created At", value: "createdAt" },
 ];
 
 export const clientInvoiceOptions = [
   { label: "Client", value: "client.name" },
   { label: "Amount Payable", value: "amount" },
   { label: "Created By", value: "createdBy" },
+  { label: "Paid At", value: "paidAt" },
   { label: "Payment Status", value: "paymentStatus" },
+  { label: "Created At", value: "createdAt" },
 ];
 
 export const customersOptions = [
@@ -1800,6 +1825,7 @@ export const customersOptions = [
   { label: "Company Name", value: "profile.companyName" },
   { label: "Email", value: "email" },
   { label: "Status", value: "status" },
+  { label: "Created At", value: "createdAt" },
 ];
 
 export const attendantsOptions = [
@@ -1807,6 +1833,7 @@ export const attendantsOptions = [
   { label: "User ID", value: "userId" },
   { label: "Account Type", value: "accountType" },
   { label: "Status", value: "status" },
+  { label: "Created At", value: "createdAt" },
 ];
 
 export const administratorsOptions = [
@@ -1815,6 +1842,7 @@ export const administratorsOptions = [
   { label: "Email", value: "email" },
   { label: "Role", value: "role.displayName" },
   { label: "Status", value: "status" },
+  { label: "Created At", value: "createdAt" },
 ];
 
 export const operatorOptions = [
@@ -1824,13 +1852,17 @@ export const operatorOptions = [
   { label: "Phone", value: "phone" },
   { label: "State", value: "state" },
   { label: "Status", value: "status" },
+  { label: "Created At", value: "createdAt" },
 ];
 
 export const eventsOptions = [
   { label: "Name", value: "name" },
   { label: "Client", value: "client.name" },
   { label: "Website", value: "website" },
+  { label: "Start Date", value: "eventStartDateTime" },
+  { label: "End Date", value: "eventEndDateTime" },
   { label: "Status", value: "status" },
+  { label: "Created At", value: "createdAt" },
 ];
 
 export const locationsOptions = [
@@ -1838,6 +1870,7 @@ export const locationsOptions = [
   { label: "Operator", value: "operator.name" },
   { label: "State", value: "state" },
   { label: "Status", value: "status" },
+  { label: "Created At", value: "createdAt" },
 ];
 
 export const valetedVehiclesOptions = [
@@ -1849,6 +1882,17 @@ export const valetedVehiclesOptions = [
   { label: "Attendant", value: "attendant.name" },
   { label: "Amount", value: "amount" },
   { label: "Status", value: "status" },
+  { label: "Created At", value: "createdAt" },
+];
+
+export const opValetedVehiclesOptions = [
+  { label: "Ticket Number", value: "ticketNumber" },
+  { label: "Location", value: "location.name" },
+  { label: "Zone", value: "zone.name" },
+  { label: "Attendant", value: "attendant.name" },
+  { label: "Amount", value: "amount" },
+  { label: "Status", value: "status" },
+  { label: "Created At", value: "createdAt" },
 ];
 
 export const zonesOptions = [
@@ -1858,6 +1902,7 @@ export const zonesOptions = [
   { label: "Description", value: "description" },
   { label: "Capacity", value: "capacity" },
   { label: "Status", value: "status" },
+  { label: "Created At", value: "createdAt" },
 ];
 
 export const ratesOptions = [
@@ -1867,22 +1912,26 @@ export const ratesOptions = [
   { label: "Duration Limit", value: "durationLimit" },
   { label: "Amount", value: "amount" },
   { label: "Status", value: "status" },
+  { label: "Created At", value: "createdAt" },
 ];
 
 export const amenitiesOptions = [
   { label: "Name", value: "name" },
   { label: "Description", value: "description" },
+  { label: "Created At", value: "createdAt" },
 ];
 
 export const policiesOptions = [
   { label: "Title", value: "title" },
   { label: "Location", value: "location.name" },
+  { label: "Created At", value: "createdAt" },
 ];
 
 export const servicesOptions = [
   { label: "Name", value: "name" },
   { label: "Description", value: "description" },
   { label: "Service Type", value: "serviceType" },
+  { label: "Created At", value: "createdAt" },
 ];
 
 export const vehiclesOptions = [
@@ -1892,6 +1941,7 @@ export const vehiclesOptions = [
   { label: "Make", value: "make.name" },
   { label: "Model", value: "model.name" },
   { label: "Created By", value: "createdBy" },
+  { label: "Created At", value: "createdAt" },
 ];
 
 export const membershipPlansOptions = [
@@ -1901,21 +1951,26 @@ export const membershipPlansOptions = [
   { label: "Corporate", value: "isCorporate" },
   { label: "Upgradeable", value: "isUpgradable" },
   { label: "Status", value: "status" },
+  { label: "Created At", value: "createdAt" },
 ];
 
 export const membershipFeaturesOptions = [
   { label: "Name", value: "name" },
   { label: "Plan", value: "membershipPlan.name" },
   { label: "Feature Type", value: "featureType" },
+  { label: "Created At", value: "createdAt" },
 ];
 
 export const customerSubOptions = [
   { label: "Customer First Name", value: "customer.profile.firstName" },
   { label: "Customer Last Name", value: "customer.profile.lastName" },
   { label: "Plan", value: "membershipPlan.name" },
+  { label: "Start Date", value: "startDate" },
+  { label: "Next Payment", value: "nextPaymentDate" },
   { label: "Amount (₦)", value: "membershipPlan.amount" },
   { label: "Duration", value: "membershipPlan.interval" },
   { label: "Status", value: "status" },
+  { label: "Created At", value: "createdAt" },
 ];
 
 export const corporateSubOptions = [
@@ -1924,6 +1979,7 @@ export const corporateSubOptions = [
   { label: "Amount (₦)", value: "membershipPlan.amount" },
   { label: "Duration", value: "membershipPlan.interval" },
   { label: "Status", value: "status" },
+  { label: "Created At", value: "createdAt" },
 ];
 
 export const payToParkOptions = [
@@ -1934,6 +1990,7 @@ export const payToParkOptions = [
   { label: "Customer First Name", value: "customer.profile.firstName" },
   { label: "Customer Last Name", value: "customer.profile.lastName" },
   { label: "Status", value: "status" },
+  { label: "Created At", value: "createdAt" },
 ];
 
 export const clientEventParkingOptions = [
@@ -1942,6 +1999,7 @@ export const clientEventParkingOptions = [
   { label: "Location", value: "zone.location.name" },
   { label: "Amount (₦)", value: "amount" },
   { label: "Status", value: "status" },
+  { label: "Created At", value: "createdAt" },
 ];
 
 export const eventParkingOptions = [
@@ -1951,6 +2009,7 @@ export const eventParkingOptions = [
   { label: "Location", value: "zone.location.name" },
   { label: "Amount (₦)", value: "amount" },
   { label: "Status", value: "status" },
+  { label: "Created At", value: "createdAt" },
 ];
 
 export const carServiceOptions = [
@@ -1961,6 +2020,7 @@ export const carServiceOptions = [
   { label: "Customer First Name", value: "customer.profile.firstName" },
   { label: "Customer Last Name", value: "customer.profile.lastName" },
   { label: "Status", value: "status" },
+  { label: "Created At", value: "createdAt" },
 ];
 
 export const tipsOptions = [
@@ -1977,6 +2037,7 @@ export const tipsOptions = [
   { label: "Attendant", value: "serviceLog.attendant.name" },
   { label: "Payment_Method", value: "paymentMethod" },
   { label: "Status", value: "status" },
+  { label: "Created At", value: "createdAt" },
 ];
 
 export const reservedParkingOptions = [
@@ -1988,23 +2049,30 @@ export const reservedParkingOptions = [
   { label: "Customer First Name", value: "customer.profile.firstName" },
   { label: "Customer Last Name", value: "customer.profile.lastName" },
   { label: "Status", value: "status" },
+  { label: "Created At", value: "createdAt" },
 ];
 
 export const rolesOptions = [
   { label: "Name", value: "name" },
   { label: "Display Name", value: "displayName" },
+  { label: "Created At", value: "createdAt" },
 ];
 
-export const makesOptions = [{ label: "Name", value: "name" }];
+export const makesOptions = [
+  { label: "Name", value: "name" },
+  { label: "Created At", value: "createdAt" },
+];
 
 export const modelsOptions = [
   { label: "Name", value: "name" },
   { label: "Make", value: "make.name" },
+  { label: "Created At", value: "createdAt" },
 ];
 
 export const faqsOptions = [
   { label: "Title", value: "title" },
   { label: "Status", value: "status" },
+  { label: "Created At", value: "createdAt" },
 ];
 
 export const serviceType = ["BASIC", "PREMIUM"];
@@ -2015,6 +2083,7 @@ export const bankDetailsOptions = [
   { label: "Account Number", value: "accountNumber" },
   { label: "Sort Code", value: "sortCode" },
   { label: "Service", value: "service.name" },
+  { label: "Created At", value: "createdAt" },
 ];
 
 export const paymentsOptions = [
@@ -2027,6 +2096,7 @@ export const paymentsOptions = [
   { label: "Vehicle", value: "serviceLog.vehicle.licensePlate" },
   { label: "Service", value: "serviceLog.service.name" },
   { label: "Payment Type", value: "paymentMethod" },
+  { label: "Created At", value: "createdAt" },
 ];
 
 export const adminLocationsReportOptions = [
@@ -2034,6 +2104,7 @@ export const adminLocationsReportOptions = [
   { label: "State", value: "state" },
   { label: "Location Type", value: "locationType" },
   { label: "Status", value: "status" },
+  { label: "Created At", value: "createdAt" },
 ];
 
 export const locationsReportOptions = [
@@ -2050,6 +2121,7 @@ export const adminTipReportOptions = [
   { label: "License Plate", value: "serviceLog.vehicle.licensePlate" },
   { label: "Location", value: "serviceLog.location.name" },
   { label: "Ticket Number", value: "serviceLog.ticketNumber" },
+  { label: "Created At", value: "createdAt" },
 ];
 
 export const zonesReportOptions = [
@@ -2062,6 +2134,7 @@ export const adminZonesReportOptions = [
   { label: "Name", value: "name" },
   { label: "Location", value: "location.name" },
   { label: "Status", value: "status" },
+  { label: "Created At", value: "createdAt" },
 ];
 
 export const vehiclesReportOptions = [
@@ -2071,6 +2144,7 @@ export const vehiclesReportOptions = [
   { label: "Model", value: "model.name" },
   { label: "Color", value: "color" },
   { label: "State", value: "state" },
+  { label: "Created At", value: "createdAt" },
 ];
 
 export const customersReportOptions = [
@@ -2078,12 +2152,14 @@ export const customersReportOptions = [
   { label: "Last Name", value: "profile.lastName" },
   { label: "Email", value: "email" },
   { label: "Phone", value: "profile.phone" },
+  { label: "Created At", value: "createdAt" },
 ];
 
 export const invoicesReportOptions = [
   { label: "Client", value: "client" },
   { label: "Created By", value: "createdBy" },
   { label: "Confirmed By", value: "confirmedBy" },
+  { label: "Created At", value: "createdAt" },
 ];
 
 export const subsReportOptions = [
@@ -2097,6 +2173,7 @@ export const adminSubsReportOptions = [
   { label: "Customer First Name", value: "customer.profile.firstName" },
   { label: "Customer Last Name", value: "customer.profile.lastName" },
   { label: "Plan", value: "membershipPlan.name" },
+  { label: "Created At", value: "createdAt" },
 ];
 
 export const logsReportOptions = [
@@ -2105,6 +2182,7 @@ export const logsReportOptions = [
   { label: "Vehicle", value: "vehicle" },
   { label: "Service", value: "service" },
   { label: "Location", value: "location" },
+  { label: "Created At", value: "createdAt" },
 ];
 
 export const paymentHistoryReportOptions = [
@@ -2113,4 +2191,5 @@ export const paymentHistoryReportOptions = [
   { label: "Payment Type", value: "paymentMethod" },
   { label: "Transaction Type", value: "transactionType" },
   { label: "Customer Email", value: "customer.email" },
+  { label: "Created At", value: "createdAt" },
 ];

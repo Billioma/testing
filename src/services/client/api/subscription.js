@@ -13,6 +13,13 @@ export const getClientSubs = async (query) => {
   return res.data;
 };
 
+export const getClientsSubs = async (page, limit, query) => {
+  const response = await axiosInstance.get(
+    `${API.CREATE_SUB}?page=${page}&limit=${limit}&sort=id,DESC&${query || ""}`
+  );
+  return response.data;
+};
+
 export const createClientSub = async (body) => {
   const res = await axiosInstance.post(API.CREATE_SUB, body);
   return res.data;

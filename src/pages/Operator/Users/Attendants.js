@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { useGetOpAttendant } from "../../../services/operator/query/attendants";
 import Filter from "../../../components/common/Filter";
 import { opUserFieldOption } from "../../../components/common/constants";
+import { formatDate } from "../../../utils/helpers";
 
 const Attendants = () => {
   const [page, setPage] = useState(1);
@@ -15,10 +16,15 @@ const Attendants = () => {
 
   const [filtArray, setFiltArray] = useState([]);
   const convertedFilters = filtArray?.map((filterObj) => {
-    return `filter=${filterObj?.title}||${filterObj?.type || "cont"}||"${
-      filterObj?.filter
-    }"`;
+    return filterObj?.gte
+      ? `filter=${filterObj?.title}||gte||"${formatDate(filterObj?.gte)}"`
+      : filterObj?.lte
+      ? `filter=${filterObj?.title}||lte||"${formatDate(filterObj?.lte)}"`
+      : `filter=${filterObj?.title}||${filterObj?.type || "cont"}||"${
+          filterObj?.filter
+        }"`;
   });
+
   const query = convertedFilters?.join("&");
   const navigate = useNavigate();
 

@@ -69,9 +69,9 @@ const TableLayer = ({
 
   const openOption = (i, location) => {
     i === 0
-      ? navigate(`/admin/locations/locations/details/${location?.id}`)
+      ? navigate(`/admin/locations/all/details/${location?.id}`)
       : i === 1
-      ? (navigate(`/admin/locations/locations/details/${location?.id}`),
+      ? (navigate(`/admin/locations/all/details/${location?.id}`),
         sessionStorage.setItem("edit", "edit"))
       : i === 2 && setSelectedRow({ isOpen: true, id: location.id });
   };

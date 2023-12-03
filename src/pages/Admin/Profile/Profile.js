@@ -1,7 +1,6 @@
 import React from "react";
 import { Box, Button, Flex, Image, Text } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
-import { useGetUser } from "../../../services/customer/query/user";
 import { formatDate } from "../../../utils/helpers";
 import { useGetProfile } from "../../../services/admin/query/auth";
 
@@ -32,7 +31,7 @@ export const Layout = ({ label, data }) => {
 const Profile = () => {
   const navigate = useNavigate();
 
-  const { data: userData, isLoading: isUser } = useGetProfile();
+  const { data: userData } = useGetProfile();
 
   return (
     <Box minH="75vh">

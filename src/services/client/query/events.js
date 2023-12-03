@@ -1,9 +1,10 @@
-import { useMutation } from "react-query";
+import { useMutation, useQuery } from "react-query";
 import {
   cancelClientSub,
   createEvent,
   deleteEvent,
   editEvent,
+  getClienteleEvents,
   getEventDetails,
   getEventParkingDetails,
   getEventParkingList,
@@ -40,6 +41,22 @@ export const useGetEvents = (options = {}) => {
     ...options,
   });
   return { mutate, isLoading, data };
+};
+export const useGetClienteleEvents = (
+  options = {},
+  page = 1,
+  limit = 25,
+  query
+) => {
+  const { data, isLoading, refetch } = useQuery(
+    ["GET_CLIENTELE_EVENTS", limit, page, query],
+    () => getClienteleEvents(page, limit, query),
+    {
+      ...options,
+    }
+  );
+
+  return { isLoading, data, refetch };
 };
 
 export const useCreateEvents = (options = {}) => {

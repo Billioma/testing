@@ -8,6 +8,14 @@ export const getRepLocations = async (query) => {
   return res.data;
 };
 
+export const getOpRepUrl = async (type, page, limit, query) => {
+  const response = await axiosInstance.get(
+    "operator/reports/" +
+      `${type}?page=${page}&limit=${limit}&sort=id,DESC&${query || ""}`
+  );
+  return response.data;
+};
+
 export const getRepZones = async (query) => {
   const res = await axiosInstance.get(
     API.GET_REP_ZONE(query.filterString, query.limit, query.page)

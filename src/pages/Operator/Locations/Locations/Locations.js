@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { Box, Button, Flex, Image, Text } from "@chakra-ui/react";
 import { MdAdd } from "react-icons/md";
-import { useNavigate } from "react-router-dom";
-import { useGetLocations } from "../../../../services/operator/query/locations";
+import { useGetOpLocationUrl } from "../../../../services/operator/query/locations";
 import TableLayer from "../../../../components/data/Operator/Locations/Locations/TableLayer";
 import Filter from "../../../../components/common/Filter";
 import { opLocFieldOption } from "../../../../components/common/constants";
+import { formatDate } from "../../../../utils/helpers";
+import { useNavigate } from "react-router-dom";
 
 const Locations = () => {
-  const { mutate, data, isLoading } = useGetLocations();
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(25);
   const [startRow, setStartRow] = useState(1);
@@ -16,17 +16,46 @@ const Locations = () => {
 
   const [filtArray, setFiltArray] = useState([]);
   const convertedFilters = filtArray?.map((filterObj) => {
-    return `filter=${filterObj?.title}||${filterObj?.type || "cont"}||"${
-      filterObj?.filter
-    }"`;
+    return filterObj?.gte
+      ? `filter=${filterObj?.title}||gte||"${formatDate(filterObj?.gte)}"`
+      : filterObj?.lte
+      ? `filter=${filterObj?.title}||lte||"${formatDate(filterObj?.lte)}"`
+      : `filter=${filterObj?.title}||${filterObj?.type || "cont"}||"${
+          filterObj?.filter
+        }"`;
   });
+
   const query = convertedFilters?.join("&");
 
-  useEffect(() => {
-    mutate({ filterString: query, limit, page: page });
-  }, [page, query, limit]);
+  const [isRefetch, setIsRefetch] = useState(false);
 
-  const navigate = useNavigate();
+  const { data, isLoading, refetch } = useGetOpLocationUrl(
+    {
+      refetchOnWindowFocus: true,
+      onSuccess: () => {
+        setIsRefetch(false);
+      },
+      onError: () => {
+        setIsRefetch(false);
+      },
+      onSettled: () => {
+        setIsRefetch(false);
+      },
+    },
+    "locations",
+    page,
+    limit,
+    query
+  );
+
+  useEffect(() => {
+    refetch();
+  }, []);
+
+  const handleRefreshClick = async () => {
+    setIsRefetch(true);
+    await refetch();
+  };
 
   useEffect(() => {
     sessionStorage.removeItem("edit");
@@ -51,6 +80,8 @@ const Locations = () => {
     setStartRow(currentStartRow);
     setEndRow(currentEndRow);
   }, [data, page, limit]);
+
+  const navigate = useNavigate();
 
   return (
     <Box minH="75vh">
@@ -88,16 +119,14 @@ const Locations = () => {
                 cursor="pointer"
                 transition=".3s ease-in-out"
                 _hover={{ bg: "#F4F6F8" }}
-                onClick={() =>
-                  mutate({ filterString: query, limit, page: page })
-                }
+                onClick={handleRefreshClick}
                 borderRadius="8px"
                 border="1px solid #848688"
                 p="10px"
               >
                 <Image
                   src="/assets/refresh.svg"
-                  className={isLoading && "mirrored-icon"}
+                  className={isRefetch && "mirrored-icon"}
                   w="20px"
                   h="20px"
                 />

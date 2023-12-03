@@ -3,6 +3,7 @@ import {
   attachUser,
   detachUser,
   getClientUsers,
+  getClientsUsers,
   getUsers,
   lookupUser,
 } from "../api/users";
@@ -13,6 +14,23 @@ export const useGetUsers = (options = {}) => {
     ...options,
   });
   return { mutate, isLoading, data };
+};
+
+export const useGetClientsUsers = (
+  options = {},
+  page = 1,
+  limit = 25,
+  query
+) => {
+  const { data, isLoading, refetch } = useQuery(
+    ["GET_CLIENTS_EVENTS", limit, page, query],
+    () => getClientsUsers(page, limit, query),
+    {
+      ...options,
+    }
+  );
+
+  return { isLoading, data, refetch };
 };
 
 export const useGetClientusers = (options = {}) => {

@@ -9,14 +9,13 @@ import {
   Text,
 } from "@chakra-ui/react";
 import LocationTableLayer from "../../../components/data/Operator/Reports/LocationTableLayer";
-import { useGetRepLocation } from "../../../services/operator/query/reports";
+import { useGetOpRepUrl } from "../../../services/operator/query/reports";
 import LocationExport from "../../../components/data/Operator/Reports/LocationExport";
 import Filter from "../../../components/common/Filter";
 import { opRepLocFieldOption } from "../../../components/common/constants";
+import { formatDate } from "../../../utils/helpers";
 
 const Locations = () => {
-  const { mutate, data, isLoading } = useGetRepLocation();
-
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(25);
   const [startRow, setStartRow] = useState(1);
@@ -24,15 +23,45 @@ const Locations = () => {
 
   const [filtArray, setFiltArray] = useState([]);
   const convertedFilters = filtArray?.map((filterObj) => {
-    return `filter=${filterObj?.title}||${filterObj?.type || "cont"}||"${
-      filterObj?.filter
-    }"`;
+    return filterObj?.gte
+      ? `filter=${filterObj?.title}||gte||"${formatDate(filterObj?.gte)}"`
+      : filterObj?.lte
+      ? `filter=${filterObj?.title}||lte||"${formatDate(filterObj?.lte)}"`
+      : `filter=${filterObj?.title}||${filterObj?.type || "cont"}||"${
+          filterObj?.filter
+        }"`;
   });
+
   const query = convertedFilters?.join("&");
+  const [isRefetch, setIsRefetch] = useState(false);
+
+  const { data, isLoading, refetch } = useGetOpRepUrl(
+    {
+      refetchOnWindowFocus: true,
+      onSuccess: () => {
+        setIsRefetch(false);
+      },
+      onError: () => {
+        setIsRefetch(false);
+      },
+      onSettled: () => {
+        setIsRefetch(false);
+      },
+    },
+    "locations",
+    page,
+    limit,
+    query
+  );
 
   useEffect(() => {
-    mutate({ filterString: query, limit, page: page });
-  }, [page, query, limit]);
+    refetch();
+  }, []);
+
+  const handleRefreshClick = async () => {
+    setIsRefetch(true);
+    await refetch();
+  };
 
   useEffect(() => {
     setPage(1);
@@ -126,16 +155,14 @@ const Locations = () => {
                 cursor="pointer"
                 transition=".3s ease-in-out"
                 _hover={{ bg: "#F4F6F8" }}
-                onClick={() =>
-                  mutate({ filterString: query, limit, page: page })
-                }
+                onClick={handleRefreshClick}
                 borderRadius="8px"
                 border="1px solid #848688"
                 p="10px"
               >
                 <Image
                   src="/assets/refresh.svg"
-                  className={isLoading && "mirrored-icon"}
+                  className={isRefetch && "mirrored-icon"}
                   w="20px"
                   h="20px"
                 />

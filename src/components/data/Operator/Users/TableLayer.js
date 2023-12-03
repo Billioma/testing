@@ -2,7 +2,7 @@ import React from "react";
 import { Box, Button, Flex, Image, Td, Text, Tr } from "@chakra-ui/react";
 import TableLoader from "../../../loaders/TableLoader";
 import { SecStatus, operatorUsersHeader } from "../../../common/constants";
-import { formatDateTimes } from "../../../../utils/helpers";
+import { formatDate } from "../../../../utils/helpers";
 import { useNavigate } from "react-router-dom";
 import { AiOutlineEdit } from "react-icons/ai";
 import { Add } from "../../../common/images";
@@ -66,7 +66,7 @@ const TableLayer = ({
                   </Flex>
                 </Td>
 
-                <Td textAlign="center">{formatDateTimes(item?.createdAt)}</Td>
+                <Td textAlign="center">{formatDate(item?.createdAt)}</Td>
 
                 <Td>
                   <Flex gap="20px" align="center" justifyContent="center">

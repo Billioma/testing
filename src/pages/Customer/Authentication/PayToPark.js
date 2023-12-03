@@ -86,7 +86,7 @@ const PayToPark = () => {
         errorToast(
           err?.response?.data?.message || err?.message || "An Error occurred"
         );
-        setIsError(true)
+        setIsError(true);
       },
     });
 

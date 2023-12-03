@@ -4,6 +4,7 @@ import { BsFilter, BsSearch } from "react-icons/bs";
 import Select from "react-select";
 import { MdClose } from "react-icons/md";
 import CustomInput from "./CustomInput";
+import DatePicker from "react-multi-date-picker";
 import {
   OnlinePaymentMethods,
   TransactionTypes,
@@ -27,6 +28,7 @@ import {
   useGetModels,
 } from "../../services/admin/query/configurations";
 import { useLocation } from "react-router-dom";
+import { formatDate } from "../../utils/helpers";
 
 const Filter = ({
   main,
@@ -41,6 +43,10 @@ const Filter = ({
     title: "",
     type: "",
     dropFilter: "",
+    gte: "",
+    gteType: "",
+    lteType: "",
+    lte: "",
     filter: "",
   });
 
@@ -121,6 +127,32 @@ const Filter = ({
     value: i,
     label: opt,
   }));
+
+  const handleClick = (type) => {
+    const fieldExists = filtArray?.some(
+      (item) =>
+        item.dropFilter === values.dropFilter && item[type + "Type"] === type
+    );
+
+    if (values[type] === "" || values.dropFilter === "") {
+      return;
+    } else if (fieldExists) {
+      setFiltArray((prevFiltArray) =>
+        prevFiltArray.map((item) =>
+          item.dropFilter === values.dropFilter && item[type + "Type"] === type
+            ? values
+            : item
+        )
+      );
+    } else {
+      setFiltArray((prevFiltArray) => [
+        ...prevFiltArray,
+        { ...values, [type + "Type"]: type },
+      ]);
+    }
+
+    resetValues();
+  };
 
   const statusOptions = (
     pathname.includes("/transactions")
@@ -229,6 +261,8 @@ const Filter = ({
       title: "",
       type: "",
       filter: "",
+      gte: "",
+      lte: "",
     });
     setSelectedTitle(null);
     setSelectedType(null);
@@ -312,172 +346,273 @@ const Filter = ({
           </Box>
           {(selectedTitle !== "" || filtArray.length) && (
             <>
-              <Box w={{ base: "100%", md: "50%" }}>
-                <Text
-                  fontSize="12px"
-                  fontWeight={500}
-                  lineHeight="100%"
-                  mb="8px"
-                  color="#646668"
-                >
-                  Search Condition
-                </Text>
-                <Select
-                  styles={customStyles}
-                  components={{
-                    IndicatorSeparator: () => (
-                      <div style={{ display: "none" }}></div>
-                    ),
-                  }}
-                  options={searchOptions}
-                  value={selectedType}
-                  onChange={(selectedOption) => {
-                    setSelectedType(selectedOption);
-                    handleSelectChange(selectedOption, { name: "type" });
-                  }}
-                  placeholder="Contains"
-                />
-              </Box>
-
-              <Box w="full">
-                <Text
-                  fontSize="12px"
-                  fontWeight={500}
-                  lineHeight="100%"
-                  mb="8px"
-                  color="#646668"
-                >
-                  Search in
-                </Text>
-
-                {values?.dropFilter?.includes("Type") ||
-                values?.dropFilter === "Duration" ||
-                values?.dropFilter === "Reservable" ||
-                values?.dropFilter === "Corporate" ||
-                values?.dropFilter === "Upgradeable" ||
-                values?.dropFilter === "Status" ||
-                values?.dropFilter === "Payment Status" ||
-                values?.dropFilter === "Make" ||
-                values?.dropFilter === "Model" ||
-                values?.dropFilter?.includes("State") ||
-                values?.dropFilter?.includes("Payment_Method") ||
-                values?.dropFilter?.includes("Duration Type") ||
-                values?.dropFilter?.includes("Account Type") ? (
-                  <Flex
-                    width="100%"
+              {values?.title === "createdAt" ||
+              values?.title === "paidAt" ||
+              values?.title.includes("Date") ? (
+                ""
+              ) : (
+                <Box w={{ base: "100%", md: "50%" }}>
+                  <Text
+                    fontSize="12px"
+                    fontWeight={500}
+                    lineHeight="100%"
+                    mb="8px"
                     color="#646668"
-                    cursor={
-                      values?.filter === "" || values?.dropFilter === ""
-                        ? ""
-                        : "pointer"
-                    }
-                    align="center"
-                    borderRadius="4px"
-                    border={values?.filter ? "none" : "1px solid #D4D6D8"}
-                    background={values?.filter ? "#F4F6F8" : "unset"}
                   >
-                    <Box w="full">
-                      <Select
-                        styles={customOptStyles}
-                        components={{
-                          IndicatorSeparator: () => (
-                            <div style={{ display: "none" }}></div>
-                          ),
-                          DropdownIndicator: () => <div></div>,
-                        }}
-                        options={
-                          values?.dropFilter === "Payment Type"
-                            ? payOptions
-                            : values?.dropFilter === "Transaction Type"
-                            ? transactionOptions
-                            : values?.dropFilter === "Payment_Method"
-                            ? payMethodOptions
-                            : values?.dropFilter === "Make"
-                            ? makeOptions
-                            : values?.dropFilter === "Make"
-                            ? makeOptions
-                            : values?.dropFilter === "Model"
-                            ? modelOptions
-                            : values?.dropFilter === "Reservable"
-                            ? yesNoOptions
-                            : values?.dropFilter === "Duration"
-                            ? intervalOptions
-                            : values?.dropFilter === "Account Type" && !client
-                            ? accountOptions
-                            : values?.dropFilter === "Account Type" && client
-                            ? clientAccountOptions
-                            : values?.dropFilter === "State"
-                            ? stateOptions
-                            : values?.dropFilter === "Duration Type"
-                            ? durationOptions
-                            : values?.dropFilter === "Booking Type"
-                            ? bookingTypeOptions
-                            : values?.dropFilter === "Service-Type"
-                            ? serviceTypeOptions
-                            : values?.dropFilter === "Location Type"
-                            ? locationOptions
-                            : values?.dropFilter === "Service Type"
-                            ? servicesOptions
-                            : values?.dropFilter === "Feature Type"
-                            ? featureTypesOptions
-                            : values?.dropFilter === "Corporate" ||
-                              values?.dropFilter === "Upgradeable"
-                            ? booleanOptions
-                            : values?.dropFilter === "Status"
-                            ? statusOptions
-                            : values?.dropFilter === "Payment Status"
-                            ? payStatusOptions
-                            : searchOptions
-                        }
-                        value={selectedFilter}
-                        onChange={(selectedOption) => {
-                          setSelectedFilter(selectedOption);
-                          handleSelectChange(selectedOption, {
-                            name: "filter",
-                          });
-                        }}
-                        placeholder="Select"
-                      />
-                    </Box>
-                    <Flex
-                      justifyContent="center"
-                      align="center"
-                      h="44px"
-                      onClick={() => {
-                        values?.filter === "" || values?.dropFilter === ""
-                          ? ""
-                          : (setFiltArray((prevFiltArray) => [
-                              ...prevFiltArray,
-                              values,
-                            ]),
-                            resetValues());
-                      }}
-                      w="10%"
-                    >
-                      <BsSearch fill="#646668" size="15px" />
-                    </Flex>
-                  </Flex>
-                ) : (
-                  <CustomInput
-                    auth
-                    add
-                    onAdd={() => {
-                      setFiltArray((prevFiltArray) => [
-                        ...prevFiltArray,
-                        values,
-                      ]);
-                      resetValues();
+                    Search Condition
+                  </Text>
+                  <Select
+                    styles={customStyles}
+                    components={{
+                      IndicatorSeparator: () => (
+                        <div style={{ display: "none" }}></div>
+                      ),
                     }}
-                    mb
-                    values={values}
-                    holder="Add search item"
-                    value={values?.filter}
-                    onChange={(e) =>
-                      setValues({ ...values, filter: e.target.value })
-                    }
+                    options={searchOptions}
+                    value={selectedType}
+                    onChange={(selectedOption) => {
+                      setSelectedType(selectedOption);
+                      handleSelectChange(selectedOption, { name: "type" });
+                    }}
+                    placeholder="Contains"
                   />
-                )}
-              </Box>
+                </Box>
+              )}
+
+              {values?.title === "createdAt" ||
+              values?.title === "paidAt" ||
+              values?.title.includes("Date") ? (
+                <>
+                  <Box w={{ base: "100%", md: "50%" }}>
+                    <Text
+                      fontSize="12px"
+                      fontWeight={500}
+                      lineHeight="100%"
+                      mb="8px"
+                      color="#646668"
+                    >
+                      From: yyyy/mm/dd
+                    </Text>
+                    <Flex
+                      align="center"
+                      w="full"
+                      border="1px solid #d4d6d8"
+                      borderRadius="4px"
+                      h="44px"
+                    >
+                      <Box className="new_class" w="full">
+                        <DatePicker
+                          placeholder="Select Date"
+                          value={values?.gte}
+                          onChange={(date) => {
+                            setValues({ ...values, gte: date, gteType: "gte" });
+                          }}
+                        />
+                      </Box>
+                      <Flex
+                        justifyContent="center"
+                        align="center"
+                        h="44px"
+                        cursor="pointer"
+                        onClick={() => handleClick("gte")}
+                        w="10%"
+                      >
+                        <BsSearch fill="#646668" size="15px" />
+                      </Flex>
+                    </Flex>
+                  </Box>
+                  <Box w={{ base: "100%", md: "50%" }}>
+                    <Text
+                      fontSize="12px"
+                      fontWeight={500}
+                      lineHeight="100%"
+                      mb="8px"
+                      color="#646668"
+                    >
+                      To: yyyy/mm/dd
+                    </Text>
+                    <Flex
+                      align="center"
+                      w="full"
+                      border="1px solid #d4d6d8"
+                      borderRadius="4px"
+                      h="44px"
+                    >
+                      <Box className="new_class" w="full">
+                        <DatePicker
+                          placeholder="Select Date"
+                          value={values?.lte}
+                          onChange={(date) => {
+                            setValues({ ...values, lte: date, lteType: "lte" });
+                          }}
+                        />
+                      </Box>
+                      <Flex
+                        justifyContent="center"
+                        align="center"
+                        h="44px"
+                        cursor="pointer"
+                        onClick={() => handleClick("lte")}
+                        w="10%"
+                      >
+                        <BsSearch fill="#646668" size="15px" />
+                      </Flex>
+                    </Flex>
+                  </Box>{" "}
+                </>
+              ) : (
+                ""
+              )}
+
+              {values?.title === "createdAt" ||
+              values?.title === "paidAt" ||
+              values?.title.includes("Date") ? (
+                ""
+              ) : (
+                <>
+                  <Box w="full">
+                    <Text
+                      fontSize="12px"
+                      fontWeight={500}
+                      lineHeight="100%"
+                      mb="8px"
+                      color="#646668"
+                    >
+                      Search In
+                    </Text>
+
+                    {values?.dropFilter?.includes("Type") ||
+                    values?.dropFilter === "Duration" ||
+                    values?.dropFilter === "Reservable" ||
+                    values?.dropFilter === "Corporate" ||
+                    values?.dropFilter === "Upgradeable" ||
+                    values?.dropFilter === "Status" ||
+                    values?.dropFilter === "Payment Status" ||
+                    values?.dropFilter === "Make" ||
+                    values?.dropFilter === "Model" ||
+                    values?.dropFilter?.includes("State") ||
+                    values?.dropFilter?.includes("Payment_Method") ||
+                    values?.dropFilter?.includes("Duration Type") ||
+                    values?.dropFilter?.includes("Account Type") ? (
+                      <Flex
+                        width="100%"
+                        color="#646668"
+                        cursor={
+                          values?.filter === "" || values?.dropFilter === ""
+                            ? ""
+                            : "pointer"
+                        }
+                        align="center"
+                        borderRadius="4px"
+                        border={values?.filter ? "none" : "1px solid #D4D6D8"}
+                        background={values?.filter ? "#F4F6F8" : "unset"}
+                      >
+                        <Box w="full">
+                          <Select
+                            styles={customOptStyles}
+                            components={{
+                              IndicatorSeparator: () => (
+                                <div style={{ display: "none" }}></div>
+                              ),
+                              DropdownIndicator: () => <div></div>,
+                            }}
+                            options={
+                              values?.dropFilter === "Payment Type"
+                                ? payOptions
+                                : values?.dropFilter === "Transaction Type"
+                                ? transactionOptions
+                                : values?.dropFilter === "Payment_Method"
+                                ? payMethodOptions
+                                : values?.dropFilter === "Make"
+                                ? makeOptions
+                                : values?.dropFilter === "Make"
+                                ? makeOptions
+                                : values?.dropFilter === "Model"
+                                ? modelOptions
+                                : values?.dropFilter === "Reservable"
+                                ? yesNoOptions
+                                : values?.dropFilter === "Duration"
+                                ? intervalOptions
+                                : values?.dropFilter === "Account Type" &&
+                                  !client
+                                ? accountOptions
+                                : values?.dropFilter === "Account Type" &&
+                                  client
+                                ? clientAccountOptions
+                                : values?.dropFilter === "State"
+                                ? stateOptions
+                                : values?.dropFilter === "Duration Type"
+                                ? durationOptions
+                                : values?.dropFilter === "Booking Type"
+                                ? bookingTypeOptions
+                                : values?.dropFilter === "Service-Type"
+                                ? serviceTypeOptions
+                                : values?.dropFilter === "Location Type"
+                                ? locationOptions
+                                : values?.dropFilter === "Service Type"
+                                ? servicesOptions
+                                : values?.dropFilter === "Feature Type"
+                                ? featureTypesOptions
+                                : values?.dropFilter === "Corporate" ||
+                                  values?.dropFilter === "Upgradeable"
+                                ? booleanOptions
+                                : values?.dropFilter === "Status"
+                                ? statusOptions
+                                : values?.dropFilter === "Payment Status"
+                                ? payStatusOptions
+                                : searchOptions
+                            }
+                            value={selectedFilter}
+                            onChange={(selectedOption) => {
+                              setSelectedFilter(selectedOption);
+                              handleSelectChange(selectedOption, {
+                                name: "filter",
+                              });
+                            }}
+                            placeholder="Select"
+                          />
+                        </Box>
+                        <Flex
+                          justifyContent="center"
+                          align="center"
+                          h="44px"
+                          onClick={() => {
+                            values?.filter === "" || values?.dropFilter === ""
+                              ? ""
+                              : (setFiltArray((prevFiltArray) => [
+                                  ...prevFiltArray,
+                                  values,
+                                ]),
+                                resetValues());
+                          }}
+                          w="10%"
+                        >
+                          <BsSearch fill="#646668" size="15px" />
+                        </Flex>
+                      </Flex>
+                    ) : (
+                      <CustomInput
+                        auth
+                        add
+                        onAdd={() => {
+                          setFiltArray((prevFiltArray) => [
+                            ...prevFiltArray,
+                            values,
+                          ]);
+                          resetValues();
+                        }}
+                        mb
+                        values={values}
+                        holder="Add search item"
+                        value={values?.filter}
+                        onChange={(e) =>
+                          setValues({ ...values, filter: e.target.value })
+                        }
+                      />
+                    )}
+                  </Box>
+                </>
+              )}
             </>
           )}
         </Flex>
@@ -500,7 +635,9 @@ const Filter = ({
             border="1px solid #d4d6d8"
             py="8px"
             justifyContent="space-between"
+            flexWrap="wrap"
             w="full"
+            gap="8px"
             align="center"
             px="16px"
           >
@@ -526,13 +663,23 @@ const Filter = ({
                       textDecoration: "underline",
                     }}
                   >
-                    {dat?.type === "eq" ? "Equals" : "Contains"}
+                    {dat?.gte
+                      ? "From"
+                      : dat?.lte
+                      ? "To"
+                      : dat?.type === "eq"
+                      ? "Equals"
+                      : "Contains"}
                   </span>
                   :
                 </Text>
                 <Text fontSize="12px" lineHeight="100%" color="#646668">
                   "
-                  {dat?.dropFilter === "Payment_Method"
+                  {dat?.gteType
+                    ? formatDate(dat?.gte)
+                    : dat?.lteType
+                    ? formatDate(dat?.lte)
+                    : dat?.dropFilter === "Payment_Method"
                     ? ["CARD", "WALLET"]?.find((item, i) => i === dat?.filter)
                     : dat?.title === "paymentMethod"
                     ? OnlinePaymentMethods?.find((item, i) => i === dat?.filter)

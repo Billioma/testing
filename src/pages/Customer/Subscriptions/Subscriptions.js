@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import Filter from "../../../components/common/Filter";
 import { useGetUserSubs } from "../../../services/customer/query/user";
 import { subFieldOption } from "../../../components/common/constants";
+import { formatDate } from "../../../utils/helpers";
 
 const Subscriptions = () => {
   const navigate = useNavigate();
@@ -18,10 +19,15 @@ const Subscriptions = () => {
   const [endRow, setEndRow] = useState(0);
 
   const convertedFilters = filtArray?.map((filterObj) => {
-    return `filter=${filterObj?.title}||${filterObj?.type || "cont"}||"${
-      filterObj?.filter
-    }"`;
+    return filterObj?.gte
+      ? `filter=${filterObj?.title}||gte||"${formatDate(filterObj?.gte)}"`
+      : filterObj?.lte
+      ? `filter=${filterObj?.title}||lte||"${formatDate(filterObj?.lte)}"`
+      : `filter=${filterObj?.title}||${filterObj?.type || "cont"}||"${
+          filterObj?.filter
+        }"`;
   });
+
   const query = convertedFilters?.join("&");
   const { mutate: subMutate, data: sub, isLoading } = useGetUserSubs();
 

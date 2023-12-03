@@ -8,6 +8,7 @@ import { useGetPermissions } from "../../../services/admin/query/configurations"
 import Filter from "../../../components/common/Filter";
 import { rolesOptions } from "../../../components/common/constants";
 import { MdAdd } from "react-icons/md";
+import { formatDate } from "../../../utils/helpers";
 
 export default function () {
   const [page, setPage] = useState(1);
@@ -18,9 +19,13 @@ export default function () {
   const [filtArray, setFiltArray] = useState([]);
 
   const convertedFilters = filtArray?.map((filterObj) => {
-    return `filter=${filterObj?.title}||${filterObj?.type || "cont"}||"${
-      filterObj?.filter
-    }"`;
+    return filterObj?.gte
+      ? `filter=${filterObj?.title}||gte||"${formatDate(filterObj?.gte)}"`
+      : filterObj?.lte
+      ? `filter=${filterObj?.title}||lte||"${formatDate(filterObj?.lte)}"`
+      : `filter=${filterObj?.title}||${filterObj?.type || "cont"}||"${
+          filterObj?.filter
+        }"`;
   });
 
   const query = convertedFilters?.join("&");

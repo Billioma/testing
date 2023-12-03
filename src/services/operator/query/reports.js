@@ -1,5 +1,6 @@
-import { useMutation } from "react-query";
+import { useMutation, useQuery } from "react-query";
 import {
+  getOpRepUrl,
   getRepLocations,
   getRepLogs,
   getRepPayments,
@@ -36,4 +37,15 @@ export const useGetRepLocation = (options = {}) => {
     ...options,
   });
   return { mutate, isLoading, data };
+};
+
+export const useGetOpRepUrl = (options = {}, type, page, limit, query) => {
+  const { data, isLoading, refetch } = useQuery(
+    ["GET_OP_Rep_URL", type, page, limit, query],
+    () => getOpRepUrl(type, page, limit, query),
+    {
+      ...options,
+    }
+  );
+  return { isLoading, data, refetch };
 };

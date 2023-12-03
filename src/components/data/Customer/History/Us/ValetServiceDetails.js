@@ -8,12 +8,9 @@ import {
   Text,
   useDisclosure,
 } from "@chakra-ui/react";
-import {
-  useGetPayToParkDetails,
-  useGetTips,
-} from "../../../../../services/customer/query/services";
+import { useGetTips } from "../../../../../services/customer/query/services";
 import { useParams } from "react-router-dom";
-import { formatDate, formatDateTime, formatTime } from "../../../../../utils/helpers";
+import { formatDate, formatDateTime } from "../../../../../utils/helpers";
 import { Status } from "../../../../common/constants";
 import GoBackTab from "../../../Admin/GoBackTab";
 import MakeTipModal from "../../../../modals/MakeTipModal";
@@ -71,11 +68,7 @@ export const Layout = ({ label, data }) => {
 
 const Details = () => {
   const { id } = useParams();
-  const {
-    data,
-    isLoading,
-    refetch: refetchParking,
-  } = useGetServiceLog(id);
+  const { data, isLoading, refetch: refetchParking } = useGetServiceLog(id);
   const { data: tips, refetch } = useGetTips();
   const { isOpen, onClose, onOpen } = useDisclosure();
 
@@ -146,9 +139,18 @@ const Details = () => {
                   <Layout label="Ticket Number" data={data?.ticketNumber} />
                   <Layout label="Attendant" data={data?.attendant?.name} />
                   <Layout label="Zone" data={data?.zone?.name} />
-                  <Layout label="Location" data={data?.zone?.location?.name || "N/A"} />
-                  <Layout label="Arrival" data={formatDateTime(data?.timeIn) || "N/A"} />
-                  <Layout label="Departure" data={formatDateTime(data?.timeOut) || "N/A"} />
+                  <Layout
+                    label="Location"
+                    data={data?.zone?.location?.name || "N/A"}
+                  />
+                  <Layout
+                    label="Arrival"
+                    data={formatDateTime(data?.timeIn) || "N/A"}
+                  />
+                  <Layout
+                    label="Departure"
+                    data={formatDateTime(data?.timeOut) || "N/A"}
+                  />
                   <Layout label="Date" data={formatDate(data?.createdAt)} />
                   <Layout
                     label="Selected Vehicle"

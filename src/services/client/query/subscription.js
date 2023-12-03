@@ -2,6 +2,7 @@ import { useMutation, useQuery } from "react-query";
 import {
   createClientSub,
   getClientSubs,
+  getClientsSubs,
   getMemPlan,
 } from "../api/subscription";
 
@@ -11,6 +12,23 @@ export const useGetMemPlan = (options = {}) => {
   });
 
   return { data, isLoading, refetch };
+};
+
+export const useGetClientsSubs = (
+  options = {},
+  page = 1,
+  limit = 25,
+  query
+) => {
+  const { data, isLoading, refetch } = useQuery(
+    ["GET_CLIENTS_SUBS", limit, page, query],
+    () => getClientsSubs(page, limit, query),
+    {
+      ...options,
+    }
+  );
+
+  return { isLoading, data, refetch };
 };
 
 export const useGetClientSubs = (options = {}) => {

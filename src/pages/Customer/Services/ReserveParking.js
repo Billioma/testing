@@ -13,7 +13,7 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import { HiOutlineArrowNarrowLeft } from "react-icons/hi";
-import { BsCheck, BsCheckCircle } from "react-icons/bs";
+import { BsCheckCircle } from "react-icons/bs";
 import Select from "react-select";
 import ConfirmReserveModal from "../../../components/modals/ConfirmReserveModal";
 import { useGetLocations } from "../../../services/customer/query/locations";
@@ -43,7 +43,7 @@ import useCustomToast from "../../../utils/notifications";
 import { useNavigate } from "react-router-dom";
 import { usePaystackPayment } from "react-paystack";
 import FundWalletDrawer from "../../../components/modals/FundWalletDrawer";
-import { allStates, cities } from "../../../components/common/constants";
+import { allStates } from "../../../components/common/constants";
 import AddVehicleModal from "../../../components/modals/AddVehicleModal";
 import CustomInput from "../../../components/common/CustomInput";
 import { FaListUl } from "react-icons/fa";

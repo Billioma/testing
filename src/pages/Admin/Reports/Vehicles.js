@@ -13,6 +13,7 @@ import { useGetReports } from "../../../services/admin/query/reports";
 import VehicleExport from "../../../components/data/Admin/Reports/VehicleExport";
 import Filter from "../../../components/common/Filter";
 import { vehiclesReportOptions } from "../../../components/common/constants";
+import { formatDate } from "../../../utils/helpers";
 
 const Vehicles = () => {
   const [page, setPage] = useState(1);
@@ -22,9 +23,13 @@ const Vehicles = () => {
   const [filtArray, setFiltArray] = useState([]);
 
   const convertedFilters = filtArray?.map((filterObj) => {
-    return `filter=${filterObj?.title}||${filterObj?.type || "cont"}||"${
-      filterObj?.filter
-    }"`;
+    return filterObj?.gte
+      ? `filter=${filterObj?.title}||gte||"${formatDate(filterObj?.gte)}"`
+      : filterObj?.lte
+      ? `filter=${filterObj?.title}||lte||"${formatDate(filterObj?.lte)}"`
+      : `filter=${filterObj?.title}||${filterObj?.type || "cont"}||"${
+          filterObj?.filter
+        }"`;
   });
 
   const query = convertedFilters?.join("&");

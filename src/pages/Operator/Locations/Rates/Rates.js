@@ -1,32 +1,61 @@
 import React, { useEffect, useState } from "react";
 import { Box, Button, Flex, Image, Text } from "@chakra-ui/react";
 import { MdAdd } from "react-icons/md";
-import { useNavigate } from "react-router-dom";
-import { useGetRates } from "../../../../services/operator/query/locations";
+import { useGetOpLocationUrl } from "../../../../services/operator/query/locations";
 import TableLayer from "../../../../components/data/Operator/Locations/Rates/TableLayer";
 import Filter from "../../../../components/common/Filter";
-import { opRateFieldOption } from "../../../../components/common/constants";
+import { opLocFieldOption } from "../../../../components/common/constants";
+import { formatDate } from "../../../../utils/helpers";
+import { useNavigate } from "react-router-dom";
 
 const Rates = () => {
-  const { mutate, data, isLoading } = useGetRates();
-
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(25);
   const [startRow, setStartRow] = useState(1);
   const [endRow, setEndRow] = useState(25);
-  const navigate = useNavigate();
 
   const [filtArray, setFiltArray] = useState([]);
   const convertedFilters = filtArray?.map((filterObj) => {
-    return `filter=${filterObj?.title}||${filterObj?.type || "cont"}||"${
-      filterObj?.filter
-    }"`;
+    return filterObj?.gte
+      ? `filter=${filterObj?.title}||gte||"${formatDate(filterObj?.gte)}"`
+      : filterObj?.lte
+      ? `filter=${filterObj?.title}||lte||"${formatDate(filterObj?.lte)}"`
+      : `filter=${filterObj?.title}||${filterObj?.type || "cont"}||"${
+          filterObj?.filter
+        }"`;
   });
+
   const query = convertedFilters?.join("&");
 
+  const [isRefetch, setIsRefetch] = useState(false);
+
+  const { data, isLoading, refetch } = useGetOpLocationUrl(
+    {
+      refetchOnWindowFocus: true,
+      onSuccess: () => {
+        setIsRefetch(false);
+      },
+      onError: () => {
+        setIsRefetch(false);
+      },
+      onSettled: () => {
+        setIsRefetch(false);
+      },
+    },
+    "rates",
+    page,
+    limit,
+    query
+  );
+
   useEffect(() => {
-    mutate({ filterString: query, limit, page: page });
-  }, [page, query, limit]);
+    refetch();
+  }, []);
+
+  const handleRefreshClick = async () => {
+    setIsRefetch(true);
+    await refetch();
+  };
 
   useEffect(() => {
     sessionStorage.removeItem("edit");
@@ -52,6 +81,8 @@ const Rates = () => {
     setEndRow(currentEndRow);
   }, [data, page, limit]);
 
+  const navigate = useNavigate();
+
   return (
     <Box minH="75vh">
       <Box borderRadius="8px" border="1px solid #d4d6d8" p="16px 23px 24px">
@@ -59,7 +90,7 @@ const Rates = () => {
           gap
           setFiltArray={setFiltArray}
           filtArray={filtArray}
-          fieldToCompare={opRateFieldOption}
+          fieldToCompare={opLocFieldOption}
           title={
             <Text
               fontSize="14px"
@@ -88,16 +119,14 @@ const Rates = () => {
                 cursor="pointer"
                 transition=".3s ease-in-out"
                 _hover={{ bg: "#F4F6F8" }}
-                onClick={() =>
-                  mutate({ filterString: query, limit, page: page })
-                }
+                onClick={handleRefreshClick}
                 borderRadius="8px"
                 border="1px solid #848688"
                 p="10px"
               >
                 <Image
                   src="/assets/refresh.svg"
-                  className={isLoading && "mirrored-icon"}
+                  className={isRefetch && "mirrored-icon"}
                   w="20px"
                   h="20px"
                 />

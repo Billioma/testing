@@ -126,7 +126,7 @@ const TableLayer = ({
                 </Td>
                 <Td textAlign="center">{vehicle?.make?.name}</Td>
                 <Td textAlign="center">{vehicle?.model?.name}</Td>
-                <Td textAlign="center">{vehicle?.createdBy}</Td>
+                <Td textAlign="center">{vehicle?.createdBy || "N/A"}</Td>
                 <Td textAlign="center">{formatDate(vehicle?.createdAt)}</Td>
                 <Td textAlign="center">
                   <Flex justifyContent="center" align="center">

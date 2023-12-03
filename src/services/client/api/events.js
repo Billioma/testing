@@ -8,6 +8,15 @@ export const getEvents = async (query) => {
   return res.data;
 };
 
+export const getClienteleEvents = async (page, limit, query) => {
+  const response = await axiosInstance.get(
+    `${API.CLIENTELE_EVENTS}?page=${page}&limit=${limit}&sort=id,DESC&${
+      query || ""
+    }`
+  );
+  return response.data;
+};
+
 export const getEventParkingList = async (query) => {
   const res = await axiosInstance.get(
     API.CLIENT_EVENT_PARKING_LIST(query.filterString, query.limit, query.page)

@@ -11,6 +11,39 @@ export const getParked = async (query) => {
   return res.data;
 };
 
+export const getOpParkedVehicles = async (page, limit, query) => {
+  const response = await axiosInstance.get(
+    `${
+      API.OP_SERVICE_LOGS
+    }?page=${page}&limit=${limit}&sort=id,DESC&filter=service.serviceType||$eq||PARKING&${
+      query || ""
+    }`
+  );
+  return response.data;
+};
+
+export const getOpValetedVehicles = async (page, limit, query) => {
+  const response = await axiosInstance.get(
+    `${
+      API.OP_SERVICE_LOGS
+    }?page=${page}&limit=${limit}&sort=id,DESC&filter=service.serviceType||$eq||VALET&${
+      query || ""
+    }`
+  );
+  return response.data;
+};
+
+export const getOpServicedVehicles = async (page, limit, query) => {
+  const response = await axiosInstance.get(
+    `${
+      API.OP_SERVICE_LOGS
+    }?page=${page}&limit=${limit}&sort=id,DESC&filter=service.serviceType||$eq||SERVICE&${
+      query || ""
+    }`
+  );
+  return response.data;
+};
+
 export const getServiced = async (query) => {
   const res = await axiosInstance.get(
     API.GET_SERVICED(query.filterString, query.limit, query.page)

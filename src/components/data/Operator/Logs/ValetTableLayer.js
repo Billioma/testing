@@ -1,8 +1,8 @@
 import React from "react";
 import { Box, Button, Flex, Image, Td, Text, Tr } from "@chakra-ui/react";
 import TableLoader from "../../../loaders/TableLoader";
-import { operatorLogHeader } from "../../../common/constants";
-import { formatDateTimes } from "../../../../utils/helpers";
+import { LogStatus, operatorLogHeader } from "../../../common/constants";
+import { formatDate } from "../../../../utils/helpers";
 import { useNavigate } from "react-router-dom";
 import { AiOutlineEye } from "react-icons/ai";
 import TableFormat from "../../../common/TableFormat";
@@ -45,12 +45,27 @@ const ValetTableLayer = ({
           >
             {data?.data?.map((item, i) => (
               <Tr fontSize="12px" fontWeight={500} color="#646668" key={i}>
-                <Td>{item?.ticketNumber}</Td>
+                <Td>{item?.ticketNumber}</Td>{" "}
+                <Td textAlign="center">₦ {item?.amount?.toLocaleString()}</Td>
                 <Td textAlign="center">{item?.location?.name || "N/A"}</Td>
                 <Td textAlign="center">{item?.zone?.name}</Td>
                 <Td textAlign="center">{item?.attendant?.name}</Td>
-                <Td textAlign="center">{formatDateTimes(item?.createdAt)}</Td>
-
+                <Td textAlign="center">{formatDate(item?.createdAt)}</Td>
+                <Td>
+                  <Flex align="center" w="full" justifyContent="center">
+                    <Flex
+                      color={Object?.values(LogStatus[item?.status])[0]}
+                      bg={Object?.values(LogStatus[item?.status])[2]}
+                      justifyContent="center"
+                      align="center"
+                      py="5px"
+                      px="16px"
+                      borderRadius="4px"
+                    >
+                      {Object?.values(LogStatus[item?.status])[1]}
+                    </Flex>
+                  </Flex>
+                </Td>
                 <Td>
                   <Flex align="center" justifyContent="center">
                     <Button

@@ -8,6 +8,15 @@ export const getUsers = async (query) => {
   return res.data;
 };
 
+export const getClientsUsers = async (page, limit, query) => {
+  const response = await axiosInstance.get(
+    `${API.GET_CLIENTS_USERS}?page=${page}&limit=${limit}&sort=id,DESC&${
+      query || ""
+    }`
+  );
+  return response.data;
+};
+
 export const getClientUsers = async () => {
   const res = await axiosInstance.get(API.GET_CLIENT_USERS);
   return res.data;

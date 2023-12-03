@@ -6,7 +6,7 @@ import {
   operatorRatesHeader,
   rateOption,
 } from "../../../../common/constants";
-import { formatDateTimes } from "../../../../../utils/helpers";
+import { formatDate } from "../../../../../utils/helpers";
 import { IoIosArrowDown } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
 import { Add } from "../../../../common/images";
@@ -104,7 +104,7 @@ const TableLayer = ({
                     </Flex>
                   </Flex>
                 </Td>
-                <Td textAlign="center">{formatDateTimes(item?.createdAt)}</Td>
+                <Td textAlign="center">{formatDate(item?.createdAt)}</Td>
 
                 <Td>
                   <Flex
