@@ -70,7 +70,7 @@ const SideBar = ({ show, setShow }) => {
             <span style={{ color: "red" }}>Parkin</span>
             Space
           </Text>
-          <Text textAlign="center" fontSize="13px" mt="12px" color="#444648">
+          <Text textAlign="center" fontSize="15px" mt="12px" color="#444648">
             Admin
           </Text>
 
@@ -146,7 +146,7 @@ const SideBar = ({ show, setShow }) => {
                       : item.icon}
                   </Box>
                   <Box display={show ? "box" : "none"}>
-                    <Text fontSize="13px" ml={4} mb={0}>
+                    <Text fontSize="15px" ml={4} mb={0}>
                       {item.name}
                     </Text>
                   </Box>
@@ -203,7 +203,7 @@ const SideBar = ({ show, setShow }) => {
                               : "400",
                           }}
                         >
-                          <Box fontSize="11px" ml="26px" mb={0}>
+                          <Box fontSize="13px" ml="26px" mb={0}>
                             <Link key={subItem.name} to={subItem.path}>
                               {subItem.name}
                             </Link>
@@ -222,7 +222,7 @@ const SideBar = ({ show, setShow }) => {
           <Text
             color="#444648"
             lineHeight="100%"
-            fontSize="12px"
+            fontSize="14px"
             fontWeight={700}
             display={show ? "box" : "none"}
             px={2}
@@ -281,7 +281,7 @@ const SideBar = ({ show, setShow }) => {
                       : item.icon}
                   </Box>
                   <Box display={show ? "box" : "none"}>
-                    <Text fontSize="13px" ml={4} mb={0}>
+                    <Text fontSize="15px" ml={4} mb={0}>
                       {item.name}
                     </Text>
                   </Box>
@@ -338,7 +338,7 @@ const SideBar = ({ show, setShow }) => {
                               : "400",
                           }}
                         >
-                          <Box fontSize="11px" ml="26px">
+                          <Box fontSize="13px" ml="26px">
                             <Link key={subItem.name} to={subItem.path}>
                               {subItem.name}
                             </Link>

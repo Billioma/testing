@@ -1,29 +1,19 @@
 import React, { useEffect, useState } from "react";
-import {
-  Box,
-  Button,
-  Flex,
-  Image,
-  Input,
-  Spinner,
-  Text,
-} from "@chakra-ui/react";
+import { Box, Button, Flex, Image, Text } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import CustomInput from "../../../components/common/CustomInput";
 import GoBackTab from "../../../components/data/Admin/GoBackTab";
-import {
-  useAdminUpdateUser,
-  useCustomerUploadPic,
-} from "../../../services/customer/query/user";
 import useCustomToast from "../../../utils/notifications";
-import { useGetProfile } from "../../../services/admin/query/auth";
+import {
+  useGetProfile,
+  useUpdateAdminProfile,
+} from "../../../services/admin/query/auth";
 
 const EditProfile = () => {
-  const [fileType, setFileType] = useState("");
   const navigate = useNavigate();
   const { data: userData, refetch } = useGetProfile();
   const { errorToast, successToast } = useCustomToast();
-  const { mutate, isLoading } = useAdminUpdateUser({
+  const { mutate, isLoading } = useUpdateAdminProfile({
     onSuccess: (res) => {
       successToast(res?.message);
       refetch();
@@ -37,33 +27,6 @@ const EditProfile = () => {
       );
     },
   });
-  const {
-    mutate: uploadMutate,
-    isLoading: isUploading,
-    data: profilePicData,
-  } = useCustomerUploadPic({
-    onError: (err) => {
-      errorToast(
-        err?.response?.data?.message || err?.message || "An Error occurred"
-      );
-    },
-  });
-
-  const handleUpload = (e) => {
-    const selectedFile = e.target.files[0];
-    if (!selectedFile) {
-      return;
-    }
-
-    setFileType(URL.createObjectURL(selectedFile));
-    const formData = new FormData();
-    formData.append("avatar", selectedFile);
-    uploadMutate({
-      fileType: "avatar",
-      entityType: "admin",
-      file: formData.get("avatar"),
-    });
-  };
 
   const [values, setValues] = useState({
     firstName: "",
@@ -84,7 +47,6 @@ const EditProfile = () => {
     mutate({
       firstName: values.firstName,
       lastName: values.lastName,
-      avatar: profilePicData?.path || values.pic,
     });
   };
 
@@ -133,66 +95,27 @@ const EditProfile = () => {
                 Edit Profile
               </Text>
 
-              <Box as="form">
-                <Input
-                  id="image_upload"
-                  onChange={handleUpload}
-                  type="file"
-                  isDisabled
-                  display="none"
-                  borderColor="black"
+              <Flex
+                border="4px solid #ee383a"
+                p="44px"
+                rounded="full"
+                w="fit-content"
+                bg="#D4D6D8"
+                justifyContent="center"
+                align="center"
+                flexDir="column"
+              >
+                <Image
+                  w="32px"
+                  rounded="full"
+                  objectFit="cover"
+                  h="32px"
+                  src="/assets/cam.svg"
                 />
-                <label htmlFor="image_upload">
-                  <Flex
-                    //   cursor="pointer"
-                    border="4px solid #ee383a"
-                    p={
-                      isUploading
-                        ? "44px"
-                        : fileType || userData?.avatar !== null
-                        ? ""
-                        : "44px"
-                    }
-                    rounded="full"
-                    w="fit-content"
-                    bg="#D4D6D8"
-                    justifyContent="center"
-                    align="center"
-                    flexDir="column"
-                  >
-                    {isUploading ? (
-                      <Spinner />
-                    ) : (
-                      <Image
-                        w={
-                          fileType || userData?.avatar !== null
-                            ? "120px"
-                            : "32px"
-                        }
-                        rounded={
-                          fileType || userData?.avatar !== null ? "full" : ""
-                        }
-                        objectFit="cover"
-                        h={
-                          fileType || userData?.avatar !== null
-                            ? "120px"
-                            : "32px"
-                        }
-                        src={
-                          fileType
-                            ? fileType
-                            : userData?.avatar === null
-                            ? "/assets/cam.svg"
-                            : userData?.avatar
-                        }
-                      />
-                    )}
-                  </Flex>
-                </label>
-              </Box>
+              </Flex>
             </Flex>
             <Box w="full" mt="16px">
-              <Text mb="8px" fontWeight={500} color="#444648" fontSize="10px">
+              <Text mb="8px" fontWeight={500} color="#444648" fontSize="12px">
                 Email
               </Text>
               <CustomInput
@@ -204,7 +127,7 @@ const EditProfile = () => {
               />
             </Box>
             <Box w="full" mt="16px">
-              <Text mb="8px" fontWeight={500} color="#444648" fontSize="10px">
+              <Text mb="8px" fontWeight={500} color="#444648" fontSize="12px">
                 First Name
               </Text>
               <CustomInput
@@ -221,7 +144,7 @@ const EditProfile = () => {
             </Box>
 
             <Box w="full" mt="16px">
-              <Text mb="8px" fontWeight={500} color="#444648" fontSize="10px">
+              <Text mb="8px" fontWeight={500} color="#444648" fontSize="12px">
                 Last Name
               </Text>
               <CustomInput
@@ -240,10 +163,8 @@ const EditProfile = () => {
             <Button
               mt="24px"
               onClick={handleSubmit}
-              // isDisabled={isUploading || isLoading}
-              isDisabled
+              isDisabled={isLoading}
               isLoading={isLoading}
-              type="submit"
               w="full"
             >
               Save Changes

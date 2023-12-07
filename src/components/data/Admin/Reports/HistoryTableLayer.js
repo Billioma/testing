@@ -6,7 +6,7 @@ import {
   TransactionTypes,
   adminRepTranHeader,
 } from "../../../common/constants";
-import { formatDate } from "../../../../utils/helpers";
+import { formatDateTime } from "../../../../utils/helpers";
 import TableFormat from "../../../common/TableFormat";
 
 const HistoryTableLayer = ({
@@ -44,7 +44,7 @@ const HistoryTableLayer = ({
             useDefaultPagination
           >
             {data?.data?.map((item, i) => (
-              <Tr fontSize="12px" fontWeight={500} color="#646668" key={i}>
+              <Tr fontSize="14px" fontWeight={500} color="#646668" key={i}>
                 <Td>{item?.transactionId}</Td>
                 <Td textAlign="center">
                   ₦{" "}
@@ -90,7 +90,7 @@ const HistoryTableLayer = ({
                   </Flex>
                 </Td>
                 <Td textAlign="center">{item?.customer?.email || "N/A"}</Td>
-                <Td textAlign="center">{formatDate(item?.createdAt)}</Td>
+                <Td textAlign="center">{formatDateTime(item?.createdAt)}</Td>
                 <Td>
                   <Flex align="center" w="full" justifyContent="center">
                     <Flex
@@ -121,7 +121,7 @@ const HistoryTableLayer = ({
           <Image src="/assets/no-pay.jpg" w="64px" h="64px" />
           <Text
             color="#848688"
-            fontSize="12px"
+            fontSize="14px"
             lineHeight="100%"
             fontWeight={500}
           >

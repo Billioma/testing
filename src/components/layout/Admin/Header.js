@@ -399,7 +399,7 @@ const Header = ({ showSidebar }) => {
           <Flex align="flex-end" gap="4px">
             <Text
               color="#242628"
-              fontSize="20px"
+              fontSize="22px"
               lineHeight="100%"
               fontWeight={500}
             >
@@ -408,7 +408,7 @@ const Header = ({ showSidebar }) => {
 
             {secTitle && (
               <Text
-                fontSize="10px"
+                fontSize="12px"
                 color="#646668"
                 pb="3px"
                 fontWeight={700}
@@ -420,7 +420,7 @@ const Header = ({ showSidebar }) => {
 
             {finTitle && (
               <Text
-                fontSize="10px"
+                fontSize="12px"
                 color="#646668"
                 pb="3px"
                 fontWeight={700}
@@ -469,7 +469,7 @@ const Header = ({ showSidebar }) => {
                 />
 
                 <Box>
-                  <Text fontSize="12px" fontWeight={500} lineHeight="100%">
+                  <Text fontSize="14px" fontWeight={500} lineHeight="100%">
                     Hi {userData?.firstName || ""}
                   </Text>
                 </Box>
@@ -496,7 +496,7 @@ const Header = ({ showSidebar }) => {
                   {adminHeaderOptions.map((data, i) => (
                     <Text
                       key={i}
-                      fontSize="12px"
+                      fontSize="14px"
                       _hover={{
                         bg: "#1C0203",
                         color: "#fff",

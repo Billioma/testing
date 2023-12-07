@@ -4,7 +4,7 @@ import { clientEventParkingOptions } from "../../../components/common/constants"
 import { useGetClientEventParkingList } from "../../../services/client/query/events";
 import TableLayer from "../../../components/data/Client/Transactions/EventParkingTableLayer";
 import Filter from "../../../components/common/Filter";
-import { formatDate } from "../../../utils/helpers";
+import { formatNewDate } from "../../../utils/helpers";
 
 const Transactions = () => {
   const [page, setPage] = useState(1);
@@ -15,9 +15,13 @@ const Transactions = () => {
 
   const convertedFilters = filtArray?.map((filterObj) => {
     return filterObj?.gte
-      ? `filter=${filterObj?.title}||gte||"${formatDate(filterObj?.gte)}"`
+      ? `filter=${filterObj?.title}||$gte||"${formatNewDate(
+          filterObj?.gte
+        )}T00:00:00"`
       : filterObj?.lte
-      ? `filter=${filterObj?.title}||lte||"${formatDate(filterObj?.lte)}"`
+      ? `filter=${filterObj?.title}||$lte||"${formatNewDate(
+          filterObj?.lte
+        )}T23:59:59"`
       : `filter=${filterObj?.title}||${filterObj?.type || "cont"}||"${
           filterObj?.filter
         }"`;

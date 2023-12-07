@@ -144,12 +144,12 @@ export default function ViewRole() {
               }}
             >
               <Box w="full" mb={4}>
-                <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
+                <Text mb="8px" fontSize="12px" fontWeight={500} color="#444648">
                   Name{" "}
                   <span
                     style={{
                       color: "tomato",
-                      fontSize: "13px",
+                      fontSize: "15px",
                     }}
                   >
                     *
@@ -167,19 +167,19 @@ export default function ViewRole() {
                 />
 
                 {formSubmitted && !values?.name && (
-                  <Text mt="-3px" fontSize="10px" color="tomato">
+                  <Text mt="-3px" fontSize="12px" color="tomato">
                     Name is required
                   </Text>
                 )}
               </Box>
 
               <Box w="full" mb={4}>
-                <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
+                <Text mb="8px" fontSize="12px" fontWeight={500} color="#444648">
                   Display Name{" "}
                   <span
                     style={{
                       color: "tomato",
-                      fontSize: "13px",
+                      fontSize: "15px",
                     }}
                   >
                     *
@@ -197,7 +197,7 @@ export default function ViewRole() {
                   }
                 />
                 {formSubmitted && !values?.displayName && (
-                  <Text mt="-3px" fontSize="10px" color="tomato">
+                  <Text mt="-3px" fontSize="12px" color="tomato">
                     Display Name is required
                   </Text>
                 )}

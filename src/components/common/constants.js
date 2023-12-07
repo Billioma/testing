@@ -1737,7 +1737,7 @@ export const customStyles = {
     width: "100%",
     minHeight: "44px",
     color: "#646668",
-    fontSize: "14px",
+    fontSize: "16px",
     cursor: "pointer",
     borderRadius: "4px",
     border: state.hasValue ? "none" : "1px solid #D4D6D8",
@@ -1746,7 +1746,7 @@ export const customStyles = {
   }),
   menu: (provided) => ({
     ...provided,
-    fontSize: "13px",
+    fontSize: "15px",
     backgroundColor: "#fff",
   }),
   option: (provided, state) => ({
@@ -1762,7 +1762,7 @@ export const errorCustomStyles = {
     width: "100%",
     minHeight: "44px",
     color: "red",
-    fontSize: "14px",
+    fontSize: "16px",
     cursor: "pointer",
     borderRadius: "4px",
     border: "1px solid red",
@@ -1771,7 +1771,7 @@ export const errorCustomStyles = {
   }),
   menu: (provided) => ({
     ...provided,
-    fontSize: "13px",
+    fontSize: "15px",
     backgroundColor: "#fff",
   }),
   option: (provided, state) => ({

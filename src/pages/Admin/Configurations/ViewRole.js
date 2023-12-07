@@ -170,7 +170,7 @@ export default function ViewRole() {
                 <Box w="full" mb={4}>
                   <Text
                     mb="8px"
-                    fontSize="10px"
+                    fontSize="12px"
                     fontWeight={500}
                     color="#444648"
                   >
@@ -191,7 +191,7 @@ export default function ViewRole() {
                 <Box w="full" mb={4}>
                   <Text
                     mb="8px"
-                    fontSize="10px"
+                    fontSize="12px"
                     fontWeight={500}
                     color="#444648"
                   >
@@ -258,7 +258,7 @@ export default function ViewRole() {
                                 _hover={{ bg: "transparent" }}
                               >
                                 <Text
-                                  fontSize={12}
+                                  fontSize="14px"
                                   fontWeight={500}
                                   textTransform="capitalize"
                                 >
@@ -309,7 +309,7 @@ export default function ViewRole() {
                                     }}
                                   />
                                   <Text
-                                    fontSize={12}
+                                    fontSize="14px"
                                     color="#646668"
                                     textTransform="capitalize"
                                   >

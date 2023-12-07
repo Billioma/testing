@@ -229,7 +229,7 @@ export default function AddOperator() {
                 <Box w="full" mb={4}>
                   <Text
                     mb="8px"
-                    fontSize="10px"
+                    fontSize="12px"
                     fontWeight={500}
                     color="#444648"
                   >
@@ -251,7 +251,7 @@ export default function AddOperator() {
                 <Box w="full" mb={4}>
                   <Text
                     mb="8px"
-                    fontSize="10px"
+                    fontSize="12px"
                     fontWeight={500}
                     color="#444648"
                   >
@@ -284,7 +284,7 @@ export default function AddOperator() {
                   <Text
                     color="#444648"
                     lineHeight="100%"
-                    fontSize="10px"
+                    fontSize="12px"
                     fontWeight={500}
                     mb="8px"
                   >
@@ -317,7 +317,7 @@ export default function AddOperator() {
                 <Box w="full" mb={4}>
                   <Text
                     mb="8px"
-                    fontSize="10px"
+                    fontSize="12px"
                     fontWeight={500}
                     color="#444648"
                   >
@@ -351,7 +351,7 @@ export default function AddOperator() {
                   <Text
                     color="#444648"
                     lineHeight="100%"
-                    fontSize="10px"
+                    fontSize="12px"
                     fontWeight={500}
                     mb="8px"
                   >
@@ -382,7 +382,7 @@ export default function AddOperator() {
                   <Text
                     color="#444648"
                     lineHeight="100%"
-                    fontSize="10px"
+                    fontSize="12px"
                     fontWeight={500}
                     mb="8px"
                   >

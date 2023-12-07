@@ -13,7 +13,7 @@ import { useGetReports } from "../../../services/admin/query/reports";
 import VehicleExport from "../../../components/data/Admin/Reports/VehicleExport";
 import Filter from "../../../components/common/Filter";
 import { vehiclesReportOptions } from "../../../components/common/constants";
-import { formatDate } from "../../../utils/helpers";
+import { formatNewDate } from "../../../utils/helpers";
 
 const Vehicles = () => {
   const [page, setPage] = useState(1);
@@ -24,9 +24,13 @@ const Vehicles = () => {
 
   const convertedFilters = filtArray?.map((filterObj) => {
     return filterObj?.gte
-      ? `filter=${filterObj?.title}||gte||"${formatDate(filterObj?.gte)}"`
+      ? `filter=${filterObj?.title}||$gte||"${formatNewDate(
+          filterObj?.gte
+        )}T00:00:00"`
       : filterObj?.lte
-      ? `filter=${filterObj?.title}||lte||"${formatDate(filterObj?.lte)}"`
+      ? `filter=${filterObj?.title}||$lte||"${formatNewDate(
+          filterObj?.lte
+        )}T23:59:59"`
       : `filter=${filterObj?.title}||${filterObj?.type || "cont"}||"${
           filterObj?.filter
         }"`;
@@ -98,7 +102,6 @@ const Vehicles = () => {
               <Box p="15px" pt="0px" pb="20px">
                 <Text
                   mt="24px"
-                  fontSize="14px"
                   lineHeight="100%"
                   fontWeight={700}
                   color="#242628"
@@ -136,13 +139,7 @@ const Vehicles = () => {
           filtArray={filtArray}
           fieldToCompare={vehiclesReportOptions}
           title={
-            <Text
-              mt="24px"
-              fontSize="14px"
-              lineHeight="100%"
-              fontWeight={700}
-              color="#242628"
-            >
+            <Text mt="24px" lineHeight="100%" fontWeight={700} color="#242628">
               All Vehicles
             </Text>
           }

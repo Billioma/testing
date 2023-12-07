@@ -88,7 +88,7 @@ export default function AddAttendants() {
       width: "100%",
       minHeight: "44px",
       color: "#646668",
-      fontSize: "14px",
+      fontSize: "16px",
       cursor: "pointer",
       borderRadius: "4px",
       border: state.hasValue ? "none" : "1px solid #D4D6D8",
@@ -97,7 +97,7 @@ export default function AddAttendants() {
     }),
     menu: (provided) => ({
       ...provided,
-      fontSize: "13px",
+      fontSize: "15px",
       backgroundColor: "#fff",
     }),
     option: (provided, state) => ({
@@ -234,7 +234,7 @@ export default function AddAttendants() {
                   flexDir="column"
                 >
                   <Text
-                    fontSize="10px"
+                    fontSize="12px"
                     fontWeight={500}
                     color="#444648"
                     textAlign="center"
@@ -291,7 +291,7 @@ export default function AddAttendants() {
                 <Box w="full" mb={4}>
                   <Text
                     mb="8px"
-                    fontSize="10px"
+                    fontSize="12px"
                     fontWeight={500}
                     color="#444648"
                   >
@@ -312,7 +312,7 @@ export default function AddAttendants() {
                 <Box w="full" mb={4}>
                   <Text
                     mb="8px"
-                    fontSize="10px"
+                    fontSize="12px"
                     fontWeight={500}
                     color="#444648"
                   >
@@ -334,7 +334,7 @@ export default function AddAttendants() {
                 <Box mb={4}>
                   <Text
                     mb="8px"
-                    fontSize="10px"
+                    fontSize="12px"
                     fontWeight={500}
                     color="#444648"
                   >
@@ -367,7 +367,7 @@ export default function AddAttendants() {
                 <Box mb={4}>
                   <Text
                     mb="8px"
-                    fontSize="10px"
+                    fontSize="12px"
                     fontWeight={500}
                     color="#444648"
                   >
@@ -400,7 +400,7 @@ export default function AddAttendants() {
                 <Box mb={4}>
                   <Text
                     mb="8px"
-                    fontSize="10px"
+                    fontSize="12px"
                     fontWeight={500}
                     color="#444648"
                   >
@@ -434,7 +434,7 @@ export default function AddAttendants() {
                 <Box mb={4}>
                   <Text
                     mb="8px"
-                    fontSize="10px"
+                    fontSize="12px"
                     fontWeight={500}
                     color="#444648"
                   >

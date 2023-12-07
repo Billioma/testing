@@ -7,7 +7,7 @@ import { useGetClientsEvents } from "../../../services/admin/query/clients";
 import Filter from "../../../components/common/Filter";
 import { eventsOptions } from "../../../components/common/constants";
 import { MdAdd } from "react-icons/md";
-import { formatDate } from "../../../utils/helpers";
+import { formatNewDate } from "../../../utils/helpers";
 
 export default function () {
   const [page, setPage] = useState(1);
@@ -19,14 +19,17 @@ export default function () {
 
   const convertedFilters = filtArray?.map((filterObj) => {
     return filterObj?.gte
-      ? `filter=${filterObj?.title}||gte||"${formatDate(filterObj?.gte)}"`
+      ? `filter=${filterObj?.title}||$gte||"${formatNewDate(
+          filterObj?.gte
+        )}T00:00:00"`
       : filterObj?.lte
-      ? `filter=${filterObj?.title}||lte||"${formatDate(filterObj?.lte)}"`
+      ? `filter=${filterObj?.title}||$lte||"${formatNewDate(
+          filterObj?.lte
+        )}T23:59:59"`
       : `filter=${filterObj?.title}||${filterObj?.type || "cont"}||"${
           filterObj?.filter
         }"`;
   });
-
   const query = convertedFilters?.join("&");
 
   const [isRefetch, setIsRefetch] = useState(false);

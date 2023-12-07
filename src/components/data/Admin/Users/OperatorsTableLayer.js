@@ -14,7 +14,7 @@ import {
   Icon,
 } from "@chakra-ui/react";
 import TableFormat from "../../../common/TableFormat";
-import { formatDate } from "../../../../utils/helpers";
+import { formatDateTime } from "../../../../utils/helpers";
 import { useNavigate } from "react-router-dom";
 import AdminDeleteModal from "../../../modals/AdminDeleteModal";
 import useCustomToast from "../../../../utils/notifications";
@@ -109,7 +109,7 @@ const TableLayer = ({
                 key={i}
                 color="#646668"
                 fontWeight={500}
-                fontSize="12px"
+                fontSize="14px"
                 lineHeight="100%"
               >
                 <Td>{operator?.name}</Td>
@@ -132,7 +132,9 @@ const TableLayer = ({
                     </Flex>
                   </Flex>
                 </Td>
-                <Td textAlign="center">{formatDate(operator?.createdAt)}</Td>
+                <Td textAlign="center">
+                  {formatDateTime(operator?.createdAt)}
+                </Td>
                 <Td textAlign="center">
                   <Flex justifyContent="center" align="center">
                     <Menu>
@@ -189,7 +191,7 @@ const TableLayer = ({
           <Image src="/assets/no-user.jpg" w="64px" h="64px" />
           <Text
             color="#848688"
-            fontSize="12px"
+            fontSize="14px"
             lineHeight="100%"
             fontWeight={500}
           >
@@ -201,7 +203,7 @@ const TableLayer = ({
             display="flex"
             bg="#000"
             gap="8px"
-            fontSize="12px"
+            fontSize="14px"
           >
             <Text>Add an Operator</Text>
             <Add fill="#fff" />

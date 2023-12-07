@@ -160,7 +160,7 @@ export default function AddLocation() {
           >
             <Box alignSelf={"center"} w="full" mb={5}>
               <Text
-                fontSize="10px"
+                fontSize="12px"
                 fontWeight={500}
                 color="#444648"
                 textAlign="center"
@@ -222,7 +222,7 @@ export default function AddLocation() {
                   <Box w="full" mb={4}>
                     <Text
                       mb="8px"
-                      fontSize="10px"
+                      fontSize="12px"
                       fontWeight={500}
                       color="#444648"
                     >
@@ -230,7 +230,7 @@ export default function AddLocation() {
                       <span
                         style={{
                           color: "tomato",
-                          fontSize: "13px",
+                          fontSize: "15px",
                         }}
                       >
                         *
@@ -250,7 +250,7 @@ export default function AddLocation() {
                   <Box w="full" mb={4}>
                     <Text
                       mb="8px"
-                      fontSize="10px"
+                      fontSize="12px"
                       fontWeight={500}
                       color="#444648"
                     >
@@ -258,7 +258,7 @@ export default function AddLocation() {
                       <span
                         style={{
                           color: "tomato",
-                          fontSize: "13px",
+                          fontSize: "15px",
                         }}
                       >
                         *
@@ -281,7 +281,7 @@ export default function AddLocation() {
                   <Box w="full" mb={4}>
                     <Text
                       mb="8px"
-                      fontSize="10px"
+                      fontSize="12px"
                       fontWeight={500}
                       color="#444648"
                     >
@@ -304,7 +304,7 @@ export default function AddLocation() {
                   <Box w="full" mb={4}>
                     <Text
                       mb="8px"
-                      fontSize="10px"
+                      fontSize="12px"
                       fontWeight={500}
                       color="#444648"
                     >
@@ -312,7 +312,7 @@ export default function AddLocation() {
                       <span
                         style={{
                           color: "tomato",
-                          fontSize: "13px",
+                          fontSize: "15px",
                         }}
                       >
                         *
@@ -334,7 +334,7 @@ export default function AddLocation() {
                   <Box w="full" mb={4}>
                     <Text
                       mb="8px"
-                      fontSize="10px"
+                      fontSize="12px"
                       fontWeight={500}
                       color="#444648"
                     >
@@ -342,7 +342,7 @@ export default function AddLocation() {
                       <span
                         style={{
                           color: "tomato",
-                          fontSize: "13px",
+                          fontSize: "15px",
                         }}
                       >
                         *
@@ -376,7 +376,7 @@ export default function AddLocation() {
                       }}
                     />
                     {formSubmitted && !values?.state && (
-                      <Text mt="8px" fontSize="10px" color="tomato">
+                      <Text mt="8px" fontSize="12px" color="tomato">
                         State is required
                       </Text>
                     )}
@@ -384,7 +384,7 @@ export default function AddLocation() {
                   <Box w="full" mb={4}>
                     <Text
                       mb="8px"
-                      fontSize="10px"
+                      fontSize="12px"
                       fontWeight={500}
                       color="#444648"
                     >
@@ -392,7 +392,7 @@ export default function AddLocation() {
                       <span
                         style={{
                           color: "tomato",
-                          fontSize: "13px",
+                          fontSize: "15px",
                         }}
                       >
                         *
@@ -426,7 +426,7 @@ export default function AddLocation() {
                       }}
                     />
                     {formSubmitted && !values?.operator && (
-                      <Text mt="8px" fontSize="10px" color="tomato">
+                      <Text mt="8px" fontSize="12px" color="tomato">
                         Operator is required
                       </Text>
                     )}
@@ -434,7 +434,7 @@ export default function AddLocation() {
                   <Box w="full" mb={4}>
                     <Text
                       mb="8px"
-                      fontSize="10px"
+                      fontSize="12px"
                       fontWeight={500}
                       color="#444648"
                     >
@@ -442,7 +442,7 @@ export default function AddLocation() {
                       <span
                         style={{
                           color: "tomato",
-                          fontSize: "13px",
+                          fontSize: "15px",
                         }}
                       >
                         *
@@ -476,7 +476,7 @@ export default function AddLocation() {
                       }}
                     />
                     {formSubmitted && !values?.locationType && (
-                      <Text mt="8px" fontSize="10px" color="tomato">
+                      <Text mt="8px" fontSize="12px" color="tomato">
                         Location Type is required
                       </Text>
                     )}
@@ -484,7 +484,7 @@ export default function AddLocation() {
                   <Box w="full" mb={4}>
                     <Text
                       mb="8px"
-                      fontSize="10px"
+                      fontSize="12px"
                       fontWeight={500}
                       color="#444648"
                     >
@@ -492,7 +492,7 @@ export default function AddLocation() {
                       <span
                         style={{
                           color: "tomato",
-                          fontSize: "13px",
+                          fontSize: "15px",
                         }}
                       >
                         *
@@ -527,7 +527,7 @@ export default function AddLocation() {
                       }}
                     />
                     {formSubmitted && !values?.amenities?.length && (
-                      <Text mt="8px" fontSize="10px" color="tomato">
+                      <Text mt="8px" fontSize="12px" color="tomato">
                         Select at least one amenity
                       </Text>
                     )}
@@ -535,7 +535,7 @@ export default function AddLocation() {
                   <Box w="full" mb={4}>
                     <Text
                       mb="8px"
-                      fontSize="10px"
+                      fontSize="12px"
                       fontWeight={500}
                       color="#444648"
                     >
@@ -543,7 +543,7 @@ export default function AddLocation() {
                       <span
                         style={{
                           color: "tomato",
-                          fontSize: "13px",
+                          fontSize: "15px",
                         }}
                       >
                         *
@@ -577,7 +577,7 @@ export default function AddLocation() {
                       }}
                     />
                     {formSubmitted && !values?.managers?.length && (
-                      <Text mt="8px" fontSize="10px" color="tomato">
+                      <Text mt="8px" fontSize="12px" color="tomato">
                         Select at least one manager
                       </Text>
                     )}
@@ -585,7 +585,7 @@ export default function AddLocation() {
                   <Box>
                     <Text
                       mb="8px"
-                      fontSize="10px"
+                      fontSize="12px"
                       fontWeight={500}
                       color="#444648"
                     >
@@ -593,7 +593,7 @@ export default function AddLocation() {
                       <span
                         style={{
                           color: "tomato",
-                          fontSize: "13px",
+                          fontSize: "15px",
                         }}
                       >
                         *
@@ -626,7 +626,7 @@ export default function AddLocation() {
                       }}
                     />
                     {formSubmitted && !values?.status && (
-                      <Text mt="8px" fontSize="10px" color="tomato">
+                      <Text mt="8px" fontSize="12px" color="tomato">
                         Status is required
                       </Text>
                     )}

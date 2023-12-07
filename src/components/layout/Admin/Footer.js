@@ -26,14 +26,14 @@ const Footer = ({ showSidebar }) => {
         py="24px"
       >
         <Flex align="center" gap="4px">
-          <Text color="#000" fontSize="12px" lineHeight="100%">
+          <Text color="#000" fontSize="14px" lineHeight="100%">
             Powered by
           </Text>
           <Image h="20px" w="80px" src="/assets/ezlogo.jpg" />
         </Flex>
 
         <Box>
-          <Text fontSize="12px" color="#000" lineHeight="100%">
+          <Text fontSize="14px" color="#000" lineHeight="100%">
             © 2023 EZPark Limited
           </Text>
         </Box>

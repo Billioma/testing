@@ -54,12 +54,12 @@ export default function QrCode() {
           border="1px solid #E4E6E8"
         >
           <Box w="full" mb={4}>
-            <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
+            <Text mb="8px" fontSize="12px" fontWeight={500} color="#444648">
               Ticket Number{" "}
               <span
                 style={{
                   color: "tomato",
-                  fontSize: "13px",
+                  fontSize: "15px",
                 }}
               >
                 *
@@ -85,7 +85,7 @@ export default function QrCode() {
             mb="16px"
             mt={2}
           >
-            <Text fontSize="12px" fontWeight={500} color="#444648">
+            <Text fontSize="14px" fontWeight={500} color="#444648">
               Claim Tickets
             </Text>
             <Switch

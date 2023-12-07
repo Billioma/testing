@@ -27,7 +27,7 @@ const StatCard = ({
       border={large ? "0.50px #E4E6E8 solid" : ""}
     >
       <Box p={isMobile ? "15px" : "20px"}>
-        <Text mb="16px" fontSize="14px" color="#242628" fontWeight={700}>
+        <Text mb="16px" color="#242628" fontWeight={700}>
           {title}
         </Text>
 
@@ -37,7 +37,7 @@ const StatCard = ({
           align={large ? "end" : ""}
         >
           <Box>
-            <Text fontSize="12px" color="#242628" fontWeight="500">
+            <Text color="#242628" fontWeight="500">
               {subTitle}
             </Text>
             <Text
@@ -52,9 +52,7 @@ const StatCard = ({
           <Flex justifyContent="space-between" gap="24px" align="center">
             {!large && inactive != null && inactive != undefined ? (
               <Flex gap="8px" align="center" fontSize="16px" fontWeight="500">
-                <Text color={"#EE383A"} fontSize="12px">
-                  Inactive
-                </Text>
+                <Text color={"#EE383A"}>Inactive</Text>
                 <Text color="#242628">{inactive}</Text>
               </Flex>
             ) : (
@@ -66,7 +64,7 @@ const StatCard = ({
               >
                 <Text
                   color={"#0B841D"}
-                  fontSize={large && isMobile ? "10px" : "12px"}
+                  fontSize={large && isMobile ? "10px" : "14px"}
                 >
                   {title.includes("Valet Parking") ||
                   title.includes("Pay-To-Park")
@@ -115,9 +113,7 @@ const StatCard = ({
 
             {!large && active != null && active != undefined ? (
               <Flex gap="8px" align="center" fontSize="16px" fontWeight="500">
-                <Text color={"#0B841D"} fontSize="12px">
-                  Active
-                </Text>
+                <Text color={"#0B841D"}>Active</Text>
 
                 <Text color="#242628">{active}</Text>
               </Flex>
@@ -130,7 +126,7 @@ const StatCard = ({
               >
                 <Text
                   color={"#444648"}
-                  fontSize={large && isMobile ? "10px" : "12px"}
+                  fontSize={large && isMobile ? "10px" : "14px"}
                 >
                   {title.includes("Events")
                     ? "Expired"

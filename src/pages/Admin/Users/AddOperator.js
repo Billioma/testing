@@ -90,7 +90,7 @@ export default function AddOperator() {
                   <Box w="full" mb={4}>
                     <Text
                       mb="8px"
-                      fontSize="10px"
+                      fontSize="12px"
                       fontWeight={500}
                       color="#444648"
                     >
@@ -98,7 +98,7 @@ export default function AddOperator() {
                       <span
                         style={{
                           color: "tomato",
-                          fontSize: "13px",
+                          fontSize: "15px",
                         }}
                       >
                         *
@@ -119,7 +119,7 @@ export default function AddOperator() {
                   <Box w="full" mb={4}>
                     <Text
                       mb="8px"
-                      fontSize="10px"
+                      fontSize="12px"
                       fontWeight={500}
                       color="#444648"
                     >
@@ -127,7 +127,7 @@ export default function AddOperator() {
                       <span
                         style={{
                           color: "tomato",
-                          fontSize: "13px",
+                          fontSize: "15px",
                         }}
                       >
                         *
@@ -150,13 +150,13 @@ export default function AddOperator() {
                       mb="8px"
                       fontWeight={500}
                       color="#444648"
-                      fontSize="10px"
+                      fontSize="12px"
                     >
                       Phone Number{" "}
                       <span
                         style={{
                           color: "tomato",
-                          fontSize: "13px",
+                          fontSize: "15px",
                         }}
                       >
                         *
@@ -187,7 +187,7 @@ export default function AddOperator() {
                   <Box w="full" mb={4}>
                     <Text
                       mb="8px"
-                      fontSize="10px"
+                      fontSize="12px"
                       fontWeight={500}
                       color="#444648"
                     >
@@ -195,7 +195,7 @@ export default function AddOperator() {
                       <span
                         style={{
                           color: "tomato",
-                          fontSize: "13px",
+                          fontSize: "15px",
                         }}
                       >
                         *
@@ -217,7 +217,7 @@ export default function AddOperator() {
                   <Box mb={4}>
                     <Text
                       mb="8px"
-                      fontSize="10px"
+                      fontSize="12px"
                       fontWeight={500}
                       color="#444648"
                     >
@@ -225,7 +225,7 @@ export default function AddOperator() {
                       <span
                         style={{
                           color: "tomato",
-                          fontSize: "13px",
+                          fontSize: "15px",
                         }}
                       >
                         *
@@ -260,7 +260,7 @@ export default function AddOperator() {
                   <Box w="full" mb={4}>
                     <Text
                       mb="8px"
-                      fontSize="10px"
+                      fontSize="12px"
                       fontWeight={500}
                       color="#444648"
                     >
@@ -268,7 +268,7 @@ export default function AddOperator() {
                       <span
                         style={{
                           color: "tomato",
-                          fontSize: "13px",
+                          fontSize: "15px",
                         }}
                       >
                         *
@@ -293,7 +293,7 @@ export default function AddOperator() {
                   <Box w="full" mb={4}>
                     <Text
                       mb="8px"
-                      fontSize="10px"
+                      fontSize="12px"
                       fontWeight={500}
                       color="#444648"
                     >
@@ -301,7 +301,7 @@ export default function AddOperator() {
                       <span
                         style={{
                           color: "tomato",
-                          fontSize: "13px",
+                          fontSize: "15px",
                         }}
                       >
                         *
@@ -329,7 +329,7 @@ export default function AddOperator() {
                   <Box mb={4}>
                     <Text
                       mb="8px"
-                      fontSize="10px"
+                      fontSize="12px"
                       fontWeight={500}
                       color="#444648"
                     >
@@ -337,7 +337,7 @@ export default function AddOperator() {
                       <span
                         style={{
                           color: "tomato",
-                          fontSize: "13px",
+                          fontSize: "15px",
                         }}
                       >
                         *
@@ -389,7 +389,7 @@ export default function AddOperator() {
                   <Box>
                     <Text
                       mb="8px"
-                      fontSize="10px"
+                      fontSize="12px"
                       fontWeight={500}
                       color="#444648"
                     >
@@ -397,7 +397,7 @@ export default function AddOperator() {
                       <span
                         style={{
                           color: "tomato",
-                          fontSize: "13px",
+                          fontSize: "15px",
                         }}
                       >
                         *

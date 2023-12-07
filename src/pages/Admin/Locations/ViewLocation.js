@@ -247,7 +247,7 @@ export default function ViewLocation() {
               >
                 <Box alignSelf={"center"} w="full" mb={5}>
                   <Text
-                    fontSize="10px"
+                    fontSize="12px"
                     fontWeight={500}
                     color="#444648"
                     textAlign="center"
@@ -306,7 +306,7 @@ export default function ViewLocation() {
                 <Box w="full" mb={4}>
                   <Text
                     mb="8px"
-                    fontSize="10px"
+                    fontSize="12px"
                     fontWeight={500}
                     color="#444648"
                   >
@@ -327,7 +327,7 @@ export default function ViewLocation() {
                 <Box w="full" mb={4}>
                   <Text
                     mb="8px"
-                    fontSize="10px"
+                    fontSize="12px"
                     fontWeight={500}
                     color="#444648"
                   >
@@ -349,7 +349,7 @@ export default function ViewLocation() {
                 <Box w="full" mb={4}>
                   <Text
                     mb="8px"
-                    fontSize="10px"
+                    fontSize="12px"
                     fontWeight={500}
                     color="#444648"
                   >
@@ -370,7 +370,7 @@ export default function ViewLocation() {
                 <Box w="full" mb={4}>
                   <Text
                     mb="8px"
-                    fontSize="10px"
+                    fontSize="12px"
                     fontWeight={500}
                     color="#444648"
                   >
@@ -391,7 +391,7 @@ export default function ViewLocation() {
                 <Box w="full" mb={4}>
                   <Text
                     mb="8px"
-                    fontSize="10px"
+                    fontSize="12px"
                     fontWeight={500}
                     color="#444648"
                   >
@@ -424,7 +424,7 @@ export default function ViewLocation() {
                 <Box w="full" mb={4}>
                   <Text
                     mb="8px"
-                    fontSize="10px"
+                    fontSize="12px"
                     fontWeight={500}
                     color="#444648"
                   >
@@ -457,7 +457,7 @@ export default function ViewLocation() {
                 <Box w="full" mb={4}>
                   <Text
                     mb="8px"
-                    fontSize="10px"
+                    fontSize="12px"
                     fontWeight={500}
                     color="#444648"
                   >
@@ -490,7 +490,7 @@ export default function ViewLocation() {
                 <Box w="full" mb={4}>
                   <Text
                     mb="8px"
-                    fontSize="10px"
+                    fontSize="12px"
                     fontWeight={500}
                     color="#444648"
                   >
@@ -524,7 +524,7 @@ export default function ViewLocation() {
                 <Box w="full" mb={4}>
                   <Text
                     mb="8px"
-                    fontSize="10px"
+                    fontSize="12px"
                     fontWeight={500}
                     color="#444648"
                   >
@@ -558,7 +558,7 @@ export default function ViewLocation() {
                 <Box w="full" mb={4}>
                   <Text
                     mb="8px"
-                    fontSize="10px"
+                    fontSize="12px"
                     fontWeight={500}
                     color="#444648"
                   >
@@ -594,7 +594,7 @@ export default function ViewLocation() {
                   mb="16px"
                   mt={4}
                 >
-                  <Text fontSize="12px" fontWeight={500} color="#444648">
+                  <Text fontSize="14px" fontWeight={500} color="#444648">
                     Enable Tips
                   </Text>
                   <Switch

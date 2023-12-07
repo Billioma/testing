@@ -83,7 +83,7 @@ export default function ServicesSection() {
       width: "100%",
       minHeight: "44px",
       color: "#646668",
-      fontSize: "14px",
+      fontSize: "16px",
       cursor: "pointer",
       borderRadius: "4px",
       border: state.hasValue ? "none" : "1px solid #D4D6D8",
@@ -92,7 +92,7 @@ export default function ServicesSection() {
     }),
     menu: (provided) => ({
       ...provided,
-      fontSize: "13px",
+      fontSize: "15px",
       backgroundColor: "#fff",
     }),
     option: (provided, state) => ({
@@ -197,7 +197,7 @@ export default function ServicesSection() {
   return (
     <Box mt="26px">
       <Flex justifyContent="space-between" align="center" mb="12px">
-        <Text fontSize="14px" color="#242628" fontWeight="700">
+        <Text color="#242628" fontWeight="700">
           SERVICES
         </Text>
         <Select

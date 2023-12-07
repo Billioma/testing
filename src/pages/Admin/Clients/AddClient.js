@@ -128,7 +128,7 @@ export default function AddClient() {
           >
             <Box alignSelf={"center"} w="full" mb={5}>
               <Text
-                fontSize="10px"
+                fontSize="12px"
                 fontWeight={500}
                 color="#444648"
                 textAlign="center"
@@ -191,7 +191,7 @@ export default function AddClient() {
                   <Box w="full" mb="16px">
                     <Text
                       mb="8px"
-                      fontSize="10px"
+                      fontSize="12px"
                       fontWeight={500}
                       color="#444648"
                     >
@@ -199,7 +199,7 @@ export default function AddClient() {
                       <span
                         style={{
                           color: "tomato",
-                          fontSize: "13px",
+                          fontSize: "15px",
                         }}
                       >
                         *
@@ -218,7 +218,7 @@ export default function AddClient() {
                   <Box w="full" mb="16px">
                     <Text
                       mb="8px"
-                      fontSize="10px"
+                      fontSize="12px"
                       fontWeight={500}
                       color="#444648"
                     >
@@ -226,7 +226,7 @@ export default function AddClient() {
                       <span
                         style={{
                           color: "tomato",
-                          fontSize: "13px",
+                          fontSize: "15px",
                         }}
                       >
                         *
@@ -245,7 +245,7 @@ export default function AddClient() {
                   <Box w="full" mb="16px">
                     <Text
                       mb="8px"
-                      fontSize="10px"
+                      fontSize="12px"
                       fontWeight={500}
                       color="#444648"
                     >
@@ -253,7 +253,7 @@ export default function AddClient() {
                       <span
                         style={{
                           color: "tomato",
-                          fontSize: "13px",
+                          fontSize: "15px",
                         }}
                       >
                         *
@@ -275,7 +275,7 @@ export default function AddClient() {
                   <Box w="full" mb="16px">
                     <Text
                       mb="8px"
-                      fontSize="10px"
+                      fontSize="12px"
                       fontWeight={500}
                       color="#444648"
                     >
@@ -283,7 +283,7 @@ export default function AddClient() {
                       <span
                         style={{
                           color: "tomato",
-                          fontSize: "13px",
+                          fontSize: "15px",
                         }}
                       >
                         *
@@ -307,13 +307,13 @@ export default function AddClient() {
                       mb="8px"
                       fontWeight={500}
                       color="#444648"
-                      fontSize="10px"
+                      fontSize="12px"
                     >
                       Phone Number{" "}
                       <span
                         style={{
                           color: "tomato",
-                          fontSize: "13px",
+                          fontSize: "15px",
                         }}
                       >
                         *
@@ -344,7 +344,7 @@ export default function AddClient() {
                   <Box w="full" mb="16px">
                     <Text
                       mb="8px"
-                      fontSize="10px"
+                      fontSize="12px"
                       fontWeight={500}
                       color="#444648"
                     >
@@ -352,7 +352,7 @@ export default function AddClient() {
                       <span
                         style={{
                           color: "tomato",
-                          fontSize: "13px",
+                          fontSize: "15px",
                         }}
                       >
                         *
@@ -374,7 +374,7 @@ export default function AddClient() {
                   <Box mb="16px">
                     <Text
                       mb="8px"
-                      fontSize="10px"
+                      fontSize="12px"
                       fontWeight={500}
                       color="#444648"
                     >
@@ -382,7 +382,7 @@ export default function AddClient() {
                       <span
                         style={{
                           color: "tomato",
-                          fontSize: "13px",
+                          fontSize: "15px",
                         }}
                       >
                         *
@@ -417,7 +417,7 @@ export default function AddClient() {
                       onBlur={handleBlur}
                     />
                     {formSubmitted && !values?.state && (
-                      <Text mt="8px" fontSize="10px" color="tomato">
+                      <Text mt="8px" fontSize="12px" color="tomato">
                         State is required
                       </Text>
                     )}
@@ -426,7 +426,7 @@ export default function AddClient() {
                   <Box w="full" mb="16px">
                     <Text
                       mb="8px"
-                      fontSize="10px"
+                      fontSize="12px"
                       fontWeight={500}
                       color="#444648"
                     >
@@ -434,7 +434,7 @@ export default function AddClient() {
                       <span
                         style={{
                           color: "tomato",
-                          fontSize: "13px",
+                          fontSize: "15px",
                         }}
                       >
                         *
@@ -460,7 +460,7 @@ export default function AddClient() {
                   <Box mb="16px">
                     <Text
                       mb="8px"
-                      fontSize="10px"
+                      fontSize="12px"
                       fontWeight={500}
                       color="#444648"
                     >
@@ -468,7 +468,7 @@ export default function AddClient() {
                       <span
                         style={{
                           color: "tomato",
-                          fontSize: "13px",
+                          fontSize: "15px",
                         }}
                       >
                         *
@@ -495,7 +495,7 @@ export default function AddClient() {
                   <Box mb="16px">
                     <Text
                       mb="8px"
-                      fontSize="10px"
+                      fontSize="12px"
                       fontWeight={500}
                       color="#444648"
                     >
@@ -503,7 +503,7 @@ export default function AddClient() {
                       <span
                         style={{
                           color: "tomato",
-                          fontSize: "13px",
+                          fontSize: "15px",
                         }}
                       >
                         *
@@ -538,7 +538,7 @@ export default function AddClient() {
                       onBlur={handleBlur}
                     />
                     {formSubmitted && !values?.accountType && (
-                      <Text mt="8px" fontSize="10px" color="tomato">
+                      <Text mt="8px" fontSize="12px" color="tomato">
                         Account Type is required
                       </Text>
                     )}
@@ -547,7 +547,7 @@ export default function AddClient() {
                   <Box mb="16px">
                     <Text
                       mb="8px"
-                      fontSize="10px"
+                      fontSize="12px"
                       fontWeight={500}
                       color="#444648"
                     >
@@ -555,7 +555,7 @@ export default function AddClient() {
                       <span
                         style={{
                           color: "tomato",
-                          fontSize: "13px",
+                          fontSize: "15px",
                         }}
                       >
                         *
@@ -590,7 +590,7 @@ export default function AddClient() {
                     />
 
                     {formSubmitted && !values?.managers?.length && (
-                      <Text mt="8px" fontSize="10px" color="tomato">
+                      <Text mt="8px" fontSize="12px" color="tomato">
                         Select at least one manager
                       </Text>
                     )}
@@ -599,7 +599,7 @@ export default function AddClient() {
                   <Box>
                     <Text
                       mb="8px"
-                      fontSize="10px"
+                      fontSize="12px"
                       fontWeight={500}
                       color="#444648"
                     >
@@ -607,7 +607,7 @@ export default function AddClient() {
                       <span
                         style={{
                           color: "tomato",
-                          fontSize: "13px",
+                          fontSize: "15px",
                         }}
                       >
                         *
@@ -641,7 +641,7 @@ export default function AddClient() {
                       onBlur={handleBlur}
                     />
                     {formSubmitted && !values?.status && (
-                      <Text mt="8px" fontSize="10px" color="tomato">
+                      <Text mt="8px" fontSize="12px" color="tomato">
                         Status is required
                       </Text>
                     )}
@@ -679,7 +679,7 @@ const customStyles = {
     width: "100%",
     minHeight: "44px",
     color: "#646668",
-    fontSize: "14px",
+    fontSize: "16px",
     cursor: "pointer",
     borderRadius: "4px",
     border: state.hasValue ? "none" : "1px solid #D4D6D8",
@@ -688,7 +688,7 @@ const customStyles = {
   }),
   menu: (provided) => ({
     ...provided,
-    fontSize: "13px",
+    fontSize: "15px",
     backgroundColor: "#fff",
   }),
   option: (provided, state) => ({

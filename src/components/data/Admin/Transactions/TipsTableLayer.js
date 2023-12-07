@@ -13,7 +13,7 @@ import {
   Icon,
 } from "@chakra-ui/react";
 import TableFormat from "../../../common/TableFormat";
-import { formatDate } from "../../../../utils/helpers";
+import { formatDateTime } from "../../../../utils/helpers";
 import { useNavigate } from "react-router-dom";
 import { BsChevronDown } from "react-icons/bs";
 import TableLoader from "../../../loaders/TableLoader";
@@ -70,7 +70,7 @@ const TableLayer = ({
                 key={i}
                 color="#646668"
                 fontWeight={500}
-                fontSize="12px"
+                fontSize="14px"
                 lineHeight="100%"
               >
                 <Td>{transaction?.serviceLog?.ticketNumber}</Td>
@@ -88,7 +88,9 @@ const TableLayer = ({
                   {transaction?.paymentMethod === 1 ? "Wallet" : "Card"}
                 </Td>
 
-                <Td textAlign="center">{formatDate(transaction?.createdAt)}</Td>
+                <Td textAlign="center">
+                  {formatDateTime(transaction?.createdAt)}
+                </Td>
                 <Td textAlign="center">
                   <Flex justifyContent="center" align="center">
                     <Menu>
@@ -141,7 +143,7 @@ const TableLayer = ({
           <Image src="/assets/no-sub.jpg" w="64px" h="64px" />
           <Text
             color="#848688"
-            fontSize="12px"
+            fontSize="14px"
             lineHeight="100%"
             fontWeight={500}
           >

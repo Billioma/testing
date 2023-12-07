@@ -40,6 +40,15 @@ html {
 *::-webkit-scrollbar-thumb {
   background-color: transparent;
 }
+.scrolle::-webkit-scrollbar {
+  width: 2px;
+  border-radius: 0;
+  background-color: transparent;
+}
+
+.scrolle::-webkit-scrollbar-thumb {
+  background-color: red;
+}
 
 .hovered_image {
   display: none;

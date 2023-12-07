@@ -33,7 +33,7 @@ const AdminAddServiceModal = ({ isOpen, refetch, onClose }) => {
       width: "100%",
       minHeight: "44px",
       color: "#646668",
-      fontSize: "14px",
+      fontSize: "16px",
       cursor: "pointer",
       borderRadius: "4px",
       border: state.hasValue ? "none" : "1px solid #D4D6D8",
@@ -42,7 +42,7 @@ const AdminAddServiceModal = ({ isOpen, refetch, onClose }) => {
     }),
     menu: (provided) => ({
       ...provided,
-      fontSize: "13px",
+      fontSize: "15px",
       backgroundColor: "#fff",
     }),
     option: (provided, state) => ({
@@ -130,7 +130,7 @@ const AdminAddServiceModal = ({ isOpen, refetch, onClose }) => {
               <Text
                 color="#444648"
                 lineHeight="100%"
-                fontSize="10px"
+                fontSize="12px"
                 mb="8px"
                 fontWeight={500}
               >
@@ -138,7 +138,7 @@ const AdminAddServiceModal = ({ isOpen, refetch, onClose }) => {
                 <span
                   style={{
                     color: "tomato",
-                    fontSize: "13px",
+                    fontSize: "15px",
                   }}
                 >
                   *
@@ -157,7 +157,7 @@ const AdminAddServiceModal = ({ isOpen, refetch, onClose }) => {
               />
 
               {formSubmitted && !values?.name && (
-                <Text mt="-22px" fontSize="10px" color="tomato">
+                <Text mt="-22px" fontSize="12px" color="tomato">
                   Name is required
                 </Text>
               )}
@@ -167,7 +167,7 @@ const AdminAddServiceModal = ({ isOpen, refetch, onClose }) => {
               <Text
                 color="#444648"
                 lineHeight="100%"
-                fontSize="10px"
+                fontSize="12px"
                 mb="8px"
                 fontWeight={500}
               >
@@ -175,7 +175,7 @@ const AdminAddServiceModal = ({ isOpen, refetch, onClose }) => {
                 <span
                   style={{
                     color: "tomato",
-                    fontSize: "13px",
+                    fontSize: "15px",
                   }}
                 >
                   *
@@ -193,7 +193,7 @@ const AdminAddServiceModal = ({ isOpen, refetch, onClose }) => {
               />
 
               {formSubmitted && !values?.description && (
-                <Text mt="-11px" fontSize="10px" color="tomato">
+                <Text mt="-11px" fontSize="12px" color="tomato">
                   Description is required
                 </Text>
               )}
@@ -203,7 +203,7 @@ const AdminAddServiceModal = ({ isOpen, refetch, onClose }) => {
               <Text
                 color="#444648"
                 lineHeight="100%"
-                fontSize="10px"
+                fontSize="12px"
                 fontWeight={500}
                 mb="8px"
               >
@@ -211,7 +211,7 @@ const AdminAddServiceModal = ({ isOpen, refetch, onClose }) => {
                 <span
                   style={{
                     color: "tomato",
-                    fontSize: "13px",
+                    fontSize: "15px",
                   }}
                 >
                   *
@@ -242,7 +242,7 @@ const AdminAddServiceModal = ({ isOpen, refetch, onClose }) => {
                 }}
               />
               {formSubmitted && !values?.serviceType && (
-                <Text mt="8px" fontSize="10px" color="tomato">
+                <Text mt="8px" fontSize="12px" color="tomato">
                   Service Type is required
                 </Text>
               )}

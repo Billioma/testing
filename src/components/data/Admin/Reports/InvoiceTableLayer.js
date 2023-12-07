@@ -42,7 +42,7 @@ const InvoiceTableLayer = ({
             useDefaultPagination
           >
             {data?.data?.map((item, i) => (
-              <Tr fontSize="12px" fontWeight={500} color="#646668" key={i}>
+              <Tr fontSize="14px" fontWeight={500} color="#646668" key={i}>
                 <Td>{item?.client || "N/A"}</Td>
                 <Td>{item?.createdBy || "N/A"}</Td>
                 <Td>{item?.paymentConfirmedBy || "N/A"}</Td>
@@ -77,7 +77,7 @@ const InvoiceTableLayer = ({
           <Image src="/assets/no-log-rep.jpg" w="64px" h="64px" />
           <Text
             color="#848688"
-            fontSize="12px"
+            fontSize="14px"
             lineHeight="100%"
             fontWeight={500}
           >

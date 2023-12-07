@@ -21,11 +21,12 @@ import { CiLocationOn, CiMap } from "react-icons/ci";
 import { PiWarningCircleLight } from "react-icons/pi";
 import { Calendar } from "react-calendar";
 import {
-  formatDate,
   formatHour,
   formatNewDate,
+  formatTime,
   formatTimeMinute,
   formatTimeToHHMMSS,
+  formatTimees,
 } from "../../../utils/helpers";
 import {
   useGetMake,
@@ -51,7 +52,13 @@ import { MdCancel } from "react-icons/md";
 import { IoIosArrowDown } from "react-icons/io";
 import DatePicker from "react-multi-date-picker";
 
+import GoogleMap from "google-map-react";
+import OverlayTrigger from "react-bootstrap/OverlayTrigger";
+import Tooltip from "react-bootstrap/Tooltip";
+
 const ReserveParking = () => {
+  const { data: locations, isLoading: isLocation } = useGetLocations();
+
   const [step, setStep] = useState(1);
   const { isOpen, onClose, onOpen } = useDisclosure();
   const [showFunds, setShowFunds] = useState(false);
@@ -72,10 +79,85 @@ const ReserveParking = () => {
     model: "",
   });
 
+  const mapStyles = {
+    width: "100%",
+    height: "100%",
+    position: "absolute",
+  };
+
+  const markerStyle = {
+    height: "30px",
+    width: "30px",
+    marginTop: "-50px",
+    cursor: "pointer",
+  };
+
+  const imgStyle = {
+    height: "100%",
+  };
+
+  const Marker = ({ location }) => (
+    <OverlayTrigger
+      placement="bottom"
+      delay={{ show: 100, hide: 100 }}
+      overlay={
+        <Tooltip>
+          <Text color="#fff" fontWeight={700}>
+            {location.name}
+          </Text>
+          <Text color="#fff" fontSize="14px" fontWeight={500}>
+            {location.address}
+          </Text>
+        </Tooltip>
+      }
+    >
+      <div
+        className="d-flex algin-items-center"
+        onClick={() => {
+          setValues({
+            ...values,
+            location: location,
+          });
+          setStep(step + 1);
+        }}
+        style={markerStyle}
+      >
+        <img style={imgStyle} src="/assets/pin.png" alt={location.name} />
+      </div>
+    </OverlayTrigger>
+  );
+
+  const [center, setCenter] = useState({
+    lat: 6.4393298,
+    lng: 3.4370477,
+  });
+
+  let locationMarkers =
+    locations?.length &&
+    locations?.map((i, index) => {
+      const center =
+        i?.geoLocation?.split("POINT(")[1]?.split(")")[0]?.split(" ") || [];
+
+      if (center.length >= 2) {
+        return (
+          <Marker
+            location={i}
+            key={index}
+            lat={center[0]}
+            lng={center[1]}
+          ></Marker>
+        );
+      } else {
+        return null;
+      }
+    });
+
   const [startDate, setStartDate] = useState(false);
   const [startValue, startChange] = useState("");
   const [endValue, endChange] = useState("");
   const [space, setSpace] = useState("");
+  const [Checking, setChecking] = useState(false);
+  const [times, setTimes] = useState(false);
 
   const {
     mutate: reqeustReserve,
@@ -84,14 +166,18 @@ const ReserveParking = () => {
   } = useRequestReserveParking({
     onSuccess: () => {
       setSpace("space");
+      setChecking(false);
     },
     onError: (err) => {
-      if (err?.response?.status === 404) {
+      if (err?.response?.data?.message === "Time slot unavailable") {
         setSpace("noSpace");
+        setTimes(err?.response?.data?.suggestedTimeSlots);
+      } else if (err?.response?.data?.message === "No Space!") {
+        setSpace("noReserve");
       }
+      setChecking(false);
     },
   });
-
   const [endDate, setEndDate] = useState(false);
   useEffect(() => {
     setStep(1);
@@ -118,9 +204,8 @@ const ReserveParking = () => {
   const { data: cards, refetch: refetchCards } = useGetCards();
   const { data: userData, refetch } = useGetUser();
 
-  const start = formatDate(startValue);
-  const end = formatDate(endValue);
-
+  const start = formatNewDate(startValue);
+  const end = formatNewDate(endValue);
   const startDateRange = new Date();
 
   const isDateDisabled = (date) => {
@@ -150,7 +235,6 @@ const ReserveParking = () => {
     return null;
   };
 
-  const { data: locations, isLoading: isLocation } = useGetLocations();
   const [showVehicle, setShowVehicle] = useState(false);
   const { data: models } = useGetModel();
   const { data: vehicles, refetch: refetchVehicle } = useGetVehicles();
@@ -283,7 +367,6 @@ const ReserveParking = () => {
         );
       },
     });
-
   const handleRequest = () => {
     reqeustReserve({
       arrival: `${start}${formatTimeToHHMMSS(values?.arrivalTime?.value)}`,
@@ -293,17 +376,7 @@ const ReserveParking = () => {
       vehicle: values?.vehicle?.id,
     });
   };
-  // useEffect(() => {
-  //   if (start && end && values?.locations && values?.vehicle) {
-  //     reqeustReserve({
-  //       arrival: `${start}${formatTimeToHHMMSS(values?.arrivalTime?.value)}`,
-  //       departure: `${end}${formatTimeToHHMMSS(values?.departureTime?.value)}`,
-  //       location: Number(values?.locations?.id),
-  //       service: "3",
-  //       vehicle: values?.vehicle?.id,
-  //     });
-  //   }
-  // }, [values, start, end]);
+
   const formattedDate = `${start.substr(6, 4)}-${start.substr(
     0,
     2
@@ -412,6 +485,26 @@ const ReserveParking = () => {
     };
   }, []);
 
+  const groupTimesByDate = (times) => {
+    const groupedTimes = {};
+
+    if (!times || times.length === 0) {
+      return groupedTimes;
+    }
+
+    times.forEach((timeObj) => {
+      const dateKey = formatNewDate(new Date(timeObj.arrivalTime));
+      if (!groupedTimes[dateKey]) {
+        groupedTimes[dateKey] = [];
+      }
+      groupedTimes[dateKey].push(timeObj);
+    });
+
+    return groupedTimes;
+  };
+
+  const groupedTimes = groupTimesByDate(times);
+
   return (
     <Box minH="75vh">
       <Flex justifyContent="center" align="center" w="full" flexDir="column">
@@ -500,7 +593,9 @@ const ReserveParking = () => {
                       value={values?.state}
                       defaultValue={values?.state}
                       onChange={(selectedOption) => {
-                        handleSelectChange(selectedOption, { name: "state" });
+                        handleSelectChange(selectedOption, {
+                          name: "state",
+                        });
                       }}
                       components={{
                         IndicatorSeparator: () => (
@@ -555,174 +650,193 @@ const ReserveParking = () => {
                 </Flex>
               </Flex>
 
-              <Grid
-                gap="35px"
-                templateColumns={
-                  currentStateLocation?.length
-                    ? [
-                        "repeat(1,1fr)",
-                        "repeat(1,1fr)",
-                        "repeat(2,1fr)",
-                        "repeat(2,1fr)",
-                      ]
-                    : isLocation
-                    ? "repeat(1,1fr)"
-                    : "repeat(1,1fr)"
-                }
-              >
-                {currentStateLocation?.length ? (
-                  currentStateLocation?.map((dat, i) => (
-                    <GridItem key={i}>
-                      <Box
-                        borderRadius="8px"
-                        border="1px solid #d4d6d8"
-                        p="16px"
-                      >
-                        <Flex align="center" gap="24px">
-                          <Box display={{ base: "none", md: "block" }}>
-                            <Image
-                              src="/assets/loc.jpg"
-                              borderRadius="9px"
-                              maxW="125px"
-                              maxH="125px"
-                              objectFit="cover"
-                            />
-                          </Box>
-
-                          <Box w="full">
-                            <Flex
-                              align="center"
-                              w="full"
-                              gap="24px"
-                              justifyContent="space-between"
-                            >
-                              <Box w="full">
-                                <Text
-                                  fontSize="10px"
-                                  color="#242628"
-                                  lineHeight="100%"
-                                  mb="8px"
-                                >
-                                  Location
-                                </Text>
-                                <Text
-                                  fontSize="14px"
-                                  color="#848688"
-                                  lineHeight="100%"
-                                  fontWeight={500}
-                                >
-                                  {dat?.name}
-                                </Text>
+              {tab === "List" && (
+                <>
+                  <Grid
+                    gap="35px"
+                    templateColumns={
+                      currentStateLocation?.length
+                        ? [
+                            "repeat(1,1fr)",
+                            "repeat(1,1fr)",
+                            "repeat(2,1fr)",
+                            "repeat(2,1fr)",
+                          ]
+                        : isLocation
+                        ? "repeat(1,1fr)"
+                        : "repeat(1,1fr)"
+                    }
+                  >
+                    {currentStateLocation?.length ? (
+                      currentStateLocation?.map((dat, i) => (
+                        <GridItem key={i}>
+                          <Box
+                            borderRadius="8px"
+                            border="1px solid #d4d6d8"
+                            p="16px"
+                          >
+                            <Flex align="center" gap="24px">
+                              <Box display={{ base: "none", md: "block" }}>
+                                <Image
+                                  src="/assets/loc.jpg"
+                                  borderRadius="9px"
+                                  maxW="125px"
+                                  maxH="125px"
+                                  objectFit="cover"
+                                />
                               </Box>
 
-                              <Flex
-                                align="center"
-                                gap="4px"
-                                color="#FFA36D"
-                                fontWeight={500}
-                                fontSize="12px"
-                                lineHeight="100%"
-                              >
-                                <PiWarningCircleLight size="16px" />
-                                <Text>Details</Text>
-                              </Flex>
-                            </Flex>
-
-                            <Flex
-                              mt="22px"
-                              align="flex-end"
-                              w="full"
-                              gap="24px"
-                              justifyContent="space-between"
-                            >
                               <Box w="full">
-                                <Text
-                                  mb="8px"
-                                  fontSize="10px"
-                                  color="#242628"
-                                  lineHeight="100%"
-                                >
-                                  Amenities
-                                </Text>
                                 <Flex
-                                  flexWrap="wrap"
                                   align="center"
-                                  gap="12px"
-                                  rowGap="8px"
+                                  w="full"
+                                  gap="24px"
+                                  justifyContent="space-between"
                                 >
-                                  {dat?.amenities?.map((amenity, i) => (
-                                    <Flex
-                                      key={i}
-                                      justifyContent="center"
-                                      align="center"
-                                      bg={colors[i % colors?.length]}
+                                  <Box w="full">
+                                    <Text
                                       fontSize="10px"
-                                      color="#646668"
-                                      fontWeight={500}
+                                      color="#242628"
                                       lineHeight="100%"
-                                      borderRadius="4px"
-                                      py="7px"
-                                      px="10px"
+                                      mb="8px"
                                     >
-                                      {amenity?.name}
+                                      Location
+                                    </Text>
+                                    <Text
+                                      fontSize="14px"
+                                      color="#848688"
+                                      lineHeight="100%"
+                                      fontWeight={500}
+                                    >
+                                      {dat?.name}
+                                    </Text>
+                                  </Box>
+
+                                  <Flex
+                                    align="center"
+                                    gap="4px"
+                                    color="#FFA36D"
+                                    fontWeight={500}
+                                    fontSize="12px"
+                                    lineHeight="100%"
+                                  >
+                                    <PiWarningCircleLight size="16px" />
+                                    <Text>Details</Text>
+                                  </Flex>
+                                </Flex>
+
+                                <Flex
+                                  mt="22px"
+                                  align="flex-end"
+                                  w="full"
+                                  gap="24px"
+                                  justifyContent="space-between"
+                                >
+                                  <Box w="full">
+                                    <Text
+                                      mb="8px"
+                                      fontSize="10px"
+                                      color="#242628"
+                                      lineHeight="100%"
+                                    >
+                                      Amenities
+                                    </Text>
+                                    <Flex
+                                      flexWrap="wrap"
+                                      align="center"
+                                      gap="12px"
+                                      rowGap="8px"
+                                    >
+                                      {dat?.amenities?.map((amenity, i) => (
+                                        <Flex
+                                          key={i}
+                                          justifyContent="center"
+                                          align="center"
+                                          bg={colors[i % colors?.length]}
+                                          fontSize="10px"
+                                          color="#646668"
+                                          fontWeight={500}
+                                          lineHeight="100%"
+                                          borderRadius="4px"
+                                          py="7px"
+                                          px="10px"
+                                        >
+                                          {amenity?.name}
+                                        </Flex>
+                                      ))}
                                     </Flex>
-                                  ))}
+                                  </Box>
+
+                                  <Box>
+                                    <Button
+                                      size="sm"
+                                      onClick={() => {
+                                        setValues({
+                                          ...values,
+                                          location: dat,
+                                        });
+                                        setStep(step + 1);
+                                      }}
+                                      fontSize="12px"
+                                      lineHeight="100%"
+                                    >
+                                      Select
+                                    </Button>
+                                  </Box>
                                 </Flex>
                               </Box>
-
-                              <Box>
-                                <Button
-                                  size="sm"
-                                  onClick={() => {
-                                    setValues({
-                                      ...values,
-                                      location: dat,
-                                    });
-                                    setStep(step + 1);
-                                  }}
-                                  fontSize="12px"
-                                  lineHeight="100%"
-                                >
-                                  Select
-                                </Button>
-                              </Box>
                             </Flex>
                           </Box>
-                        </Flex>
-                      </Box>
-                    </GridItem>
-                  ))
-                ) : isLocation ? (
-                  <Flex
-                    justifyContent="center"
-                    align="center"
-                    w="full"
-                    my="38px"
-                    flexDir="column"
+                        </GridItem>
+                      ))
+                    ) : isLocation ? (
+                      <Flex
+                        justifyContent="center"
+                        align="center"
+                        w="full"
+                        my="38px"
+                        flexDir="column"
+                      >
+                        <Spinner />
+                      </Flex>
+                    ) : (
+                      <Flex
+                        gap="16px"
+                        justifyContent="center"
+                        align="center"
+                        w="full"
+                        my="38px"
+                        flexDir="column"
+                      >
+                        <Image src="/assets/no-loc.jpg" w="64px" h="64px" />
+                        <Text
+                          color="#848688"
+                          fontSize="12px"
+                          lineHeight="100%"
+                          fontWeight={500}
+                        >
+                          No Location Data
+                        </Text>
+                      </Flex>
+                    )}
+                  </Grid>
+                </>
+              )}
+
+              {tab === "Map" && (
+                <Box h="600px" pos="relative">
+                  <GoogleMap
+                    style={mapStyles}
+                    bootstrapURLKeys={{
+                      key: "AIzaSyAxAeC8VSn6cOx69kEuIEdoqTno2I2UV5E",
+                    }}
+                    center={center}
+                    zoom={14}
                   >
-                    <Spinner />
-                  </Flex>
-                ) : (
-                  <Flex
-                    gap="16px"
-                    justifyContent="center"
-                    align="center"
-                    w="full"
-                    my="38px"
-                    flexDir="column"
-                  >
-                    <Image src="/assets/no-loc.jpg" w="64px" h="64px" />
-                    <Text
-                      color="#848688"
-                      fontSize="12px"
-                      lineHeight="100%"
-                      fontWeight={500}
-                    >
-                      No Location Data
-                    </Text>
-                  </Flex>
-                )}
-              </Grid>
+                    {locationMarkers}
+                  </GoogleMap>
+                </Box>
+              )}
             </>
           )}
 
@@ -795,7 +909,18 @@ const ReserveParking = () => {
                       placeholder="Select Date"
                       value={startValue}
                       minDate={startDateRange}
-                      onChange={startChange}
+                      onChange={(date) => {
+                        startChange(date);
+                        if (
+                          start &&
+                          end &&
+                          values?.arrivalTime &&
+                          values?.departureTime
+                        ) {
+                          reqeustReserve();
+                          setChecking(true);
+                        }
+                      }}
                     />
                   </Box>
                   <Box
@@ -825,7 +950,18 @@ const ReserveParking = () => {
                     {startDate && (
                       <Box pos="absolute" top="50px" w="200%" zIndex="3">
                         <Calendar
-                          onChange={handleDateChange}
+                          onChange={(date) => {
+                            handleDateChange(date);
+                            if (
+                              start &&
+                              end &&
+                              values?.arrivalTime &&
+                              values?.departureTime
+                            ) {
+                              reqeustReserve();
+                              setChecking(true);
+                            }
+                          }}
                           value={startValue}
                           minDate={startDateRange}
                           tileClassName={tileClassName}
@@ -851,11 +987,20 @@ const ReserveParking = () => {
                     options={timeOptions}
                     value={values?.arrivalTime}
                     defaultValue={values?.arrivalTime}
-                    onChange={(selectedOption) =>
+                    onChange={(selectedOption) => {
                       handleSelectChange(selectedOption, {
                         name: "arrivalTime",
-                      })
-                    }
+                      });
+                      if (
+                        start &&
+                        end &&
+                        values?.arrivalTime &&
+                        values?.departureTime
+                      ) {
+                        reqeustReserve();
+                        setChecking(true);
+                      }
+                    }}
                     components={{
                       IndicatorSeparator: () => (
                         <div style={{ display: "none" }}></div>
@@ -892,7 +1037,18 @@ const ReserveParking = () => {
                       placeholder="Select Date"
                       value={endValue}
                       minDate={startDateRange}
-                      onChange={endChange}
+                      onChange={(date) => {
+                        endChange(date);
+                        if (
+                          start &&
+                          end &&
+                          values?.arrivalTime &&
+                          values?.departureTime
+                        ) {
+                          reqeustReserve();
+                          setChecking(true);
+                        }
+                      }}
                     />
                   </Box>
 
@@ -923,7 +1079,18 @@ const ReserveParking = () => {
                     {endDate && (
                       <Box pos="absolute" top="70" w="200%" zIndex="3">
                         <Calendar
-                          onChange={handleEndDateChange}
+                          onChange={(date) => {
+                            handleEndDateChange(date);
+                            if (
+                              start &&
+                              end &&
+                              values?.arrivalTime &&
+                              values?.departureTime
+                            ) {
+                              reqeustReserve();
+                              setChecking(true);
+                            }
+                          }}
                           value={endValue}
                           minDate={startDateRange}
                           tileClassName={tileClassName}
@@ -949,11 +1116,20 @@ const ReserveParking = () => {
                     options={timeOption}
                     value={values?.departureTime}
                     defaultValue={values?.departureTime}
-                    onChange={(selectedOption) =>
+                    onChange={(selectedOption) => {
                       handleSelectChange(selectedOption, {
                         name: "departureTime",
-                      })
-                    }
+                      });
+                      if (
+                        start &&
+                        end &&
+                        values?.arrivalTime &&
+                        values?.departureTime
+                      ) {
+                        reqeustReserve();
+                        setChecking(true);
+                      }
+                    }}
                     components={{
                       IndicatorSeparator: () => (
                         <div style={{ display: "none" }}></div>
@@ -1024,8 +1200,7 @@ const ReserveParking = () => {
               ) : (
                 ""
               )}
-
-              {isRequesting ? (
+              {!Checking && isRequesting ? (
                 <Flex
                   align="center"
                   gap="8px"
@@ -1038,6 +1213,132 @@ const ReserveParking = () => {
                   <Text>Checking Parking Availability</Text>
                 </Flex>
               ) : space === "noSpace" ? (
+                <Box
+                  pos="relative"
+                  h="30vh"
+                  className="scrolle"
+                  overflowY="scroll"
+                >
+                  <Box pb="5px" bg="#fff" pos="sticky" top="0">
+                    <Flex
+                      align="center"
+                      gap="8px"
+                      color="red"
+                      fontSize="12px"
+                      lineHeight="100%"
+                      fontWeight={500}
+                    >
+                      <BsCheckCircle size="16px" />
+                      <Text>Desired time unavailable.</Text>
+                    </Flex>
+                    <Text
+                      color="#444648"
+                      my="12px"
+                      fontSize="12px"
+                      lineHeight="100%"
+                      fontWeight={500}
+                    >
+                      Select from an available time-slot below.
+                    </Text>{" "}
+                  </Box>
+                  <Box>
+                    {times?.length > 0
+                      ? Object.entries(groupedTimes).map(
+                          ([date, timeArray], i) => (
+                            <Box>
+                              <Text
+                                color="#444648"
+                                my="12px"
+                                textAlign="center"
+                                fontSize="12px"
+                                lineHeight="100%"
+                                fontWeight={700}
+                              >
+                                {date}
+                              </Text>
+                              <Grid
+                                key={i}
+                                gap="12px"
+                                rowGap="5px"
+                                templateColumns={{
+                                  base: "repeat(2,1fr)",
+                                  md: "repeat(3,1fr)",
+                                }}
+                              >
+                                {timeArray.map((timeObj, j) => (
+                                  <Flex
+                                    key={j}
+                                    borderRadius="6px"
+                                    bg={
+                                      values?.arrivalTime?.value ===
+                                        formatTime(timeObj?.arrivalTime) &&
+                                      values?.departureTime?.value ===
+                                        formatTime(timeObj?.departureTime)
+                                        ? "red"
+                                        : "#f4f6f8"
+                                    }
+                                    color={
+                                      values?.arrivalTime?.value ===
+                                        formatTime(timeObj?.arrivalTime) &&
+                                      values?.departureTime?.value ===
+                                        formatTime(timeObj?.departureTime)
+                                        ? "#fff"
+                                        : "#646668"
+                                    }
+                                    fontSize={{ base: "12px", md: "13px" }}
+                                    fontWeight={500}
+                                    lineHeight="100%"
+                                    onClick={() => {
+                                      setValues({
+                                        ...values,
+                                        arrivalTime: {
+                                          value: formatTime(
+                                            timeObj.arrivalTime
+                                          ),
+                                          label: formatTime(
+                                            timeObj.arrivalTime
+                                          ),
+                                        },
+                                        departureTime: {
+                                          value: formatTime(
+                                            timeObj.departureTime
+                                          ),
+                                          label: formatTime(
+                                            timeObj.departureTime
+                                          ),
+                                        },
+                                      });
+                                      startChange(
+                                        formatNewDate(timeObj?.arrivalTime)
+                                      );
+                                      endChange(
+                                        formatNewDate(timeObj?.departureTime)
+                                      );
+                                    }}
+                                    transition=".3s ease-in-out"
+                                    _hover={{
+                                      backgroundColor: "red",
+                                      color: "#fff",
+                                    }}
+                                    cursor="pointer"
+                                    py="8px"
+                                    px="20px"
+                                  >
+                                    {`${formatTimees(
+                                      new Date(timeObj.arrivalTime)
+                                    )} - ${formatTimees(
+                                      new Date(timeObj.departureTime)
+                                    )}`}
+                                  </Flex>
+                                ))}
+                              </Grid>
+                            </Box>
+                          )
+                        )
+                      : ""}{" "}
+                  </Box>
+                </Box>
+              ) : space === "noReserve" ? (
                 <Flex
                   align="center"
                   gap="8px"
@@ -1047,7 +1348,10 @@ const ReserveParking = () => {
                   fontWeight={500}
                 >
                   <BsCheckCircle size="16px" />
-                  <Text>Desired time unavailable.</Text>
+                  <Text>
+                    No Reservable Parking space found for zones in this
+                    location.
+                  </Text>
                 </Flex>
               ) : space === "space" ? (
                 <Flex

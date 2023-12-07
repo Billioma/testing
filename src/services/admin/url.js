@@ -299,3 +299,6 @@ export const ADMIN_FAQS_LIST = (filterString = "", limit = "", page = "") =>
   `admin/faqs?${filterString}&limit=${limit}&page=${page}&sort=id,DESC`;
 
 export const ADMIN_FAQ = (id = "") => `admin/faqs/${id}`;
+
+export const UPDATE_ADMIN_PROFILE = "/admin/update-profile";
+export const UPDATE_ADMIN_PASSWORD = "/admin/update-password";

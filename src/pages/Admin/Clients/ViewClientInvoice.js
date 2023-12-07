@@ -223,7 +223,6 @@ export default function ViewOperator() {
                   >
                     <Text
                       textAlign={"center"}
-                      fontSize="14px"
                       mb="26px"
                       color="#646668"
                       lineHeight="100%"
@@ -235,7 +234,7 @@ export default function ViewOperator() {
                     <Box w="full" mb="16px">
                       <Text
                         mb="8px"
-                        fontSize="10px"
+                        fontSize="12px"
                         fontWeight={500}
                         color="#444648"
                       >
@@ -267,7 +266,7 @@ export default function ViewOperator() {
                     <Box w="full" mb="16px">
                       <Text
                         mb="8px"
-                        fontSize="10px"
+                        fontSize="12px"
                         fontWeight={500}
                         color="#444648"
                       >
@@ -293,13 +292,12 @@ export default function ViewOperator() {
                         mb="8px"
                         fontWeight={500}
                         color="#444648"
-                        fontSize="10px"
+                        fontSize="12px"
                       >
                         Invoice Date
                       </Text>
                       <Box pos="relative" w="full" className="box">
                         <Flex
-                          fontSize="14px"
                           onClick={() => setShowInvoiceDate((prev) => !prev)}
                           align="center"
                           justifyContent="space-between"
@@ -337,13 +335,12 @@ export default function ViewOperator() {
                         mb="8px"
                         fontWeight={500}
                         color="#444648"
-                        fontSize="10px"
+                        fontSize="12px"
                       >
                         Due Date
                       </Text>
                       <Box pos="relative" w="full" className="box">
                         <Flex
-                          fontSize="14px"
                           onClick={() => setShowDueDate((prev) => !prev)}
                           align="center"
                           justifyContent="space-between"
@@ -391,7 +388,6 @@ export default function ViewOperator() {
                   >
                     <Text
                       textAlign={"center"}
-                      fontSize="14px"
                       mb="31px"
                       color="#646668"
                       lineHeight="100%"
@@ -404,7 +400,7 @@ export default function ViewOperator() {
                       justifyContent={"space-between"}
                       alignItems={"center"}
                     >
-                      <Text fontSize="12px" color="#646668">
+                      <Text fontSize="14px" color="#646668">
                         Payment Status
                       </Text>
 
@@ -419,7 +415,7 @@ export default function ViewOperator() {
                         <Text
                           fontWeight={500}
                           lineHeight="100%"
-                          fontSize="10px"
+                          fontSize="12px"
                         >
                           {values?.paymentStatus ? "Paid" : "Unpaid"}
                         </Text>
@@ -432,11 +428,11 @@ export default function ViewOperator() {
                       mt="24px"
                       w="full"
                     >
-                      <Text fontSize="12px" lineHeight="100%">
+                      <Text fontSize="14px" lineHeight="100%">
                         Amount Payable
                       </Text>
 
-                      <Text fontWeight={500} fontSize="14px" lineHeight="100%">
+                      <Text fontWeight={500} lineHeight="100%">
                         ₦ {values?.amountPayable?.toLocaleString() || "0.00"}
                       </Text>
                     </Flex>
@@ -444,7 +440,7 @@ export default function ViewOperator() {
                     <Box w="full" my="24px">
                       <Text
                         mb="8px"
-                        fontSize="10px"
+                        fontSize="12px"
                         fontWeight={500}
                         color="#444648"
                       >
@@ -470,13 +466,12 @@ export default function ViewOperator() {
                         mb="8px"
                         fontWeight={500}
                         color="#444648"
-                        fontSize="10px"
+                        fontSize="12px"
                       >
                         Payment Date
                       </Text>
                       <Box pos="relative" w="full" className="box">
                         <Flex
-                          fontSize="14px"
                           onClick={() => setShowPaymentDate((prev) => !prev)}
                           align="center"
                           justifyContent="space-between"
@@ -555,13 +550,12 @@ export default function ViewOperator() {
                       mb="8px"
                       fontWeight={500}
                       color="#444648"
-                      fontSize="10px"
+                      fontSize="12px"
                     >
                       Service Date
                     </Text>
                     <Box pos="relative" w="full" className="box">
                       <Flex
-                        fontSize="14px"
                         onClick={() => {
                           const updatedShowServiceDateArray = [
                             ...showServiceDateArray,
@@ -612,7 +606,7 @@ export default function ViewOperator() {
                   <Box w={{ base: "100%", lg: "15rem" }}>
                     <Text
                       mb="8px"
-                      fontSize="10px"
+                      fontSize="12px"
                       fontWeight={500}
                       color="#444648"
                     >
@@ -646,7 +640,7 @@ export default function ViewOperator() {
                   <Box w={{ base: "100%", lg: "19rem" }}>
                     <Text
                       mb="8px"
-                      fontSize="10px"
+                      fontSize="12px"
                       fontWeight={500}
                       color="#444648"
                     >
@@ -684,7 +678,7 @@ export default function ViewOperator() {
                   <Box minW={{ base: "100%", lg: "13rem" }}>
                     <Text
                       mb="8px"
-                      fontSize="10px"
+                      fontSize="12px"
                       fontWeight={500}
                       color="#444648"
                     >
@@ -718,7 +712,7 @@ export default function ViewOperator() {
                   <Box w={{ base: "40%", md: "20%" }}>
                     <Text
                       mb="8px"
-                      fontSize="10px"
+                      fontSize="12px"
                       fontWeight={500}
                       color="#444648"
                     >
@@ -743,7 +737,7 @@ export default function ViewOperator() {
                   <Box w={{ base: "40%", md: "20%" }}>
                     <Text
                       mb="8px"
-                      fontSize="10px"
+                      fontSize="12px"
                       fontWeight={500}
                       color="#444648"
                     >

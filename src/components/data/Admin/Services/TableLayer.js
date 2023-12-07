@@ -15,7 +15,7 @@ import {
 } from "@chakra-ui/react";
 import TableFormat from "../../../common/TableFormat";
 import { BsChevronDown } from "react-icons/bs";
-import { formatDate } from "../../../../utils/helpers";
+import { formatDateTime } from "../../../../utils/helpers";
 import AdminDeleteModal from "../../../modals/AdminDeleteModal";
 import useCustomToast from "../../../../utils/notifications";
 import { useDeleteService } from "../../../../services/admin/query/services";
@@ -95,7 +95,7 @@ const TableLayer = ({
                 key={i}
                 color="#646668"
                 fontWeight={500}
-                fontSize="12px"
+                fontSize="14px"
                 lineHeight="100%"
               >
                 <Td>{service?.name}</Td>
@@ -103,7 +103,7 @@ const TableLayer = ({
                   {service?.description}
                 </Td>
                 <Td textAlign="center">{service?.serviceType}</Td>
-                <Td textAlign="center">{formatDate(service?.createdAt)}</Td>
+                <Td textAlign="center">{formatDateTime(service?.createdAt)}</Td>
                 <Td>
                   <Flex justifyContent="center" align="center">
                     <Menu>
@@ -159,7 +159,7 @@ const TableLayer = ({
           <Image src="/assets/no-sub.jpg" w="64px" h="64px" />
           <Text
             color="#848688"
-            fontSize="12px"
+            fontSize="14px"
             lineHeight="100%"
             fontWeight={500}
           >
@@ -171,7 +171,7 @@ const TableLayer = ({
             display="flex"
             bg="#000"
             gap="8px"
-            fontSize="12px"
+            fontSize="14px"
           >
             <Text>Add a Service</Text>
             <Add fill="#fff" />

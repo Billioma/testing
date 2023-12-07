@@ -11,7 +11,7 @@ import {
 import Filter from "../../../../common/Filter";
 import PaymentTable from "./PaymentTable";
 import TipsTable from "./TipsTable";
-import { formatDate } from "../../../../../utils/helpers";
+import { formatNewDate } from "../../../../../utils/helpers";
 
 const TableLayer = () => {
   const [filtArray, setFiltArray] = useState([]);
@@ -20,9 +20,13 @@ const TableLayer = () => {
   const limit = 10;
   const convertedFilters = filtArray?.map((filterObj) => {
     return filterObj?.gte
-      ? `filter=${filterObj?.title}||gte||"${formatDate(filterObj?.gte)}"`
+      ? `filter=${filterObj?.title}||$gte||"${formatNewDate(
+          filterObj?.gte
+        )}T00:00:00"`
       : filterObj?.lte
-      ? `filter=${filterObj?.title}||lte||"${formatDate(filterObj?.lte)}"`
+      ? `filter=${filterObj?.title}||$lte||"${formatNewDate(
+          filterObj?.lte
+        )}T23:59:59"`
       : `filter=${filterObj?.title}||${filterObj?.type || "cont"}||"${
           filterObj?.filter
         }"`;

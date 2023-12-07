@@ -185,7 +185,7 @@ export default function ViewCustomer() {
                   flexDir="column"
                 >
                   <Text
-                    fontSize="10px"
+                    fontSize="12px"
                     fontWeight={500}
                     color="#444648"
                     textAlign="center"
@@ -245,7 +245,7 @@ export default function ViewCustomer() {
                 <Box w="full" mb={4}>
                   <Text
                     mb="8px"
-                    fontSize="10px"
+                    fontSize="12px"
                     fontWeight={500}
                     color="#444648"
                   >
@@ -266,7 +266,7 @@ export default function ViewCustomer() {
                 <Box w="full" mb={4}>
                   <Text
                     mb="8px"
-                    fontSize="10px"
+                    fontSize="12px"
                     fontWeight={500}
                     color="#444648"
                   >
@@ -287,7 +287,7 @@ export default function ViewCustomer() {
                 <Box w="full" mb={4}>
                   <Text
                     mb="8px"
-                    fontSize="10px"
+                    fontSize="12px"
                     fontWeight={500}
                     color="#444648"
                   >
@@ -310,7 +310,7 @@ export default function ViewCustomer() {
                     mb="8px"
                     fontWeight={500}
                     color="#444648"
-                    fontSize="10px"
+                    fontSize="12px"
                   >
                     Phone Number
                   </Text>
@@ -336,7 +336,7 @@ export default function ViewCustomer() {
                 <Box w="full" mb={4}>
                   <Text
                     mb="8px"
-                    fontSize="10px"
+                    fontSize="12px"
                     fontWeight={500}
                     color="#444648"
                   >
@@ -357,7 +357,7 @@ export default function ViewCustomer() {
                 <Box mb={4}>
                   <Text
                     mb="8px"
-                    fontSize="10px"
+                    fontSize="12px"
                     fontWeight={500}
                     color="#444648"
                   >
@@ -438,12 +438,7 @@ export default function ViewCustomer() {
                   h="fit-content"
                   display={edit ? "none" : "flex"}
                 >
-                  <Text
-                    alignSelf={"center"}
-                    color="#646668"
-                    fontWeight={500}
-                    fontSize={"14px"}
-                  >
+                  <Text alignSelf={"center"} color="#646668" fontWeight={500}>
                     Customer Payments
                   </Text>
 
@@ -455,7 +450,7 @@ export default function ViewCustomer() {
                       color="#646668"
                     >
                       <Text fontSize="12px">Wallet</Text>
-                      <Text fontSize="14px" fontWeight={500} mt="8px">
+                      <Text fontWeight={500} mt="8px">
                         Balance: ₦{" "}
                         {data?.wallet?.balance?.toLocaleString() || "0.00"}
                       </Text>
@@ -501,7 +496,7 @@ export default function ViewCustomer() {
                             );
                           })
                         ) : (
-                          <Text fontSize="14px" color="#646668" mt={1}>
+                          <Text color="#646668" mt={1}>
                             No Card Added yet
                           </Text>
                         )}
@@ -530,7 +525,7 @@ const customStyles = {
     width: "100%",
     minHeight: "44px",
     color: "#646668",
-    fontSize: "14px",
+    fontSize: "16px",
     cursor: "pointer",
     borderRadius: "4px",
     border: state.hasValue ? "none" : "1px solid #D4D6D8",
@@ -539,7 +534,7 @@ const customStyles = {
   }),
   menu: (provided) => ({
     ...provided,
-    fontSize: "13px",
+    fontSize: "15px",
     backgroundColor: "#fff",
   }),
   option: (provided, state) => ({

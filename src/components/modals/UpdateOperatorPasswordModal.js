@@ -27,6 +27,7 @@ import {
   useEditAttendant,
   useEditCustomer,
 } from "../../services/admin/query/users";
+import { useUpdateAdminPassword } from "../../services/admin/query/auth";
 
 const UpdateOperatorPasswordModal = ({
   clientValues,
@@ -35,6 +36,7 @@ const UpdateOperatorPasswordModal = ({
   onClose,
   adminUser,
   admin,
+  mainAdmin,
   operator,
   attendant,
   customer,
@@ -111,6 +113,18 @@ const UpdateOperatorPasswordModal = ({
       );
     },
   });
+  const { mutate: mainAdminMutate, isLoading: isMainAdmin } =
+    useUpdateAdminPassword({
+      onSuccess: (res) => {
+        successToast(res?.message);
+        logout();
+      },
+      onError: (err) => {
+        errorToast(
+          err?.response?.data?.message || err?.message || "An Error occurred"
+        );
+      },
+    });
 
   const handleSubmit = (values = "") => {
     const { currentPassword, ...rest } = values;
@@ -155,6 +169,8 @@ const UpdateOperatorPasswordModal = ({
             ...rest,
           },
         })
+      : mainAdmin
+      ? mainAdminMutate(values)
       : mutate(values);
   };
 
@@ -314,7 +330,8 @@ const UpdateOperatorPasswordModal = ({
                       isCustomer ||
                       isAttendant ||
                       isAdmin ||
-                      isOperator
+                      isOperator ||
+                      isMainAdmin
                     }
                     isDisabled={!isValid || !dirty}
                     lineHeight="100%"

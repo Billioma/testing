@@ -169,7 +169,6 @@ export default function AddClientInvoice() {
                     textAlign={"center"}
                     color="#646668"
                     lineHeight="100%"
-                    fontSize="14px"
                     mb="31px"
                     fontWeight={700}
                   >
@@ -179,7 +178,7 @@ export default function AddClientInvoice() {
                   <Box w="full" mb="16px">
                     <Text
                       mb="8px"
-                      fontSize="10px"
+                      fontSize="12px"
                       fontWeight={500}
                       color="#444648"
                     >
@@ -187,7 +186,7 @@ export default function AddClientInvoice() {
                       <span
                         style={{
                           color: "tomato",
-                          fontSize: "13px",
+                          fontSize: "15px",
                         }}
                       >
                         *
@@ -221,7 +220,7 @@ export default function AddClientInvoice() {
                       onBlur={handleBlur}
                     />
                     {formSubmitted && !values?.client && (
-                      <Text mt="8px" fontSize="10px" color="tomato">
+                      <Text mt="8px" fontSize="12px" color="tomato">
                         Client is required
                       </Text>
                     )}
@@ -230,7 +229,7 @@ export default function AddClientInvoice() {
                   <Box w="full" mb="16px">
                     <Text
                       mb="8px"
-                      fontSize="10px"
+                      fontSize="12px"
                       fontWeight={500}
                       color="#444648"
                     >
@@ -238,7 +237,7 @@ export default function AddClientInvoice() {
                       <span
                         style={{
                           color: "tomato",
-                          fontSize: "13px",
+                          fontSize: "15px",
                         }}
                       >
                         *
@@ -264,13 +263,13 @@ export default function AddClientInvoice() {
                       mb="8px"
                       fontWeight={500}
                       color="#444648"
-                      fontSize="10px"
+                      fontSize="12px"
                     >
                       Invoice Date{" "}
                       <span
                         style={{
                           color: "tomato",
-                          fontSize: "13px",
+                          fontSize: "15px",
                         }}
                       >
                         *
@@ -278,7 +277,6 @@ export default function AddClientInvoice() {
                     </Text>
                     <Box pos="relative" w="full" className="box">
                       <Flex
-                        fontSize="14px"
                         onClick={() => setShowInvoiceDate((prev) => !prev)}
                         align="center"
                         justifyContent="space-between"
@@ -323,7 +321,7 @@ export default function AddClientInvoice() {
                     </Box>
 
                     {formSubmitted && !values?.invoiceDate && (
-                      <Text mt="8px" fontSize="10px" color="tomato">
+                      <Text mt="8px" fontSize="12px" color="tomato">
                         Invoice Date is required
                       </Text>
                     )}
@@ -334,13 +332,13 @@ export default function AddClientInvoice() {
                       mb="8px"
                       fontWeight={500}
                       color="#444648"
-                      fontSize="10px"
+                      fontSize="12px"
                     >
                       Due Date{" "}
                       <span
                         style={{
                           color: "tomato",
-                          fontSize: "13px",
+                          fontSize: "15px",
                         }}
                       >
                         *
@@ -348,7 +346,6 @@ export default function AddClientInvoice() {
                     </Text>
                     <Box pos="relative" w="full" className="box">
                       <Flex
-                        fontSize="14px"
                         onClick={() => setShowDueDate((prev) => !prev)}
                         align="center"
                         justifyContent="space-between"
@@ -393,7 +390,7 @@ export default function AddClientInvoice() {
                     </Box>
 
                     {formSubmitted && !values?.dueDate && (
-                      <Text mt="8px" fontSize="10px" color="tomato">
+                      <Text mt="8px" fontSize="12px" color="tomato">
                         Due Date is required
                       </Text>
                     )}
@@ -442,13 +439,12 @@ export default function AddClientInvoice() {
                       mb="8px"
                       fontWeight={500}
                       color="#444648"
-                      fontSize="10px"
+                      fontSize="12px"
                     >
                       Invoice Date
                     </Text>
                     <Box pos="relative" w="full" className="box">
                       <Flex
-                        fontSize="14px"
                         onClick={() => {
                           const updatedShowServiceDateArray = [
                             ...showServiceDateArray,
@@ -499,7 +495,7 @@ export default function AddClientInvoice() {
                   <Box w={{ base: "100%", lg: "15rem" }}>
                     <Text
                       mb="8px"
-                      fontSize="10px"
+                      fontSize="12px"
                       fontWeight={500}
                       color="#444648"
                     >
@@ -533,7 +529,7 @@ export default function AddClientInvoice() {
                   <Box w={{ base: "100%", lg: "19rem" }}>
                     <Text
                       mb="8px"
-                      fontSize="10px"
+                      fontSize="12px"
                       fontWeight={500}
                       color="#444648"
                     >
@@ -571,7 +567,7 @@ export default function AddClientInvoice() {
                   <Box minW={{ base: "100%", lg: "13rem" }}>
                     <Text
                       mb="8px"
-                      fontSize="10px"
+                      fontSize="12px"
                       fontWeight={500}
                       color="#444648"
                     >
@@ -605,7 +601,7 @@ export default function AddClientInvoice() {
                   <Box w={{ base: "40%", md: "20%" }}>
                     <Text
                       mb="8px"
-                      fontSize="10px"
+                      fontSize="12px"
                       fontWeight={500}
                       color="#444648"
                     >
@@ -630,7 +626,7 @@ export default function AddClientInvoice() {
                   <Box w={{ base: "40%", md: "20%" }}>
                     <Text
                       mb="8px"
-                      fontSize="10px"
+                      fontSize="12px"
                       fontWeight={500}
                       color="#444648"
                     >
@@ -686,7 +682,7 @@ export default function AddClientInvoice() {
                     item?.serviceType &&
                     item?.unit
                 )) && (
-                <Text mt="8px" fontSize="10px" color="tomato">
+                <Text mt="8px" fontSize="12px" color="tomato">
                   Invoice Item is required
                 </Text>
               )}

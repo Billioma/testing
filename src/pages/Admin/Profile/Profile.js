@@ -1,8 +1,16 @@
 import React from "react";
-import { Box, Button, Flex, Image, Text } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Flex,
+  Image,
+  Text,
+  useDisclosure,
+} from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import { formatDate } from "../../../utils/helpers";
 import { useGetProfile } from "../../../services/admin/query/auth";
+import UpdateOperatorPasswordModal from "../../../components/modals/UpdateOperatorPasswordModal";
 
 export const Layout = ({ label, data }) => {
   return (
@@ -13,13 +21,12 @@ export const Layout = ({ label, data }) => {
       w="full"
       align="center"
     >
-      <Text lineHeight="100%" fontSize="12px">
+      <Text lineHeight="100%" fontSize="14px">
         {label}
       </Text>
       <Text
         lineHeight="100%"
         color={data === "Active" ? "#008000" : data === "Inactive" ? "red" : ""}
-        fontSize="14px"
         fontWeight={500}
       >
         {data}
@@ -30,6 +37,7 @@ export const Layout = ({ label, data }) => {
 
 const Profile = () => {
   const navigate = useNavigate();
+  const { isOpen, onClose, onOpen } = useDisclosure();
 
   const { data: userData } = useGetProfile();
 
@@ -88,7 +96,7 @@ const Profile = () => {
             mt="15px"
             mb="25px"
             py="9px"
-            fontSize="10px"
+            fontSize="12px"
             fontWeight={500}
           >
             Edit Profile
@@ -108,19 +116,24 @@ const Profile = () => {
           />
 
           <Button
-            onClick={() => navigate("/admin/reset-password")}
+            onClick={onOpen}
             px="20px"
-            isDisabled
             w="full"
             py="9px"
             bg="#000"
-            fontSize="13px"
+            fontSize="15px"
             fontWeight={500}
           >
             Change Password
           </Button>
         </Flex>
       </Flex>
+
+      <UpdateOperatorPasswordModal
+        mainAdmin
+        isOpen={isOpen}
+        onClose={onClose}
+      />
     </Box>
   );
 };

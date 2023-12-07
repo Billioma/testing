@@ -42,13 +42,7 @@ const TableFormat = ({
           justifyContent="space-between"
           w="full"
         >
-          <Text
-            color="#242628"
-            fontWeight={500}
-            fontSize="14px"
-            lineHeight="100%"
-            mb="12px"
-          >
+          <Text color="#242628" fontWeight={500} lineHeight="100%" mb="12px">
             {title}
           </Text>
 
@@ -147,7 +141,7 @@ const DefaultPagination = ({
   return (
     <Flex justifyContent="center" align="center" flexDir="column" w="full">
       <Flex justifyContent="center" gap="32px" align="center" pb={5}>
-        <Text fontSize="12px" color="#242628" lineHeight="100%">
+        <Text fontSize="14px" color="#242628" lineHeight="100%">
           Showing rows {startRow} to {endRow} of {total}
         </Text>
 
@@ -159,19 +153,19 @@ const DefaultPagination = ({
             align="center"
             gap="2px"
             color="#A4A6A8"
-            fontSize="12px"
+            fontSize="14px"
           >
             <IoIosArrowBack />
             <Text lineHeight="100%">Previous</Text>
           </Flex>
 
-          <Flex align="center" gap="5px" color="#A4A6A8" fontSize="12px">
+          <Flex align="center" gap="5px" color="#A4A6A8" fontSize="14px">
             <Flex
               bg="transparent"
               py="6px"
               px="8px"
               color="#242628"
-              fontSize="12px"
+              fontSize="14px"
               lineHeight="100%"
             >
               <Text>{page}</Text>
@@ -185,7 +179,7 @@ const DefaultPagination = ({
             align="center"
             gap="2px"
             color="#A4A6A8"
-            fontSize="12px"
+            fontSize="14px"
           >
             <IoIosArrowForward />
             <Text lineHeight="100%">Next</Text>
@@ -197,7 +191,7 @@ const DefaultPagination = ({
           w="fit-content"
           size="sm"
           bg="transparent"
-          fontSize={12}
+          fontSize="14px"
           borderRadius={8}
           borderWidth={1}
           onChange={(e) => setLimit(e.target.value)}

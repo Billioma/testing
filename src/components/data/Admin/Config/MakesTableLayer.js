@@ -14,7 +14,7 @@ import {
   Button,
 } from "@chakra-ui/react";
 import TableFormat from "../../../common/TableFormat";
-import { formatDate } from "../../../../utils/helpers";
+import { formatDateTime } from "../../../../utils/helpers";
 import { useNavigate } from "react-router-dom";
 import AdminDeleteModal from "../../../modals/AdminDeleteModal";
 import useCustomToast from "../../../../utils/notifications";
@@ -97,12 +97,12 @@ const TableLayer = ({
                 key={i}
                 color="#646668"
                 fontWeight={500}
-                fontSize="12px"
+                fontSize="14px"
                 lineHeight="100%"
               >
                 <Td>{make?.name}</Td>
 
-                <Td textAlign="center">{formatDate(make?.createdAt)}</Td>
+                <Td textAlign="center">{formatDateTime(make?.createdAt)}</Td>
                 <Td>
                   <Flex justifyContent="center" align="center">
                     <Menu>
@@ -159,7 +159,7 @@ const TableLayer = ({
           <Image src="/assets/no-sub.jpg" w="64px" h="64px" />
           <Text
             color="#848688"
-            fontSize="12px"
+            fontSize="14px"
             lineHeight="100%"
             fontWeight={500}
           >
@@ -173,7 +173,7 @@ const TableLayer = ({
             display="flex"
             bg="#000"
             gap="8px"
-            fontSize="12px"
+            fontSize="14px"
           >
             <Text>Add Make</Text>
             <Add fill="#fff" />

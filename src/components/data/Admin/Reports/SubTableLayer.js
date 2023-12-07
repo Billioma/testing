@@ -2,7 +2,7 @@ import React from "react";
 import { Box, Flex, Image, Td, Text, Tr } from "@chakra-ui/react";
 import TableLoader from "../../../loaders/TableLoader";
 import { adminRepSubHeader } from "../../../common/constants";
-import { formatDate } from "../../../../utils/helpers";
+import { formatDateTime } from "../../../../utils/helpers";
 import TableFormat from "../../../common/TableFormat";
 
 const SubTableLayer = ({
@@ -41,20 +41,20 @@ const SubTableLayer = ({
             useDefaultPagination
           >
             {data?.data?.map((item, i) => (
-              <Tr fontSize="12px" fontWeight={500} color="#646668" key={i}>
+              <Tr fontSize="14px" fontWeight={500} color="#646668" key={i}>
                 <Td>{item?.customer || "N/A"}</Td>
                 <Td>{item?.membershipPlan || "N/A"}</Td>
                 <Td textAlign="center">
-                  {formatDate(item?.startDate) || "N/A"}
+                  {formatDateTime(item?.startDate) || "N/A"}
                 </Td>
                 <Td textAlign="center">
-                  {formatDate(item?.nextRenewal) || "N/A"}
+                  {formatDateTime(item?.nextRenewal) || "N/A"}
                 </Td>
                 <Td textAlign="center">{item?.autoRenew || "N/A"}</Td>
                 <Td textAlign="center">{item?.isCancelled || "N/A"}</Td>
                 <Td textAlign="center">{item?.status || "N/A"}</Td>
                 <Td textAlign="center">
-                  {formatDate(item?.createdAt) || "N/A"}
+                  {formatDateTime(item?.createdAt) || "N/A"}
                 </Td>
               </Tr>
             ))}
@@ -71,7 +71,7 @@ const SubTableLayer = ({
           <Image src="/assets/sub.png" w="64px" h="64px" />
           <Text
             color="#848688"
-            fontSize="12px"
+            fontSize="14px"
             lineHeight="100%"
             fontWeight={500}
           >

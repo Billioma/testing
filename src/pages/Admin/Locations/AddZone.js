@@ -122,7 +122,7 @@ export default function AddZone() {
                   <Box w="full" mb={4}>
                     <Text
                       mb="8px"
-                      fontSize="10px"
+                      fontSize="12px"
                       fontWeight={500}
                       color="#444648"
                     >
@@ -130,7 +130,7 @@ export default function AddZone() {
                       <span
                         style={{
                           color: "tomato",
-                          fontSize: "13px",
+                          fontSize: "15px",
                         }}
                       >
                         *
@@ -150,7 +150,7 @@ export default function AddZone() {
                   <Box w="full" mb={4}>
                     <Text
                       mb="8px"
-                      fontSize="10px"
+                      fontSize="12px"
                       fontWeight={500}
                       color="#444648"
                     >
@@ -158,7 +158,7 @@ export default function AddZone() {
                       <span
                         style={{
                           color: "tomato",
-                          fontSize: "13px",
+                          fontSize: "15px",
                         }}
                       >
                         *
@@ -181,7 +181,7 @@ export default function AddZone() {
                   <Box w="full" mb={4}>
                     <Text
                       mb="8px"
-                      fontSize="10px"
+                      fontSize="12px"
                       fontWeight={500}
                       color="#444648"
                     >
@@ -189,7 +189,7 @@ export default function AddZone() {
                       <span
                         style={{
                           color: "tomato",
-                          fontSize: "13px",
+                          fontSize: "15px",
                         }}
                       >
                         *
@@ -212,7 +212,7 @@ export default function AddZone() {
                   <Box w="full" mb={4}>
                     <Text
                       mb="8px"
-                      fontSize="10px"
+                      fontSize="12px"
                       fontWeight={500}
                       color="#444648"
                     >
@@ -220,7 +220,7 @@ export default function AddZone() {
                       <span
                         style={{
                           color: "tomato",
-                          fontSize: "13px",
+                          fontSize: "15px",
                         }}
                       >
                         *
@@ -254,7 +254,7 @@ export default function AddZone() {
                       }}
                     />
                     {formSubmitted && !values?.location && (
-                      <Text mt="8px" fontSize="10px" color="tomato">
+                      <Text mt="8px" fontSize="12px" color="tomato">
                         Location is required
                       </Text>
                     )}
@@ -262,7 +262,7 @@ export default function AddZone() {
                   <Box w="full" mb={4}>
                     <Text
                       mb="8px"
-                      fontSize="10px"
+                      fontSize="12px"
                       fontWeight={500}
                       color="#444648"
                     >
@@ -270,7 +270,7 @@ export default function AddZone() {
                       <span
                         style={{
                           color: "tomato",
-                          fontSize: "13px",
+                          fontSize: "15px",
                         }}
                       >
                         *
@@ -294,7 +294,7 @@ export default function AddZone() {
                   <Box w="full" mb={4}>
                     <Text
                       mb="8px"
-                      fontSize="10px"
+                      fontSize="12px"
                       fontWeight={500}
                       color="#444648"
                     >
@@ -302,7 +302,7 @@ export default function AddZone() {
                       <span
                         style={{
                           color: "tomato",
-                          fontSize: "13px",
+                          fontSize: "15px",
                         }}
                       >
                         *
@@ -336,7 +336,7 @@ export default function AddZone() {
                       }}
                     />
                     {formSubmitted && !values?.service && (
-                      <Text mt="8px" fontSize="10px" color="tomato">
+                      <Text mt="8px" fontSize="12px" color="tomato">
                         Service is required
                       </Text>
                     )}
@@ -344,7 +344,7 @@ export default function AddZone() {
                   <Box w="full" mb={4}>
                     <Text
                       mb="8px"
-                      fontSize="10px"
+                      fontSize="12px"
                       fontWeight={500}
                       color="#444648"
                     >
@@ -352,7 +352,7 @@ export default function AddZone() {
                       <span
                         style={{
                           color: "tomato",
-                          fontSize: "13px",
+                          fontSize: "15px",
                         }}
                       >
                         *
@@ -387,7 +387,7 @@ export default function AddZone() {
                     />
 
                     {formSubmitted && !values?.amenities?.length && (
-                      <Text mt="8px" fontSize="10px" color="tomato">
+                      <Text mt="8px" fontSize="12px" color="tomato">
                         Select at least one amenity
                       </Text>
                     )}
@@ -418,7 +418,7 @@ export default function AddZone() {
                     <Box w="full" mb={4} className="opt-input">
                       <Text
                         mb="8px"
-                        fontSize="10px"
+                        fontSize="12px"
                         fontWeight={500}
                         color="#444648"
                       >
@@ -467,7 +467,7 @@ export default function AddZone() {
                     <Box w="full" mb={4}>
                       <Text
                         mb="8px"
-                        fontSize="10px"
+                        fontSize="12px"
                         fontWeight={500}
                         color="#444648"
                       >
@@ -501,7 +501,7 @@ export default function AddZone() {
                   <Box w="full" mb={4}>
                     <Text
                       mb="8px"
-                      fontSize="10px"
+                      fontSize="12px"
                       fontWeight={500}
                       color="#444648"
                     >
@@ -509,7 +509,7 @@ export default function AddZone() {
                       <span
                         style={{
                           color: "tomato",
-                          fontSize: "13px",
+                          fontSize: "15px",
                         }}
                       >
                         *
@@ -542,7 +542,7 @@ export default function AddZone() {
                       }}
                     />
                     {formSubmitted && !values?.status && (
-                      <Text mt="8px" fontSize="10px" color="tomato">
+                      <Text mt="8px" fontSize="12px" color="tomato">
                         Status is required
                       </Text>
                     )}

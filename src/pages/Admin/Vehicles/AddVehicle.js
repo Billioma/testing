@@ -175,7 +175,7 @@ export default function AddOperator() {
                   <Box w="full" mb={4}>
                     <Text
                       mb="8px"
-                      fontSize="10px"
+                      fontSize="12px"
                       fontWeight={500}
                       color="#444648"
                     >
@@ -183,7 +183,7 @@ export default function AddOperator() {
                       <span
                         style={{
                           color: "tomato",
-                          fontSize: "13px",
+                          fontSize: "15px",
                         }}
                       >
                         *
@@ -214,7 +214,7 @@ export default function AddOperator() {
                   <Box w="full" mb={4}>
                     <Text
                       mb="8px"
-                      fontSize="10px"
+                      fontSize="12px"
                       fontWeight={500}
                       color="#444648"
                     >
@@ -222,7 +222,7 @@ export default function AddOperator() {
                       <span
                         style={{
                           color: "tomato",
-                          fontSize: "13px",
+                          fontSize: "15px",
                         }}
                       >
                         *
@@ -257,7 +257,7 @@ export default function AddOperator() {
                       }}
                     />
                     {formSubmitted && !values?.customer && (
-                      <Text mt="8px" fontSize="10px" color="tomato">
+                      <Text mt="8px" fontSize="12px" color="tomato">
                         Customer is required
                       </Text>
                     )}
@@ -266,7 +266,7 @@ export default function AddOperator() {
                     <Text
                       color="#444648"
                       lineHeight="100%"
-                      fontSize="10px"
+                      fontSize="12px"
                       fontWeight={500}
                       mb="8px"
                     >
@@ -274,7 +274,7 @@ export default function AddOperator() {
                       <span
                         style={{
                           color: "tomato",
-                          fontSize: "13px",
+                          fontSize: "15px",
                         }}
                       >
                         *
@@ -322,7 +322,7 @@ export default function AddOperator() {
                       placeholder="Select vehicle color"
                     />
                     {formSubmitted && !values?.color && (
-                      <Text mt="8px" fontSize="10px" color="tomato">
+                      <Text mt="8px" fontSize="12px" color="tomato">
                         Color is required
                       </Text>
                     )}
@@ -331,7 +331,7 @@ export default function AddOperator() {
                   <Box w="full" mb={4}>
                     <Text
                       mb="8px"
-                      fontSize="10px"
+                      fontSize="12px"
                       fontWeight={500}
                       color="#444648"
                     >
@@ -339,7 +339,7 @@ export default function AddOperator() {
                       <span
                         style={{
                           color: "tomato",
-                          fontSize: "13px",
+                          fontSize: "15px",
                         }}
                       >
                         *
@@ -374,7 +374,7 @@ export default function AddOperator() {
                       }}
                     />
                     {formSubmitted && !values?.state && (
-                      <Text mt="8px" fontSize="10px" color="tomato">
+                      <Text mt="8px" fontSize="12px" color="tomato">
                         State is required
                       </Text>
                     )}
@@ -383,7 +383,7 @@ export default function AddOperator() {
                     <Text
                       color="#444648"
                       lineHeight="100%"
-                      fontSize="10px"
+                      fontSize="12px"
                       fontWeight={500}
                       mb="8px"
                     >
@@ -391,7 +391,7 @@ export default function AddOperator() {
                       <span
                         style={{
                           color: "tomato",
-                          fontSize: "13px",
+                          fontSize: "15px",
                         }}
                       >
                         *
@@ -428,7 +428,7 @@ export default function AddOperator() {
                       placeholder="Select vehicle make"
                     />
                     {formSubmitted && !values?.make && (
-                      <Text mt="8px" fontSize="10px" color="tomato">
+                      <Text mt="8px" fontSize="12px" color="tomato">
                         Make is required
                       </Text>
                     )}
@@ -437,7 +437,7 @@ export default function AddOperator() {
                     <Text
                       color="#444648"
                       lineHeight="100%"
-                      fontSize="10px"
+                      fontSize="12px"
                       fontWeight={500}
                       mb="8px"
                     >
@@ -445,7 +445,7 @@ export default function AddOperator() {
                       <span
                         style={{
                           color: "tomato",
-                          fontSize: "13px",
+                          fontSize: "15px",
                         }}
                       >
                         *
@@ -481,7 +481,7 @@ export default function AddOperator() {
                     />
 
                     {formSubmitted && !values?.model && (
-                      <Text mt="8px" fontSize="10px" color="tomato">
+                      <Text mt="8px" fontSize="12px" color="tomato">
                         Model is required
                       </Text>
                     )}

@@ -85,12 +85,12 @@ export default function AddVehicleMake() {
               }}
             >
               <Box w="full" mb={4}>
-                <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
+                <Text mb="8px" fontSize="12px" fontWeight={500} color="#444648">
                   Model Name{" "}
                   <span
                     style={{
                       color: "tomato",
-                      fontSize: "13px",
+                      fontSize: "15px",
                     }}
                   >
                     *
@@ -107,19 +107,19 @@ export default function AddVehicleMake() {
                   error={formSubmitted && !values?.name ? true : false}
                 />
                 {formSubmitted && !values?.name && (
-                  <Text mt="-3px" fontSize="10px" color="tomato">
+                  <Text mt="-3px" fontSize="12px" color="tomato">
                     Name is required
                   </Text>
                 )}
               </Box>
 
               <Box w="full" mb={4}>
-                <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
+                <Text mb="8px" fontSize="12px" fontWeight={500} color="#444648">
                   Make{" "}
                   <span
                     style={{
                       color: "tomato",
-                      fontSize: "13px",
+                      fontSize: "15px",
                     }}
                   >
                     *
@@ -151,7 +151,7 @@ export default function AddVehicleMake() {
                   value={values?.make}
                 />
                 {formSubmitted && !values?.make && (
-                  <Text mt="3px" fontSize="10px" color="tomato">
+                  <Text mt="3px" fontSize="12px" color="tomato">
                     Make is required
                   </Text>
                 )}

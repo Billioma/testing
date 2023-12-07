@@ -13,7 +13,7 @@ import { useGetReports } from "../../../services/admin/query/reports";
 import CustomerExport from "../../../components/data/Admin/Reports/CustomerExport";
 import Filter from "../../../components/common/Filter";
 import { customersReportOptions } from "../../../components/common/constants";
-import { formatDate } from "../../../utils/helpers";
+import { formatNewDate } from "../../../utils/helpers";
 
 const Customers = () => {
   const [page, setPage] = useState(1);
@@ -21,17 +21,19 @@ const Customers = () => {
   const [startRow, setStartRow] = useState(1);
   const [endRow, setEndRow] = useState(50);
   const [filtArray, setFiltArray] = useState([]);
-
   const convertedFilters = filtArray?.map((filterObj) => {
     return filterObj?.gte
-      ? `filter=${filterObj?.title}||gte||"${formatDate(filterObj?.gte)}"`
+      ? `filter=${filterObj?.title}||$gte||"${formatNewDate(
+          filterObj?.gte
+        )}T00:00:00"`
       : filterObj?.lte
-      ? `filter=${filterObj?.title}||lte||"${formatDate(filterObj?.lte)}"`
+      ? `filter=${filterObj?.title}||$lte||"${formatNewDate(
+          filterObj?.lte
+        )}T23:59:59"`
       : `filter=${filterObj?.title}||${filterObj?.type || "cont"}||"${
           filterObj?.filter
         }"`;
   });
-
   const query = convertedFilters?.join("&");
   const [isRefetch, setIsRefetch] = useState(false);
   const { data, isLoading, refetch } = useGetReports(
@@ -98,7 +100,6 @@ const Customers = () => {
               <Box p="15px" pt="0px" pb="20px">
                 <Text
                   mt="24px"
-                  fontSize="14px"
                   lineHeight="100%"
                   fontWeight={700}
                   color="#242628"
@@ -136,13 +137,7 @@ const Customers = () => {
           filtArray={filtArray}
           fieldToCompare={customersReportOptions}
           title={
-            <Text
-              mt="24px"
-              fontSize="14px"
-              lineHeight="100%"
-              fontWeight={700}
-              color="#242628"
-            >
+            <Text mt="24px" lineHeight="100%" fontWeight={700} color="#242628">
               All Customers
             </Text>
           }

@@ -99,7 +99,7 @@ export default function AddPolicy() {
                   <Box w="full" mb={4}>
                     <Text
                       mb="8px"
-                      fontSize="10px"
+                      fontSize="12px"
                       fontWeight={500}
                       color="#444648"
                     >
@@ -107,7 +107,7 @@ export default function AddPolicy() {
                       <span
                         style={{
                           color: "tomato",
-                          fontSize: "13px",
+                          fontSize: "15px",
                         }}
                       >
                         *
@@ -128,7 +128,7 @@ export default function AddPolicy() {
                   <Box w="full" mb={4}>
                     <Text
                       mb="8px"
-                      fontSize="10px"
+                      fontSize="12px"
                       fontWeight={500}
                       color="#444648"
                     >
@@ -136,7 +136,7 @@ export default function AddPolicy() {
                       <span
                         style={{
                           color: "tomato",
-                          fontSize: "13px",
+                          fontSize: "15px",
                         }}
                       >
                         *
@@ -157,7 +157,7 @@ export default function AddPolicy() {
                   <Box w="full" mb={4}>
                     <Text
                       mb="8px"
-                      fontSize="10px"
+                      fontSize="12px"
                       fontWeight={500}
                       color="#444648"
                     >
@@ -165,7 +165,7 @@ export default function AddPolicy() {
                       <span
                         style={{
                           color: "tomato",
-                          fontSize: "13px",
+                          fontSize: "15px",
                         }}
                       >
                         *
@@ -199,7 +199,7 @@ export default function AddPolicy() {
                       }}
                     />
                     {formSubmitted && !values?.location && (
-                      <Text mt="8px" fontSize="10px" color="tomato">
+                      <Text mt="8px" fontSize="12px" color="tomato">
                         Location is required
                       </Text>
                     )}
@@ -207,7 +207,7 @@ export default function AddPolicy() {
                   <Box w="full" mb={4}>
                     <Text
                       mb="8px"
-                      fontSize="10px"
+                      fontSize="12px"
                       fontWeight={500}
                       color="#444648"
                     >
@@ -215,7 +215,7 @@ export default function AddPolicy() {
                       <span
                         style={{
                           color: "tomato",
-                          fontSize: "13px",
+                          fontSize: "15px",
                         }}
                       >
                         *
@@ -248,7 +248,7 @@ export default function AddPolicy() {
                       }}
                     />
                     {formSubmitted && !values?.status && (
-                      <Text mt="8px" fontSize="10px" color="tomato">
+                      <Text mt="8px" fontSize="12px" color="tomato">
                         Status is required
                       </Text>
                     )}

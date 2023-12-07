@@ -265,7 +265,7 @@ export default function ViewCustomer() {
                   mb={5}
                 >
                   <Text
-                    fontSize="10px"
+                    fontSize="12px"
                     fontWeight={500}
                     color="#444648"
                     textAlign="center"
@@ -323,7 +323,7 @@ export default function ViewCustomer() {
                 <Box w="full" mb={4}>
                   <Text
                     mb="8px"
-                    fontSize="10px"
+                    fontSize="12px"
                     fontWeight={500}
                     color="#444648"
                   >
@@ -346,7 +346,7 @@ export default function ViewCustomer() {
                 <Box w="full" mb={4}>
                   <Text
                     mb="8px"
-                    fontSize="10px"
+                    fontSize="12px"
                     fontWeight={500}
                     color="#444648"
                   >
@@ -369,7 +369,7 @@ export default function ViewCustomer() {
                 <Box w="full" mb={4}>
                   <Text
                     mb="8px"
-                    fontSize="10px"
+                    fontSize="12px"
                     fontWeight={500}
                     color="#444648"
                   >
@@ -392,7 +392,7 @@ export default function ViewCustomer() {
                 <Box w="full" mb={4}>
                   <Text
                     mb="8px"
-                    fontSize="10px"
+                    fontSize="12px"
                     fontWeight={500}
                     color="#444648"
                   >
@@ -417,7 +417,7 @@ export default function ViewCustomer() {
                     mb="8px"
                     fontWeight={500}
                     color="#444648"
-                    fontSize="10px"
+                    fontSize="12px"
                   >
                     Phone Number
                   </Text>
@@ -442,7 +442,7 @@ export default function ViewCustomer() {
                 <Box w="full" mb={4}>
                   <Text
                     mb="8px"
-                    fontSize="10px"
+                    fontSize="12px"
                     fontWeight={500}
                     color="#444648"
                   >
@@ -465,7 +465,7 @@ export default function ViewCustomer() {
                 <Box mb={4}>
                   <Text
                     mb="8px"
-                    fontSize="10px"
+                    fontSize="12px"
                     fontWeight={500}
                     color="#444648"
                   >
@@ -498,7 +498,7 @@ export default function ViewCustomer() {
                 <Box mb={4}>
                   <Text
                     mb="8px"
-                    fontSize="10px"
+                    fontSize="12px"
                     fontWeight={500}
                     color="#444648"
                   >
@@ -531,7 +531,7 @@ export default function ViewCustomer() {
                 <Box mb={4}>
                   <Text
                     mb="8px"
-                    fontSize="10px"
+                    fontSize="12px"
                     fontWeight={500}
                     color="#444648"
                   >
@@ -565,7 +565,7 @@ export default function ViewCustomer() {
                 <Box mb={4}>
                   <Text
                     mb="8px"
-                    fontSize="10px"
+                    fontSize="12px"
                     fontWeight={500}
                     color="#444648"
                   >
@@ -643,12 +643,7 @@ export default function ViewCustomer() {
                   border="1px solid #E4E6E8"
                   h="fit-content"
                 >
-                  <Text
-                    alignSelf={"center"}
-                    color="#646668"
-                    fontWeight={500}
-                    fontSize={"14px"}
-                  >
+                  <Text alignSelf={"center"} color="#646668" fontWeight={500}>
                     Payments
                   </Text>
 
@@ -660,7 +655,7 @@ export default function ViewCustomer() {
                       borderRadius={"4px"}
                     >
                       <Text fontSize="12px">Wallet</Text>
-                      <Text fontWeight={500} fontSize="14px" mt="8px">
+                      <Text fontWeight={500} mt="8px">
                         Balance:
                         <span>
                           {" "}
@@ -713,7 +708,7 @@ export default function ViewCustomer() {
                             );
                           })
                         ) : (
-                          <Text fontSize="14px" color="#646668" mt={1}>
+                          <Text color="#646668" mt={1}>
                             No Card Added yet
                           </Text>
                         )}
@@ -734,7 +729,7 @@ export default function ViewCustomer() {
                   h="fit-content"
                 >
                   <Flex align="center" justifyContent="space-between" w="full">
-                    <Text color="#646668" fontWeight={500} fontSize={"14px"}>
+                    <Text color="#646668" fontWeight={500}>
                       Client users
                     </Text>
 
@@ -744,7 +739,7 @@ export default function ViewCustomer() {
                       display="flex"
                       align="center"
                       onClick={() => setShowAddUser(true)}
-                      fontSize="10px"
+                      fontSize="12px"
                       isDisabled={edit ? false : true}
                       gap="8px"
                     >
@@ -773,16 +768,11 @@ export default function ViewCustomer() {
                             mb="24px"
                           >
                             <Box>
-                              <Text fontSize="13px" color="#646668">
+                              <Text fontSize="15px" color="#646668">
                                 {user?.profile?.firstName}{" "}
                                 {user?.profile?.lastName}
                               </Text>
-                              <Text
-                                fontSize="14px"
-                                fontWeight={500}
-                                color="#444648"
-                                mt="8px"
-                              >
+                              <Text fontWeight={500} color="#444648" mt="8px">
                                 {user?.email}
                               </Text>
                             </Box>
@@ -808,11 +798,7 @@ export default function ViewCustomer() {
                           </Flex>
                         ))
                       ) : (
-                        <Text
-                          fontSize="14px"
-                          color="#646668"
-                          textAlign="center"
-                        >
+                        <Text color="#646668" textAlign="center">
                           No user has been assigned to this client
                         </Text>
                       )}

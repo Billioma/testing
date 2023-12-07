@@ -42,14 +42,11 @@ const AdminDeleteModal = ({
               {title}
             </Text>
 
-            <Text fontSize="14px" color="#646668">
-              {subTitle}
-            </Text>
+            <Text color="#646668">{subTitle}</Text>
           </Flex>
 
           <Flex gap={4} mt={10}>
             <Button
-              fontSize="14px"
               fontWeight={500}
               onClick={onClose}
               lineHeight="100%"
@@ -61,7 +58,6 @@ const AdminDeleteModal = ({
             </Button>
 
             <Button
-              fontSize="14px"
               fontWeight={500}
               isLoading={isLoading}
               onClick={handleSubmit}

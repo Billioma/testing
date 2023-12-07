@@ -23,7 +23,6 @@ const BackButtonBox = () => {
     >
       <Flex
         align="center"
-        fontSize="14px"
         fontWeight="500"
         lineHeight="100%"
         cursor="pointer"

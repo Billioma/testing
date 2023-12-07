@@ -128,27 +128,64 @@ const Filter = ({
     label: opt,
   }));
 
-  const handleClick = (type) => {
-    const fieldExists = filtArray?.some(
-      (item) =>
-        item.dropFilter === values.dropFilter && item[type + "Type"] === type
+  const handleClick = () => {
+    const existingGteIndex = filtArray.findIndex(
+      (filter) =>
+        filter.gteType === "gte" && filter.dropFilter === values?.dropFilter
+    );
+    const existingLteIndex = filtArray.findIndex(
+      (filter) =>
+        filter.lteType === "lte" && filter.dropFilter === values?.dropFilter
     );
 
-    if (values[type] === "" || values.dropFilter === "") {
-      return;
-    } else if (fieldExists) {
-      setFiltArray((prevFiltArray) =>
-        prevFiltArray.map((item) =>
-          item.dropFilter === values.dropFilter && item[type + "Type"] === type
-            ? values
-            : item
-        )
-      );
-    } else {
-      setFiltArray((prevFiltArray) => [
-        ...prevFiltArray,
-        { ...values, [type + "Type"]: type },
-      ]);
+    if (values.gte !== "") {
+      if (existingGteIndex !== -1) {
+        setFiltArray((prevFiltArray) => [
+          ...prevFiltArray.slice(0, existingGteIndex),
+          {
+            dropFilter: values?.dropFilter,
+            title: values?.title,
+            gteType: "gte",
+            gte: values.gte,
+          },
+          ...prevFiltArray.slice(existingGteIndex + 1),
+        ]);
+      } else {
+        setFiltArray((prevFiltArray) => [
+          ...prevFiltArray,
+          {
+            dropFilter: values?.dropFilter,
+            title: values?.title,
+            gteType: "gte",
+            gte: values.gte,
+          },
+        ]);
+      }
+    }
+
+    if (values.lte !== "") {
+      if (existingLteIndex !== -1) {
+        setFiltArray((prevFiltArray) => [
+          ...prevFiltArray.slice(0, existingLteIndex),
+          {
+            dropFilter: "Created At",
+            title: "createdAt",
+            lteType: "lte",
+            lte: values.lte,
+          },
+          ...prevFiltArray.slice(existingLteIndex + 1),
+        ]);
+      } else {
+        setFiltArray((prevFiltArray) => [
+          ...prevFiltArray,
+          {
+            dropFilter: "Created At",
+            title: "createdAt",
+            lteType: "lte",
+            lte: values.lte,
+          },
+        ]);
+      }
     }
 
     resetValues();
@@ -202,7 +239,7 @@ const Filter = ({
       width: "100%",
       minHeight: "44px",
       color: "#646668",
-      fontSize: "14px",
+      fontSize: "16px",
       cursor: "pointer",
       borderRadius: "4px",
       border: state.hasValue ? "none" : "1px solid #D4D6D8",
@@ -211,7 +248,7 @@ const Filter = ({
     }),
     menu: (provided) => ({
       ...provided,
-      fontSize: "13px",
+      fontSize: "15px",
       backgroundColor: "#fff",
     }),
     option: (provided, state) => ({
@@ -227,7 +264,7 @@ const Filter = ({
       width: "100%",
       minHeight: "44px",
       color: "#646668",
-      fontSize: "14px",
+      fontSize: "16px",
       cursor: "pointer",
       borderRadius: "4px",
       border: "none",
@@ -236,7 +273,7 @@ const Filter = ({
     }),
     menu: (provided) => ({
       ...provided,
-      fontSize: "13px",
+      fontSize: "15px",
       backgroundColor: "#fff",
     }),
     option: (provided, state) => ({
@@ -294,7 +331,7 @@ const Filter = ({
                 : setShow(true)
             }
             gap="16px"
-            fontSize="12px"
+            fontSize="14px"
           >
             <Text color="#646668">Filter</Text>
             {show ? (
@@ -315,7 +352,7 @@ const Filter = ({
         >
           <Box w={{ base: "100%", md: "50%" }}>
             <Text
-              fontSize="12px"
+              fontSize="14px"
               fontWeight={500}
               lineHeight="100%"
               mb="8px"
@@ -353,7 +390,7 @@ const Filter = ({
               ) : (
                 <Box w={{ base: "100%", md: "50%" }}>
                   <Text
-                    fontSize="12px"
+                    fontSize="14px"
                     fontWeight={500}
                     lineHeight="100%"
                     mb="8px"
@@ -385,7 +422,7 @@ const Filter = ({
                 <>
                   <Box w={{ base: "100%", md: "50%" }}>
                     <Text
-                      fontSize="12px"
+                      fontSize="14px"
                       fontWeight={500}
                       lineHeight="100%"
                       mb="8px"
@@ -409,21 +446,11 @@ const Filter = ({
                           }}
                         />
                       </Box>
-                      <Flex
-                        justifyContent="center"
-                        align="center"
-                        h="44px"
-                        cursor="pointer"
-                        onClick={() => handleClick("gte")}
-                        w="10%"
-                      >
-                        <BsSearch fill="#646668" size="15px" />
-                      </Flex>
                     </Flex>
                   </Box>
                   <Box w={{ base: "100%", md: "50%" }}>
                     <Text
-                      fontSize="12px"
+                      fontSize="14px"
                       fontWeight={500}
                       lineHeight="100%"
                       mb="8px"
@@ -452,7 +479,7 @@ const Filter = ({
                         align="center"
                         h="44px"
                         cursor="pointer"
-                        onClick={() => handleClick("lte")}
+                        onClick={() => handleClick()}
                         w="10%"
                       >
                         <BsSearch fill="#646668" size="15px" />
@@ -472,7 +499,7 @@ const Filter = ({
                 <>
                   <Box w="full">
                     <Text
-                      fontSize="12px"
+                      fontSize="14px"
                       fontWeight={500}
                       lineHeight="100%"
                       mb="8px"
@@ -621,7 +648,7 @@ const Filter = ({
       {filtArray?.length ? (
         <Box w="fit-content" mt="15px">
           <Text
-            fontSize="12px"
+            fontSize="14px"
             mb="8px"
             fontWeight={500}
             lineHeight="100%"
@@ -651,7 +678,7 @@ const Filter = ({
                 p="6px"
               >
                 <Text
-                  fontSize="12px"
+                  fontSize="14px"
                   fontWeight={500}
                   lineHeight="100%"
                   color="#646668"
@@ -673,7 +700,7 @@ const Filter = ({
                   </span>
                   :
                 </Text>
-                <Text fontSize="12px" lineHeight="100%" color="#646668">
+                <Text fontSize="14px" lineHeight="100%" color="#646668">
                   "
                   {dat?.gteType
                     ? formatDate(dat?.gte)

@@ -110,7 +110,7 @@ export default function AddAttendants() {
           >
             <Box alignSelf={"center"} mb={5}>
               <Text
-                fontSize="10px"
+                fontSize="12px"
                 fontWeight={500}
                 color="#444648"
                 textAlign="center"
@@ -168,7 +168,7 @@ export default function AddAttendants() {
                   <Box w="full" mb={4}>
                     <Text
                       mb="8px"
-                      fontSize="10px"
+                      fontSize="12px"
                       fontWeight={500}
                       color="#444648"
                     >
@@ -176,7 +176,7 @@ export default function AddAttendants() {
                       <span
                         style={{
                           color: "tomato",
-                          fontSize: "13px",
+                          fontSize: "15px",
                         }}
                       >
                         *
@@ -200,7 +200,7 @@ export default function AddAttendants() {
                   <Box w="full" mb={4}>
                     <Text
                       mb="8px"
-                      fontSize="10px"
+                      fontSize="12px"
                       fontWeight={500}
                       color="#444648"
                     >
@@ -208,7 +208,7 @@ export default function AddAttendants() {
                       <span
                         style={{
                           color: "tomato",
-                          fontSize: "13px",
+                          fontSize: "15px",
                         }}
                       >
                         *
@@ -232,7 +232,7 @@ export default function AddAttendants() {
                   <Box w="full" mb={4}>
                     <Text
                       mb="8px"
-                      fontSize="10px"
+                      fontSize="12px"
                       fontWeight={500}
                       color="#444648"
                     >
@@ -240,7 +240,7 @@ export default function AddAttendants() {
                       <span
                         style={{
                           color: "tomato",
-                          fontSize: "13px",
+                          fontSize: "15px",
                         }}
                       >
                         *
@@ -260,7 +260,7 @@ export default function AddAttendants() {
                   <Box w="full" mb={4}>
                     <Text
                       mb="8px"
-                      fontSize="10px"
+                      fontSize="12px"
                       fontWeight={500}
                       color="#444648"
                     >
@@ -268,7 +268,7 @@ export default function AddAttendants() {
                       <span
                         style={{
                           color: "tomato",
-                          fontSize: "13px",
+                          fontSize: "15px",
                         }}
                       >
                         *
@@ -295,7 +295,7 @@ export default function AddAttendants() {
                   <Box mb={4}>
                     <Text
                       mb="8px"
-                      fontSize="10px"
+                      fontSize="12px"
                       fontWeight={500}
                       color="#444648"
                     >
@@ -303,7 +303,7 @@ export default function AddAttendants() {
                       <span
                         style={{
                           color: "tomato",
-                          fontSize: "13px",
+                          fontSize: "15px",
                         }}
                       >
                         *
@@ -330,7 +330,7 @@ export default function AddAttendants() {
                   <Box mb={4}>
                     <Text
                       mb="8px"
-                      fontSize="10px"
+                      fontSize="12px"
                       fontWeight={500}
                       color="#444648"
                     >
@@ -338,7 +338,7 @@ export default function AddAttendants() {
                       <span
                         style={{
                           color: "tomato",
-                          fontSize: "13px",
+                          fontSize: "15px",
                         }}
                       >
                         *
@@ -394,7 +394,7 @@ export default function AddAttendants() {
                   <Box>
                     <Text
                       mb="8px"
-                      fontSize="10px"
+                      fontSize="12px"
                       fontWeight={500}
                       color="#444648"
                     >
@@ -402,7 +402,7 @@ export default function AddAttendants() {
                       <span
                         style={{
                           color: "tomato",
-                          fontSize: "13px",
+                          fontSize: "15px",
                         }}
                       >
                         *
@@ -476,7 +476,7 @@ const customStyles = {
   }),
   menu: (provided) => ({
     ...provided,
-    fontSize: "13px",
+    fontSize: "15px",
     backgroundColor: "#fff",
   }),
   option: (provided, state) => ({

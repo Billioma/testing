@@ -149,7 +149,7 @@ export default function ViewCorporateSubscription() {
                 <Box w="full" mb={4}>
                   <Text
                     mb="8px"
-                    fontSize="10px"
+                    fontSize="12px"
                     fontWeight={500}
                     color="#444648"
                   >
@@ -177,7 +177,7 @@ export default function ViewCorporateSubscription() {
                 <Box w="full" mb={4}>
                   <Text
                     mb="8px"
-                    fontSize="10px"
+                    fontSize="12px"
                     fontWeight={500}
                     color="#444648"
                   >
@@ -195,7 +195,7 @@ export default function ViewCorporateSubscription() {
                 <Box w="full" mb={4}>
                   <Text
                     mb="8px"
-                    fontSize="10px"
+                    fontSize="12px"
                     fontWeight={500}
                     color="#444648"
                   >
@@ -225,7 +225,7 @@ export default function ViewCorporateSubscription() {
                       mb="8px"
                       fontWeight={500}
                       color="#444648"
-                      fontSize="10px"
+                      fontSize="12px"
                     >
                       Start Date
                     </Text>
@@ -240,7 +240,7 @@ export default function ViewCorporateSubscription() {
                       mb="8px"
                       fontWeight={500}
                       color="#444648"
-                      fontSize="10px"
+                      fontSize="12px"
                     >
                       Next Payment Date
                     </Text>
@@ -254,7 +254,7 @@ export default function ViewCorporateSubscription() {
                 <Box w="full" mb={4}>
                   <Text
                     mb="8px"
-                    fontSize="10px"
+                    fontSize="12px"
                     fontWeight={500}
                     color="#444648"
                   >
@@ -281,7 +281,7 @@ export default function ViewCorporateSubscription() {
 
                 <Flex wrap={"wrap"} gap={4} mt={2}>
                   <Flex
-                    fontSize="12px"
+                    fontSize="14px"
                     fontWeight={500}
                     opacity={edit ? 1 : 0.6}
                     cursor={!edit ? "" : "pointer"}
@@ -295,7 +295,7 @@ export default function ViewCorporateSubscription() {
                   </Flex>
                   <Flex
                     cursor={!edit ? "" : "pointer"}
-                    fontSize="12px"
+                    fontSize="14px"
                     fontWeight={500}
                     color="#0B841D"
                     opacity={edit ? 1 : 0.6}
@@ -312,7 +312,7 @@ export default function ViewCorporateSubscription() {
                     gap="15px"
                     mb="16px"
                   >
-                    <Text fontSize="12px" fontWeight={500} color="#444648">
+                    <Text fontSize="14px" fontWeight={500} color="#444648">
                       Auto-Renewal
                     </Text>
                     <Switch

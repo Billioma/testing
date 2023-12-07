@@ -89,12 +89,12 @@ export default function AddFaq() {
               }}
             >
               <Box w="full" mb={4}>
-                <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
+                <Text mb="8px" fontSize="12px" fontWeight={500} color="#444648">
                   Title (The Question){" "}
                   <span
                     style={{
                       color: "tomato",
-                      fontSize: "13px",
+                      fontSize: "15px",
                     }}
                   >
                     *
@@ -112,19 +112,19 @@ export default function AddFaq() {
                 />
 
                 {formSubmitted && !values?.title && (
-                  <Text mt="-3px" fontSize="10px" color="tomato">
+                  <Text mt="-3px" fontSize="12px" color="tomato">
                     Question is required
                   </Text>
                 )}
               </Box>
 
               <Box w="full" mb={4}>
-                <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
+                <Text mb="8px" fontSize="12px" fontWeight={500} color="#444648">
                   Body{" "}
                   <span
                     style={{
                       color: "tomato",
-                      fontSize: "13px",
+                      fontSize: "15px",
                     }}
                   >
                     *
@@ -141,14 +141,14 @@ export default function AddFaq() {
                 />
 
                 {formSubmitted && !values?.body && (
-                  <Text mt="-15px" fontSize="10px" color="tomato">
+                  <Text mt="-15px" fontSize="12px" color="tomato">
                     An answer is required
                   </Text>
                 )}
               </Box>
 
               <Box w="full" mb={4}>
-                <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
+                <Text mb="8px" fontSize="12px" fontWeight={500} color="#444648">
                   External link
                 </Text>
                 <CustomInput
@@ -163,12 +163,12 @@ export default function AddFaq() {
               </Box>
 
               <Box mb={4}>
-                <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
+                <Text mb="8px" fontSize="12px" fontWeight={500} color="#444648">
                   Status{" "}
                   <span
                     style={{
                       color: "tomato",
-                      fontSize: "13px",
+                      fontSize: "15px",
                     }}
                   >
                     *
@@ -200,7 +200,7 @@ export default function AddFaq() {
                   value={values?.status}
                 />
                 {formSubmitted && !values?.status && (
-                  <Text mt="8px" fontSize="10px" color="tomato">
+                  <Text mt="8px" fontSize="12px" color="tomato">
                     Status is required
                   </Text>
                 )}

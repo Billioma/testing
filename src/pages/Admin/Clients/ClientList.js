@@ -7,7 +7,7 @@ import { useGetClients } from "../../../services/admin/query/clients";
 import Filter from "../../../components/common/Filter";
 import { clientListOptions } from "../../../components/common/constants";
 import { MdAdd } from "react-icons/md";
-import { formatDate } from "../../../utils/helpers";
+import { formatNewDate } from "../../../utils/helpers";
 
 const ClientList = () => {
   const [page, setPage] = useState(1);
@@ -19,14 +19,17 @@ const ClientList = () => {
 
   const convertedFilters = filtArray?.map((filterObj) => {
     return filterObj?.gte
-      ? `filter=${filterObj?.title}||gte||"${formatDate(filterObj?.gte)}"`
+      ? `filter=${filterObj?.title}||$gte||"${formatNewDate(
+          filterObj?.gte
+        )}T00:00:00"`
       : filterObj?.lte
-      ? `filter=${filterObj?.title}||lte||"${formatDate(filterObj?.lte)}"`
+      ? `filter=${filterObj?.title}||$lte||"${formatNewDate(
+          filterObj?.lte
+        )}T23:59:59"`
       : `filter=${filterObj?.title}||${filterObj?.type || "cont"}||"${
           filterObj?.filter
         }"`;
   });
-
   const query = convertedFilters?.join("&");
 
   const [isRefetch, setIsRefetch] = useState(false);
@@ -86,12 +89,7 @@ const ClientList = () => {
         filtArray={filtArray}
         fieldToCompare={clientListOptions}
         title={
-          <Text
-            fontSize="14px"
-            fontWeight={500}
-            lineHeight="100%"
-            color="#242628"
-          >
+          <Text fontWeight={500} lineHeight="100%" color="#242628">
             All Clients
           </Text>
         }
@@ -104,7 +102,7 @@ const ClientList = () => {
               bg="#000"
               gap="8px"
             >
-              <Text fontSize="12px">Add a Client</Text>
+              <Text fontSize="14px">Add a Client</Text>
               <MdAdd size="20px" />
             </Button>
             <Flex

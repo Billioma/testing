@@ -173,7 +173,6 @@ export default function AddCorporateSubscription() {
           >
             <Flex
               align="center"
-              fontSize="14px"
               fontWeight="500"
               lineHeight="100%"
               cursor="pointer"
@@ -214,7 +213,7 @@ export default function AddCorporateSubscription() {
               border="1px solid #E4E6E8"
             >
               <Box bg="#0D0718" borderRadius="8px" p={4} mb={4}>
-                <Text color="#fff" fontSize="14px" fontWeight={500}>
+                <Text color="#fff" fontWeight={500}>
                   {
                     plans?.find((plan) => plan.id === state?.membershipPlan)
                       ?.name
@@ -223,10 +222,10 @@ export default function AddCorporateSubscription() {
 
                 <Flex justifyContent="space-between" mt={3}>
                   <Flex alignItems="end" gap={2} mb={1}>
-                    <Text fontSize="10px" color="#fff">
+                    <Text fontSize="12px" color="#fff">
                       Price{" "}
                     </Text>
-                    <Text fontSize="12px" color="#848688" fontWeight={500}>
+                    <Text fontSize="14px" color="#848688" fontWeight={500}>
                       ₦
                       {plans
                         ?.find((plan) => plan.id === state?.membershipPlan)
@@ -234,10 +233,10 @@ export default function AddCorporateSubscription() {
                     </Text>
                   </Flex>
                   <Flex alignItems="end" gap={2} mb={1}>
-                    <Text fontSize="10px" color="#fff">
+                    <Text fontSize="12px" color="#fff">
                       Duration{" "}
                     </Text>
-                    <Text fontSize="12px" color="#848688" fontWeight={500}>
+                    <Text fontSize="14px" color="#848688" fontWeight={500}>
                       {
                         intervalOptions[
                           plans?.find(
@@ -262,7 +261,7 @@ export default function AddCorporateSubscription() {
                 <Box w="full" mb={4}>
                   <Text
                     mb="8px"
-                    fontSize="10px"
+                    fontSize="12px"
                     fontWeight={500}
                     color="#444648"
                   >
@@ -292,7 +291,7 @@ export default function AddCorporateSubscription() {
                     placeholder="Select a Client"
                   />
                   {formSubmitted && !state?.client && (
-                    <Text mt="5px" fontSize="10px" color="tomato">
+                    <Text mt="5px" fontSize="12px" color="tomato">
                       Client is required
                     </Text>
                   )}
@@ -306,7 +305,7 @@ export default function AddCorporateSubscription() {
                     <Box w="full" mb={4}>
                       <Text
                         mb="8px"
-                        fontSize="10px"
+                        fontSize="12px"
                         fontWeight={500}
                         color="#444648"
                       >
@@ -339,7 +338,7 @@ export default function AddCorporateSubscription() {
                       {featureTypes?.length
                         ? formSubmitted &&
                           !state?.subscriptionOptions[0]?.data?.length && (
-                            <Text mt="5px" fontSize="10px" color="tomato">
+                            <Text mt="5px" fontSize="12px" color="tomato">
                               Select at least one user
                             </Text>
                           )
@@ -365,7 +364,7 @@ export default function AddCorporateSubscription() {
                   <>
                     <Text
                       mb="8px"
-                      fontSize="10px"
+                      fontSize="12px"
                       fontWeight={500}
                       color="#444648"
                     >
@@ -398,7 +397,7 @@ export default function AddCorporateSubscription() {
                   gap="15px"
                   mb="16px"
                 >
-                  <Text fontSize="12px" fontWeight={500} color="#444648">
+                  <Text fontSize="14px" fontWeight={500} color="#444648">
                     Renew Automatically
                   </Text>
                   <Switch
@@ -450,24 +449,19 @@ export default function AddCorporateSubscription() {
                     alignItems="center"
                   >
                     <Box>
-                      <Text
-                        color="#848688"
-                        fontWeight={500}
-                        mb={2}
-                        fontSize="14px"
-                      >
+                      <Text color="#848688" fontWeight={500} mb={2}>
                         {plan.name}
                       </Text>
 
                       <Flex alignItems="end" gap={2} mb={1}>
-                        <Text fontSize="10px">Price </Text>
-                        <Text fontSize="12px" color="#848688" fontWeight={500}>
+                        <Text fontSize="12px">Price </Text>
+                        <Text fontSize="14px" color="#848688" fontWeight={500}>
                           ₦{plan.amount?.toLocaleString()}
                         </Text>
                       </Flex>
                       <Flex alignItems="end" gap={2}>
-                        <Text fontSize="10px">Duration </Text>
-                        <Text fontSize="12px" color="#848688" fontWeight={500}>
+                        <Text fontSize="12px">Duration </Text>
+                        <Text fontSize="14px" color="#848688" fontWeight={500}>
                           {intervalOptions[plan.interval]}
                         </Text>
                       </Flex>

@@ -148,7 +148,7 @@ export default function ViewOperator() {
                 <Box w="full" mb={4}>
                   <Text
                     mb="8px"
-                    fontSize="10px"
+                    fontSize="12px"
                     fontWeight={500}
                     color="#444648"
                   >
@@ -169,7 +169,7 @@ export default function ViewOperator() {
                 <Box w="full" mb={4}>
                   <Text
                     mb="8px"
-                    fontSize="10px"
+                    fontSize="12px"
                     fontWeight={500}
                     color="#444648"
                   >
@@ -192,7 +192,7 @@ export default function ViewOperator() {
                     mb="8px"
                     fontWeight={500}
                     color="#444648"
-                    fontSize="10px"
+                    fontSize="12px"
                   >
                     Phone Number
                   </Text>
@@ -218,7 +218,7 @@ export default function ViewOperator() {
                 <Box w="full" mb={4}>
                   <Text
                     mb="8px"
-                    fontSize="10px"
+                    fontSize="12px"
                     fontWeight={500}
                     color="#444648"
                   >
@@ -238,7 +238,7 @@ export default function ViewOperator() {
                 <Box mb={4}>
                   <Text
                     mb="8px"
-                    fontSize="10px"
+                    fontSize="12px"
                     fontWeight={500}
                     color="#444648"
                   >
@@ -271,7 +271,7 @@ export default function ViewOperator() {
                 <Box w="full" mb={4}>
                   <Text
                     mb="8px"
-                    fontSize="10px"
+                    fontSize="12px"
                     fontWeight={500}
                     color="#444648"
                   >
@@ -292,7 +292,7 @@ export default function ViewOperator() {
                 <Box mb={4}>
                   <Text
                     mb="8px"
-                    fontSize="10px"
+                    fontSize="12px"
                     fontWeight={500}
                     color="#444648"
                   >
@@ -328,7 +328,7 @@ export default function ViewOperator() {
                   mb="16px"
                   mt={2}
                 >
-                  <Text fontSize="12px" fontWeight={500} color="#444648">
+                  <Text fontSize="14px" fontWeight={500} color="#444648">
                     Enable Tips
                   </Text>
                   <Switch
@@ -347,7 +347,7 @@ export default function ViewOperator() {
 
                 <Button
                   variant="adminSecondary"
-                  fontSize="12px"
+                  fontSize="14px"
                   mt={4}
                   isDisabled={edit ? false : true}
                   h="32px"

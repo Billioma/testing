@@ -107,12 +107,12 @@ export default function AddBankDetail() {
               }}
             >
               <Box w="full" mb={4}>
-                <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
+                <Text mb="8px" fontSize="12px" fontWeight={500} color="#444648">
                   Bank Name{" "}
                   <span
                     style={{
                       color: "tomato",
-                      fontSize: "13px",
+                      fontSize: "15px",
                     }}
                   >
                     *
@@ -129,19 +129,19 @@ export default function AddBankDetail() {
                   error={formSubmitted && !values?.bankName ? true : false}
                 />
                 {formSubmitted && !values?.bankName && (
-                  <Text mt="-5px" fontSize="10px" color="tomato">
+                  <Text mt="-5px" fontSize="12px" color="tomato">
                     Bank Name is required
                   </Text>
                 )}
               </Box>
 
               <Box w="full" mb={4}>
-                <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
+                <Text mb="8px" fontSize="12px" fontWeight={500} color="#444648">
                   Account Number{" "}
                   <span
                     style={{
                       color: "tomato",
-                      fontSize: "13px",
+                      fontSize: "15px",
                     }}
                   >
                     *
@@ -161,19 +161,19 @@ export default function AddBankDetail() {
                 />
 
                 {formSubmitted && !values?.accountNumber && (
-                  <Text mt="-5px" fontSize="10px" color="tomato">
+                  <Text mt="-5px" fontSize="12px" color="tomato">
                     Account Number is required
                   </Text>
                 )}
               </Box>
 
               <Box w="full" mb={4}>
-                <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
+                <Text mb="8px" fontSize="12px" fontWeight={500} color="#444648">
                   Account Name{" "}
                   <span
                     style={{
                       color: "tomato",
-                      fontSize: "13px",
+                      fontSize: "15px",
                     }}
                   >
                     *
@@ -190,19 +190,19 @@ export default function AddBankDetail() {
                   error={formSubmitted && !values?.accountName ? true : false}
                 />
                 {formSubmitted && !values?.accountName && (
-                  <Text mt="-5px" fontSize="10px" color="tomato">
+                  <Text mt="-5px" fontSize="12px" color="tomato">
                     Account Name is required
                   </Text>
                 )}
               </Box>
 
               <Box w="full" mb={4}>
-                <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
+                <Text mb="8px" fontSize="12px" fontWeight={500} color="#444648">
                   Sort Code{" "}
                   <span
                     style={{
                       color: "tomato",
-                      fontSize: "13px",
+                      fontSize: "15px",
                     }}
                   >
                     *
@@ -220,19 +220,19 @@ export default function AddBankDetail() {
                 />
 
                 {formSubmitted && !values?.sortCode && (
-                  <Text mt="-5px" fontSize="10px" color="tomato">
+                  <Text mt="-5px" fontSize="12px" color="tomato">
                     Sort Code is required
                   </Text>
                 )}
               </Box>
 
               <Box w="full" mb={4}>
-                <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
+                <Text mb="8px" fontSize="12px" fontWeight={500} color="#444648">
                   Service{" "}
                   <span
                     style={{
                       color: "tomato",
-                      fontSize: "13px",
+                      fontSize: "15px",
                     }}
                   >
                     *
@@ -264,19 +264,19 @@ export default function AddBankDetail() {
                   value={values?.service}
                 />
                 {formSubmitted && !values?.service && (
-                  <Text mt="8px" fontSize="10px" color="tomato">
+                  <Text mt="8px" fontSize="12px" color="tomato">
                     Service is required
                   </Text>
                 )}
               </Box>
 
               <Box w="full" mb={4}>
-                <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
+                <Text mb="8px" fontSize="12px" fontWeight={500} color="#444648">
                   Status{" "}
                   <span
                     style={{
                       color: "tomato",
-                      fontSize: "13px",
+                      fontSize: "15px",
                     }}
                   >
                     *
@@ -308,7 +308,7 @@ export default function AddBankDetail() {
                   value={values?.status}
                 />
                 {formSubmitted && !values?.status && (
-                  <Text mt="8px" fontSize="10px" color="tomato">
+                  <Text mt="8px" fontSize="12px" color="tomato">
                     Status is required
                   </Text>
                 )}

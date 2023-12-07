@@ -20,7 +20,7 @@ import useCustomToast from "../../../../utils/notifications";
 import { PRIVATE_PATHS } from "../../../../routes/constants";
 import { BsChevronDown } from "react-icons/bs";
 import { useDeleteMembershipPlan } from "../../../../services/admin/query/memberships";
-import { formatDate } from "../../../../utils/helpers";
+import { formatDateTime } from "../../../../utils/helpers";
 import { SecStatus, clientListOption } from "../../../common/constants";
 import { Add } from "../../../common/images";
 import TableLoader from "../../../loaders/TableLoader";
@@ -118,7 +118,7 @@ const TableLayer = ({
                 key={i}
                 color="#646668"
                 fontWeight={500}
-                fontSize="12px"
+                fontSize="14px"
                 lineHeight="100%"
               >
                 <Td whiteSpace="pre-wrap">{plan?.name}</Td>
@@ -164,7 +164,7 @@ const TableLayer = ({
                       ))}
                 </Td>
 
-                <Td textAlign="center">{formatDate(plan?.createdAt)}</Td>
+                <Td textAlign="center">{formatDateTime(plan?.createdAt)}</Td>
                 <Td textAlign="center">
                   <Flex justifyContent="center" align="center">
                     <Menu>
@@ -220,7 +220,7 @@ const TableLayer = ({
           <Image src="/assets/no-log-rep.jpg" w="64px" h="64px" />
           <Text
             color="#848688"
-            fontSize="12px"
+            fontSize="14px"
             lineHeight="100%"
             fontWeight={500}
           >
@@ -232,7 +232,7 @@ const TableLayer = ({
             display="flex"
             bg="#000"
             gap="8px"
-            fontSize="12px"
+            fontSize="14px"
           >
             <Text>Add a Plan</Text>
             <Add fill="#fff" />

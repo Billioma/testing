@@ -26,12 +26,12 @@ export const formatDate = (date, fallback = "", withTime = false) => {
 
   const formattedDate = new Date(date);
 
-  const year = formattedDate.getFullYear();
-  const month = (formattedDate.getMonth() + 1).toString().padStart(2, "0");
-  const day = formattedDate.getDate().toString().padStart(2, "0");
+  const year = formattedDate.getUTCFullYear();
+  const month = (formattedDate.getUTCMonth() + 1).toString().padStart(2, "0");
+  const day = formattedDate.getUTCDate().toString().padStart(2, "0");
 
-  const hours = formattedDate.getHours().toString().padStart(2, "0");
-  const minutes = formattedDate.getMinutes().toString().padStart(2, "0");
+  const hours = formattedDate.getUTCHours().toString().padStart(2, "0");
+  const minutes = formattedDate.getUTCMinutes().toString().padStart(2, "0");
 
   return `${year}-${month}-${day} ${withTime ? `${hours}:${minutes}` : ""}`;
 };
@@ -49,7 +49,7 @@ export const formatNewDate = (date, fallback = "", withTime = false) => {
   const minutes = formattedDate.getMinutes().toString().padStart(2, "0");
   // const seconds = formattedDate.getSeconds().toString().padStart(2, "0");
 
-  return `${year}-${month}-${day}${withTime ? `${hours}:${minutes}` : ""}`;
+  return `${year}-${month}-${day} ${withTime ? `${hours}:${minutes}` : ""}`;
 };
 
 export const formatDateHour = (date, fallback = "") => {
@@ -77,6 +77,16 @@ export const formatDateTimes = (date, fallback = "") => {
   });
 };
 
+export const formatTimes = (date, fallback = "") => {
+  if (!date) return fallback;
+
+  return new Date(date).toLocaleTimeString("default", {
+    hour: "numeric",
+    minute: "numeric",
+    second: undefined,
+  });
+};
+
 export const formatTime = (date, fallback = "") => {
   if (!date) return fallback;
 
@@ -87,12 +97,13 @@ export const formatTime = (date, fallback = "") => {
   });
 };
 
-export const formatTimes = (date, fallback = "") => {
+export const formatTimees = (date, fallback = "") => {
   if (!date) return fallback;
 
   return new Date(date).toLocaleTimeString("default", {
     hour: "numeric",
     minute: "numeric",
+    hour12: false,
   });
 };
 
@@ -159,7 +170,7 @@ export const formatDateTime = (date, fallback = "") => {
     year: "numeric",
     hour: "numeric",
     minute: "numeric",
-    hour12: false,
+    hour12: true,
     timeZone: "UTC",
   };
 

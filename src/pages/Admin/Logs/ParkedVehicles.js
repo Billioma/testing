@@ -4,7 +4,7 @@ import { Box, Flex, Image, Text } from "@chakra-ui/react";
 import { useGetParkedVehicles } from "../../../services/admin/query/logs";
 import { valetedVehiclesOptions } from "../../../components/common/constants";
 import Filter from "../../../components/common/Filter";
-import { formatDate } from "../../../utils/helpers";
+import { formatNewDate } from "../../../utils/helpers";
 
 export default function () {
   const [page, setPage] = useState(1);
@@ -15,9 +15,13 @@ export default function () {
 
   const convertedFilters = filtArray?.map((filterObj) => {
     return filterObj?.gte
-      ? `filter=${filterObj?.title}||gte||"${formatDate(filterObj?.gte)}"`
+      ? `filter=${filterObj?.title}||$gte||"${formatNewDate(
+          filterObj?.gte
+        )}T00:00:00"`
       : filterObj?.lte
-      ? `filter=${filterObj?.title}||lte||"${formatDate(filterObj?.lte)}"`
+      ? `filter=${filterObj?.title}||$lte||"${formatNewDate(
+          filterObj?.lte
+        )}T23:59:59"`
       : `filter=${filterObj?.title}||${filterObj?.type || "cont"}||"${
           filterObj?.filter
         }"`;
@@ -82,12 +86,7 @@ export default function () {
         fieldToCompare={valetedVehiclesOptions}
         gap
         title={
-          <Text
-            fontSize="14px"
-            fontWeight={500}
-            lineHeight="100%"
-            color="#242628"
-          >
+          <Text fontWeight={500} lineHeight="100%" color="#242628">
             All Parked Vehicles
           </Text>
         }

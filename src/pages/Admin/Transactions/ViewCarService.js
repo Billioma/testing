@@ -188,7 +188,7 @@ export default function AddCarService() {
                 <Box w="full" mb={4}>
                   <Text
                     mb="8px"
-                    fontSize="10px"
+                    fontSize="12px"
                     fontWeight={500}
                     color="#444648"
                   >
@@ -200,7 +200,7 @@ export default function AddCarService() {
                 <Box mb={4}>
                   <Text
                     mb="8px"
-                    fontSize="10px"
+                    fontSize="12px"
                     fontWeight={500}
                     color="#444648"
                   >
@@ -217,7 +217,7 @@ export default function AddCarService() {
                 <Box w="full" mb={4}>
                   <Text
                     mb="8px"
-                    fontSize="10px"
+                    fontSize="12px"
                     fontWeight={500}
                     color="#444648"
                   >
@@ -229,7 +229,7 @@ export default function AddCarService() {
                 <Box mb={4}>
                   <Text
                     mb="8px"
-                    fontSize="10px"
+                    fontSize="12px"
                     fontWeight={500}
                     color="#444648"
                   >
@@ -256,7 +256,7 @@ export default function AddCarService() {
                 <Box mb={4}>
                   <Text
                     mb="8px"
-                    fontSize="10px"
+                    fontSize="12px"
                     fontWeight={500}
                     color="#444648"
                   >
@@ -284,7 +284,7 @@ export default function AddCarService() {
                 <Box mb={4}>
                   <Text
                     mb="8px"
-                    fontSize="10px"
+                    fontSize="12px"
                     fontWeight={500}
                     color="#444648"
                   >
@@ -314,7 +314,6 @@ export default function AddCarService() {
                           fontWeight={
                             values?.serviceType === "BASIC" ? 500 : 400
                           }
-                          fontSize="14px"
                         >
                           Basic
                         </Text>
@@ -329,7 +328,6 @@ export default function AddCarService() {
                           fontWeight={
                             values?.serviceType === "PREMIUM" ? 500 : 400
                           }
-                          fontSize="14px"
                         >
                           Premium
                         </Text>
@@ -341,7 +339,7 @@ export default function AddCarService() {
                 <Box mb={4}>
                   <Text
                     mb="8px"
-                    fontSize="10px"
+                    fontSize="12px"
                     fontWeight={500}
                     color="#444648"
                   >
@@ -374,7 +372,7 @@ export default function AddCarService() {
                 <Box mb={4}>
                   <Text
                     mb="8px"
-                    fontSize="10px"
+                    fontSize="12px"
                     fontWeight={500}
                     color="#444648"
                   >
@@ -395,7 +393,7 @@ export default function AddCarService() {
                 <Box w="full" mb={4}>
                   <Text
                     mb="8px"
-                    fontSize="10px"
+                    fontSize="12px"
                     fontWeight={500}
                     color="#444648"
                   >
@@ -407,7 +405,7 @@ export default function AddCarService() {
                 <Box mb={4}>
                   <Text
                     mb="8px"
-                    fontSize="10px"
+                    fontSize="12px"
                     fontWeight={500}
                     color="#444648"
                   >

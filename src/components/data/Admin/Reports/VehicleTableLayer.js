@@ -41,7 +41,7 @@ const VehicleTableLayer = ({
             useDefaultPagination
           >
             {data?.data?.map((item, i) => (
-              <Tr fontSize="12px" fontWeight={500} color="#646668" key={i}>
+              <Tr fontSize="14px" fontWeight={500} color="#646668" key={i}>
                 <Td>{item?.customer}</Td>
                 <Td textAlign="center">{item?.licensePlate}</Td>
                 <Td textAlign="center">{item?.make}</Td>
@@ -64,7 +64,7 @@ const VehicleTableLayer = ({
           <Image src="/assets/no-sub.jpg" w="64px" h="64px" />
           <Text
             color="#848688"
-            fontSize="12px"
+            fontSize="14px"
             lineHeight="100%"
             fontWeight={500}
           >

@@ -32,10 +32,10 @@ import { IoIosArrowDown } from "react-icons/io";
 export const Layout = ({ label, data }) => {
   return (
     <Flex justifyContent={"space-between"} align="center" color="#646668">
-      <Text fontSize="12px" lineHeight="100%">
+      <Text fontSize="14px" lineHeight="100%">
         {label}
       </Text>
-      <Text fontWeight={500} fontSize="14px" lineHeight="100%">
+      <Text fontWeight={500} lineHeight="100%">
         {data}
       </Text>
     </Flex>
@@ -397,7 +397,7 @@ export default function ViewParkedVehicle() {
                     <Box w="full" mb={4}>
                       <Text
                         mb="8px"
-                        fontSize="10px"
+                        fontSize="12px"
                         fontWeight={500}
                         color="#444648"
                       >
@@ -417,7 +417,7 @@ export default function ViewParkedVehicle() {
                     {/* <Box w="full" mb={4}>
                       <Text
                         mb="8px"
-                        fontSize="10px"
+                        fontSize="12px"
                         fontWeight={500}
                         color="#444648"
                       >
@@ -437,7 +437,7 @@ export default function ViewParkedVehicle() {
                     <Box w="full" mb={4}>
                       <Text
                         mb="8px"
-                        fontSize="10px"
+                        fontSize="12px"
                         fontWeight={500}
                         color="#444648"
                       >
@@ -457,7 +457,7 @@ export default function ViewParkedVehicle() {
                     <Box w="full" mb={4}>
                       <Text
                         mb="8px"
-                        fontSize="10px"
+                        fontSize="12px"
                         fontWeight={500}
                         color="#444648"
                       >
@@ -477,7 +477,7 @@ export default function ViewParkedVehicle() {
                     <Box w="full" mb={4}>
                       <Text
                         mb="8px"
-                        fontSize="10px"
+                        fontSize="12px"
                         fontWeight={500}
                         color="#444648"
                       >
@@ -509,7 +509,7 @@ export default function ViewParkedVehicle() {
                     <Box w="full" mb={4}>
                       <Text
                         mb="8px"
-                        fontSize="10px"
+                        fontSize="12px"
                         fontWeight={500}
                         color="#444648"
                       >
@@ -541,7 +541,7 @@ export default function ViewParkedVehicle() {
                     <Box w="full" mb={4}>
                       <Text
                         mb="8px"
-                        fontSize="10px"
+                        fontSize="12px"
                         fontWeight={500}
                         color="#444648"
                       >
@@ -573,7 +573,7 @@ export default function ViewParkedVehicle() {
                     <Box w="full" mb={4}>
                       <Text
                         mb="8px"
-                        fontSize="10px"
+                        fontSize="12px"
                         fontWeight={500}
                         color="#444648"
                       >
@@ -605,7 +605,7 @@ export default function ViewParkedVehicle() {
                     <Box w="full" mb={4}>
                       <Text
                         mb="8px"
-                        fontSize="10px"
+                        fontSize="12px"
                         fontWeight={500}
                         color="#444648"
                       >
@@ -637,7 +637,7 @@ export default function ViewParkedVehicle() {
                     <Box w="full" mb={4}>
                       <Text
                         mb="8px"
-                        fontSize="10px"
+                        fontSize="12px"
                         fontWeight={500}
                         color="#444648"
                       >
@@ -657,7 +657,7 @@ export default function ViewParkedVehicle() {
                     <Box w="full" mb={4}>
                       <Text
                         mb="8px"
-                        fontSize="10px"
+                        fontSize="12px"
                         fontWeight={500}
                         color="#444648"
                       >
@@ -689,7 +689,7 @@ export default function ViewParkedVehicle() {
                     <Box w="full" mb={4}>
                       <Text
                         mb="8px"
-                        fontSize="10px"
+                        fontSize="12px"
                         fontWeight={500}
                         color="#444648"
                       >
@@ -721,7 +721,7 @@ export default function ViewParkedVehicle() {
                     <Box w="full" mb={4}>
                       <Text
                         mb="8px"
-                        fontSize="10px"
+                        fontSize="12px"
                         fontWeight={500}
                         color="#444648"
                       >
@@ -754,7 +754,7 @@ export default function ViewParkedVehicle() {
                     <Box w="full" mb={4}>
                       <Text
                         mb="8px"
-                        fontSize="10px"
+                        fontSize="12px"
                         fontWeight={500}
                         color="#444648"
                       >
@@ -787,7 +787,7 @@ export default function ViewParkedVehicle() {
                     <Box w="full" mb={4}>
                       <Text
                         mb="8px"
-                        fontSize="10px"
+                        fontSize="12px"
                         fontWeight={500}
                         color="#444648"
                       >
@@ -820,7 +820,7 @@ export default function ViewParkedVehicle() {
                     <Box w="full" mb={4}>
                       <Text
                         mb="8px"
-                        fontSize="10px"
+                        fontSize="12px"
                         fontWeight={500}
                         color="#444648"
                       >
@@ -887,7 +887,7 @@ export default function ViewParkedVehicle() {
                   >
                     <Text
                       mb="20px"
-                      fontSize="10px"
+                      fontSize="12px"
                       fontWeight={500}
                       color="#444648"
                     >
@@ -897,7 +897,7 @@ export default function ViewParkedVehicle() {
                     <Box w="full" mb={4}>
                       <Text
                         mb="8px"
-                        fontSize="10px"
+                        fontSize="12px"
                         fontWeight={500}
                         color="#444648"
                       >
@@ -918,7 +918,7 @@ export default function ViewParkedVehicle() {
                     <Box w="full" mb={4}>
                       <Text
                         mb="8px"
-                        fontSize="10px"
+                        fontSize="12px"
                         fontWeight={500}
                         color="#444648"
                       >
@@ -940,7 +940,7 @@ export default function ViewParkedVehicle() {
                     <Box w="full" mb={4}>
                       <Text
                         mb="8px"
-                        fontSize="10px"
+                        fontSize="12px"
                         fontWeight={500}
                         color="#444648"
                       >

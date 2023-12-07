@@ -144,7 +144,7 @@ export default function AddOperator() {
                 <Box w="full" mb={4}>
                   <Text
                     mb="8px"
-                    fontSize="10px"
+                    fontSize="12px"
                     fontWeight={500}
                     color="#444648"
                   >
@@ -165,7 +165,7 @@ export default function AddOperator() {
                 <Box w="full" mb={4}>
                   <Text
                     mb="8px"
-                    fontSize="10px"
+                    fontSize="12px"
                     fontWeight={500}
                     color="#444648"
                   >
@@ -186,7 +186,7 @@ export default function AddOperator() {
                 <Box w="full" mb={4}>
                   <Text
                     mb="8px"
-                    fontSize="10px"
+                    fontSize="12px"
                     fontWeight={500}
                     color="#444648"
                   >
@@ -209,7 +209,7 @@ export default function AddOperator() {
                   <Text
                     color="#444648"
                     lineHeight="100%"
-                    fontSize="10px"
+                    fontSize="12px"
                     fontWeight={500}
                     mb="8px"
                   >
@@ -245,7 +245,7 @@ export default function AddOperator() {
                   gap="15px"
                   mb="16px"
                 >
-                  <Text fontSize="12px" fontWeight={500} color="#444648">
+                  <Text fontSize="14px" fontWeight={500} color="#444648">
                     Activate plan
                   </Text>
                   <Switch
@@ -268,7 +268,7 @@ export default function AddOperator() {
                   gap="15px"
                   mb="16px"
                 >
-                  <Text fontSize="12px" fontWeight={500} color="#444648">
+                  <Text fontSize="14px" fontWeight={500} color="#444648">
                     Set as Corporate Plan
                   </Text>
                   <Switch
@@ -291,7 +291,7 @@ export default function AddOperator() {
                   gap="15px"
                   mb="16px"
                 >
-                  <Text fontSize="12px" fontWeight={500} color="#444648">
+                  <Text fontSize="14px" fontWeight={500} color="#444648">
                     Set as Upgradeable Plan
                   </Text>
                   <Switch

@@ -4,7 +4,7 @@ import { useGetOpRp } from "../../../services/operator/query/transactions";
 import RpTableLayer from "../../../components/data/Operator/Transactions/RpTableLayer";
 import { opRpOptions } from "../../../components/common/constants";
 import Filter from "../../../components/common/Filter";
-import { formatDate } from "../../../utils/helpers";
+import { formatNewDate } from "../../../utils/helpers";
 
 const ReserveParking = () => {
   const [page, setPage] = useState(1);
@@ -16,9 +16,13 @@ const ReserveParking = () => {
 
   const convertedFilters = filtArray?.map((filterObj) => {
     return filterObj?.gte
-      ? `filter=${filterObj?.title}||gte||"${formatDate(filterObj?.gte)}"`
+      ? `filter=${filterObj?.title}||$gte||"${formatNewDate(
+          filterObj?.gte
+        )}T00:00:00"`
       : filterObj?.lte
-      ? `filter=${filterObj?.title}||lte||"${formatDate(filterObj?.lte)}"`
+      ? `filter=${filterObj?.title}||$lte||"${formatNewDate(
+          filterObj?.lte
+        )}T23:59:59"`
       : `filter=${filterObj?.title}||${filterObj?.type || "cont"}||"${
           filterObj?.filter
         }"`;

@@ -223,7 +223,6 @@ export default function AddCustomerSubscription() {
         >
           <Flex
             align="center"
-            fontSize="14px"
             fontWeight="500"
             lineHeight="100%"
             cursor="pointer"
@@ -264,7 +263,7 @@ export default function AddCustomerSubscription() {
             border="1px solid #E4E6E8"
           >
             <Box bg="#0D0718" borderRadius="8px" p={4} mb={4}>
-              <Text color="#fff" fontSize="14px" fontWeight={500}>
+              <Text color="#fff" fontWeight={500}>
                 {
                   plans?.data?.find((plan) => plan.id === state?.membershipPlan)
                     ?.name
@@ -273,10 +272,10 @@ export default function AddCustomerSubscription() {
 
               <Flex justifyContent="space-between" mt={3}>
                 <Flex alignItems="end" gap={2} mb={1}>
-                  <Text fontSize="10px" color="#fff">
+                  <Text fontSize="12px" color="#fff">
                     Price{" "}
                   </Text>
-                  <Text fontSize="12px" color="#848688" fontWeight={500}>
+                  <Text fontSize="14px" color="#848688" fontWeight={500}>
                     ₦
                     {plans?.data
                       ?.find((plan) => plan.id === state?.membershipPlan)
@@ -284,10 +283,10 @@ export default function AddCustomerSubscription() {
                   </Text>
                 </Flex>
                 <Flex alignItems="end" gap={2} mb={1}>
-                  <Text fontSize="10px" color="#fff">
+                  <Text fontSize="12px" color="#fff">
                     Duration{" "}
                   </Text>
-                  <Text fontSize="12px" color="#848688" fontWeight={500}>
+                  <Text fontSize="14px" color="#848688" fontWeight={500}>
                     {
                       intervalOptions[
                         plans?.data?.find(
@@ -315,7 +314,7 @@ export default function AddCustomerSubscription() {
               }}
             >
               <Box w="full" mb={4}>
-                <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
+                <Text mb="8px" fontSize="12px" fontWeight={500} color="#444648">
                   Select a customer
                 </Text>
                 <Select
@@ -341,7 +340,7 @@ export default function AddCustomerSubscription() {
                   placeholder="Select customer"
                 />
                 {formSubmitted && !state?.customer && (
-                  <Text mt="5px" fontSize="10px" color="tomato">
+                  <Text mt="5px" fontSize="12px" color="tomato">
                     Customer is required
                   </Text>
                 )}
@@ -357,7 +356,7 @@ export default function AddCustomerSubscription() {
                   <Box w="full" mb={4}>
                     <Text
                       mb="8px"
-                      fontSize="10px"
+                      fontSize="12px"
                       fontWeight={500}
                       color="#444648"
                     >
@@ -416,7 +415,7 @@ export default function AddCustomerSubscription() {
                       !state?.subscriptionOptions?.find(
                         (item) => item?.type === "vehicle"
                       )?.data?.length && (
-                        <Text mt="5px" fontSize="10px" color="tomato">
+                        <Text mt="5px" fontSize="12px" color="tomato">
                           Select at least one vehicle
                         </Text>
                       )}
@@ -428,7 +427,7 @@ export default function AddCustomerSubscription() {
                   <Box w="full" mb={4}>
                     <Text
                       mb="8px"
-                      fontSize="10px"
+                      fontSize="12px"
                       fontWeight={500}
                       color="#444648"
                     >
@@ -486,7 +485,7 @@ export default function AddCustomerSubscription() {
                       !state?.subscriptionOptions?.find(
                         (item) => item?.type === "location"
                       )?.data?.length && (
-                        <Text mt="5px" fontSize="10px" color="tomato">
+                        <Text mt="5px" fontSize="12px" color="tomato">
                           Select at least one location
                         </Text>
                       )}
@@ -499,7 +498,7 @@ export default function AddCustomerSubscription() {
                 gap="15px"
                 mb="16px"
               >
-                <Text fontSize="12px" fontWeight={500} color="#444648">
+                <Text fontSize="14px" fontWeight={500} color="#444648">
                   Renew Automatically
                 </Text>
                 <Switch
@@ -549,24 +548,19 @@ export default function AddCustomerSubscription() {
                   alignItems="center"
                 >
                   <Box>
-                    <Text
-                      color="#848688"
-                      fontWeight={500}
-                      mb={2}
-                      fontSize="14px"
-                    >
+                    <Text color="#848688" fontWeight={500} mb={2}>
                       {plan.name}
                     </Text>
 
                     <Flex alignItems="end" gap={2} mb={1}>
-                      <Text fontSize="10px">Price </Text>
-                      <Text fontSize="12px" color="#848688" fontWeight={500}>
+                      <Text fontSize="12px">Price </Text>
+                      <Text fontSize="14px" color="#848688" fontWeight={500}>
                         ₦{plan.amount?.toLocaleString()}
                       </Text>
                     </Flex>
                     <Flex alignItems="end" gap={2}>
-                      <Text fontSize="10px">Duration </Text>
-                      <Text fontSize="12px" color="#848688" fontWeight={500}>
+                      <Text fontSize="12px">Duration </Text>
+                      <Text fontSize="14px" color="#848688" fontWeight={500}>
                         {intervalOptions[plan.interval]}
                       </Text>
                     </Flex>

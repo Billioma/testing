@@ -135,7 +135,7 @@ export default function AddEvent() {
           >
             <Box alignSelf={"center"} mb={5}>
               <Text
-                fontSize="10px"
+                fontSize="12px"
                 fontWeight={500}
                 color="#444648"
                 textAlign="center"
@@ -197,7 +197,7 @@ export default function AddEvent() {
                   <Box w="full" mb={4}>
                     <Text
                       mb="8px"
-                      fontSize="10px"
+                      fontSize="12px"
                       fontWeight={500}
                       color="#444648"
                     >
@@ -205,7 +205,7 @@ export default function AddEvent() {
                       <span
                         style={{
                           color: "tomato",
-                          fontSize: "13px",
+                          fontSize: "15px",
                         }}
                       >
                         *
@@ -226,7 +226,7 @@ export default function AddEvent() {
                   <Box w="full" mb={4}>
                     <Text
                       mb="8px"
-                      fontSize="10px"
+                      fontSize="12px"
                       fontWeight={500}
                       color="#444648"
                     >
@@ -234,7 +234,7 @@ export default function AddEvent() {
                       <span
                         style={{
                           color: "tomato",
-                          fontSize: "13px",
+                          fontSize: "15px",
                         }}
                       >
                         *
@@ -258,7 +258,7 @@ export default function AddEvent() {
                   <Box w="full" mb={4}>
                     <Text
                       mb="8px"
-                      fontSize="10px"
+                      fontSize="12px"
                       fontWeight={500}
                       color="#444648"
                     >
@@ -266,7 +266,7 @@ export default function AddEvent() {
                       <span
                         style={{
                           color: "tomato",
-                          fontSize: "13px",
+                          fontSize: "15px",
                         }}
                       >
                         *
@@ -289,7 +289,7 @@ export default function AddEvent() {
                   <Box w="full" mb={4}>
                     <Text
                       mb="8px"
-                      fontSize="10px"
+                      fontSize="12px"
                       fontWeight={500}
                       color="#444648"
                     >
@@ -314,13 +314,13 @@ export default function AddEvent() {
                       mb="8px"
                       fontWeight={500}
                       color="#444648"
-                      fontSize="10px"
+                      fontSize="12px"
                     >
                       Event Start Date & Time{" "}
                       <span
                         style={{
                           color: "tomato",
-                          fontSize: "13px",
+                          fontSize: "15px",
                         }}
                       >
                         *
@@ -335,7 +335,7 @@ export default function AddEvent() {
                     />
 
                     {formSubmitted && !values?.eventStartDateTime && (
-                      <Text mt="8px" fontSize="10px" color="tomato">
+                      <Text mt="8px" fontSize="12px" color="tomato">
                         Start Date is required
                       </Text>
                     )}
@@ -346,13 +346,13 @@ export default function AddEvent() {
                       mb="8px"
                       fontWeight={500}
                       color="#444648"
-                      fontSize="10px"
+                      fontSize="12px"
                     >
                       Event End Date & Time{" "}
                       <span
                         style={{
                           color: "tomato",
-                          fontSize: "13px",
+                          fontSize: "15px",
                         }}
                       >
                         *
@@ -367,7 +367,7 @@ export default function AddEvent() {
                     />
 
                     {formSubmitted && !values?.eventEndDateTime && (
-                      <Text mt="8px" fontSize="10px" color="tomato">
+                      <Text mt="8px" fontSize="12px" color="tomato">
                         End Date is required
                       </Text>
                     )}
@@ -376,7 +376,7 @@ export default function AddEvent() {
                   {values?.eventEndDateTime < values?.eventStartDateTime && (
                     <Text
                       mt={-3}
-                      fontSize="13px"
+                      fontSize="15px"
                       mb={4}
                       color="tomato"
                       fontWeight={500}
@@ -387,7 +387,7 @@ export default function AddEvent() {
                   <Box w="full" mb={4}>
                     <Text
                       mb="8px"
-                      fontSize="10px"
+                      fontSize="12px"
                       fontWeight={500}
                       color="#444648"
                     >
@@ -395,7 +395,7 @@ export default function AddEvent() {
                       <span
                         style={{
                           color: "tomato",
-                          fontSize: "13px",
+                          fontSize: "15px",
                         }}
                       >
                         *
@@ -430,7 +430,7 @@ export default function AddEvent() {
                     />
 
                     {formSubmitted && !values?.client && (
-                      <Text mt="8px" fontSize="10px" color="tomato">
+                      <Text mt="8px" fontSize="12px" color="tomato">
                         Client is required
                       </Text>
                     )}
@@ -438,7 +438,7 @@ export default function AddEvent() {
                   <Box w="full" mb={4}>
                     <Text
                       mb="8px"
-                      fontSize="10px"
+                      fontSize="12px"
                       fontWeight={500}
                       color="#444648"
                     >
@@ -446,7 +446,7 @@ export default function AddEvent() {
                       <span
                         style={{
                           color: "tomato",
-                          fontSize: "13px",
+                          fontSize: "15px",
                         }}
                       >
                         *
@@ -482,7 +482,7 @@ export default function AddEvent() {
                     />
 
                     {formSubmitted && !values?.zones?.length && (
-                      <Text mt="8px" fontSize="10px" color="tomato">
+                      <Text mt="8px" fontSize="12px" color="tomato">
                         Select at least one zone
                       </Text>
                     )}
@@ -491,7 +491,7 @@ export default function AddEvent() {
                   <Box mb={4}>
                     <Text
                       mb="8px"
-                      fontSize="10px"
+                      fontSize="12px"
                       fontWeight={500}
                       color="#444648"
                     >
@@ -499,7 +499,7 @@ export default function AddEvent() {
                       <span
                         style={{
                           color: "tomato",
-                          fontSize: "13px",
+                          fontSize: "15px",
                         }}
                       >
                         *
@@ -532,7 +532,7 @@ export default function AddEvent() {
                       }}
                     />
                     {formSubmitted && !values?.status && (
-                      <Text mt="8px" fontSize="10px" color="tomato">
+                      <Text mt="8px" fontSize="12px" color="tomato">
                         Status is required
                       </Text>
                     )}
@@ -566,7 +566,7 @@ export default function AddEvent() {
                     <Box w="full" mb={4}>
                       <Text
                         mb="8px"
-                        fontSize="10px"
+                        fontSize="12px"
                         fontWeight={500}
                         color="#444648"
                       >

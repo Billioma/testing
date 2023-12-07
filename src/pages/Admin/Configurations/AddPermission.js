@@ -79,7 +79,7 @@ export default function AddPermissions() {
                   <Box w="full" mb="16px">
                     <Text
                       mb="8px"
-                      fontSize="10px"
+                      fontSize="12px"
                       fontWeight={500}
                       color="#444648"
                     >
@@ -87,7 +87,7 @@ export default function AddPermissions() {
                       <span
                         style={{
                           color: "tomato",
-                          fontSize: "13px",
+                          fontSize: "15px",
                         }}
                       >
                         *
@@ -106,7 +106,7 @@ export default function AddPermissions() {
                   <Box w="full" mb="16px">
                     <Text
                       mb="8px"
-                      fontSize="10px"
+                      fontSize="12px"
                       fontWeight={500}
                       color="#444648"
                     >
@@ -114,7 +114,7 @@ export default function AddPermissions() {
                       <span
                         style={{
                           color: "tomato",
-                          fontSize: "13px",
+                          fontSize: "15px",
                         }}
                       >
                         *
@@ -136,7 +136,7 @@ export default function AddPermissions() {
                   <Box w="full" mb="16px">
                     <Text
                       mb="8px"
-                      fontSize="10px"
+                      fontSize="12px"
                       fontWeight={500}
                       color="#444648"
                     >
@@ -144,7 +144,7 @@ export default function AddPermissions() {
                       <span
                         style={{
                           color: "tomato",
-                          fontSize: "13px",
+                          fontSize: "15px",
                         }}
                       >
                         *

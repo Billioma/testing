@@ -31,7 +31,7 @@ const AdminEditServiceModal = ({ isOpen, refetch, onClose, service }) => {
       width: "100%",
       minHeight: "44px",
       color: "#646668",
-      fontSize: "14px",
+      fontSize: "16px",
       cursor: "pointer",
       borderRadius: "4px",
       border: state.hasValue ? "none" : "1px solid #D4D6D8",
@@ -40,7 +40,7 @@ const AdminEditServiceModal = ({ isOpen, refetch, onClose, service }) => {
     }),
     menu: (provided) => ({
       ...provided,
-      fontSize: "13px",
+      fontSize: "15px",
       backgroundColor: "#fff",
     }),
     option: (provided, state) => ({
@@ -132,7 +132,7 @@ const AdminEditServiceModal = ({ isOpen, refetch, onClose, service }) => {
             <Text
               color="#444648"
               lineHeight="100%"
-              fontSize="10px"
+              fontSize="12px"
               mb="8px"
               fontWeight={500}
             >
@@ -154,7 +154,7 @@ const AdminEditServiceModal = ({ isOpen, refetch, onClose, service }) => {
             <Text
               color="#444648"
               lineHeight="100%"
-              fontSize="10px"
+              fontSize="12px"
               mb="8px"
               fontWeight={500}
             >
@@ -176,7 +176,7 @@ const AdminEditServiceModal = ({ isOpen, refetch, onClose, service }) => {
             <Text
               color="#444648"
               lineHeight="100%"
-              fontSize="10px"
+              fontSize="12px"
               fontWeight={500}
               mb="8px"
             >
