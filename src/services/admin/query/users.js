@@ -28,6 +28,7 @@ import {
   getOperator,
   editAdminOperator,
   getAdminEvent,
+  fundCustomer,
 } from "../api/users";
 
 export const useGetAttendants = (options = {}, page, limit, query) => {
@@ -222,6 +223,15 @@ export const useCreateCustomer = (options = {}) => {
 export const useEditCustomer = (options = {}) => {
   const { isLoading, data, mutate } = useMutation(editCustomer, {
     mutationKey: ["EDIT_CUSTOMER"],
+    ...options,
+  });
+
+  return { isLoading, data, mutate };
+};
+
+export const useFundCustomer = (options = {}) => {
+  const { isLoading, data, mutate } = useMutation(fundCustomer, {
+    mutationKey: ["fundCustomer"],
     ...options,
   });
 

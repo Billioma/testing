@@ -1175,6 +1175,21 @@ export const PaymentMethods = [
   "CARD",
 ];
 
+export const FundMethods = [
+  {
+    id: 0,
+    name: "CASH",
+  },
+  {
+    id: 1,
+    name: "TRANSFER",
+  },
+  {
+    id: 3,
+    name: "POS",
+  },
+];
+
 export const OnlinePaymentMethods = ["CARD", "WALLET", "TRANSFER"];
 
 export const cardImg = [

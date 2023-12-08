@@ -7,18 +7,26 @@ import {
   Image,
   Spinner,
   Input,
+  Switch,
 } from "@chakra-ui/react";
 import CustomInput from "../../../components/common/CustomInput";
 import { useNavigate, useParams } from "react-router-dom";
 import { PRIVATE_PATHS } from "../../../routes/constants";
 import {
   useEditCustomer,
+  useFundCustomer,
   useGetAdminCustomer,
 } from "../../../services/admin/query/users";
 import useCustomToast from "../../../utils/notifications";
 import Select from "react-select";
 import GoBackTab from "../../../components/data/Admin/GoBackTab";
-import { cardImg, statusType } from "../../../components/common/constants";
+import {
+  FundMethods,
+  PaymentMethods,
+  cardImg,
+  errorCustomStyles,
+  statusType,
+} from "../../../components/common/constants";
 import { useCustomerUploadPic } from "../../../services/customer/query/user";
 import { IoIosArrowDown } from "react-icons/io";
 import UpdateOperatorPasswordModal from "../../../components/modals/UpdateOperatorPasswordModal";
@@ -33,6 +41,7 @@ export default function ViewCustomer() {
   }, [isEdit]);
 
   const [edit, setEdit] = useState(false);
+  const [formSubmitted, setFormSubmitted] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
   const { id } = useParams();
@@ -56,10 +65,25 @@ export default function ViewCustomer() {
       );
     },
   });
+  const { mutate: fundMutate, isLoading: isFund } = useFundCustomer({
+    onSuccess: () => {
+      successToast("Customer wallet funded successfully!");
+      sessionStorage.removeItem("edit");
+      navigate(PRIVATE_PATHS.ADMIN_CUSTOMERS);
+    },
+    onError: (error) => {
+      errorToast(
+        error?.response?.data?.message || error?.message || "An Error occurred"
+      );
+    },
+  });
 
   const [values, setValues] = useState({
     profilePicture: "",
     firstName: "",
+    showFund: false,
+    paymentMethod: "",
+    customerAmount: "",
     lastName: "",
     email: "",
     phone: "",
@@ -77,6 +101,11 @@ export default function ViewCustomer() {
   const statusOptions = statusType?.map((status, i) => ({
     value: i,
     label: status,
+  }));
+
+  const payOptions = FundMethods?.map((method) => ({
+    value: method?.id,
+    label: method?.name,
   }));
 
   useEffect(() => {
@@ -139,6 +168,16 @@ export default function ViewCustomer() {
         phone: `+234${Number(values?.phone)}` || "",
         status: values?.status.value,
         profilePicture: profilePicData?.path || values?.pic,
+      },
+    });
+  };
+
+  const handleFund = () => {
+    fundMutate({
+      query: id,
+      body: {
+        amount: Number(values?.customerAmount),
+        paymentMethod: Number(values?.paymentMethod?.value),
       },
     });
   };
@@ -386,6 +425,142 @@ export default function ViewCustomer() {
                     isDisabled={edit ? false : true}
                   />
                 </Box>
+
+                <form
+                  onSubmit={(e) => {
+                    !values?.customerAmount || !values?.paymentMethod
+                      ? setFormSubmitted(true)
+                      : (setFormSubmitted(true), handleFund(e));
+                    e.preventDefault();
+                  }}
+                >
+                  <Flex
+                    align="center"
+                    justifyContent={"space-between"}
+                    gap="15px"
+                    mb="16px"
+                    mt={2}
+                  >
+                    <Text fontSize="12px" fontWeight={500} color="#444648">
+                      Fund Wallet
+                    </Text>
+                    <Switch
+                      onChange={() =>
+                        setValues({
+                          ...values,
+                          showFund: values?.showFund ? 0 : 1,
+                        })
+                      }
+                      value={values?.showFund}
+                      isChecked={values?.showFund ? true : false}
+                      size="sm"
+                      variant="adminPrimary"
+                    />
+                  </Flex>
+
+                  {values?.showFund ? (
+                    <>
+                      {" "}
+                      <Box w="full" mb={4}>
+                        <Text
+                          mb="8px"
+                          fontSize="12px"
+                          fontWeight={500}
+                          color="#444648"
+                        >
+                          Amount{" "}
+                          <span
+                            style={{
+                              color: "tomato",
+                              fontSize: "15px",
+                            }}
+                          >
+                            *
+                          </span>
+                        </Text>
+                        <CustomInput
+                          value={values.customerAmount}
+                          auth
+                          type="number"
+                          error={
+                            formSubmitted && !values?.customerAmount
+                              ? true
+                              : false
+                          }
+                          onChange={(e) =>
+                            setValues({
+                              ...values,
+                              customerAmount: e.target.value,
+                            })
+                          }
+                        />
+
+                        {formSubmitted && !values?.customerAmount && (
+                          <Text mt="-22px" fontSize="12px" color="tomato">
+                            Amount is required
+                          </Text>
+                        )}
+                      </Box>
+                      <Box mb={4}>
+                        <Text
+                          color="#444648"
+                          lineHeight="100%"
+                          fontSize="12px"
+                          fontWeight={500}
+                          mb="8px"
+                        >
+                          Payment Method{" "}
+                          <span
+                            style={{
+                              color: "tomato",
+                              fontSize: "15px",
+                            }}
+                          >
+                            *
+                          </span>
+                        </Text>
+                        <Select
+                          styles={
+                            formSubmitted && !values?.paymentMethod
+                              ? errorCustomStyles
+                              : customStyles
+                          }
+                          options={payOptions}
+                          onChange={(selectedOption) =>
+                            handleSelectChange(selectedOption, {
+                              name: "paymentMethod",
+                            })
+                          }
+                          value={values?.paymentMethod}
+                          components={{
+                            IndicatorSeparator: () => (
+                              <div style={{ display: "none" }}></div>
+                            ),
+                            DropdownIndicator: () => (
+                              <div>
+                                <IoIosArrowDown size="15px" color="#646668" />
+                              </div>
+                            ),
+                          }}
+                        />
+                        {formSubmitted && !values?.paymentMethod && (
+                          <Text mt="8px" fontSize="12px" color="tomato">
+                            Payment Method is required
+                          </Text>
+                        )}
+                      </Box>
+                      <Button
+                        type="submit"
+                        isLoading={isFund}
+                        variant="adminPrimary"
+                        size="sm"
+                      >
+                        Fund Wallet
+                      </Button>
+                    </>
+                  ) : null}
+                </form>
+
                 <Button
                   variant="adminSecondary"
                   fontSize="12px"

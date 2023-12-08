@@ -34,6 +34,7 @@ export const ADMIN_CUSTOMERS_LIST = (
 ) => `admin/customers?${filterString}&limit=${limit}&page=${page}&sort=id,DESC`;
 
 export const ADMIN_CUSTOMER = (id = "") => `admin/customers/${id}`;
+export const FUND_CUSTOMER = (id = "") => `admin/customers/fund-wallet/${id}`;
 
 export const ADMIN_OPERATORS = "admin/operators";
 export const ADMIN_OPERATOR = (id = "") => `admin/operators/${id}`;

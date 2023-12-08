@@ -13,7 +13,7 @@ import { useGetReports } from "../../../services/admin/query/reports";
 import SubExport from "../../../components/data/Admin/Reports/SubExport";
 import Filter from "../../../components/common/Filter";
 import { adminSubsReportOptions } from "../../../components/common/constants";
-import { formatNewDate } from "../../../utils/helpers";
+import { formatFilterDate } from "../../../utils/helpers";
 
 const Subs = () => {
   const [page, setPage] = useState(1);
@@ -22,13 +22,15 @@ const Subs = () => {
   const [endRow, setEndRow] = useState(0);
   const [filtArray, setFiltArray] = useState([]);
 
+  const today = new Date();
+  const year = today.getFullYear();
   const convertedFilters = filtArray?.map((filterObj) => {
     return filterObj?.gte
-      ? `filter=${filterObj?.title}||$gte||"${formatNewDate(
+      ? `filter=${filterObj?.title}||$gte||"${formatFilterDate(
           filterObj?.gte
         )}T00:00:00"`
       : filterObj?.lte
-      ? `filter=${filterObj?.title}||$lte||"${formatNewDate(
+      ? `filter=${filterObj?.title}||$lte||"${formatFilterDate(
           filterObj?.lte
         )}T23:59:59"`
       : `filter=${filterObj?.title}||${filterObj?.type || "cont"}||"${
@@ -36,7 +38,27 @@ const Subs = () => {
         }"`;
   });
 
-  const query = convertedFilters?.join("&");
+  const query =
+    filtArray?.length === 0
+      ? `filter=createdAt||$gte||${year}-01-01T00:00:00&filter=createdAt||$lte||${year}-12-31T23:59:59`
+      : filtArray?.filter((item) => item?.gte)?.length > 0 &&
+        filtArray?.filter((item) => item?.lte)?.length === 0
+      ? `${convertedFilters?.join(
+          "&"
+        )}&filter=createdAt||$lte||${year}-12-31T23:59:59`
+      : filtArray?.filter((item) => item?.gte)?.length === 0 &&
+        filtArray?.filter((item) => item?.lte)?.length === 0
+      ? `${convertedFilters?.join(
+          "&"
+        )}&filter=createdAt||$gte||${year}-01-01T00:00:00&filter=createdAt||$lte||${year}-12-31T23:59:59`
+      : filtArray?.filter((item) => item?.gte)?.length === 0 &&
+        filtArray?.filter((item) => item?.lte)?.length > 0
+      ? `${convertedFilters?.join("&")}`
+      : filtArray?.filter((item) => item?.gte)?.length &&
+        filtArray?.filter((item) => item?.lte)?.length
+      ? `${convertedFilters?.join("&")}`
+      : convertedFilters?.join("&");
+
   const [isRefetch, setIsRefetch] = useState(false);
   const { data, isLoading, refetch } = useGetReports(
     {

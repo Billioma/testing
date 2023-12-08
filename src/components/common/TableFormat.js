@@ -196,7 +196,7 @@ const DefaultPagination = ({
           borderWidth={1}
           onChange={(e) => setLimit(e.target.value)}
         >
-          {["25", "50", "100"].map((dat, i) => (
+          {["25", "50", "100", "200"].map((dat, i) => (
             <option key={i} value={dat}>
               {dat}
             </option>

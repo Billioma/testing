@@ -106,6 +106,11 @@ export const editCustomer = async ({ query, body }) => {
   return response.data;
 };
 
+export const fundCustomer = async ({ query, body }) => {
+  const response = await axiosInstance.post(API.FUND_CUSTOMER(query), body);
+  return response.data;
+};
+
 export const editAdministrator = async (data) => {
   const response = await axiosInstance.patch(
     `${API.ADMIN_ADMINISTRATORS}/${data.id}`,
