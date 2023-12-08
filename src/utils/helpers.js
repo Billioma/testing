@@ -207,6 +207,9 @@ export const formatTimeToHHMMSS = (time) => {
     hours = "00";
   }
 
+  hours = hours.padStart(2, '0');
+  minutes = minutes.padStart(2, '0');
+
   const seconds = "00";
   return `${hours}:${minutes}:${seconds}`;
 };
