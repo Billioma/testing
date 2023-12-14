@@ -88,12 +88,7 @@ const Subscriptions = () => {
           filtArray={filtArray}
           fieldToCompare={subFieldOption}
           title={
-            <Text
-              fontSize="14px"
-              fontWeight={500}
-              lineHeight="100%"
-              color="#242628"
-            >
+            <Text fontWeight={500} lineHeight="100%" color="#242628">
               All Subscriptions
             </Text>
           }
@@ -105,9 +100,8 @@ const Subscriptions = () => {
                 onClick={() => navigate("/client/subscriptions/create")}
                 display="flex"
                 gap="8px"
-                fontSize=""
               >
-                <Text fontSize="12px">Add a Subscription</Text>
+                <Text fontSize="14px">Add a Subscription</Text>
                 <MdAdd size="20px" />
               </Button>
               <Flex

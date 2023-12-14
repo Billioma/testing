@@ -6,7 +6,7 @@ import {
   operatorZonesHeader,
   zoneOption,
 } from "../../../../common/constants";
-import { formatDate } from "../../../../../utils/helpers";
+import { formatDateNewTime } from "../../../../../utils/helpers";
 import { IoIosArrowDown } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
 import { Add } from "../../../../common/images";
@@ -79,7 +79,7 @@ const TableLayer = ({
             useDefaultPagination
           >
             {data?.data?.map((item, i) => (
-              <Tr fontSize="12px" fontWeight={500} color="#646668" key={i}>
+              <Tr fontSize="14px" fontWeight={500} color="#646668" key={i}>
                 <Td>{item?.name}</Td>
                 <Td>{item?.location?.name}</Td>
                 <Td textAlign="center">{item?.capacity}</Td>
@@ -100,7 +100,7 @@ const TableLayer = ({
                     </Flex>
                   </Flex>
                 </Td>
-                <Td textAlign="center">{formatDate(item?.createdAt)}</Td>
+                <Td textAlign="center">{formatDateNewTime(item?.createdAt)}</Td>
 
                 <Td>
                   <Flex
@@ -137,7 +137,7 @@ const TableLayer = ({
                             onClick={() => openOption(i)}
                             _hover={{ bg: "#F4F6F8" }}
                             cursor="pointer"
-                            fontSize="10px"
+                            fontSize="12px"
                             color={i !== 2 ? "#646668" : "#A11212"}
                             lineHeight="100%"
                             gap="12px"
@@ -166,7 +166,7 @@ const TableLayer = ({
           <Image src="/assets/no-zone.jpg" w="64px" h="64px" />
           <Text
             color="#848688"
-            fontSize="12px"
+            fontSize="14px"
             lineHeight="100%"
             fontWeight={500}
           >
@@ -177,7 +177,7 @@ const TableLayer = ({
             onClick={() => navigate("/operator/locations/zones/create")}
             display="flex"
             gap="8px"
-            fontSize="12px"
+            fontSize="14px"
           >
             <Text>Add a Zone</Text>
             <Add fill="#fff" />

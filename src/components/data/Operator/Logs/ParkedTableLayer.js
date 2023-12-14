@@ -2,7 +2,7 @@ import React from "react";
 import { Box, Button, Flex, Image, Td, Text, Tr } from "@chakra-ui/react";
 import TableLoader from "../../../loaders/TableLoader";
 import { LogStatus, operatorLogHeader } from "../../../common/constants";
-import { formatDate } from "../../../../utils/helpers";
+import { formatDateNewTime } from "../../../../utils/helpers";
 import { useNavigate } from "react-router-dom";
 import { AiOutlineEye } from "react-icons/ai";
 import TableFormat from "../../../common/TableFormat";
@@ -50,7 +50,7 @@ const ParkedTableLayer = ({
                 <Td textAlign="center">{item?.location?.name || "N/A"}</Td>
                 <Td textAlign="center">{item?.zone?.name}</Td>
                 <Td textAlign="center">{item?.attendant?.name}</Td>
-                <Td textAlign="center">{formatDate(item?.createdAt)}</Td>
+                <Td textAlign="center">{formatDateNewTime(item?.createdAt)}</Td>
                 <Td>
                   <Flex align="center" w="full" justifyContent="center">
                     <Flex

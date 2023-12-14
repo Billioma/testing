@@ -24,7 +24,7 @@ export const getFaq = async () => {
 export const getUserSub = async ({ queryKey }) => {
   const [, limit, page, filters] = queryKey;
   const filterString = filters.join("&");
-  const apiUrl = `customer/${API.GET_SUBSCRIPTIONS}?${filterString}&limit=${limit}&page=${page}&sort=id,DESC`;
+  const apiUrl = `customer/${API.GET_SUBSCRIPTIONS}?${filterString}&limit=${limit}&page=${page}&sort=createdAt,DESC`;
 
   const res = await axiosInstance.get(apiUrl);
   return res.data;

@@ -2,7 +2,7 @@ import React from "react";
 import { Box, Flex, Image, Td, Text, Tr } from "@chakra-ui/react";
 import TableLoader from "../../../loaders/TableLoader";
 import { adminRepLogHeader } from "../../../common/constants";
-import { formatDateTimes } from "../../../../utils/helpers";
+import { formatDateNewTime } from "../../../../utils/helpers";
 import TableFormat from "../../../common/TableFormat";
 
 const LogsTableLayer = ({
@@ -61,7 +61,7 @@ const LogsTableLayer = ({
 
                 <Td textAlign="center">{item?.status}</Td>
 
-                <Td>{formatDateTimes(item?.createdAt)}</Td>
+                <Td>{formatDateNewTime(item?.createdAt)}</Td>
               </Tr>
             ))}
           </TableFormat>

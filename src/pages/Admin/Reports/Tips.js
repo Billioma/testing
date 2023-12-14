@@ -40,7 +40,7 @@ const Tips = () => {
 
   const query =
     filtArray?.length === 0
-      ? `filter=createdAt||$gte||${year}-01-01T00:00:00&filter=createdAt||$lte||${year}-12-31T23:59:59`
+      ? `filter=createdAt||$lte||${year}-12-31T23:59:59`
       : filtArray?.filter((item) => item?.gte)?.length > 0 &&
         filtArray?.filter((item) => item?.lte)?.length === 0
       ? `${convertedFilters?.join(
@@ -50,7 +50,7 @@ const Tips = () => {
         filtArray?.filter((item) => item?.lte)?.length === 0
       ? `${convertedFilters?.join(
           "&"
-        )}&filter=createdAt||$gte||${year}-01-01T00:00:00&filter=createdAt||$lte||${year}-12-31T23:59:59`
+        )}&filter=createdAt||$lte||${year}-12-31T23:59:59`
       : filtArray?.filter((item) => item?.gte)?.length === 0 &&
         filtArray?.filter((item) => item?.lte)?.length > 0
       ? `${convertedFilters?.join("&")}`

@@ -189,7 +189,7 @@ const AddUser = () => {
           gap="8px"
         >
           <HiOutlineArrowNarrowLeft size="24px" color="#242628" />
-          <Text fontSize="14px" fontWeight={500} lineHeight="100%">
+          <Text fontWeight={500} lineHeight="100%">
             Back
           </Text>
         </Flex>
@@ -246,7 +246,6 @@ const AddUser = () => {
                         <Text
                           w="full"
                           color="#848688"
-                          fontSize="14px"
                           fontWeight={500}
                           lineHeight="100%"
                         >
@@ -261,14 +260,13 @@ const AddUser = () => {
                         >
                           <Text
                             color="#242628"
-                            fontSize="10px"
+                            fontSize="12px"
                             lineHeight="100%"
                           >
                             Price
                           </Text>
                           <Text
                             color="#848688"
-                            fontSize="14px"
                             fontWeight={500}
                             lineHeight="100%"
                           >
@@ -285,12 +283,11 @@ const AddUser = () => {
                           w="full"
                           flexDir={["column", "row", "row", "row"]}
                         >
-                          <Text color="#000" fontSize="10px" lineHeight="100%">
+                          <Text color="#000" fontSize="12px" lineHeight="100%">
                             Duration
                           </Text>
                           <Text
                             color="#848688"
-                            fontSize="14px"
                             fontWeight={500}
                             lineHeight="100%"
                           >
@@ -306,7 +303,7 @@ const AddUser = () => {
                           _hover={{ bg: "Transparent" }}
                           _active={{ bg: "transparent" }}
                           _focus={{ bg: "transparent" }}
-                          fontSize="12px"
+                          fontSize="14px"
                           color="#444648"
                           py="17px"
                           px="26px"
@@ -319,7 +316,7 @@ const AddUser = () => {
                           w="full"
                           py="17px"
                           px="26px"
-                          fontSize="12px"
+                          fontSize="14px"
                         >
                           Select
                         </Button>
@@ -350,7 +347,7 @@ const AddUser = () => {
               gap="8px"
             >
               <HiOutlineArrowNarrowLeft size="24px" color="#242628" />
-              <Text fontSize="14px" fontWeight={500} lineHeight="100%">
+              <Text fontWeight={500} lineHeight="100%">
                 Back
               </Text>
             </Flex>
@@ -388,12 +385,7 @@ const AddUser = () => {
                 border="1px solid #d4d6d8"
               >
                 <Box>
-                  <Text
-                    color="#646668"
-                    fontSize="14px"
-                    fontWeight={500}
-                    lineHeight="100%"
-                  >
+                  <Text color="#646668" fontWeight={500} lineHeight="100%">
                     Plan Details
                   </Text>
                 </Box>
@@ -409,12 +401,12 @@ const AddUser = () => {
                     gap="8px"
                     flexDir={["column", "row", "row", "row"]}
                   >
-                    <Text color="#242628" fontSize="10px" lineHeight="100%">
+                    <Text color="#242628" fontSize="12px" lineHeight="100%">
                       Price
                     </Text>
                     <Text
                       color="#848688"
-                      fontSize="12px"
+                      fontSize="14px"
                       fontWeight={500}
                       lineHeight="100%"
                     >
@@ -432,12 +424,12 @@ const AddUser = () => {
                     w="full"
                     flexDir={["column", "row", "row", "row"]}
                   >
-                    <Text color="#000" fontSize="10px" lineHeight="100%">
+                    <Text color="#000" fontSize="12px" lineHeight="100%">
                       Duration
                     </Text>
                     <Text
                       color="#848688"
-                      fontSize="12px"
+                      fontSize="14px"
                       fontWeight={500}
                       lineHeight="100%"
                     >
@@ -451,7 +443,7 @@ const AddUser = () => {
                 <Box borderRadius="8px" p="16px" border="1px solid #e4e6e8">
                   <Text
                     color="#646668"
-                    fontSize="12px"
+                    fontSize="14px"
                     fontWeight={500}
                     lineHeight="100%"
                   >
@@ -480,18 +472,13 @@ const AddUser = () => {
                             w="full"
                           >
                             <Box w="full">
-                              <Text
-                                color="#646668"
-                                fontSize="14px"
-                                lineHeight="100%"
-                              >
+                              <Text color="#646668" lineHeight="100%">
                                 {user?.profile?.firstName}{" "}
                                 {user?.profile?.lastName}
                               </Text>
                               <Text
                                 mt="8px"
                                 color="#444648"
-                                fontSize="14px"
                                 fontWeight={500}
                                 lineHeight="100%"
                               >
@@ -541,7 +528,7 @@ const AddUser = () => {
                   _hover={{ bg: "Transparent" }}
                   _active={{ bg: "transparent" }}
                   _focus={{ bg: "transparent" }}
-                  fontSize="12px"
+                  fontSize="14px"
                   color="#444648"
                   py="17px"
                   px="26px"
@@ -564,7 +551,7 @@ const AddUser = () => {
                   w="full"
                   py="17px"
                   px="26px"
-                  fontSize="12px"
+                  fontSize="14px"
                   isDisabled={currentSub?.features?.length && !users?.length}
                 >
                   Save
@@ -593,7 +580,7 @@ const AddUser = () => {
               gap="8px"
             >
               <HiOutlineArrowNarrowLeft size="24px" color="#242628" />
-              <Text fontSize="14px" fontWeight={500} lineHeight="100%">
+              <Text fontWeight={500} lineHeight="100%">
                 Back
               </Text>
             </Flex>
@@ -616,7 +603,7 @@ const AddUser = () => {
             >
               <Box p="16px" borderRadius="8px" bg="#000" color="#fff">
                 <Box>
-                  <Text fontSize="14px" fontWeight={500} lineHeight="100%">
+                  <Text fontWeight={500} lineHeight="100%">
                     {currentSub?.name}
                   </Text>
                 </Box>
@@ -632,11 +619,11 @@ const AddUser = () => {
                     gap="8px"
                     flexDir={["column", "row", "row", "row"]}
                   >
-                    <Text fontSize="10px" lineHeight="100%">
+                    <Text fontSize="12px" lineHeight="100%">
                       Price
                     </Text>
                     <Text
-                      fontSize="12px"
+                      fontSize="14px"
                       color="#848688"
                       fontWeight={700}
                       lineHeight="100%"
@@ -655,11 +642,11 @@ const AddUser = () => {
                     w="full"
                     flexDir={["column", "row", "row", "row"]}
                   >
-                    <Text fontSize="10px" lineHeight="100%">
+                    <Text fontSize="12px" lineHeight="100%">
                       Duration
                     </Text>
                     <Text
-                      fontSize="12px"
+                      fontSize="14px"
                       fontWeight={700}
                       color="#848688"
                       lineHeight="100%"
@@ -681,7 +668,7 @@ const AddUser = () => {
                   px="16px"
                   border="1px solid #d4d6d8"
                 >
-                  <Text color="#646668" fontSize="12px" lineHeight="100%">
+                  <Text color="#646668" fontSize="14px" lineHeight="100%">
                     {users?.length} user{users?.length > 1 ? "s" : ""} selected
                   </Text>
 
@@ -689,7 +676,7 @@ const AddUser = () => {
                     py="6px"
                     px="16px"
                     size="sm"
-                    fontSize="10px"
+                    fontSize="12px"
                     onClick={() => setStep(step - 1)}
                     display="flex"
                     align="center"
@@ -704,7 +691,7 @@ const AddUser = () => {
               )}
 
               <Box mt="24px">
-                <Text color="#444648" fontSize="10px" lineHeight="100%">
+                <Text color="#444648" fontSize="12px" lineHeight="100%">
                   Client Payment Method
                 </Text>
                 <Flex my="16px" align="center">
@@ -726,7 +713,6 @@ const AddUser = () => {
                           values.paymentMethod === "1" ? "#EE383A" : "#646668"
                         }
                         fontWeight={values.paymentMethod === "1" ? 500 : 400}
-                        fontSize="14px"
                       >
                         {" "}
                         Wallet
@@ -738,7 +724,6 @@ const AddUser = () => {
                           values.paymentMethod === "0" ? "#EE383A" : "#646668"
                         }
                         fontWeight={values.paymentMethod === "0" ? 500 : 400}
-                        fontSize="14px"
                       >
                         Card
                       </Text>
@@ -753,13 +738,13 @@ const AddUser = () => {
                     <Box>
                       <Text
                         color="#444648"
-                        fontSize="10px"
+                        fontSize="12px"
                         lineHeight="100%"
                         mb="8px"
                       >
                         Wallet
                       </Text>
-                      <Text fontSize="14px" color="#646668" lineHeight="100%">
+                      <Text color="#646668" lineHeight="100%">
                         <span style={{ fontWeight: 500 }}> Balance: </span> ₦{" "}
                         {userData?.wallet?.balance?.toLocaleString(undefined, {
                           minimumFractionDigits: 2,
@@ -805,14 +790,13 @@ const AddUser = () => {
                             <Box>
                               <Text
                                 color="#444648"
-                                fontSize="10px"
+                                fontSize="12px"
                                 lineHeight="100%"
                                 mb="8px"
                               >
                                 Card Details
                               </Text>
                               <Text
-                                fontSize="14px"
                                 textTransform="capitalize"
                                 color="#646668"
                                 lineHeight="100%"
@@ -831,14 +815,12 @@ const AddUser = () => {
                       </Box>
                     ))
                   ) : (
-                    <Text fontSize="14px" fontWeight={500}>
-                      No Card Available
-                    </Text>
+                    <Text fontWeight={500}>No Card Available</Text>
                   )}
                   <Flex
                     mt="8px"
                     color="red"
-                    fontSize="12px"
+                    fontSize="14px"
                     mb="24px"
                     fontWeight={500}
                     lineHeight="100%"
@@ -863,7 +845,7 @@ const AddUser = () => {
                   mt="8px"
                   mb="24px"
                   color="red"
-                  fontSize="12px"
+                  fontSize="14px"
                   fontWeight={500}
                   lineHeight="100%"
                   justifyContent="flex-end"
@@ -885,7 +867,7 @@ const AddUser = () => {
                 w="full"
                 mb="24px"
               >
-                <Text fontSize="12px" color="#646668">
+                <Text fontSize="14px" color="#646668">
                   Renew Automatically
                 </Text>
                 <Switch
@@ -906,7 +888,7 @@ const AddUser = () => {
                   _hover={{ bg: "Transparent" }}
                   _active={{ bg: "transparent" }}
                   _focus={{ bg: "transparent" }}
-                  fontSize="12px"
+                  fontSize="14px"
                   color="#444648"
                   py="17px"
                   onClick={() => {
@@ -934,7 +916,7 @@ const AddUser = () => {
                       : values.paymentMethod == "1" && !values.paymentMethod
                   }
                   px="26px"
-                  fontSize="12px"
+                  fontSize="14px"
                 >
                   Make Payment
                 </Button>

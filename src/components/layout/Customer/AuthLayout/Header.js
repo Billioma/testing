@@ -154,7 +154,7 @@ const Header = ({ showSidebar }) => {
           <Flex align="flex-end" gap="16px">
             <Text
               color="orangeBg"
-              fontSize="20px"
+              fontSize="22px"
               lineHeight="100%"
               cursor={
                 locationRoute.includes("account/")
@@ -177,7 +177,6 @@ const Header = ({ showSidebar }) => {
 
             {secTitle && (
               <Text
-                fontSize="14px"
                 display={isMobile ? "none" : "flex"}
                 color="#848688"
                 pt="3px"
@@ -225,7 +224,7 @@ const Header = ({ showSidebar }) => {
                   }
                 />
 
-                <Text fontSize="12px" fontWeight={500} lineHeight="100%">
+                <Text fontSize="14px" fontWeight={500} lineHeight="100%">
                   Hi {userData?.profile?.firstName || ""}
                 </Text>
                 <IoIosArrowDown />
@@ -248,7 +247,7 @@ const Header = ({ showSidebar }) => {
                   {accountDrop.map((data, i) => (
                     <Text
                       key={i}
-                      fontSize="12px"
+                      fontSize="14px"
                       _hover={{
                         bg: "red",
                         color: "#fff",

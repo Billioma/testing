@@ -96,12 +96,7 @@ const Policies = () => {
           filtArray={filtArray}
           fieldToCompare={opLocFieldOption}
           title={
-            <Text
-              fontSize="14px"
-              fontWeight={500}
-              lineHeight="100%"
-              color="#242628"
-            >
+            <Text fontWeight={500} lineHeight="100%" color="#242628">
               All Policies
             </Text>
           }
@@ -111,9 +106,8 @@ const Policies = () => {
                 onClick={() => navigate("/operator/locations/policies/create")}
                 display="flex"
                 gap="8px"
-                fontSize=""
               >
-                <Text fontSize="12px">Add a Policy</Text>
+                <Text fontSize="14px">Add a Policy</Text>
                 <MdAdd size="20px" />
               </Button>
 

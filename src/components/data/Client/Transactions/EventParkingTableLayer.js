@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Box, Flex, Td, Text, Tr, Image } from "@chakra-ui/react";
 import TableFormat from "../../../common/TableFormat";
-import { formatDate, formatFullDate } from "../../../../utils/helpers";
+import { formatDateNewTime } from "../../../../utils/helpers";
 import { useNavigate } from "react-router-dom";
 import useCustomToast from "../../../../utils/notifications";
 import TableLoader from "../../../loaders/TableLoader";
@@ -120,7 +120,7 @@ const TableLayer = ({
                 key={i}
                 color="#646668"
                 fontWeight={500}
-                fontSize="12px"
+                fontSize="14px"
                 lineHeight="100%"
               >
                 <Td>{transaction?.ticketNumber}</Td>
@@ -133,10 +133,10 @@ const TableLayer = ({
                   {transaction?.zone?.location?.name || "N/A"}
                 </Td>
                 <Td textAlign="center">
-                  {formatFullDate(transaction?.event?.eventStartDateTime)}
+                  {formatDateNewTime(transaction?.event?.eventStartDateTime)}
                 </Td>
                 <Td textAlign="center">
-                  {formatFullDate(transaction?.event?.eventEndDateTime)}
+                  {formatDateNewTime(transaction?.event?.eventEndDateTime)}
                 </Td>
 
                 <Td textAlign="center">
@@ -156,7 +156,9 @@ const TableLayer = ({
                   </Flex>
                 </Td>
 
-                <Td textAlign="center">{formatDate(transaction?.createdAt)}</Td>
+                <Td textAlign="center">
+                  {formatDateNewTime(transaction?.createdAt)}
+                </Td>
                 <Td textAlign="center">
                   <Flex
                     onClick={() => open(transaction)}
@@ -194,7 +196,7 @@ const TableLayer = ({
                             onClick={() => openOption(index, transaction)}
                             _hover={{ bg: "#F4F6F8" }}
                             cursor="pointer"
-                            fontSize="10px"
+                            fontSize="12px"
                             color={index === 0 ? "#646668" : "red"}
                             w="full"
                             lindexneHeight="100%"
@@ -228,7 +230,7 @@ const TableLayer = ({
           <Image src="/assets/no-sub.jpg" w="64px" h="64px" />
           <Text
             color="#848688"
-            fontSize="12px"
+            fontSize="14px"
             lineHeight="100%"
             fontWeight={500}
           >

@@ -15,13 +15,12 @@ export const Layout = ({ label, data }) => {
       w="full"
       align="center"
     >
-      <Text lineHeight="100%" fontSize="12px">
+      <Text lineHeight="100%" fontSize="14px">
         {label}
       </Text>
       <Text
         lineHeight="100%"
         color={data === "Active" ? "#008000" : data === "Inactive" ? "red" : ""}
-        fontSize="14px"
         fontWeight={500}
       >
         {data}
@@ -57,7 +56,7 @@ const Details = () => {
             gap="8px"
           >
             <HiOutlineArrowNarrowLeft size="24px" color="#242628" />
-            <Text fontSize="14px" fontWeight={500} lineHeight="100%">
+            <Text fontWeight={500} lineHeight="100%">
               Back
             </Text>
           </Flex>

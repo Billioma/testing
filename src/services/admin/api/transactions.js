@@ -3,7 +3,7 @@ import * as API from "../url";
 
 export const getPayToPark = async (page, limit, query) => {
   const response = await axiosInstance.get(
-    `${API.ADMIN_PAY_TO_PARK}?page=${page}&limit=${limit}&sort=id,DESC&${
+    `${API.ADMIN_PAY_TO_PARK}?page=${page}&limit=${limit}&sort=createdAt,DESC&${
       query || ""
     }`
   );
@@ -12,16 +12,18 @@ export const getPayToPark = async (page, limit, query) => {
 
 export const getEventParking = async (page, limit, query) => {
   const response = await axiosInstance.get(
-    `${API.ADMIN_EVENT_PARKING}?page=${page}&limit=${limit}&sort=id,DESC&${
-      query || ""
-    }`
+    `${
+      API.ADMIN_EVENT_PARKING
+    }?page=${page}&limit=${limit}&sort=createdAt,DESC&${query || ""}`
   );
   return response.data;
 };
 
 export const getTips = async (page, limit, query) => {
   const response = await axiosInstance.get(
-    `${API.ADMIN_TIPS}?page=${page}&limit=${limit}&sort=id,DESC&${query || ""}`
+    `${API.ADMIN_TIPS}?page=${page}&limit=${limit}&sort=createdAt,DESC&${
+      query || ""
+    }`
   );
   return response.data;
 };
@@ -90,9 +92,9 @@ export const getTipsDetails = async (query) => {
 
 export const getCarServices = async (page, limit, query) => {
   const response = await axiosInstance.get(
-    `${API.ADMIN_CAR_SERVICES}?page=${page}&limit=${limit}&sort=id,DESC&${
-      query || ""
-    }`
+    `${
+      API.ADMIN_CAR_SERVICES
+    }?page=${page}&limit=${limit}&sort=createdAt,DESC&${query || ""}`
   );
   return response.data;
 };
@@ -109,9 +111,9 @@ export const deleteTips = async (id) => {
 
 export const getReservedParking = async (page, limit, query) => {
   const response = await axiosInstance.get(
-    `${API.ADMIN_RESERVED_PARKING}?page=${page}&limit=${limit}&sort=id,DESC&${
-      query || ""
-    }`
+    `${
+      API.ADMIN_RESERVED_PARKING
+    }?page=${page}&limit=${limit}&sort=createdAt,DESC&${query || ""}`
   );
   return response.data;
 };

@@ -14,7 +14,7 @@ import {
   Image,
 } from "@chakra-ui/react";
 import TableFormat from "../../../common/TableFormat";
-import { formatDateTime } from "../../../../utils/helpers";
+import { formatDateNewTime } from "../../../../utils/helpers";
 import { useNavigate } from "react-router-dom";
 import AdminDeleteModal from "../../../modals/AdminDeleteModal";
 import useCustomToast from "../../../../utils/notifications";
@@ -104,7 +104,9 @@ const TableLayer = ({
                 <Td>{model?.name}</Td>
                 <Td>{model?.make?.name}</Td>
 
-                <Td textAlign="center">{formatDateTime(model?.createdAt)}</Td>
+                <Td textAlign="center">
+                  {formatDateNewTime(model?.createdAt)}
+                </Td>
                 <Td>
                   <Flex justifyContent="center" align="center">
                     <Menu>

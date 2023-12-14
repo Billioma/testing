@@ -10,7 +10,7 @@ export const getEvents = async (query) => {
 
 export const getClienteleEvents = async (page, limit, query) => {
   const response = await axiosInstance.get(
-    `${API.CLIENTELE_EVENTS}?page=${page}&limit=${limit}&sort=id,DESC&${
+    `${API.CLIENTELE_EVENTS}?page=${page}&limit=${limit}&sort=createdAt,DESC&${
       query || ""
     }`
   );

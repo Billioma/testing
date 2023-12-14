@@ -6,7 +6,7 @@ import {
   BillingTypes,
   OnlinePaymentMethods,
 } from "../../../components/common/constants";
-import { formatDate, formatDateTime } from "../../../utils/helpers";
+import { formatDateNewTime } from "../../../utils/helpers";
 import { useGetOpEvDetails } from "../../../services/operator/query/transactions";
 
 export const Layout = ({ label, data }) => {
@@ -18,7 +18,7 @@ export const Layout = ({ label, data }) => {
       w="full"
       align="center"
     >
-      <Text lineHeight="100%" fontSize="12px">
+      <Text lineHeight="100%" fontSize="14px">
         {label}
       </Text>
       <Text
@@ -32,7 +32,6 @@ export const Layout = ({ label, data }) => {
             ? "red"
             : ""
         }
-        fontSize="14px"
         fontWeight={500}
       >
         {data}
@@ -67,7 +66,7 @@ const ViewEventParking = () => {
             gap="8px"
           >
             <HiOutlineArrowNarrowLeft size="24px" color="#242628" />
-            <Text fontSize="14px" fontWeight={500} lineHeight="100%">
+            <Text fontWeight={500} lineHeight="100%">
               Back
             </Text>
           </Flex>
@@ -89,11 +88,11 @@ const ViewEventParking = () => {
               <Layout label="Event Name" data={data?.event?.name} />
               <Layout
                 label="Start Date"
-                data={formatDateTime(data?.event?.eventStartDateTime)}
+                data={formatDateNewTime(data?.event?.eventStartDateTime)}
               />
               <Layout
                 label="End Date"
-                data={formatDateTime(data?.event?.eventEndDateTime)}
+                data={formatDateNewTime(data?.event?.eventEndDateTime)}
               />
               <Layout label="Ticket Number" data={data?.ticketNumber} />
               <Layout
@@ -133,7 +132,7 @@ const ViewEventParking = () => {
                     : "N/A"
                 }
               />
-              <Layout label="Date" data={formatDate(data?.createdAt)} />
+              <Layout label="Date" data={formatDateNewTime(data?.createdAt)} />
               <Layout
                 label="Status"
                 data={

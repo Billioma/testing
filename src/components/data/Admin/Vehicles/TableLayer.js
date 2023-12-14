@@ -14,7 +14,7 @@ import {
   Icon,
 } from "@chakra-ui/react";
 import TableFormat from "../../../common/TableFormat";
-import { formatDateTime } from "../../../../utils/helpers";
+import { formatDateNewTime } from "../../../../utils/helpers";
 import { useNavigate } from "react-router-dom";
 import AdminDeleteModal from "../../../modals/AdminDeleteModal";
 import useCustomToast from "../../../../utils/notifications";
@@ -127,7 +127,9 @@ const TableLayer = ({
                 <Td textAlign="center">{vehicle?.make?.name}</Td>
                 <Td textAlign="center">{vehicle?.model?.name}</Td>
                 <Td textAlign="center">{vehicle?.createdBy || "N/A"}</Td>
-                <Td textAlign="center">{formatDateTime(vehicle?.createdAt)}</Td>
+                <Td textAlign="center">
+                  {formatDateNewTime(vehicle?.createdAt)}
+                </Td>
                 <Td textAlign="center">
                   <Flex justifyContent="center" align="center">
                     <Menu>

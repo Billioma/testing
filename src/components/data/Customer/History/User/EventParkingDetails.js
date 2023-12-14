@@ -14,7 +14,7 @@ import {
 } from "../../../../../services/customer/query/services";
 import GoBackTab from "../../../Admin/GoBackTab";
 import { useParams } from "react-router-dom";
-import { formatDate } from "../../../../../utils/helpers";
+import { formatDateNewTime } from "../../../../../utils/helpers";
 import { Status } from "../../../../common/constants";
 import MakeTipModal from "../../../../modals/MakeTipModal";
 
@@ -31,7 +31,7 @@ export const Layout = ({ label, data }) => {
         base: label === "Location" ? "10px" : "unset",
         md: "unset",
       }}
-      fontSize="13px"
+      fontSize="15px"
       flexDir={{ base: label === "Location" ? "column" : "row", md: "row" }}
       fontWeight={500}
       justifyContent="space-between"
@@ -122,7 +122,6 @@ const EventParkingDetails = () => {
                 <Text
                   mt="16px"
                   mb="28px"
-                  fontSize="14px"
                   fontWeight={500}
                   lineHeight="100%"
                   color="#242628"
@@ -149,7 +148,10 @@ const EventParkingDetails = () => {
                     label="Location"
                     data={data?.zone?.location?.name || "N/A"}
                   />
-                  <Layout label="Date" data={formatDate(data?.createdAt)} />
+                  <Layout
+                    label="Date"
+                    data={formatDateNewTime(data?.createdAt)}
+                  />
 
                   <Layout
                     label="Selected Vehicle"
@@ -195,7 +197,7 @@ const EventParkingDetails = () => {
                   >
                     <Image src="/assets/tips.svg" />
                     <Text
-                      fontSize="13px"
+                      fontSize="15px"
                       color="#075F14"
                       fontWeight={500}
                       lineHeight="100%"
@@ -213,7 +215,7 @@ const EventParkingDetails = () => {
                     border="1px solid #ee7a38"
                     color="#ee7a38"
                     bg="transparent"
-                    fontSize="13px"
+                    fontSize="15px"
                     borderRadius="4px"
                     py="17px"
                   >
@@ -221,7 +223,7 @@ const EventParkingDetails = () => {
                   </Button>
                 </Box>
                 <Box w="full">
-                  <Button w="full" fontSize="13px" borderRadius="4px" py="17px">
+                  <Button w="full" fontSize="15px" borderRadius="4px" py="17px">
                     Download Receipt
                   </Button>
                 </Box>

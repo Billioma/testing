@@ -203,7 +203,7 @@ const ZoneDetails = () => {
           gap="8px"
         >
           <HiOutlineArrowNarrowLeft size="24px" color="#242628" />
-          <Text fontSize="14px" fontWeight={500} lineHeight="100%">
+          <Text fontWeight={500} lineHeight="100%">
             Back
           </Text>
         </Flex>
@@ -235,7 +235,7 @@ const ZoneDetails = () => {
                   <Box>
                     <Text
                       color="#444648"
-                      fontSize="10px"
+                      fontSize="12px"
                       fontWeight={500}
                       mb="8px"
                       lineHeight="100%"
@@ -259,7 +259,7 @@ const ZoneDetails = () => {
                   <Box my="16px">
                     <Text
                       color="#444648"
-                      fontSize="10px"
+                      fontSize="12px"
                       fontWeight={500}
                       mb="8px"
                       lineHeight="100%"
@@ -283,7 +283,7 @@ const ZoneDetails = () => {
                   <Box>
                     <Text
                       color="#444648"
-                      fontSize="10px"
+                      fontSize="12px"
                       fontWeight={500}
                       mb="8px"
                       lineHeight="100%"
@@ -308,7 +308,7 @@ const ZoneDetails = () => {
                   <Box my="16px">
                     <Text
                       color="#444648"
-                      fontSize="10px"
+                      fontSize="12px"
                       fontWeight={500}
                       mb="8px"
                       lineHeight="100%"
@@ -332,7 +332,7 @@ const ZoneDetails = () => {
                   <Box>
                     <Text
                       color="#444648"
-                      fontSize="10px"
+                      fontSize="12px"
                       fontWeight={500}
                       mb="8px"
                       lineHeight="100%"
@@ -365,7 +365,7 @@ const ZoneDetails = () => {
                   <Box my="16px">
                     <Text
                       color="#444648"
-                      fontSize="10px"
+                      fontSize="12px"
                       fontWeight={500}
                       mb="8px"
                       lineHeight="100%"
@@ -390,7 +390,7 @@ const ZoneDetails = () => {
                   <Box>
                     <Text
                       color="#444648"
-                      fontSize="10px"
+                      fontSize="12px"
                       fontWeight={500}
                       mb="8px"
                       lineHeight="100%"
@@ -424,7 +424,7 @@ const ZoneDetails = () => {
                   <Box my="16px">
                     <Text
                       color="#444648"
-                      fontSize="10px"
+                      fontSize="12px"
                       fontWeight={500}
                       mb="8px"
                       lineHeight="100%"
@@ -456,7 +456,7 @@ const ZoneDetails = () => {
                   </Box>
 
                   <Flex align="center" justifyContent="space-between" w="full">
-                    <Text fontSize="12px" color="#646668" lineHeight="100%">
+                    <Text fontSize="14px" color="#646668" lineHeight="100%">
                       Add Reservable Space
                     </Text>
 
@@ -473,7 +473,7 @@ const ZoneDetails = () => {
                     <Box mt="16px">
                       <Text
                         color="#444648"
-                        fontSize="10px"
+                        fontSize="12px"
                         fontWeight={500}
                         mb="8px"
                         lineHeight="100%"
@@ -498,7 +498,7 @@ const ZoneDetails = () => {
                   <Box mt="16px">
                     <Text
                       color="#444648"
-                      fontSize="10px"
+                      fontSize="12px"
                       fontWeight={500}
                       mb="8px"
                       lineHeight="100%"
@@ -538,7 +538,6 @@ const ZoneDetails = () => {
                       color="#646668"
                       fontWeight={500}
                       lineHeight="100%"
-                      fontSize="14px"
                       onClick={() => setEdit(false)}
                       _hover={{ bg: "transparent" }}
                       _active={{ bg: "transparent" }}
@@ -556,7 +555,7 @@ const ZoneDetails = () => {
                     isLoading={isUpdating}
                     w="full"
                     onClick={() => (!edit ? setEdit(true) : handleUpdate())}
-                    fontSize="12px"
+                    fontSize="14px"
                     px="26px"
                     py="17px"
                   >

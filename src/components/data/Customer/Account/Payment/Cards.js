@@ -124,7 +124,7 @@ const Cards = () => {
 
               <Text
                 mt="20px"
-                fontSize="12px"
+                fontSize="14px"
                 color="#848688"
                 fontWeight={700}
                 lineHeight="100%"
@@ -153,7 +153,7 @@ const Cards = () => {
                 onClick={() => setShowFund(true)}
                 py="14px"
                 color="#fff"
-                fontSize="12px"
+                fontSize="14px"
                 fontWeight={500}
               >
                 Fund My Wallet
@@ -195,7 +195,7 @@ const Cards = () => {
                     return (
                       <Box key={i}>
                         <Text
-                          fontSize="12px"
+                          fontSize="14px"
                           fontWeight={700}
                           lineHeight="100%"
                           color="#848688"
@@ -232,7 +232,7 @@ const Cards = () => {
                             w="15%"
                           >
                             <Text
-                              fontSize="10px"
+                              fontSize="12px"
                               color="#848688"
                               fontWeight={700}
                               lineHeight="100%"
@@ -308,7 +308,7 @@ const Cards = () => {
                 onClick={() => {
                   initializePayment(onSuccess, onClose);
                 }}
-                fontSize="12px"
+                fontSize="14px"
                 fontWeight={500}
               >
                 {cards?.data?.length === 3

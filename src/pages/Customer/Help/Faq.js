@@ -24,7 +24,7 @@ const Faq = () => {
           gap="8px"
         >
           <HiOutlineArrowNarrowLeft size="24px" color="#242628" />
-          <Text fontSize="14px" fontWeight={500} lineHeight="100%">
+          <Text fontWeight={500} lineHeight="100%">
             Back
           </Text>
         </Flex>

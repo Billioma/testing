@@ -32,7 +32,6 @@ const Settings = () => {
             {["Notifications", "Change Password"]?.map((dat, i) => (
               <Text
                 textAlign="center"
-                fontSize="14px"
                 w="full"
                 color={tab === dat ? "red" : "#646668"}
                 pb="16px"

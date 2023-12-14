@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Box, Button, Flex, Image, Td, Text, Tr } from "@chakra-ui/react";
 import TableLoader from "../../../loaders/TableLoader";
 import { SecStatus, clientUserHeader } from "../../../common/constants";
-import { formatDate } from "../../../../utils/helpers";
+import { formatDateNewTime } from "../../../../utils/helpers";
 import { FiMoreVertical } from "react-icons/fi";
 import ConfirmDeleteModal from "../../../modals/ConfirmDeleteModal";
 import useCustomToast from "../../../../utils/notifications";
@@ -96,7 +96,7 @@ const TableLayer = ({
             useDefaultPagination
           >
             {data?.data?.map((item, i) => (
-              <Tr fontSize="12px" fontWeight={500} color="#646668" key={i}>
+              <Tr fontSize="14px" fontWeight={500} color="#646668" key={i}>
                 <Td>
                   {item?.profile?.firstName} {item?.profile?.lastName}
                 </Td>
@@ -121,7 +121,7 @@ const TableLayer = ({
                     </Flex>
                   </Flex>
                 </Td>
-                <Td textAlign="center">{formatDate(item?.createdAt)}</Td>
+                <Td textAlign="center">{formatDateNewTime(item?.createdAt)}</Td>
                 <Td>
                   <Flex
                     onClick={() => open(item)}
@@ -155,7 +155,7 @@ const TableLayer = ({
                           onClick={() => setShowDelete(true)}
                           _hover={{ bg: "#F4F6F8" }}
                           cursor="pointer"
-                          fontSize="10px"
+                          fontSize="12px"
                           color="red"
                           w="full"
                           lineHeight="100%"
@@ -184,7 +184,7 @@ const TableLayer = ({
           <Image src="/assets/no-user.jpg" w="64px" h="64px" />
           <Text
             color="#848688"
-            fontSize="12px"
+            fontSize="14px"
             lineHeight="100%"
             fontWeight={500}
           >
@@ -195,7 +195,7 @@ const TableLayer = ({
             onClick={() => navigate("/client/users/create")}
             display="flex"
             gap="8px"
-            fontSize="12px"
+            fontSize="14px"
           >
             <Text>Add a User</Text>
             <Add fill="#fff" />

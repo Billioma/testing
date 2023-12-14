@@ -20,7 +20,7 @@ import useCustomToast from "../../../../utils/notifications";
 import { PRIVATE_PATHS } from "../../../../routes/constants";
 import { BsChevronDown } from "react-icons/bs";
 import { useDeleteMembershipPlan } from "../../../../services/admin/query/memberships";
-import { formatDateTime } from "../../../../utils/helpers";
+import { formatDateNewTime } from "../../../../utils/helpers";
 import { SecStatus, clientListOption } from "../../../common/constants";
 import { Add } from "../../../common/images";
 import TableLoader from "../../../loaders/TableLoader";
@@ -164,7 +164,7 @@ const TableLayer = ({
                       ))}
                 </Td>
 
-                <Td textAlign="center">{formatDateTime(plan?.createdAt)}</Td>
+                <Td textAlign="center">{formatDateNewTime(plan?.createdAt)}</Td>
                 <Td textAlign="center">
                   <Flex justifyContent="center" align="center">
                     <Menu>

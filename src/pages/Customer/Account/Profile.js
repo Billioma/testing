@@ -13,13 +13,12 @@ export const Layout = ({ label, data }) => {
       w="full"
       align="center"
     >
-      <Text lineHeight="100%" fontSize="12px">
+      <Text lineHeight="100%" fontSize="14px">
         {label}
       </Text>
       <Text
         lineHeight="100%"
         color={data === "Active" ? "#008000" : data === "Inactive" ? "red" : ""}
-        fontSize="14px"
         fontWeight={500}
       >
         {data}
@@ -98,7 +97,7 @@ const Profile = () => {
             px="20px"
             mb="33px"
             py="9px"
-            fontSize="10px"
+            fontSize="12px"
             fontWeight={500}
           >
             Edit Profile

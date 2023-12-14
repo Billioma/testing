@@ -15,16 +15,18 @@ export const getAdminReport = async (query) => {
 
 export const getReports = async (type, page, limit, query) => {
   const res = await axiosInstance.get(
-    `${API.ADMIN_REPORTS}/${type}?page=${page}&limit=${limit}&sort=id,DESC&${
-      query || ""
-    }`
+    `${
+      API.ADMIN_REPORTS
+    }/${type}?page=${page}&limit=${limit}&sort=createdAt,DESC&${query || ""}`
   );
   return res.data;
 };
 
 export const getTrans = async (page, limit, query) => {
   const res = await axiosInstance.get(
-    `${API.GET_TRAN}?page=${page}&limit=${limit}&sort=id,DESC&${query || ""}`
+    `${API.GET_TRAN}?page=${page}&limit=${limit}&sort=createdAt,DESC&${
+      query || ""
+    }`
   );
   return res.data;
 };

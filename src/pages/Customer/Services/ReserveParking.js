@@ -19,8 +19,8 @@ import ConfirmReserveModal from "../../../components/modals/ConfirmReserveModal"
 import { useGetLocations } from "../../../services/customer/query/locations";
 import { CiLocationOn, CiMap } from "react-icons/ci";
 import { PiWarningCircleLight } from "react-icons/pi";
-import { Calendar } from "react-calendar";
 import {
+  formatDate,
   formatHour,
   formatNewDate,
   formatTime,
@@ -105,7 +105,7 @@ const ReserveParking = () => {
           <Text color="#fff" fontWeight={700}>
             {location.name}
           </Text>
-          <Text color="#fff" fontSize="14px" fontWeight={500}>
+          <Text color="#fff" fontWeight={500}>
             {location.address}
           </Text>
         </Tooltip>
@@ -152,7 +152,6 @@ const ReserveParking = () => {
       }
     });
 
-  const [startDate, setStartDate] = useState(false);
   const [startValue, startChange] = useState("");
   const [endValue, endChange] = useState("");
   const [space, setSpace] = useState("");
@@ -178,7 +177,7 @@ const ReserveParking = () => {
       setChecking(false);
     },
   });
-  const [endDate, setEndDate] = useState(false);
+
   useEffect(() => {
     setStep(1);
     endChange("");
@@ -207,33 +206,6 @@ const ReserveParking = () => {
   const start = formatNewDate(startValue);
   const end = formatNewDate(endValue);
   const startDateRange = new Date();
-
-  const isDateDisabled = (date) => {
-    return date < startDateRange;
-  };
-  const handleEndDateChange = (date) => {
-    if (!isDateDisabled(date)) {
-      endChange(date);
-    }
-    setEndDate(false);
-  };
-
-  const handleDateChange = (date) => {
-    if (!isDateDisabled(date)) {
-      startChange(date);
-    }
-    setStartDate(false);
-  };
-
-  const tileClassName = ({ date }) => {
-    if (date.getDate() === startDateRange.getDate()) {
-      return "selected-date";
-    }
-    if (isDateDisabled(date)) {
-      return "disabled-date";
-    }
-    return null;
-  };
 
   const [showVehicle, setShowVehicle] = useState(false);
   const { data: models } = useGetModel();
@@ -471,20 +443,6 @@ const ReserveParking = () => {
     }),
   };
 
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (event.target.closest(".box") === null) {
-        setStartDate(false);
-        setEndDate(false);
-      }
-    };
-
-    document.addEventListener("click", handleClickOutside);
-    return () => {
-      document.removeEventListener("click", handleClickOutside);
-    };
-  }, []);
-
   const groupTimesByDate = (times) => {
     const groupedTimes = {};
 
@@ -549,12 +507,7 @@ const ReserveParking = () => {
               w="fit-content"
             >
               <HiOutlineArrowNarrowLeft size="24px" color="#242628" />
-              <Text
-                lineHeight="100%"
-                color="#242628"
-                fontSize="14px"
-                fontWeight={500}
-              >
+              <Text lineHeight="100%" color="#242628" fontWeight={500}>
                 Back
               </Text>
             </Flex>
@@ -642,9 +595,7 @@ const ReserveParking = () => {
                       onClick={() => setTab(dat)}
                     >
                       <Box>{i === 0 ? <FaListUl /> : <CiMap />}</Box>
-                      <Text fontSize="14px" lineHeight="100%">
-                        {dat}
-                      </Text>
+                      <Text lineHeight="100%">{dat}</Text>
                     </Flex>
                   ))}
                 </Flex>
@@ -695,7 +646,7 @@ const ReserveParking = () => {
                                 >
                                   <Box w="full">
                                     <Text
-                                      fontSize="10px"
+                                      fontSize="12px"
                                       color="#242628"
                                       lineHeight="100%"
                                       mb="8px"
@@ -703,7 +654,6 @@ const ReserveParking = () => {
                                       Location
                                     </Text>
                                     <Text
-                                      fontSize="14px"
                                       color="#848688"
                                       lineHeight="100%"
                                       fontWeight={500}
@@ -717,7 +667,7 @@ const ReserveParking = () => {
                                     gap="4px"
                                     color="#FFA36D"
                                     fontWeight={500}
-                                    fontSize="12px"
+                                    fontSize="14px"
                                     lineHeight="100%"
                                   >
                                     <PiWarningCircleLight size="16px" />
@@ -735,7 +685,7 @@ const ReserveParking = () => {
                                   <Box w="full">
                                     <Text
                                       mb="8px"
-                                      fontSize="10px"
+                                      fontSize="12px"
                                       color="#242628"
                                       lineHeight="100%"
                                     >
@@ -753,7 +703,7 @@ const ReserveParking = () => {
                                           justifyContent="center"
                                           align="center"
                                           bg={colors[i % colors?.length]}
-                                          fontSize="10px"
+                                          fontSize="12px"
                                           color="#646668"
                                           fontWeight={500}
                                           lineHeight="100%"
@@ -777,7 +727,7 @@ const ReserveParking = () => {
                                         });
                                         setStep(step + 1);
                                       }}
-                                      fontSize="12px"
+                                      fontSize="14px"
                                       lineHeight="100%"
                                     >
                                       Select
@@ -811,7 +761,7 @@ const ReserveParking = () => {
                         <Image src="/assets/no-loc.jpg" w="64px" h="64px" />
                         <Text
                           color="#848688"
-                          fontSize="12px"
+                          fontSize="14px"
                           lineHeight="100%"
                           fontWeight={500}
                         >
@@ -858,13 +808,13 @@ const ReserveParking = () => {
                   w="full"
                 >
                   <Box w="full">
-                    <Text color="#fff" fontSize="10px" lineHeight="100%">
+                    <Text color="#fff" fontSize="12px" lineHeight="100%">
                       Location
                     </Text>
                     <Text
                       color="#D4D6D8"
                       fontWeight={500}
-                      fontSize="12px"
+                      fontSize="14px"
                       lineHeight="100%"
                       mt="8px"
                     >
@@ -873,13 +823,13 @@ const ReserveParking = () => {
                   </Box>
 
                   <Flex flexDir="column" justifyContent="center" w="full">
-                    <Text color="#fff" fontSize="10px" lineHeight="100%">
+                    <Text color="#fff" fontSize="12px" lineHeight="100%">
                       State
                     </Text>
                     <Text
                       color="#D4D6D8"
                       fontWeight={500}
-                      fontSize="12px"
+                      fontSize="14px"
                       lineHeight="100%"
                       mt="8px"
                     >
@@ -898,13 +848,13 @@ const ReserveParking = () => {
                 <Box w="full">
                   <Text
                     mb="8px"
-                    fontSize="10px"
+                    fontSize="12px"
                     fontWeight={500}
                     color="#444648"
                   >
                     Arrival Date
                   </Text>
-                  <Box display={{ base: "flex", md: "none" }}>
+                  <Box>
                     <DatePicker
                       placeholder="Select Date"
                       value={startValue}
@@ -923,58 +873,12 @@ const ReserveParking = () => {
                       }}
                     />
                   </Box>
-                  <Box
-                    pos="relative"
-                    display={{ base: "none", md: "flex" }}
-                    w="full"
-                    className="box"
-                  >
-                    <Flex
-                      fontSize="14px"
-                      onClick={() => setStartDate((prev) => !prev)}
-                      align="center"
-                      justifyContent="space-between"
-                      w="full"
-                      bg={start ? "#F4F6F8" : "transparent"}
-                      color={start ? "#000" : ""}
-                      h="44px"
-                      cursor="pointer"
-                      borderRadius="4px"
-                      border="1px solid #D4D6D8"
-                      py="12px"
-                      px="16px"
-                    >
-                      <Text>{start ? start : "Select Date"}</Text>
-                      <Image src="/assets/cal.svg" w="20px" h="20px" />{" "}
-                    </Flex>
-                    {startDate && (
-                      <Box pos="absolute" top="50px" w="200%" zIndex="3">
-                        <Calendar
-                          onChange={(date) => {
-                            handleDateChange(date);
-                            if (
-                              start &&
-                              end &&
-                              values?.arrivalTime &&
-                              values?.departureTime
-                            ) {
-                              reqeustReserve();
-                              setChecking(true);
-                            }
-                          }}
-                          value={startValue}
-                          minDate={startDateRange}
-                          tileClassName={tileClassName}
-                        />
-                      </Box>
-                    )}
-                  </Box>
                 </Box>
 
                 <Box w="full">
                   <Text
                     mb="8px"
-                    fontSize="10px"
+                    fontSize="12px"
                     fontWeight={500}
                     color="#444648"
                   >
@@ -1025,18 +929,17 @@ const ReserveParking = () => {
                 <Box w="full">
                   <Text
                     mb="8px"
-                    fontSize="10px"
+                    fontSize="12px"
                     fontWeight={500}
                     color="#444648"
                   >
                     Departure Date
                   </Text>
-
-                  <Box display={{ base: "flex", md: "none" }}>
+                  <Box>
                     <DatePicker
                       placeholder="Select Date"
                       value={endValue}
-                      minDate={startDateRange}
+                      minDate={formatDate(startValue)}
                       onChange={(date) => {
                         endChange(date);
                         if (
@@ -1051,59 +954,12 @@ const ReserveParking = () => {
                       }}
                     />
                   </Box>
-
-                  <Box
-                    pos="relative"
-                    display={{ base: "none", md: "flex" }}
-                    w="full"
-                    className="box"
-                  >
-                    <Flex
-                      fontSize="14px"
-                      onClick={() => setEndDate((prev) => !prev)}
-                      align="center"
-                      justifyContent="space-between"
-                      w="full"
-                      h="44px"
-                      cursor="pointer"
-                      borderRadius="4px"
-                      bg={end ? "#F4F6F8" : "transparent"}
-                      color={end ? "#000" : ""}
-                      border="1px solid #D4D6D8"
-                      py="12px"
-                      px="16px"
-                    >
-                      <Text>{end ? end : "Select Date"}</Text>
-                      <Image src="/assets/cal.svg" w="20px" h="20px" />{" "}
-                    </Flex>
-                    {endDate && (
-                      <Box pos="absolute" top="70" w="200%" zIndex="3">
-                        <Calendar
-                          onChange={(date) => {
-                            handleEndDateChange(date);
-                            if (
-                              start &&
-                              end &&
-                              values?.arrivalTime &&
-                              values?.departureTime
-                            ) {
-                              reqeustReserve();
-                              setChecking(true);
-                            }
-                          }}
-                          value={endValue}
-                          minDate={startDateRange}
-                          tileClassName={tileClassName}
-                        />
-                      </Box>
-                    )}
-                  </Box>
                 </Box>
 
                 <Box w="full">
                   <Text
                     mb="8px"
-                    fontSize="10px"
+                    fontSize="12px"
                     fontWeight={500}
                     color="#444648"
                   >
@@ -1113,6 +969,7 @@ const ReserveParking = () => {
                   <Select
                     styles={customStyles}
                     placeholder="Select Time"
+                    isDisabled={!values?.arrivalTime}
                     options={timeOption}
                     value={values?.departureTime}
                     defaultValue={values?.departureTime}
@@ -1150,13 +1007,13 @@ const ReserveParking = () => {
                 values?.arrivalTime &&
                 values?.departureTime &&
                 formattedDeparture < formattedDate && (
-                  <Text mt="8px" fontSize="12px" color="red">
+                  <Text mt="8px" fontSize="14px" color="red">
                     Departure Date is earlier than Arrival Date
                   </Text>
                 )}
 
               <Box w="full" my="16px">
-                <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
+                <Text mb="8px" fontSize="12px" fontWeight={500} color="#444648">
                   Select Vehicle
                 </Text>
 
@@ -1183,7 +1040,7 @@ const ReserveParking = () => {
                   mt="-8px"
                   color="red"
                   mb="16px"
-                  fontSize="12px"
+                  fontSize="14px"
                   fontWeight={500}
                   lineHeight="100%"
                   justifyContent="flex-end"
@@ -1205,7 +1062,7 @@ const ReserveParking = () => {
                   align="center"
                   gap="8px"
                   color="#EE8F38"
-                  fontSize="12px"
+                  fontSize="14px"
                   lineHeight="100%"
                   fontWeight={500}
                 >
@@ -1224,7 +1081,7 @@ const ReserveParking = () => {
                       align="center"
                       gap="8px"
                       color="red"
-                      fontSize="12px"
+                      fontSize="14px"
                       lineHeight="100%"
                       fontWeight={500}
                     >
@@ -1234,7 +1091,7 @@ const ReserveParking = () => {
                     <Text
                       color="#444648"
                       my="12px"
-                      fontSize="12px"
+                      fontSize="14px"
                       lineHeight="100%"
                       fontWeight={500}
                     >
@@ -1250,7 +1107,7 @@ const ReserveParking = () => {
                                 color="#444648"
                                 my="12px"
                                 textAlign="center"
-                                fontSize="12px"
+                                fontSize="14px"
                                 lineHeight="100%"
                                 fontWeight={700}
                               >
@@ -1343,7 +1200,7 @@ const ReserveParking = () => {
                   align="center"
                   gap="8px"
                   color="red"
-                  fontSize="12px"
+                  fontSize="14px"
                   lineHeight="100%"
                   fontWeight={500}
                 >
@@ -1358,7 +1215,7 @@ const ReserveParking = () => {
                   align="center"
                   gap="8px"
                   color="#0B841D"
-                  fontSize="12px"
+                  fontSize="14px"
                   lineHeight="100%"
                   fontWeight={500}
                 >
@@ -1374,7 +1231,7 @@ const ReserveParking = () => {
                   <Box mt="24px">
                     <Text
                       mb="8px"
-                      fontSize="10px"
+                      fontSize="12px"
                       fontWeight={500}
                       color="#444648"
                     >
@@ -1400,16 +1257,16 @@ const ReserveParking = () => {
                         justifyContent="space-between"
                       >
                         <Radio size="sm" value={"1"}>
-                          <Text fontSize="14px"> Pay with Wallet</Text>
+                          <Text> Pay with Wallet</Text>
                         </Radio>
                         <Radio size="sm" value={"0"}>
-                          <Text fontSize="14px">Pay with Card</Text>
+                          <Text>Pay with Card</Text>
                         </Radio>
                         <Radio size="sm" value={"2"}>
-                          <Text fontSize="14px">Pay with Points</Text>
+                          <Text>Pay with Points</Text>
                         </Radio>
                         <Radio size="sm" value={"3"}>
-                          <Text fontSize="14px">Pay with Transfer</Text>
+                          <Text>Pay with Transfer</Text>
                         </Radio>
                       </RadioGroup>
                     </Flex>
@@ -1429,17 +1286,13 @@ const ReserveParking = () => {
                         <Box>
                           <Text
                             color="#444648"
-                            fontSize="10px"
+                            fontSize="12px"
                             lineHeight="100%"
                             mb="8px"
                           >
                             Wallet
                           </Text>
-                          <Text
-                            fontSize="14px"
-                            color="#646668"
-                            lineHeight="100%"
-                          >
+                          <Text color="#646668" lineHeight="100%">
                             <span style={{ fontWeight: 500 }}> Balance: </span>{" "}
                             ₦{" "}
                             {userData?.wallet?.balance?.toLocaleString(
@@ -1488,14 +1341,13 @@ const ReserveParking = () => {
                                 <Box>
                                   <Text
                                     color="#444648"
-                                    fontSize="10px"
+                                    fontSize="12px"
                                     lineHeight="100%"
                                     mb="8px"
                                   >
                                     Card Details
                                   </Text>
                                   <Text
-                                    fontSize="14px"
                                     textTransform="capitalize"
                                     color="#646668"
                                     lineHeight="100%"
@@ -1514,14 +1366,14 @@ const ReserveParking = () => {
                           </Box>
                         ))
                       ) : (
-                        <Box fontSize="14px" fontWeight={500} mt="8px">
+                        <Box fontWeight={500} mt="8px">
                           No Card Available
                         </Box>
                       )}
                       <Flex
                         mt="8px"
                         color="red"
-                        fontSize="12px"
+                        fontSize="14px"
                         fontWeight={500}
                         lineHeight="100%"
                         justifyContent="flex-end"
@@ -1543,7 +1395,7 @@ const ReserveParking = () => {
                     <Flex
                       mt="8px"
                       color="red"
-                      fontSize="12px"
+                      fontSize="14px"
                       fontWeight={500}
                       lineHeight="100%"
                       justifyContent="flex-end"
@@ -1605,7 +1457,6 @@ const ReserveParking = () => {
                     : ""
                   : ""
               }
-              fontSize="14px"
             >
               {step === 1
                 ? "Select"

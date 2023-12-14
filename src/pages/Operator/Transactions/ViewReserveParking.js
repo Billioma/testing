@@ -4,7 +4,7 @@ import { HiOutlineArrowNarrowLeft } from "react-icons/hi";
 import { useNavigate, useParams } from "react-router-dom";
 import { useGetOpRpDetails } from "../../../services/operator/query/transactions";
 import { OnlinePaymentMethods } from "../../../components/common/constants";
-import { formatDate } from "../../../utils/helpers";
+import { formatDateNewTime } from "../../../utils/helpers";
 
 export const Layout = ({ label, data }) => {
   return (
@@ -15,7 +15,7 @@ export const Layout = ({ label, data }) => {
       w="full"
       align="center"
     >
-      <Text lineHeight="100%" fontSize="12px">
+      <Text lineHeight="100%" fontSize="14px">
         {label}
       </Text>
       <Text
@@ -29,7 +29,6 @@ export const Layout = ({ label, data }) => {
             ? "red"
             : ""
         }
-        fontSize="14px"
         fontWeight={500}
       >
         {data}
@@ -64,7 +63,7 @@ const ViewReservedParking = () => {
           gap="8px"
         >
           <HiOutlineArrowNarrowLeft size="24px" color="#242628" />
-          <Text fontSize="14px" fontWeight={500} lineHeight="100%">
+          <Text fontWeight={500} lineHeight="100%">
             Back
           </Text>
         </Flex>
@@ -115,7 +114,7 @@ const ViewReservedParking = () => {
                     : "N/A"
                 }
               />
-              <Layout label="Date" data={formatDate(data?.createdAt)} />
+              <Layout label="Date" data={formatDateNewTime(data?.createdAt)} />
               <Layout
                 label="Status"
                 data={

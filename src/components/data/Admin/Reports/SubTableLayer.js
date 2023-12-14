@@ -2,7 +2,7 @@ import React from "react";
 import { Box, Flex, Image, Td, Text, Tr } from "@chakra-ui/react";
 import TableLoader from "../../../loaders/TableLoader";
 import { adminRepSubHeader } from "../../../common/constants";
-import { formatDateTime } from "../../../../utils/helpers";
+import { formatDateNewTime } from "../../../../utils/helpers";
 import TableFormat from "../../../common/TableFormat";
 
 const SubTableLayer = ({
@@ -45,16 +45,16 @@ const SubTableLayer = ({
                 <Td>{item?.customer || "N/A"}</Td>
                 <Td>{item?.membershipPlan || "N/A"}</Td>
                 <Td textAlign="center">
-                  {formatDateTime(item?.startDate) || "N/A"}
+                  {formatDateNewTime(item?.startDate) || "N/A"}
                 </Td>
                 <Td textAlign="center">
-                  {formatDateTime(item?.nextRenewal) || "N/A"}
+                  {formatDateNewTime(item?.nextRenewal) || "N/A"}
                 </Td>
                 <Td textAlign="center">{item?.autoRenew || "N/A"}</Td>
                 <Td textAlign="center">{item?.isCancelled || "N/A"}</Td>
                 <Td textAlign="center">{item?.status || "N/A"}</Td>
                 <Td textAlign="center">
-                  {formatDateTime(item?.createdAt) || "N/A"}
+                  {formatDateNewTime(item?.createdAt) || "N/A"}
                 </Td>
               </Tr>
             ))}

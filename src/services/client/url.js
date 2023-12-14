@@ -7,13 +7,13 @@ export const CHANGE_USER_PASSWORD = "update-password";
 export const GET_CLIENT_DETAILS = "auth/profile";
 export const GET_CLIENTS_USERS = "client/users";
 export const GET_USERS = (filterString = "", limit = "", page = "") =>
-  `client/users?${filterString}&limit=${limit}&page=${page}&sort=id,DESC`;
+  `client/users?${filterString}&limit=${limit}&page=${page}&sort=createdAt,DESC`;
 export const CLIENT_EVENT_PARKING_LIST = (
   filterString = "",
   limit = "",
   page = ""
 ) =>
-  `client/event-parking?${filterString}&limit=${limit}&page=${page}&sort=id,DESC`;
+  `client/event-parking?${filterString}&limit=${limit}&page=${page}&sort=createdAt,DESC`;
 export const CLIENT_EVENT_PARKING_DETAIL = (id = "") =>
   `client/event-parking/${id}`;
 
@@ -29,9 +29,9 @@ export const CREATE_EVENTS = "client/events";
 export const CREATE_SUB = "client/membership-subscriptions";
 export const CLIENTELE_EVENTS = "client/events";
 export const GET_EVENTS = (filterString = "", limit = "", page = "") =>
-  `client/events?${filterString}&limit=${limit}&page=${page}&sort=id,DESC`;
+  `client/events?${filterString}&limit=${limit}&page=${page}&sort=createdAt,DESC`;
 export const GET_SUBS = (filterString = "", limit = "", page = "") =>
-  `client/membership-subscriptions?${filterString}&limit=${limit}&page=${page}&sort=id,DESC`;
+  `client/membership-subscriptions?${filterString}&limit=${limit}&page=${page}&sort=createdAt,DESC`;
 export const DEL_EVENTS = (id = "") => `client/events/${id}`;
 export const LOOKUP_USER = (email = "") =>
   `client/users/lookup-user?email=${email}`;

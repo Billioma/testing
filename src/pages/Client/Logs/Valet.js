@@ -75,7 +75,7 @@ const Valet = () => {
             <Tbody>
               {clientLogPayBody?.length ? (
                 clientLogPayBody?.map((item, i) => (
-                  <Tr fontSize="12px" fontWeight={500} color="#646668" key={i}>
+                  <Tr fontSize="14px" fontWeight={500} color="#646668" key={i}>
                     <Td>{item?.ticket}</Td>
                     <Td>{item?.plate}</Td>
                     <Td>{item?.customer}</Td>
@@ -137,7 +137,7 @@ const Valet = () => {
                               align="center"
                               _hover={{ bg: "#F4F6F8" }}
                               cursor="pointer"
-                              fontSize="10px"
+                              fontSize="12px"
                               w="full"
                               lineHeight="100%"
                               fontWeight={500}
@@ -176,7 +176,7 @@ const Valet = () => {
             gap={{ base: "10px", md: "32px" }}
             align="center"
           >
-            <Text fontSize="12px" color="#242628" lineHeight="100%">
+            <Text fontSize="14px" color="#242628" lineHeight="100%">
               Showing rows 1 to 10 of 20
             </Text>
 
@@ -188,24 +188,24 @@ const Valet = () => {
                 align="center"
                 gap="2px"
                 color="#A4A6A8"
-                fontSize="12px"
+                fontSize="14px"
               >
                 <IoIosArrowBack />
                 <Text lineHeight="100%">Previous</Text>
               </Flex>
 
-              <Flex align="center" gap="5px" color="#A4A6A8" fontSize="12px">
+              <Flex align="center" gap="5px" color="#A4A6A8" fontSize="14px">
                 <Flex
                   bg="transparent"
                   py="6px"
                   px="8px"
                   color="#242628"
-                  fontSize="12px"
+                  fontSize="14px"
                   lineHeight="100%"
                 >
                   <Text>1</Text>
                 </Flex>
-                <Text fontWeight={500} fontSize="12px">
+                <Text fontWeight={500} fontSize="14px">
                   -{" "}
                 </Text>
                 <Flex
@@ -213,7 +213,7 @@ const Valet = () => {
                   py="6px"
                   px="8px"
                   color="#fff"
-                  fontSize="12px"
+                  fontSize="14px"
                   lineHeight="100%"
                 >
                   <Text>2</Text>
@@ -229,7 +229,7 @@ const Valet = () => {
                 align="center"
                 gap="2px"
                 color="#A4A6A8"
-                fontSize="12px"
+                fontSize="14px"
               >
                 <IoIosArrowForward />
                 <Text lineHeight="100%">Next</Text>

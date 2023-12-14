@@ -6,7 +6,7 @@ import {
   Status,
   operatorRpHeader,
 } from "../../../common/constants";
-import { formatDate } from "../../../../utils/helpers";
+import { formatDateNewTime } from "../../../../utils/helpers";
 import { useNavigate } from "react-router-dom";
 import TableFormat from "../../../common/TableFormat";
 import { TbListDetails } from "react-icons/tb";
@@ -105,7 +105,7 @@ const RpTableLayer = ({
             useDefaultPagination
           >
             {data?.data?.map((item, i) => (
-              <Tr fontSize="12px" fontWeight={500} color="#646668" key={i}>
+              <Tr fontSize="14px" fontWeight={500} color="#646668" key={i}>
                 <Td>{item?.reservationId}</Td>
                 <Td textAlign="center">{item?.zone?.location?.name}</Td>
                 <Td textAlign="center">{item?.zone?.name}</Td>
@@ -123,11 +123,11 @@ const RpTableLayer = ({
                     >
                       {OnlinePaymentMethods?.find(
                         (dat, i) => i === item?.paymentMethod
-                      )}
+                      ) || "N/A"}
                     </Flex>
                   </Flex>
                 </Td>
-                <Td textAlign="center">{formatDate(item?.createdAt)}</Td>
+                <Td textAlign="center">{formatDateNewTime(item?.createdAt)}</Td>
                 <Td>
                   <Flex align="center" w="full" justifyContent="center">
                     <Flex
@@ -182,7 +182,7 @@ const RpTableLayer = ({
                             onClick={() => openOption(item, i)}
                             _hover={{ bg: "#F4F6F8" }}
                             cursor="pointer"
-                            fontSize="10px"
+                            fontSize="12px"
                             gap="12px"
                             w="full"
                             color={i === 0 ? "#646668" : "#A11212"}
@@ -212,7 +212,7 @@ const RpTableLayer = ({
           <Image src="/assets/no-log.jpg" w="64px" h="64px" />
           <Text
             color="#848688"
-            fontSize="12px"
+            fontSize="14px"
             lineHeight="100%"
             fontWeight={500}
           >

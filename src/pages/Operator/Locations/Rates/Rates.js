@@ -96,12 +96,7 @@ const Rates = () => {
           filtArray={filtArray}
           fieldToCompare={opLocFieldOption}
           title={
-            <Text
-              fontSize="14px"
-              fontWeight={500}
-              lineHeight="100%"
-              color="#242628"
-            >
+            <Text fontWeight={500} lineHeight="100%" color="#242628">
               All Rates
             </Text>
           }
@@ -111,9 +106,8 @@ const Rates = () => {
                 onClick={() => navigate("/operator/locations/rates/create")}
                 display="flex"
                 gap="8px"
-                fontSize=""
               >
-                <Text fontSize="12px">Add a Rate</Text>
+                <Text fontSize="14px">Add a Rate</Text>
                 <MdAdd size="20px" />
               </Button>
 

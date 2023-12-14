@@ -22,7 +22,6 @@ import Select from "react-select";
 import GoBackTab from "../../../components/data/Admin/GoBackTab";
 import {
   FundMethods,
-  PaymentMethods,
   cardImg,
   errorCustomStyles,
   statusType,

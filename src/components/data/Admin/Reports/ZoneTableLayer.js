@@ -2,7 +2,7 @@ import React from "react";
 import { Box, Flex, Image, Td, Text, Tr } from "@chakra-ui/react";
 import TableLoader from "../../../loaders/TableLoader";
 import { adminRepZoneHeader } from "../../../common/constants";
-import { formatDateTimes } from "../../../../utils/helpers";
+import { formatDateNewTime } from "../../../../utils/helpers";
 import TableFormat from "../../../common/TableFormat";
 
 const ZoneTableLayer = ({
@@ -64,7 +64,7 @@ const ZoneTableLayer = ({
                   </Flex>
                 </Td>
 
-                <Td textAlign="center">{formatDateTimes(item?.createdAt)}</Td>
+                <Td textAlign="center">{formatDateNewTime(item?.createdAt)}</Td>
               </Tr>
             ))}
           </TableFormat>

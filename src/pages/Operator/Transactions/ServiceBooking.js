@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Box, Flex, Image, Text } from "@chakra-ui/react";
 import { useGetOpService } from "../../../services/operator/query/transactions";
 import ServiceTableLayer from "../../../components/data/Operator/Transactions/ServiceTableLayer";
-import { opPtpOptions } from "../../../components/common/constants";
+import { opCarServiceOptions } from "../../../components/common/constants";
 import Filter from "../../../components/common/Filter";
 import { formatNewDate } from "../../../utils/helpers";
 
@@ -86,14 +86,9 @@ const ServiceBooking = () => {
           client
           setFiltArray={setFiltArray}
           filtArray={filtArray}
-          fieldToCompare={opPtpOptions}
+          fieldToCompare={opCarServiceOptions}
           title={
-            <Text
-              fontSize="14px"
-              fontWeight={500}
-              lineHeight="100%"
-              color="#242628"
-            >
+            <Text fontWeight={500} lineHeight="100%" color="#242628">
               Car Services
             </Text>
           }

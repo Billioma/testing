@@ -2,7 +2,7 @@ import React from "react";
 import { Box, Flex, Image, Td, Text, Tr } from "@chakra-ui/react";
 import TableLoader from "../../../loaders/TableLoader";
 import { adminRepPaymentHeader } from "../../../common/constants";
-import { formatDateTimes } from "../../../../utils/helpers";
+import { formatDateNewTime } from "../../../../utils/helpers";
 import TableFormat from "../../../common/TableFormat";
 
 const PaymentTableLayer = ({
@@ -53,7 +53,7 @@ const PaymentTableLayer = ({
                 <Td textAlign="center">{item?.vehicle}</Td>
                 <Td textAlign="center">{item?.serviceType}</Td>
                 <Td textAlign="center">{item?.paymentMethod || "N/A"}</Td>
-                <Td textAlign="center">{formatDateTimes(item?.createdAt)}</Td>
+                <Td textAlign="center">{formatDateNewTime(item?.createdAt)}</Td>
               </Tr>
             ))}
           </TableFormat>

@@ -67,7 +67,7 @@ const AddUser = () => {
         gap="8px"
       >
         <HiOutlineArrowNarrowLeft size="24px" color="#242628" />
-        <Text fontSize="14px" fontWeight={500} lineHeight="100%">
+        <Text fontWeight={500} lineHeight="100%">
           Back
         </Text>
       </Flex>
@@ -109,7 +109,7 @@ const AddUser = () => {
               <Box bg="#FDECEC" borderRadius="8px" p="16px">
                 <Text
                   color="#646668"
-                  fontSize="12px"
+                  fontSize="14px"
                   fontWeight={500}
                   lineHeight="100%"
                 >
@@ -128,7 +128,6 @@ const AddUser = () => {
                     </Text>
                     <Text
                       color="#646668"
-                      fontSize="14px"
                       mt="16px"
                       fontWeight={700}
                       lineHeight="100%"
@@ -145,7 +144,7 @@ const AddUser = () => {
                       display="flex"
                       gap="8px"
                     >
-                      <Text fontSize="12px">Add a User</Text>
+                      <Text fontSize="14px">Add a User</Text>
                       <MdAdd size="20px" />
                     </Button>
                   </Box>
@@ -161,7 +160,6 @@ const AddUser = () => {
             w="full"
             isLoading={isLoading}
             py="17px"
-            fontSize="14px"
           >
             {step === 1 ? "Search" : "Cancel"}
           </Button>

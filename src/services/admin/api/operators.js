@@ -4,7 +4,7 @@ import * as API from "../url";
 export const getOperators = async (page, limit, query) => {
   const response = await axiosInstance.get(
     API.ADMIN_OPERATORS +
-      `?page=${page}&limit=${limit}&sort=id,DESC&${query || ""}`
+      `?page=${page}&limit=${limit}&sort=createdAt,DESC&${query || ""}`
   );
   return response.data;
 };

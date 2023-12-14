@@ -5,7 +5,7 @@ export const getValetedVehicles = async (page, limit, query) => {
   const response = await axiosInstance.get(
     `${
       API.ADMIN_SERVICE_LOGS
-    }?page=${page}&limit=${limit}&sort=id,DESC&filter=service.serviceType||$eq||VALET&${
+    }?page=${page}&limit=${limit}&sort=createdAt,DESC&filter=service.serviceType||$eq||VALET&${
       query || ""
     }`
   );
@@ -68,7 +68,7 @@ export const getParkedVehicles = async (page, limit, query) => {
   const response = await axiosInstance.get(
     `${
       API.ADMIN_SERVICE_LOGS
-    }?page=${page}&limit=${limit}&sort=id,DESC&filter=service.serviceType||$eq||PARKING&${
+    }?page=${page}&limit=${limit}&sort=createdAt,DESC&filter=service.serviceType||$eq||PARKING&${
       query || ""
     }`
   );
@@ -95,7 +95,7 @@ export const getServicedVehicles = async (page, limit, query) => {
   const response = await axiosInstance.get(
     `${
       API.ADMIN_SERVICE_LOGS
-    }?page=${page}&limit=${limit}&sort=id,DESC&filter=service.serviceType||$eq||SERVICE&${
+    }?page=${page}&limit=${limit}&sort=createdAt,DESC&filter=service.serviceType||$eq||SERVICE&${
       query || ""
     }`
   );

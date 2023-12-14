@@ -49,7 +49,7 @@ const ChangePassword = () => {
         }) => (
           <Form onSubmit={handleSubmit}>
             <Box>
-              <Text mb="8px" fontWeight={500} color="#444648" fontSize="10px">
+              <Text mb="8px" fontWeight={500} color="#444648" fontSize="12px">
                 Enter Old Password
               </Text>
               <CustomInput
@@ -71,7 +71,7 @@ const ChangePassword = () => {
               />
             </Box>
             <Box my="24px">
-              <Text mb="8px" fontWeight={500} color="#444648" fontSize="10px">
+              <Text mb="8px" fontWeight={500} color="#444648" fontSize="12px">
                 Enter New Password
               </Text>
               <CustomInput
@@ -91,7 +91,7 @@ const ChangePassword = () => {
               />
             </Box>
             <Box>
-              <Text mb="8px" fontWeight={500} color="#444648" fontSize="10px">
+              <Text mb="8px" fontWeight={500} color="#444648" fontSize="12px">
                 Confirm New Password
               </Text>
               <CustomInput
@@ -111,7 +111,7 @@ const ChangePassword = () => {
                 show
                 type={show ? "text" : "password"}
               />
-              <Text textAlign="end" mt="8px" color="#1C0203" fontSize="10px">
+              <Text textAlign="end" mt="8px" color="#1C0203" fontSize="12px">
                 Same password as above
               </Text>
             </Box>

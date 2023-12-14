@@ -9,7 +9,7 @@ import {
   companyCarHeader,
 } from "../../../common/constants";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
-import { formatDate } from "../../../../utils/helpers";
+import { formatDateNewTime } from "../../../../utils/helpers";
 import { useEffect } from "react";
 import { TbListDetails } from "react-icons/tb";
 import { useNavigate } from "react-router-dom";
@@ -133,7 +133,7 @@ const UsTableLayer = () => {
               gap={{ base: "10px", md: "32px" }}
               align="center"
             >
-              <Text fontSize="12px" color="#242628" lineHeight="100%">
+              <Text fontSize="14px" color="#242628" lineHeight="100%">
                 Showing rows {page === 1 ? 1 : (page - 1) * limit + 1} to{" "}
                 {tab === "Pay-To-Park"
                   ? parkingLog?.pageCount === page
@@ -160,7 +160,7 @@ const UsTableLayer = () => {
                   : tab === "Car Services" && serviceLog?.total}
               </Text>
 
-              <Flex gap="16px" align="center" fontSize="12px">
+              <Flex gap="16px" align="center" fontSize="14px">
                 <Flex
                   opacity={
                     tab === "Pay-To-Park"
@@ -308,7 +308,7 @@ const UsTableLayer = () => {
                 key={i}
                 color="#646668"
                 fontWeight={500}
-                fontSize="12px"
+                fontSize="14px"
                 lineHeight="100%"
               >
                 <Td textAlign="center">{dat?.ticketNumber}</Td>
@@ -331,7 +331,7 @@ const UsTableLayer = () => {
                     </Flex>
                   </Flex>
                 </Td>
-                <Td textAlign="center">{formatDate(dat?.createdAt)}</Td>
+                <Td textAlign="center">{formatDateNewTime(dat?.createdAt)}</Td>
                 <Td>
                   <Flex
                     pos="relative"
@@ -365,7 +365,7 @@ const UsTableLayer = () => {
                           align="center"
                           _hover={{ bg: "#F4F6F8" }}
                           cursor="pointer"
-                          fontSize="10px"
+                          fontSize="12px"
                           gap="12px"
                           w="full"
                           onClick={() =>
@@ -418,7 +418,7 @@ const UsTableLayer = () => {
                       No Recent Activity
                     </Text>
                     <Text
-                      fontSize="11px"
+                      fontSize="13px"
                       color="#A4A6A8"
                       fontWeight={500}
                       lineHeight="100%"
@@ -437,7 +437,7 @@ const UsTableLayer = () => {
                 key={i}
                 color="#646668"
                 fontWeight={500}
-                fontSize="12px"
+                fontSize="14px"
                 lineHeight="100%"
               >
                 <Td textAlign="center">{dat?.ticketNumber}</Td>
@@ -460,7 +460,7 @@ const UsTableLayer = () => {
                     </Flex>
                   </Flex>
                 </Td>
-                <Td textAlign="center">{formatDate(dat?.createdAt)}</Td>
+                <Td textAlign="center">{formatDateNewTime(dat?.createdAt)}</Td>
                 <Td>
                   <Flex
                     pos="relative"
@@ -494,7 +494,7 @@ const UsTableLayer = () => {
                           align="center"
                           _hover={{ bg: "#F4F6F8" }}
                           cursor="pointer"
-                          fontSize="10px"
+                          fontSize="12px"
                           gap="12px"
                           w="full"
                           onClick={() =>
@@ -547,7 +547,7 @@ const UsTableLayer = () => {
                       No Recent Activity
                     </Text>
                     <Text
-                      fontSize="11px"
+                      fontSize="13px"
                       color="#A4A6A8"
                       fontWeight={500}
                       lineHeight="100%"
@@ -567,7 +567,7 @@ const UsTableLayer = () => {
                 key={i}
                 color="#646668"
                 fontWeight={500}
-                fontSize="12px"
+                fontSize="14px"
                 lineHeight="100%"
               >
                 <Td textAlign="center">{dat?.ticketNumber}</Td>
@@ -606,7 +606,7 @@ const UsTableLayer = () => {
                     </Flex>
                   </Flex>
                 </Td>
-                <Td textAlign="center">{formatDate(dat?.createdAt)}</Td>
+                <Td textAlign="center">{formatDateNewTime(dat?.createdAt)}</Td>
                 <Td>
                   <Flex
                     pos="relative"
@@ -640,7 +640,7 @@ const UsTableLayer = () => {
                           align="center"
                           _hover={{ bg: "#F4F6F8" }}
                           cursor="pointer"
-                          fontSize="10px"
+                          fontSize="12px"
                           gap="12px"
                           w="full"
                           onClick={() =>
@@ -693,7 +693,7 @@ const UsTableLayer = () => {
                       No Recent Activity
                     </Text>
                     <Text
-                      fontSize="11px"
+                      fontSize="13px"
                       color="#A4A6A8"
                       fontWeight={500}
                       lineHeight="100%"

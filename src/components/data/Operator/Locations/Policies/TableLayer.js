@@ -5,7 +5,7 @@ import {
   SecStatus,
   operatorPoliciesHeader,
 } from "../../../../common/constants";
-import { formatDate } from "../../../../../utils/helpers";
+import { formatDateNewTime } from "../../../../../utils/helpers";
 import { useNavigate } from "react-router-dom";
 import { AiOutlineEdit } from "react-icons/ai";
 import { Add } from "../../../../common/images";
@@ -50,7 +50,7 @@ const TableLayer = ({
             useDefaultPagination
           >
             {data?.data?.map((item, i) => (
-              <Tr fontSize="12px" fontWeight={500} color="#646668" key={i}>
+              <Tr fontSize="14px" fontWeight={500} color="#646668" key={i}>
                 <Td>{item?.title}</Td>
                 <Td>{item?.location?.name || "N/A"}</Td>
                 <Td>
@@ -68,7 +68,7 @@ const TableLayer = ({
                     </Flex>
                   </Flex>
                 </Td>
-                <Td textAlign="center">{formatDate(item?.createdAt)}</Td>
+                <Td textAlign="center">{formatDateNewTime(item?.createdAt)}</Td>
 
                 <Td>
                   <Flex gap="20px" align="center" justifyContent="center">
@@ -78,7 +78,7 @@ const TableLayer = ({
                       color="#848688"
                       fontWeight={500}
                       lineHeight="100%"
-                      fontSize="12px"
+                      fontSize="14px"
                       _hover={{ bg: "transparent" }}
                       _active={{ bg: "transparent" }}
                       _focus={{ bg: "transparent" }}
@@ -108,7 +108,7 @@ const TableLayer = ({
                       lineHeight="100%"
                       px="16px"
                       py="8px"
-                      fontSize="12px"
+                      fontSize="14px"
                       display="flex"
                       align="center"
                       gap="8px"
@@ -133,7 +133,7 @@ const TableLayer = ({
           <Image src="/assets/no-policy.jpg" w="64px" h="64px" />
           <Text
             color="#848688"
-            fontSize="12px"
+            fontSize="14px"
             lineHeight="100%"
             fontWeight={500}
           >
@@ -144,7 +144,7 @@ const TableLayer = ({
             onClick={() => navigate("/operator/locations/policies/create")}
             display="flex"
             gap="8px"
-            fontSize="12px"
+            fontSize="14px"
           >
             <Text>Add a Policy</Text>
             <Add fill="#fff" />

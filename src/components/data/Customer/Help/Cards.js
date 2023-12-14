@@ -36,9 +36,7 @@ const Cards = () => {
                 justifyContent="space-between"
                 align="center"
               >
-                <Text fontSize="14px" lineHeight="100%">
-                  {item.title}
-                </Text>
+                <Text lineHeight="100%">{item.title}</Text>
                 <IoIosArrowForward size="20px" />
               </Flex>
             </Box>

@@ -97,7 +97,7 @@ const VehicleCards = () => {
                   justifyContent="space-between"
                   align="center"
                 >
-                  <Text fontSize="14px" fontWeight={500} lineHeight="100%">
+                  <Text  fontWeight={500} lineHeight="100%">
                     Default
                   </Text>
 
@@ -109,11 +109,11 @@ const VehicleCards = () => {
                       mb="8px"
                       color="#848688"
                       fontWeight={700}
-                      fontSize="10px"
+                      fontSize="12px"
                     >
                       Vehicles
                     </Text>
-                    <Text fontSize="14px" color="#242628" fontWeight={500}>
+                    <Text color="#242628" fontWeight={500}>
                       {data?.model?.make?.name} {data?.model?.name}
                     </Text>
                   </Box>
@@ -123,11 +123,11 @@ const VehicleCards = () => {
                       mb="8px"
                       color="#848688"
                       fontWeight={700}
-                      fontSize="10px"
+                      fontSize="12px"
                     >
                       Color
                     </Text>
-                    <Text fontSize="14px" color="#242628" fontWeight={500}>
+                    <Text color="#242628" fontWeight={500}>
                       {colorTypes.find(
                         (item) =>
                           item?.color?.toLocaleLowerCase() === data?.color
@@ -147,11 +147,11 @@ const VehicleCards = () => {
                       mb="8px"
                       color="#848688"
                       fontWeight={700}
-                      fontSize="10px"
+                      fontSize="12px"
                     >
                       License Plate
                     </Text>
-                    <Text fontSize="14px" color="#242628" fontWeight={500}>
+                    <Text color="#242628" fontWeight={500}>
                       {data?.licensePlate}
                     </Text>
                   </Box>
@@ -166,11 +166,11 @@ const VehicleCards = () => {
                       mb="8px"
                       color="#848688"
                       fontWeight={700}
-                      fontSize="10px"
+                      fontSize="12px"
                     >
                       State
                     </Text>
-                    <Text fontSize="14px" color="#242628" fontWeight={500}>
+                    <Text color="#242628" fontWeight={500}>
                       {data?.state}
                     </Text>
                   </Flex>
@@ -223,7 +223,7 @@ const VehicleCards = () => {
               lineHeight="100%"
               color="#646668"
               fontWeight={500}
-              fontSize="10px"
+              fontSize="12px"
             >
               {vehicles?.data?.length >= 3
                 ? "You have reached your vehicle limit"

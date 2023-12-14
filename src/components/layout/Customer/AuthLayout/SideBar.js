@@ -118,7 +118,7 @@ const SideBar = ({ show, setShow }) => {
                   pl={show ? "16px" : "16px"}
                   pr={show ? "2px" : "16px"}
                   mb="12px"
-                  fontSize="13px"
+                  fontSize="15px"
                   lineHeight="100%"
                   cursor="pointer"
                   onClick={() =>
@@ -199,7 +199,7 @@ const SideBar = ({ show, setShow }) => {
                               : "#848688",
                           }}
                         >
-                          <Box fontSize="11px" pb="12px" ml="20px">
+                          <Box fontSize="13px" pb="12px" ml="20px">
                             <Link key={subItems.name} to={subItems.path}>
                               {subItems.name}
                             </Link>
@@ -214,7 +214,7 @@ const SideBar = ({ show, setShow }) => {
           })}
 
           <Flex
-            fontSize="13px"
+            fontSize="15px"
             cursor="pointer"
             onClick={action}
             align="center"
@@ -276,7 +276,7 @@ const SideBar = ({ show, setShow }) => {
         justifyContent="center"
         align="center"
       >
-        <Text fontSize="12px" color="#000" lineHeight="100%" mb="8px">
+        <Text fontSize="14px" color="#000" lineHeight="100%" mb="8px">
           Powered by
         </Text>
         <Image src="/assets/ezlogo.svg" objectFit="cover" />

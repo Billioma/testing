@@ -2,7 +2,7 @@ import React from "react";
 import { Box, Flex, Image, Td, Text, Tr } from "@chakra-ui/react";
 import TableLoader from "../../../loaders/TableLoader";
 import { operatorRepPaymentHeader } from "../../../common/constants";
-import { formatDate } from "../../../../utils/helpers";
+import { formatDateNewTime } from "../../../../utils/helpers";
 import TableFormat from "../../../common/TableFormat";
 
 const PaymentTableLayer = ({
@@ -42,7 +42,7 @@ const PaymentTableLayer = ({
             useDefaultPagination
           >
             {data?.data?.map((item, i) => (
-              <Tr fontSize="12px" fontWeight={500} color="#646668" key={i}>
+              <Tr fontSize="14px" fontWeight={500} color="#646668" key={i}>
                 <Td>{item?.location}</Td>
                 <Td>{item?.zone}</Td>
                 <Td>{item?.attendant}</Td>
@@ -59,7 +59,7 @@ const PaymentTableLayer = ({
                   }) || "0.00"}
                 </Td>
                 <Td textAlign="center">{item?.serviceType}</Td>
-                <Td textAlign="center">{formatDate(item?.createdAt)}</Td>
+                <Td textAlign="center">{formatDateNewTime(item?.createdAt)}</Td>
               </Tr>
             ))}
           </TableFormat>
@@ -75,7 +75,7 @@ const PaymentTableLayer = ({
           <Image src="/assets/no-pay.jpg" w="64px" h="64px" />
           <Text
             color="#848688"
-            fontSize="12px"
+            fontSize="14px"
             lineHeight="100%"
             fontWeight={500}
           >

@@ -20,7 +20,7 @@ import {
   useGetPayToPark,
   useGetReserveParking,
 } from "../../../../services/customer/query/services";
-import { formatDate, formatDateTime } from "../../../../utils/helpers";
+import { formatDateNewTime } from "../../../../utils/helpers";
 import ConfirmDeleteModal from "../../../modals/ConfirmDeleteModal";
 import useCustomToast from "../../../../utils/notifications";
 import { useEffect } from "react";
@@ -135,7 +135,7 @@ const UserTableLayer = () => {
                 px={{ base: "0px", md: "30px" }}
                 pb="13px"
                 textAlign={{ base: "center", md: "" }}
-                fontSize={{ base: "12px", md: "14px" }}
+                fontSize={{ base: "12px", md: "16px" }}
                 cursor="pointer"
                 onClick={() => {
                   setTab(dat);
@@ -184,7 +184,7 @@ const UserTableLayer = () => {
               gap={{ base: "10px", md: "32px" }}
               align="center"
             >
-              <Text fontSize="12px" color="#242628" lineHeight="100%">
+              <Text fontSize="14px" color="#242628" lineHeight="100%">
                 Showing rows {page === 1 ? 1 : (page - 1) * limit + 1} to{" "}
                 {tab === "Pay-To-Park"
                   ? payToPark?.pageCount === page
@@ -219,7 +219,7 @@ const UserTableLayer = () => {
                   : tab === "Car Services" && carService?.total}
               </Text>
 
-              <Flex gap="16px" align="center" fontSize="12px">
+              <Flex gap="16px" align="center" fontSize="14px">
                 <Flex
                   opacity={
                     tab === "Pay-To-Park"
@@ -361,7 +361,7 @@ const UserTableLayer = () => {
                 w="fit-content"
                 size="sm"
                 bg="transparent"
-                fontSize={12}
+                fontSize="14px"
                 borderRadius={8}
                 borderWidth={1}
                 onChange={(e) => setLimit(e.target.value)}
@@ -383,7 +383,7 @@ const UserTableLayer = () => {
                 key={i}
                 color="#646668"
                 fontWeight={500}
-                fontSize="12px"
+                fontSize="14px"
                 lineHeight="100%"
               >
                 <Td textAlign="center">{dat?.ticketNumber}</Td>
@@ -405,7 +405,7 @@ const UserTableLayer = () => {
                     </Flex>
                   </Flex>
                 </Td>
-                <Td textAlign="center">{formatDate(dat?.createdAt)}</Td>
+                <Td textAlign="center">{formatDateNewTime(dat?.createdAt)}</Td>
                 <Td>
                   <Flex
                     pos="relative"
@@ -440,7 +440,7 @@ const UserTableLayer = () => {
                           align="center"
                           _hover={{ bg: "#F4F6F8" }}
                           cursor="pointer"
-                          fontSize="10px"
+                          fontSize="12px"
                           gap="12px"
                           w="full"
                           onClick={() =>
@@ -493,7 +493,7 @@ const UserTableLayer = () => {
                       No Recent Activity
                     </Text>
                     <Text
-                      fontSize="11px"
+                      fontSize="13px"
                       color="#A4A6A8"
                       fontWeight={500}
                       lineHeight="100%"
@@ -512,7 +512,7 @@ const UserTableLayer = () => {
                 key={i}
                 color="#646668"
                 fontWeight={500}
-                fontSize="12px"
+                fontSize="14px"
                 lineHeight="100%"
               >
                 <Td textAlign="center">{dat?.ticketNumber}</Td>
@@ -534,7 +534,7 @@ const UserTableLayer = () => {
                     </Flex>
                   </Flex>
                 </Td>
-                <Td textAlign="center">{formatDate(dat?.createdAt)}</Td>
+                <Td textAlign="center">{formatDateNewTime(dat?.createdAt)}</Td>
                 <Td>
                   <Flex
                     pos="relative"
@@ -569,7 +569,7 @@ const UserTableLayer = () => {
                           align="center"
                           _hover={{ bg: "#F4F6F8" }}
                           cursor="pointer"
-                          fontSize="10px"
+                          fontSize="12px"
                           gap="12px"
                           w="full"
                           onClick={() =>
@@ -641,7 +641,7 @@ const UserTableLayer = () => {
                 key={i}
                 color="#646668"
                 fontWeight={500}
-                fontSize="12px"
+                fontSize="14px"
                 lineHeight="100%"
               >
                 <Td textAlign="center">
@@ -652,12 +652,12 @@ const UserTableLayer = () => {
                 </Td>
                 <Td textAlign="center">{dat?.vehicle?.licensePlate}</Td>
                 <Td textAlign="center">
-                  {formatDateTime(dat?.arrival) || "N/A"}
+                  {formatDateNewTime(dat?.arrival) || "N/A"}
                 </Td>
                 <Td textAlign="center">
-                  {formatDateTime(dat?.departure) || "N/A"}
+                  {formatDateNewTime(dat?.departure) || "N/A"}
                 </Td>
-                <Td textAlign="center">{formatDate(dat?.createdAt)}</Td>
+                <Td textAlign="center">{formatDateNewTime(dat?.createdAt)}</Td>
 
                 <Td>
                   <Flex justifyContent="center" align="center" w="full">
@@ -723,7 +723,7 @@ const UserTableLayer = () => {
                               }
                               _hover={{ bg: "#F4F6F8" }}
                               cursor="pointer"
-                              fontSize="10px"
+                              fontSize="12px"
                               color={i === 0 ? "" : "red"}
                               lineHeight="100%"
                               gap="12px"
@@ -797,7 +797,7 @@ const UserTableLayer = () => {
                 key={i}
                 color="#646668"
                 fontWeight={500}
-                fontSize="12px"
+                fontSize="14px"
                 lineHeight="100%"
               >
                 <Td textAlign="center">{dat?.ticketNumber}</Td>
@@ -838,7 +838,9 @@ const UserTableLayer = () => {
                     </Flex>
                   </Flex>
                 </Td>
-                <Td textAlign="center">{formatDate(dat?.reservedDate)}</Td>
+                <Td textAlign="center">
+                  {formatDateNewTime(dat?.reservedDate)}
+                </Td>
                 <Td>
                   <Flex
                     pos="relative"
@@ -873,7 +875,7 @@ const UserTableLayer = () => {
                           align="center"
                           _hover={{ bg: "#F4F6F8" }}
                           cursor="pointer"
-                          fontSize="10px"
+                          fontSize="12px"
                           gap="12px"
                           w="full"
                           onClick={() =>
@@ -944,7 +946,7 @@ const UserTableLayer = () => {
               key={i}
               color="#646668"
               fontWeight={500}
-              fontSize="12px"
+              fontSize="14px"
               lineHeight="100%"
             >
               <Td textAlign="center">{dat?.serviceType}</Td>
@@ -969,7 +971,7 @@ const UserTableLayer = () => {
 
               <Td textAlign="center">{dat?.appointmentDate}</Td>
 
-              <Td textAlign="center">{formatDate(dat?.createdAt)}</Td>
+              <Td textAlign="center">{formatDateNewTime(dat?.createdAt)}</Td>
               <Td>
                 <Flex justifyContent="center" align="center" w="full">
                   <Flex
@@ -1020,7 +1022,7 @@ const UserTableLayer = () => {
                         onClick={() => setShowCancel(true)}
                         _hover={{ bg: "#F4F6F8" }}
                         cursor="pointer"
-                        fontSize="10px"
+                        fontSize="12px"
                         color="red"
                         gap="12px"
                         w="full"

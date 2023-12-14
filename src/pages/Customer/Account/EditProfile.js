@@ -206,7 +206,7 @@ const EditProfile = () => {
             </Box>
           </Flex>
           <Box w="full" mt="16px">
-            <Text mb="8px" fontWeight={500} color="#444648" fontSize="10px">
+            <Text mb="8px" fontWeight={500} color="#444648" fontSize="12px">
               First Name
             </Text>
             <CustomInput
@@ -223,7 +223,7 @@ const EditProfile = () => {
           </Box>
 
           <Box w="full" mt="16px">
-            <Text mb="8px" fontWeight={500} color="#444648" fontSize="10px">
+            <Text mb="8px" fontWeight={500} color="#444648" fontSize="12px">
               Last Name
             </Text>
             <CustomInput
@@ -240,7 +240,7 @@ const EditProfile = () => {
           </Box>
 
           <Box mt="10px">
-            <Text mb="8px" fontWeight={500} color="#444648" fontSize="10px">
+            <Text mb="8px" fontWeight={500} color="#444648" fontSize="12px">
               Phone Number
             </Text>
             <CustomInput
@@ -258,7 +258,7 @@ const EditProfile = () => {
           </Box>
 
           <Box mt="16px">
-            <Text mb="8px" fontWeight={500} color="#444648" fontSize="10px">
+            <Text mb="8px" fontWeight={500} color="#444648" fontSize="12px">
               Company Name
             </Text>
             <CustomInput

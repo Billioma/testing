@@ -25,7 +25,7 @@ const ActiveSessions = () => {
               <Flex align="center" justifyContent="space-between" w="full">
                 <Text
                   color="black"
-                  fontSize="10px"
+                  fontSize="12px"
                   lineHeight="100%"
                   fontWeight={500}
                 >
@@ -38,7 +38,7 @@ const ActiveSessions = () => {
                   py="6px"
                   px="12px"
                   color="red"
-                  fontSize="10px"
+                  fontSize="12px"
                   lineHeight="100%"
                 >
                   Valet
@@ -54,7 +54,7 @@ const ActiveSessions = () => {
                 <Flex align="center" gap="4px">
                   <Image w="12px" h="12px" src="/assets/location.svg" />
 
-                  <Text fontSize="12px" color="#242628" lineHeight="100%">
+                  <Text fontSize="14px" color="#242628" lineHeight="100%">
                     Landmark Village
                   </Text>
                 </Flex>
@@ -62,7 +62,7 @@ const ActiveSessions = () => {
                 <Flex align="center" gap="4px">
                   <Image w="12px" h="12px" src="/assets/car-icon.svg" />
 
-                  <Text fontSize="12px" color="#242628" lineHeight="100%">
+                  <Text fontSize="14px" color="#242628" lineHeight="100%">
                     Toyota Corrola
                   </Text>
                 </Flex>
@@ -70,7 +70,7 @@ const ActiveSessions = () => {
                 <Flex align="center" gap="4px">
                   <Image w="12px" h="12px" src="/assets/clock-icon.svg" />
 
-                  <Text fontSize="12px" color="#242628" lineHeight="100%">
+                  <Text fontSize="14px" color="#242628" lineHeight="100%">
                     12:00pm
                   </Text>
                 </Flex>
@@ -83,7 +83,7 @@ const ActiveSessions = () => {
                 align="center"
                 gap="4px"
               >
-                <Text fontSize="12px" color="#242628" lineHeight="100%">
+                <Text fontSize="14px" color="#242628" lineHeight="100%">
                   View Details
                 </Text>
                 <IoIosArrowForward size="15px" />

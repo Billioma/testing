@@ -2,7 +2,7 @@ import React from "react";
 import { Box, Flex, Image, Td, Text, Tr } from "@chakra-ui/react";
 import TableLoader from "../../../loaders/TableLoader";
 import { operatorRepLogHeader } from "../../../common/constants";
-import { formatDate } from "../../../../utils/helpers";
+import { formatDateNewTime } from "../../../../utils/helpers";
 import TableFormat from "../../../common/TableFormat";
 
 const LogsTableLayer = ({
@@ -43,7 +43,7 @@ const LogsTableLayer = ({
             useDefaultPagination
           >
             {data?.data?.map((item, i) => (
-              <Tr fontSize="12px" fontWeight={500} color="#646668" key={i}>
+              <Tr fontSize="14px" fontWeight={500} color="#646668" key={i}>
                 <Td>{item?.ticketNumber}</Td>
                 <Td>{item?.serviceType}</Td>
                 <Td>{item?.location}</Td>
@@ -57,7 +57,7 @@ const LogsTableLayer = ({
 
                 <Td textAlign="center">{item?.status}</Td>
 
-                <Td textAlign="center">{formatDate(item?.createdAt)}</Td>
+                <Td textAlign="center">{formatDateNewTime(item?.createdAt)}</Td>
               </Tr>
             ))}
           </TableFormat>
@@ -73,7 +73,7 @@ const LogsTableLayer = ({
           <Image src="/assets/no-log-rep.jpg" w="64px" h="64px" />
           <Text
             color="#848688"
-            fontSize="12px"
+            fontSize="14px"
             lineHeight="100%"
             fontWeight={500}
           >

@@ -98,7 +98,7 @@ const Dashboard = () => {
       width: "100%",
       minHeight: "44px",
       color: "#646668",
-      fontSize: "14px",
+      fontSize: "16px",
       cursor: "pointer",
       borderRadius: "4px",
       border: state.hasValue ? "none" : "1px solid #D4D6D8",
@@ -107,7 +107,7 @@ const Dashboard = () => {
     }),
     menu: (provided) => ({
       ...provided,
-      fontSize: "13px",
+      fontSize: "15px",
       backgroundColor: "#fff",
     }),
     option: (provided, state) => ({
@@ -175,20 +175,10 @@ const Dashboard = () => {
                   w="full"
                   mt="16px"
                 >
-                  <Text
-                    fontSize="14px"
-                    fontWeight={500}
-                    lineHeight="100%"
-                    color="#444648"
-                  >
+                  <Text fontWeight={500} lineHeight="100%" color="#444648">
                     {dat?.title}
                   </Text>
-                  <Text
-                    fontSize="14px"
-                    fontWeight={700}
-                    lineHeight="100%"
-                    color="#444648"
-                  >
+                  <Text fontWeight={700} lineHeight="100%" color="#444648">
                     {i === 0
                       ? mainData?.data?.locations
                       : i === 1
@@ -227,7 +217,6 @@ const Dashboard = () => {
                   <Image src={dat?.img} w="40px" h="40px" />
                   <Text
                     mt="16px"
-                    fontSize="14px"
                     lineHeight="100%"
                     fontWeight={700}
                     color="#242628"
@@ -243,7 +232,7 @@ const Dashboard = () => {
                   >
                     <Box w="full">
                       <Text
-                        fontSize="12px"
+                        fontSize="14px"
                         lineHeight="100%"
                         color="#848688"
                         fontWeight={500}
@@ -277,7 +266,7 @@ const Dashboard = () => {
                     >
                       <Box>
                         <Text
-                          fontSize="12px"
+                          fontSize="14px"
                           lineHeight="100%"
                           color="#848688"
                           fontWeight={500}

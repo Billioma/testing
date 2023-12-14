@@ -14,7 +14,7 @@ import {
   Button,
 } from "@chakra-ui/react";
 import TableFormat from "../../../common/TableFormat";
-import { formatDateTime } from "../../../../utils/helpers";
+import { formatDateNewTime } from "../../../../utils/helpers";
 import { useNavigate } from "react-router-dom";
 import AdminDeleteModal from "../../../modals/AdminDeleteModal";
 import useCustomToast from "../../../../utils/notifications";
@@ -115,10 +115,10 @@ const TableLayer = ({
                 <Td>{event?.client?.name}</Td>
                 <Td>{event?.website || "N/A"}</Td>
                 <Td textAlign="center">
-                  {formatDateTime(event?.eventStartDateTime, "", true)}
+                  {formatDateNewTime(event?.eventStartDateTime, "", true)}
                 </Td>
                 <Td textAlign="center">
-                  {formatDateTime(event?.eventEndDateTime, "", true)}
+                  {formatDateNewTime(event?.eventEndDateTime, "", true)}
                 </Td>
 
                 <Td>
@@ -138,7 +138,9 @@ const TableLayer = ({
                   </Flex>
                 </Td>
 
-                <Td textAlign={"center"}>{formatDateTime(event?.createdAt)}</Td>
+                <Td textAlign={"center"}>
+                  {formatDateNewTime(event?.createdAt)}
+                </Td>
                 <Td>
                   <Flex justifyContent="center" align="center">
                     <Menu>

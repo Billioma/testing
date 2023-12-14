@@ -50,7 +50,6 @@ const Dashboard = () => {
                   <Image src={dat?.img} w="40px" h="40px" />
                   <Text
                     mt="16px"
-                    fontSize="14px"
                     lineHeight="100%"
                     fontWeight={700}
                     color="#242628"
@@ -66,7 +65,7 @@ const Dashboard = () => {
                   >
                     <Box w="fit-content">
                       <Text
-                        fontSize="12px"
+                        fontSize="14px"
                         lineHeight="100%"
                         color="#242628"
                         fontWeight={500}
@@ -97,7 +96,7 @@ const Dashboard = () => {
                       <Flex align="center" gap="8px">
                         <Text
                           color="#0B841D"
-                          fontSize="12px"
+                          fontSize="14px"
                           lineHeight="100%"
                           fontWeight={500}
                         >
@@ -119,7 +118,7 @@ const Dashboard = () => {
                       <Flex align="center" gap="8px">
                         <Text
                           color="#646668"
-                          fontSize="12px"
+                          fontSize="14px"
                           lineHeight="100%"
                           fontWeight={500}
                         >

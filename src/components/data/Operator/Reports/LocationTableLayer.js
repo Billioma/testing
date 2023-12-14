@@ -2,7 +2,7 @@ import React from "react";
 import { Box, Flex, Image, Td, Text, Tr } from "@chakra-ui/react";
 import TableLoader from "../../../loaders/TableLoader";
 import { operatorRepLocationHeader } from "../../../common/constants";
-import { formatDate } from "../../../../utils/helpers";
+import { formatDateNewTime } from "../../../../utils/helpers";
 import TableFormat from "../../../common/TableFormat";
 
 const LocationTableLayer = ({
@@ -40,7 +40,7 @@ const LocationTableLayer = ({
             useDefaultPagination
           >
             {data?.data?.map((item, i) => (
-              <Tr fontSize="12px" fontWeight={500} color="#646668" key={i}>
+              <Tr fontSize="14px" fontWeight={500} color="#646668" key={i}>
                 <Td>{item?.name}</Td>
                 <Td textAlign="center">{item?.state}</Td>
                 <Td textAlign="center">{item?.zones}</Td>
@@ -52,7 +52,7 @@ const LocationTableLayer = ({
                       bg="#f4f6f8"
                       borderRadius="4px"
                       py="7px"
-                      fontSize="10px"
+                      fontSize="14px"
                       w="fit-content"
                       px="16px"
                     >
@@ -60,7 +60,7 @@ const LocationTableLayer = ({
                     </Flex>
                   </Flex>
                 </Td>
-                <Td textAlign="center">{formatDate(item?.createdAt)}</Td>
+                <Td textAlign="center">{formatDateNewTime(item?.createdAt)}</Td>
               </Tr>
             ))}
           </TableFormat>
@@ -76,7 +76,7 @@ const LocationTableLayer = ({
           <Image src="/assets/no-loc.jpg" w="64px" h="64px" />
           <Text
             color="#848688"
-            fontSize="12px"
+            fontSize="14px"
             lineHeight="100%"
             fontWeight={500}
           >

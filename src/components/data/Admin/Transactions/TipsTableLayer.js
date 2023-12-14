@@ -13,7 +13,7 @@ import {
   Icon,
 } from "@chakra-ui/react";
 import TableFormat from "../../../common/TableFormat";
-import { formatDateTime } from "../../../../utils/helpers";
+import { formatDateNewTime } from "../../../../utils/helpers";
 import { useNavigate } from "react-router-dom";
 import { BsChevronDown } from "react-icons/bs";
 import TableLoader from "../../../loaders/TableLoader";
@@ -89,7 +89,7 @@ const TableLayer = ({
                 </Td>
 
                 <Td textAlign="center">
-                  {formatDateTime(transaction?.createdAt)}
+                  {formatDateNewTime(transaction?.createdAt)}
                 </Td>
                 <Td textAlign="center">
                   <Flex justifyContent="center" align="center">

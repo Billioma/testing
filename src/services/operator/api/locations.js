@@ -11,7 +11,7 @@ export const getLocations = async (query) => {
 export const getOpLocationUrl = async (type, page, limit, query) => {
   const response = await axiosInstance.get(
     "operator/" +
-      `${type}?page=${page}&limit=${limit}&sort=id,DESC&${query || ""}`
+      `${type}?page=${page}&limit=${limit}&sort=createdAt,DESC&${query || ""}`
   );
   return response.data;
 };

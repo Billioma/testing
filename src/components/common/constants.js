@@ -415,7 +415,7 @@ export const operatorPtpHeader = [
 ];
 
 export const operatorRpHeader = [
-  "RESERVATION ID",
+  "BOOKING ID",
   "LOCATION",
   "ZONE",
   "PAYMENT METHOD",
@@ -1811,6 +1811,15 @@ export const opPtpOptions = [
   { label: "Location", value: "zone.location.name" },
   { label: "Zone", value: "zone.name" },
   { label: "Payment Type", value: "transaction.paymentMethod" },
+  { label: "Status", value: "status" },
+  { label: "Created At", value: "createdAt" },
+];
+
+export const opCarServiceOptions = [
+  { label: "Booking ID", value: "bookingId" },
+  { label: "Location", value: "zone.location.name" },
+  { label: "Zone", value: "zone.name" },
+  { label: "Payment Type", value: "paymentMethod" },
   { label: "Status", value: "status" },
   { label: "Created At", value: "createdAt" },
 ];

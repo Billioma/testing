@@ -44,7 +44,7 @@ export const getPayToPark = async ({ queryKey }) => {
   const [, limit, page] = queryKey;
   const res = await axiosInstance.get(
     "customer/" +
-      `${API.GET_PAY_TO_PARK}?limit=${limit}&page=${page}&sort=id,DESC`
+      `${API.GET_PAY_TO_PARK}?limit=${limit}&page=${page}&sort=createdAt,DESC`
   );
   return res.data;
 };
@@ -87,7 +87,7 @@ export const getReserveParking = async ({ queryKey }) => {
   const [, limit, page] = queryKey;
   const res = await axiosInstance.get(
     "customer/" +
-      `${API.RESERVE_PARKING}?limit=${limit}&page=${page}&sort=id,DESC`
+      `${API.RESERVE_PARKING}?limit=${limit}&page=${page}&sort=createdAt,DESC`
   );
   return res.data;
 };
@@ -96,7 +96,7 @@ export const getEventParking = async ({ queryKey }) => {
   const [, limit, page] = queryKey;
   const res = await axiosInstance.get(
     "customer/" +
-      `${API.EVENT_PARKING}?limit=${limit}&page=${page}&sort=id,DESC`
+      `${API.EVENT_PARKING}?limit=${limit}&page=${page}&sort=createdAt,DESC`
   );
   return res.data;
 };
@@ -105,7 +105,7 @@ export const getCarService = async ({ queryKey }) => {
   const [, limit, page] = queryKey;
   const res = await axiosInstance.get(
     "customer/" +
-      `${API.SERVICE_BOOKINGS}?limit=${limit}&page=${page}&sort=id,DESC`
+      `${API.SERVICE_BOOKINGS}?limit=${limit}&page=${page}&sort=createdAt,DESC`
   );
   return res.data;
 };

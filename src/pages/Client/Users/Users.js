@@ -89,12 +89,7 @@ const Users = () => {
           filtArray={filtArray}
           fieldToCompare={clientUserFieldOption}
           title={
-            <Text
-              fontSize="14px"
-              fontWeight={500}
-              lineHeight="100%"
-              color="#242628"
-            >
+            <Text fontWeight={500} lineHeight="100%" color="#242628">
               All Users
             </Text>
           }
@@ -105,9 +100,8 @@ const Users = () => {
                 onClick={() => navigate("/client/users/create")}
                 display="flex"
                 gap="8px"
-                fontSize=""
               >
-                <Text fontSize="12px">Add a User</Text>
+                <Text fontSize="14px">Add a User</Text>
                 <MdAdd size="20px" />
               </Button>
 

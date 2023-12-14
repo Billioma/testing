@@ -136,7 +136,7 @@ export const NonAuthLayout = ({ children }) => {
           justifyContent="center"
           align="center"
         >
-          <Text fontSize="12px" lineHeight="100%" mb="8px">
+          <Text fontSize="14px" lineHeight="100%" mb="8px">
             Powered by
           </Text>
           <Image src="/assets/ezlogo.png" />

@@ -1,6 +1,6 @@
 import React from "react";
 import { Flex, Image, Td, Text, Tr } from "@chakra-ui/react";
-import { formatDate } from "../../../../../utils/helpers";
+import { formatDateNewTime } from "../../../../../utils/helpers";
 import { Status, tipsHeader } from "../../../../common/constants";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import TableFormat from "../../../../common/TableFormat";
@@ -21,7 +21,7 @@ const TipsTable = ({ isTips, setPage, paymentTips, page, limit }) => {
             gap={{ base: "10px", md: "32px" }}
             align="center"
           >
-            <Text fontSize="12px" color="#242628" lineHeight="100%">
+            <Text fontSize="14px" color="#242628" lineHeight="100%">
               Showing rows {page === 1 ? 1 : (page - 1) * limit + 1} to{" "}
               {paymentTips?.pageCount === page
                 ? page * limit > paymentTips?.total
@@ -31,7 +31,7 @@ const TipsTable = ({ isTips, setPage, paymentTips, page, limit }) => {
               of {paymentTips?.total}
             </Text>
 
-            <Flex gap="16px" fontSize="12px" align="center">
+            <Flex gap="16px" fontSize="14px" align="center">
               <Flex
                 opacity={paymentTips?.page === 1 ? 0.5 : 1}
                 onClick={() =>
@@ -77,7 +77,7 @@ const TipsTable = ({ isTips, setPage, paymentTips, page, limit }) => {
             key={i}
             color="#646668"
             fontWeight={500}
-            fontSize="12px"
+            fontSize="14px"
             lineHeight="100%"
           >
             <Td textAlign="center">{dat?.serviceLog?.id}</Td>
@@ -111,7 +111,7 @@ const TipsTable = ({ isTips, setPage, paymentTips, page, limit }) => {
                 </Flex>
               </Flex>
             </Td>
-            <Td textAlign="center">{formatDate(dat?.createdAt)}</Td>
+            <Td textAlign="center">{formatDateNewTime(dat?.createdAt)}</Td>
           </Tr>
         ))
       ) : (
@@ -146,7 +146,7 @@ const TipsTable = ({ isTips, setPage, paymentTips, page, limit }) => {
                   No Recent Activity
                 </Text>
                 <Text
-                  fontSize="11px"
+                  fontSize="13px"
                   color="#A4A6A8"
                   fontWeight={500}
                   lineHeight="100%"

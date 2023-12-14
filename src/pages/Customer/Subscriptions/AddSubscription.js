@@ -328,12 +328,7 @@ const AddSubscription = () => {
               w="fit-content"
             >
               <HiOutlineArrowNarrowLeft size="24px" color="#242628" />
-              <Text
-                lineHeight="100%"
-                color="#242628"
-                fontSize="14px"
-                fontWeight={500}
-              >
+              <Text lineHeight="100%" color="#242628" fontWeight={500}>
                 Back
               </Text>
             </Flex>
@@ -387,7 +382,7 @@ const AddSubscription = () => {
                           >
                             <Box w="full">
                               <Text
-                                fontSize="10px"
+                                fontSize="14px"
                                 color="#242628"
                                 lineHeight="100%"
                               >
@@ -396,7 +391,6 @@ const AddSubscription = () => {
                               <Text
                                 mt="8px"
                                 color="#848688"
-                                fontSize="14px"
                                 fontWeight={500}
                                 lineHeight="100%"
                               >
@@ -406,7 +400,7 @@ const AddSubscription = () => {
 
                             <Box w="90%">
                               <Text
-                                fontSize="10px"
+                                fontSize="14px"
                                 color="#242628"
                                 lineHeight="100%"
                               >
@@ -415,7 +409,6 @@ const AddSubscription = () => {
                               <Text
                                 mt="8px"
                                 color="#848688"
-                                fontSize="14px"
                                 fontWeight={500}
                                 lineHeight="100%"
                               >
@@ -425,7 +418,7 @@ const AddSubscription = () => {
 
                             <Flex justifyContent="flex-end" w="30%">
                               <Text
-                                fontSize="10px"
+                                fontSize="14px"
                                 color="#242628"
                                 lineHeight="100%"
                                 textDecor="underline"
@@ -443,7 +436,7 @@ const AddSubscription = () => {
                           >
                             <Box w="full">
                               <Text
-                                fontSize="10px"
+                                fontSize="14px"
                                 color="#242628"
                                 lineHeight="100%"
                               >
@@ -452,7 +445,6 @@ const AddSubscription = () => {
                               <Text
                                 mt="8px"
                                 color="#848688"
-                                fontSize="14px"
                                 fontWeight={500}
                                 lineHeight="100%"
                               >
@@ -465,7 +457,7 @@ const AddSubscription = () => {
 
                             <Box w="70%">
                               <Text
-                                fontSize="10px"
+                                fontSize="14px"
                                 color="#242628"
                                 lineHeight="100%"
                               >
@@ -481,7 +473,6 @@ const AddSubscription = () => {
                                     )}
                                     <Text
                                       color="#838688"
-                                      fontSize="14px"
                                       lineHeight="100%"
                                       fontWeight={500}
                                     >
@@ -500,7 +491,6 @@ const AddSubscription = () => {
                                 w="full"
                                 py="17px"
                                 px="26px"
-                                fontSize="12px"
                               >
                                 Select
                               </Button>
@@ -529,13 +519,12 @@ const AddSubscription = () => {
                   w="full"
                 >
                   <Box w="full">
-                    <Text fontSize="10px" color="#242628" lineHeight="100%">
+                    <Text fontSize="14px" color="#242628" lineHeight="100%">
                       Subscription Name
                     </Text>
                     <Text
                       mt="8px"
                       color="#848688"
-                      fontSize="14px"
                       fontWeight={500}
                       lineHeight="100%"
                     >
@@ -544,13 +533,12 @@ const AddSubscription = () => {
                   </Box>
 
                   <Box w="90%">
-                    <Text fontSize="10px" color="#242628" lineHeight="100%">
+                    <Text fontSize="14px" color="#242628" lineHeight="100%">
                       Duration
                     </Text>
                     <Text
                       mt="8px"
                       color="#848688"
-                      fontSize="14px"
                       fontWeight={500}
                       lineHeight="100%"
                     >
@@ -560,7 +548,7 @@ const AddSubscription = () => {
 
                   <Flex justifyContent="flex-end" w="30%">
                     <Text
-                      fontSize="10px"
+                      fontSize="14px"
                       color="#242628"
                       lineHeight="100%"
                       textDecor="underline"
@@ -577,13 +565,12 @@ const AddSubscription = () => {
                   w="full"
                 >
                   <Box w="full">
-                    <Text fontSize="10px" color="#242628" lineHeight="100%">
+                    <Text fontSize="14px" color="#242628" lineHeight="100%">
                       Price
                     </Text>
                     <Text
                       mt="8px"
                       color="#848688"
-                      fontSize="14px"
                       fontWeight={500}
                       lineHeight="100%"
                     >
@@ -595,7 +582,7 @@ const AddSubscription = () => {
                   </Box>
 
                   <Box w="70%">
-                    <Text fontSize="10px" color="#242628" lineHeight="100%">
+                    <Text fontSize="14px" color="#242628" lineHeight="100%">
                       Features
                     </Text>
                     <Flex mt="8px" align="center" gap="16px">
@@ -608,7 +595,6 @@ const AddSubscription = () => {
                           )}
                           <Text
                             color="#838688"
-                            fontSize="14px"
                             lineHeight="100%"
                             fontWeight={500}
                           >
@@ -643,7 +629,6 @@ const AddSubscription = () => {
                       display="flex"
                       align="center"
                       gap="8px"
-                      fontSize="12px"
                     >
                       <Text>Change</Text>
                       <AiOutlineEdit size="15px" />
@@ -670,7 +655,7 @@ const AddSubscription = () => {
                     >
                       <Text
                         mb="8px"
-                        fontSize="10px"
+                        fontSize="14px"
                         fontWeight={500}
                         color="#444648"
                       >
@@ -724,7 +709,7 @@ const AddSubscription = () => {
                         !state?.subscriptionOptions?.find(
                           (item) => item?.type === "vehicle"
                         )?.data?.length && (
-                          <Text mt="5px" fontSize="10px" color="tomato">
+                          <Text mt="5px" fontSize="14px" color="tomato">
                             Select at least one vehicle
                           </Text>
                         )}
@@ -734,7 +719,6 @@ const AddSubscription = () => {
                         mt="8px"
                         color="red"
                         mb="16px"
-                        fontSize="12px"
                         fontWeight={500}
                         lineHeight="100%"
                         justifyContent="flex-end"
@@ -758,7 +742,7 @@ const AddSubscription = () => {
                   <Box w="full" mb="24px">
                     <Text
                       mb="8px"
-                      fontSize="10px"
+                      fontSize="14px"
                       fontWeight={500}
                       color="#444648"
                     >
@@ -812,7 +796,7 @@ const AddSubscription = () => {
                       !state?.subscriptionOptions?.find(
                         (item) => item?.type === "location"
                       )?.data?.length && (
-                        <Text mt="5px" fontSize="10px" color="tomato">
+                        <Text mt="5px" fontSize="14px" color="tomato">
                           Select at least one location
                         </Text>
                       )}
@@ -825,7 +809,7 @@ const AddSubscription = () => {
                   gap="24px"
                   mb="24px"
                 >
-                  <Text fontSize="10px" fontWeight={500} color="#444648">
+                  <Text fontSize="14px" fontWeight={500} color="#444648">
                     Autorenewal Subscription
                   </Text>
                   <Switch
@@ -871,10 +855,10 @@ const AddSubscription = () => {
                       gap="24px"
                     >
                       <Radio size="sm" value={"1"}>
-                        <Text fontSize="14px"> Pay via Wallet</Text>
+                        <Text> Pay via Wallet</Text>
                       </Radio>
                       <Radio size="sm" value={"0"}>
-                        <Text fontSize="14px">Pay via card</Text>
+                        <Text>Pay via card</Text>
                       </Radio>
                     </RadioGroup>
                   </Flex>
@@ -890,13 +874,13 @@ const AddSubscription = () => {
                       <Box>
                         <Text
                           color="#444648"
-                          fontSize="10px"
+                          fontSize="14px"
                           lineHeight="100%"
                           mb="8px"
                         >
                           Wallet
                         </Text>
-                        <Text fontSize="14px" color="#646668" lineHeight="100%">
+                        <Text color="#646668" lineHeight="100%">
                           <span style={{ fontWeight: 500 }}> Balance: </span> ₦{" "}
                           {userData?.wallet?.balance?.toLocaleString(
                             undefined,
@@ -949,14 +933,13 @@ const AddSubscription = () => {
                               <Box>
                                 <Text
                                   color="#444648"
-                                  fontSize="10px"
+                                  fontSize="14px"
                                   lineHeight="100%"
                                   mb="8px"
                                 >
                                   Card Details
                                 </Text>
                                 <Text
-                                  fontSize="14px"
                                   textTransform="capitalize"
                                   color="#646668"
                                   lineHeight="100%"
@@ -980,7 +963,7 @@ const AddSubscription = () => {
                     {formSubmitted &&
                       state?.paymentMethod === "0" &&
                       !state?.cardId && (
-                        <Text mt="5px" fontSize="10px" color="tomato">
+                        <Text mt="5px" fontSize="14px" color="tomato">
                           Select a card
                         </Text>
                       )}
@@ -988,7 +971,6 @@ const AddSubscription = () => {
                       mt="8px"
                       color="red"
                       mb="16px"
-                      fontSize="12px"
                       fontWeight={500}
                       lineHeight="100%"
                       justifyContent="flex-end"
@@ -1010,7 +992,6 @@ const AddSubscription = () => {
                   <Flex
                     mt="8px"
                     color="red"
-                    fontSize="12px"
                     mb="16px"
                     fontWeight={500}
                     lineHeight="100%"
@@ -1041,7 +1022,6 @@ const AddSubscription = () => {
                   //         !values?.paymentMethod
                   //     : ""
                   // }
-                  fontSize="14px"
                 >
                   Make Payment
                 </Button>

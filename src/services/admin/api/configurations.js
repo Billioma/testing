@@ -3,7 +3,9 @@ import * as API from "../url";
 
 export const getRoles = async (page, limit, query) => {
   const response = await axiosInstance.get(
-    `${API.ADMIN_ROLES}?page=${page}&limit=${limit}&sort=id,DESC&${query || ""}`
+    `${API.ADMIN_ROLES}?page=${page}&limit=${limit}&sort=createdAt,DESC&${
+      query || ""
+    }`
   );
   return response.data;
 };
@@ -89,7 +91,7 @@ export const editRole = async ({ query, body }) => {
 export const getPermissions = async (page, limit, query) => {
   const response = await axiosInstance.get(
     API.ADMIN_ROLES_PERMISSIONS +
-      `?page=${page}&limit=${limit}&sort=id,DESC&${query || ""}`
+      `?page=${page}&limit=${limit}&sort=createdAt,DESC&${query || ""}`
   );
   return response.data;
 };
@@ -131,9 +133,9 @@ export const addModel = async (data) => {
 export const getModels = async (page, limit, query) => {
   if (window.location.pathname.includes("/admin")) {
     const response = await axiosInstance.get(
-      `${API.ADMIN_VEHICLE_MODELS}?page=${page}&limit=${limit}&sort=id,DESC&${
-        query || ""
-      }`
+      `${
+        API.ADMIN_VEHICLE_MODELS
+      }?page=${page}&limit=${limit}&sort=createdAt,DESC&${query || ""}`
     );
     return response.data;
   } else {
@@ -166,9 +168,9 @@ export const addMake = async (data) => {
 export const getMakes = async (page, limit, query) => {
   if (window.location.pathname.includes("/admin")) {
     const response = await axiosInstance.get(
-      `${API.ADMIN_VEHICLE_MAKES}?page=${page}&limit=${limit}&sort=id,DESC&${
-        query || ""
-      }`
+      `${
+        API.ADMIN_VEHICLE_MAKES
+      }?page=${page}&limit=${limit}&sort=createdAt,DESC&${query || ""}`
     );
     return response.data;
   } else {
@@ -200,9 +202,9 @@ export const addBankDetail = async (data) => {
 
 export const getBankDetails = async (page, limit, query) => {
   const response = await axiosInstance.get(
-    `${API.ADMIN_BANK_DETAILS}?page=${page}&limit=${limit}&sort=id,DESC&${
-      query || ""
-    }`
+    `${
+      API.ADMIN_BANK_DETAILS
+    }?page=${page}&limit=${limit}&sort=createdAt,DESC&${query || ""}`
   );
   return response.data;
 };
@@ -227,7 +229,9 @@ export const addFaq = async (data) => {
 
 export const getFaqs = async (page, limit, query) => {
   const response = await axiosInstance.get(
-    `${API.ADMIN_FAQS}?page=${page}&limit=${limit}&sort=id,DESC&${query || ""}`
+    `${API.ADMIN_FAQS}?page=${page}&limit=${limit}&sort=createdAt,DESC&${
+      query || ""
+    }`
   );
   return response.data;
 };

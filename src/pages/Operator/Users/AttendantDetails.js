@@ -60,7 +60,7 @@ const AttendantDetails = () => {
       width: "100%",
       minHeight: "44px",
       color: "#646668",
-      fontSize: "14px",
+      fontSize: "16px",
       cursor: "pointer",
       borderRadius: "4px",
       border: state.hasValue ? "none" : "1px solid #D4D6D8",
@@ -69,7 +69,7 @@ const AttendantDetails = () => {
     }),
     menu: (provided) => ({
       ...provided,
-      fontSize: "13px",
+      fontSize: "15px",
       backgroundColor: "#fff",
     }),
     option: (provided, state) => ({
@@ -191,7 +191,7 @@ const AttendantDetails = () => {
           gap="8px"
         >
           <HiOutlineArrowNarrowLeft size="24px" color="#242628" />
-          <Text fontSize="14px" fontWeight={500} lineHeight="100%">
+          <Text fontWeight={500} lineHeight="100%">
             Back
           </Text>
         </Flex>
@@ -220,7 +220,7 @@ const AttendantDetails = () => {
                 flexDir="column"
               >
                 <Text
-                  fontSize="10px"
+                  fontSize="12px"
                   fontWeight={500}
                   lineHeight="100%"
                   mb="8px"
@@ -275,7 +275,7 @@ const AttendantDetails = () => {
                   <Box>
                     <Text
                       color="#444648"
-                      fontSize="10px"
+                      fontSize="12px"
                       fontWeight={500}
                       mb="8px"
                       lineHeight="100%"
@@ -299,7 +299,7 @@ const AttendantDetails = () => {
                   <Box my="16px">
                     <Text
                       color="#444648"
-                      fontSize="10px"
+                      fontSize="12px"
                       fontWeight={500}
                       mb="8px"
                       lineHeight="100%"
@@ -323,7 +323,7 @@ const AttendantDetails = () => {
                   <Box>
                     <Text
                       color="#444648"
-                      fontSize="10px"
+                      fontSize="12px"
                       fontWeight={500}
                       mb="8px"
                       lineHeight="100%"
@@ -356,7 +356,7 @@ const AttendantDetails = () => {
                   <Box my="16px">
                     <Text
                       color="#444648"
-                      fontSize="10px"
+                      fontSize="12px"
                       fontWeight={500}
                       mb="8px"
                       lineHeight="100%"
@@ -391,7 +391,7 @@ const AttendantDetails = () => {
                   <Box>
                     <Text
                       color="#444648"
-                      fontSize="10px"
+                      fontSize="12px"
                       fontWeight={500}
                       mb="8px"
                       lineHeight="100%"
@@ -431,7 +431,6 @@ const AttendantDetails = () => {
                       color="#646668"
                       fontWeight={500}
                       lineHeight="100%"
-                      fontSize="14px"
                       onClick={() => setEdit(false)}
                       _hover={{ bg: "transparent" }}
                       _active={{ bg: "transparent" }}
@@ -449,7 +448,7 @@ const AttendantDetails = () => {
                     isLoading={isUpdating}
                     w="full"
                     onClick={() => (!edit ? setEdit(true) : handleUpdate())}
-                    fontSize="12px"
+                    fontSize="14px"
                     px="26px"
                     py="17px"
                   >

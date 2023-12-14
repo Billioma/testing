@@ -43,7 +43,7 @@ const PolicyDetails = () => {
       width: "100%",
       minHeight: "44px",
       color: "#646668",
-      fontSize: "14px",
+      fontSize: "16px",
       cursor: "pointer",
       borderRadius: "4px",
       border: state.hasValue ? "none" : "1px solid #D4D6D8",
@@ -52,7 +52,7 @@ const PolicyDetails = () => {
     }),
     menu: (provided) => ({
       ...provided,
-      fontSize: "13px",
+      fontSize: "15px",
       backgroundColor: "#fff",
     }),
     option: (provided, state) => ({
@@ -138,7 +138,7 @@ const PolicyDetails = () => {
           gap="8px"
         >
           <HiOutlineArrowNarrowLeft size="24px" color="#242628" />
-          <Text fontSize="14px" fontWeight={500} lineHeight="100%">
+          <Text fontWeight={500} lineHeight="100%">
             Back
           </Text>
         </Flex>
@@ -170,7 +170,7 @@ const PolicyDetails = () => {
                   <Box>
                     <Text
                       color="#444648"
-                      fontSize="10px"
+                      fontSize="12px"
                       fontWeight={500}
                       mb="8px"
                       lineHeight="100%"
@@ -194,7 +194,7 @@ const PolicyDetails = () => {
                   <Box my="16px">
                     <Text
                       color="#444648"
-                      fontSize="10px"
+                      fontSize="12px"
                       fontWeight={500}
                       mb="8px"
                       lineHeight="100%"
@@ -218,7 +218,7 @@ const PolicyDetails = () => {
                   <Box>
                     <Text
                       color="#444648"
-                      fontSize="10px"
+                      fontSize="12px"
                       fontWeight={500}
                       mb="8px"
                       lineHeight="100%"
@@ -251,7 +251,7 @@ const PolicyDetails = () => {
                   <Box mt="16px">
                     <Text
                       color="#444648"
-                      fontSize="10px"
+                      fontSize="12px"
                       fontWeight={500}
                       mb="8px"
                       lineHeight="100%"
@@ -291,7 +291,6 @@ const PolicyDetails = () => {
                       color="#646668"
                       fontWeight={500}
                       lineHeight="100%"
-                      fontSize="14px"
                       onClick={() => setEdit(false)}
                       _hover={{ bg: "transparent" }}
                       _active={{ bg: "transparent" }}

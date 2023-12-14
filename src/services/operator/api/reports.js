@@ -11,7 +11,7 @@ export const getRepLocations = async (query) => {
 export const getOpRepUrl = async (type, page, limit, query) => {
   const response = await axiosInstance.get(
     "operator/reports/" +
-      `${type}?page=${page}&limit=${limit}&sort=id,DESC&${query || ""}`
+      `${type}?page=${page}&limit=${limit}&sort=createdAt,DESC&${query || ""}`
   );
   return response.data;
 };

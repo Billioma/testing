@@ -6,7 +6,7 @@ import {
   clientSubHeader,
   intervals,
 } from "../../../common/constants";
-import { formatDate } from "../../../../utils/helpers";
+import { formatDateNewTime } from "../../../../utils/helpers";
 import { Add } from "../../../common/images";
 import { useNavigate } from "react-router-dom";
 import TableFormat from "../../../common/TableFormat";
@@ -48,7 +48,7 @@ const TableLayer = ({
             useDefaultPagination
           >
             {data?.data?.map((item, i) => (
-              <Tr fontSize="12px" fontWeight={500} color="#646668" key={i}>
+              <Tr fontSize="14px" fontWeight={500} color="#646668" key={i}>
                 <Td>{item?.membershipPlan?.name}</Td>
 
                 <Td textAlign="center">
@@ -60,7 +60,9 @@ const TableLayer = ({
                 <Td textAlign="center">
                   {Object?.values(intervals[item?.membershipPlan?.interval])[0]}
                 </Td>
-                <Td textAlign="center">{formatDate(item?.nextPaymentDate)}</Td>
+                <Td textAlign="center">
+                  {formatDateNewTime(item?.nextPaymentDate)}
+                </Td>
                 <Td>
                   <Flex align="center" w="full" justifyContent="center">
                     <Flex
@@ -76,7 +78,7 @@ const TableLayer = ({
                     </Flex>
                   </Flex>
                 </Td>
-                <Td textAlign="center">{formatDate(item?.createdAt)}</Td>
+                <Td textAlign="center">{formatDateNewTime(item?.createdAt)}</Td>
               </Tr>
             ))}
           </TableFormat>
@@ -92,7 +94,7 @@ const TableLayer = ({
           <Image src="/assets/no-sub.jpg" w="64px" h="64px" />
           <Text
             color="#848688"
-            fontSize="12px"
+            fontSize="14px"
             lineHeight="100%"
             fontWeight={500}
           >
@@ -103,7 +105,7 @@ const TableLayer = ({
             onClick={() => navigate("/client/subscriptions/create")}
             display="flex"
             gap="8px"
-            fontSize="12px"
+            fontSize="14px"
           >
             <Text>Add a Subscription</Text>
             <Add fill="#fff" />

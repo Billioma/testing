@@ -67,12 +67,7 @@ const Subscriptions = () => {
           filtArray={filtArray}
           fieldToCompare={subFieldOption}
           title={
-            <Text
-              fontSize="14px"
-              fontWeight={500}
-              lineHeight="100%"
-              color="#242628"
-            >
+            <Text fontWeight={500} lineHeight="100%" color="#242628">
               Subscriptions
             </Text>
           }
@@ -82,7 +77,7 @@ const Subscriptions = () => {
               display="flex"
               gap="8px"
               borderRadius="8px"
-              fontSize="12px"
+              fontSize="14px"
             >
               <Text>Add Subscription</Text>
               <Add fill="#fff" />

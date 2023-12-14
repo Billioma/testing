@@ -6,7 +6,7 @@ import {
   TransactionTypes,
   adminRepTranHeader,
 } from "../../../common/constants";
-import { formatDateTime } from "../../../../utils/helpers";
+import { formatDateNewTime } from "../../../../utils/helpers";
 import TableFormat from "../../../common/TableFormat";
 
 const HistoryTableLayer = ({
@@ -90,7 +90,7 @@ const HistoryTableLayer = ({
                   </Flex>
                 </Td>
                 <Td textAlign="center">{item?.customer?.email || "N/A"}</Td>
-                <Td textAlign="center">{formatDateTime(item?.createdAt)}</Td>
+                <Td textAlign="center">{formatDateNewTime(item?.createdAt)}</Td>
                 <Td>
                   <Flex align="center" w="full" justifyContent="center">
                     <Flex

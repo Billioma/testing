@@ -13,7 +13,7 @@ import {
   useGetUser,
   useRenewSub,
 } from "../../../../services/customer/query/user";
-import { formatDate } from "../../../../utils/helpers";
+import { formatDateNewTime } from "../../../../utils/helpers";
 import TableLoader from "../../../loaders/TableLoader";
 import { Add } from "../../../common/images";
 import { useNavigate } from "react-router-dom";
@@ -198,7 +198,7 @@ const TableLayer = ({
                 key={i}
                 color="#646668"
                 fontWeight={500}
-                fontSize="12px"
+                fontSize="14px"
                 lineHeight="100%"
               >
                 <Td textAlign="center">{dat?.membershipPlan?.name}</Td>
@@ -211,7 +211,9 @@ const TableLayer = ({
                 <Td textAlign="center">
                   {Object.values(intervals[dat?.membershipPlan?.interval])[0]}
                 </Td>
-                <Td textAlign="center">{formatDate(dat?.nextPaymentDate)}</Td>
+                <Td textAlign="center">
+                  {formatDateNewTime(dat?.nextPaymentDate)}
+                </Td>
                 <Td>
                   <Flex
                     color={
@@ -235,7 +237,7 @@ const TableLayer = ({
                       : Object.values(SecStatus[dat?.status])[1]}
                   </Flex>
                 </Td>
-                <Td textAlign="center">{formatDate(dat?.createdAt)}</Td>
+                <Td textAlign="center">{formatDateNewTime(dat?.createdAt)}</Td>
                 <Td>
                   <Flex
                     pos="relative"
@@ -277,7 +279,7 @@ const TableLayer = ({
                             onClick={() => openOption(dat, i, item)}
                             _hover={{ bg: "#F4F6F8" }}
                             cursor="pointer"
-                            fontSize="10px"
+                            fontSize="12px"
                             gap="12px"
                             w="full"
                             color={i !== 1 ? "#646668" : "#A11212"}
@@ -308,7 +310,7 @@ const TableLayer = ({
           <Image src="/assets/sub.png" />
           <Text
             color="#848688"
-            fontSize="12px"
+            fontSize="14px"
             lineHeight="100%"
             fontWeight={500}
           >
@@ -319,7 +321,7 @@ const TableLayer = ({
             onClick={() => navigate("/customer/subscriptions/create")}
             display="flex"
             gap="8px"
-            fontSize="12px"
+            fontSize="14px"
           >
             <Text>Add Subscription</Text>
             <Add fill="#fff" />

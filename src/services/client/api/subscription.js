@@ -15,7 +15,9 @@ export const getClientSubs = async (query) => {
 
 export const getClientsSubs = async (page, limit, query) => {
   const response = await axiosInstance.get(
-    `${API.CREATE_SUB}?page=${page}&limit=${limit}&sort=id,DESC&${query || ""}`
+    `${API.CREATE_SUB}?page=${page}&limit=${limit}&sort=createdAt,DESC&${
+      query || ""
+    }`
   );
   return response.data;
 };

@@ -88,12 +88,7 @@ const ReserveParking = () => {
           filtArray={filtArray}
           fieldToCompare={opRpOptions}
           title={
-            <Text
-              fontSize="14px"
-              fontWeight={500}
-              lineHeight="100%"
-              color="#242628"
-            >
+            <Text fontWeight={500} lineHeight="100%" color="#242628">
               Reserve Parking
             </Text>
           }

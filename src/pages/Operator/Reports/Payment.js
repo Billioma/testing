@@ -127,7 +127,6 @@ const Payment = () => {
                 <Box p="15px" pt="0px" pb="20px">
                   <Text
                     mt="24px"
-                    fontSize="14px"
                     lineHeight="100%"
                     fontWeight={700}
                     color="#242628"
@@ -187,12 +186,7 @@ const Payment = () => {
           filtArray={filtArray}
           fieldToCompare={opRepPayFieldOption}
           title={
-            <Text
-              fontSize="14px"
-              fontWeight={500}
-              lineHeight="100%"
-              color="#242628"
-            >
+            <Text fontWeight={500} lineHeight="100%" color="#242628">
               All Payment
             </Text>
           }

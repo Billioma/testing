@@ -51,7 +51,7 @@ const AddZone = () => {
       width: "100%",
       minHeight: "44px",
       color: "#646668",
-      fontSize: "14px",
+      fontSize: "16px",
       cursor: "pointer",
       borderRadius: "4px",
       border: state.hasValue ? "none" : "1px solid #D4D6D8",
@@ -60,7 +60,7 @@ const AddZone = () => {
     }),
     menu: (provided) => ({
       ...provided,
-      fontSize: "13px",
+      fontSize: "15px",
       backgroundColor: "#fff",
     }),
     option: (provided, state) => ({
@@ -127,7 +127,7 @@ const AddZone = () => {
             gap="8px"
           >
             <HiOutlineArrowNarrowLeft size="24px" color="#242628" />
-            <Text fontSize="14px" fontWeight={500} lineHeight="100%">
+            <Text fontWeight={500} lineHeight="100%">
               Back
             </Text>
           </Flex>
@@ -168,7 +168,7 @@ const AddZone = () => {
                     <Box>
                       <Text
                         color="#444648"
-                        fontSize="10px"
+                        fontSize="12px"
                         fontWeight={500}
                         mb="8px"
                         lineHeight="100%"
@@ -188,7 +188,7 @@ const AddZone = () => {
                     <Box my="16px">
                       <Text
                         color="#444648"
-                        fontSize="10px"
+                        fontSize="12px"
                         fontWeight={500}
                         mb="8px"
                         lineHeight="100%"
@@ -212,7 +212,7 @@ const AddZone = () => {
                     <Box>
                       <Text
                         color="#444648"
-                        fontSize="10px"
+                        fontSize="12px"
                         fontWeight={500}
                         mb="8px"
                         lineHeight="100%"
@@ -237,7 +237,7 @@ const AddZone = () => {
                     <Box my="16px">
                       <Text
                         color="#444648"
-                        fontSize="10px"
+                        fontSize="12px"
                         fontWeight={500}
                         mb="8px"
                         lineHeight="100%"
@@ -261,7 +261,7 @@ const AddZone = () => {
                     <Box>
                       <Text
                         color="#444648"
-                        fontSize="10px"
+                        fontSize="12px"
                         fontWeight={500}
                         mb="8px"
                         lineHeight="100%"
@@ -296,7 +296,7 @@ const AddZone = () => {
                     <Box my="16px">
                       <Text
                         color="#444648"
-                        fontSize="10px"
+                        fontSize="12px"
                         fontWeight={500}
                         mb="8px"
                         lineHeight="100%"
@@ -321,7 +321,7 @@ const AddZone = () => {
                     <Box>
                       <Text
                         color="#444648"
-                        fontSize="10px"
+                        fontSize="12px"
                         fontWeight={500}
                         mb="8px"
                         lineHeight="100%"
@@ -357,7 +357,7 @@ const AddZone = () => {
                     <Box my="16px">
                       <Text
                         color="#444648"
-                        fontSize="10px"
+                        fontSize="12px"
                         fontWeight={500}
                         mb="8px"
                         lineHeight="100%"
@@ -397,7 +397,7 @@ const AddZone = () => {
                     >
                       <Text
                         color="#444648"
-                        fontSize="12px"
+                        fontSize="14px"
                         mb="8px"
                         lineHeight="100%"
                       >
@@ -414,7 +414,7 @@ const AddZone = () => {
                       <Box my="16px" className="opt-input">
                         <Text
                           color="#444648"
-                          fontSize="10px"
+                          fontSize="12px"
                           fontWeight={500}
                           mb="8px"
                           lineHeight="100%"
@@ -439,7 +439,7 @@ const AddZone = () => {
                     <Box mt="16px">
                       <Text
                         color="#444648"
-                        fontSize="10px"
+                        fontSize="12px"
                         fontWeight={500}
                         mb="8px"
                         lineHeight="100%"
@@ -478,7 +478,6 @@ const AddZone = () => {
                         color="#646668"
                         fontWeight={500}
                         lineHeight="100%"
-                        fontSize="14px"
                         _hover={{ bg: "transparent" }}
                         _active={{ bg: "transparent" }}
                         _focus={{ bg: "transparent" }}
@@ -496,7 +495,7 @@ const AddZone = () => {
                         isDisabled={
                           !isValid || !dirty || !values.amenities.length
                         }
-                        fontSize="12px"
+                        fontSize="14px"
                         type="submit"
                         px="26px"
                         py="17px"

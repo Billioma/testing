@@ -1,6 +1,6 @@
 import React from "react";
 import { Flex, Image, Td, Text, Tr } from "@chakra-ui/react";
-import { formatDate } from "../../../../../utils/helpers";
+import { formatDateNewTime } from "../../../../../utils/helpers";
 import {
   PaymentMethods,
   Status,
@@ -26,7 +26,7 @@ const PaymentTable = ({ isLoading, setPage, paymentHistory, page, limit }) => {
             gap={{ base: "10px", md: "32px" }}
             align="center"
           >
-            <Text fontSize="12px" color="#242628" lineHeight="100%">
+            <Text fontSize="14px" color="#242628" lineHeight="100%">
               Showing rows {page === 1 ? 1 : (page - 1) * limit + 1} to{" "}
               {paymentHistory?.pageCount === page
                 ? page * limit > paymentHistory?.total
@@ -36,7 +36,7 @@ const PaymentTable = ({ isLoading, setPage, paymentHistory, page, limit }) => {
               of {paymentHistory?.total}
             </Text>
 
-            <Flex gap="16px" fontSize="12px" align="center">
+            <Flex gap="16px" fontSize="14px" align="center">
               <Flex
                 opacity={paymentHistory?.page === 1 ? 0.5 : 1}
                 onClick={() =>
@@ -86,7 +86,7 @@ const PaymentTable = ({ isLoading, setPage, paymentHistory, page, limit }) => {
             key={i}
             color="#646668"
             fontWeight={500}
-            fontSize="12px"
+            fontSize="14px"
             lineHeight="100%"
           >
             <Td textAlign="center">{dat?.transactionId}</Td>
@@ -137,7 +137,7 @@ const PaymentTable = ({ isLoading, setPage, paymentHistory, page, limit }) => {
                 </Flex>
               </Flex>
             </Td>
-            <Td textAlign="center">{formatDate(dat?.createdAt)}</Td>
+            <Td textAlign="center">{formatDateNewTime(dat?.createdAt)}</Td>
           </Tr>
         ))
       ) : (
@@ -172,7 +172,7 @@ const PaymentTable = ({ isLoading, setPage, paymentHistory, page, limit }) => {
                   No Recent Activity
                 </Text>
                 <Text
-                  fontSize="11px"
+                  fontSize="13px"
                   color="#A4A6A8"
                   fontWeight={500}
                   lineHeight="100%"

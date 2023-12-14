@@ -12,6 +12,9 @@ html {
 ::-webkit-scrollbar-thumb {
   background-color: transparent;
 }
+.check {
+  color: red
+}
 
 /* Firefox */
 /* For Firefox 64+ */

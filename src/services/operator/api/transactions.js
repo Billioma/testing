@@ -3,28 +3,36 @@ import * as API from "../url";
 
 export const getOpPtp = async (page, limit, query) => {
   const response = await axiosInstance.get(
-    `${API.OP_PTP}?page=${page}&limit=${limit}&sort=id,DESC&${query || ""}`
+    `${API.OP_PTP}?page=${page}&limit=${limit}&sort=createdAt,DESC&${
+      query || ""
+    }`
   );
   return response.data;
 };
 
 export const getOpRp = async (page, limit, query) => {
   const response = await axiosInstance.get(
-    `${API.OP_RP}?page=${page}&limit=${limit}&sort=id,DESC&${query || ""}`
+    `${API.OP_RP}?page=${page}&limit=${limit}&sort=createdAt,DESC&${
+      query || ""
+    }`
   );
   return response.data;
 };
 
 export const getOpEv = async (page, limit, query) => {
   const response = await axiosInstance.get(
-    `${API.OP_EV}?page=${page}&limit=${limit}&sort=id,DESC&${query || ""}`
+    `${API.OP_EV}?page=${page}&limit=${limit}&sort=createdAt,DESC&${
+      query || ""
+    }`
   );
   return response.data;
 };
 
 export const getOpService = async (page, limit, query) => {
   const response = await axiosInstance.get(
-    `${API.OP_SERVICE}?page=${page}&limit=${limit}&sort=id,DESC&${query || ""}`
+    `${API.OP_SERVICE}?page=${page}&limit=${limit}&sort=createdAt,DESC&${
+      query || ""
+    }`
   );
   return response.data;
 };

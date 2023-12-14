@@ -15,7 +15,7 @@ import {
 } from "@chakra-ui/react";
 import TableFormat from "../../../common/TableFormat";
 import { BsChevronDown } from "react-icons/bs";
-import { formatDateTime } from "../../../../utils/helpers";
+import { formatDateNewTime } from "../../../../utils/helpers";
 import AdminDeleteModal from "../../../modals/AdminDeleteModal";
 import useCustomToast from "../../../../utils/notifications";
 import { useDeleteService } from "../../../../services/admin/query/services";
@@ -103,7 +103,9 @@ const TableLayer = ({
                   {service?.description}
                 </Td>
                 <Td textAlign="center">{service?.serviceType}</Td>
-                <Td textAlign="center">{formatDateTime(service?.createdAt)}</Td>
+                <Td textAlign="center">
+                  {formatDateNewTime(service?.createdAt)}
+                </Td>
                 <Td>
                   <Flex justifyContent="center" align="center">
                     <Menu>

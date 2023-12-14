@@ -13,7 +13,7 @@ import {
   Icon,
 } from "@chakra-ui/react";
 import TableFormat from "../../../common/TableFormat";
-import { formatDateTime } from "../../../../utils/helpers";
+import { formatDateNewTime } from "../../../../utils/helpers";
 import { useNavigate } from "react-router-dom";
 import AdminDeleteModal from "../../../modals/AdminDeleteModal";
 import useCustomToast from "../../../../utils/notifications";
@@ -124,7 +124,7 @@ const TableLayer = ({
                 <Td textAlign="center">{transaction?.zone?.code}</Td>
                 <Td textAlign="center">{transaction?.vehicle?.licensePlate}</Td>
                 <Td textAlign="center">
-                  {formatDateTime(transaction?.arrival) || "N/A"}
+                  {formatDateNewTime(transaction?.arrival) || "N/A"}
                 </Td>
 
                 <Td textAlign="center">
@@ -145,7 +145,7 @@ const TableLayer = ({
                 </Td>
 
                 <Td textAlign="center">
-                  {formatDateTime(transaction?.createdAt)}
+                  {formatDateNewTime(transaction?.createdAt)}
                 </Td>
                 <Td textAlign="center">
                   <Flex justifyContent="center" align="center">

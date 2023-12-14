@@ -3,7 +3,7 @@ import { Box, Flex, Image, Td, Text, Tr } from "@chakra-ui/react";
 import TableFormat from "../../../common/TableFormat";
 import { Status, servicesHeader } from "../../../common/constants";
 import { useGetPayToPark } from "../../../../services/customer/query/services";
-import { formatDate } from "../../../../utils/helpers";
+import { formatDateNewTime } from "../../../../utils/helpers";
 
 const TableLayer = () => {
   const page = 1;
@@ -27,7 +27,7 @@ const TableLayer = () => {
               key={i}
               color="#646668"
               fontWeight={500}
-              fontSize="12px"
+              fontSize="14px"
               lineHeight="100%"
             >
               <Td textAlign="center">{dat?.ticketNumber}</Td>
@@ -47,7 +47,7 @@ const TableLayer = () => {
                   {Object.values(Status[dat?.status])[1]}
                 </Flex>
               </Td>
-              <Td textAlign="center">{formatDate(dat?.createdAt)}</Td>
+              <Td textAlign="center">{formatDateNewTime(dat?.createdAt)}</Td>
             </Tr>
           ))
         ) : (
@@ -82,7 +82,7 @@ const TableLayer = () => {
                     No Recent Activity
                   </Text>
                   <Text
-                    fontSize="11px"
+                    fontSize="13px"
                     color="#A4A6A8"
                     fontWeight={500}
                     lineHeight="100%"

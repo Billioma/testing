@@ -170,7 +170,6 @@ export const formatFullDate = (date, fallback = "") => {
     hour: "numeric",
     minute: "numeric",
     hour12: true,
-    timeZone: "UTC",
   };
 
   return formattedDate.toLocaleString("default", options);
@@ -187,7 +186,30 @@ export const formatDateTime = (date, fallback = "") => {
     hour: "numeric",
     minute: "numeric",
     hour12: true,
-    timeZone: "UTC",
+  };
+
+  return formattedDate.toLocaleString("default", options);
+};
+
+export const formatDateNewTime = (date, fallback = "") => {
+  if (!date) return fallback;
+
+  let formattedDate = new Date(date);
+
+  // Check if the location host is "app.parkinspace.ng"
+  const isParkInSpaceApp = location.host === "app.parkinspace.ng";
+
+  // Add one hour to the date if the app is Park In Space
+  if (isParkInSpaceApp) {
+    formattedDate.setHours(formattedDate.getHours() + 1);
+  }
+  const options = {
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+    hour: "numeric",
+    minute: "numeric",
+    hour12: true,
   };
 
   return formattedDate.toLocaleString("default", options);
@@ -207,8 +229,8 @@ export const formatTimeToHHMMSS = (time) => {
     hours = "00";
   }
 
-  hours = hours.padStart(2, '0');
-  minutes = minutes.padStart(2, '0');
+  hours = hours.padStart(2, "0");
+  minutes = minutes.padStart(2, "0");
 
   const seconds = "00";
   return `${hours}:${minutes}:${seconds}`;

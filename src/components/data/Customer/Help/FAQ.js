@@ -40,7 +40,7 @@ const FAQ = ({ label, data, i }) => {
             <Box
               whiteSpace="pre-wrap"
               lineHeight="150%"
-              fontSize={{ base: "14px", md: "16px" }}
+              fontSize={{ base: "14px", md: "18px" }}
               color="#646668"
             >
               {data}

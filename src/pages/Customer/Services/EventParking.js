@@ -100,8 +100,6 @@ const EventParking = () => {
 
   const [event, setEvent] = useState({});
 
-  const start = formatDate(startValue);
-
   const { data: events, isLoading: isEVent } = useGetEvents();
   const { data: services } = useGetServices();
   const [showVehicle, setShowVehicle] = useState(false);
@@ -163,6 +161,7 @@ const EventParking = () => {
       );
     },
   });
+
   const arrayDates = startValue?.map((dat) => formatDate(new Date(dat)));
   const handleSubmit = () => {
     Number(values?.paymentMethod) === 0
@@ -239,9 +238,7 @@ const EventParking = () => {
                 }}
                 size="24px"
               />
-              <Text fontSize="14px" fontWeight={500}>
-                Back
-              </Text>
+              <Text fontWeight={500}>Back</Text>
             </Flex>
           )}
 
@@ -343,7 +340,7 @@ const EventParking = () => {
                                   <Box w="full">
                                     <Text
                                       lineHeight="100%"
-                                      fontSize="12px"
+                                      fontSize="14px"
                                       color="#242628"
                                     >
                                       Event Name
@@ -353,7 +350,6 @@ const EventParking = () => {
                                       color="#848688"
                                       fontWeight={500}
                                       lineHeight="100%"
-                                      fontSize="14px"
                                     >
                                       {data?.name}
                                     </Text>
@@ -362,7 +358,7 @@ const EventParking = () => {
                                   <Box w="60%">
                                     <Text
                                       lineHeight="100%"
-                                      fontSize="12px"
+                                      fontSize="14px"
                                       color="#242628"
                                     >
                                       Date
@@ -372,7 +368,6 @@ const EventParking = () => {
                                       color="#848688"
                                       fontWeight={500}
                                       lineHeight="100%"
-                                      fontSize="14px"
                                     >
                                       {formatDate(data?.eventStartDateTime)}
                                     </Text>
@@ -388,7 +383,7 @@ const EventParking = () => {
                                   <Box w="full">
                                     <Text
                                       lineHeight="100%"
-                                      fontSize="12px"
+                                      fontSize="14px"
                                       color="#242628"
                                     >
                                       Location
@@ -398,7 +393,6 @@ const EventParking = () => {
                                       color="#848688"
                                       fontWeight={500}
                                       lineHeight="100%"
-                                      fontSize="14px"
                                       w="80%"
                                     >
                                       {data?.address}
@@ -412,7 +406,7 @@ const EventParking = () => {
                                         setStep(step + 1);
                                       }}
                                       w="full"
-                                      fontSize="12px"
+                                      fontSize="14px"
                                     >
                                       Select
                                     </Button>
@@ -452,7 +446,7 @@ const EventParking = () => {
                     />
 
                     <Box>
-                      <Text lineHeight="100%" color="#242628" fontSize="10px">
+                      <Text lineHeight="100%" color="#242628" fontSize="12px">
                         Event Name
                       </Text>
                       <Text
@@ -460,7 +454,7 @@ const EventParking = () => {
                         color="#646668"
                         fontWeight={500}
                         lineHeight="100%"
-                        fontSize="12px"
+                        fontSize="14px"
                       >
                         {event?.name}
                       </Text>
@@ -468,13 +462,13 @@ const EventParking = () => {
                   </Flex>
 
                   <Flex flexDir="column" w={{ base: "100%", md: "25%" }}>
-                    <Text color="#242628" fontSize="10px" lineHeight="100%">
+                    <Text color="#242628" fontSize="12px" lineHeight="100%">
                       Location
                     </Text>
                     <Text
                       color="#646668"
                       fontWeight={500}
-                      fontSize="12px"
+                      fontSize="14px"
                       lineHeight="100%"
                       mt="8px"
                     >
@@ -493,13 +487,13 @@ const EventParking = () => {
                   w="full"
                 >
                   <Box w={{ base: "100%", md: "80%" }}>
-                    <Text color="#242628" fontSize="10px" lineHeight="100%">
+                    <Text color="#242628" fontSize="12px" lineHeight="100%">
                       Start
                     </Text>
                     <Text
                       color="#646668"
                       fontWeight={500}
-                      fontSize="12px"
+                      fontSize="14px"
                       lineHeight="100%"
                       mt="8px"
                     >
@@ -513,13 +507,13 @@ const EventParking = () => {
                     justifyContent="flex-start"
                     w={{ base: "100%", md: "80%" }}
                   >
-                    <Text color="#242628" fontSize="10px" lineHeight="100%">
+                    <Text color="#242628" fontSize="12px" lineHeight="100%">
                       End
                     </Text>
                     <Text
                       color="#646668"
                       fontWeight={500}
-                      fontSize="12px"
+                      fontSize="14px"
                       lineHeight="100%"
                       mt="8px"
                     >
@@ -534,13 +528,13 @@ const EventParking = () => {
                     justifyContent="flex-end"
                     w={{ base: "40%", md: "40%" }}
                   >
-                    <Text color="#242628" fontSize="10px" lineHeight="100%">
+                    <Text color="#242628" fontSize="12px" lineHeight="100%">
                       Amount Due
                     </Text>
                     <Text
                       color="#646668"
                       fontWeight={500}
-                      fontSize="12px"
+                      fontSize="14px"
                       lineHeight="100%"
                       mt="8px"
                     >
@@ -554,7 +548,7 @@ const EventParking = () => {
               </Box>
 
               <Box w="full" my="16px">
-                <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
+                <Text mb="8px" fontSize="12px" fontWeight={500} color="#444648">
                   Select Date
                 </Text>
 
@@ -566,11 +560,10 @@ const EventParking = () => {
                   maxDate={formatDate(event?.eventEndDateTime)}
                   onChange={startChange}
                 />
-                {console.log(formatDate(event?.eventStartDateTime))}
               </Box>
 
               <Box w="full" my="16px">
-                <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
+                <Text mb="8px" fontSize="12px" fontWeight={500} color="#444648">
                   Select Service
                 </Text>
 
@@ -594,7 +587,7 @@ const EventParking = () => {
               </Box>
 
               <Box w="full" my="16px">
-                <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
+                <Text mb="8px" fontSize="12px" fontWeight={500} color="#444648">
                   Select Vehicle
                 </Text>
 
@@ -621,7 +614,7 @@ const EventParking = () => {
                   mt="8px"
                   color="red"
                   mb="16px"
-                  fontSize="12px"
+                  fontSize="14px"
                   fontWeight={500}
                   lineHeight="100%"
                   justifyContent="flex-end"
@@ -640,7 +633,7 @@ const EventParking = () => {
               )}
 
               <Box mb="16px">
-                <Text mb="8px" fontSize="10px" fontWeight={500} color="#444648">
+                <Text mb="8px" fontSize="12px" fontWeight={500} color="#444648">
                   Payment Method
                 </Text>
                 <Flex mt="17px" align="center">
@@ -663,16 +656,16 @@ const EventParking = () => {
                     justifyContent="space-between"
                   >
                     <Radio size="sm" value={"1"}>
-                      <Text fontSize="14px"> Pay with Wallet</Text>
+                      <Text> Pay with Wallet</Text>
                     </Radio>
                     <Radio size="sm" value={"0"}>
-                      <Text fontSize="14px">Pay with Card</Text>
+                      <Text>Pay with Card</Text>
                     </Radio>
                     <Radio size="sm" value={"2"}>
-                      <Text fontSize="14px">Pay with Points</Text>
+                      <Text>Pay with Points</Text>
                     </Radio>
                     <Radio size="sm" value={"3"}>
-                      <Text fontSize="14px">Pay with Transfer</Text>
+                      <Text>Pay with Transfer</Text>
                     </Radio>
                   </RadioGroup>
                 </Flex>
@@ -689,13 +682,13 @@ const EventParking = () => {
                       <Box>
                         <Text
                           color="#444648"
-                          fontSize="10px"
+                          fontSize="12px"
                           lineHeight="100%"
                           mb="8px"
                         >
                           Wallet
                         </Text>
-                        <Text fontSize="14px" color="#646668" lineHeight="100%">
+                        <Text color="#646668" lineHeight="100%">
                           <span style={{ fontWeight: 500 }}> Balance: </span> ₦{" "}
                           {userData?.wallet?.balance?.toLocaleString(
                             undefined,
@@ -716,7 +709,7 @@ const EventParking = () => {
                   <Flex
                     mt="8px"
                     color="red"
-                    fontSize="12px"
+                    fontSize="14px"
                     fontWeight={500}
                     lineHeight="100%"
                     justifyContent="flex-end"
@@ -763,14 +756,13 @@ const EventParking = () => {
                             <Box>
                               <Text
                                 color="#444648"
-                                fontSize="10px"
+                                fontSize="12px"
                                 lineHeight="100%"
                                 mb="8px"
                               >
                                 Card Details
                               </Text>
                               <Text
-                                fontSize="14px"
                                 textTransform="capitalize"
                                 color="#646668"
                                 lineHeight="100%"
@@ -794,7 +786,7 @@ const EventParking = () => {
                   <Flex
                     mt="8px"
                     color="red"
-                    fontSize="12px"
+                    fontSize="14px"
                     fontWeight={500}
                     lineHeight="100%"
                     justifyContent="flex-end"
@@ -833,7 +825,6 @@ const EventParking = () => {
                     !values?.paymentMethod
                 : ""
             }
-            fontSize="14px"
           >
             {step === 1 ? "Enter" : "Reserve Event Parking"}
           </Button>
@@ -842,10 +833,10 @@ const EventParking = () => {
       <ConfirmEventModal
         values={values}
         event={event}
-        start={start}
         isLoading={isEventing}
         action={handleSubmit}
         isOpen={isOpen}
+        arrayDates={arrayDates}
         onClose={onClose}
       />
       <FundWalletDrawer

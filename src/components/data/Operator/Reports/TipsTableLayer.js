@@ -2,7 +2,7 @@ import React from "react";
 import { Box, Flex, Image, Td, Text, Tr } from "@chakra-ui/react";
 import TableLoader from "../../../loaders/TableLoader";
 import { adminTipsHeader } from "../../../common/constants";
-import { formatDateTimes } from "../../../../utils/helpers";
+import { formatDateNewTime } from "../../../../utils/helpers";
 import TableFormat from "../../../common/TableFormat";
 
 const TipsTableLayer = ({
@@ -42,7 +42,7 @@ const TipsTableLayer = ({
             useDefaultPagination
           >
             {data?.data?.map((item, i) => (
-              <Tr fontSize="12px" fontWeight={500} color="#646668" key={i}>
+              <Tr fontSize="14px" fontWeight={500} color="#646668" key={i}>
                 <Td>{item?.ticketNumber}</Td>
                 <Td>{item?.customer}</Td>
                 <Td>{item?.attendant}</Td>
@@ -52,7 +52,7 @@ const TipsTableLayer = ({
                 <Td textAlign="center">{item?.location}</Td>
                 <Td textAlign="center">{item?.licensePlate}</Td>
 
-                <Td textAlign="center">{formatDateTimes(item?.createdAt)}</Td>
+                <Td textAlign="center">{formatDateNewTime(item?.createdAt)}</Td>
               </Tr>
             ))}
           </TableFormat>
@@ -68,7 +68,7 @@ const TipsTableLayer = ({
           <Image src="/assets/no-log-rep.png" w="64px" h="64px" />
           <Text
             color="#848688"
-            fontSize="12px"
+            fontSize="14px"
             lineHeight="100%"
             fontWeight={500}
           >

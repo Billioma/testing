@@ -7,7 +7,7 @@ export const CHANGE_USER_PASSWORD = "update-password";
 
 export const CUSTOMER_SERVICE_LOGS = "customer/service-logs";
 export const CUSTOMER_SERVICE_LOGS_LIST = (limit = "", page = "") =>
-  `customer/service-logs?limit=${limit}&page=${page}&sort=id,DESC`;
+  `customer/service-logs?limit=${limit}&page=${page}&sort=createdAt,DESC`;
 
 export const REFRESH_TOKEN = "/auth/refresh";
 export const PUBLIC_MAKES = "self-parking/get-makes";
@@ -23,13 +23,13 @@ export const GET_MODEL = "vehicles/get-models";
 export const GET_USER = "auth/profile";
 export const GET_FAQ = "public/faqs";
 export const GET_PAYMENT_HISTORY = (filterString = "", limit, page) =>
-  `transactions?${filterString}&limit=${limit}&page=${page}&sort=id,DESC`;
+  `transactions?${filterString}&limit=${limit}&page=${page}&sort=createdAt,DESC`;
 export const GET_PAYMENT_TIPS = (filterString = "", limit, page) =>
-  `tips?${filterString}&limit=${limit}&page=${page}&sort=id,DESC`;
+  `tips?${filterString}&limit=${limit}&page=${page}&sort=createdAt,DESC`;
 export const UPLOAD_PIC = "system/media-upload";
 export const PAY_TO_PARK = "pay-to-park";
 export const NON_USER_PAY_TO_PARK = "self-parking/pay-to-park";
-export const TIPS = "customers/tips?sort=id,DESC";
+export const TIPS = "customers/tips?sort=createdAt,DESC";
 export const CREATE_TIPS = "customers/tips";
 export const RESERVE_PARKING = "reserve-parking";
 export const EVENT_PARKING = "event-parking";
@@ -45,7 +45,7 @@ export const CANCEL_BOOKING = (id = "") => `service-bookings/cancel/${id}`;
 export const CANCEL_SUBSCRIPTIONS = (id = "") =>
   `membership-subscriptions/cancel/${id}`;
 export const GET_SUBS = (filterString = "", limit, page) =>
-  `membership-subscriptions?${filterString}&limit=${limit}&page=${page}&sort=id,DESC`;
+  `membership-subscriptions?${filterString}&limit=${limit}&page=${page}&sort=createdAt,DESC`;
 export const RENEW_SUBSCRIPTIONS = (id = "") =>
   `membership-subscriptions/renew/${id}`;
 export const GET_LOCATIONS = "public/locations";

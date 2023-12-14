@@ -35,12 +35,7 @@ const Services = ({ opt }) => {
             >
               <Flex align="center" gap="16px">
                 <Image src={dat?.img} h="48px" w="48px" />
-                <Text
-                  color="#444648"
-                  fontWeight={500}
-                  fontSize="14px"
-                  lineHeight="100%"
-                >
+                <Text color="#444648" fontWeight={500} lineHeight="100%">
                   {dat?.title}
                 </Text>
               </Flex>

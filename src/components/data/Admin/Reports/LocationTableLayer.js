@@ -4,7 +4,7 @@ import TableLoader from "../../../loaders/TableLoader";
 import { adminRepLocationHeader } from "../../../common/constants";
 
 import TableFormat from "../../../common/TableFormat";
-import { formatDateTimes } from "../../../../utils/helpers";
+import { formatDateNewTime } from "../../../../utils/helpers";
 
 const LocationTableLayer = ({
   data,
@@ -76,7 +76,7 @@ const LocationTableLayer = ({
                     </Flex>
                   </Flex>
                 </Td>
-                <Td textAlign="center">{formatDateTimes(item?.createdAt)}</Td>
+                <Td textAlign="center">{formatDateNewTime(item?.createdAt)}</Td>
               </Tr>
             ))}
           </TableFormat>

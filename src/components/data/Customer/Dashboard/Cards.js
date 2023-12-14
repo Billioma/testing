@@ -183,7 +183,7 @@ const Cards = ({ vehicles, isLoading, refetchVehicle }) => {
 
               <Text
                 mt="20px"
-                fontSize="12px"
+                fontSize="14px"
                 color="#848688"
                 fontWeight={700}
                 lineHeight="100%"
@@ -214,7 +214,7 @@ const Cards = ({ vehicles, isLoading, refetchVehicle }) => {
                 onClick={() => setShowFunds(true)}
                 color="#242628"
                 border="1px solid #242628"
-                fontSize="12px"
+                fontSize="14px"
                 fontWeight={500}
               >
                 Fund My Wallet
@@ -262,7 +262,7 @@ const Cards = ({ vehicles, isLoading, refetchVehicle }) => {
                       w="30%"
                     >
                       <Text
-                        fontSize="10px"
+                        fontSize="12px"
                         color="#848688"
                         fontWeight={700}
                         lineHeight="100%"
@@ -321,7 +321,7 @@ const Cards = ({ vehicles, isLoading, refetchVehicle }) => {
                     >
                       <Box>
                         <Text
-                          fontSize="12px"
+                          fontSize="14px"
                           color="#848688"
                           fontWeight={700}
                           lineHeight="100%"
@@ -331,7 +331,6 @@ const Cards = ({ vehicles, isLoading, refetchVehicle }) => {
                         <Text
                           mt="8px"
                           color="#242628"
-                          fontSize="14px"
                           fontWeight={500}
                           lineHeight="100%"
                         >
@@ -341,7 +340,7 @@ const Cards = ({ vehicles, isLoading, refetchVehicle }) => {
 
                       <Box>
                         <Text
-                          fontSize="12px"
+                          fontSize="14px"
                           color="#848688"
                           fontWeight={700}
                           lineHeight="100%"
@@ -351,7 +350,6 @@ const Cards = ({ vehicles, isLoading, refetchVehicle }) => {
                         <Text
                           mt="8px"
                           color="#242628"
-                          fontSize="14px"
                           fontWeight={500}
                           lineHeight="100%"
                         >
@@ -372,7 +370,7 @@ const Cards = ({ vehicles, isLoading, refetchVehicle }) => {
                     >
                       <Box w="80%">
                         <Text
-                          fontSize="12px"
+                          fontSize="14px"
                           color="#848688"
                           fontWeight={700}
                           lineHeight="100%"
@@ -382,7 +380,6 @@ const Cards = ({ vehicles, isLoading, refetchVehicle }) => {
                         <Text
                           mt="8px"
                           color="#242628"
-                          fontSize="14px"
                           fontWeight={500}
                           lineHeight="100%"
                         >
@@ -397,7 +394,7 @@ const Cards = ({ vehicles, isLoading, refetchVehicle }) => {
                       </Box>
                       <Box w="full">
                         <Text
-                          fontSize="12px"
+                          fontSize="14px"
                           color="#848688"
                           fontWeight={700}
                           lineHeight="100%"
@@ -407,7 +404,6 @@ const Cards = ({ vehicles, isLoading, refetchVehicle }) => {
                         <Text
                           mt="8px"
                           color="#242628"
-                          fontSize="14px"
                           fontWeight={500}
                           lineHeight="100%"
                         >
@@ -428,7 +424,7 @@ const Cards = ({ vehicles, isLoading, refetchVehicle }) => {
                           gap="4px"
                         >
                           <Text
-                            fontSize="10px"
+                            fontSize="12px"
                             fontWeight={700}
                             lineHeight="100%"
                           >
@@ -456,7 +452,7 @@ const Cards = ({ vehicles, isLoading, refetchVehicle }) => {
                     borderRadius="8px"
                     w="full"
                     color="red"
-                    fontSize="12px"
+                    fontSize="14px"
                     bg="transparent"
                     border="1px solid red"
                   >
@@ -507,7 +503,7 @@ const Cards = ({ vehicles, isLoading, refetchVehicle }) => {
                       w="30%"
                     >
                       <Text
-                        fontSize="10px"
+                        fontSize="12px"
                         color="#848688"
                         fontWeight={700}
                         lineHeight="100%"
@@ -562,7 +558,7 @@ const Cards = ({ vehicles, isLoading, refetchVehicle }) => {
                     >
                       <Box>
                         <Text
-                          fontSize="12px"
+                          fontSize="14px"
                           color="#848688"
                           fontWeight={700}
                           lineHeight="100%"
@@ -572,7 +568,6 @@ const Cards = ({ vehicles, isLoading, refetchVehicle }) => {
                         <Text
                           mt="8px"
                           color="#242628"
-                          fontSize="14px"
                           fontWeight={500}
                           lineHeight="100%"
                         >
@@ -582,7 +577,7 @@ const Cards = ({ vehicles, isLoading, refetchVehicle }) => {
 
                       <Box>
                         <Text
-                          fontSize="12px"
+                          fontSize="14px"
                           color="#848688"
                           fontWeight={700}
                           lineHeight="100%"
@@ -592,7 +587,6 @@ const Cards = ({ vehicles, isLoading, refetchVehicle }) => {
                         <Text
                           mt="8px"
                           color="#242628"
-                          fontSize="14px"
                           fontWeight={500}
                           lineHeight="100%"
                         >
@@ -612,7 +606,7 @@ const Cards = ({ vehicles, isLoading, refetchVehicle }) => {
                     >
                       <Box w="full">
                         <Text
-                          fontSize="12px"
+                          fontSize="14px"
                           color="#848688"
                           fontWeight={700}
                           lineHeight="100%"
@@ -622,7 +616,6 @@ const Cards = ({ vehicles, isLoading, refetchVehicle }) => {
                         <Text
                           mt="8px"
                           color="#242628"
-                          fontSize="14px"
                           fontWeight={500}
                           lineHeight="100%"
                         >
@@ -632,7 +625,7 @@ const Cards = ({ vehicles, isLoading, refetchVehicle }) => {
 
                       <Box w="full">
                         <Text
-                          fontSize="12px"
+                          fontSize="14px"
                           color="#848688"
                           fontWeight={700}
                           lineHeight="100%"
@@ -642,7 +635,6 @@ const Cards = ({ vehicles, isLoading, refetchVehicle }) => {
                         <Text
                           mt="8px"
                           color="#242628"
-                          fontSize="14px"
                           fontWeight={500}
                           lineHeight="100%"
                         >
@@ -675,7 +667,7 @@ const Cards = ({ vehicles, isLoading, refetchVehicle }) => {
                             color="#242628"
                             onClick={() => openMenu(data)}
                             lineHeight="100%"
-                            fontSize="10px"
+                            fontSize="12px"
                             fontWeight={500}
                           >
                             Edit

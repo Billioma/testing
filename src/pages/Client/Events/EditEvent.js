@@ -232,7 +232,7 @@ const EditEvent = () => {
       width: "100%",
       minHeight: "44px",
       color: "#646668",
-      fontSize: "14px",
+      fontSize: "16px",
       cursor: "pointer",
       borderRadius: "4px",
       border: state.hasValue ? "none" : "1px solid #D4D6D8",
@@ -241,7 +241,7 @@ const EditEvent = () => {
     }),
     menu: (provided) => ({
       ...provided,
-      fontSize: "13px",
+      fontSize: "15px",
       backgroundColor: "#fff",
     }),
     option: (provided, state) => ({
@@ -317,7 +317,7 @@ const EditEvent = () => {
         gap="8px"
       >
         <HiOutlineArrowNarrowLeft size="24px" color="#242628" />
-        <Text fontSize="14px" fontWeight={500} lineHeight="100%">
+        <Text fontWeight={500} lineHeight="100%">
           Back
         </Text>
       </Flex>
@@ -368,7 +368,7 @@ const EditEvent = () => {
                     <AiOutlineFolderOpen size="32px" />
                     <Text
                       mt="8px"
-                      fontSize="10px"
+                      fontSize="12px"
                       lineHeight="100%"
                       fontWeight={500}
                     >
@@ -381,7 +381,7 @@ const EditEvent = () => {
           </label>
 
           <Box my="24px">
-            <Text mb="8px" fontSize="10px" lineHeight="100%" fontWeight={500}>
+            <Text mb="8px" fontSize="12px" lineHeight="100%" fontWeight={500}>
               Event Name
             </Text>
             <CustomInput
@@ -399,7 +399,7 @@ const EditEvent = () => {
           </Box>
 
           <Box>
-            <Text mb="8px" fontSize="10px" lineHeight="100%" fontWeight={500}>
+            <Text mb="8px" fontSize="12px" lineHeight="100%" fontWeight={500}>
               Event Description
             </Text>
             <CustomInput
@@ -417,7 +417,7 @@ const EditEvent = () => {
           </Box>
 
           <Box my="24px">
-            <Text mb="8px" fontSize="10px" lineHeight="100%" fontWeight={500}>
+            <Text mb="8px" fontSize="12px" lineHeight="100%" fontWeight={500}>
               Event Address
             </Text>
             <CustomInput
@@ -435,7 +435,7 @@ const EditEvent = () => {
           </Box>
 
           <Box>
-            <Text mb="8px" fontSize="10px" lineHeight="100%" fontWeight={500}>
+            <Text mb="8px" fontSize="12px" lineHeight="100%" fontWeight={500}>
               Event Website
             </Text>
             <CustomInput
@@ -454,13 +454,12 @@ const EditEvent = () => {
 
           <Flex align="center" gap="16px" my="24px">
             <Box w="full">
-              <Text mb="8px" fontSize="10px" lineHeight="100%" fontWeight={500}>
+              <Text mb="8px" fontSize="12px" lineHeight="100%" fontWeight={500}>
                 Event Start Date
               </Text>
 
               <Box pos="relative" w="full" className="box">
                 <Flex
-                  fontSize="14px"
                   onClick={() => setStartDate((prev) => !prev)}
                   align="center"
                   justifyContent="space-between"
@@ -492,7 +491,7 @@ const EditEvent = () => {
             </Box>
 
             <Box w="full">
-              <Text mb="8px" fontSize="10px" lineHeight="100%" fontWeight={500}>
+              <Text mb="8px" fontSize="12px" lineHeight="100%" fontWeight={500}>
                 Event Start Time
               </Text>
 
@@ -524,13 +523,12 @@ const EditEvent = () => {
 
           <Flex align="center" gap="16px">
             <Box w="full">
-              <Text mb="8px" fontSize="10px" lineHeight="100%" fontWeight={500}>
+              <Text mb="8px" fontSize="12px" lineHeight="100%" fontWeight={500}>
                 Event End Date
               </Text>
 
               <Box pos="relative" w="full" className="box">
                 <Flex
-                  fontSize="14px"
                   onClick={() => setEndDate((prev) => !prev)}
                   align="center"
                   justifyContent="space-between"
@@ -561,7 +559,7 @@ const EditEvent = () => {
             </Box>
 
             <Box w="full">
-              <Text mb="8px" fontSize="10px" lineHeight="100%" fontWeight={500}>
+              <Text mb="8px" fontSize="12px" lineHeight="100%" fontWeight={500}>
                 Event End Time
               </Text>
 
@@ -596,7 +594,7 @@ const EditEvent = () => {
             values.arrivalTime &&
             values.departureTime &&
             formattedDeparture < formattedDate && (
-              <Text mt="8px" fontSize="12px" color="red">
+              <Text mt="8px" fontSize="14px" color="red">
                 Departure Date is earlier than Arrival Date
               </Text>
             )}
@@ -612,14 +610,14 @@ const EditEvent = () => {
               }
               size="sm"
             />
-            <Text fontSize="10px" lineHeight="100%" fontWeight={500}>
+            <Text fontSize="12px" lineHeight="100%" fontWeight={500}>
               Add Event Price
             </Text>
           </Flex>
 
           {values.paymentRequired && (
             <Box mb="24px">
-              <Text mb="8px" fontSize="10px" lineHeight="100%" fontWeight={500}>
+              <Text mb="8px" fontSize="12px" lineHeight="100%" fontWeight={500}>
                 Event Price
               </Text>
               <CustomInput
@@ -646,7 +644,6 @@ const EditEvent = () => {
             isLoading={isLoading}
             onClick={handleCreate}
             py="17px"
-            fontSize="14px"
           >
             Update Event
           </Button>

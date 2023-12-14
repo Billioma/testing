@@ -71,7 +71,6 @@ const TableLayer = () => {
             <Box w="full">
               <Text
                 color="#242628"
-                fontSize="14px"
                 textAlign={{ base: "center", md: "start" }}
                 lineHeight="100%"
                 fontWeight={500}
@@ -86,7 +85,6 @@ const TableLayer = () => {
                   key={i}
                   textAlign="center"
                   pb="16px"
-                  fontSize="14px"
                   cursor="pointer"
                   _hover={{ color: "#EE383A" }}
                   transition=".3s ease-in-out"

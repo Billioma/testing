@@ -37,7 +37,7 @@ const AddPolicy = () => {
       width: "100%",
       minHeight: "44px",
       color: "#646668",
-      fontSize: "14px",
+      fontSize: "16px",
       cursor: "pointer",
       borderRadius: "4px",
       border: state.hasValue ? "none" : "1px solid #D4D6D8",
@@ -46,7 +46,7 @@ const AddPolicy = () => {
     }),
     menu: (provided) => ({
       ...provided,
-      fontSize: "13px",
+      fontSize: "15px",
       backgroundColor: "#fff",
     }),
     option: (provided, state) => ({
@@ -97,7 +97,7 @@ const AddPolicy = () => {
             gap="8px"
           >
             <HiOutlineArrowNarrowLeft size="24px" color="#242628" />
-            <Text fontSize="14px" fontWeight={500} lineHeight="100%">
+            <Text fontWeight={500} lineHeight="100%">
               Back
             </Text>
           </Flex>
@@ -136,7 +136,7 @@ const AddPolicy = () => {
                     <Box>
                       <Text
                         color="#444648"
-                        fontSize="10px"
+                        fontSize="12px"
                         fontWeight={500}
                         mb="8px"
                         lineHeight="100%"
@@ -156,7 +156,7 @@ const AddPolicy = () => {
                     <Box my="16px">
                       <Text
                         color="#444648"
-                        fontSize="10px"
+                        fontSize="12px"
                         fontWeight={500}
                         mb="8px"
                         lineHeight="100%"
@@ -176,7 +176,7 @@ const AddPolicy = () => {
                     <Box>
                       <Text
                         color="#444648"
-                        fontSize="10px"
+                        fontSize="12px"
                         fontWeight={500}
                         mb="8px"
                         lineHeight="100%"
@@ -211,7 +211,7 @@ const AddPolicy = () => {
                     <Box mt="16px">
                       <Text
                         color="#444648"
-                        fontSize="10px"
+                        fontSize="12px"
                         fontWeight={500}
                         mb="8px"
                         lineHeight="100%"
@@ -250,7 +250,6 @@ const AddPolicy = () => {
                         color="#646668"
                         fontWeight={500}
                         lineHeight="100%"
-                        fontSize="14px"
                         _hover={{ bg: "transparent" }}
                         _active={{ bg: "transparent" }}
                         _focus={{ bg: "transparent" }}
@@ -267,7 +266,7 @@ const AddPolicy = () => {
                         w="full"
                         isDisabled={!isValid || !dirty}
                         type="submit"
-                        fontSize="12px"
+                        fontSize="14px"
                         px="26px"
                         py="17px"
                       >

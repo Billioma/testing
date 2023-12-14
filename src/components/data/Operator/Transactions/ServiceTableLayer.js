@@ -6,7 +6,7 @@ import {
   Status,
   operatorRpHeader,
 } from "../../../common/constants";
-import { formatDate } from "../../../../utils/helpers";
+import { formatDateNewTime } from "../../../../utils/helpers";
 import { useNavigate } from "react-router-dom";
 import { AiOutlineEye } from "react-icons/ai";
 import TableFormat from "../../../common/TableFormat";
@@ -48,8 +48,8 @@ const ServiceTableLayer = ({
             useDefaultPagination
           >
             {data?.data?.map((item, i) => (
-              <Tr fontSize="12px" fontWeight={500} color="#646668" key={i}>
-                <Td>{item?.reservationId}</Td>
+              <Tr fontSize="14px" fontWeight={500} color="#646668" key={i}>
+                <Td>{item?.bookingId}</Td>
                 <Td textAlign="center">{item?.zone?.location?.name}</Td>
                 <Td textAlign="center">{item?.zone?.name}</Td>
                 <Td textAlign="center">
@@ -66,11 +66,11 @@ const ServiceTableLayer = ({
                     >
                       {OnlinePaymentMethods?.find(
                         (dat, i) => i === item?.paymentMethod
-                      )}
+                      ) || "N/A"}
                     </Flex>
                   </Flex>
                 </Td>
-                <Td textAlign="center">{formatDate(item?.createdAt)}</Td>
+                <Td textAlign="center">{formatDateNewTime(item?.createdAt)}</Td>
                 <Td>
                   <Flex align="center" w="full" justifyContent="center">
                     <Flex
@@ -97,12 +97,14 @@ const ServiceTableLayer = ({
                       color="#fff"
                       fontWeight={500}
                       onClick={() =>
-                        navigate(`/operator/logs/valeted-vehicles/${item?.id}`)
+                        navigate(
+                          `/operator/transactions/car-services/${item?.id}`
+                        )
                       }
                       lineHeight="100%"
                       px="16px"
                       py="8px"
-                      fontSize="12px"
+                      fontSize="14px"
                       display="flex"
                       align="center"
                       gap="8px"
@@ -127,7 +129,7 @@ const ServiceTableLayer = ({
           <Image src="/assets/no-log.jpg" w="64px" h="64px" />
           <Text
             color="#848688"
-            fontSize="12px"
+            fontSize="14px"
             lineHeight="100%"
             fontWeight={500}
           >

@@ -156,7 +156,7 @@ const Header = ({ showSidebar }) => {
           <Flex align="flex-end" gap="4px">
             <Text
               color="orangeBg"
-              fontSize="20px"
+              fontSize="22px"
               lineHeight="100%"
               cursor={
                 locationRoute === "/operator/users/attendants" ||
@@ -189,7 +189,7 @@ const Header = ({ showSidebar }) => {
 
             {secTitle && (
               <Text
-                fontSize="10px"
+                fontSize="12px"
                 color="#848688"
                 pb={{ base: "2px", md: "1px" }}
                 fontWeight={500}
@@ -201,7 +201,7 @@ const Header = ({ showSidebar }) => {
 
             {finTitle && (
               <Text
-                fontSize="10px"
+                fontSize="12px"
                 color="#848688"
                 pb={{ base: "2px", md: "1px" }}
                 fontWeight={500}
@@ -249,14 +249,14 @@ const Header = ({ showSidebar }) => {
                 />
 
                 <Box>
-                  <Text fontSize="12px" fontWeight={500} lineHeight="100%">
+                  <Text fontSize="14px" fontWeight={500} lineHeight="100%">
                     Hi {userData?.name || ""}
                   </Text>
                   <Text
                     mt="8px"
                     textDecor="underline"
                     color="#646668"
-                    fontSize="10px"
+                    fontSize="12px"
                     fontWeight={500}
                     lineHeight="100%"
                   >

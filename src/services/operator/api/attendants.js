@@ -11,7 +11,7 @@ export const getAttendants = async (query) => {
 export const getOpAttendants = async (page, limit, query) => {
   const response = await axiosInstance.get(
     API.GET_OP_ATTENDANTS +
-      `?page=${page}&limit=${limit}&sort=id,DESC&${query || ""}`
+      `?page=${page}&limit=${limit}&sort=createdAt,DESC&${query || ""}`
   );
   return response.data;
 };

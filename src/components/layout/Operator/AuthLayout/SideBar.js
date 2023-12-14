@@ -77,7 +77,7 @@ const SideBar = ({ show, setShow }) => {
           </Text>
           <Text
             textAlign="center"
-            fontSize="12px"
+            fontSize="14px"
             display={show ? "block" : "none"}
             fontWeight={700}
             mt="16px"
@@ -164,7 +164,7 @@ const SideBar = ({ show, setShow }) => {
                       : item.icon}
                   </Box>
                   <Box display={show ? "box" : "none"}>
-                    <Text fontSize="13px" ml={4} mb={0}>
+                    <Text fontSize="15px" ml={4} mb={0}>
                       {item.name}
                     </Text>
                   </Box>
@@ -221,7 +221,7 @@ const SideBar = ({ show, setShow }) => {
                               : "400",
                           }}
                         >
-                          <Box fontSize="11px" ml="29px">
+                          <Box fontSize="13px" ml="29px">
                             <Link key={subItem.name} to={subItem.path}>
                               {subItem.name}
                             </Link>
@@ -236,7 +236,7 @@ const SideBar = ({ show, setShow }) => {
           })}
 
           <Flex
-            fontSize="13px"
+            fontSize="15px"
             cursor="pointer"
             onClick={action}
             align="center"
@@ -304,7 +304,7 @@ const SideBar = ({ show, setShow }) => {
         w="full"
       >
         <Flex flexDir="column" justifyContent="center" align="center">
-          <Text fontSize="12px" color="#000" lineHeight="100%" mb="8px">
+          <Text color="#000" lineHeight="100%" mb="8px">
             Powered by
           </Text>
           <Image src="/assets/ezlogo.svg" objectFit="cover" />

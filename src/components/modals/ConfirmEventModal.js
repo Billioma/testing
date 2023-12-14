@@ -15,8 +15,8 @@ import { formatDate } from "../../utils/helpers";
 const ConfirmEventModal = ({
   isOpen,
   values,
+  arrayDates,
   event,
-  start,
   onClose,
   isLoading,
   action,
@@ -95,10 +95,10 @@ const ConfirmEventModal = ({
                   textAlign="end"
                   w="full"
                   fontSize="14px"
-                  lineHeight="100%"
+                  lineHeight="140%"
                   fontWeight={500}
                 >
-                  {start}
+                  {arrayDates?.join(", ")}
                 </Text>
               </Flex>
 
