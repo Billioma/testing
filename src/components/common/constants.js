@@ -1153,6 +1153,9 @@ export const TransactionTypes = [
   "TOKENIZATION_REFUND",
   "MEMBERSHIP_SUBSCRIPTION",
   "MEMBERSHIP_SUBSCRIPTION_RENEWAL",
+  "SERVICE_TIP",
+  "GUEST_PAY_TO_PARK",
+  "FUND_POINTS",
 ];
 
 export const FeatureType = [
@@ -1173,6 +1176,7 @@ export const PaymentMethods = [
   "UNPAID",
   "SUBSCRIPTION",
   "CARD",
+  "POINTS",
 ];
 
 export const FundMethods = [

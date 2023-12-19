@@ -47,6 +47,7 @@ const TableLayer = ({
     "PAID AT",
     "PAYMENT STATUS",
     "DATE",
+    "STATUS",
     "ACTIONS",
   ];
   const [selectedRow, setSelectedRow] = useState({ isOpen: false, id: null });
@@ -158,6 +159,21 @@ const TableLayer = ({
                   {formatDateNewTime(invoice?.createdAt)}
                 </Td>
                 <Td>
+                  <Flex align="center" w="full" justifyContent="center">
+                    <Flex
+                      bg={invoice?.sent === 1 ? "#E5FFE5" : "#FEF1F1"}
+                      color={invoice?.sent === 1 ? "#0B841D" : "#EE383A"}
+                      justifyContent={"center"}
+                      alignItems="center"
+                      py="5px"
+                      px="16px"
+                      borderRadius="4px"
+                    >
+                      {invoice?.sent === 1 ? "Sent" : "Unsent"}
+                    </Flex>
+                  </Flex>
+                </Td>
+                <Td>
                   <Flex justifyContent="center" align="center">
                     {currentInvoice === invoice && isSending ? (
                       <Spinner />
@@ -172,10 +188,7 @@ const TableLayer = ({
                           border="1px solid #F4F6F8"
                           boxShadow="0px 8px 16px 0px rgba(0, 0, 0, 0.08)"
                         >
-                          {(invoice?.client?.accountType === "BUSINESS"
-                            ? clientInvoiceListOption
-                            : clientInvoiceListOption?.slice(1, 5)
-                          ).map((dat, i) => (
+                          {clientInvoiceListOption.map((dat, i) => (
                             <MenuItem
                               gap="12px"
                               key={i}

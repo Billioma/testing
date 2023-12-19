@@ -196,13 +196,6 @@ export const formatDateNewTime = (date, fallback = "") => {
 
   let formattedDate = new Date(date);
 
-  // Check if the location host is "app.parkinspace.ng"
-  const isParkInSpaceApp = location.host === "app.parkinspace.ng";
-
-  // Add one hour to the date if the app is Park In Space
-  if (isParkInSpaceApp) {
-    formattedDate.setHours(formattedDate.getHours() + 1);
-  }
   const options = {
     day: "numeric",
     month: "short",

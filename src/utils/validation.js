@@ -203,6 +203,7 @@ export const initAdminRateValues = {
   showCarServiceType: 0,
   carServiceType: "",
   status: "",
+  zones: "",
 };
 
 export const initAdminAmenitiesValues = {
@@ -422,6 +423,7 @@ export const validateAdminZoneSchema = Yup.object().shape({
 
 export const validateAdminRateSchema = Yup.object().shape({
   name: Yup.string().required("Name is required"),
+  zones: Yup.array().required("Zone is required"),
   operator: Yup.object().required("Operator is required"),
   service: Yup.object().required("Service is required"),
   rateType: Yup.object().required("Rate Type is required"),

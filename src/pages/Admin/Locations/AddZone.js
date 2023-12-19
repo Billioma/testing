@@ -55,13 +55,13 @@ export default function AddZone() {
   }));
 
   const serviceOptions = services?.data?.map((service) => ({
-    label: service.name,
-    value: service.id,
+    label: service?.name,
+    value: service?.id,
   }));
 
   const amenitiesOptions = amenities?.data?.map((amenity) => ({
-    label: amenity.name,
-    value: parseInt(amenity.id),
+    label: amenity?.name,
+    value: parseInt(amenity?.id),
   }));
 
   const billingOptions = BillingTypes.map((type, index) => ({

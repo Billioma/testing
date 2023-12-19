@@ -15,6 +15,7 @@ import { useGetOperators } from "../../../services/admin/query/users";
 import {
   useEditRate,
   useGetAdminRate,
+  useGetZones,
 } from "../../../services/admin/query/locations";
 import { useGetServices } from "../../../services/admin/query/services";
 import { IoIosArrowDown } from "react-icons/io";
@@ -46,6 +47,13 @@ export default function AddZone() {
 
   const { data: operators } = useGetOperators({}, 1, 1000);
   const { data: services } = useGetServices({}, 1, 1000);
+
+  const { data: zones } = useGetZones({}, 1, 1000);
+
+  const zoneOptions = zones?.data?.map((zone) => ({
+    label: zone?.name,
+    value: parseInt(zone?.id),
+  }));
 
   const rateOptions = RateTypes?.map((rate, i) => ({
     value: i,
@@ -91,6 +99,7 @@ export default function AddZone() {
     showCarServiceType: 0,
     carServiceType: "",
     status: "",
+    zones: "",
   });
 
   useEffect(() => {
@@ -109,6 +118,10 @@ export default function AddZone() {
     const selectedCarServiceOption = carServiceOptions?.find(
       (option) => option?.value === data?.carServiceType
     );
+    const selectedZonesOption = data?.zones?.map((item) => ({
+      value: Number(item?.id),
+      label: item?.name,
+    }));
     setValues({
       ...values,
       name: data?.name,
@@ -123,8 +136,9 @@ export default function AddZone() {
       showCarServiceType: data?.carServiceType !== null ? 1 : 0,
       carServiceType: selectedCarServiceOption,
       status: selectedStatusOption,
+      zones: selectedZonesOption,
     });
-  }, [data, services, operators]);
+  }, [data, services, operators, zones]);
 
   const handleSelectChange = (selectedOption, { name }) => {
     setValues({
@@ -150,12 +164,13 @@ export default function AddZone() {
           ? values?.carServiceType?.value
           : null,
         status: values?.status?.value,
+        zones: values?.zones?.map((item) => Number(item?.value)),
       },
     });
   };
+
   return (
     <Box minH="75vh">
-      {" "}
       <Flex
         align="flex-start"
         flexDir={{ md: "row", base: "column" }}
@@ -487,6 +502,40 @@ export default function AddZone() {
                     />
                   </Box>
                 ) : null}
+
+                <Box w="full" mb={4}>
+                  <Text
+                    mb="8px"
+                    fontSize="12px"
+                    fontWeight={500}
+                    color="#444648"
+                  >
+                    Select Zones
+                  </Text>
+                  <Select
+                    isMulti
+                    styles={customStyles}
+                    placeholder="Select Zones"
+                    options={zoneOptions}
+                    onChange={(selectedOption) =>
+                      handleSelectChange(selectedOption, {
+                        name: "zones",
+                      })
+                    }
+                    components={{
+                      IndicatorSeparator: () => (
+                        <div style={{ display: "none" }}></div>
+                      ),
+                      DropdownIndicator: () => (
+                        <div>
+                          <IoIosArrowDown size="15px" color="#646668" />
+                        </div>
+                      ),
+                    }}
+                    value={values?.zones}
+                    isDisabled={edit ? false : true}
+                  />
+                </Box>
 
                 <Box w="full" mb={4}>
                   <Text

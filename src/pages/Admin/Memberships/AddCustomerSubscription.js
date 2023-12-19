@@ -102,10 +102,7 @@ export default function AddCustomerSubscription() {
   ];
 
   const { data: plans } = useGetMembershipPlans({}, 1, 100000);
-  console.log(
-    featureTypes?.find((type) => type["vehicle"]) !== undefined ||
-      featureTypes?.find((type) => type["location"]) !== undefined
-  );
+
   const handleSelectChange = (selectedOption, { name }) => {
     if (name === "customer") {
       setState({

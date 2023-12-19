@@ -13,7 +13,10 @@ import { PRIVATE_PATHS } from "../../../routes/constants";
 import useCustomToast from "../../../utils/notifications";
 import GoBackTab from "../../../components/data/Admin/GoBackTab";
 import { useGetOperators } from "../../../services/admin/query/users";
-import { useAddRate } from "../../../services/admin/query/locations";
+import {
+  useAddRate,
+  useGetZones,
+} from "../../../services/admin/query/locations";
 import { useGetServices } from "../../../services/admin/query/services";
 import { Form, Formik } from "formik";
 import { IoIosArrowDown } from "react-icons/io";
@@ -39,10 +42,16 @@ export default function AddZone() {
 
   const { data: operators } = useGetOperators({}, 1, 1000);
   const { data: services } = useGetServices({}, 1, 1000);
+  const { data: zones } = useGetZones({}, 1, 1000);
 
   const rateOptions = RateTypes?.map((rate, i) => ({
     value: i,
     label: rate,
+  }));
+
+  const zoneOptions = zones?.data?.map((zone) => ({
+    label: zone?.name,
+    value: parseInt(zone?.id),
   }));
 
   const operatorOptions = operators?.data?.map((operator) => ({
@@ -74,6 +83,7 @@ export default function AddZone() {
       status,
       showCarServiceType,
       carServiceType,
+      zones,
       ...rest
     } = values;
     mutate({
@@ -83,11 +93,13 @@ export default function AddZone() {
       serviceType: service?.serviceType,
       rateType: rateType?.value,
       status: status?.value,
+      zones: zones?.map((item) => item?.value),
       carServiceType: showCarServiceType ? carServiceType?.value : null,
     });
   };
 
   const [formSubmitted, setFormSubmitted] = useState(false);
+  
   return (
     <Box minH="75vh">
       <Flex align="flex-start" flexDir={{ md: "row", base: "column" }}>
@@ -514,6 +526,57 @@ export default function AddZone() {
                       />
                     </Box>
                   ) : null}
+                  <Box w="full" mb={4}>
+                    <Text
+                      mb="8px"
+                      fontSize="12px"
+                      fontWeight={500}
+                      color="#444648"
+                    >
+                      Select Zones{" "}
+                      <span
+                        style={{
+                          color: "tomato",
+                          fontSize: "15px",
+                        }}
+                      >
+                        *
+                      </span>
+                    </Text>
+                    <Select
+                      isMulti
+                      styles={
+                        formSubmitted && !values?.zones?.length
+                          ? errorCustomStyles
+                          : customStyles
+                      }
+                      placeholder="Select Zones"
+                      options={zoneOptions}
+                      name="zones"
+                      onChange={(selectedOptions) =>
+                        setValues({
+                          ...values,
+                          zones: selectedOptions,
+                        })
+                      }
+                      components={{
+                        IndicatorSeparator: () => (
+                          <div style={{ display: "none" }}></div>
+                        ),
+                        DropdownIndicator: () => (
+                          <div>
+                            <IoIosArrowDown size="15px" color="#646668" />
+                          </div>
+                        ),
+                      }}
+                    />
+
+                    {formSubmitted && !values?.zones?.length && (
+                      <Text mt="8px" fontSize="12px" color="tomato">
+                        Select at least one zone
+                      </Text>
+                    )}
+                  </Box>
                   <Box w="full" mb={4}>
                     <Text
                       mb="8px"
