@@ -92,7 +92,7 @@ const PaymentTable = ({ isLoading, setPage, paymentHistory, page, limit }) => {
             <Td textAlign="center">{dat?.transactionId}</Td>
 
             <Td textAlign="center">
-              ₦{" "}
+              {dat?.transactionType === 11 ? "" : "₦"}{" "}
               {dat?.amount?.toLocaleString(undefined, {
                 maximumFractionDigits: 2,
               }) || "0.00"}
