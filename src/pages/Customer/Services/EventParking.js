@@ -661,10 +661,10 @@ const EventParking = () => {
                     <Radio size="sm" value={"0"}>
                       <Text>Pay with Card</Text>
                     </Radio>
-                    <Radio size="sm" value={"2"}>
+                    <Radio size="sm" value={"3"}>
                       <Text>Pay with Points</Text>
                     </Radio>
-                    <Radio size="sm" value={"3"}>
+                    <Radio size="sm" value={"2"}>
                       <Text>Pay with Transfer</Text>
                     </Radio>
                   </RadioGroup>
@@ -804,6 +804,37 @@ const EventParking = () => {
                   </Flex>
                 </Box>
               )}
+
+              {values.paymentMethod === "3" && (
+                <Box mt="8px">
+                  <Box border="1px solid #0B841D" borderRadius="4px" p="16px">
+                    <Flex
+                      align="center"
+                      w="full"
+                      justifyContent="space-between"
+                    >
+                      <Box>
+                        <Text
+                          color="#444648"
+                          fontSize="12px"
+                          lineHeight="100%"
+                          mb="8px"
+                        >
+                          Points
+                        </Text>
+                        <Text color="#646668" lineHeight="100%">
+                          <span style={{ fontWeight: 500 }}> Balance: </span>
+                          {userData?.wallet?.points || "0"}
+                        </Text>
+                      </Box>
+
+                      <Box>
+                        <BsCheckCircle color="#0B841D" />
+                      </Box>
+                    </Flex>
+                  </Box>
+                </Box>
+              )}
             </Box>
           )}
 
@@ -822,6 +853,7 @@ const EventParking = () => {
                   ? !values?.cardId
                   : !values?.service ||
                     !values?.vehicle ||
+                    values?.paymentMethod === "2" ||
                     !values?.paymentMethod
                 : ""
             }

@@ -174,10 +174,14 @@ const ConfirmReserveModal = ({
                   lineHeight="100%"
                   fontWeight={500}
                 >
-                  ₦{" "}
-                  {amount?.toLocaleString(undefined, {
-                    maximumFractionDigits: 2,
-                  }) || "0.00"}
+                  {values?.paymentMethod === "3"
+                    ? `${Math.ceil(amount / 100)} Points`
+                    : `₦ 
+                  ${
+                    amount?.toLocaleString(undefined, {
+                      maximumFractionDigits: 2,
+                    }) || "0.00"
+                  }`}
                 </Text>
               </Flex>
             </Box>

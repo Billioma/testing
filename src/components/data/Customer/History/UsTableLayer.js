@@ -312,6 +312,7 @@ const UsTableLayer = () => {
                 lineHeight="100%"
               >
                 <Td textAlign="center">{dat?.ticketNumber}</Td>
+                <Td textAlign="center">{dat?.location?.name || "N/A"}</Td>
                 <Td textAlign="center">{dat?.attendant?.name}</Td>
                 <Td textAlign="center">{dat?.vehicle?.licensePlate}</Td>
                 <Td textAlign="center">{dat?.service?.name}</Td>
@@ -388,7 +389,7 @@ const UsTableLayer = () => {
             ))
           ) : (
             <Tr>
-              <Td colSpan={7} rowSpan={2}>
+              <Td colSpan={8} rowSpan={2}>
                 <Flex
                   textAlign="center"
                   justifyContent="center"
@@ -441,6 +442,7 @@ const UsTableLayer = () => {
                 lineHeight="100%"
               >
                 <Td textAlign="center">{dat?.ticketNumber}</Td>
+                <Td textAlign="center">{dat?.location?.name || "N/A"}</Td>
                 <Td textAlign="center">{dat?.attendant?.name}</Td>
                 <Td textAlign="center">{dat?.vehicle?.licensePlate}</Td>
                 <Td textAlign="center">{dat?.service?.name}</Td>
@@ -517,7 +519,7 @@ const UsTableLayer = () => {
             ))
           ) : (
             <Tr>
-              <Td colSpan={7} rowSpan={2}>
+              <Td colSpan={8} rowSpan={2}>
                 <Flex
                   textAlign="center"
                   justifyContent="center"
@@ -571,6 +573,7 @@ const UsTableLayer = () => {
                 lineHeight="100%"
               >
                 <Td textAlign="center">{dat?.ticketNumber}</Td>
+                <Td textAlign="center">{dat?.location?.name || "N/A"}</Td>
                 <Td textAlign="center">
                   ₦{" "}
                   {dat?.amount?.toLocaleString(undefined, {
@@ -663,7 +666,7 @@ const UsTableLayer = () => {
             ))
           ) : (
             <Tr>
-              <Td colSpan={8} rowSpan={2}>
+              <Td colSpan={9} rowSpan={2}>
                 <Flex
                   textAlign="center"
                   justifyContent="center"

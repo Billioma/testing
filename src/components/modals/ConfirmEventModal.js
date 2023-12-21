@@ -196,10 +196,14 @@ const ConfirmEventModal = ({
                   lineHeight="100%"
                   fontWeight={500}
                 >
-                  ₦{" "}
-                  {event?.price?.toLocaleString(undefined, {
-                    maximumFractionDigits: 2,
-                  }) || "0.00"}
+                  {values?.paymentMethod === "3"
+                    ? `${Math.ceil(event?.price / 100)} Points`
+                    : `₦ 
+                  ${
+                    event?.price?.toLocaleString(undefined, {
+                      maximumFractionDigits: 2,
+                    }) || "0.00"
+                  }`}
                 </Text>
               </Flex>
             </Box>

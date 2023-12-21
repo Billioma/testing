@@ -172,10 +172,14 @@ const ConfirmParkModal = ({
                   lineHeight="100%"
                   fontWeight={500}
                 >
-                  ₦{" "}
-                  {values?.serviceType?.amount?.toLocaleString(undefined, {
-                    maximumFractionDigits: 2,
-                  }) || "0.00"}
+                  {values?.paymentMethod === "3"
+                    ? `${values?.serviceType?.amount / 100} Points`
+                    : `₦ 
+                  ${
+                    values?.serviceType?.amount?.toLocaleString(undefined, {
+                      maximumFractionDigits: 2,
+                    }) || "0.00"
+                  }`}
                 </Text>
               </Flex>
             </Box>

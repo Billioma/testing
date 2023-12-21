@@ -99,7 +99,7 @@ export default function AddZone() {
   };
 
   const [formSubmitted, setFormSubmitted] = useState(false);
-  
+
   return (
     <Box minH="75vh">
       <Flex align="flex-start" flexDir={{ md: "row", base: "column" }}>

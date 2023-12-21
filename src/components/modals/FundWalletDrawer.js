@@ -76,7 +76,7 @@ const FundWalletDrawer = ({
 
   return (
     <Modal
-      size="sm"
+      size="md"
       isCentered
       trapFocus={false}
       isOpen={isOpen}

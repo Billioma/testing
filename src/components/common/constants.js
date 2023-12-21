@@ -1194,7 +1194,7 @@ export const FundMethods = [
   },
 ];
 
-export const OnlinePaymentMethods = ["CARD", "WALLET", "TRANSFER"];
+export const OnlinePaymentMethods = ["CARD", "WALLET", "TRANSFER", "POINTS"];
 
 export const cardImg = [
   { img: "/assets/mastercard.svg", name: "mastercard" },
@@ -1405,6 +1405,8 @@ export const servicesHeader = [
 
 export const payToParkHeader = [
   "TICKET NUMBER",
+  "AMOUNT",
+  "LOCATION",
   "VEHICLE",
   "SERVICE TYPE",
   "STATUS",
@@ -1414,6 +1416,7 @@ export const payToParkHeader = [
 
 export const companyPayToParkHeader = [
   "TICKET NUMBER",
+  "LOCATION",
   "ATTENDANT",
   "VEHICLE",
   "SERVICE TYPE",
@@ -1498,6 +1501,7 @@ export const customerHelp = [
 
 export const reserveHeader = [
   "AMOUNT",
+  "LOCATION",
   "VEHICLE",
   "ARRIVAL",
   "DEPARTURE",
@@ -1519,6 +1523,7 @@ export const companyReserveHeader = [
 
 export const eventHeader = [
   "TICKET NUMBER",
+  "LOCATION",
   "AMOUNT",
   "VEHICLE",
   "SERVICE TYPE",
@@ -1541,6 +1546,7 @@ export const companyEventHeader = [
 
 export const carHeader = [
   "SERVICE TYPE",
+  "LOCATION",
   "AMOUNT",
   "APPOINTMENT SLOT",
   "APPOINTMENT DATE",
@@ -1551,6 +1557,7 @@ export const carHeader = [
 
 export const companyCarHeader = [
   "TICKET NUMBER",
+  "LOCATION",
   "AMOUNT",
   "ATTENDANT",
   "VEHICLE",

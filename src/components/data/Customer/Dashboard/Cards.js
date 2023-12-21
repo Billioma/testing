@@ -181,28 +181,54 @@ const Cards = ({ vehicles, isLoading, refetchVehicle }) => {
                 </Text>
               </Flex>
 
-              <Text
-                mt="20px"
-                fontSize="14px"
-                color="#848688"
-                fontWeight={700}
-                lineHeight="100%"
-              >
-                Wallet Balance
-              </Text>
-              <Text
-                mt="8px"
-                color="#242628"
-                fontSize="32px"
-                fontWeight={500}
-                lineHeight="100%"
-              >
-                ₦{" "}
-                {userData?.wallet?.balance?.toLocaleString(undefined, {
-                  minimumFractionDigits: 2,
-                  maximumFractionDigits: 2,
-                }) || "0.00"}
-              </Text>
+              <Flex align="center" justifyContent="space-between">
+                <Box>
+                  <Text
+                    mt="20px"
+                    fontSize={{ base: "11px", md: "12px" }}
+                    color="#848688"
+                    fontWeight={700}
+                    lineHeight="100%"
+                  >
+                    Wallet Balance
+                  </Text>
+                  <Text
+                    mt="8px"
+                    color="#242628"
+                    fontSize={{ base: "20px", md: "27px" }}
+                    fontWeight={500}
+                    lineHeight="100%"
+                  >
+                    ₦{" "}
+                    {userData?.wallet?.balance?.toLocaleString(undefined, {
+                      minimumFractionDigits: 2,
+                      maximumFractionDigits: 2,
+                    }) || "0.00"}
+                  </Text>
+                </Box>
+
+                <Box>
+                  <Text
+                    mt="20px"
+                    fontSize={{ base: "11px", md: "12px" }}
+                    color="#848688"
+                    fontWeight={700}
+                    lineHeight="100%"
+                  >
+                    Point Balance
+                  </Text>
+                  <Text
+                    mt="8px"
+                    textAlign="end"
+                    color="#242628"
+                    fontSize={{ base: "20px", md: "27px" }}
+                    fontWeight={500}
+                    lineHeight="100%"
+                  >
+                    {userData?.wallet?.points || "0"}
+                  </Text>
+                </Box>
+              </Flex>
 
               <Button
                 mt="20px"

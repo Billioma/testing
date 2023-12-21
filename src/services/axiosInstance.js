@@ -94,7 +94,6 @@ const refreshAccessToken = async (refreshToken) => {
     window.location.reload();
     localStorage.setItem(newPath, JSON.stringify(newAccessToken));
   } catch (error) {
-    console.error("Error refreshing access token:", error);
     localStorage.removeItem(newPath);
     setTimeout(() => {
       window.location.href = `${newPath}/auth/login`;

@@ -808,10 +808,14 @@ const CarServices = () => {
                     lineHeight="100%"
                     fontWeight={500}
                   >
-                    ₦{" "}
-                    {values?.billingRate?.amount?.toLocaleString(undefined, {
+                    {values?.paymentMethod === "3"
+                      ? `${Math.ceil(values?.billingRate?.amount / 100)} Points`
+                      : `₦ 
+                  ${
+                    values?.billingRate?.amount?.toLocaleString(undefined, {
                       maximumFractionDigits: 2,
-                    }) || "0.00"}
+                    }) || "0.00"
+                  }`}
                   </Text>
                 </Flex>
               </Box>
@@ -850,10 +854,10 @@ const CarServices = () => {
                     <Radio size="sm" value={"0"}>
                       <Text>Pay with Card</Text>
                     </Radio>
-                    <Radio size="sm" value={"2"}>
+                    <Radio size="sm" value={"3"}>
                       <Text>Pay with Points</Text>
                     </Radio>
-                    <Radio size="sm" value={"3"}>
+                    <Radio size="sm" value={"2"}>
                       <Text>Pay with Transfer</Text>
                     </Radio>
                   </RadioGroup>
@@ -986,6 +990,37 @@ const CarServices = () => {
                   </Text>
                 </Flex>
               )}
+
+              {values.paymentMethod === "3" && (
+                <Box mt="8px">
+                  <Box border="1px solid #0B841D" borderRadius="4px" p="16px">
+                    <Flex
+                      align="center"
+                      w="full"
+                      justifyContent="space-between"
+                    >
+                      <Box>
+                        <Text
+                          color="#444648"
+                          fontSize="12px"
+                          lineHeight="100%"
+                          mb="8px"
+                        >
+                          Points
+                        </Text>
+                        <Text color="#646668" lineHeight="100%">
+                          <span style={{ fontWeight: 500 }}> Balance: </span>
+                          {userData?.wallet?.points || "0"}
+                        </Text>
+                      </Box>
+
+                      <Box>
+                        <BsCheckCircle color="#0B841D" />
+                      </Box>
+                    </Flex>
+                  </Box>
+                </Box>
+              )}
             </Box>
           )}
 
@@ -998,7 +1033,7 @@ const CarServices = () => {
                 step === 3
                   ? values?.paymentMethod === "0"
                     ? !values?.cardId
-                    : !values?.paymentMethod
+                    : !values?.paymentMethod || values?.paymentMethod === "2"
                   : step === 2
                   ? !values?.address ||
                     !values?.appointmentTime ||

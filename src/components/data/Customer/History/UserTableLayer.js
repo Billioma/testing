@@ -27,6 +27,7 @@ import { useEffect } from "react";
 import { FcCancel } from "react-icons/fc";
 import { TbListDetails } from "react-icons/tb";
 import { useNavigate } from "react-router-dom";
+import { useGetUser } from "../../../../services/customer/query/user";
 
 const UserTableLayer = () => {
   const [page, setPage] = useState(1);
@@ -78,12 +79,14 @@ const UserTableLayer = () => {
   };
 
   const { errorToast, successToast } = useCustomToast();
+  const { refetch: refetchUser } = useGetUser();
 
   const { mutate: bookCancel, isLoading: isCancelBook } = useCancelBooking({
     onSuccess: () => {
       setShowCancel(false);
       successToast("Reservation Cancelled");
       refetchBook();
+      refetchUser();
     },
     onError: (err) => {
       errorToast(
@@ -91,9 +94,11 @@ const UserTableLayer = () => {
       );
     },
   });
+
   const { mutate, isLoading: isCancel } = useCancelReserve({
     onSuccess: () => {
       setShowCancel(false);
+      refetchUser();
       successToast("Reservation Cancelled");
       refetch();
     },
@@ -387,6 +392,13 @@ const UserTableLayer = () => {
                 lineHeight="100%"
               >
                 <Td textAlign="center">{dat?.ticketNumber}</Td>
+                <Td textAlign="center">
+                  ₦{" "}
+                  {dat?.amount?.toLocaleString(undefined, {
+                    maximumFractionDigits: 2,
+                  }) || "0.00"}
+                </Td>
+                <Td textAlign="center">{dat?.zone?.location?.name || "N/A"}</Td>
                 <Td textAlign="center">{dat?.vehicle?.licensePlate}</Td>
                 <Td textAlign="center">{dat?.service?.name}</Td>
                 <Td>
@@ -463,7 +475,7 @@ const UserTableLayer = () => {
             ))
           ) : (
             <Tr>
-              <Td colSpan={7} rowSpan={2}>
+              <Td colSpan={8} rowSpan={2}>
                 <Flex
                   textAlign="center"
                   justifyContent="center"
@@ -505,135 +517,6 @@ const UserTableLayer = () => {
               </Td>
             </Tr>
           )
-        ) : tab === "Valet Parking" ? (
-          payToPark?.data?.length ? (
-            payToPark?.data?.map((dat, i) => (
-              <Tr
-                key={i}
-                color="#646668"
-                fontWeight={500}
-                fontSize="14px"
-                lineHeight="100%"
-              >
-                <Td textAlign="center">{dat?.ticketNumber}</Td>
-                <Td textAlign="center">{dat?.vehicle?.licensePlate}</Td>
-                <Td textAlign="center">{dat?.service?.name}</Td>
-                <Td>
-                  <Flex justifyContent="center" align="center" w="full">
-                    <Flex
-                      color={Object.values(Status[dat?.status])[0]}
-                      bg={Object.values(Status[dat?.status])[2]}
-                      py="5px"
-                      px="16px"
-                      w="fit-content"
-                      justifyContent="center"
-                      borderRadius="4px"
-                      align="center"
-                    >
-                      {Object.values(Status[dat?.status])[1]}
-                    </Flex>
-                  </Flex>
-                </Td>
-                <Td textAlign="center">{formatDateNewTime(dat?.createdAt)}</Td>
-                <Td>
-                  <Flex
-                    pos="relative"
-                    cursor="pointer"
-                    onClick={() => open(dat)}
-                    justifyContent="center"
-                    className="box"
-                    align="center"
-                  >
-                    <FiMoreVertical />
-
-                    {show && currentItem === dat && (
-                      <Box
-                        border="1px solid #F4F6F8"
-                        px="4px"
-                        py="8px"
-                        bg="#fff"
-                        borderRadius="4px"
-                        pos="absolute"
-                        right="0"
-                        zIndex={5555555}
-                        top={i === payToPark?.data?.length - 1 ? "" : "20px"}
-                        bottom={i === payToPark?.data?.length - 1 ? "0" : ""}
-                        boxShadow="0px 8px 16px 0px rgba(0, 0, 0, 0.08)"
-                      >
-                        <Flex
-                          mb="8px"
-                          py="6px"
-                          px="8px"
-                          borderRadius="2px"
-                          justifyContent="center"
-                          align="center"
-                          _hover={{ bg: "#F4F6F8" }}
-                          cursor="pointer"
-                          fontSize="12px"
-                          gap="12px"
-                          w="full"
-                          onClick={() =>
-                            navigate(
-                              `/customer/history/user/pay-to-park/${dat?.id}`
-                            )
-                          }
-                          color="#646668"
-                          lineHeight="100%"
-                          fontWeight={500}
-                        >
-                          <Icon as={TbListDetails} w="20px" h="20px" />
-                          View Details
-                        </Flex>
-                      </Box>
-                    )}
-                  </Flex>
-                </Td>
-              </Tr>
-            ))
-          ) : (
-            <Tr>
-              <Td colSpan={7} rowSpan={2}>
-                <Flex
-                  textAlign="center"
-                  justifyContent="center"
-                  mt="30px"
-                  align="center"
-                  w="full"
-                >
-                  <Flex
-                    textAlign="center"
-                    justifyContent="center"
-                    align="center"
-                    flexDir="column"
-                    border="1px solid #e4e6e8"
-                    borderRadius="8px"
-                    py="16px"
-                    px="24px"
-                    w="fit-content"
-                  >
-                    <Image src="/assets/no-sub.jpg" w="48px" h="48px" />
-
-                    <Text
-                      my="16px"
-                      color="#646668"
-                      lineHeight="100%"
-                      fontWeight={700}
-                    >
-                      No Recent Activity
-                    </Text>
-                    <Text
-                      fontSize="11px"
-                      color="#A4A6A8"
-                      fontWeight={500}
-                      lineHeight="100%"
-                    >
-                      Make use of any of our parking services
-                    </Text>
-                  </Flex>
-                </Flex>
-              </Td>
-            </Tr>
-          )
         ) : tab === "Reserve Parking" ? (
           reserveParking?.data?.length ? (
             reserveParking?.data?.map((dat, i) => (
@@ -650,6 +533,7 @@ const UserTableLayer = () => {
                     maximumFractionDigits: 2,
                   }) || "0.00"}
                 </Td>
+                <Td textAlign="center">{dat?.zone?.location?.name || "N/A"}</Td>
                 <Td textAlign="center">{dat?.vehicle?.licensePlate}</Td>
                 <Td textAlign="center">
                   {formatDateNewTime(dat?.arrival) || "N/A"}
@@ -748,7 +632,7 @@ const UserTableLayer = () => {
             ))
           ) : (
             <Tr>
-              <Td colSpan={7} rowSpan={2}>
+              <Td colSpan={8} rowSpan={2}>
                 <Flex
                   textAlign="center"
                   justifyContent="center"
@@ -801,6 +685,7 @@ const UserTableLayer = () => {
                 lineHeight="100%"
               >
                 <Td textAlign="center">{dat?.ticketNumber}</Td>
+                <Td textAlign="center">{dat?.zone?.location?.name || "N/A"}</Td>
                 <Td textAlign="center">
                   ₦{" "}
                   {dat?.amount?.toLocaleString(undefined, {
@@ -898,7 +783,7 @@ const UserTableLayer = () => {
             ))
           ) : (
             <Tr>
-              <Td colSpan={8} rowSpan={2}>
+              <Td colSpan={9} rowSpan={2}>
                 <Flex
                   textAlign="center"
                   justifyContent="center"
@@ -950,6 +835,7 @@ const UserTableLayer = () => {
               lineHeight="100%"
             >
               <Td textAlign="center">{dat?.serviceType}</Td>
+              <Td textAlign="center">{dat?.address || "N/A"}</Td>
               <Td textAlign="center">
                 {" "}
                 ₦{" "}
@@ -1040,7 +926,7 @@ const UserTableLayer = () => {
           ))
         ) : (
           <Tr>
-            <Td colSpan={7} rowSpan={2}>
+            <Td colSpan={8} rowSpan={2}>
               <Flex
                 textAlign="center"
                 justifyContent="center"
