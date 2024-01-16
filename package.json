@@ -7,11 +7,12 @@
     "@chakra-ui/react": "^2.7.1",
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
-    "@tanstack/react-query": "^4.32.6",
+    "@tanstack/react-query": "^4.32.1",
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^13.0.0",
     "@testing-library/user-event": "^13.2.1",
     "axios": "^1.4.0",
+    "date-fns": "^3.0.5",
     "formik": "^2.4.2",
     "framer-motion": "^10.12.18",
     "google-map-react": "^2.2.1",
@@ -23,7 +24,6 @@
     "react-datepicker": "^4.18.0",
     "react-dom": "^18.2.0",
     "react-icons": "^4.10.1",
-    "react-modern-drawer": "^1.2.0",
     "react-multi-date-picker": "^4.4.1",
     "react-paystack": "^4.0.3",
     "react-qr-barcode-scanner": "^1.0.6",
@@ -35,9 +35,9 @@
     "yup": "^1.2.0"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
+    "start": "react-app-rewired start",
+    "build": "react-app-rewired build",
+    "test": "react-app-rewired test",
     "eject": "react-scripts eject",
     "lint": "eslint .",
     "lint:fix": "eslint --fix ."
@@ -62,11 +62,12 @@
   },
   "devDependencies": {
     "@babel/eslint-parser": "^7.22.5",
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "@babel/preset-react": "^7.22.5",
     "eslint-config-prettier": "^8.8.0",
     "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-react": "^7.32.2",
     "prettier": "^2.8.8",
-    "tailwindcss": "^3.3.2"
+    "react-app-rewired": "^2.2.1"
   }
 }

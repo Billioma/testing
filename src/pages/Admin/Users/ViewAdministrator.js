@@ -21,6 +21,7 @@ import { customStyles, statusType } from "../../../components/common/constants";
 import UpdateOperatorPasswordModal from "../../../components/modals/UpdateOperatorPasswordModal";
 import { useCustomerUploadPic } from "../../../services/customer/query/user";
 import { IoIosArrowDown } from "react-icons/io";
+import { useGetAttendants } from "../../../services/admin/query/users";
 
 export default function AddAttendants() {
   const [values, setValues] = useState({
@@ -30,6 +31,7 @@ export default function AddAttendants() {
     role: "",
     isManager: "",
     avatar: "",
+    attendant: "",
     status: "",
   });
 
@@ -68,6 +70,12 @@ export default function AddAttendants() {
   });
 
   const { data: allRoles } = useGetAllRoles();
+  const { data: attendants } = useGetAttendants({}, 1, 1000);
+
+  const attendantOptions = attendants?.data?.map((attendant) => ({
+    value: parseInt(attendant?.id),
+    label: attendant?.name,
+  }));
 
   const roleOptions = allRoles?.data?.map((role) => ({
     label: role.displayName,
@@ -123,6 +131,10 @@ export default function AddAttendants() {
     const selectedStatusOption = statusOptions?.find(
       (option) => option.value === data?.status
     );
+
+    const selectedAttendantOption = attendantOptions?.find(
+      (option) => option?.value === Number(data?.attendant?.id)
+    );
     setValues({
       ...values,
       avatar: data?.avatar?.replace("https://staging-api.ezpark.ng/", ""),
@@ -132,6 +144,7 @@ export default function AddAttendants() {
       isManager: data?.isManager,
       role: selectedRoleOption,
       status: selectedStatusOption,
+      attendant: selectedAttendantOption,
     });
   }, [data, allRoles]);
 
@@ -146,6 +159,7 @@ export default function AddAttendants() {
         isManager: values?.isManager,
         status: values?.status?.value,
         role: values?.role?.value,
+        attendant: values?.attendant?.value,
       },
     });
   };
@@ -361,6 +375,39 @@ export default function AddAttendants() {
                     isDisabled={edit ? false : true}
                   />
                 </Flex>
+
+                <Box w="full" mb={4}>
+                  <Text
+                    mb="8px"
+                    fontSize="12px"
+                    fontWeight={500}
+                    color="#444648"
+                  >
+                    Attendant
+                  </Text>
+                  <Select
+                    styles={customStyles}
+                    placeholder="Select attendant"
+                    options={attendantOptions}
+                    onChange={(selectedOption) =>
+                      handleSelectChange(selectedOption, {
+                        name: "attendant",
+                      })
+                    }
+                    components={{
+                      IndicatorSeparator: () => (
+                        <div style={{ display: "none" }}></div>
+                      ),
+                      DropdownIndicator: () => (
+                        <div>
+                          <IoIosArrowDown size="15px" color="#646668" />
+                        </div>
+                      ),
+                    }}
+                    value={values?.attendant}
+                    isDisabled={edit ? false : true}
+                  />
+                </Box>
 
                 <Box mb={4}>
                   <Text

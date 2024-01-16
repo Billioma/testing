@@ -717,13 +717,18 @@ export const businessSidebar = [
     subItems: [
       {
         id: 1,
-        name: "Pay-To-Park",
-        path: "/client/logs/pay-to-park",
+        name: "Parked Vehicles",
+        path: "/client/logs/parked-vehicles",
       },
       {
         id: 2,
-        name: "Valet Parking",
-        path: "/client/logs/valet-park",
+        name: "Valeted Vehicles",
+        path: "/client/logs/valeted-vehicles",
+      },
+      {
+        id: 2,
+        name: "Serviced Vehicles",
+        path: "/client/logs/serviced-vehicles",
       },
     ],
   },
@@ -950,12 +955,10 @@ export const clientTranHeader = [
 
 export const clientLogPayHeader = [
   "TICKET NUMBER",
-  "LICENSE PLATE",
-  "CUSTOMER",
+  "AMOUNT",
   "LOCATION",
   "ZONE",
   "ATTENDANT",
-  "AMOUNT",
   "STATUS",
   "DATE",
   "ACTIONS",
@@ -1916,6 +1919,16 @@ export const valetedVehiclesOptions = [
   { label: "Zone", value: "zone.name" },
   { label: "Attendant", value: "attendant.name" },
   { label: "Amount", value: "amount" },
+  { label: "Status", value: "status" },
+  { label: "Created At", value: "createdAt" },
+];
+
+export const clientLogsOptions = [
+  { label: "Ticket Number", value: "ticketNumber" },
+  { label: "Amount", value: "amount" },
+  { label: "Location", value: "location.name" },
+  { label: "Zone", value: "zone.name" },
+  { label: "Attendant", value: "attendant.name" },
   { label: "Status", value: "status" },
   { label: "Created At", value: "createdAt" },
 ];

@@ -127,10 +127,10 @@ const ReserveParking = () => {
     </OverlayTrigger>
   );
 
-  const [center, setCenter] = useState({
+  const center = {
     lat: 6.4393298,
     lng: 3.4370477,
-  });
+  };
 
   let locationMarkers =
     locations?.length &&

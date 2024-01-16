@@ -70,9 +70,11 @@ const {
   CLIENT_EVENTS,
   CLIENT_LOGS,
   CLIENT_TRAN,
-  CLIENT_LOGS_VALET,
   CLIENT_LOGS_DETAILS,
+  CLIENT_LOGS_VALET,
   CLIENT_LOGS_VALET_DETAILS,
+  CLIENT_LOGS_SERVICED,
+  CLIENT_LOGS_SERVICED_DETAILS,
   CLIENT_TRAN_DETAILS,
   CLIENT_ADD_EVENT,
   CLIENT_EDIT_EVENT,
@@ -327,15 +329,21 @@ const ClientEvents = WithSuspense(
 const ClientLogs = WithSuspense(
   lazy(() => import("../pages/Client/Logs/Logs"))
 );
-const ClientLogsValet = WithSuspense(
-  lazy(() => import("../pages/Client/Logs/Valet"))
-);
 const ClientLogsDetails = WithSuspense(
   lazy(() => import("../pages/Client/Logs/ParkDetails"))
 );
 
+const ClientLogsValet = WithSuspense(
+  lazy(() => import("../pages/Client/Logs/Valet"))
+);
 const ClientLogsValetDetails = WithSuspense(
   lazy(() => import("../pages/Client/Logs/ValetDetails"))
+);
+const ClientLogsServiced = WithSuspense(
+  lazy(() => import("../pages/Client/Logs/Service"))
+);
+const ClientLogsServicedDetails = WithSuspense(
+  lazy(() => import("../pages/Client/Logs/ServiceDetails"))
 );
 const ClientTran = WithSuspense(
   lazy(() => import("../pages/Client/Transactions/Transactions"))
@@ -1010,6 +1018,11 @@ export const PRIVATE_ROUTES = [
   { path: CLIENT_LOGS_DETAILS, element: <ClientLogsDetails /> },
   { path: CLIENT_LOGS_VALET, element: <ClientLogsValet /> },
   { path: CLIENT_LOGS_VALET_DETAILS, element: <ClientLogsValetDetails /> },
+  { path: CLIENT_LOGS_SERVICED, element: <ClientLogsServiced /> },
+  {
+    path: CLIENT_LOGS_SERVICED_DETAILS,
+    element: <ClientLogsServicedDetails />,
+  },
   { path: CLIENT_ADD_EVENT, element: <ClientAddEvent /> },
   { path: CLIENT_EDIT_EVENT, element: <ClientEditEvent /> },
   { path: CLIENT_ADD_SUB, element: <ClientAddSub /> },

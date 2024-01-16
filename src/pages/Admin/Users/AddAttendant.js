@@ -253,7 +253,6 @@ export default function AddAttendants() {
                     <CustomInput
                       auth
                       mb
-                      type="number"
                       holder="Enter user ID"
                       name="userId"
                       value={values?.userId}

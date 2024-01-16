@@ -242,6 +242,7 @@ export const initAdminValues = {
   password: "",
   passwordConfirmation: "",
   status: "",
+  attendant: "",
 };
 
 export const initVehicleValues = {
@@ -483,6 +484,7 @@ export const validateAdminSchema = Yup.object().shape({
     .oneOf([Yup.ref("password")], "Passwords do not match"),
   role: Yup.object().required("Role is required"),
   status: Yup.object().required("Status is required"),
+  attendant: Yup.object().required("Attendant is required"),
 });
 
 export const validateVehicleSchema = Yup.object().shape({

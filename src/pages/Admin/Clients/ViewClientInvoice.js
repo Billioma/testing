@@ -20,9 +20,35 @@ import Calendar from "react-calendar";
 import { formatNewDate } from "../../../utils/helpers";
 import { BsTrash } from "react-icons/bs";
 import { Add } from "../../../components/common/images";
+import { format, parseISO } from "date-fns";
 
 export default function ViewOperator() {
   const navigate = useNavigate();
+
+  const formatSafariDates = (date, fallback = "", withTime = false) => {
+    if (!date) return fallback;
+
+    try {
+      // Use parseISO from date-fns to parse the date string
+      const parsedDate = parseISO(date);
+
+      if (isNaN(parsedDate)) {
+        // Handle cases where parsing failed
+        return fallback;
+      }
+
+      const formattedDate = format(
+        parsedDate,
+        withTime ? "yyyy-MM-dd HH:mm" : "yyyy-MM-dd"
+      );
+
+      return formattedDate;
+    } catch (error) {
+      console.error("Error parsing date:", error);
+      return fallback;
+    }
+  };
+
   const { errorToast, successToast } = useCustomToast();
   const { mutate: updateMutate, isLoading: isUpdating } =
     useUpdateClientInvoice({
@@ -578,7 +604,7 @@ export default function ViewOperator() {
                       >
                         <Text>
                           {item?.date
-                            ? formatNewDate(new Date(item.date))
+                            ? formatSafariDates(item.date)
                             : "Select Date"}
                         </Text>
                         <Image src="/assets/calendar.svg" w="20px" h="20px" />{" "}

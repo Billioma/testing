@@ -29,7 +29,7 @@ export const Layout = ({ label, data }) => {
   );
 };
 
-const ParkDetails = () => {
+const ServiceDetails = () => {
   const { id } = useParams();
   const { mutate, data, isLoading } = useGetClientServiceLog();
 
@@ -103,4 +103,4 @@ const ParkDetails = () => {
   );
 };
 
-export default ParkDetails;
+export default ServiceDetails;

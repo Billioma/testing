@@ -128,6 +128,27 @@ const Filter = ({
     label: opt,
   }));
 
+  const resetValues = () => {
+    setValues({ ...values, type: "", filter: "", gte: "", lte: "" });
+    setSelectedType(null);
+    setSelectedFilter(null);
+  };
+  const resetAllValues = () => {
+    setValues({
+      title: "",
+      type: "",
+      dropFilter: "",
+      gte: "",
+      gteType: "",
+      lteType: "",
+      lte: "",
+      filter: "",
+    });
+    setSelectedTitle(null);
+    setSelectedType(null);
+    setSelectedFilter(null);
+  };
+
   const handleClick = () => {
     const existingGteIndex = filtArray.findIndex(
       (filter) =>
@@ -192,9 +213,9 @@ const Filter = ({
   };
 
   const statusOptions = (
-    pathname.includes("/transactions")
+    pathname?.includes("/transactions")
       ? ReservedStatus
-      : pathname.includes("/logs")
+      : pathname?.includes("/logs")
       ? LogsStatus
       : newStatusType
   )?.map((status, i) => ({
@@ -293,18 +314,6 @@ const Filter = ({
   const [selectedTitle, setSelectedTitle] = useState(null);
   const [selectedType, setSelectedType] = useState(null);
   const [selectedFilter, setSelectedFilter] = useState(null);
-  const resetValues = () => {
-    setValues({
-      title: "",
-      type: "",
-      filter: "",
-      gte: "",
-      lte: "",
-    });
-    setSelectedTitle(null);
-    setSelectedType(null);
-    setSelectedFilter(null);
-  };
 
   return (
     <Box pos="relative" zIndex="3" py={3} px={{ base: 0, md: 5 }}>
@@ -327,7 +336,7 @@ const Filter = ({
             borderRadius="8px"
             onClick={() =>
               show
-                ? (setShow(false), resetValues(), setFiltArray([]))
+                ? (setShow(false), resetAllValues(), setFiltArray([]))
                 : setShow(true)
             }
             gap="16px"
@@ -385,7 +394,7 @@ const Filter = ({
             <>
               {values?.title === "createdAt" ||
               values?.title === "paidAt" ||
-              values?.title.includes("Date") ? (
+              values?.title?.includes("Date") ? (
                 ""
               ) : (
                 <Box w={{ base: "100%", md: "50%" }}>
@@ -418,7 +427,7 @@ const Filter = ({
 
               {values?.title === "createdAt" ||
               values?.title === "paidAt" ||
-              values?.title.includes("Date") ? (
+              values?.title?.includes("Date") ? (
                 <>
                   <Box w={{ base: "100%", md: "50%" }}>
                     <Text
@@ -493,7 +502,7 @@ const Filter = ({
 
               {values?.title === "createdAt" ||
               values?.title === "paidAt" ||
-              values?.title.includes("Date") ? (
+              values?.title?.includes("Date") ? (
                 ""
               ) : (
                 <>
@@ -604,13 +613,31 @@ const Filter = ({
                           align="center"
                           h="44px"
                           onClick={() => {
-                            values?.filter === "" || values?.dropFilter === ""
-                              ? ""
-                              : (setFiltArray((prevFiltArray) => [
+                            if (
+                              values.filter !== "" &&
+                              values.dropFilter !== ""
+                            ) {
+                              const existingIndex = filtArray.findIndex(
+                                (filter) =>
+                                  filter.title === values.title &&
+                                  filter.dropFilter === values.dropFilter
+                              );
+
+                              if (existingIndex !== -1) {
+                                setFiltArray((prevFiltArray) => [
+                                  ...prevFiltArray.slice(0, existingIndex),
+                                  values,
+                                  ...prevFiltArray.slice(existingIndex + 1),
+                                ]);
+                              } else {
+                                setFiltArray((prevFiltArray) => [
                                   ...prevFiltArray,
                                   values,
-                                ]),
-                                resetValues());
+                                ]);
+                              }
+
+                              resetValues();
+                            }
                           }}
                           w="10%"
                         >
@@ -622,10 +649,25 @@ const Filter = ({
                         auth
                         add
                         onAdd={() => {
-                          setFiltArray((prevFiltArray) => [
-                            ...prevFiltArray,
-                            values,
-                          ]);
+                          const existingIndex = filtArray.findIndex(
+                            (filter) =>
+                              filter.title === values.title &&
+                              filter.dropFilter === values.dropFilter
+                          );
+
+                          if (existingIndex !== -1) {
+                            setFiltArray((prevFiltArray) => [
+                              ...prevFiltArray.slice(0, existingIndex),
+                              values,
+                              ...prevFiltArray.slice(existingIndex + 1),
+                            ]);
+                          } else {
+                            setFiltArray((prevFiltArray) => [
+                              ...prevFiltArray,
+                              values,
+                            ]);
+                          }
+
                           resetValues();
                         }}
                         mb
@@ -702,7 +744,9 @@ const Filter = ({
                 </Text>
                 <Text fontSize="14px" lineHeight="100%" color="#646668">
                   "
-                  {dat?.gteType
+                  {dat?.filter
+                    ? dat?.filter
+                    : dat?.gteType
                     ? formatDate(dat?.gte)
                     : dat?.lteType
                     ? formatDate(dat?.lte)
@@ -719,9 +763,9 @@ const Filter = ({
                     : dat?.title === "reservable"
                     ? ["No", "Yes"]?.find((item, i) => i === dat?.filter)
                     : dat?.title === "status"
-                    ? (pathname.includes("/transactions")
+                    ? (pathname?.includes("/transactions")
                         ? ReservedStatus
-                        : pathname.includes("/logs")
+                        : pathname?.includes("/logs")
                         ? LogsStatus
                         : newStatusType
                       )?.find((item, i) => i === dat?.filter)
@@ -729,9 +773,9 @@ const Filter = ({
                     ? invoiceStatusType?.find((item, i) => i === dat?.filter)
                     : dat?.title === "locationType"
                     ? LocationTypes?.find((item, i) => i === dat?.filter)
-                    : dat?.title.includes("interval")
+                    : dat?.title?.includes("interval")
                     ? IntervalType?.find((item, i) => i === dat?.filter)
-                    : dat?.filter}
+                    : dat?.filter && !dat?.gte && !dat?.lte && dat?.filter}
                   "
                 </Text>
 

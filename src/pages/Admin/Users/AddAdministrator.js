@@ -25,6 +25,7 @@ import {
   validateAdminSchema,
 } from "../../../utils/validation";
 import { statusType } from "../../../components/common/constants";
+import { useGetAttendants } from "../../../services/admin/query/users";
 
 export default function AddAttendants() {
   const [fileType, setFileType] = useState("");
@@ -61,6 +62,13 @@ export default function AddAttendants() {
   const { errorToast, successToast } = useCustomToast();
   const { data: allRoles } = useGetAllRoles();
 
+  const { data: attendants } = useGetAttendants({}, 1, 1000);
+
+  const attendantOptions = attendants?.data?.map((attendant) => ({
+    value: parseInt(attendant?.id),
+    label: attendant?.name,
+  }));
+
   const roleOptions = allRoles?.data?.map((role) => ({
     label: role.displayName,
     value: parseInt(role.id),
@@ -84,10 +92,11 @@ export default function AddAttendants() {
   });
 
   const handleSubmit = (values = "") => {
-    const { status, role, ...rest } = values;
+    const { status, attendant, role, ...rest } = values;
     mutate({
       ...rest,
       status: status?.value,
+      attendant: attendant?.value,
       role: Number(role?.value),
       avatar: profilePicData?.path,
     });
@@ -391,6 +400,49 @@ export default function AddAttendants() {
                       variant="adminPrimary"
                     />
                   </Flex>
+
+                  <Box w="full" mb={4}>
+                    <Text
+                      mb="8px"
+                      fontSize="12px"
+                      fontWeight={500}
+                      color="#444648"
+                    >
+                      Attendant{" "}
+                      <span
+                        style={{
+                          color: "tomato",
+                          fontSize: "15px",
+                        }}
+                      >
+                        *
+                      </span>
+                    </Text>
+                    <Select
+                      styles={customStyles}
+                      placeholder="Select attendant"
+                      options={attendantOptions}
+                      name="attendant"
+                      onChange={(selectedOption) => {
+                        setValues({
+                          ...values,
+                          attendant: selectedOption,
+                        });
+                      }}
+                      onBlur={handleBlur}
+                      components={{
+                        IndicatorSeparator: () => (
+                          <div style={{ display: "none" }}></div>
+                        ),
+                        DropdownIndicator: () => (
+                          <div>
+                            <IoIosArrowDown size="15px" color="#646668" />
+                          </div>
+                        ),
+                      }}
+                    />
+                  </Box>
+
                   <Box>
                     <Text
                       mb="8px"

@@ -322,7 +322,6 @@ export default function AddAttendants() {
                     auth
                     value={values?.userId}
                     mb
-                    type="number"
                     holder="Enter user ID"
                     onChange={(e) =>
                       setValues({ ...values, userId: e.target.value })

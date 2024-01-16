@@ -90,7 +90,7 @@ const TableLayer = ({
       ? (setCurrentInvoice(invoice), sendMutate(invoice?.id))
       : dat?.id === 1
       ? window.open(
-          `https://pisapi.ezpark.ng/public/client-invoices/${invoice?.id}/view`,
+          `https://api.parkinspace.ng/public/client-invoices/${invoice?.id}/view`,
           "_blank"
         )
       : dat?.id === 2

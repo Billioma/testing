@@ -681,10 +681,11 @@ export default function ViewCustomer() {
                       <Flex mt="10px">
                         {data?.cards?.length ? (
                           data?.cards?.map((item, i) => {
-                            const matchedCardImg = cardImg.find(
-                              (type) =>
-                                type?.name?.toLowerCase() ===
-                                item?.cardType?.trim().toLowerCase()
+                            const matchedCardImg = cardImg.find((type) =>
+                              item.cardType
+                                .trim()
+                                .toLowerCase()
+                                .includes(type.name.toLowerCase())
                             );
 
                             return (

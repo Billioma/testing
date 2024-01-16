@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
-import ParkedTableLayer from "../../../components/data/Client/Logs/ParkedTableLayer";
+import ServiceTableLayer from "../../../components/data/Client/Logs/ServiceTableLayer";
 import { Box, Flex, Image, Text } from "@chakra-ui/react";
 import { clientLogsOptions } from "../../../components/common/constants";
 import Filter from "../../../components/common/Filter";
 import { formatFilterDate } from "../../../utils/helpers";
-import { useGetClientParkedLogs } from "../../../services/client/query/logs";
+import { useGetClientServicedLogs } from "../../../services/client/query/logs";
 
 export default function () {
   const [page, setPage] = useState(1);
@@ -52,7 +52,7 @@ export default function () {
 
   const [isRefetch, setIsRefetch] = useState(false);
 
-  const { data, isLoading, refetch } = useGetClientParkedLogs(
+  const { data, isLoading, refetch } = useGetClientServicedLogs(
     {
       refetchOnWindowFocus: true,
       onSuccess: () => {
@@ -108,7 +108,7 @@ export default function () {
         gap
         title={
           <Text fontWeight={500} lineHeight="100%" color="#242628">
-            All Parked Vehicles
+            All Serviced Vehicles
           </Text>
         }
         main={
@@ -135,7 +135,7 @@ export default function () {
         }
       />
 
-      <ParkedTableLayer
+      <ServiceTableLayer
         data={data}
         isLoading={isLoading}
         page={page}

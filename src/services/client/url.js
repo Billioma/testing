@@ -26,6 +26,7 @@ export const GET_SUB_COUNT = "client/dashboard/subscriptions";
 export const GET_MEM_PLAN = "public/membership-plans?corporate=1";
 export const GET_EVENT_COUNT = "client/dashboard/events";
 export const CREATE_EVENTS = "client/events";
+export const CLIENT_SERVICE_LOGS = "client/service-logs";
 export const CREATE_SUB = "client/membership-subscriptions";
 export const CLIENTELE_EVENTS = "client/events";
 export const GET_EVENTS = (filterString = "", limit = "", page = "") =>
@@ -40,3 +41,6 @@ export const ATTACH_USER = (email = "") =>
 export const DETACH_USER = (email = "") =>
   `client/users/detach-user?email=${email}`;
 export const GET_CARDS = "client/cards";
+
+export const CLIENT_SERVICE_LOGS_DETAIL = (id = "") =>
+  `client/service-logs/${id}`;

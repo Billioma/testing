@@ -187,10 +187,11 @@ const Cards = () => {
               <Box mt="20px">
                 {cards?.data?.length ? (
                   currentCard?.map((data, i) => {
-                    const matchedCardImg = cardImg.find(
-                      (item) =>
-                        item.name.toLowerCase() ===
-                        data.cardType.trim().toLowerCase()
+                    const matchedCardImg = cardImg.find((item) =>
+                      data.cardType
+                        .trim()
+                        .toLowerCase()
+                        .includes(item.name.toLowerCase())
                     );
                     return (
                       <Box key={i}>

@@ -60,7 +60,7 @@ const SideBar = ({ show, setShow }) => {
 
   useEffect(() => {
     handleToggleSubItem(null);
-  }, [pathname]);
+  }, [pathname, userData]);
 
   const navigate = useNavigate();
 
