@@ -4,14 +4,16 @@ import { Box, Flex, Text } from "@chakra-ui/layout";
 import CustomInput from "../../../components/common/CustomInput";
 import { Button } from "@chakra-ui/button";
 import { Form, Formik } from "formik";
-import { useParams, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { passValues, passSchema } from "../../../utils/validation";
 import useCustomToast from "../../../utils/notifications";
 import { useOperatorUpdatePassword } from "../../../services/operator/query/auth";
 
 const ChangePassword = () => {
   const [show, setShow] = useState(false);
-  const { id, hash } = useParams();
+  
+  const id = new URLSearchParams(location.search).get("id");
+  const hash = new URLSearchParams(location.search).get("hash");
   const navigate = useNavigate();
 
   const { errorToast } = useCustomToast();

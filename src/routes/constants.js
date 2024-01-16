@@ -3,7 +3,7 @@ export const PUBLIC_PATHS = {
   CUST_LOGIN: "/customer/auth/login",
   CUST_LOGIN_REDIRECT: "/customer/auth/login/:redirect",
   CUST_RESET_PASS: "/customer/auth/forgot-password",
-  CUST_CHANGE_PASS: "/customer/auth/password-reset/:id/:hash",
+  CUST_CHANGE_PASS: "/customer/auth/password-reset",
   CUST_CHANGE_SUCCESS: "/customer/auth/password-success",
   CUST_RESET_SENT: "/customer/auth/reset-success",
   CUST_SIGNUP: "/customer/auth/signup",
@@ -13,7 +13,7 @@ export const PUBLIC_PATHS = {
   // CLIENT ROUTES
   CLIENT_LOGIN: "/client/auth/login",
   CLIENT_RESET_PASS: "/client/auth/forgot-password",
-  CLIENT_CHANGE_PASS: "/client/auth/password-reset/:id/:hash",
+  CLIENT_CHANGE_PASS: "/client/auth/password-reset",
   CLIENT_CHANGE_SUCCESS: "/client/auth/password-success",
   CLIENT_RESET_SENT: "/client/auth/reset-success",
 
@@ -22,7 +22,7 @@ export const PUBLIC_PATHS = {
   OPERATOR_RESET_PASSWORD: "/operator/auth/forgot-password",
   OPERATOR_RESET_SENT: "/operator/auth/reset-success",
   OPERATOR_CHANGE_SUCCESS: "/operator/auth/password-success",
-  OPERATOR_CHANGE_PASS: "/operator/auth/password-reset/:id/:hash",
+  OPERATOR_CHANGE_PASS: "/operator/auth/password-reset",
 
   // ADMIN ROUTES
   ADMIN_LOGIN: "/admin/auth/login",

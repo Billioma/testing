@@ -5,13 +5,14 @@ import CustomInput from "../../../components/common/CustomInput";
 import { Button } from "@chakra-ui/button";
 import { Form, Formik } from "formik";
 import { useNavigate } from "react-router";
-import { useParams } from "react-router-dom";
 import { useCustomerUpdatePassword } from "../../../services/customer/query/auth";
 import useCustomToast from "../../../utils/notifications";
 import { passValues, passSchema } from "../../../utils/validation";
 
 const ChangePassword = () => {
-  const { id, hash } = useParams();
+  
+  const id = new URLSearchParams(location.search).get("id");
+  const hash = new URLSearchParams(location.search).get("hash");
   const [show, setShow] = useState(false);
   const navigate = useNavigate();
 
