@@ -68,7 +68,7 @@ const AddLocation = () => {
     }),
     menu: (provided) => ({
       ...provided,
-      fontSize: "5px",
+      fontSize: "15px",
       backgroundColor: "#fff",
     }),
     option: (provided, state) => ({
