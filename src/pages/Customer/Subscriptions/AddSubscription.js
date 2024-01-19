@@ -274,14 +274,16 @@ const AddSubscription = () => {
   const [formSubmitted, setFormSubmitted] = useState(false);
 
   const handlePay = () => {
-    const { cardId, ...rest } = state;
+    const { cardId, autoRenewal, ...rest } = state;
     state?.paymentMethod === "0"
       ? mutate({
           ...rest,
           cardId: cardId,
+          autoRenewal: autoRenewal ? 1 : 0,
         })
       : mutate({
           ...rest,
+          autoRenewal: autoRenewal ? 1 : 0,
         });
   };
 
