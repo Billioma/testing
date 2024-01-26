@@ -10,7 +10,6 @@ import useCustomToast from "../../../utils/notifications";
 import { passValues, passSchema } from "../../../utils/validation";
 
 const ChangePassword = () => {
-  
   const id = new URLSearchParams(location.search).get("id");
   const hash = new URLSearchParams(location.search).get("hash");
   const [show, setShow] = useState(false);

@@ -288,3 +288,13 @@ textarea::placeholder {
   padding: 12px !important;
   height: 44px !important;
 }
+
+#reload_href{
+  color: red !important;
+  font-size: 13px;
+  font-weight: 600;
+}
+#canv {
+  border: 1px solid #444648;
+  margin-bottom: 10px !important;
+}

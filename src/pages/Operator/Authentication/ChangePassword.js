@@ -11,7 +11,7 @@ import { useOperatorUpdatePassword } from "../../../services/operator/query/auth
 
 const ChangePassword = () => {
   const [show, setShow] = useState(false);
-  
+
   const id = new URLSearchParams(location.search).get("id");
   const hash = new URLSearchParams(location.search).get("hash");
   const navigate = useNavigate();

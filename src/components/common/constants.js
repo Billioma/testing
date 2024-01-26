@@ -717,13 +717,13 @@ export const businessSidebar = [
     subItems: [
       {
         id: 1,
-        name: "Parked Vehicles",
-        path: "/client/logs/parked-vehicles",
+        name: "Valeted Vehicles",
+        path: "/client/logs/valeted-vehicles",
       },
       {
         id: 2,
-        name: "Valeted Vehicles",
-        path: "/client/logs/valeted-vehicles",
+        name: "Parked Vehicles",
+        path: "/client/logs/parked-vehicles",
       },
       {
         id: 2,

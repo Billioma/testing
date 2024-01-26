@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Image } from "@chakra-ui/image";
 import { Box, Flex, Text } from "@chakra-ui/layout";
 import CustomInput from "../../../components/common/CustomInput";
@@ -10,9 +10,16 @@ import { useNavigate } from "react-router";
 import { useParams } from "react-router-dom";
 import useCustomToast from "../../../utils/notifications";
 import { useCustomerLogin } from "../../../services/customer/query/auth";
+import {
+  loadCaptchaEnginge,
+  LoadCanvasTemplate,
+  validateCaptcha,
+} from "react-simple-captcha";
 
 const Login = () => {
   const { redirect } = useParams();
+  const userCaptchaInputRef = useRef(null);
+  const [captcha, setCaptcha] = useState("");
 
   const [show, setShow] = useState(false);
   const navigate = useNavigate();
@@ -20,6 +27,8 @@ const Login = () => {
   const { errorToast } = useCustomToast();
   const { mutate, isLoading } = useCustomerLogin({
     onSuccess: (res) => {
+      setCaptcha("");
+      setCaptcha("");
       localStorage.setItem("customer", JSON.stringify(res));
       localStorage.setItem("login", "login");
       if (redirect?.includes("pay-to-park")) {
@@ -42,8 +51,25 @@ const Login = () => {
   });
 
   const handleSubmit = (values = "") => {
-    mutate(values);
+    if (validateCaptcha(captcha)) {
+      mutate(values);
+    } else {
+      errorToast("Captcha Does Not Match");
+      setCaptcha("");
+    }
   };
+
+  const [showCanvas, setShowCanvas] = useState(false);
+  const [password, setPassword] = useState("");
+
+  useEffect(() => {
+    if (password) {
+      setShowCanvas(true);
+      setTimeout(() => {
+        loadCaptchaEnginge(6);
+      }, 2000);
+    }
+  }, [password]);
 
   return (
     <Flex justifyContent="center" w="full" align="center" flexDir="column">
@@ -109,7 +135,10 @@ const Login = () => {
                   mb
                   holder="Enter Password"
                   value={values?.password}
-                  onChange={handleChange}
+                  onChange={(e) => {
+                    handleChange(e);
+                    setPassword(e);
+                  }}
                   onBlur={handleBlur}
                   name="password"
                   error={
@@ -143,9 +172,25 @@ const Login = () => {
                 </Text>
               </Flex>
 
+              {showCanvas ? (
+                <>
+                  <LoadCanvasTemplate />{" "}
+                  <CustomInput
+                    onChange={(e) => setCaptcha(e.target.value)}
+                    value={captcha}
+                    holder="Enter Captcha Value"
+                    id="user_captcha_input"
+                    name="user_captcha_input"
+                    ref={userCaptchaInputRef}
+                  />
+                </>
+              ) : (
+                ""
+              )}
+
               <Button
                 isLoading={isLoading}
-                isDisabled={!isValid || !dirty}
+                isDisabled={!isValid || !dirty || !captcha}
                 type="submit"
                 w="full"
               >
