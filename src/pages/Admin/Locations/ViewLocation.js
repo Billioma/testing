@@ -31,6 +31,7 @@ import {
 } from "../../../services/admin/query/locations";
 import { useCustomerUploadPic } from "../../../services/customer/query/user";
 import { IoIosArrowDown } from "react-icons/io";
+import { useGetClients } from "../../../services/admin/query/clients";
 
 export default function ViewLocation() {
   const isEdit = sessionStorage.getItem("edit");
@@ -96,6 +97,7 @@ export default function ViewLocation() {
   const { data: operators } = useGetOperators({}, 1, 1000);
   const { data: managers } = useGetAdministrators({}, 1, 1000);
   const { data: amenities } = useGetAmenities({}, 1, 1000);
+  const { data: clients } = useGetClients({}, 1, 1000);
 
   const [values, setValues] = useState({
     picture: "",
@@ -103,6 +105,7 @@ export default function ViewLocation() {
     description: "",
     geoLocation: "",
     address: "",
+    client_id:"",
     state: "",
     operator: "",
     locationType: "",
@@ -130,6 +133,11 @@ export default function ViewLocation() {
   const operatorOptions = operators?.data?.map((operator) => ({
     value: parseInt(operator?.id),
     label: operator?.name,
+  }));
+
+  const clientsOptions = clients?.data?.map((client) => ({
+    value: parseInt(client?.id),
+    label: client?.name,
   }));
 
   const stateOptions = allStates?.map((state) => ({
@@ -165,6 +173,9 @@ export default function ViewLocation() {
     const selectedOperatorOption = operatorOptions?.find(
       (option) => option?.value === Number(data?.operator?.id)
     );
+    const selectedClientOption = clientsOptions?.find(
+      (option) => option?.value === Number(data?.client_id)
+    );
     const selectedLocationOption = locationTypeOptions?.find(
       (option) => option?.value === data?.locationType
     );
@@ -187,6 +198,7 @@ export default function ViewLocation() {
       amenities: selectedAmenitiesOption,
       state: selectedStateOption,
       operator: selectedOperatorOption,
+      client: selectedClientOption,
       status: selectedStatusOption,
       enableTips: data?.enableTips,
       managers: selectedManagersOption,
@@ -203,6 +215,7 @@ export default function ViewLocation() {
         geoLocation: values?.geoLocation,
         address: values?.address,
         operator: values?.operator?.value,
+        client_id: values?.client_id?.value,
         locationType: values?.locationType?.value,
         amenities: values?.amenities?.map((item) => item?.value),
         state: values?.state?.value,
@@ -450,6 +463,39 @@ export default function ViewLocation() {
                       ),
                     }}
                     value={values?.operator}
+                    isDisabled={edit ? false : true}
+                  />
+                </Box>
+                
+                <Box w="full" mb={4}>
+                  <Text
+                    mb="8px"
+                    fontSize="12px"
+                    fontWeight={500}
+                    color="#444648"
+                  >
+                    Client
+                  </Text>
+                  <Select
+                    styles={customStyles}
+                    placeholder="Select client"
+                    options={clientsOptions}
+                    onChange={(selectedOption) =>
+                      handleSelectChange(selectedOption, {
+                        name: "client_id",
+                      })
+                    }
+                    components={{
+                      IndicatorSeparator: () => (
+                        <div style={{ display: "none" }}></div>
+                      ),
+                      DropdownIndicator: () => (
+                        <div>
+                          <IoIosArrowDown size="15px" color="#646668" />
+                        </div>
+                      ),
+                    }}
+                    value={values?.client_id}
                     isDisabled={edit ? false : true}
                   />
                 </Box>

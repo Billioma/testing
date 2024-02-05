@@ -86,7 +86,7 @@ export default function AddClient() {
   }));
 
   const accountTypes = ["BUSINESS", "EVENT_PLANNER", "CORPORATE", "OTHERS"].map(
-    (type, index) => ({ label: type, value: index })
+    (type) => ({ label: type, value: type })
   );
 
   const stateOptions = allStates?.map((state) => ({

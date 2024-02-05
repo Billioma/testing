@@ -24,6 +24,7 @@ import {
   getEventParking,
   getTips,
   deleteTip,
+  getPointsDetails,
 } from "../api/transactions";
 
 export const useGetPayToPark = (options = {}, page = 1, limit = 25, query) => {
@@ -94,6 +95,14 @@ export const useGetAdminReservedParkingList = (options = {}) => {
 export const useGetAdminReservedParkingDetails = (options = {}) => {
   const { mutate, isLoading, data } = useMutation(getReservedParkingDetails, {
     mutationKey: "GET_ADMIN_RESERVED_PARKING_DETAILS",
+    ...options,
+  });
+  return { mutate, isLoading, data };
+};
+
+export const useGetPointsDetails = (options = {}) => {
+  const { mutate, isLoading, data } = useMutation(getPointsDetails, {
+    mutationKey: "getPointsDetails",
     ...options,
   });
   return { mutate, isLoading, data };

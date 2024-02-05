@@ -339,7 +339,7 @@ export const initCustomerValues = {
 export const validateClientSchema = Yup.object().shape({
   name: Yup.string().required("Full Name is required"),
   email: Yup.string().email().required("Email is required"),
-  billingEmail: Yup.string().email().required("Email is required"),
+  billingEmail: Yup.string().required("Email is required"),
   contactPerson: Yup.string().required("Contact is required"),
   phone: Yup.string().required("Phone Numnber is required"),
   address: Yup.string().required("Address is required"),

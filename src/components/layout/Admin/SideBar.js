@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Box, Flex, Text, VStack, Collapse, Image } from "@chakra-ui/react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { ChevronDownIcon, ChevronRightIcon } from "@chakra-ui/icons";
@@ -6,32 +6,9 @@ import { sidebarItems } from "../../common/constants";
 import { FiChevronsLeft } from "react-icons/fi";
 
 const SideBar = ({ show, setShow }) => {
-  const [openSubItems, setOpenSubItems] = useState({});
   const { pathname } = useLocation();
-
-  const handleToggleSubItem = (name) => {
-    setOpenSubItems((prevState) => {
-      const newOpenSubItems = {};
-
-      Object.keys(prevState).forEach((item) => {
-        newOpenSubItems[item] = false;
-      });
-
-      const activeParentItem = sidebarItems.find((item) =>
-        pathname.includes(item.path)
-      )?.name;
-
-      newOpenSubItems[activeParentItem] = true;
-
-      if (name) newOpenSubItems[name] = !prevState[name];
-
-      return newOpenSubItems;
-    });
-  };
-
-  useEffect(() => {
-    handleToggleSubItem(null);
-  }, [pathname]);
+  const [showMenu, setShowMenu] = useState(false);
+  const [currentIndex, setCurrentIndex] = useState("");
 
   const navigate = useNavigate();
 
@@ -100,8 +77,22 @@ const SideBar = ({ show, setShow }) => {
               <VStack
                 key={i}
                 align="stretch"
-                mb={show ? "unset" : "12px"}
-                className={!pathname.includes(item?.path) && "parent_nav"}
+                mb={
+                  show
+                    ? showMenu
+                      ? showMenu && currentIndex === item.id
+                        ? "5px"
+                        : "unset"
+                      : i !== 0 && pathname.includes(item?.path)
+                      ? "5px"
+                      : "unset"
+                    : "12px"
+                }
+                className={
+                  showMenu
+                    ? showMenu && currentIndex !== i && "parent_nav"
+                    : !pathname.includes(item?.path) && "parent_nav"
+                }
                 gap={0}
               >
                 <Flex
@@ -114,23 +105,49 @@ const SideBar = ({ show, setShow }) => {
                   cursor="pointer"
                   onClick={() =>
                     item.subItems
-                      ? (navigate(item.subItems[0].path), setShow(true))
-                      : navigate(item.path)
+                      ? (showMenu && currentIndex === item.id
+                          ? setShowMenu(false)
+                          : !showMenu && setShowMenu(true),
+                        setCurrentIndex(item.id),
+                        setShow(true))
+                      : (navigate(item.path),
+                        setShowMenu(false),
+                        setCurrentIndex(""))
                   }
                   bg={
-                    openSubItems[item.name] || pathname.includes(item.path)
+                    showMenu
+                      ? showMenu && currentIndex === item.id
+                        ? "#EE383A"
+                        : "transparent"
+                      : pathname.includes(item.path)
                       ? "#EE383A"
                       : "transparent"
                   }
                   color={
-                    pathname.includes(item.path) || openSubItems[item.name]
+                    showMenu
+                      ? showMenu && currentIndex === item.id
+                        ? "#fff"
+                        : "#646668"
+                      : pathname.includes(item.path)
                       ? "#fff"
                       : "#646668"
                   }
                   fontWeight={500}
                   _hover={{
-                    bg: pathname.includes(item.path) ? "" : "transparent",
-                    color: pathname.includes(item.path) ? "" : "#EE383A",
+                    bg: showMenu
+                      ? showMenu && currentIndex === item.id
+                        ? ""
+                        : "transparent"
+                      : pathname.includes(item.path)
+                      ? ""
+                      : "transparent",
+                    color: showMenu
+                      ? showMenu && currentIndex === item.id
+                        ? ""
+                        : "#EE383A"
+                      : pathname.includes(item.path)
+                      ? ""
+                      : "#EE383A",
                   }}
                   transition=".3s ease-in-out"
                   borderRadius={4}
@@ -139,10 +156,12 @@ const SideBar = ({ show, setShow }) => {
                   <Box className="hovered_image">{item.hover}</Box>
 
                   <Box className="initial_image">
-                    {pathname.includes(item.path)
+                    {showMenu
+                      ? showMenu && currentIndex === item.id
+                        ? item.sec
+                        : item.icon
+                      : pathname.includes(item.path)
                       ? item.sec
-                      : openSubItems[item.name]
-                      ? item.hover
                       : item.icon}
                   </Box>
                   <Box display={show ? "box" : "none"}>
@@ -151,7 +170,41 @@ const SideBar = ({ show, setShow }) => {
                     </Text>
                   </Box>
 
-                  {pathname.includes(item.path) ? (
+                  {showMenu ? (
+                    showMenu && currentIndex === item.id ? (
+                      <Box
+                        position="absolute"
+                        top="50%"
+                        display={show ? "box" : "none"}
+                        right={2}
+                        transform="translateY(-50%)"
+                        w="3px"
+                        h="25px"
+                        bg="#fff"
+                        borderRadius={4}
+                      />
+                    ) : (
+                      item.subItems && (
+                        <Box
+                          flex="1"
+                          textAlign="right"
+                          display={show ? "box" : "none"}
+                          pb={1}
+                          color={
+                            showMenu && currentIndex === item.id
+                              ? "#fff"
+                              : "black"
+                          }
+                        >
+                          {showMenu && currentIndex === item.id ? (
+                            <ChevronDownIcon />
+                          ) : (
+                            <ChevronRightIcon />
+                          )}
+                        </Box>
+                      )
+                    )
+                  ) : pathname.includes(item.path) ? (
                     <Box
                       position="absolute"
                       top="50%"
@@ -170,20 +223,16 @@ const SideBar = ({ show, setShow }) => {
                         textAlign="right"
                         display={show ? "box" : "none"}
                         pb={1}
-                        color={openSubItems[item.name] ? "#fff" : "black"}
+                        color={showMenu ? "#fff" : "black"}
                       >
-                        {openSubItems[item.name] ? (
-                          <ChevronDownIcon />
-                        ) : (
-                          <ChevronRightIcon />
-                        )}
+                        {showMenu ? <ChevronDownIcon /> : <ChevronRightIcon />}
                       </Box>
                     )
                   )}
                 </Flex>
 
                 {item.subItems && show && (
-                  <Collapse in={openSubItems[item.name]}>
+                  <Collapse in={showMenu && currentIndex === item.id}>
                     <VStack
                       pl={3}
                       align="stretch"
@@ -234,9 +283,23 @@ const SideBar = ({ show, setShow }) => {
             return (
               <VStack
                 key={i}
-                mb={show ? "unset" : "12px"}
                 align="stretch"
-                className={!pathname.includes(item?.path) && "parent_nav"}
+                my={
+                  show
+                    ? showMenu
+                      ? showMenu && currentIndex === item.id
+                        ? "5px"
+                        : "unset"
+                      : i !== 0 && pathname.includes(item?.path)
+                      ? "5px"
+                      : "unset"
+                    : "12px"
+                }
+                className={
+                  showMenu
+                    ? showMenu && currentIndex !== i && "parent_nav"
+                    : !pathname.includes(item?.path) && "parent_nav"
+                }
                 gap={0}
               >
                 <Flex
@@ -249,23 +312,49 @@ const SideBar = ({ show, setShow }) => {
                   cursor="pointer"
                   onClick={() =>
                     item.subItems
-                      ? (navigate(item.subItems[0].path), setShow(true))
-                      : navigate(item.path)
+                      ? (showMenu && currentIndex === item.id
+                          ? setShowMenu(false)
+                          : !showMenu && setShowMenu(true),
+                        setCurrentIndex(item.id),
+                        setShow(true))
+                      : (navigate(item.path),
+                        setShowMenu(false),
+                        setCurrentIndex(""))
                   }
                   bg={
-                    openSubItems[item.name] || pathname.includes(item.path)
+                    showMenu
+                      ? showMenu && currentIndex === item.id
+                        ? "#EE383A"
+                        : "transparent"
+                      : pathname.includes(item.path)
                       ? "#EE383A"
                       : "transparent"
                   }
                   color={
-                    pathname.includes(item.path) || openSubItems[item.name]
+                    showMenu
+                      ? showMenu && currentIndex === item.id
+                        ? "#fff"
+                        : "#646668"
+                      : pathname.includes(item.path)
                       ? "#fff"
                       : "#646668"
                   }
                   fontWeight={500}
                   _hover={{
-                    bg: pathname.includes(item.path) ? "" : "transparent",
-                    color: pathname.includes(item.path) ? "" : "#EE383A",
+                    bg: showMenu
+                      ? showMenu && currentIndex === item.id
+                        ? ""
+                        : "transparent"
+                      : pathname.includes(item.path)
+                      ? ""
+                      : "transparent",
+                    color: showMenu
+                      ? showMenu && currentIndex === item.id
+                        ? ""
+                        : "#EE383A"
+                      : pathname.includes(item.path)
+                      ? ""
+                      : "#EE383A",
                   }}
                   transition=".3s ease-in-out"
                   borderRadius={4}
@@ -274,10 +363,12 @@ const SideBar = ({ show, setShow }) => {
                   <Box className="hovered_image">{item.hover}</Box>
 
                   <Box className="initial_image">
-                    {pathname.includes(item.path)
+                    {showMenu
+                      ? showMenu && currentIndex === item.id
+                        ? item.sec
+                        : item.icon
+                      : pathname.includes(item.path)
                       ? item.sec
-                      : openSubItems[item.name]
-                      ? item.hover
                       : item.icon}
                   </Box>
                   <Box display={show ? "box" : "none"}>
@@ -286,12 +377,46 @@ const SideBar = ({ show, setShow }) => {
                     </Text>
                   </Box>
 
-                  {pathname.includes(item.path) ? (
+                  {showMenu ? (
+                    showMenu && currentIndex === item.id ? (
+                      <Box
+                        position="absolute"
+                        top="50%"
+                        display={show ? "box" : "none"}
+                        right={2}
+                        transform="translateY(-50%)"
+                        w="3px"
+                        h="25px"
+                        bg="#fff"
+                        borderRadius={4}
+                      />
+                    ) : (
+                      item.subItems && (
+                        <Box
+                          flex="1"
+                          textAlign="right"
+                          display={show ? "box" : "none"}
+                          pb={1}
+                          color={
+                            showMenu && currentIndex === item.id
+                              ? "#fff"
+                              : "black"
+                          }
+                        >
+                          {showMenu && currentIndex === item.id ? (
+                            <ChevronDownIcon />
+                          ) : (
+                            <ChevronRightIcon />
+                          )}
+                        </Box>
+                      )
+                    )
+                  ) : pathname.includes(item.path) ? (
                     <Box
                       position="absolute"
                       top="50%"
-                      right={2}
                       display={show ? "box" : "none"}
+                      right={2}
                       transform="translateY(-50%)"
                       w="3px"
                       h="25px"
@@ -302,23 +427,19 @@ const SideBar = ({ show, setShow }) => {
                     item.subItems && (
                       <Box
                         flex="1"
-                        display={show ? "box" : "none"}
                         textAlign="right"
+                        display={show ? "box" : "none"}
                         pb={1}
-                        color={openSubItems[item.name] ? "#fff" : "black"}
+                        color={showMenu ? "#fff" : "black"}
                       >
-                        {openSubItems[item.name] ? (
-                          <ChevronDownIcon />
-                        ) : (
-                          <ChevronRightIcon />
-                        )}
+                        {showMenu ? <ChevronDownIcon /> : <ChevronRightIcon />}
                       </Box>
                     )
                   )}
                 </Flex>
 
                 {item.subItems && show && (
-                  <Collapse in={openSubItems[item.name]}>
+                  <Collapse in={showMenu && currentIndex === item.id}>
                     <VStack
                       pl={3}
                       align="stretch"

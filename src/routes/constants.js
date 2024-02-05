@@ -177,6 +177,8 @@ export const PRIVATE_PATHS = {
   ADMIN_CAR_SERVICES: "/admin/transactions/car-services",
   ADMIN_TIPS: "/admin/transactions/tips",
   ADMIN_VIEWTIPS: "/admin/transactions/tips/:id",
+  ADMIN_POINTS: "/admin/transactions/points",
+  ADMIN_VIEWPOINTS: "/admin/transactions/points/:id",
   ADMIN_VIEW_CAR_SERVICE: "/admin/transactions/car-services/details/:id",
   ADMIN_ADD_CAR_SERVICE: "/admin/transactions/car-services/create",
 

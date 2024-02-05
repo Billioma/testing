@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useState } from "react";
 import { Image } from "@chakra-ui/image";
 import { Box, Flex, Text } from "@chakra-ui/layout";
 import CustomInput from "../../../components/common/CustomInput";
@@ -11,15 +11,13 @@ import { useParams } from "react-router-dom";
 import useCustomToast from "../../../utils/notifications";
 import { useCustomerLogin } from "../../../services/customer/query/auth";
 import {
-  loadCaptchaEnginge,
-  LoadCanvasTemplate,
-  validateCaptcha,
-} from "react-simple-captcha";
+  GoogleReCaptchaProvider,
+  GoogleReCaptcha,
+} from "react-google-recaptcha-v3";
 
 const Login = () => {
   const { redirect } = useParams();
-  const userCaptchaInputRef = useRef(null);
-  const [captcha, setCaptcha] = useState("");
+  const [reCaptcha, setReCaptcha] = useState(false);
 
   const [show, setShow] = useState(false);
   const navigate = useNavigate();
@@ -27,8 +25,6 @@ const Login = () => {
   const { errorToast } = useCustomToast();
   const { mutate, isLoading } = useCustomerLogin({
     onSuccess: (res) => {
-      setCaptcha("");
-      setCaptcha("");
       localStorage.setItem("customer", JSON.stringify(res));
       localStorage.setItem("login", "login");
       if (redirect?.includes("pay-to-park")) {
@@ -51,25 +47,12 @@ const Login = () => {
   });
 
   const handleSubmit = (values = "") => {
-    if (validateCaptcha(captcha)) {
-      mutate(values);
-    } else {
-      errorToast("Captcha Does Not Match");
-      setCaptcha("");
-    }
+    mutate(values);
   };
 
-  const [showCanvas, setShowCanvas] = useState(false);
-  const [password, setPassword] = useState("");
-
-  useEffect(() => {
-    if (password) {
-      setShowCanvas(true);
-      setTimeout(() => {
-        loadCaptchaEnginge(6);
-      }, 2000);
-    }
-  }, [password]);
+  const handleVerify = () => {
+    setReCaptcha(true);
+  };
 
   return (
     <Flex justifyContent="center" w="full" align="center" flexDir="column">
@@ -135,10 +118,7 @@ const Login = () => {
                   mb
                   holder="Enter Password"
                   value={values?.password}
-                  onChange={(e) => {
-                    handleChange(e);
-                    setPassword(e);
-                  }}
+                  onChange={handleChange}
                   onBlur={handleBlur}
                   name="password"
                   error={
@@ -172,25 +152,21 @@ const Login = () => {
                 </Text>
               </Flex>
 
-              {showCanvas ? (
-                <>
-                  <LoadCanvasTemplate />{" "}
-                  <CustomInput
-                    onChange={(e) => setCaptcha(e.target.value)}
-                    value={captcha}
-                    holder="Enter Captcha Value"
-                    id="user_captcha_input"
-                    name="user_captcha_input"
-                    ref={userCaptchaInputRef}
-                  />
-                </>
-              ) : (
-                ""
-              )}
+              <GoogleReCaptchaProvider
+                reCaptchaKey="6LfyKIMaAAAAACUd3zGILy2zfYmbgUlSaksLg3wX"
+                scriptProps={{
+                  async: false,
+                  defer: false,
+                  appendTo: "body",
+                  nonce: undefined,
+                }}
+              >
+                <GoogleReCaptcha onVerify={handleVerify} />
+              </GoogleReCaptchaProvider>
 
               <Button
                 isLoading={isLoading}
-                isDisabled={!isValid || !dirty || !captcha}
+                isDisabled={!isValid || !dirty || !reCaptcha}
                 type="submit"
                 w="full"
               >

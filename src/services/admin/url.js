@@ -221,6 +221,8 @@ export const ADMIN_RESERVED_PARKING_LIST = (
 export const ADMIN_RESERVED_PARKING_DETAIL = (id = "") =>
   `admin/reservations/${id}`;
 
+export const ADMIN_POINTS_DETAIL = (id = "") => `admin/transactions/${id}`;
+
 export const ADMIN_EVENT_PARKING_DETAIL = (id = "") =>
   `admin/event-parking/${id}`;
 

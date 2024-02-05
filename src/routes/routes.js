@@ -163,6 +163,8 @@ const {
   ADMIN_EVENTPARK,
   ADMIN_TIPS,
   ADMIN_VIEWTIPS,
+  ADMIN_POINTS,
+  ADMIN_VIEWPOINTS,
   ADMIN_VIEW_EVENTPARK,
   ADMIN_ADD_RESERVED_PARKING,
   ADMIN_CAR_SERVICES,
@@ -651,6 +653,14 @@ const AdminTips = WithSuspense(
 
 const AdminViewTips = WithSuspense(
   lazy(() => import("../pages/Admin/Transactions/ViewTips"))
+);
+
+const AdminPoints = WithSuspense(
+  lazy(() => import("../pages/Admin/Transactions/Points"))
+);
+
+const AdminViewPoints = WithSuspense(
+  lazy(() => import("../pages/Admin/Transactions/ViewPoints"))
 );
 
 const AdminEventParking = WithSuspense(
@@ -1159,6 +1169,14 @@ export const PRIVATE_ROUTES = [
   {
     path: ADMIN_VIEWTIPS,
     element: <AdminViewTips />,
+  },
+  {
+    path: ADMIN_POINTS,
+    element: <AdminPoints />,
+  },
+  {
+    path: ADMIN_VIEWPOINTS,
+    element: <AdminViewPoints />,
   },
   {
     path: ADMIN_EVENTPARK,

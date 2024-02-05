@@ -2,6 +2,7 @@ import { useMutation, useQuery } from "react-query";
 import {
   getAdminReport,
   getAdminTran,
+  getPoints,
   getReports,
   getTrans,
 } from "../api/report";
@@ -46,6 +47,18 @@ export const useGetTran = (options = {}, page = 1, limit = 50, query) => {
   const { data, isLoading, refetch } = useQuery(
     ["GET_ADM_TRAN", page, limit, query],
     () => getTrans(page, limit, query),
+    {
+      ...options,
+    }
+  );
+
+  return { isLoading, data, refetch };
+};
+
+export const useGetPoints = (options = {}, page = 1, limit = 50, query) => {
+  const { data, isLoading, refetch } = useQuery(
+    ["getPoints", page, limit, query],
+    () => getPoints(page, limit, query),
     {
       ...options,
     }

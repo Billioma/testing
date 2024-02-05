@@ -82,10 +82,10 @@ const TableLayer = ({
       );
     },
   });
-
+console.log(selectedRow.id)
   const handleSubmit = (e) => {
     e.preventDefault();
-    mutate(selectedRow.id);
+    mutate(Number(selectedRow.id));
   };
 
   const handleClaim = (e) => {

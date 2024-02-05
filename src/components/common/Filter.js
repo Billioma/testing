@@ -102,7 +102,7 @@ const Filter = ({
   const payOptions = (
     pathname === "/operator/transactions/pay-to-park"
       ? PaymentMethods
-      : OnlinePaymentMethods
+      : PaymentMethods
   ).map((payment, i) => ({
     value: i,
     label: payment,
@@ -113,7 +113,7 @@ const Filter = ({
     label: transaction,
   }));
 
-  const payMethodOptions = ["CARD", "WALLET"].map((type, i) => ({
+  const payMethodOptions = PaymentMethods.map((type, i) => ({
     value: i,
     label: type,
   }));
@@ -443,6 +443,7 @@ const Filter = ({
                       align="center"
                       w="full"
                       border="1px solid #d4d6d8"
+                      borderLeft="0"
                       borderRadius="4px"
                       h="44px"
                     >
@@ -471,6 +472,7 @@ const Filter = ({
                       align="center"
                       w="full"
                       border="1px solid #d4d6d8"
+                      borderLeft="0"
                       borderRadius="4px"
                       h="44px"
                     >
@@ -519,6 +521,7 @@ const Filter = ({
 
                     {values?.dropFilter?.includes("Type") ||
                     values?.dropFilter === "Duration" ||
+                    values?.dropFilter === "Interval" ||
                     values?.dropFilter === "Reservable" ||
                     values?.dropFilter === "Corporate" ||
                     values?.dropFilter === "Upgradeable" ||
@@ -567,7 +570,8 @@ const Filter = ({
                                 ? modelOptions
                                 : values?.dropFilter === "Reservable"
                                 ? yesNoOptions
-                                : values?.dropFilter === "Duration"
+                                : values?.dropFilter === "Duration" ||
+                                  values?.dropFilter === "Interval"
                                 ? intervalOptions
                                 : values?.dropFilter === "Account Type" &&
                                   !client
@@ -740,18 +744,18 @@ const Filter = ({
                       ? "Equals"
                       : "Contains"}
                   </span>
-                  :
+                  :{console.log(dat?.filter)}
                 </Text>
                 <Text fontSize="14px" lineHeight="100%" color="#646668">
                   "
-                  {dat?.filter
-                    ? dat?.filter
-                    : dat?.gteType
+                  {dat?.gteType
                     ? formatDate(dat?.gte)
                     : dat?.lteType
                     ? formatDate(dat?.lte)
+                    : dat?.dropFilter === "Payment Type"
+                    ? PaymentMethods?.find((item, i) => i === dat?.filter)
                     : dat?.dropFilter === "Payment_Method"
-                    ? ["CARD", "WALLET"]?.find((item, i) => i === dat?.filter)
+                    ? PaymentMethods?.find((item, i) => i === dat?.filter)
                     : dat?.title === "paymentMethod"
                     ? OnlinePaymentMethods?.find((item, i) => i === dat?.filter)
                     : dat?.title === "transaction.paymentMethod"
@@ -762,6 +766,9 @@ const Filter = ({
                     ? FeatureType?.find((item, i) => i === dat?.filter)
                     : dat?.title === "reservable"
                     ? ["No", "Yes"]?.find((item, i) => i === dat?.filter)
+                    : dat?.title === "isUpgradable" ||
+                      dat?.title === "isCorporate"
+                    ? ["FALSE", "TRUE"]?.find((item, i) => i === dat?.filter)
                     : dat?.title === "status"
                     ? (pathname?.includes("/transactions")
                         ? ReservedStatus
@@ -775,7 +782,9 @@ const Filter = ({
                     ? LocationTypes?.find((item, i) => i === dat?.filter)
                     : dat?.title?.includes("interval")
                     ? IntervalType?.find((item, i) => i === dat?.filter)
-                    : dat?.filter && !dat?.gte && !dat?.lte && dat?.filter}
+                    : dat?.filter && !dat?.gte && !dat?.lte
+                    ? dat?.filter
+                    : dat?.filter && dat?.filter}
                   "
                 </Text>
 

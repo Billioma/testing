@@ -201,11 +201,15 @@ export const sidebarItems = [
         name: "Tips",
         path: "/admin/transactions/tips",
       },
+      {
+        name: "Points",
+        path: "/admin/transactions/points",
+      },
     ],
   },
 
   {
-    id: 10,
+    id: 9,
     name: "Logs",
     path: "/admin/logs",
     icon: <LogsIcon fill={"#fff"} stroke="#000" />,
@@ -227,7 +231,7 @@ export const sidebarItems = [
     ],
   },
   {
-    id: 11,
+    id: 10,
     name: "Reports",
     path: "/admin/reports",
     icon: <ReportsIcon fill={"#fff"} stroke="#000" />,
@@ -277,7 +281,7 @@ export const sidebarItems = [
     ],
   },
   {
-    id: 12,
+    id: 11,
     name: "Configurations",
     path: "/admin/configurations",
     icon: <ConfigIcon fill={"#fff"} stroke="#000" />,
@@ -869,7 +873,7 @@ export const operatorSidebar = [
     ],
   },
   {
-    id: 3,
+    id: 4,
     name: "Transactions",
     path: "/operator/transactions",
     icon: <CustomerIcon fill="#444648" />,
@@ -899,7 +903,7 @@ export const operatorSidebar = [
     ],
   },
   {
-    id: 4,
+    id: 5,
     name: "Reports",
     path: "/operator/reports",
     icon: <ClientLogIcon fill="#444648" />,
@@ -2084,6 +2088,16 @@ export const tipsOptions = [
   },
   { label: "Attendant", value: "serviceLog.attendant.name" },
   { label: "Payment_Method", value: "paymentMethod" },
+  { label: "Status", value: "status" },
+  { label: "Created At", value: "createdAt" },
+];
+export const pointsOptions = [
+  { label: "Ticket ID", value: "id" },
+  { label: "Amount", value: "amount" },
+  {
+    label: "Customer",
+    value: "customer.email",
+  },
   { label: "Status", value: "status" },
   { label: "Created At", value: "createdAt" },
 ];

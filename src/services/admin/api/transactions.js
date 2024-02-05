@@ -54,6 +54,13 @@ export const getReservedParkingDetails = async (query) => {
   return res.data;
 };
 
+export const getPointsDetails = async (query) => {
+  const res = await axiosInstance.get(
+    API.ADMIN_POINTS_DETAIL(query.id)
+  );
+  return res.data;
+};
+
 export const getEventParkingList = async (query) => {
   const res = await axiosInstance.get(
     API.ADMIN_EVENT_PARKING_LIST(query.filterString, query.limit, query.page)

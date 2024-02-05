@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import {
   Box,
   Collapse,
@@ -31,33 +31,10 @@ const SideDrawer = ({ isOpen, onClose }) => {
     }, 1000);
   };
 
-  const [openSubItems, setOpenSubItems] = useState({});
   const { pathname } = useLocation();
   const navigate = useNavigate();
-
-  const handleToggleSubItem = (name) => {
-    setOpenSubItems((prevState) => {
-      const newOpenSubItems = {};
-
-      Object.keys(prevState).forEach((item) => {
-        newOpenSubItems[item] = false;
-      });
-
-      const activeParentItem = general.find((item) =>
-        pathname.includes(item.path)
-      )?.name;
-
-      newOpenSubItems[activeParentItem] = true;
-
-      if (name) newOpenSubItems[name] = !prevState[name];
-
-      return newOpenSubItems;
-    });
-  };
-
-  useEffect(() => {
-    handleToggleSubItem(null);
-  }, [pathname]);
+  const [showMenu, setShowMenu] = useState(false);
+  const [currentIndex, setCurrentIndex] = useState("");
 
   return (
     <Drawer
@@ -102,9 +79,12 @@ const SideDrawer = ({ isOpen, onClose }) => {
                 return (
                   <VStack
                     key={i}
-                    onClick={onClose}
                     align="stretch"
-                    className={!pathname.includes(item?.path) && "parent_nav"}
+                    className={
+                      showMenu
+                        ? showMenu && currentIndex !== i && "parent_nav"
+                        : !pathname.includes(item?.path) && "parent_nav"
+                    }
                   >
                     <Flex
                       align="center"
@@ -118,23 +98,49 @@ const SideDrawer = ({ isOpen, onClose }) => {
                       cursor="pointer"
                       onClick={() =>
                         item.subItems
-                          ? navigate(item.subItems[0].path)
-                          : navigate(item.path)
+                          ? (showMenu && currentIndex === item.id
+                              ? setShowMenu(false)
+                              : !showMenu && setShowMenu(true),
+                            setCurrentIndex(item.id))
+                          : (navigate(item.path),
+                            setShowMenu(false),
+                            setCurrentIndex(""),
+                            onClose())
                       }
                       bg={
-                        openSubItems[item.name] || pathname.includes(item.path)
+                        showMenu
+                          ? showMenu && currentIndex === item.id
+                            ? "#FDE8E8"
+                            : "transparent"
+                          : pathname.includes(item.path)
                           ? "#FDE8E8"
                           : "transparent"
                       }
                       color={
-                        pathname.includes(item.path) || openSubItems[item.name]
+                        showMenu
+                          ? showMenu && currentIndex === item.id
+                            ? "#EE383A"
+                            : "#646668"
+                          : pathname.includes(item.path)
                           ? "#EE383A"
                           : "#646668"
                       }
                       fontWeight={500}
                       _hover={{
-                        bg: pathname.includes(item.path) ? "" : "transparent",
-                        color: pathname.includes(item.path) ? "" : "#EE383A",
+                        bg: showMenu
+                          ? showMenu && currentIndex === item.id
+                            ? ""
+                            : "transparent"
+                          : pathname.includes(item.path)
+                          ? ""
+                          : "transparent",
+                        color: showMenu
+                          ? showMenu && currentIndex === item.id
+                            ? ""
+                            : "#EE383A"
+                          : pathname.includes(item.path)
+                          ? ""
+                          : "#EE383A",
                       }}
                       borderRadius={4}
                       position="relative"
@@ -142,9 +148,11 @@ const SideDrawer = ({ isOpen, onClose }) => {
                       <Box className="hovered_image">{item.sec}</Box>
 
                       <Box className="initial_image" w="16px" h="16px">
-                        {pathname.includes(item.path)
-                          ? item.sec
-                          : openSubItems[item.name]
+                        {showMenu
+                          ? showMenu && currentIndex === item.id
+                            ? item.sec
+                            : item.icon
+                          : pathname.includes(item.path)
                           ? item.sec
                           : item.icon}
                       </Box>
@@ -152,7 +160,33 @@ const SideDrawer = ({ isOpen, onClose }) => {
                         <Text ml="8px">{item.name}</Text>
                       </Box>
 
-                      {pathname.includes(item.path) ? (
+                      {showMenu ? (
+                        showMenu && currentIndex === item.id ? (
+                          <Box
+                            position="absolute"
+                            top="50%"
+                            right={2}
+                            transform="translateY(-50%)"
+                            w="3px"
+                            h="28px"
+                            bg="#EE383A"
+                            borderRadius={4}
+                          />
+                        ) : (
+                          item.subItems && (
+                            <Box
+                              flex="1"
+                              textAlign="right"
+                              pb={1}
+                              color={
+                                showMenu && currentIndex === item.id
+                                  ? "#fff"
+                                  : "black"
+                              }
+                            ></Box>
+                          )
+                        )
+                      ) : pathname.includes(item.path) ? (
                         <Box
                           position="absolute"
                           top="50%"
@@ -169,14 +203,14 @@ const SideDrawer = ({ isOpen, onClose }) => {
                             flex="1"
                             textAlign="right"
                             pb={1}
-                            color={openSubItems[item.name] ? "#fff" : "black"}
+                            color={showMenu ? "#fff" : "black"}
                           ></Box>
                         )
                       )}
                     </Flex>
 
                     {item.subItems && (
-                      <Collapse in={openSubItems[item.name]}>
+                      <Collapse in={showMenu && currentIndex === item.id}>
                         <VStack align="stretch">
                           {item.subItems.map((subItems, i) => (
                             <Flex
@@ -192,7 +226,12 @@ const SideDrawer = ({ isOpen, onClose }) => {
                                   : "#848688",
                               }}
                             >
-                              <Box fontSize="11px" pb="12px" ml="20px">
+                              <Box
+                                fontSize="11px"
+                                onClick={onClose}
+                                pb="12px"
+                                ml="20px"
+                              >
                                 <Link key={subItems.name} to={subItems.path}>
                                   {subItems.name}
                                 </Link>
@@ -224,7 +263,11 @@ const SideDrawer = ({ isOpen, onClose }) => {
                     key={i}
                     onClick={onClose}
                     align="stretch"
-                    className={!pathname.includes(item?.link) && "parent_nav"}
+                    className={
+                      showMenu
+                        ? showMenu && currentIndex !== i && "parent_nav"
+                        : !pathname.includes(item?.path) && "parent_nav"
+                    }
                   >
                     <Flex
                       align="center"
@@ -236,17 +279,51 @@ const SideDrawer = ({ isOpen, onClose }) => {
                       fontSize="13px"
                       lineHeight="100%"
                       cursor="pointer"
-                      onClick={() => navigate(item.link)}
+                      onClick={() =>
+                        item.subItems
+                          ? (showMenu && currentIndex === item.id
+                              ? setShowMenu(false)
+                              : !showMenu && setShowMenu(true),
+                            setCurrentIndex(item.id))
+                          : (navigate(item.path),
+                            setShowMenu(false),
+                            setCurrentIndex(""),
+                            onClose())
+                      }
                       bg={
-                        pathname.includes(item.link) ? "#FDE8E8" : "transparent"
+                        showMenu
+                          ? showMenu && currentIndex === item.id
+                            ? "#FDE8E8"
+                            : "transparent"
+                          : pathname.includes(item.path)
+                          ? "#FDE8E8"
+                          : "transparent"
                       }
                       color={
-                        pathname.includes(item.link) ? "#EE383A" : "#646668"
+                        showMenu
+                          ? showMenu && currentIndex === item.id
+                            ? "#EE383A"
+                            : "#646668"
+                          : pathname.includes(item.path)
+                          ? "#EE383A"
+                          : "#646668"
                       }
                       fontWeight={500}
                       _hover={{
-                        bg: pathname.includes(item.link) ? "" : "transparent",
-                        color: pathname.includes(item.link) ? "" : "#EE383A",
+                        bg: showMenu
+                          ? showMenu && currentIndex === item.id
+                            ? ""
+                            : "transparent"
+                          : pathname.includes(item.path)
+                          ? ""
+                          : "transparent",
+                        color: showMenu
+                          ? showMenu && currentIndex === item.id
+                            ? ""
+                            : "#EE383A"
+                          : pathname.includes(item.path)
+                          ? ""
+                          : "#EE383A",
                       }}
                       borderRadius={4}
                       position="relative"
@@ -254,9 +331,11 @@ const SideDrawer = ({ isOpen, onClose }) => {
                       <Box className="hovered_image">{item.sec}</Box>
 
                       <Box className="initial_image" w="16px" h="16px">
-                        {pathname.includes(item.link)
-                          ? item.sec
-                          : openSubItems[item.name]
+                        {showMenu
+                          ? showMenu && currentIndex === item.id
+                            ? item.sec
+                            : item.icon
+                          : pathname.includes(item.path)
                           ? item.sec
                           : item.icon}
                       </Box>
@@ -264,7 +343,33 @@ const SideDrawer = ({ isOpen, onClose }) => {
                         <Text ml="8px">{item.name}</Text>
                       </Box>
 
-                      {pathname.includes(item.link) ? (
+                      {showMenu ? (
+                        showMenu && currentIndex === item.id ? (
+                          <Box
+                            position="absolute"
+                            top="50%"
+                            right={2}
+                            transform="translateY(-50%)"
+                            w="3px"
+                            h="28px"
+                            bg="#EE383A"
+                            borderRadius={4}
+                          />
+                        ) : (
+                          item.subItems && (
+                            <Box
+                              flex="1"
+                              textAlign="right"
+                              pb={1}
+                              color={
+                                showMenu && currentIndex === item.id
+                                  ? "#fff"
+                                  : "black"
+                              }
+                            ></Box>
+                          )
+                        )
+                      ) : pathname.includes(item.path) ? (
                         <Box
                           position="absolute"
                           top="50%"
@@ -276,7 +381,14 @@ const SideDrawer = ({ isOpen, onClose }) => {
                           borderRadius={4}
                         />
                       ) : (
-                        ""
+                        item.subItems && (
+                          <Box
+                            flex="1"
+                            textAlign="right"
+                            pb={1}
+                            color={showMenu ? "#fff" : "black"}
+                          ></Box>
+                        )
                       )}
                     </Flex>
                   </VStack>
