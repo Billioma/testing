@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { Box, Flex, Image, Text } from "@chakra-ui/react";
 import TableLayer from "../../../components/data/Admin/Transactions/PointsTableLayer";
-import { useGetTips } from "../../../services/admin/query/transactions";
 import { pointsOptions } from "../../../components/common/constants";
 import Filter from "../../../components/common/Filter";
 import { formatFilterDate } from "../../../utils/helpers";
-import { useGetPoints, useGetTran } from "../../../services/admin/query/reports";
+import { useGetPoints } from "../../../services/admin/query/reports";
 
 export default function () {
   const [page, setPage] = useState(1);
@@ -18,16 +17,16 @@ export default function () {
   const year = today.getFullYear();
   const convertedFilters = filtArray?.map((filterObj) => {
     return filterObj?.gte
-      ? `filter=paymentMethod||cont||%227%22&filter=${filterObj?.title}||$gte||"${formatFilterDate(
-          filterObj?.gte
-        )}T00:00:00"`
+      ? `filter=paymentMethod||cont||%227%22&filter=${
+          filterObj?.title
+        }||$gte||"${formatFilterDate(filterObj?.gte)}T00:00:00"`
       : filterObj?.lte
-      ? `filter=paymentMethod||cont||%227%22&filter=${filterObj?.title}||$lte||"${formatFilterDate(
-          filterObj?.lte
-        )}T23:59:59"`
-      : `filter=paymentMethod||cont||%227%22&filter=${filterObj?.title}||${filterObj?.type || "cont"}||"${
-          filterObj?.filter
-        }"`;
+      ? `filter=paymentMethod||cont||%227%22&filter=${
+          filterObj?.title
+        }||$lte||"${formatFilterDate(filterObj?.lte)}T23:59:59"`
+      : `filter=paymentMethod||cont||%227%22&filter=${filterObj?.title}||${
+          filterObj?.type || "cont"
+        }||"${filterObj?.filter}"`;
   });
 
   const query =

@@ -42,6 +42,7 @@ import FundWalletDrawer from "../../../components/modals/FundWalletDrawer";
 import { usePaystackPayment } from "react-paystack";
 import AddVehicleModal from "../../../components/modals/AddVehicleModal";
 import DatePicker from "react-multi-date-picker";
+import PointsModal from "../../../components/modals/PointsModal";
 
 const CarServices = () => {
   const [step, setStep] = useState(1);
@@ -50,6 +51,7 @@ const CarServices = () => {
   const { data: cards, refetch: refetchCards } = useGetCards();
   const { data: userData, refetch } = useGetUser();
   const { refetch: refetchBooking } = useGetCarService(10, 1);
+  const [showPoint, setShowPoint] = useState(false);
 
   const [values, setValues] = useState({
     serviceId: "",
@@ -234,19 +236,23 @@ const CarServices = () => {
         startChange("");
         refetch();
         refetchBooking();
-        setValues({
-          serviceId: "",
-          address: "",
-          appointmentTime: "",
-          img: "",
-          desc: "",
-          billingRate: "",
-          cardId: "",
-          paymentMethod: "",
-          vehicle: "",
-        });
-        setStep(1);
-        navigate("/customer/history/user");
+        // setValues({
+        //   serviceId: "",
+        //   address: "",
+        //   appointmentTime: "",
+        //   img: "",
+        //   desc: "",
+        //   billingRate: "",
+        //   cardId: "",
+        //   paymentMethod: "",
+        //   vehicle: "",
+        // });
+        // setStep(1);
+        if (values.paymentMethod !== "3") {
+          setShowPoint(true);
+        } else if (values.paymentMethod === "3") {
+          navigate("/customer/history/user");
+        }
         successToast("Payment Successful");
       },
       onError: (err) => {
@@ -344,6 +350,11 @@ const CarServices = () => {
 
   return (
     <Box minH="75vh">
+      <PointsModal
+        isOpen={showPoint}
+        onClose={() => setShowPoint(false)}
+        amount={values?.billingRate?.amount}
+      />
       <Flex justifyContent="center" align="center" w="full" flexDir="column">
         <Flex
           bg="#fff"

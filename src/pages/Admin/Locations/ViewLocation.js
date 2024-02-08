@@ -105,7 +105,7 @@ export default function ViewLocation() {
     description: "",
     geoLocation: "",
     address: "",
-    client_id:"",
+    client: "",
     state: "",
     operator: "",
     locationType: "",
@@ -174,7 +174,7 @@ export default function ViewLocation() {
       (option) => option?.value === Number(data?.operator?.id)
     );
     const selectedClientOption = clientsOptions?.find(
-      (option) => option?.value === Number(data?.client_id)
+      (option) => option?.value === Number(data?.client?.id)
     );
     const selectedLocationOption = locationTypeOptions?.find(
       (option) => option?.value === data?.locationType
@@ -215,7 +215,7 @@ export default function ViewLocation() {
         geoLocation: values?.geoLocation,
         address: values?.address,
         operator: values?.operator?.value,
-        client_id: values?.client_id?.value,
+        client: values?.client?.value,
         locationType: values?.locationType?.value,
         amenities: values?.amenities?.map((item) => item?.value),
         state: values?.state?.value,
@@ -466,7 +466,7 @@ export default function ViewLocation() {
                     isDisabled={edit ? false : true}
                   />
                 </Box>
-                
+
                 <Box w="full" mb={4}>
                   <Text
                     mb="8px"
@@ -482,7 +482,7 @@ export default function ViewLocation() {
                     options={clientsOptions}
                     onChange={(selectedOption) =>
                       handleSelectChange(selectedOption, {
-                        name: "client_id",
+                        name: "client",
                       })
                     }
                     components={{
@@ -495,7 +495,7 @@ export default function ViewLocation() {
                         </div>
                       ),
                     }}
-                    value={values?.client_id}
+                    value={values?.client}
                     isDisabled={edit ? false : true}
                   />
                 </Box>

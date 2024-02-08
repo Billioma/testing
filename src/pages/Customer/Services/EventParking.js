@@ -39,6 +39,7 @@ import useCustomToast from "../../../utils/notifications";
 import { useNavigate } from "react-router-dom";
 import AddVehicleModal from "../../../components/modals/AddVehicleModal";
 import DatePicker from "react-multi-date-picker";
+import PointsModal from "../../../components/modals/PointsModal";
 
 const EventParking = () => {
   const [step, setStep] = useState(1);
@@ -138,21 +139,26 @@ const EventParking = () => {
   };
 
   const { successToast, errorToast } = useCustomToast();
+  const [showPoint, setShowPoint] = useState(false);
   const navigate = useNavigate();
   const { mutate: eventMutate, isLoading: isEventing } = useCreateEventParking({
     onSuccess: () => {
-      navigate("/customer/history/user");
+      if (values.paymentMethod !== "3") {
+        setShowPoint(true);
+      } else if (values.paymentMethod === "3") {
+        navigate("/customer/history/user");
+      }
       successToast("Parking spot reserved");
       onClose();
       refetch();
       refetchEvent();
-      setEvent({});
+      // setEvent({});
       setValues({
         event: "",
         service: "",
         vehicle: "",
         cardId: "",
-        paymentMethod: "",
+        // paymentMethod: "",
       });
     },
     onError: (err) => {
@@ -208,6 +214,11 @@ const EventParking = () => {
 
   return (
     <Box minH="75vh">
+      <PointsModal
+        isOpen={showPoint}
+        onClose={() => setShowPoint(false)}
+        amount={event?.price}
+      />
       <Flex justifyContent="center" align="center" w="full" flexDir="column">
         <Flex
           bg="#fff"

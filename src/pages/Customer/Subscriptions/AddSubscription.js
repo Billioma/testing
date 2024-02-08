@@ -42,12 +42,14 @@ import { usePaystackPayment } from "react-paystack";
 import FundWalletDrawer from "../../../components/modals/FundWalletDrawer";
 import { AiOutlineEdit } from "react-icons/ai";
 import AddVehicleModal from "../../../components/modals/AddVehicleModal";
+import PointsModal from "../../../components/modals/PointsModal";
 
 const AddSubscription = () => {
   const { data: plans, isLoading: isPlan } = useGetPlans();
   const [step, setStep] = useState(1);
   const [currentSub, setCurrentSub] = useState({});
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const [showPoint, setShowPoint] = useState(false);
   const { data: models } = useGetModel();
   const { data: vehicles, refetch: refetchVehicle } = useGetVehicles();
   const { data: makes } = useGetMake();
@@ -247,20 +249,24 @@ const AddSubscription = () => {
     onSuccess: (res) => {
       refetch();
       refetchSub();
-      navigate("/customer/subscriptions");
-      setState({
-        membershipPlan: "",
-        subscriptionOptions: [
-          {
-            planFeature: 0,
-            data: [],
-          },
-        ],
-        autoRenewal: false,
-        paymentMethod: "",
-      });
-      setCurrentSub({});
-      setStep(1);
+      if (state.paymentMethod !== "3") {
+        setShowPoint(true);
+      } else if (state.paymentMethod === "3") {
+        navigate("/customer/subscriptions");
+      }
+      // setState({
+      //   membershipPlan: "",
+      //   subscriptionOptions: [
+      //     {
+      //       planFeature: 0,
+      //       data: [],
+      //     },
+      //   ],
+      //   autoRenewal: false,
+      //   paymentMethod: "",
+      // });
+      // setCurrentSub({});
+      // setStep(1);
 
       setFormSubmitted(false);
       successToast(res?.message);
@@ -289,6 +295,11 @@ const AddSubscription = () => {
 
   return (
     <Box minH="75vh">
+      <PointsModal
+        isOpen={showPoint}
+        onClose={() => setShowPoint(false)}
+        amount={currentSub?.amount}
+      />
       <Flex justifyContent="center" align="center" w="full" flexDir="column">
         <Flex
           bg="#fff"

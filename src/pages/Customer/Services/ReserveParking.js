@@ -26,7 +26,6 @@ import {
   formatTime,
   formatTimeMinute,
   formatTimeToHHMMSS,
-  formatTimees,
 } from "../../../utils/helpers";
 import {
   useGetMake,
@@ -55,6 +54,7 @@ import DatePicker from "react-multi-date-picker";
 import GoogleMap from "google-map-react";
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Tooltip from "react-bootstrap/Tooltip";
+import PointsModal from "../../../components/modals/PointsModal";
 
 const ReserveParking = () => {
   const { data: locations, isLoading: isLocation } = useGetLocations();
@@ -324,13 +324,18 @@ const ReserveParking = () => {
 
   const navigate = useNavigate();
   const { successToast, errorToast } = useCustomToast();
+  const [showPoint, setShowPoint] = useState(false);
   const { refetch: refetchParking } = useGetReserveParking(10, 1);
   const { mutate: reserveMutate, isLoading: isReserving } =
     useCreateReserveParking({
       onSuccess: () => {
         refetch();
         refetchParking();
-        navigate("/customer/history/user");
+        if (values.paymentMethod !== "3") {
+          setShowPoint(true);
+        } else if (values.paymentMethod === "3") {
+          navigate("/customer/history/user");
+        }
         successToast("Parking spot reserved");
       },
       onError: (err) => {
@@ -465,6 +470,11 @@ const ReserveParking = () => {
 
   return (
     <Box minH="75vh">
+      <PointsModal
+        isOpen={showPoint}
+        onClose={() => setShowPoint(false)}
+        amount={requestData?.amount}
+      />
       <Flex justifyContent="center" align="center" w="full" flexDir="column">
         <Flex
           bg="#fff"
@@ -884,7 +894,6 @@ const ReserveParking = () => {
                   >
                     Arrival Time
                   </Text>
-
                   <Select
                     styles={customStyles}
                     placeholder="Select Time"
@@ -1072,7 +1081,7 @@ const ReserveParking = () => {
               ) : space === "noSpace" ? (
                 <Box
                   pos="relative"
-                  h="30vh"
+                  maxH="30vh"
                   className="scrolle"
                   overflowY="scroll"
                 >
@@ -1117,14 +1126,12 @@ const ReserveParking = () => {
                                 key={i}
                                 gap="12px"
                                 rowGap="5px"
-                                templateColumns={{
-                                  base: "repeat(2,1fr)",
-                                  md: "repeat(3,1fr)",
-                                }}
+                                templateColumns="repeat(2,1fr)"
                               >
                                 {timeArray.map((timeObj, j) => (
                                   <Flex
                                     key={j}
+                                    justifyContent="center"
                                     borderRadius="6px"
                                     bg={
                                       values?.arrivalTime?.value ===
@@ -1149,28 +1156,40 @@ const ReserveParking = () => {
                                       setValues({
                                         ...values,
                                         arrivalTime: {
-                                          value: formatTime(
+                                          value: new Date(
                                             timeObj.arrivalTime
-                                          ),
-                                          label: formatTime(
+                                          ).toLocaleTimeString([], {
+                                            hour: "2-digit",
+                                            minute: "2-digit",
+                                            hour12: false,
+                                          }),
+                                          label: new Date(
                                             timeObj.arrivalTime
-                                          ),
+                                          ).toLocaleTimeString([], {
+                                            hour: "2-digit",
+                                            minute: "2-digit",
+                                            hour12: true,
+                                          }),
                                         },
                                         departureTime: {
-                                          value: formatTime(
+                                          value: new Date(
                                             timeObj.departureTime
-                                          ),
-                                          label: formatTime(
+                                          ).toLocaleTimeString([], {
+                                            hour: "2-digit",
+                                            minute: "2-digit",
+                                            hour12: false,
+                                          }),
+                                          label: new Date(
                                             timeObj.departureTime
-                                          ),
+                                          ).toLocaleTimeString([], {
+                                            hour: "2-digit",
+                                            minute: "2-digit",
+                                            hour12: true,
+                                          }),
                                         },
                                       });
-                                      startChange(
-                                        formatNewDate(timeObj?.arrivalTime)
-                                      );
-                                      endChange(
-                                        formatNewDate(timeObj?.departureTime)
-                                      );
+                                      startChange(timeObj?.arrivalTime);
+                                      endChange(timeObj?.departureTime);
                                     }}
                                     transition=".3s ease-in-out"
                                     _hover={{
@@ -1179,13 +1198,20 @@ const ReserveParking = () => {
                                     }}
                                     cursor="pointer"
                                     py="8px"
-                                    px="20px"
                                   >
-                                    {`${formatTimees(
-                                      new Date(timeObj.arrivalTime)
-                                    )} - ${formatTimees(
-                                      new Date(timeObj.departureTime)
-                                    )}`}
+                                    {`${new Date(
+                                      timeObj.arrivalTime
+                                    ).toLocaleTimeString([], {
+                                      hour: "2-digit",
+                                      minute: "2-digit",
+                                      hour12: true,
+                                    })} - ${new Date(
+                                      timeObj.departureTime
+                                    ).toLocaleTimeString([], {
+                                      hour: "2-digit",
+                                      minute: "2-digit",
+                                      hour12: true,
+                                    })}`}
                                   </Flex>
                                 ))}
                               </Grid>

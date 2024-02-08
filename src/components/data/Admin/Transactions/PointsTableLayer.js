@@ -17,11 +17,7 @@ import { formatDateNewTime } from "../../../../utils/helpers";
 import { useNavigate } from "react-router-dom";
 import { BsChevronDown } from "react-icons/bs";
 import TableLoader from "../../../loaders/TableLoader";
-import {
-  PaymentMethods,
-  Status,
-  viewDeleteOption,
-} from "../../../common/constants";
+import { Status, viewDeleteOption } from "../../../common/constants";
 
 const TableLayer = ({
   data,

@@ -10,15 +10,9 @@ import { useNavigate } from "react-router";
 import { useParams } from "react-router-dom";
 import useCustomToast from "../../../utils/notifications";
 import { useCustomerLogin } from "../../../services/customer/query/auth";
-import {
-  GoogleReCaptchaProvider,
-  GoogleReCaptcha,
-} from "react-google-recaptcha-v3";
 
 const Login = () => {
   const { redirect } = useParams();
-  const [reCaptcha, setReCaptcha] = useState(false);
-
   const [show, setShow] = useState(false);
   const navigate = useNavigate();
 
@@ -48,10 +42,6 @@ const Login = () => {
 
   const handleSubmit = (values = "") => {
     mutate(values);
-  };
-
-  const handleVerify = () => {
-    setReCaptcha(true);
   };
 
   return (
@@ -152,21 +142,9 @@ const Login = () => {
                 </Text>
               </Flex>
 
-              <GoogleReCaptchaProvider
-                reCaptchaKey="6LfyKIMaAAAAACUd3zGILy2zfYmbgUlSaksLg3wX"
-                scriptProps={{
-                  async: false,
-                  defer: false,
-                  appendTo: "body",
-                  nonce: undefined,
-                }}
-              >
-                <GoogleReCaptcha onVerify={handleVerify} />
-              </GoogleReCaptchaProvider>
-
               <Button
                 isLoading={isLoading}
-                isDisabled={!isValid || !dirty || !reCaptcha}
+                isDisabled={!isValid || !dirty}
                 type="submit"
                 w="full"
               >

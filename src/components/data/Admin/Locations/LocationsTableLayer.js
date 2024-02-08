@@ -39,6 +39,7 @@ const TableLayer = ({
   const headers = [
     "NAME",
     "OPERATOR",
+    "CLIENT",
     "STATE",
     "MANAGERS",
     "STATUS",
@@ -87,7 +88,7 @@ const TableLayer = ({
             opt
             alignFirstHeader
             alignSecondHeader
-            alignForthHeader
+            alignThirdHeader
             paginationValues={{
               startRow,
               endRow,
@@ -112,6 +113,7 @@ const TableLayer = ({
               >
                 <Td>{location?.name}</Td>
                 <Td>{location?.operator?.name || "N/A"}</Td>
+                <Td>{location?.client?.name || "N/A"}</Td>
                 <Td textAlign="center">{location?.state}</Td>
                 <Td>
                   {location?.managers[0]?.firstName}{" "}

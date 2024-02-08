@@ -1,10 +1,40 @@
 import { useQuery } from "react-query";
-import { getEventCount, getSubCount, getUserCount } from "../api/dashboard";
+import {
+  getEventCount,
+  getLogsCount,
+  getSubCount,
+  getTransactionCount,
+  getUserCount,
+} from "../api/dashboard";
 
 export const useGetUserCount = (options = {}) => {
   const { data, isLoading, refetch } = useQuery(
     "GET_USERS_COUNT",
     getUserCount,
+    {
+      ...options,
+    }
+  );
+
+  return { data, isLoading, refetch };
+};
+
+export const useGetLogsCount = (options = {}) => {
+  const { data, isLoading, refetch } = useQuery(
+    "GET_LOGS_COUNT",
+    getLogsCount,
+    {
+      ...options,
+    }
+  );
+
+  return { data, isLoading, refetch };
+};
+
+export const useGetTransactionCount = (options = {}) => {
+  const { data, isLoading, refetch } = useQuery(
+    "GET_transactionS_COUNT",
+    getTransactionCount,
     {
       ...options,
     }

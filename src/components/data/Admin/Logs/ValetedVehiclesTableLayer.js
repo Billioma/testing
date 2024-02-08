@@ -82,7 +82,7 @@ const TableLayer = ({
       );
     },
   });
-console.log(selectedRow.id)
+
   const handleSubmit = (e) => {
     e.preventDefault();
     mutate(Number(selectedRow.id));

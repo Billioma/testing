@@ -102,6 +102,25 @@ export const formatTimes = (date, fallback = "") => {
     second: undefined,
   });
 };
+export const formatUTCTime = (date, fallback = "") => {
+  if (!date) return fallback;
+
+  // Parse input date as UTC
+  const utcDate = new Date(date);
+  const utcOptions = {
+    timeZone: "UTC", // Specify the timezone as UTC
+
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+    hour: "numeric",
+    minute: "numeric",
+    hour12: true,
+  };
+
+  // Format the parsed UTC date
+  return utcDate.toLocaleTimeString("default", utcOptions);
+};
 
 export const formatTime = (date, fallback = "") => {
   if (!date) return fallback;
@@ -190,7 +209,6 @@ export const formatDateTime = (date, fallback = "") => {
 
   return formattedDate.toLocaleString("default", options);
 };
-
 export const formatDateNewTime = (date, fallback = "") => {
   if (!date) return fallback;
 
@@ -205,7 +223,13 @@ export const formatDateNewTime = (date, fallback = "") => {
     hour12: true,
   };
 
-  return formattedDate.toLocaleString("default", options);
+  let hours = formattedDate.getHours();
+  hours = hours % 12;
+  hours = hours ? hours : 12;
+
+  return formattedDate
+    .toLocaleString("default", options)
+    .replace(/(\d{1,2}):(\d{2})/, `${hours}:$2 `);
 };
 
 export const formatTimeToHHMMSS = (time) => {

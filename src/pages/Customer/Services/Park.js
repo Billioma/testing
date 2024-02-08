@@ -31,6 +31,7 @@ import { useGetCards } from "../../../services/customer/query/payment";
 import { usePaystackPayment } from "react-paystack";
 import FundWalletDrawer from "../../../components/modals/FundWalletDrawer";
 import AddVehicleModal from "../../../components/modals/AddVehicleModal";
+import PointsModal from "../../../components/modals/PointsModal";
 
 const Park = () => {
   const [zone, setZone] = useState("");
@@ -76,6 +77,7 @@ const Park = () => {
     vehicle: "",
     serviceType: "",
     paymentMethod: "",
+    amount: "",
     cardId: "",
   });
   const { mutate, isLoading, data } = useGetZone({
@@ -93,6 +95,7 @@ const Park = () => {
       }
     },
   });
+  const [showPoint, setShowPoint] = useState(false);
 
   const { refetch: refetchPark } = useGetPayToPark(10, 1);
   const { mutate: parkMutate, isLoading: isCreating } = useCreatePayToPark({
@@ -100,11 +103,16 @@ const Park = () => {
       onClose();
       refetchPark();
       refetch();
-      navigate("/customer/history/user");
+      if (values.paymentMethod !== "3") {
+        setShowPoint(true);
+      } else if (values.paymentMethod === "3") {
+        navigate("/customer/history/user");
+      }
       setValues({
+        ...values,
         vehicle: "",
         serviceType: "",
-        paymentMethod: "",
+        // paymentMethod: "",
         cardId: "",
       });
       setZone("");
@@ -145,7 +153,13 @@ const Park = () => {
 
   useEffect(() => {
     setStep(1);
-    setValues({ vehicle: "", serviceType: "", paymentMethod: "", cardId: "" });
+    setValues({
+      ...values,
+      vehicle: "",
+      serviceType: "",
+      paymentMethod: "",
+      cardId: "",
+    });
     setZone("");
   }, []);
 
@@ -219,6 +233,11 @@ const Park = () => {
 
   return (
     <Box minH="75vh">
+      <PointsModal
+        isOpen={showPoint}
+        onClose={() => setShowPoint(false)}
+        amount={values?.amount}
+      />
       <Flex justifyContent="center" align="center" w="full" flexDir="column">
         <Flex
           bg="#fff"
@@ -237,6 +256,7 @@ const Park = () => {
               onClick={() => {
                 setStep(step - 1);
                 setValues({
+                  ...values,
                   vehicle: "",
                   serviceType: "",
                   paymentMethod: "",
@@ -273,6 +293,7 @@ const Park = () => {
               setStep(1);
               setError(false);
               setValues({
+                ...values,
                 vehicle: "",
                 serviceType: "",
                 paymentMethod: "",
@@ -384,9 +405,14 @@ const Park = () => {
                     ),
                   }}
                   options={serviceOptions}
-                  onChange={(selectedOption) =>
-                    handleSelectChange(selectedOption, { name: "serviceType" })
-                  }
+                  onChange={(selectedOption) => {
+                    // handleSelectChange(selectedOption, { name: "serviceType" });
+                    setValues({
+                      ...values,
+                      amount: selectedOption.amount,
+                      serviceType: selectedOption,
+                    });
+                  }}
                 />
               </Box>
 

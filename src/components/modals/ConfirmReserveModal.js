@@ -98,7 +98,7 @@ const ConfirmReserveModal = ({
                   lineHeight="100%"
                   fontWeight={500}
                 >
-                  {start} {values?.arrivalTime?.value}
+                  {start} {values?.arrivalTime?.label}
                 </Text>
               </Flex>
 
@@ -120,7 +120,7 @@ const ConfirmReserveModal = ({
                   lineHeight="100%"
                   fontWeight={500}
                 >
-                  {end} {values?.departureTime?.value}
+                  {end} {values?.departureTime?.label}
                 </Text>
               </Flex>
 

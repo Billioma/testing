@@ -8,15 +8,26 @@ import {
   Skeleton,
   Text,
 } from "@chakra-ui/react";
-import { clientDahboard } from "../../../components/common/constants";
+import {
+  busClientDashboard,
+  clientDahboard,
+  eventClientDahboard,
+} from "../../../components/common/constants";
 import {
   useGetUserCount,
   useGetSubCount,
   useGetEventCount,
+  useGetLogsCount,
+  useGetTransactionCount,
 } from "../../../services/client/query/dashboard";
+import { useGetClientDetails } from "../../../services/client/query/user";
 
 const Dashboard = () => {
   const { data: usersCount, isLoading: isUser } = useGetUserCount();
+  const { data: logsCount, isLoading: isLog } = useGetLogsCount();
+  const { data: transactionCount, isLoading: isTransaction } =
+    useGetTransactionCount();
+  const { data: userData } = useGetClientDetails();
   const { data: subCount, isLoading: isSub } = useGetSubCount();
   const { data: eventCount, isLoading: isEvent } = useGetEventCount();
 
@@ -31,11 +42,26 @@ const Dashboard = () => {
           "repeat(3,1fr)",
         ]}
       >
-        {clientDahboard?.map((dat, i) => (
+        {(userData?.accountType === "BUSINESS"
+          ? busClientDashboard
+          : userData?.accountType === "EVENT_PLANNER"
+          ? eventClientDahboard
+          : clientDahboard.slice(0, 2)
+        )?.map((dat, i) => (
           <GridItem key={i}>
             <Skeleton
               isLoaded={
-                i === 0 ? !isUser : i === 1 ? !isSub : i === 2 && !isEvent
+                userData?.accountType === "BUSINESS"
+                  ? !isLog
+                  : userData?.accountType === "EVENT_PLANNER"
+                  ? i === 0
+                    ? !isTransaction
+                    : i === 1
+                    ? !isUser
+                    : i === 2 && !isEvent
+                  : i === 0
+                  ? !isSub
+                  : i === 1 && !isUser
               }
               h="12rem"
             >
@@ -79,11 +105,17 @@ const Dashboard = () => {
                         color="#646668"
                         fontWeight={500}
                       >
-                        {i === 0
-                          ? subCount?.total
+                        {userData?.accountType === "EVENT_PLANNER"
+                          ? i === 0
+                            ? transactionCount?.total?.toLocaleString()
+                            : i === 1 && eventCount?.total?.toLocaleString()
+                          : userData?.accountType === "BUSINESS"
+                          ? i === 0 && logsCount?.total?.toLocaleString()
+                          : i === 0
+                          ? subCount?.total?.toLocaleString()
                           : i === 1
-                          ? usersCount?.total
-                          : i === 2 && eventCount?.total}
+                          ? usersCount?.total?.toLocaleString()
+                          : i === 2 && eventCount?.total?.toLocaleString()}
                       </Text>
                     </Box>
 
@@ -100,18 +132,28 @@ const Dashboard = () => {
                           lineHeight="100%"
                           fontWeight={500}
                         >
-                          {dat?.opt}
+                          {userData?.accountType === "BUSINESS" ||
+                          (userData?.accountType === "EVENT_PLANNER" && i === 0)
+                            ? "Pending"
+                            : dat?.opt}
                         </Text>
                         <Text
                           color="#242628"
                           lineHeight="100%"
                           fontWeight={500}
                         >
-                          {i === 0
-                            ? subCount?.inactive
+                          {userData?.accountType === "EVENT_PLANNER"
+                            ? i === 0
+                              ? transactionCount?.pending?.toLocaleString()
+                              : i === 1 &&
+                                eventCount?.inactive?.toLocaleString()
+                            : userData?.accountType === "BUSINESS"
+                            ? logsCount?.pending?.toLocaleString()
+                            : i === 0
+                            ? subCount?.inactive?.toLocaleString()
                             : i === 1
-                            ? usersCount?.inactive
-                            : i === 2 && eventCount?.active}
+                            ? usersCount?.inactive?.toLocaleString()
+                            : i === 2 && eventCount?.inactive?.toLocaleString()}
                         </Text>
                       </Flex>
 
@@ -122,18 +164,27 @@ const Dashboard = () => {
                           lineHeight="100%"
                           fontWeight={500}
                         >
-                          {dat?.secOpt}
+                          {userData?.accountType === "BUSINESS" ||
+                          (userData?.accountType === "EVENT_PLANNER" && i === 0)
+                            ? "Completed"
+                            : dat?.secOpt}
                         </Text>
                         <Text
                           color="#242628"
                           lineHeight="100%"
                           fontWeight={500}
                         >
-                          {i === 0
-                            ? subCount?.active
+                          {userData?.accountType === "EVENT_PLANNER"
+                            ? i === 0
+                              ? transactionCount?.completed?.toLocaleString()
+                              : i === 1 && eventCount?.active?.toLocaleString()
+                            : userData?.accountType === "BUSINESS"
+                            ? logsCount?.completed?.toLocaleString()
+                            : i === 0
+                            ? subCount?.active?.toLocaleString()
                             : i === 1
-                            ? usersCount?.active
-                            : i === 2 && eventCount?.inactive}
+                            ? usersCount?.active?.toLocaleString()
+                            : i === 2 && eventCount?.inactive?.toLocaleString()}
                         </Text>
                       </Flex>
                     </Flex>

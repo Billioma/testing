@@ -20,7 +20,7 @@ import {
   useGetPayToPark,
   useGetReserveParking,
 } from "../../../../services/customer/query/services";
-import { formatDateNewTime } from "../../../../utils/helpers";
+import { formatDateNewTime, formatUTCTime } from "../../../../utils/helpers";
 import ConfirmDeleteModal from "../../../modals/ConfirmDeleteModal";
 import useCustomToast from "../../../../utils/notifications";
 import { useEffect } from "react";
@@ -28,6 +28,7 @@ import { FcCancel } from "react-icons/fc";
 import { TbListDetails } from "react-icons/tb";
 import { useNavigate } from "react-router-dom";
 import { useGetUser } from "../../../../services/customer/query/user";
+import PointsModal from "../../../modals/PointsModal";
 
 const UserTableLayer = () => {
   const [page, setPage] = useState(1);
@@ -67,6 +68,14 @@ const UserTableLayer = () => {
   const [showCancel, setShowCancel] = useState(false);
   const [currentItem, setCurrentItem] = useState("");
 
+  const currentTime = new Date();
+  const arrival = formatUTCTime(currentItem?.arrival);
+  const arrivalTime = new Date(arrival);
+  const [showPoint, setShowPoint] = useState(false);
+
+  const timeDifference =
+    (arrivalTime.getTime() - currentTime.getTime()) / (1000 * 60 * 60);
+
   useEffect(() => {
     if (showCancel) {
       setShow(false);
@@ -101,6 +110,14 @@ const UserTableLayer = () => {
       refetchUser();
       successToast("Reservation Cancelled");
       refetch();
+      if (timeDifference <= 4 && timeDifference > 1) {
+        console.log("Within 4 hours");
+        setShowPoint(true);
+      } else if (timeDifference <= 4 && timeDifference <= 1) {
+        console.log("Within one hour");
+      } else {
+        console.log("Exceed 4 hours");
+      }
     },
     onError: (err) => {
       errorToast(
@@ -129,9 +146,15 @@ const UserTableLayer = () => {
       document.removeEventListener("click", handleClickOutside);
     };
   }, []);
-
   return (
     <Box>
+      <PointsModal
+        isOpen={showPoint}
+        refund
+        onClose={() => setShowPoint(false)}
+        currentItem={currentItem}
+        amount={""}
+      />
       <TableFormat
         tab={
           <Flex flexWrap="wrap" rowGap={{ base: "20px", md: "unset" }}>
@@ -536,12 +559,12 @@ const UserTableLayer = () => {
                 <Td textAlign="center">{dat?.zone?.location?.name || "N/A"}</Td>
                 <Td textAlign="center">{dat?.vehicle?.licensePlate}</Td>
                 <Td textAlign="center">
-                  {formatDateNewTime(dat?.arrival) || "N/A"}
+                  {formatUTCTime(dat?.arrival) || "N/A"}
                 </Td>
                 <Td textAlign="center">
-                  {formatDateNewTime(dat?.departure) || "N/A"}
+                  {formatUTCTime(dat?.departure) || "N/A"}
                 </Td>
-                <Td textAlign="center">{formatDateNewTime(dat?.createdAt)}</Td>
+                <Td textAlign="center">{formatUTCTime(dat?.createdAt)}</Td>
 
                 <Td>
                   <Flex justifyContent="center" align="center" w="full">
@@ -588,42 +611,43 @@ const UserTableLayer = () => {
                         }
                         boxShadow="0px 8px 16px 0px rgba(0, 0, 0, 0.08)"
                       >
-                        {["View Details", "Cancel Reservation"].map(
-                          (item, i) => (
-                            <Flex
-                              key={i}
-                              w="full"
-                              px="8px"
-                              borderRadius="2px"
-                              mb="5px"
-                              py="9px"
-                              align="center"
-                              onClick={() =>
-                                i == 0
-                                  ? navigate(
-                                      `/customer/history/user/reserve-parking/${dat?.id}`
-                                    )
-                                  : setShowCancel(true)
-                              }
-                              _hover={{ bg: "#F4F6F8" }}
-                              cursor="pointer"
-                              fontSize="12px"
-                              color={i === 0 ? "" : "red"}
-                              lineHeight="100%"
-                              gap="12px"
-                              fontWeight={500}
-                            >
-                              <Box>
-                                {i === 0 ? (
-                                  <TbListDetails size="15px" />
-                                ) : (
-                                  <FcCancel size="15px" />
-                                )}
-                              </Box>
-                              <Box>{item}</Box>
-                            </Flex>
-                          )
-                        )}
+                        {(dat?.status
+                          ? ["View Details"]
+                          : ["View Details", "Cancel Reservation"]
+                        ).map((item, i) => (
+                          <Flex
+                            key={i}
+                            w="full"
+                            px="8px"
+                            borderRadius="2px"
+                            mb="5px"
+                            py="9px"
+                            align="center"
+                            onClick={() =>
+                              i == 0
+                                ? navigate(
+                                    `/customer/history/user/reserve-parking/${dat?.id}`
+                                  )
+                                : setShowCancel(true)
+                            }
+                            _hover={{ bg: "#F4F6F8" }}
+                            cursor="pointer"
+                            fontSize="12px"
+                            color={i === 0 ? "" : "red"}
+                            lineHeight="100%"
+                            gap="12px"
+                            fontWeight={500}
+                          >
+                            <Box>
+                              {i === 0 ? (
+                                <TbListDetails size="15px" />
+                              ) : (
+                                <FcCancel size="15px" />
+                              )}
+                            </Box>
+                            <Box>{item}</Box>
+                          </Flex>
+                        ))}
                       </Box>
                     )}
                   </Flex>

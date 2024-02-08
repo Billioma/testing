@@ -744,7 +744,7 @@ const Filter = ({
                       ? "Equals"
                       : "Contains"}
                   </span>
-                  :{console.log(dat?.filter)}
+                  :
                 </Text>
                 <Text fontSize="14px" lineHeight="100%" color="#646668">
                   "

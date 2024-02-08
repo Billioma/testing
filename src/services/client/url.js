@@ -21,6 +21,8 @@ export const CANCEL_CLIENT_EVENT = (id = "") =>
   `client/event-parking/cancel/${id}`;
 export const GET_CLIENT_USERS = "client/users/?";
 export const GET_USERS_COUNT = "client/dashboard/users";
+export const GET_TRANSACTION_COUNT = "client/dashboard/transactions";
+export const GET_LOGS_COUNT = "client/dashboard/logs";
 export const FUND_WALLET = "cards/fund-wallet";
 export const GET_SUB_COUNT = "client/dashboard/subscriptions";
 export const GET_MEM_PLAN = "public/membership-plans?corporate=1";

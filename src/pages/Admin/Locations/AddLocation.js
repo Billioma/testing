@@ -34,6 +34,7 @@ import {
   initAdminLocationValues,
   validateAdminLocationSchema,
 } from "../../../utils/validation";
+import { useGetClients } from "../../../services/admin/query/clients";
 
 export default function AddLocation() {
   const navigate = useNavigate();
@@ -54,10 +55,16 @@ export default function AddLocation() {
   const { data: operators } = useGetOperators({}, 1, 1000);
   const { data: managers } = useGetAdministrators({}, 1, 1000);
   const { data: amenities } = useGetAmenities({}, 1, 1000);
+  const { data: clients } = useGetClients({}, 1, 1000);
 
   const managerOptions = managers?.data?.map((manager) => ({
     label: `${manager.firstName} ${manager.lastName}`,
     value: parseInt(manager.id),
+  }));
+
+  const clientsOptions = clients?.data?.map((client) => ({
+    value: parseInt(client?.id),
+    label: client?.name,
   }));
 
   const amenitiesOptions = amenities?.data?.map((amenity) => ({
@@ -116,6 +123,7 @@ export default function AddLocation() {
       operator,
       locationType,
       amenities,
+      client,
       managers,
       ...rest
     } = values;
@@ -123,6 +131,7 @@ export default function AddLocation() {
       ...rest,
       status: status?.value,
       operator: operator?.value,
+      client: client?.value,
       state: state?.value,
       picture: profilePicData?.path,
       locationType: locationType?.value,
@@ -428,6 +437,56 @@ export default function AddLocation() {
                     {formSubmitted && !values?.operator && (
                       <Text mt="8px" fontSize="12px" color="tomato">
                         Operator is required
+                      </Text>
+                    )}
+                  </Box>
+                  <Box w="full" mb={4}>
+                    <Text
+                      mb="8px"
+                      fontSize="12px"
+                      fontWeight={500}
+                      color="#444648"
+                    >
+                      Client{" "}
+                      <span
+                        style={{
+                          color: "tomato",
+                          fontSize: "15px",
+                        }}
+                      >
+                        *
+                      </span>
+                    </Text>
+                    <Select
+                      styles={
+                        formSubmitted && !values?.client
+                          ? errorCustomStyles
+                          : customStyles
+                      }
+                      placeholder="Select client"
+                      options={clientsOptions}
+                      name="client"
+                      onChange={(selectedOption) => {
+                        setValues({
+                          ...values,
+                          client: selectedOption,
+                        });
+                      }}
+                      onBlur={handleBlur}
+                      components={{
+                        IndicatorSeparator: () => (
+                          <div style={{ display: "none" }}></div>
+                        ),
+                        DropdownIndicator: () => (
+                          <div>
+                            <IoIosArrowDown size="15px" color="#646668" />
+                          </div>
+                        ),
+                      }}
+                    />
+                    {formSubmitted && !values?.client && (
+                      <Text mt="8px" fontSize="12px" color="tomato">
+                        Client is required
                       </Text>
                     )}
                   </Box>
