@@ -78,7 +78,7 @@ const SideBar = ({ show, setShow }) => {
               <VStack
                 key={i}
                 align="stretch"
-                my={
+                mb={
                   show
                     ? showMenu
                       ? showMenu && currentIndex === item.id
