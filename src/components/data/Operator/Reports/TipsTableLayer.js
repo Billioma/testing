@@ -65,7 +65,7 @@ const TipsTableLayer = ({
           my="38px"
           flexDir="column"
         >
-          <Image src="/assets/no-log-rep.png" w="64px" h="64px" />
+          <Image src="/assets/no-log-rep.jpg" w="64px" h="64px" />
           <Text
             color="#848688"
             fontSize="14px"

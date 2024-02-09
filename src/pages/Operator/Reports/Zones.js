@@ -124,7 +124,7 @@ const Zones = () => {
                       color="#646668"
                       fontWeight={500}
                     >
-                      {data?.total}
+                      {data?.total || 0}
                     </Text>
                   </Box>
                 </Flex>
