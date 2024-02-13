@@ -1518,15 +1518,22 @@ export const eventClientDahboard = [
 ];
 
 export const busClientDashboard = [
-  // {
-  //   title: "Users",
-  //   opt: "Inactive",
-  //   color: "#0B841D",
-  //   secOpt: "Active",
-  //   img: "/assets/users.jpg",
-  // },
   {
-    title: "Logs",
+    title: "Valet Logs",
+    color: "#EE383A",
+    opt: "Upcoming",
+    secOpt: "Past",
+    img: "/assets/events.jpg",
+  },
+  {
+    title: "Parking Logs",
+    color: "#0B841D",
+    opt: "Upcoming",
+    secOpt: "Past",
+    img: "/assets/events.jpg",
+  },
+  {
+    title: "Serviced Logs",
     color: "#242628",
     opt: "Upcoming",
     secOpt: "Past",

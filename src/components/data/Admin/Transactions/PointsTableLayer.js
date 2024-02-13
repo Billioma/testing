@@ -76,7 +76,10 @@ const TableLayer = ({
                 <Td textAlign="center">
                   {transaction?.amount?.toLocaleString()}
                 </Td>
-                <Td textAlign="center">{transaction?.customer?.email}</Td>
+                <Td textAlign="center">
+                  {transaction?.customer?.profile?.firstName}{" "}
+                  {transaction?.customer?.profile?.lastName}
+                </Td>
 
                 <Td textAlign="center" textTransform="uppercase">
                   <Flex align="center" w="full" justifyContent="center">

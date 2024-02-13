@@ -110,7 +110,12 @@ const Dashboard = () => {
                             ? transactionCount?.total?.toLocaleString()
                             : i === 1 && eventCount?.total?.toLocaleString()
                           : userData?.accountType === "BUSINESS"
-                          ? i === 0 && logsCount?.total?.toLocaleString()
+                          ? i === 0
+                            ? logsCount?.valet?.total?.toLocaleString()
+                            : i === 1
+                            ? logsCount?.parking?.total?.toLocaleString()
+                            : i === 2 &&
+                              logsCount?.service?.total?.toLocaleString()
                           : i === 0
                           ? subCount?.total?.toLocaleString()
                           : i === 1
@@ -148,7 +153,12 @@ const Dashboard = () => {
                               : i === 1 &&
                                 eventCount?.inactive?.toLocaleString()
                             : userData?.accountType === "BUSINESS"
-                            ? logsCount?.pending?.toLocaleString()
+                            ? i === 0
+                              ? logsCount?.valet?.pending?.toLocaleString()
+                              : i === 1
+                              ? logsCount?.parking?.pending?.toLocaleString()
+                              : i === 2 &&
+                                logsCount?.service?.pending?.toLocaleString()
                             : i === 0
                             ? subCount?.inactive?.toLocaleString()
                             : i === 1
@@ -179,7 +189,12 @@ const Dashboard = () => {
                               ? transactionCount?.completed?.toLocaleString()
                               : i === 1 && eventCount?.active?.toLocaleString()
                             : userData?.accountType === "BUSINESS"
-                            ? logsCount?.completed?.toLocaleString()
+                            ? i === 0
+                              ? logsCount?.valet?.completed?.toLocaleString()
+                              : i === 1
+                              ? logsCount?.parking?.completed?.toLocaleString()
+                              : i === 2 &&
+                                logsCount?.service?.completed?.toLocaleString()
                             : i === 0
                             ? subCount?.active?.toLocaleString()
                             : i === 1
