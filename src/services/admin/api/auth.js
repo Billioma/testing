@@ -2,8 +2,10 @@ import axios from "axios";
 import axiosInstance from "../../axiosInstance";
 import * as API from "../url";
 
-export const login = async (data) => {
-  const response = await axios.post(API.LOGIN, data);
+const BASE_URL = process.env.REACT_APP_BASE_URL;
+
+export const login = async (body) => {
+  const response = await axios.post(BASE_URL + "admin/" + API.LOGIN, body);
   return response.data;
 };
 

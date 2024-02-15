@@ -79,7 +79,11 @@ export default function AddCustomerSubscription() {
     value: customer?.id,
   }));
 
-  const locationOptions = locations?.data?.map((location) => ({
+  const locationToMap = locations?.data?.filter(
+    (item) => item?.isSubApplicable
+  );
+
+  const locationOptions = locationToMap?.map((location) => ({
     label: location?.name,
     value: parseInt(location?.id),
   }));

@@ -173,6 +173,7 @@ export const initAdminLocationValues = {
   amenities: "",
   managers: "",
   enableTips: 0,
+  isSubApplicable: 0,
   status: "",
 };
 

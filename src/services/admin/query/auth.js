@@ -7,12 +7,12 @@ import {
 } from "../api/auth";
 
 export const useLogin = (options = {}) => {
-  const { mutate, isLoading, data } = useMutation(login, {
+  const { mutate, isLoading } = useMutation(login, {
     mutationKey: "LOGIN",
     ...options,
   });
 
-  return { mutate, isLoading, data };
+  return { mutate, isLoading };
 };
 
 export const useUpdateAdminProfile = (options = {}) => {

@@ -173,8 +173,9 @@ const AddSubscription = () => {
       paymentMethod: "",
     });
   }, []);
+  const locationToMap = locations?.filter((item) => item?.isSubApplicable);
 
-  const locationOptions = locations?.map((location) => ({
+  const locationOptions = locationToMap?.map((location) => ({
     value: location?.id,
     label: location?.name,
     id: location?.id,

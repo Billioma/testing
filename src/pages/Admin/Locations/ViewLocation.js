@@ -113,6 +113,7 @@ export default function ViewLocation() {
     managers: "",
     status: "",
     enableTips: 0,
+    isSubApplicable: 0,
   });
 
   const statusOptions = statusType?.map((status, i) => ({
@@ -201,6 +202,7 @@ export default function ViewLocation() {
       client: selectedClientOption,
       status: selectedStatusOption,
       enableTips: data?.enableTips,
+      isSubApplicable: data?.isSubApplicable,
       managers: selectedManagersOption,
     });
   }, [data, operators, amenities, managers]);
@@ -220,6 +222,7 @@ export default function ViewLocation() {
         amenities: values?.amenities?.map((item) => item?.value),
         state: values?.state?.value,
         status: values?.status?.value,
+        isSubApplicable: values?.isSubApplicable,
         enableTips: values?.enableTips,
         managers: values?.managers?.map((item) => item?.value),
       },
@@ -532,6 +535,29 @@ export default function ViewLocation() {
                     isDisabled={edit ? false : true}
                   />
                 </Box>
+
+                <Flex
+                  align="center"
+                  justifyContent={"space-between"}
+                  gap="15px"
+                  mb={4}
+                >
+                  <Text fontSize="14px" fontWeight={500} color="#444648">
+                    Enable Subscription
+                  </Text>
+                  <Switch
+                    onChange={() =>
+                      setValues({
+                        ...values,
+                        isSubApplicable: values?.isSubApplicable ? 0 : 1,
+                      })
+                    }
+                    isChecked={values?.isSubApplicable}
+                    size="sm"
+                    variant="adminPrimary"
+                    isDisabled={edit ? false : true}
+                  />
+                </Flex>
 
                 <Box w="full" mb={4}>
                   <Text

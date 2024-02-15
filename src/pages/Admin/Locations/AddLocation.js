@@ -540,6 +540,26 @@ export default function AddLocation() {
                       </Text>
                     )}
                   </Box>
+                  <Flex
+                    align="center"
+                    justifyContent={"space-between"}
+                    gap="15px"
+                    mb={4}
+                  >
+                    <Text fontSize="12px" fontWeight={500} color="#444648">
+                      Enable Subscription
+                    </Text>
+                    <Switch
+                      onChange={() =>
+                        setValues({
+                          ...values,
+                          isSubApplicable: values?.isSubApplicable ? 0 : 1,
+                        })
+                      }
+                      size="sm"
+                      variant="adminPrimary"
+                    />
+                  </Flex>
                   <Box w="full" mb={4}>
                     <Text
                       mb="8px"
