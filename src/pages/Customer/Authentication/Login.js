@@ -10,6 +10,7 @@ import { useNavigate } from "react-router";
 import { useParams } from "react-router-dom";
 import useCustomToast from "../../../utils/notifications";
 import { useCustomerLogin } from "../../../services/customer/query/auth";
+import ReCAPTCHA from "react-google-recaptcha";
 
 const Login = () => {
   const { redirect } = useParams();
@@ -39,10 +40,19 @@ const Login = () => {
       );
     },
   });
+  const [checked, setChecked] = useState("");
 
   const handleSubmit = (values = "") => {
-    mutate(values);
+    if (checked) {
+      mutate(values);
+    } else {
+      errorToast("Please check the box");
+    }
   };
+
+  function onChange() {
+    setChecked(true);
+  }
 
   return (
     <Flex justifyContent="center" w="full" align="center" flexDir="column">
@@ -141,10 +151,15 @@ const Login = () => {
                   Forgot Password
                 </Text>
               </Flex>
+              <ReCAPTCHA
+                sitekey="6LdN7d4UAAAAAGGTI0wkD2ZlpJLfm6PbpFOQnFx9"
+                onChange={onChange}
+              />
 
               <Button
+                mt="20px"
                 isLoading={isLoading}
-                isDisabled={!isValid || !dirty}
+                isDisabled={!isValid || !dirty || !checked}
                 type="submit"
                 w="full"
               >

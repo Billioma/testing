@@ -9,6 +9,7 @@ import { Form, Formik } from "formik";
 import { useNavigate } from "react-router";
 import { useLogin } from "../../../services/admin/query/auth";
 import useCustomToast from "../../../utils/notifications";
+import ReCAPTCHA from "react-google-recaptcha";
 
 const Login = () => {
   const [show, setShow] = useState(false);
@@ -30,9 +31,19 @@ const Login = () => {
     },
   });
 
+  const [checked, setChecked] = useState("");
+
   const handleSubmit = (values = "") => {
-    mutate(values);
+    if (checked) {
+      mutate(values);
+    } else {
+      errorToast("Please check the box");
+    }
   };
+
+  function onChange() {
+    setChecked(true);
+  }
 
   return (
     <Flex
@@ -136,8 +147,14 @@ const Login = () => {
                 </Text>
               </Flex>
 
+              <ReCAPTCHA
+                sitekey="6LdN7d4UAAAAAGGTI0wkD2ZlpJLfm6PbpFOQnFx9"
+                onChange={onChange}
+              />
+
               <Button
-                isDisabled={!isValid || !dirty}
+                mt="20px"
+                isDisabled={!isValid || !dirty || !checked}
                 type="submit"
                 w="full"
                 isLoading={isLoading}
