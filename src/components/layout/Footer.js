@@ -1,30 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { companies, company, connect, information } from "../common/constants";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-scroll";
 
 const Footer = () => {
   const navigate = useNavigate();
-
-  const handleScroll = () => {
-    const divs = document.querySelectorAll("div");
-    let currentSection = "";
-
-    divs.forEach((div) => {
-      const divTop = div.offsetTop;
-      const divHeight = div.clientHeight;
-      const scrollPosition = window.scrollY + window.innerHeight / 2;
-
-      if (scrollPosition >= divTop && scrollPosition <= divTop + divHeight) {
-        currentSection = div.id;
-      }
-    });
-  };
-
-  useEffect(() => {
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
 
   const today = new Date();
 
@@ -66,10 +46,12 @@ const Footer = () => {
             <div>
               {information.map((dat, i) => (
                 <div
-                  className={`${i === 0 ? "cursor-pointer" : ""}  mb-[21px]`}
+                  className={`${
+                    i === 0 || i === 2 ? "cursor-pointer" : ""
+                  }  mb-[21px]`}
                   key={i}
                 >
-                  {i === 0 ? (
+                  {i === 0 || i === 2 ? (
                     <a target="_blank" rel="noreferrer" href={dat.link}>
                       {dat.name}
                     </a>
@@ -125,7 +107,9 @@ const Footer = () => {
               <div>
                 {information.map((dat, i) => (
                   <div
-                    onClick={() => (i === 0 ? navigate(dat?.link) : "")}
+                    onClick={() =>
+                      i === 0 || i === 2 ? navigate(dat?.link) : ""
+                    }
                     className="cursor-pointer mb-[21px]"
                     key={i}
                   >

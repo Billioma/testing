@@ -288,14 +288,14 @@ export const connect = [
   {
     id: 2,
     name: "Twitter",
-    link: "https://twitter.com/EZParkLimited",
+    link: "https://twitter.com/ParkinspaceNG",
     icon: "/assets/twitter_icon.png",
     img: <RiTwitterXLine color="white" size={20} />,
   },
   {
     id: 3,
     name: "Instagram",
-    link: "https://www.instagram.com/ezparklimited/",
+    link: "https://instagram.com/parkinspace.africa",
     icon: "/assets/instagram_icon.png",
     img: <RiInstagramFill color="white" size={20} />,
   },
@@ -310,6 +310,8 @@ export const connect = [
 
 export const information = [
   { name: "Contact Us", link: "/contact-us" },
+  { name: "Terms & Conditions", link: "" },
+  { name: "Privacy & Policy", link: "/privacy-policy" },
   { name: "Terms & Conditions", link: "" },
   { name: "Frequently Asked Questions", link: "" },
   { name: "Careers", link: "" },

@@ -2,7 +2,6 @@ import React from "react";
 import { headers } from "../common/constants";
 import { HiOutlineMenuAlt3 } from "react-icons/hi";
 import Menu from "./Menu";
-import Auth from "../../pages/Auth";
 import { useNavigate } from "react-router-dom";
 
 const Header = () => {
@@ -19,10 +18,12 @@ const Header = () => {
             <img
               src="/assets/logo.png"
               className="flex lg:hidden w-[134px] h-[28px]"
+              onClick={() => navigate("/")}
             />
             <img
               src="/assets/logo.png"
-              className="hidden lg:flex w-[268px] h-[56px]"
+              className="hidden lg:flex w-[268px] h-[56px] cursor-pointer"
+              onClick={() => navigate("/")}
             />
           </div>
 
