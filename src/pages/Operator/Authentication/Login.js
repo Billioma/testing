@@ -151,7 +151,7 @@ const Login = () => {
               />
 
               <Button
-              mt="20px"
+                mt="20px"
                 isLoading={isLoading}
                 isDisabled={!isValid || !dirty || !checked}
                 type="submit"

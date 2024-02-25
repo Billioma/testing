@@ -48,7 +48,7 @@ const PointsModal = ({ isOpen, refund, onClose, amount, currentItem }) => {
               fontSize="24px"
               mt="24px"
             >
-              Points Received
+              {refund ? "Refund Complete" : "Payment Successful"}
             </Text>
 
             <Text
@@ -58,7 +58,7 @@ const PointsModal = ({ isOpen, refund, onClose, amount, currentItem }) => {
               fontSize="16px"
               mt="24px"
             >
-              You have been {refund ? "refunded" : "awarded"}{" "}
+              {refund ? "You've been refunded" : "You've earned"}{" "}
               {currentItem
                 ? ((currentItem?.amount * 2) / 1000).toFixed(0)
                 : ((amount * 2) / 1000).toFixed(0)}{" "}
