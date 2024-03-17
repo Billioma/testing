@@ -60,7 +60,7 @@ const RatingsModal = ({
             </Flex>
           </Flex>
 
-          <Text fontWeight={700} fontSize="20px" mt="10px">
+          <Text textAlign="center" fontWeight={700} fontSize="20px" mt="10px">
             Please rate our service
           </Text>
           <Flex mt="14px" justifyContent="center">

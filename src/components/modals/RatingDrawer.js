@@ -50,7 +50,7 @@ const RatingsDrawer = ({
         color="#000"
       >
         <DrawerBody px="0">
-          <Text fontWeight={700} fontSize="20px" mt="10px">
+          <Text textAlign="center" fontWeight={700} fontSize="20px" mt="10px">
             Please rate our service
           </Text>
           <Flex justifyContent="flex-end">
