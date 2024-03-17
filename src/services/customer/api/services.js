@@ -6,6 +6,26 @@ export const createPayToPark = async (body) => {
   return res.data;
 };
 
+export const payToParkRate = async ({ query, body }) => {
+  const res = await axiosInstance.patch(API.PAY_TO_PARK_RATE(query), body);
+  return res.data;
+};
+
+export const reserveParkRate = async ({ query, body }) => {
+  const res = await axiosInstance.patch(API.RESERVE_PARKING_RATE(query), body);
+  return res.data;
+};
+
+export const eventParkRate = async ({ query, body }) => {
+  const res = await axiosInstance.patch(API.EVENT_PARKING_RATE(query), body);
+  return res.data;
+};
+
+export const serviceBookRate = async ({ query, body }) => {
+  const res = await axiosInstance.patch(API.SERVICE_BOOKINGS_RATE(query), body);
+  return res.data;
+};
+
 export const createNonUserPayToPark = async (body) => {
   const res = await axiosInstance.post(API.NON_USER_PAY_TO_PARK, body);
   return res.data;

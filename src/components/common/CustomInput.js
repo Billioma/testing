@@ -16,6 +16,7 @@ const CustomInput = ({
   reserve,
   opt,
   onClick,
+  textarea,
   auth,
   show,
   password,
@@ -105,7 +106,7 @@ const CustomInput = ({
           border={reserve ? "none" : getBorderColor()}
           onBlur={(e) => (!auth ? handleInputBlur(e) : setIsTyping(false))}
           onFocus={onFocus}
-          h={opt ? "60px" : reserve ? "40px" : "44px"}
+          h={opt ? "60px" : reserve ? "40px" : textarea ? textarea : "44px"}
           type={type ? type : "text"}
           fontSize="13px"
           _placeholder={{

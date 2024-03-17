@@ -5,6 +5,7 @@ import {
   ClientTranIcon,
   ClientUserIcon,
   DashboardIcon,
+  FeedbackIcon,
   HelpIcon,
   HistoryIcon,
   LocateIcon,
@@ -282,6 +283,14 @@ export const sidebarItems = [
   },
   {
     id: 11,
+    name: "Feedback & Complaints",
+    path: "/admin/feedback&complaints",
+    icon: <FeedbackIcon fill={"#fff"} stroke="#000" />,
+    hover: <FeedbackIcon fill="#fff" stroke="#EE383A" />,
+    sec: <FeedbackIcon fill="#EE383A" stroke="#fff" />,
+  },
+  {
+    id: 12,
     name: "Configurations",
     path: "/admin/configurations",
     icon: <ConfigIcon fill={"#fff"} stroke="#000" />,
@@ -1215,6 +1224,14 @@ export const SecStatus = [
   { color: "#F9A11E", name: "Pending", bg: "#FDF6E7" },
 ];
 
+export const ratings = [
+  { img: "/assets/1.jpg", label: "Poor!" },
+  { img: "/assets/2.jpg", label: "Okay!" },
+  { img: "/assets/3.jpg", label: "Fair!" },
+  { img: "/assets/4.jpg", label: "Good!" },
+  { img: "/assets/5.jpg", label: "Excellent!" },
+];
+
 export const ReservedStatus = ["Pending", "Completed", "Cancelled"];
 export const LogsStatus = ["In Service", "Completed", "Cancelled"];
 export const ServicesStatus = ["In Progress", "Completed", "Cancelled"];
@@ -1435,19 +1452,19 @@ export const companyPayToParkHeader = [
 export const operatorDashCards = [
   {
     title: "Locations",
-    img: "/assets/locationn.jpg",
+    img: "/assets/locationassets/n.jpg",
   },
   {
     title: "Zones",
-    img: "/assets/zones.jpg",
+    img: "/assets/zoneassets/s.jpg",
   },
   {
     title: "Attendants",
-    img: "/assets/attendant.jpg",
+    img: "/assets/attendanassets/t.jpg",
   },
   {
     title: "Transactions",
-    img: "/assets/trans.jpg",
+    img: "/assets/tranassets/s.jpg",
   },
 ];
 
@@ -1455,7 +1472,7 @@ export const operatorDahboard = [
   {
     title: "Valeted Vehicles",
     color: "#EE383A",
-    img: "/assets/valeted.jpg",
+    img: "/assets/valeteassets/d.jpg",
   },
   {
     title: "Parked Vehicles",
@@ -1475,21 +1492,21 @@ export const clientDahboard = [
     opt: "Inactive",
     color: "#EE383A",
     secOpt: "Active",
-    img: "/assets/subs.jpg",
+    img: "/assets/subassets/s.jpg",
   },
   {
     title: "Users",
     opt: "Inactive",
     color: "#0B841D",
     secOpt: "Active",
-    img: "/assets/users.jpg",
+    img: "/assets/userassets/s.jpg",
   },
   {
     title: "Events",
     color: "#242628",
     opt: "Upcoming",
     secOpt: "Past",
-    img: "/assets/events.jpg",
+    img: "/assets/eventassets/s.jpg",
   },
 ];
 
@@ -1499,21 +1516,21 @@ export const eventClientDahboard = [
     opt: "Inactive",
     color: "#EE383A",
     secOpt: "Active",
-    img: "/assets/subs.jpg",
+    img: "/assets/subassets/s.jpg",
   },
   // {
   //   title: "Users",
   //   opt: "Inactive",
   //   color: "#0B841D",
   //   secOpt: "Active",
-  //   img: "/assets/users.jpg",
+  //   img: "/assets/userassets/s.jpg",
   // },
   {
     title: "Events",
     color: "#242628",
     opt: "Upcoming",
     secOpt: "Past",
-    img: "/assets/events.jpg",
+    img: "/assets/eventassets/s.jpg",
   },
 ];
 
@@ -1523,33 +1540,33 @@ export const busClientDashboard = [
     color: "#EE383A",
     opt: "Upcoming",
     secOpt: "Past",
-    img: "/assets/events.jpg",
+    img: "/assets/eventassets/s.jpg",
   },
   {
     title: "Parking Logs",
     color: "#0B841D",
     opt: "Upcoming",
     secOpt: "Past",
-    img: "/assets/events.jpg",
+    img: "/assets/eventassets/s.jpg",
   },
   {
     title: "Serviced Logs",
     color: "#242628",
     opt: "Upcoming",
     secOpt: "Past",
-    img: "/assets/events.jpg",
+    img: "/assets/eventassets/s.jpg",
   },
 ];
 
 export const customerHelp = [
   {
     title: "Frequently Asked Questions",
-    img: "/assets/faq.jpg",
+    img: "/assets/faassets/q.jpg",
     link: "/customer/help-center/FAQs",
   },
   {
     title: "Send us an email",
-    img: "/assets/help.jpg",
+    img: "/assets/helassets/p.jpg",
     link: "/customer/help-center/contact-us",
   },
 ];

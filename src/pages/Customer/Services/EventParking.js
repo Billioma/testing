@@ -11,6 +11,7 @@ import {
   Skeleton,
   Text,
   useDisclosure,
+  useMediaQuery,
 } from "@chakra-ui/react";
 import { HiOutlineArrowNarrowLeft } from "react-icons/hi";
 import { BsCheckCircle } from "react-icons/bs";
@@ -33,6 +34,7 @@ import { usePaystackPayment } from "react-paystack";
 import FundWalletDrawer from "../../../components/modals/FundWalletDrawer";
 import {
   useCreateEventParking,
+  useEventRate,
   useGetEventParking,
 } from "../../../services/customer/query/services";
 import useCustomToast from "../../../utils/notifications";
@@ -40,6 +42,8 @@ import { useNavigate } from "react-router-dom";
 import AddVehicleModal from "../../../components/modals/AddVehicleModal";
 import DatePicker from "react-multi-date-picker";
 import PointsModal from "../../../components/modals/PointsModal";
+import RatingsDrawer from "../../../components/modals/RatingDrawer";
+import RatingsModal from "../../../components/modals/RatingsModal";
 
 const EventParking = () => {
   const [step, setStep] = useState(1);
@@ -140,13 +144,25 @@ const EventParking = () => {
 
   const { successToast, errorToast } = useCustomToast();
   const [showPoint, setShowPoint] = useState(false);
+  const [showRatings, setShowRatings] = useState(false);
+  const [showMobilRatings, setShowMobileRatings] = useState(false);
+  const [isMobile] = useMediaQuery("(max-width: 991px)");
+
   const navigate = useNavigate();
-  const { mutate: eventMutate, isLoading: isEventing } = useCreateEventParking({
+  const {
+    mutate: eventMutate,
+    isLoading: isEventing,
+    data: eventData,
+  } = useCreateEventParking({
     onSuccess: () => {
       if (values.paymentMethod !== "3") {
         setShowPoint(true);
       } else if (values.paymentMethod === "3") {
-        navigate("/customer/history/user");
+        if (isMobile) {
+          setShowMobileRatings(true);
+        } else {
+          setShowRatings(true);
+        }
       }
       successToast("Parking spot reserved");
       onClose();
@@ -212,12 +228,66 @@ const EventParking = () => {
     }),
   };
 
+  const [ratingsValue, setRatingsValue] = useState({
+    rating: "",
+    ratingReason: "",
+  });
+
+  const { mutate: rateMutate, isLoading: isRating } = useEventRate({
+    onSuccess: (res) => {
+      successToast(res?.message);
+      setShowMobileRatings(false);
+      setShowRatings(false);
+      setRatingsValue({ rating: "", ratingReason: "" });
+      navigate("/customer/history/user");
+    },
+    onError: (err) => {
+      errorToast(
+        err?.response?.data?.message || err?.message || "An Error occurred"
+      );
+    },
+  });
+
+  useEffect(() => {
+    if (showRatings || showMobilRatings) {
+      setShowPoint(false);
+    }
+  }, [showRatings, showMobilRatings]);
+
+  const handleRating = () => {
+    rateMutate({
+      query: eventData[0]?.id,
+      body: {
+        rating: ratingsValue?.rating,
+        ratingReason: ratingsValue?.ratingReason,
+      },
+    });
+  };
+
   return (
     <Box minH="75vh">
       <PointsModal
         isOpen={showPoint}
         onClose={() => setShowPoint(false)}
+        setShowRatings={setShowRatings}
+        setShowMobileRatings={setShowMobileRatings}
         amount={event?.price}
+      />
+      <RatingsModal
+        isOpen={showRatings}
+        action={handleRating}
+        isLoading={isRating}
+        setRatingsValue={setRatingsValue}
+        ratingsValue={ratingsValue}
+        onClose={() => setShowRatings(false)}
+      />
+      <RatingsDrawer
+        isOpen={showMobilRatings}
+        action={handleRating}
+        isLoading={isRating}
+        setRatingsValue={setRatingsValue}
+        ratingsValue={ratingsValue}
+        onClose={() => setShowMobileRatings(false)}
       />
       <Flex justifyContent="center" align="center" w="full" flexDir="column">
         <Flex

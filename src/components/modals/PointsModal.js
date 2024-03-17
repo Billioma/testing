@@ -9,12 +9,19 @@ import {
   ModalContent,
   ModalOverlay,
   Text,
+  useMediaQuery,
 } from "@chakra-ui/react";
-import { useLocation, useNavigate } from "react-router-dom";
 
-const PointsModal = ({ isOpen, refund, onClose, amount, currentItem }) => {
-  const navigate = useNavigate();
-  const { pathname } = useLocation();
+const PointsModal = ({
+  isOpen,
+  refund,
+  setShowRatings,
+  setShowMobileRatings,
+  onClose,
+  amount,
+  currentItem,
+}) => {
+  const [isMobile] = useMediaQuery("(max-width: 991px)");
   return (
     <Modal
       isCentered
@@ -69,11 +76,7 @@ const PointsModal = ({ isOpen, refund, onClose, amount, currentItem }) => {
               <Button
                 w="full"
                 onClick={() =>
-                  pathname.includes("/customer/services")
-                    ? navigate("/customer/history/user")
-                    : pathname.includes("/customer/subscriptions")
-                    ? navigate("/customer/subscriptions")
-                    : onClose()
+                  isMobile ? setShowMobileRatings(true) : setShowRatings(true)
                 }
                 fontSize="13px"
                 borderRadius="4px"

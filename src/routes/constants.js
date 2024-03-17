@@ -186,6 +186,9 @@ export const PRIVATE_PATHS = {
   ADMIN_ADD_CLIENT: "/admin/clients/all/create",
   ADMIN_VIEW_CLIENT: "/admin/clients/all/details/:id",
 
+  ADMIN_FEEDBACK: "/admin/feedback&complaints",
+  ADMIN_VIEW_FEEDBACK: "/admin/feedback&complaints/:id",
+
   ADMIN_CLIENTS_INVOICES: "/admin/clients/invoices",
   ADMIN_VIEW_CLIENT_INVOICE: "/admin/clients/invoices/details/:id",
   ADMIN_ADD_CLIENT_INVOICE: "/admin/clients/invoices/create",

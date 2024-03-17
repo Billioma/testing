@@ -28,11 +28,16 @@ export const GET_PAYMENT_TIPS = (filterString = "", limit, page) =>
   `tips?${filterString}&limit=${limit}&page=${page}&sort=createdAt,DESC`;
 export const UPLOAD_PIC = "system/media-upload";
 export const PAY_TO_PARK = "pay-to-park";
+export const PAY_TO_PARK_RATE = (id = "") => `customer/pay-to-park/rate/${id}`;
 export const NON_USER_PAY_TO_PARK = "self-parking/pay-to-park";
 export const TIPS = "customers/tips?sort=createdAt,DESC";
 export const CREATE_TIPS = "customers/tips";
 export const RESERVE_PARKING = "reserve-parking";
+export const RESERVE_PARKING_RATE = (id = "") =>
+  `customer/reserve-parking/rate/${id}`;
 export const EVENT_PARKING = "event-parking";
+export const EVENT_PARKING_RATE = (id = "") =>
+  `customer/event-parking/rate/${id}`;
 
 export const EVENT_PARKING_POST = "event-parking/multiple";
 export const REQUEST_RESERVE_PARKING = "reserve-parking/request-reservation";
@@ -53,6 +58,8 @@ export const GET_PLANS = "public/membership-plans";
 export const FUND_WALLET = "cards/fund-wallet";
 export const GET_EVENTS = "public/events";
 export const SERVICE_BOOKINGS = "service-bookings";
+export const SERVICE_BOOKINGS_RATE = (id = "") =>
+  `customer/service-bookings/rate/${id}`;
 export const BOOKING_RATES = "service-bookings/rates";
 export const GET_ZONE = (zone = "") => `public/zone?term=${zone}`;
 export const GET_SERVICES = "public/services";

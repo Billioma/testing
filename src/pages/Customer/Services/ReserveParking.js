@@ -11,6 +11,7 @@ import {
   Spinner,
   Text,
   useDisclosure,
+  useMediaQuery,
 } from "@chakra-ui/react";
 import { HiOutlineArrowNarrowLeft } from "react-icons/hi";
 import { BsCheckCircle } from "react-icons/bs";
@@ -38,6 +39,7 @@ import {
   useCreateReserveParking,
   useGetReserveParking,
   useRequestReserveParking,
+  useReserveRate,
 } from "../../../services/customer/query/services";
 import useCustomToast from "../../../utils/notifications";
 import { useNavigate } from "react-router-dom";
@@ -55,6 +57,8 @@ import GoogleMap from "google-map-react";
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Tooltip from "react-bootstrap/Tooltip";
 import PointsModal from "../../../components/modals/PointsModal";
+import RatingsDrawer from "../../../components/modals/RatingDrawer";
+import RatingsModal from "../../../components/modals/RatingsModal";
 
 const ReserveParking = () => {
   const { data: locations, isLoading: isLocation } = useGetLocations();
@@ -325,25 +329,36 @@ const ReserveParking = () => {
   const navigate = useNavigate();
   const { successToast, errorToast } = useCustomToast();
   const [showPoint, setShowPoint] = useState(false);
+  const [showRatings, setShowRatings] = useState(false);
+  const [showMobilRatings, setShowMobileRatings] = useState(false);
+
+  const [isMobile] = useMediaQuery("(max-width: 991px)");
   const { refetch: refetchParking } = useGetReserveParking(10, 1);
-  const { mutate: reserveMutate, isLoading: isReserving } =
-    useCreateReserveParking({
-      onSuccess: () => {
-        refetch();
-        refetchParking();
-        if (values.paymentMethod !== "3") {
-          setShowPoint(true);
-        } else if (values.paymentMethod === "3") {
-          navigate("/customer/history/user");
+  const {
+    mutate: reserveMutate,
+    isLoading: isReserving,
+    data,
+  } = useCreateReserveParking({
+    onSuccess: () => {
+      refetch();
+      refetchParking();
+      if (values.paymentMethod !== "3") {
+        setShowPoint(true);
+      } else if (values.paymentMethod === "3") {
+        if (isMobile) {
+          setShowMobileRatings(true);
+        } else {
+          setShowRatings(true);
         }
-        successToast("Parking spot reserved");
-      },
-      onError: (err) => {
-        errorToast(
-          err?.response?.data?.message || err?.message || "An Error occurred"
-        );
-      },
-    });
+      }
+      successToast("Parking spot reserved");
+    },
+    onError: (err) => {
+      errorToast(
+        err?.response?.data?.message || err?.message || "An Error occurred"
+      );
+    },
+  });
   const handleRequest = () => {
     reqeustReserve({
       arrival: `${start}${formatTimeToHHMMSS(values?.arrivalTime?.value)}`,
@@ -468,12 +483,66 @@ const ReserveParking = () => {
 
   const groupedTimes = groupTimesByDate(times);
 
+  const [ratingsValue, setRatingsValue] = useState({
+    rating: "",
+    ratingReason: "",
+  });
+
+  const { mutate: rateMutate, isLoading: isRating } = useReserveRate({
+    onSuccess: (res) => {
+      successToast(res?.message);
+      setShowMobileRatings(false);
+      setShowRatings(false);
+      setRatingsValue({ rating: "", ratingReason: "" });
+      navigate("/customer/history/user");
+    },
+    onError: (err) => {
+      errorToast(
+        err?.response?.data?.message || err?.message || "An Error occurred"
+      );
+    },
+  });
+
+  useEffect(() => {
+    if (showRatings || showMobilRatings) {
+      setShowPoint(false);
+    }
+  }, [showRatings, showMobilRatings]);
+
+  const handleRating = () => {
+    rateMutate({
+      query: data?.id,
+      body: {
+        rating: ratingsValue?.rating,
+        ratingReason: ratingsValue?.ratingReason,
+      },
+    });
+  };
+
   return (
     <Box minH="75vh">
       <PointsModal
         isOpen={showPoint}
+        setShowRatings={setShowRatings}
+        setShowMobileRatings={setShowMobileRatings}
         onClose={() => setShowPoint(false)}
         amount={requestData?.amount}
+      />
+      <RatingsModal
+        isOpen={showRatings}
+        action={handleRating}
+        isLoading={isRating}
+        setRatingsValue={setRatingsValue}
+        ratingsValue={ratingsValue}
+        onClose={() => setShowRatings(false)}
+      />
+      <RatingsDrawer
+        isOpen={showMobilRatings}
+        action={handleRating}
+        isLoading={isRating}
+        setRatingsValue={setRatingsValue}
+        ratingsValue={ratingsValue}
+        onClose={() => setShowMobileRatings(false)}
       />
       <Flex justifyContent="center" align="center" w="full" flexDir="column">
         <Flex

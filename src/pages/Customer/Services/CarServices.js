@@ -9,6 +9,7 @@ import {
   Radio,
   RadioGroup,
   Text,
+  useMediaQuery,
 } from "@chakra-ui/react";
 import { HiOutlineArrowNarrowLeft } from "react-icons/hi";
 import {
@@ -34,6 +35,7 @@ import {
   useGetBookingRate,
   useCreateServiceBookings,
   useGetCarService,
+  useServiceBookRate,
 } from "../../../services/customer/query/services";
 import { useGetCards } from "../../../services/customer/query/payment";
 import useCustomToast from "../../../utils/notifications";
@@ -43,6 +45,8 @@ import { usePaystackPayment } from "react-paystack";
 import AddVehicleModal from "../../../components/modals/AddVehicleModal";
 import DatePicker from "react-multi-date-picker";
 import PointsModal from "../../../components/modals/PointsModal";
+import RatingsDrawer from "../../../components/modals/RatingDrawer";
+import RatingsModal from "../../../components/modals/RatingsModal";
 
 const CarServices = () => {
   const [step, setStep] = useState(1);
@@ -52,6 +56,8 @@ const CarServices = () => {
   const { data: userData, refetch } = useGetUser();
   const { refetch: refetchBooking } = useGetCarService(10, 1);
   const [showPoint, setShowPoint] = useState(false);
+  const [showRatings, setShowRatings] = useState(false);
+  const [showMobilRatings, setShowMobileRatings] = useState(false);
 
   const [values, setValues] = useState({
     serviceId: "",
@@ -229,39 +235,34 @@ const CarServices = () => {
       [name]: selectedOption,
     });
   };
+  const [isMobile] = useMediaQuery("(max-width: 991px)");
 
-  const { mutate: bookMutate, isLoading: isBooking } = useCreateServiceBookings(
-    {
-      onSuccess: () => {
-        startChange("");
-        refetch();
-        refetchBooking();
-        // setValues({
-        //   serviceId: "",
-        //   address: "",
-        //   appointmentTime: "",
-        //   img: "",
-        //   desc: "",
-        //   billingRate: "",
-        //   cardId: "",
-        //   paymentMethod: "",
-        //   vehicle: "",
-        // });
-        // setStep(1);
-        if (values.paymentMethod !== "3") {
-          setShowPoint(true);
-        } else if (values.paymentMethod === "3") {
-          navigate("/customer/history/user");
+  const {
+    mutate: bookMutate,
+    isLoading: isBooking,
+    data: serviceData,
+  } = useCreateServiceBookings({
+    onSuccess: () => {
+      startChange("");
+      refetch();
+      refetchBooking();
+      if (values.paymentMethod !== "3") {
+        setShowPoint(true);
+      } else if (values.paymentMethod === "3") {
+        if (isMobile) {
+          setShowMobileRatings(true);
+        } else {
+          setShowRatings(true);
         }
-        successToast("Payment Successful");
-      },
-      onError: (err) => {
-        errorToast(
-          err?.response?.data?.message || err?.message || "An Error occurred"
-        );
-      },
-    }
-  );
+      }
+      successToast("Payment Successful");
+    },
+    onError: (err) => {
+      errorToast(
+        err?.response?.data?.message || err?.message || "An Error occurred"
+      );
+    },
+  });
 
   const selectedIndex = BookingSlots.findIndex(
     (time) => time === values?.appointmentTime?.value
@@ -348,12 +349,66 @@ const CarServices = () => {
     }
   }, [step]);
 
+  const [ratingsValue, setRatingsValue] = useState({
+    rating: "",
+    ratingReason: "",
+  });
+
+  const { mutate: rateMutate, isLoading: isRating } = useServiceBookRate({
+    onSuccess: (res) => {
+      successToast(res?.message);
+      setShowMobileRatings(false);
+      setShowRatings(false);
+      setRatingsValue({ rating: "", ratingReason: "" });
+      navigate("/customer/history/user");
+    },
+    onError: (err) => {
+      errorToast(
+        err?.response?.data?.message || err?.message || "An Error occurred"
+      );
+    },
+  });
+
+  useEffect(() => {
+    if (showRatings || showMobilRatings) {
+      setShowPoint(false);
+    }
+  }, [showRatings, showMobilRatings]);
+
+  const handleRating = () => {
+    rateMutate({
+      query: serviceData?.id,
+      body: {
+        rating: ratingsValue?.rating,
+        ratingReason: ratingsValue?.ratingReason,
+      },
+    });
+  };
+
   return (
     <Box minH="75vh">
       <PointsModal
         isOpen={showPoint}
+        setShowRatings={setShowRatings}
+        setShowMobileRatings={setShowMobileRatings}
         onClose={() => setShowPoint(false)}
         amount={values?.billingRate?.amount}
+      />
+      <RatingsModal
+        isOpen={showRatings}
+        action={handleRating}
+        isLoading={isRating}
+        setRatingsValue={setRatingsValue}
+        ratingsValue={ratingsValue}
+        onClose={() => setShowRatings(false)}
+      />
+      <RatingsDrawer
+        isOpen={showMobilRatings}
+        action={handleRating}
+        isLoading={isRating}
+        setRatingsValue={setRatingsValue}
+        ratingsValue={ratingsValue}
+        onClose={() => setShowMobileRatings(false)}
       />
       <Flex justifyContent="center" align="center" w="full" flexDir="column">
         <Flex

@@ -65,6 +65,9 @@ const Header = ({ showSidebar }) => {
       case locationRoute.includes("configurations"):
         return setTitle("Configurations");
 
+      case locationRoute.includes("feedback"):
+        return setTitle("Feedback & Complaints ");
+
       default:
         return setTitle("");
     }
@@ -399,7 +402,7 @@ const Header = ({ showSidebar }) => {
           <Flex align="flex-end" gap="4px">
             <Text
               color="#242628"
-              fontSize="22px"
+              fontSize={{ base: "", md: "22px" }}
               lineHeight="100%"
               fontWeight={500}
             >

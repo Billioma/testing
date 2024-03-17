@@ -210,8 +210,7 @@ const VehicleCards = () => {
             flexDir="column"
             justifyContent="center"
             align="center"
-            onClick={() => onOpen()}
-            // onClick={() => (vehicles?.data?.length >= 3 ? "" : onOpen())}
+            onClick={() => (vehicles?.data?.length >= 3 ? "" : onOpen())}
             borderRadius="8px"
           >
             {vehicles?.data?.length >= 3 ? (

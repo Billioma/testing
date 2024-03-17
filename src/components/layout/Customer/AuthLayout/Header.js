@@ -179,7 +179,7 @@ const Header = ({ showSidebar }) => {
               <Text
                 display={isMobile ? "none" : "flex"}
                 color="#848688"
-                pt="3px"
+                mb="3px"
                 fontWeight={500}
                 lineHeight="100%"
               >

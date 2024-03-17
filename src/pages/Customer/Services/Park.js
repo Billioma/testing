@@ -8,6 +8,7 @@ import {
   RadioGroup,
   Text,
   useDisclosure,
+  useMediaQuery,
 } from "@chakra-ui/react";
 import CustomInput from "../../../components/common/CustomInput";
 import { HiOutlineArrowNarrowLeft } from "react-icons/hi";
@@ -25,6 +26,7 @@ import { useGetUser } from "../../../services/customer/query/user";
 import {
   useCreatePayToPark,
   useGetPayToPark,
+  usePayToParkRate,
 } from "../../../services/customer/query/services";
 import { useNavigate } from "react-router-dom";
 import { useGetCards } from "../../../services/customer/query/payment";
@@ -32,6 +34,8 @@ import { usePaystackPayment } from "react-paystack";
 import FundWalletDrawer from "../../../components/modals/FundWalletDrawer";
 import AddVehicleModal from "../../../components/modals/AddVehicleModal";
 import PointsModal from "../../../components/modals/PointsModal";
+import RatingsModal from "../../../components/modals/RatingsModal";
+import RatingsDrawer from "../../../components/modals/RatingDrawer";
 
 const Park = () => {
   const [zone, setZone] = useState("");
@@ -96,23 +100,34 @@ const Park = () => {
     },
   });
   const [showPoint, setShowPoint] = useState(false);
+  const [showRatings, setShowRatings] = useState(false);
+  const [showMobilRatings, setShowMobileRatings] = useState(false);
+  const [isMobile] = useMediaQuery("(max-width: 991px)");
 
   const { refetch: refetchPark } = useGetPayToPark(10, 1);
-  const { mutate: parkMutate, isLoading: isCreating } = useCreatePayToPark({
+  const {
+    mutate: parkMutate,
+    isLoading: isCreating,
+    data: parkData,
+  } = useCreatePayToPark({
     onSuccess: () => {
       onClose();
       refetchPark();
       refetch();
+      console.log(values.paymentMethod);
       if (values.paymentMethod !== "3") {
         setShowPoint(true);
       } else if (values.paymentMethod === "3") {
-        navigate("/customer/history/user");
+        if (isMobile) {
+          setShowMobileRatings(true);
+        } else {
+          setShowRatings(true);
+        }
       }
       setValues({
         ...values,
         vehicle: "",
         serviceType: "",
-        // paymentMethod: "",
         cardId: "",
       });
       setZone("");
@@ -231,12 +246,66 @@ const Park = () => {
     }),
   };
 
+  const [ratingsValue, setRatingsValue] = useState({
+    rating: "",
+    ratingReason: "",
+  });
+
+  const { mutate: rateMutate, isLoading: isRating } = usePayToParkRate({
+    onSuccess: (res) => {
+      successToast(res?.message);
+      setShowMobileRatings(false);
+      setShowRatings(false);
+      setRatingsValue({ rating: "", ratingReason: "" });
+      navigate("/customer/history/user");
+    },
+    onError: (err) => {
+      errorToast(
+        err?.response?.data?.message || err?.message || "An Error occurred"
+      );
+    },
+  });
+
+  useEffect(() => {
+    if (showRatings || showMobilRatings) {
+      setShowPoint(false);
+    }
+  }, [showRatings, showMobilRatings]);
+
+  const handleRating = () => {
+    rateMutate({
+      query: parkData?.id,
+      body: {
+        rating: ratingsValue?.rating,
+        ratingReason: ratingsValue?.ratingReason,
+      },
+    });
+  };
+
   return (
     <Box minH="75vh">
       <PointsModal
         isOpen={showPoint}
+        setShowRatings={setShowRatings}
+        setShowMobileRatings={setShowMobileRatings}
         onClose={() => setShowPoint(false)}
         amount={values?.amount}
+      />
+      <RatingsModal
+        isOpen={showRatings}
+        action={handleRating}
+        isLoading={isRating}
+        setRatingsValue={setRatingsValue}
+        ratingsValue={ratingsValue}
+        onClose={() => setShowRatings(false)}
+      />
+      <RatingsDrawer
+        isOpen={showMobilRatings}
+        action={handleRating}
+        isLoading={isRating}
+        setRatingsValue={setRatingsValue}
+        ratingsValue={ratingsValue}
+        onClose={() => setShowMobileRatings(false)}
       />
       <Flex justifyContent="center" align="center" w="full" flexDir="column">
         <Flex
@@ -317,7 +386,12 @@ const Park = () => {
               p="12px"
             >
               <Flex align="center" gap="12px">
-                <Image src="/assets/zone_pic.png" w="96px" h="96px" />
+                <Image
+                  display={{ base: "none", md: "flex" }}
+                  src="/assets/zone_pic.png"
+                  w="96px"
+                  h="96px"
+                />
                 <Box w="full">
                   <Flex align="center" justifyContent="space-between" w="full">
                     <Box>

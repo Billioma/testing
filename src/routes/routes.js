@@ -149,6 +149,8 @@ const {
   ADMIN_VIEW_MEMBERSHIP_FEATURE,
   ADMIN_ADD_MEMBERSHIP_FEATURE,
 
+  ADMIN_FEEDBACK,
+
   ADMIN_CORPORATE_SUBSCRIPTIONS,
   ADMIN_VIEW_CORPORATE_SUBSCRIPTION,
   ADMIN_ADD_CORPORATE_SUBSCRIPTION,
@@ -570,6 +572,14 @@ const AdminAddAdministrator = WithSuspense(
 
 const AdminViewAdministrator = WithSuspense(
   lazy(() => import("../pages/Admin/Users/ViewAdministrator"))
+);
+
+const AdminFeedback = WithSuspense(
+  lazy(() => import("../pages/Admin/FeedbackComplaints/FeedbackComplaints"))
+);
+
+const AdminViewFeedback = WithSuspense(
+  lazy(() => import("../pages/Admin/FeedbackComplaints/ViewFeedbackComplaints"))
 );
 
 const AdminVehicles = WithSuspense(
@@ -1250,6 +1260,20 @@ export const PRIVATE_ROUTES = [
   {
     path: PRIVATE_PATHS.ADMIN_ADD_EVENT,
     element: <AdminAddClientsEvent />,
+  },
+
+  {
+    path: ADMIN_FEEDBACK,
+    element: <AdminFeedback />,
+  },
+  {
+    path: PRIVATE_PATHS.ADMIN_VIEW_FEEDBACK,
+    element: <AdminViewFeedback />,
+  },
+
+  {
+    path: PRIVATE_PATHS.ADMIN_LOCATIONS,
+    element: <AdminLocations />,
   },
 
   {
