@@ -213,11 +213,11 @@ export const useGetBookingRate = (id = "", type = "", options = {}) => {
 };
 
 export const useCreatePayToPark = (options = {}) => {
-  const { mutate, isLoading } = useMutation(createPayToPark, {
+  const { mutate, isLoading, data } = useMutation(createPayToPark, {
     mutationKey: "CREATE_PAY_TO_PARK",
     ...options,
   });
-  return { mutate, isLoading };
+  return { mutate, isLoading, data };
 };
 
 export const useCreateNonUserPayToPark = (options = {}) => {
