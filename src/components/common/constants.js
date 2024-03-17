@@ -1226,8 +1226,8 @@ export const SecStatus = [
 
 export const ratings = [
   { img: "/assets/1.jpg", label: "Poor!" },
-  { img: "/assets/2.jpg", label: "Okay!" },
-  { img: "/assets/3.jpg", label: "Fair!" },
+  { img: "/assets/2.jpg", label: "Fair!" },
+  { img: "/assets/3.jpg", label: "Okay!" },
   { img: "/assets/4.jpg", label: "Good!" },
   { img: "/assets/5.jpg", label: "Excellent!" },
 ];

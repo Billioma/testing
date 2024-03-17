@@ -60,7 +60,15 @@ const RatingsModal = ({
             </Flex>
           </Flex>
 
-          <Text textAlign="center" fontWeight={700} fontSize="20px" mt="10px">
+          <Text
+            textAlign="center"
+            fontFamily="Cooper"
+            color="#444648"
+            fontWeight={900}
+            lineHeight="120%"
+            fontSize="24px"
+            mt="10px"
+          >
             Please rate our service
           </Text>
           <Flex mt="14px" justifyContent="center">

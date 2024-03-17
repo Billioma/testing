@@ -292,7 +292,7 @@ const Park = () => {
         amount={values?.amount}
       />
       <RatingsModal
-        isOpen={showRatings}
+        isOpen={true}
         action={handleRating}
         isLoading={isRating}
         setRatingsValue={setRatingsValue}
