@@ -114,7 +114,6 @@ const Park = () => {
       onClose();
       refetchPark();
       refetch();
-      console.log(values.paymentMethod);
       if (values.paymentMethod !== "3") {
         setShowPoint(true);
       } else if (values.paymentMethod === "3") {
@@ -292,7 +291,7 @@ const Park = () => {
         amount={values?.amount}
       />
       <RatingsModal
-        isOpen={true}
+        isOpen={showRatings}
         action={handleRating}
         isLoading={isRating}
         setRatingsValue={setRatingsValue}
