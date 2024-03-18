@@ -196,7 +196,7 @@ export default function ViewOperator() {
       body: {
         amountPaid: values.amountPaid,
         paidAt: values.paidAt,
-        paymentStatus: 1,
+        paymentStatus: Number(values?.amountPaid) === 0 ? 0 : 1,
       },
     });
   };
