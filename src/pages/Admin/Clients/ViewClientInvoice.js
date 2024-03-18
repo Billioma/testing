@@ -195,7 +195,7 @@ export default function ViewOperator() {
       query: id,
       body: {
         amountPaid: values.amountPaid,
-        paidAt: values.paidAt,
+        paidAt: Number(values?.amountPaid) === 0 ? null : values.paidAt,
         paymentStatus: Number(values?.amountPaid) === 0 ? 0 : 1,
       },
     });
@@ -214,7 +214,7 @@ export default function ViewOperator() {
       paymentStatus: data?.paymentStatus,
       amountPayable: data?.amountPayable,
       amountPaid: data?.amountPaid,
-      paidAt: data?.paidAt || new Date(),
+      paidAt: data?.paidAt,
       invoiceItems: data && JSON.parse(data?.invoiceItems),
     });
   }, [data, clients]);
