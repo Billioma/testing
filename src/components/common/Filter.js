@@ -118,6 +118,11 @@ const Filter = ({
     label: type,
   }));
 
+  const messageOptions = ["FEEDBACK", "COMPLAINT", "ENQUIRY"].map((type) => ({
+    value: type,
+    label: type,
+  }));
+
   const yesNoOptions = ["No", "Yes"].map((opt, i) => ({
     value: i,
     label: opt,
@@ -562,6 +567,8 @@ const Filter = ({
                                 ? transactionOptions
                                 : values?.dropFilter === "Payment_Method"
                                 ? payMethodOptions
+                                : values?.dropFilter === "Message Type"
+                                ? messageOptions
                                 : values?.dropFilter === "Make"
                                 ? makeOptions
                                 : values?.dropFilter === "Make"

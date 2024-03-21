@@ -19,6 +19,7 @@ export default function ViewFeedbackComplaints() {
     name: "",
     email: "",
     feedback: "",
+    message: "",
   });
 
   const { mutate, data, isLoading } = useGetFeedback();
@@ -55,6 +56,7 @@ export default function ViewFeedbackComplaints() {
       ...values,
       email: data?.senderEmail,
       name: data?.senderName,
+      message: data?.content,
     });
   }, [data]);
 
@@ -97,19 +99,9 @@ export default function ViewFeedbackComplaints() {
                   >
                     Name
                   </Text>
-                  <CustomInput
-                    auth
-                    value={values?.name}
-                    mb
-                    holder="Enter name"
-                    onChange={(e) =>
-                      setValues({
-                        ...values,
-                        name: e.target.value,
-                      })
-                    }
-                  />
+                  <CustomInput auth value={values?.name} mb isDisabled />
                 </Box>
+
                 <Box w="full" mb={4}>
                   <Text
                     mb="8px"
@@ -119,19 +111,21 @@ export default function ViewFeedbackComplaints() {
                   >
                     Email Address
                   </Text>
-                  <CustomInput
-                    auth
-                    value={values?.email}
-                    mb
-                    holder="Enter email"
-                    onChange={(e) =>
-                      setValues({
-                        ...values,
-                        email: e.target.value,
-                      })
-                    }
-                  />
+                  <CustomInput auth value={values?.email} mb isDisabled />
                 </Box>
+
+                <Box w="full" mb={4}>
+                  <Text
+                    mb="8px"
+                    fontSize="12px"
+                    fontWeight={500}
+                    color="#444648"
+                  >
+                    Message
+                  </Text>
+                  <TextInput auth value={values?.message} mb isDisabled />
+                </Box>
+
                 <Box w="full" mb={4}>
                   <Text
                     mb="8px"
@@ -167,7 +161,7 @@ export default function ViewFeedbackComplaints() {
                     fontSize="14px"
                     onClick={() => navigate(PRIVATE_PATHS.ADMIN_FEEDBACK)}
                   >
-                    Clear
+                    Cancel
                   </Button>
                   <Button
                     isLoading={isUpdating}
@@ -175,7 +169,7 @@ export default function ViewFeedbackComplaints() {
                     h="48px"
                     onClick={handleSubmit}
                   >
-                    Reply & Clear
+                    Reply
                   </Button>
                 </Flex>
               </Flex>

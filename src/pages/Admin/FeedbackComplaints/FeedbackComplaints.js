@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Box, Flex, Image, Text } from "@chakra-ui/react";
 import TableLayer from "../../../components/data/Admin/Feedbacks/TableLayer";
 import Filter from "../../../components/common/Filter";
-import { vehiclesOptions } from "../../../components/common/constants";
+import { feedbackOptions } from "../../../components/common/constants";
 import { formatFilterDate } from "../../../utils/helpers";
 import { useGetFeedbacks } from "../../../services/admin/query/feedback";
 
@@ -102,7 +102,7 @@ export default function () {
       <Filter
         setFiltArray={setFiltArray}
         filtArray={filtArray}
-        fieldToCompare={vehiclesOptions}
+        fieldToCompare={feedbackOptions}
         title={
           <Text fontWeight={500} lineHeight="100%" color="#242628">
             All Feedbacks

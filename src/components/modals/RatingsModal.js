@@ -78,15 +78,6 @@ const RatingsModal = ({
               >
                 Rate our service
               </Text>
-              <Text
-                textAlign="center"
-                color="#242627"
-                fontWeight={500}
-                fontSize="12px"
-                mt="4px"
-              >
-                Tell us how easy it was to park
-              </Text>{" "}
               <Flex mt="24px" align="center" gap="6px" justifyContent="center">
                 {Array(5)
                   .fill(null)

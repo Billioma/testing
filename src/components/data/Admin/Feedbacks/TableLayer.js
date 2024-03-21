@@ -15,14 +15,7 @@ const TableLayer = ({
   limit,
   setLimit,
 }) => {
-  const headers = [
-    "TIME STAMP",
-    "NAME",
-    "CUSTOMER EMAIL",
-    "TYPE",
-    "MESSAGE",
-    "ACTIONS",
-  ];
+  const headers = ["NAME", "CUSTOMER EMAIL", "TYPE", "TIME STAMP", "ACTIONS"];
 
   const navigate = useNavigate();
   return (
@@ -35,8 +28,7 @@ const TableLayer = ({
             header={headers}
             opt
             alignFirstHeader
-            alignThirdHeader
-            alignFifthHeader
+            alignSecondHeader
             paginationValues={{
               startRow,
               endRow,
@@ -59,8 +51,7 @@ const TableLayer = ({
                 fontSize="14px"
                 lineHeight="100%"
               >
-                <Td>{formatDateNewTime(item?.createdAt)}</Td>
-                <Td textAlign="center">{item?.senderName}</Td>
+                <Td>{item?.senderName}</Td>
                 <Td>{item?.senderEmail}</Td>
                 <Td textAlign="center">
                   <Flex justifyContent="center" align="center">
@@ -90,7 +81,7 @@ const TableLayer = ({
                     </Flex>
                   </Flex>
                 </Td>
-                <Td>{item?.content}</Td>
+                <Td textAlign="center">{formatDateNewTime(item?.createdAt)}</Td>
                 <Td textAlign="center">
                   <Flex justifyContent="center" align="center">
                     <Text

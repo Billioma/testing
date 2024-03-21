@@ -2061,6 +2061,12 @@ export const vehiclesOptions = [
   { label: "Created At", value: "createdAt" },
 ];
 
+export const feedbackOptions = [
+  { label: "Name", value: "senderName" },
+  { label: "Email", value: "senderEmail" },
+  { label: "Message Type", value: "type" },
+];
+
 export const membershipPlansOptions = [
   { label: "Name", value: "name" },
   { label: "Amount (₦)", value: "amount" },
