@@ -15,7 +15,14 @@ const TableLayer = ({
   limit,
   setLimit,
 }) => {
-  const headers = ["NAME", "CUSTOMER EMAIL", "TYPE", "TIME STAMP", "ACTIONS"];
+  const headers = [
+    "NAME",
+    "CUSTOMER EMAIL",
+    "TYPE",
+    "STATUS",
+    "TIME STAMP",
+    "ACTIONS",
+  ];
 
   const navigate = useNavigate();
   return (
@@ -53,6 +60,7 @@ const TableLayer = ({
               >
                 <Td>{item?.senderName}</Td>
                 <Td>{item?.senderEmail}</Td>
+
                 <Td textAlign="center">
                   <Flex justifyContent="center" align="center">
                     <Flex
@@ -75,9 +83,27 @@ const TableLayer = ({
                           ? "#EE383A"
                           : "#F79E1B"
                       }
+                      borderRadius="6px"
                       textTransform="capitalize"
                     >
                       {item?.type.toLowerCase()}
+                    </Flex>
+                  </Flex>
+                </Td>
+                <Td textAlign="center">
+                  <Flex justifyContent="center" align="center">
+                    <Flex
+                      justifyContent="center"
+                      align="center"
+                      py="6px"
+                      px="15px"
+                      w="fit-content"
+                      borderRadius="6px"
+                      bg={item?.isReplied ? "#E5FFE5" : "#FEF1F1"}
+                      color={item?.isReplied ? "#0B841D" : "#EE383A"}
+                      textTransform="capitalize"
+                    >
+                      {item?.isReplied ? "Replied" : "Unreplied"}
                     </Flex>
                   </Flex>
                 </Td>
