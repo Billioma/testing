@@ -8,7 +8,6 @@ import {
   Text,
   useDisclosure,
 } from "@chakra-ui/react";
-import { useGetTips } from "../../../../../services/customer/query/services";
 import { useParams } from "react-router-dom";
 import { formatDateNewTime } from "../../../../../utils/helpers";
 import { Status } from "../../../../common/constants";
@@ -69,12 +68,7 @@ export const Layout = ({ label, data }) => {
 const CarServiceDetails = () => {
   const { id } = useParams();
   const { data, isLoading, refetch: refetchParking } = useGetServiceLog(id);
-  const { data: tips, refetch } = useGetTips();
   const { isOpen, onClose, onOpen } = useDisclosure();
-
-  const currentTip = tips?.data?.find(
-    (item) => item?.serviceLog?.id === data?.serviceLog?.id
-  );
 
   return (
     <Box minH="75vh">
@@ -167,12 +161,11 @@ const CarServiceDetails = () => {
                     <Layout
                       label="Tip"
                       data={
-                        currentTip === undefined
+                        !data?.serviceLog?.tips?.length
                           ? "No tip added"
                           : `₦ ${
-                              currentTip?.amount?.toLocaleString(undefined, {
-                                maximumFractionDigits: 2,
-                              }) || "0.00"
+                              data?.serviceLog?.tips[0]?.amount?.toLocaleString() ||
+                              "0.00"
                             }`
                       }
                     />
@@ -180,7 +173,7 @@ const CarServiceDetails = () => {
                 </Box>
               </Flex>
 
-              {data?.status === 1 && currentTip === undefined && (
+              {data?.status === 1 && !data?.serviceLog?.tips?.length && (
                 <Flex align="center" w="full" justifyContent="center" mt="28px">
                   <Flex
                     align="center"
@@ -230,7 +223,6 @@ const CarServiceDetails = () => {
         <MakeTipModal
           data={data}
           refetchParking={refetchParking}
-          refetchTips={refetch}
           isOpen={isOpen}
           onClose={onClose}
         />

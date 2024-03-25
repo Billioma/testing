@@ -20,13 +20,7 @@ import FundWalletDrawer from "./FundWalletDrawer";
 import { useCreateTips } from "../../services/customer/query/services";
 import useCustomToast from "../../utils/notifications";
 
-const MakeTipModal = ({
-  isOpen,
-  onClose,
-  data,
-  refetchTips,
-  refetchParking,
-}) => {
+const MakeTipModal = ({ isOpen, onClose, data, refetchParking }) => {
   const [values, setValues] = useState({
     paymentMethod: "1",
     amount: "",
@@ -46,7 +40,6 @@ const MakeTipModal = ({
   const { successToast, errorToast } = useCustomToast();
   const { mutate, isLoading } = useCreateTips({
     onSuccess: () => {
-      refetchTips();
       refetch();
       refetchParking();
       close();

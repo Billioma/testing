@@ -8,7 +8,6 @@ import {
   DrawerContent,
   DrawerOverlay,
   Text,
-  Textarea,
 } from "@chakra-ui/react";
 import { MdClose } from "react-icons/md";
 import { rating, ratings } from "../common/constants";
