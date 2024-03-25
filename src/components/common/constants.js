@@ -2061,6 +2061,21 @@ export const vehiclesOptions = [
   { label: "Created At", value: "createdAt" },
 ];
 
+export const rating = [
+  "Good",
+  "Bad",
+  "Fast",
+  "Slow",
+  "Convenient",
+  "Satisfactory",
+  "Impressive",
+  "Easy to Navigate",
+  "Great Service",
+  "Difficult to Navigate",
+  "Terrible Service",
+  "Encountered Some Difficulty",
+];
+
 export const feedbackOptions = [
   { label: "Name", value: "senderName" },
   { label: "Email", value: "senderEmail" },

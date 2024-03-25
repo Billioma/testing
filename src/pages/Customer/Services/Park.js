@@ -299,7 +299,7 @@ const Park = () => {
         onClose={() => setShowRatings(false)}
       />
       <RatingsDrawer
-        isOpen={showMobilRatings}
+        isOpen={true}
         action={handleRating}
         isLoading={isRating}
         setRatingsValue={setRatingsValue}

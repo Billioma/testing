@@ -11,7 +11,7 @@ import {
   Textarea,
 } from "@chakra-ui/react";
 import { MdClose } from "react-icons/md";
-import { ratings } from "../common/constants";
+import { rating, ratings } from "../common/constants";
 import { useNavigate } from "react-router-dom";
 
 const RatingsModal = ({
@@ -152,9 +152,16 @@ const RatingsModal = ({
                   ))}
               </Flex>
 
-              <Flex mt="14px" align="center" gap="12px" justifyContent="center">
-                {ratingsValue?.rating === 1
-                  ? ["Slow", "Terrible", "Bad Customer Service"].map((item) => (
+              <Flex
+                mt="14px"
+                align="center"
+                w="100%"
+                flexWrap="wrap"
+                gap="12px"
+                justifyContent="center"
+              >
+                {ratingsValue?.rating
+                  ? rating.map((item) => (
                       <Flex
                         border="1px solid #D4D6D8"
                         bg={
@@ -183,68 +190,20 @@ const RatingsModal = ({
                         {item}
                       </Flex>
                     ))
-                  : !ratingsValue?.rating
-                  ? ""
-                  : ["Fast", "Reliable", "Good Customer Service"].map(
-                      (item) => (
-                        <Flex
-                          border="1px solid #D4D6D8"
-                          bg={
-                            picked && ratingsValue?.ratingReason === item
-                              ? "#EE383A"
-                              : "transparent"
-                          }
-                          color={
-                            picked && ratingsValue?.ratingReason === item
-                              ? "#fff"
-                              : "#242628"
-                          }
-                          rounded="full"
-                          py="8px"
-                          cursor="pointer"
-                          onClick={() => {
-                            setPicked(true);
-                            setRatingsValue({
-                              ...ratingsValue,
-                              ratingReason: item,
-                            });
-                          }}
-                          px="16px"
-                          fontSize="12px"
-                        >
-                          {item}
-                        </Flex>
-                      )
-                    )}
-              </Flex>
-
-              <Flex mt="14px">
-                <Textarea
-                  borderRadius="12px"
-                  value={picked ? "" : ratingsValue?.ratingReason}
-                  onChange={(e) => {
-                    setRatingsValue({
-                      ...ratingsValue,
-                      ratingReason: e.target.value,
-                    });
-                    setPicked(false);
-                  }}
-                  bg="transparent"
-                  border="1px solid #D4D6D8"
-                  h="135px"
-                />
+                  : ""}
               </Flex>
 
               <Flex
-                mt="14px"
+                mt="34px"
                 w="100%"
                 justifyContent="flex-end"
                 gap="24px"
                 align="center"
               >
                 <Button
-                  w="40%"
+                  w="30%"
                   fontSize="12px"
+                  isDisabled={!ratingsValue?.ratingReason}
                   onClick={action}
                   isLoading={isLoading}
                 >
