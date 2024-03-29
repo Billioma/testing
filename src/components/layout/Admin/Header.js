@@ -65,8 +65,8 @@ const Header = ({ showSidebar }) => {
       case locationRoute.includes("configurations"):
         return setTitle("Configurations");
 
-      case locationRoute.includes("feedback"):
-        return setTitle("Feedback & Complaints ");
+      case locationRoute.includes("support"):
+        return setTitle("Support");
 
       default:
         return setTitle("");
@@ -209,6 +209,12 @@ const Header = ({ showSidebar }) => {
 
       case locationRoute.includes("vehicles/create"):
         return setSecTitle("Create Vehicle");
+
+      case locationRoute.includes("feedback"):
+        return setSecTitle("Feedback");
+
+      case locationRoute.includes("ratings"):
+        return setSecTitle("Ratings");
 
       default:
         return setSecTitle("");

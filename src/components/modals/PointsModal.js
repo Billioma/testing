@@ -11,17 +11,20 @@ import {
   Text,
   useMediaQuery,
 } from "@chakra-ui/react";
+import { useNavigate } from "react-router-dom";
 
 const PointsModal = ({
   isOpen,
   refund,
   setShowRatings,
+  noRating,
   setShowMobileRatings,
   onClose,
   amount,
   currentItem,
 }) => {
   const [isMobile] = useMediaQuery("(max-width: 991px)");
+  const navigate = useNavigate();
   return (
     <Modal
       isCentered
@@ -76,7 +79,11 @@ const PointsModal = ({
               <Button
                 w="full"
                 onClick={() =>
-                  isMobile ? setShowMobileRatings(true) : setShowRatings(true)
+                  noRating
+                    ? navigate("/customer/subscriptions")
+                    : isMobile
+                    ? setShowMobileRatings(true)
+                    : setShowRatings(true)
                 }
                 fontSize="13px"
                 borderRadius="4px"

@@ -1,10 +1,16 @@
 import { useMutation, useQuery } from "react-query";
 import { feedbackReply, getFeedback, getFeedbacks } from "../api/feedback";
 
-export const useGetFeedbacks = (options = {}, page = 1, limit = 25, query) => {
+export const useGetFeedbacks = (
+  options = {},
+  page = 1,
+  limit = 25,
+  query,
+  type = ""
+) => {
   const { data, isLoading, refetch } = useQuery(
-    ["GET_FEEDBACK", page, limit, query],
-    () => getFeedbacks(page, limit, query),
+    ["GET_FEEDBACK", page, limit, query, type],
+    () => getFeedbacks(page, limit, query, type),
     {
       ...options,
     }

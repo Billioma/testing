@@ -153,7 +153,9 @@ const SideBar = ({ show, setShow }) => {
                   borderRadius={4}
                   position="relative"
                 >
-                  <Box className="hovered_image">{item.hover}</Box>
+                  <Box className="hovered_image">
+                    {currentIndex === item.id ? item?.sec : item.hover}
+                  </Box>
 
                   <Box className="initial_image">
                     {showMenu
@@ -360,7 +362,9 @@ const SideBar = ({ show, setShow }) => {
                   borderRadius={4}
                   position="relative"
                 >
-                  <Box className="hovered_image">{item.hover}</Box>
+                  <Box className="hovered_image">
+                    {currentIndex === item.id ? item?.sec : item.hover}
+                  </Box>
 
                   <Box className="initial_image">
                     {showMenu

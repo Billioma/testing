@@ -115,10 +115,10 @@ export const getCustomerSubscriptions = async (page, limit, query) => {
   return response.data;
 };
 
-export const editCustomerSubscription = async (data) => {
+export const editCustomerSubscription = async ({ query, body }) => {
   const response = await axiosInstance.patch(
-    `${API.ADMIN_CUSTOMER_SUBSCRIPTIONS}/${data.id}`,
-    data
+    API.ADMIN_CUSTOMER_SUBSCRIPTION(query),
+    body
   );
 
   return response.data;

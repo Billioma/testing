@@ -529,7 +529,6 @@ export default function ViewOperator() {
                         )}
                       </Box>
                     </Box>
-                    {console.log(values.paidAt)}
 
                     <Button
                       variant="adminPrimary"

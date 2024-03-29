@@ -2,7 +2,10 @@ import React, { useState, useEffect } from "react";
 import { Box, Flex, Image, Text } from "@chakra-ui/react";
 import TableLayer from "../../../components/data/Admin/Feedbacks/TableLayer";
 import Filter from "../../../components/common/Filter";
-import { feedbackOptions } from "../../../components/common/constants";
+import {
+  feedbackOptions,
+  supportType,
+} from "../../../components/common/constants";
 import { formatFilterDate } from "../../../utils/helpers";
 import { useGetFeedbacks } from "../../../services/admin/query/feedback";
 
@@ -50,6 +53,7 @@ export default function () {
       : convertedFilters?.join("&");
 
   const [isRefetch, setIsRefetch] = useState(false);
+  const [type, setType] = useState("FEEDBACK");
 
   const { data, isLoading, refetch } = useGetFeedbacks(
     {
@@ -66,7 +70,8 @@ export default function () {
     },
     page,
     limit,
-    query
+    query,
+    type
   );
 
   useEffect(() => {
@@ -98,51 +103,74 @@ export default function () {
   }, [data, page, limit]);
 
   return (
-    <Box border="1px solid #d4d6d8" borderRadius="8px" p="16px 23px 24px">
-      <Filter
-        setFiltArray={setFiltArray}
-        filtArray={filtArray}
-        fieldToCompare={feedbackOptions}
-        title={
-          <Text fontWeight={500} lineHeight="100%" color="#242628">
-            All Feedbacks
-          </Text>
-        }
-        gap
-        main={
-          <>
-            <Flex
-              justifyContent="center"
-              align="center"
-              cursor="pointer"
-              transition=".3s ease-in-out"
-              _hover={{ bg: "#F4F6F8" }}
-              onClick={handleRefreshClick}
-              borderRadius="8px"
-              border="1px solid #848688"
-              p="10px"
-            >
-              <Image
-                src="/assets/refresh.svg"
-                className={isRefetch && "mirrored-icon"}
-                w="20px"
-                h="20px"
-              />
-            </Flex>
-          </>
-        }
-      />
+    <Box>
+      <Flex w="full" mb="24px" bg="#F4F6F8" gap="24px" align="flex-end">
+        {supportType.map((item, i) => (
+          <Flex
+            px="32px"
+            py="11px"
+            fontSize="13px"
+            fontWeight={500}
+            cursor="pointer"
+            _hover={{ color: "#EE383A" }}
+            transition=".3s ease-in-out"
+            justifyContent="center"
+            color={type === item?.value ? "#444648" : "#949698"}
+            align="center"
+            key={i}
+            borderBottom={type === item?.value ? "1px solid  #EE383A" : "none"}
+            onClick={() => setType(item?.value)}
+          >
+            {item?.name}
+          </Flex>
+        ))}
+      </Flex>
+      <Box border="1px solid #d4d6d8" borderRadius="8px" p="16px 23px 24px">
+        <Filter
+          setFiltArray={setFiltArray}
+          filtArray={filtArray}
+          fieldToCompare={feedbackOptions}
+          title={
+            <Text fontWeight={500} lineHeight="100%" color="#242628">
+              All Feedbacks
+            </Text>
+          }
+          gap
+          main={
+            <>
+              <Flex
+                justifyContent="center"
+                align="center"
+                cursor="pointer"
+                transition=".3s ease-in-out"
+                _hover={{ bg: "#F4F6F8" }}
+                onClick={handleRefreshClick}
+                borderRadius="8px"
+                border="1px solid #848688"
+                p="10px"
+              >
+                <Image
+                  src="/assets/refresh.svg"
+                  className={isRefetch && "mirrored-icon"}
+                  w="20px"
+                  h="20px"
+                />
+              </Flex>
+            </>
+          }
+        />
 
-      <TableLayer
-        data={data}
-        isLoading={isLoading}
-        page={page}
-        limit={limit}
-        setPage={setPage}
-        startRow={startRow}
-        endRow={endRow}
-        setLimit={setLimit}
-      />
+        <TableLayer
+          data={data}
+          isLoading={isLoading}
+          page={page}
+          limit={limit}
+          setPage={setPage}
+          startRow={startRow}
+          endRow={endRow}
+          setLimit={setLimit}
+        />
+      </Box>
     </Box>
   );
 }

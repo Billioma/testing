@@ -7,6 +7,7 @@ import {
   SimpleGrid,
   Switch,
   Spinner,
+  Skeleton,
 } from "@chakra-ui/react";
 import Select from "react-select";
 import {
@@ -105,7 +106,11 @@ export default function AddCustomerSubscription() {
     "Annually",
   ];
 
-  const { data: plans } = useGetMembershipPlans({}, 1, 100000);
+  const { data: plans, isLoading: isPlanning } = useGetMembershipPlans(
+    {},
+    1,
+    100000
+  );
 
   const handleSelectChange = (selectedOption, { name }) => {
     if (name === "customer") {
@@ -209,9 +214,26 @@ export default function AddCustomerSubscription() {
     <Box minH="75vh">
       {" "}
       {!state?.membershipPlan ? (
-        <Box w="fit-content">
-          <GoBackTab />
-        </Box>
+        <>
+          <Box w="fit-content">
+            <GoBackTab />
+          </Box>
+
+          {isPlanning ? (
+            <Box border="1px solid #E4E6E8" w="full" p={5} borderRadius="8px">
+              <SimpleGrid templateColumns="1fr 1fr 1fr" gap={4} w="full">
+                <Skeleton h="150px" borderRadius="8px"></Skeleton>
+                <Skeleton h="150px" borderRadius="8px"></Skeleton>
+                <Skeleton h="150px" borderRadius="8px"></Skeleton>
+                <Skeleton h="150px" borderRadius="8px"></Skeleton>
+                <Skeleton h="150px" borderRadius="8px"></Skeleton>
+                <Skeleton h="150px" borderRadius="8px"></Skeleton>
+              </SimpleGrid>
+            </Box>
+          ) : (
+            ""
+          )}
+        </>
       ) : (
         <Box
           w="fit-content"
@@ -537,7 +559,13 @@ export default function AddCustomerSubscription() {
             </form>
           </Flex>
         ) : (
-          <Box border="1px solid #E4E6E8" w="full" p={5} borderRadius="8px">
+          <Box
+            border="1px solid #E4E6E8"
+            display={isPlanning ? "none" : "flex"}
+            w="full"
+            p={5}
+            borderRadius="8px"
+          >
             <SimpleGrid templateColumns="1fr 1fr 1fr" gap={4} w="full">
               {plans?.data?.map((plan) => (
                 <Flex

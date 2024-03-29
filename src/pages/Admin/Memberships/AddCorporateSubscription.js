@@ -7,6 +7,7 @@ import {
   SimpleGrid,
   Switch,
   Spinner,
+  Skeleton,
 } from "@chakra-ui/react";
 
 import Select from "react-select";
@@ -91,7 +92,7 @@ export default function AddCorporateSubscription() {
     "Annually",
   ];
 
-  const { data: plans } = useGetCorporatePlans({});
+  const { data: plans, isLoading: isPlanning } = useGetCorporatePlans({});
 
   const handlePlanSelection = (plan) => {
     const tempFeatureTypes = [];
@@ -158,9 +159,26 @@ export default function AddCorporateSubscription() {
     <Box minH="75vh">
       <Flex align="flex-start" flexDir="column">
         {!state?.membershipPlan ? (
-          <Box w="fit-content">
-            <GoBackTab />
-          </Box>
+          <>
+            <Box w="fit-content">
+              <GoBackTab />
+            </Box>
+
+            {isPlanning ? (
+              <Box border="1px solid #E4E6E8" w="full" p={5} borderRadius="8px">
+                <SimpleGrid templateColumns="1fr 1fr 1fr" gap={4} w="full">
+                  <Skeleton h="150px" borderRadius="8px"></Skeleton>
+                  <Skeleton h="150px" borderRadius="8px"></Skeleton>
+                  <Skeleton h="150px" borderRadius="8px"></Skeleton>
+                  <Skeleton h="150px" borderRadius="8px"></Skeleton>
+                  <Skeleton h="150px" borderRadius="8px"></Skeleton>
+                  <Skeleton h="150px" borderRadius="8px"></Skeleton>
+                </SimpleGrid>
+              </Box>
+            ) : (
+              ""
+            )}
+          </>
         ) : (
           <Box
             w="fit-content"
@@ -433,7 +451,13 @@ export default function AddCorporateSubscription() {
               </form>
             </Flex>
           ) : (
-            <Box border="1px solid #E4E6E8" w="full" p={5} borderRadius="8px">
+            <Box
+              border="1px solid #E4E6E8"
+              display={isPlanning ? "none" : "flex"}
+              w="full"
+              p={5}
+              borderRadius="8px"
+            >
               <SimpleGrid
                 templateColumns={{ base: "1fr", md: "1fr 1fr 1fr" }}
                 gap={4}

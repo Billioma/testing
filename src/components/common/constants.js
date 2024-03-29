@@ -283,11 +283,21 @@ export const sidebarItems = [
   },
   {
     id: 11,
-    name: "Feedback & Complaints",
-    path: "/admin/feedback&complaints",
+    name: "Support",
+    path: "/admin/support",
     icon: <FeedbackIcon fill={"#fff"} stroke="#000" />,
-    hover: <FeedbackIcon fill="#fff" stroke="#EE383A" />,
+    hover: <FeedbackIcon fill="#EE383A" stroke="#EE383A" />,
     sec: <FeedbackIcon fill="#EE383A" stroke="#fff" />,
+    subItems: [
+      {
+        name: "Feedbacks",
+        path: "/admin/support/feedback",
+      },
+      {
+        name: "Ratings",
+        path: "/admin/support/ratings",
+      },
+    ],
   },
   {
     id: 12,
@@ -2079,7 +2089,12 @@ export const rating = [
 export const feedbackOptions = [
   { label: "Name", value: "senderName" },
   { label: "Email", value: "senderEmail" },
-  { label: "Message Type", value: "type" },
+];
+
+export const supportType = [
+  { name: "FEEDBACK", value: "FEEDBACK" },
+  { name: "COMPLAINTS", value: "COMPLAINT" },
+  { name: "ENQUIRIES", value: "ENQUIRY" },
 ];
 
 export const membershipPlansOptions = [

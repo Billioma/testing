@@ -52,17 +52,27 @@ export default function AddOperator() {
   const membershipPlanOptions = membershipPlans?.data?.map((plan) => ({
     label: plan.name,
     value: parseInt(plan.id),
+    isGlobal: plan?.isGlobal,
   }));
 
-  const featureTypes = [
-    "Vehicle Limit",
-    "Parking Limit",
-    "Valet Limit",
-    "Location Limit",
-    "Car Service Limit",
-    "Applicable Locations",
-    "User Limit",
-  ].map((feature, index) => ({ label: feature, value: index }));
+  const features = [
+    { name: "Vehicle Limit", id: 0 },
+    { name: "Parking Limit", id: 1 },
+    { name: "Valet Limit", id: 2 },
+    { name: "Location Limit", id: 3 },
+    { name: "Car Service Limit", id: 4 },
+    { name: "Applicable Locations", id: 5 },
+    { name: "User Limit", id: 6 },
+  ];
+
+  const featureToMap = state?.membershipPlan?.isGlobal
+    ? features?.filter((item, index) => index !== 3)
+    : features;
+
+  const featureTypes = featureToMap.map((feature) => ({
+    label: feature.name,
+    value: feature.id,
+  }));
 
   const handleSelectChange = (selectedOption, { name }) => {
     setState({
@@ -129,11 +139,15 @@ export default function AddOperator() {
                       ? errorCustomStyles
                       : customStyles
                   }
-                  onChange={(selectedOption) =>
+                  onChange={(selectedOption) => {
                     handleSelectChange(selectedOption, {
                       name: "membershipPlan",
-                    })
-                  }
+                    });
+                    setState((prevState) => ({
+                      ...prevState,
+                      featureType: null,
+                    }));
+                  }}
                   components={{
                     IndicatorSeparator: () => (
                       <div style={{ display: "none" }}></div>

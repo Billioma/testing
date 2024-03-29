@@ -298,6 +298,7 @@ const AddSubscription = () => {
     <Box minH="75vh">
       <PointsModal
         isOpen={showPoint}
+        noRating
         onClose={() => setShowPoint(false)}
         amount={currentSub?.amount}
       />

@@ -149,7 +149,8 @@ const {
   ADMIN_VIEW_MEMBERSHIP_FEATURE,
   ADMIN_ADD_MEMBERSHIP_FEATURE,
 
-  ADMIN_FEEDBACK,
+  ADMIN_SUPP_FEEDBACK,
+  ADMIN_RATE_FEEDBACK,
 
   ADMIN_CORPORATE_SUBSCRIPTIONS,
   ADMIN_VIEW_CORPORATE_SUBSCRIPTION,
@@ -574,12 +575,16 @@ const AdminViewAdministrator = WithSuspense(
   lazy(() => import("../pages/Admin/Users/ViewAdministrator"))
 );
 
-const AdminFeedback = WithSuspense(
-  lazy(() => import("../pages/Admin/FeedbackComplaints/FeedbackComplaints"))
+const AdminSuppFeedback = WithSuspense(
+  lazy(() => import("../pages/Admin/Support/Feedback"))
+);
+
+const AdminRateFeedback = WithSuspense(
+  lazy(() => import("../pages/Admin/Support/Ratings"))
 );
 
 const AdminViewFeedback = WithSuspense(
-  lazy(() => import("../pages/Admin/FeedbackComplaints/ViewFeedbackComplaints"))
+  lazy(() => import("../pages/Admin/Support/ViewFeedbackComplaints"))
 );
 
 const AdminVehicles = WithSuspense(
@@ -1263,8 +1268,13 @@ export const PRIVATE_ROUTES = [
   },
 
   {
-    path: ADMIN_FEEDBACK,
-    element: <AdminFeedback />,
+    path: ADMIN_SUPP_FEEDBACK,
+    element: <AdminSuppFeedback />,
+  },
+
+  {
+    path: ADMIN_RATE_FEEDBACK,
+    element: <AdminRateFeedback />,
   },
   {
     path: PRIVATE_PATHS.ADMIN_VIEW_FEEDBACK,

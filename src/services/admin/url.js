@@ -172,6 +172,8 @@ export const ADMIN_CORP_SUB = (id = "") =>
   `admin/corporate-subscriptions/${id}`;
 export const ADMIN_MEMBERSHIP_FEATURES = "admin/membership-plan-features";
 export const ADMIN_CUSTOMER_SUBSCRIPTIONS = "admin/membership-subscriptions";
+export const ADMIN_CUSTOMER_SUBSCRIPTION = (id = "") =>
+  `admin/membership-subscriptions/${id}`;
 export const ADMIN_CORPORATE_SUBSCRIPTIONS = "admin/corporate-subscriptions";
 
 export const ADMIN_CLIENTS = "admin/clients";

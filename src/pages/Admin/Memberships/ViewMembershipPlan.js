@@ -22,6 +22,7 @@ export default function AddOperator() {
     interval: 0,
     isActive: 0,
     isCorporate: 0,
+    isGlobal: 0,
     isUpgradable: 0,
   });
 
@@ -88,6 +89,7 @@ export default function AddOperator() {
         interval: state?.interval?.value,
         isActive: state?.isActive,
         isCorporate: state?.isCorporate,
+        isGlobal: state?.isGlobal,
         isUpgradable: state?.isUpgradable,
       },
     });
@@ -105,6 +107,7 @@ export default function AddOperator() {
       isActive: data?.isActive,
       interval: selectedIntervalOption,
       isCorporate: data?.isCorporate,
+      isGlobal: data?.isGlobal,
       isUpgradable: data?.isUpgradable,
     });
   }, [data]);
@@ -282,6 +285,28 @@ export default function AddOperator() {
                     variant="adminPrimary"
                     isChecked={state.isCorporate}
                     isDisabled={edit ? false : true}
+                  />
+                </Flex>
+
+                <Flex
+                  align="center"
+                  justifyContent={"space-between"}
+                  gap="15px"
+                  mb="16px"
+                >
+                  <Text fontSize="12px" fontWeight={500} color="#444648">
+                    Set as Global Plan
+                  </Text>
+                  <Switch
+                    onChange={() =>
+                      setState({
+                        ...state,
+                        isGlobal: state.isGlobal ? 0 : 1,
+                      })
+                    }
+                    size="sm"
+                    variant="adminPrimary"
+                    isChecked={state.isGlobal}
                   />
                 </Flex>
 

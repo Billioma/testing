@@ -1,10 +1,12 @@
 import axiosInstance from "../../axiosInstance";
 import * as API from "../url";
 
-export const getFeedbacks = async (page, limit, query) => {
+export const getFeedbacks = async (page, limit, query, type) => {
   const response = await axiosInstance.get(
     API.ADMIN_FEEDBACKS +
-      `?page=${page}&limit=${limit}&sort=createdAt,DESC&${query || ""}`
+      `?page=${page}&limit=${limit}&sort=createdAt,DESC&${
+        query || ""
+      }&filter=type||cont||${type}`
   );
   return response.data;
 };

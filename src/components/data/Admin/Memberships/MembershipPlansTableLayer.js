@@ -40,6 +40,7 @@ const TableLayer = ({
     "NAME",
     "AMOUNT",
     "INTERVAL",
+    "GLOBAL",
     "CORPORATE",
     "UPGRADEABLE",
     "STATUS",
@@ -130,6 +131,7 @@ const TableLayer = ({
                     )?.label
                   }
                 </Td>
+                <Td textAlign="center">{plan?.isGlobal ? "TRUE" : "FALSE"}</Td>
                 <Td textAlign="center">
                   {plan?.isCorporate ? "TRUE" : "FALSE"}
                 </Td>

@@ -14,6 +14,7 @@ import GoBackTab from "../../../components/data/Admin/GoBackTab";
 import { IoMdRefresh, IoMdClose, IoIosArrowDown } from "react-icons/io";
 import {
   useCancelCustomerSubscription,
+  useEditCustomerSubscription,
   useGetAdminCustomerSub,
   useGetMembershipPlans,
   useRenewCustomerSubscription,
@@ -75,6 +76,13 @@ export default function ViewMembershipSubscription() {
       },
     });
 
+  const handleSelectChange = (selectedOption, { name }) => {
+    setState({
+      ...state,
+      [name]: selectedOption,
+    });
+  };
+
   const { mutate: cancelCustomerSub, isLoading: isCanceling } =
     useCancelCustomerSubscription({
       onSuccess: (res) => {
@@ -89,6 +97,31 @@ export default function ViewMembershipSubscription() {
         );
       },
     });
+
+  const { mutate: updateMutate, isLoading: isUpdating } =
+    useEditCustomerSubscription({
+      onSuccess: () => {
+        successToast("Customer Sub updated successfully!");
+        navigate(PRIVATE_PATHS.ADMIN_CUSTOMER_SUBSCRIPTIONS);
+        sessionStorage.removeItem("edit");
+      },
+      onError: (error) => {
+        errorToast(
+          error?.response?.data?.message ||
+            error?.message ||
+            "An Error occurred"
+        );
+      },
+    });
+
+  const handleSubmit = () => {
+    updateMutate({
+      query: id,
+      body: {
+        status: state?.status?.value,
+      },
+    });
+  };
 
   const { data: membershipPlans } = useGetMembershipPlans({}, 1, 100000);
   const { data: locations } = useGetAllLocations();
@@ -294,8 +327,12 @@ export default function ViewMembershipSubscription() {
                   </Text>
                   <Select
                     styles={customStyles}
-                    placeholder="Status"
                     options={statusOptions}
+                    onChange={(selectedOption) =>
+                      handleSelectChange(selectedOption, {
+                        name: "status",
+                      })
+                    }
                     components={{
                       IndicatorSeparator: () => (
                         <div style={{ display: "none" }}></div>
@@ -307,7 +344,7 @@ export default function ViewMembershipSubscription() {
                       ),
                     }}
                     value={state?.status}
-                    isDisabled
+                    isDisabled={edit ? false : true}
                   />
                 </Box>
 
@@ -363,6 +400,16 @@ export default function ViewMembershipSubscription() {
                     onClick={() => setEdit(!edit)}
                   >
                     {edit ? "Cancel" : "Edit"}
+                  </Button>
+                  <Button
+                    variant="adminPrimary"
+                    display={edit ? "flex" : "none"}
+                    i
+                    isLoading={isUpdating}
+                    w="100%"
+                    onClickCapture={handleSubmit}
+                  >
+                    Save
                   </Button>
                 </Flex>
               </Flex>
