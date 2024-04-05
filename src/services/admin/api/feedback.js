@@ -11,6 +11,21 @@ export const getFeedbacks = async (page, limit, query, type) => {
   return response.data;
 };
 
+export const getRatingsMetric = async () => {
+  const response = await axiosInstance.get(API.ADMIN_RATINGS_METRIC);
+  return response.data;
+};
+
+export const getRatings = async (type, page, limit, query) => {
+  const response = await axiosInstance.get(
+    "admin/" +
+      `${type}?fields=rating,ratingComment,ratingReason,createdAt,customer.profile.firstName,customer.profile.lastName&filter=rating%7C%7C%24ne%7C%7C0&page=${page}&limit=${limit}&sort=createdAt,DESC&${
+        query || ""
+      }`
+  );
+  return response.data;
+};
+
 export const getFeedback = async (query) => {
   const res = await axiosInstance.get(API.ADMIN_FEEDBACK(query.id));
   return res.data;

@@ -116,6 +116,8 @@ export const UPLOAD_MEDIA = "system/media-upload";
 export const SERVICE_LOG_MAKE_PAYMENT = (id = "") =>
   `admin/service-logs/make-payment/${id}`;
 
+export const ADMIN_RATINGS_METRIC = "admin/dashboard/ratings-metrics";
+
 export const ADMIN_FEEDBACKS = "admin/feedbacks";
 export const ADMIN_FEEDBACK_REPLY = "admin/feedbacks/reply";
 export const ADMIN_FEEDBACK = (id = "") => `admin/feedbacks/${id}`;

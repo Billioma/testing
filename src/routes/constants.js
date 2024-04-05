@@ -188,7 +188,7 @@ export const PRIVATE_PATHS = {
 
   ADMIN_SUPP_FEEDBACK: "/admin/support/feedback",
   ADMIN_RATE_FEEDBACK: "/admin/support/ratings",
-  ADMIN_VIEW_FEEDBACK: "/admin/feedback&complaints/:id",
+  ADMIN_VIEW_FEEDBACK: "/admin/support/feedback/:id",
 
   ADMIN_CLIENTS_INVOICES: "/admin/clients/invoices",
   ADMIN_VIEW_CLIENT_INVOICE: "/admin/clients/invoices/details/:id",

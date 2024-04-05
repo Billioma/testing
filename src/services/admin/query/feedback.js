@@ -1,5 +1,11 @@
 import { useMutation, useQuery } from "react-query";
-import { feedbackReply, getFeedback, getFeedbacks } from "../api/feedback";
+import {
+  feedbackReply,
+  getFeedback,
+  getFeedbacks,
+  getRatings,
+  getRatingsMetric,
+} from "../api/feedback";
 
 export const useGetFeedbacks = (
   options = {},
@@ -11,6 +17,36 @@ export const useGetFeedbacks = (
   const { data, isLoading, refetch } = useQuery(
     ["GET_FEEDBACK", page, limit, query, type],
     () => getFeedbacks(page, limit, query, type),
+    {
+      ...options,
+    }
+  );
+
+  return { isLoading, data, refetch };
+};
+
+export const useGetRatingsMetric = (options = {}) => {
+  const { data, isLoading, refetch } = useQuery(
+    "getRatingsMetric",
+    getRatingsMetric,
+    {
+      ...options,
+    }
+  );
+
+  return { isLoading, data, refetch };
+};
+
+export const useGetRatings = (
+  options = {},
+  type = "",
+  page = 1,
+  limit = 25,
+  query
+) => {
+  const { data, isLoading, refetch } = useQuery(
+    ["getRatings", type, page, limit, query],
+    () => getRatings(type, page, limit, query),
     {
       ...options,
     }

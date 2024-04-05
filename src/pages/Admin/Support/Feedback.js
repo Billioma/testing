@@ -118,13 +118,14 @@ export default function () {
             color={type === item?.value ? "#444648" : "#949698"}
             align="center"
             key={i}
-            borderBottom={type === item?.value ? "1px solid  #EE383A" : "none"}
+            borderBottom={type === item?.value ? "2px solid  #EE383A" : "none"}
             onClick={() => setType(item?.value)}
           >
             {item?.name}
           </Flex>
         ))}
       </Flex>
+
       <Box border="1px solid #d4d6d8" borderRadius="8px" p="16px 23px 24px">
         <Filter
           setFiltArray={setFiltArray}

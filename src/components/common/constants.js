@@ -552,6 +552,13 @@ export const operatorPayGrid = [
   "Total Payments",
 ];
 
+export const ratingGrid = [
+  "Pay-To-Park Rating",
+  "Event Parking Rating",
+  "Reserved Parking Rating",
+  "Service Bookings Rating",
+];
+
 export const adminInvoiceGrid = [
   "Total Invoices",
   "Total Amount Payable",
@@ -2095,6 +2102,13 @@ export const supportType = [
   { name: "FEEDBACK", value: "FEEDBACK" },
   { name: "COMPLAINTS", value: "COMPLAINT" },
   { name: "ENQUIRIES", value: "ENQUIRY" },
+];
+
+export const ratingType = [
+  { name: "Pay-To-Park", value: "pay-to-park" },
+  { name: "Event Parking", value: "event-parking" },
+  { name: "Reserved Parking", value: "reservations" },
+  { name: "Car Services", value: "service-bookings" },
 ];
 
 export const membershipPlansOptions = [

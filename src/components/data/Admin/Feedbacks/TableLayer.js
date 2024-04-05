@@ -20,7 +20,7 @@ const TableLayer = ({
     "CUSTOMER EMAIL",
     "TYPE",
     "STATUS",
-    "TIME STAMP",
+    "DATE CREATED",
     "ACTIONS",
   ];
 
@@ -114,7 +114,7 @@ const TableLayer = ({
                       textDecor="underline"
                       cursor="pointer"
                       onClick={() =>
-                        navigate(`/admin/feedback&complaints/${item?.id}`)
+                        navigate(`/admin/support/feedback/${item?.id}`)
                       }
                     >
                       View

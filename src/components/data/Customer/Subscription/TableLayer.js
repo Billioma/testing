@@ -201,7 +201,7 @@ const TableLayer = ({
                 fontSize="14px"
                 lineHeight="100%"
               >
-                <Td textAlign="center">{dat?.membershipPlan?.name}</Td>
+                <Td textAlign="center">{dat?.membershipPlan?.name || "N/A"}</Td>
                 <Td textAlign="center">
                   ₦{" "}
                   {dat?.membershipPlan?.amount?.toLocaleString(undefined, {
@@ -209,7 +209,8 @@ const TableLayer = ({
                   }) || "0.00"}
                 </Td>
                 <Td textAlign="center">
-                  {Object.values(intervals[dat?.membershipPlan?.interval])[0]}
+                  {dat?.membershipPlan &&
+                    Object.values(intervals[dat?.membershipPlan?.interval])[0]}
                 </Td>
                 <Td textAlign="center">
                   {formatDateNewTime(dat?.nextPaymentDate)}
