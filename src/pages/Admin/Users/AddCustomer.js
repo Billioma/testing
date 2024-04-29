@@ -52,20 +52,30 @@ export default function AddCustomer() {
     },
   });
 
+  const [fileLimit, setFileLimit] = useState(false);
+
   const handleUpload = (e) => {
     const selectedFile = e.target.files[0];
     if (!selectedFile) {
       return;
     }
 
+    const fileSizeInBytes = selectedFile.size;
     setFileType(URL.createObjectURL(selectedFile));
     const formData = new FormData();
     formData.append("file", selectedFile);
-    uploadMutate({
-      fileType: "image",
-      entityType: "client",
-      file: formData.get("file"),
-    });
+
+    const limitInMB = Math.ceil(fileSizeInBytes / 1048576);
+    if (limitInMB > 2) {
+      setFileLimit(true);
+    } else {
+      setFileLimit(false);
+      uploadMutate({
+        fileType: "image",
+        entityType: "client",
+        file: formData.get("file"),
+      });
+    }
   };
 
   const [show, setShow] = useState(false);
@@ -161,6 +171,16 @@ export default function AddCustomer() {
                     />
                   )}
                 </Flex>
+
+                <Text
+                  color="tomato"
+                  display={fileLimit ? "block" : "none"}
+                  textAlign="center"
+                  mt="8px"
+                  fontSize="14px"
+                >
+                  File size exceeds 2MB limit!
+                </Text>
               </label>
             </Box>
 
@@ -301,7 +321,7 @@ export default function AddCustomer() {
                       onChange={(e) => {
                         const inputPhone = e.target.value
                           .replace(/\D/g, "")
-                          .slice(0, 10);
+                          .slice(0, 11);
                         handleChange({
                           target: {
                             name: "phone",

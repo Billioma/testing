@@ -281,6 +281,14 @@ export const GET_ADMIN_TRAN = (filterString = "", limit = "", page = "") =>
 
 export const GET_TRAN = "admin/transactions";
 
+export const STAFFS = "/admin/staff";
+export const STAFF_LIST = (filterString = "", limit = "", page = "") =>
+  `admin/staff?${filterString}&limit=${limit}&page=${page}&sort=createdAt,DESC`;
+export const STAFF = (id = "") => `admin/staff/${id}`;
+export const UPDATE_EMPLOYEE_DOC = (id = "") =>
+  `admin/employee-documents/${id}`;
+export const EMPLOYEE_DOC = "admin/employee-documents";
+
 export const ADMIN_RATES = "admin/rates";
 export const ADMIN_RATES_LIST = (filterString = "", limit = "", page = "") =>
   `admin/rates?${filterString}&limit=${limit}&page=${page}&sort=createdAt,DESC`;

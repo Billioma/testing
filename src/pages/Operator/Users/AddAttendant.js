@@ -91,20 +91,30 @@ const AddAttendant = () => {
 
   const [fileType, setFileType] = useState("");
 
+  const [fileLimit, setFileLimit] = useState(false);
+
   const handleUpload = (e) => {
     const selectedFile = e.target.files[0];
     if (!selectedFile) {
       return;
     }
 
+    const fileSizeInBytes = selectedFile.size;
     setFileType(URL.createObjectURL(selectedFile));
     const formData = new FormData();
     formData.append("file", selectedFile);
-    uploadMutate({
-      fileType: "image",
-      entityType: "client",
-      file: formData.get("file"),
-    });
+
+    const limitInMB = Math.ceil(fileSizeInBytes / 1048576);
+    if (limitInMB > 2) {
+      setFileLimit(true);
+    } else {
+      setFileLimit(false);
+      uploadMutate({
+        fileType: "image",
+        entityType: "client",
+        file: formData.get("file"),
+      });
+    }
   };
 
   const [show, setShow] = useState(false);
@@ -190,6 +200,16 @@ const AddAttendant = () => {
                   />
                 )}
               </Flex>
+
+              <Text
+                color="tomato"
+                display={fileLimit ? "block" : "none"}
+                textAlign="center"
+                mt="8px"
+                fontSize="14px"
+              >
+                File size exceeds 2MB limit!
+              </Text>
             </label>
 
             <Box mt="24px" w="full">

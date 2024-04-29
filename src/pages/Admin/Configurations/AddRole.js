@@ -10,6 +10,7 @@ import {
   AccordionIcon,
   AccordionPanel,
   Checkbox,
+  Switch,
 } from "@chakra-ui/react";
 import CustomInput from "../../../components/common/CustomInput";
 import { useNavigate } from "react-router-dom";
@@ -26,6 +27,7 @@ export default function ViewRole() {
     name: "",
     displayName: "",
     permissions: [],
+    isStaffRole: false,
   });
 
   const navigate = useNavigate();
@@ -52,6 +54,7 @@ export default function ViewRole() {
       name: values?.name,
       displayName: values?.displayName,
       permissions: values?.permissions?.map((item) => item),
+      isStaffRole: values?.isStaffRole,
     });
   };
 
@@ -202,6 +205,28 @@ export default function ViewRole() {
                   </Text>
                 )}
               </Box>
+
+              <Flex
+                align="center"
+                justifyContent={"space-between"}
+                gap="15px"
+                mb="16px"
+              >
+                <Text fontSize="12px" fontWeight={500} color="#444648">
+                  Set as Staff Role
+                </Text>
+                <Switch
+                  onChange={() =>
+                    setValues({
+                      ...values,
+                      isStaffRole: values.isStaffRole ? false : true,
+                    })
+                  }
+                  size="sm"
+                  variant="adminPrimary"
+                  isChecked={values.isStaffRole}
+                />
+              </Flex>
 
               <Flex gap={4} mt={4}>
                 <Button

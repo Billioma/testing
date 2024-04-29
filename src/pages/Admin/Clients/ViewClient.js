@@ -107,22 +107,31 @@ export default function ViewCustomer() {
       email: user.email,
     });
   };
-  const [fileType, setFileType] = useState("");
 
+  const [fileLimit, setFileLimit] = useState(false);
+  const [fileType, setFileType] = useState("");
   const handleUpload = (e) => {
     const selectedFile = e.target.files[0];
     if (!selectedFile) {
       return;
     }
 
+    const fileSizeInBytes = selectedFile.size;
     setFileType(URL.createObjectURL(selectedFile));
     const formData = new FormData();
     formData.append("file", selectedFile);
-    uploadMutate({
-      fileType: "logo",
-      entityType: "admin",
-      file: formData.get("file"),
-    });
+
+    const limitInMB = Math.ceil(fileSizeInBytes / 1048576);
+    if (limitInMB > 2) {
+      setFileLimit(true);
+    } else {
+      setFileLimit(false);
+      uploadMutate({
+        fileType: "logo",
+        entityType: "admin",
+        file: formData.get("file"),
+      });
+    }
   };
 
   useEffect(() => {
@@ -172,7 +181,7 @@ export default function ViewCustomer() {
         email: values?.email,
         billingEmail: values?.billingEmail,
         contactPerson: values?.contactPerson,
-        phone: values?.phone,
+        phone: `+234${Number(values?.phone)}`,
         address: values?.address,
         managers: values?.managers?.map((item) => item?.value),
         state: values?.state?.value,
@@ -318,6 +327,15 @@ export default function ViewCustomer() {
                         />
                       )}
                     </Flex>
+                    <Text
+                      color="tomato"
+                      display={fileLimit ? "block" : "none"}
+                      textAlign="center"
+                      mt="8px"
+                      fontSize="14px"
+                    >
+                      File size exceeds 2MB limit!
+                    </Text>
                   </label>
                 </Flex>
                 <Box w="full" mb={4}>
@@ -429,7 +447,7 @@ export default function ViewCustomer() {
                     onChange={(e) => {
                       const inputPhone = e.target.value
                         .replace(/\D/g, "")
-                        .slice(0, 10);
+                        .slice(0, 11);
                       setValues({
                         ...values,
                         phone: inputPhone,

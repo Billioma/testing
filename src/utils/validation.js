@@ -177,6 +177,31 @@ export const initAdminLocationValues = {
   status: "",
 };
 
+export const initAdminStaffValues = {
+  fullName: "",
+  phoneNumber: "",
+  email: "",
+  staffId: "",
+  role: "",
+  dateOfBirth: new Date(),
+  nextOfKin: "",
+  guarantor1: "",
+  guarantor2: "",
+  employmentLetter: "",
+  guarantorForm: "",
+  guarantorForm2:"",
+  confidentialityAgreement: "",
+  nonSolicitationAgreement: "",
+  exclusivity: "",
+  identificationDocument: "",
+  nextOfKinAddress: "",
+  residentialAddress: "",
+  nextOfKinPhone: "",
+  secondaryPhoneNumber: "",
+  lineManager: "",
+  secondaryResidentialAddress: "",
+};
+
 export const initAdminZoneValues = {
   name: "",
   description: "",
@@ -399,6 +424,37 @@ export const validateAttendantsSchema = Yup.object().shape({
   accountType: Yup.object().required("Account type is required"),
   status: Yup.object().required("Status is required"),
   locations: Yup.array().required("Locations is required"),
+});
+
+export const validateAdminStaffSchema = Yup.object().shape({
+  fullName: Yup.string().required("Full Name is required"),
+  phoneNumber: Yup.string().required("Phone Number is required"),
+  email: Yup.string().email().required("Email is required"),
+  dateOfBirth: Yup.string().required("Date of Birth is required"),
+  residentialAddress: Yup.string().required("Residential Address is required"),
+  guarantor1: Yup.string().required("Guarantor 1 is required"),
+  guarantor2: Yup.string().required("Guarantor 2 is required"),
+
+  nextOfKin: Yup.string().required("Next of kin is required"),
+  nextOfKinPhone: Yup.string().required("Next Of Kin Phone is required"),
+  nextOfKinAddress: Yup.string().required("Next Of Kin Address is required"),
+
+  staffId: Yup.string().required("Staff ID is required"),
+  role: Yup.object().required("Role is required"),
+
+  employmentLetter: Yup.string().required("Employment Letter is required"),
+  guarantorForm: Yup.string().required("Guarantor Form is required"),
+  guarantorForm2: Yup.string().required("Guarantor Form 2 is required"),
+  confidentialityAgreement: Yup.string().required(
+    "Confidentiality Agreement is required"
+  ),
+  nonSolicitationAgreement: Yup.string().required(
+    "Non-Solicitation Agreement is required"
+  ),
+  exclusivity: Yup.string().required("exclusivity Agreement is required"),
+  identificationDocument: Yup.string().required(
+    "Identification Document is required"
+  ),
 });
 
 export const validateAdminLocationSchema = Yup.object().shape({

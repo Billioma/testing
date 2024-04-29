@@ -73,21 +73,32 @@ export default function ViewLocation() {
   });
   const [fileType, setFileType] = useState("");
 
+  const [fileLimit, setFileLimit] = useState(false);
+
   const handleUpload = (e) => {
     const selectedFile = e.target.files[0];
     if (!selectedFile) {
       return;
     }
 
+    const fileSizeInBytes = selectedFile.size;
     setFileType(URL.createObjectURL(selectedFile));
     const formData = new FormData();
     formData.append("file", selectedFile);
-    uploadMutate({
-      fileType: "picture",
-      entityType: "admin",
-      file: formData.get("file"),
-    });
+
+    const limitInMB = Math.ceil(fileSizeInBytes / 1048576);
+    if (limitInMB > 2) {
+      setFileLimit(true);
+    } else {
+      setFileLimit(false);
+      uploadMutate({
+        fileType: "picture",
+        entityType: "admin",
+        file: formData.get("file"),
+      });
+    }
   };
+
   const { mutate, data, isLoading } = useGetAdminLocation();
 
   useEffect(() => {
@@ -317,6 +328,16 @@ export default function ViewLocation() {
                         />
                       )}
                     </Flex>
+
+                    <Text
+                      color="tomato"
+                      display={fileLimit ? "block" : "none"}
+                      textAlign="center"
+                      mt="8px"
+                      fontSize="14px"
+                    >
+                      File size exceeds 2MB limit!
+                    </Text>
                   </label>
                 </Box>
                 <Box w="full" mb={4}>

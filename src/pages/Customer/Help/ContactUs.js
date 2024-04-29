@@ -68,7 +68,7 @@ const ContactUs = () => {
 
   const isDisabled = Object.values(values).some((value) => !value);
 
-  const phoneNumber = `+234${values.phone}`;
+  const phoneNumber = `+234${Number(values.phone)}`;
   const handleSubmit = () => {
     mutate({
       name: values.name,
@@ -161,7 +161,7 @@ const ContactUs = () => {
                 onChange={(e) => {
                   const inputPhone = e.target.value
                     .replace(/\D/g, "")
-                    .slice(0, 10);
+                    .slice(0, 11);
                   setValues({ ...values, phone: inputPhone });
                 }}
               />

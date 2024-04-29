@@ -265,4 +265,12 @@ export const PRIVATE_PATHS = {
   ADMIN_REP_LOGS: "/admin/reports/logs",
   ADMIN_REP_HISTORY: "/admin/reports/payment-history",
   ADMIN_REP_TIPS: "/admin/reports/tips",
+
+  ADMIN_STAFF_PROFILE: "/admin/staff-profiles",
+  ADMIN_STAFF_PROFILE_DETAILS: "/admin/staff-profiles/:id",
+  ADMIN_ADD_STAFF: "/admin/staff-profiles/create",
+  ADMIN_LOAN: "/admin/loans",
+  ADMIN_LEAVE_MGT: "/admin/leave-mgt",
+  ADMIN_MEDICAL_ASSISTANCE: "/admin/medical-assistance",
+  ADMIN_STAFF_SCHEDULE: "/admin/staff-schedule",
 };

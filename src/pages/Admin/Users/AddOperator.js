@@ -170,7 +170,7 @@ export default function AddOperator() {
                       onChange={(e) => {
                         const inputPhone = e.target.value
                           .replace(/\D/g, "")
-                          .slice(0, 10);
+                          .slice(0, 11);
                         handleChange({
                           target: {
                             name: "phone",

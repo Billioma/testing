@@ -41,7 +41,7 @@ const Signup = () => {
   const [isChecked, setIsChecked] = useState(false);
 
   const handleSubmit = (values = "") => {
-    const phoneNumber = `+234${values.phone}`;
+    const phoneNumber = `+234${Number(values.phone)}`;
     mutate({ ...values, phone: phoneNumber });
   };
 
@@ -161,7 +161,7 @@ const Signup = () => {
                   onChange={(e) => {
                     const inputPhone = e.target.value
                       .replace(/\D/g, "")
-                      .slice(0, 10);
+                      .slice(0, 11);
                     handleChange({
                       target: {
                         name: "phone",

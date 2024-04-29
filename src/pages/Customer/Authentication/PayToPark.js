@@ -740,7 +740,7 @@ const PayToPark = () => {
                           ngn
                           mb
                           holder="Enter Phone Mumber"
-                          handleKeyPress={(e) => handleKeyPress(e, 10)}
+                          handleKeyPress={(e) => handleKeyPress(e, 11)}
                           value={values.phone}
                           type="number"
                           onChange={(e) =>
@@ -933,7 +933,7 @@ const PayToPark = () => {
                               lineHeight="100%"
                               fontWeight={500}
                             >
-                              +234{values?.phone}
+                              +234{Number(values?.phone)}
                             </Text>
                           </Flex>
 

@@ -176,6 +176,12 @@ const {
   ADMIN_CLIENTS,
   ADMIN_ADD_CLIENT,
   ADMIN_VIEW_CLIENT,
+
+  ADMIN_STAFF_PROFILE,
+  ADMIN_LOAN,
+  ADMIN_LEAVE_MGT,
+  ADMIN_MEDICAL_ASSISTANCE,
+  ADMIN_STAFF_SCHEDULE,
 } = PRIVATE_PATHS;
 
 //CUSTOMER PAGES
@@ -937,6 +943,34 @@ const AdminConfigQrCode = WithSuspense(
   lazy(() => import("../pages/Admin/Configurations/QrCode"))
 );
 
+const AdminStaffProfile = WithSuspense(
+  lazy(() => import("../pages/Admin/StaffProfile/StaffProfile"))
+);
+
+const AdminAddStaffProfile = WithSuspense(
+  lazy(() => import("../pages/Admin/StaffProfile/AddStaff"))
+);
+
+const AdminAddStaffProfileDetails = WithSuspense(
+  lazy(() => import("../pages/Admin/StaffProfile/StaffProfileDetails"))
+);
+
+const AdminLoan = WithSuspense(
+  lazy(() => import("../pages/Admin/Loans/Loans"))
+);
+
+const AdminLeaveMgt = WithSuspense(
+  lazy(() => import("../pages/Admin/LeaveMgt/LeaveMgt"))
+);
+
+const AdminMedicalAssistance = WithSuspense(
+  lazy(() => import("../pages/Admin/MedicalAssistance/MedicalAssistance"))
+);
+
+const AdminStaffSchedule = WithSuspense(
+  lazy(() => import("../pages/Admin/StaffSchedule/StaffSchedule"))
+);
+
 export const PUBLIC_ROUTES = [
   //CUSTOMER ROUTES
   { path: CUST_LOGIN, element: <CustLogin /> },
@@ -1275,6 +1309,41 @@ export const PRIVATE_ROUTES = [
   {
     path: ADMIN_RATE_FEEDBACK,
     element: <AdminRateFeedback />,
+  },
+
+  {
+    path: ADMIN_STAFF_PROFILE,
+    element: <AdminStaffProfile />,
+  },
+
+  {
+    path: PRIVATE_PATHS.ADMIN_ADD_STAFF,
+    element: <AdminAddStaffProfile />,
+  },
+
+  {
+    path: PRIVATE_PATHS.ADMIN_STAFF_PROFILE_DETAILS,
+    element: <AdminAddStaffProfileDetails />,
+  },
+
+  {
+    path: ADMIN_LEAVE_MGT,
+    element: <AdminLeaveMgt />,
+  },
+
+  {
+    path: ADMIN_LOAN,
+    element: <AdminLoan />,
+  },
+
+  {
+    path: ADMIN_MEDICAL_ASSISTANCE,
+    element: <AdminMedicalAssistance />,
+  },
+
+  {
+    path: ADMIN_STAFF_SCHEDULE,
+    element: <AdminStaffSchedule />,
   },
   {
     path: PRIVATE_PATHS.ADMIN_VIEW_FEEDBACK,

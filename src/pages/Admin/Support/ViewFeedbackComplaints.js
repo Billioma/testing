@@ -18,6 +18,7 @@ export default function ViewFeedbackComplaints() {
   const [values, setValues] = useState({
     name: "",
     email: "",
+    senderPhone: "",
     feedback: "",
     message: "",
   });
@@ -33,7 +34,7 @@ export default function ViewFeedbackComplaints() {
   const { mutate: updateMutate, isLoading: isUpdating } = useFeedbackReply({
     onSuccess: () => {
       successToast("Feedback Sent!");
-      navigate(PRIVATE_PATHS.ADMIN_FEEDBACK);
+      navigate(PRIVATE_PATHS.ADMIN_SUPP_FEEDBACK);
     },
     onError: (error) => {
       errorToast(
@@ -47,6 +48,7 @@ export default function ViewFeedbackComplaints() {
       id,
       name: values?.name,
       email: values?.email,
+      senderPhone: values?.senderPhone,
       feedback: values?.feedback,
     });
   };
@@ -57,6 +59,8 @@ export default function ViewFeedbackComplaints() {
       email: data?.senderEmail,
       name: data?.senderName,
       message: data?.content,
+      feedback: data?.reply,
+      senderPhone: data?.senderPhone,
     });
   }, [data]);
 
@@ -121,6 +125,18 @@ export default function ViewFeedbackComplaints() {
                     fontWeight={500}
                     color="#444648"
                   >
+                    Phone Number
+                  </Text>
+                  <CustomInput auth value={values?.senderPhone} mb isDisabled />
+                </Box>
+
+                <Box w="full" mb={4}>
+                  <Text
+                    mb="8px"
+                    fontSize="12px"
+                    fontWeight={500}
+                    color="#444648"
+                  >
                     Message
                   </Text>
                   <TextInput auth value={values?.message} mb isDisabled />
@@ -133,13 +149,14 @@ export default function ViewFeedbackComplaints() {
                     fontWeight={500}
                     color="#444648"
                   >
-                    Feedback
+                    Response
                   </Text>
                   <TextInput
                     auth
+                    isDisabled={data?.reply}
                     value={values?.feedback}
                     mb
-                    holder="Enter Feedback"
+                    holder="Enter Response"
                     onChange={(e) =>
                       setValues({
                         ...values,
@@ -149,7 +166,11 @@ export default function ViewFeedbackComplaints() {
                   />
                 </Box>
 
-                <Flex gap="24px" mt="24px">
+                <Flex
+                  gap="24px"
+                  mt="24px"
+                  display={data?.reply ? "none" : "flex"}
+                >
                   <Button
                     border="1px solid #A11212"
                     bg="unset"

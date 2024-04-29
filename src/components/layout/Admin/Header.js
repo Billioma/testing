@@ -50,6 +50,9 @@ const Header = ({ showSidebar }) => {
       case locationRoute.includes("vehicles"):
         return setTitle("Vehicles");
 
+      case locationRoute.includes("profiles"):
+        return setTitle("Staff Profiles");
+
       case locationRoute.includes("profile"):
         return setTitle("Profile");
 
@@ -215,6 +218,9 @@ const Header = ({ showSidebar }) => {
 
       case locationRoute.includes("ratings"):
         return setSecTitle("Ratings");
+
+      case locationRoute.includes("profiles/create"):
+        return setSecTitle("Add New Staff");
 
       default:
         return setSecTitle("");

@@ -49,20 +49,30 @@ const EditProfile = () => {
     },
   });
 
+  const [fileLimit, setFileLimit] = useState(false);
+
   const handleUpload = (e) => {
     const selectedFile = e.target.files[0];
     if (!selectedFile) {
       return;
     }
 
+    const fileSizeInBytes = selectedFile.size;
     setFileType(URL.createObjectURL(selectedFile));
     const formData = new FormData();
     formData.append("profilePicture", selectedFile);
-    uploadMutate({
-      fileType: "avatar",
-      entityType: "customer",
-      file: formData.get("profilePicture"),
-    });
+
+    const limitInMB = Math.ceil(fileSizeInBytes / 1048576);
+    if (limitInMB > 2) {
+      setFileLimit(true);
+    } else {
+      setFileLimit(false);
+      uploadMutate({
+        fileType: "avatar",
+        entityType: "customer",
+        file: formData.get("profilePicture"),
+      });
+    }
   };
 
   const [values, setValues] = useState({
@@ -75,7 +85,7 @@ const EditProfile = () => {
 
   const handleChange = (e, { name }) => {
     if (name === "phone") {
-      const inputPhone = e.target.value.replace(/\D/g, "").slice(0, 10);
+      const inputPhone = e.target.value.replace(/\D/g, "").slice(0, 11);
       setValues({
         ...values,
         [name]: inputPhone,
@@ -89,7 +99,7 @@ const EditProfile = () => {
   };
 
   const handleSubmit = () => {
-    const phoneNumber = `+234${values.phone}`;
+    const phoneNumber = `+234${Number(values.phone)}`;
     mutate({
       firstName: values.firstName,
       lastName: values.lastName,
@@ -202,6 +212,15 @@ const EditProfile = () => {
                     />
                   )}
                 </Flex>
+                <Text
+                  color="tomato"
+                  display={fileLimit ? "block" : "none"}
+                  textAlign="center"
+                  mt="8px"
+                  fontSize="14px"
+                >
+                  File size exceeds 2MB limit!
+                </Text>
               </label>
             </Box>
           </Flex>

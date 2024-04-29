@@ -8,7 +8,12 @@ import {
   FeedbackIcon,
   HelpIcon,
   HistoryIcon,
+  LeaveMgtIcon,
+  LoanIcon,
   LocateIcon,
+  MedicalIcon,
+  StaffProfileIcon,
+  StaffScheduleIcon,
   SubscriptionIcon,
   VehicleIcon,
 } from "./images";
@@ -32,6 +37,57 @@ import { AiOutlineEdit } from "react-icons/ai";
 import { TbListDetails, TbCalendarEvent } from "react-icons/tb";
 import { HiOutlineInformationCircle } from "react-icons/hi";
 import { FiEdit } from "react-icons/fi";
+
+export const staffSidebar = [
+  {
+    id: 0,
+    name: "Dashboard",
+    path: "/admin/dashboard",
+    icon: <AdminDashboardIcon fill={"#fff"} stroke="#000" />,
+    hover: <AdminDashboardIcon fill="#fff" stroke="#EE383A" />,
+    sec: <AdminDashboardIcon fill="#EE383A" stroke="#fff" />,
+  },
+  {
+    id: 1,
+    name: "Staff Profiles",
+    path: "/admin/staff-profiles",
+    icon: <StaffProfileIcon fill={"#000"} />,
+    hover: <StaffProfileIcon fill="#EE383A" />,
+    sec: <StaffProfileIcon fill="#fff" />,
+  },
+  {
+    id: 2,
+    name: "Loans",
+    path: "/admin/loans",
+    icon: <LoanIcon fill={"#000"} />,
+    hover: <LoanIcon fill="#EE383A" />,
+    sec: <LoanIcon fill="#fff" />,
+  },
+  {
+    id: 3,
+    name: "Leave Management",
+    path: "/admin/leave-mgt",
+    icon: <LeaveMgtIcon fill={"#000"} />,
+    hover: <LeaveMgtIcon fill="#EE383A" />,
+    sec: <LeaveMgtIcon fill="#fff" />,
+  },
+  {
+    id: 4,
+    name: "Medical Assistance",
+    path: "/admin/medical-assistance",
+    icon: <MedicalIcon fill={"#000"} />,
+    hover: <MedicalIcon fill="#EE383A" />,
+    sec: <MedicalIcon fill="#fff" />,
+  },
+  {
+    id: 5,
+    name: "Staff Schedule",
+    path: "/admin/staff-schedule",
+    icon: <StaffScheduleIcon fill={"#000"} />,
+    hover: <StaffScheduleIcon fill="#EE383A" />,
+    sec: <StaffScheduleIcon fill="#fff" />,
+  },
+];
 
 export const sidebarItems = [
   {
@@ -1235,6 +1291,12 @@ export const cardImg = [
   { img: "/assets/verve.svg", name: "verve" },
 ];
 
+export const NewStatus = [
+  { color: "#E81313", name: "Denied", bg: "#F9D0CD" },
+  { color: "#008000", name: "Active", bg: "#E5FFE5" },
+  { color: "#F9A11E", name: "Pending", bg: "#FDF6E7" },
+];
+
 export const SecStatus = [
   { color: "#E81313", name: "Inactive", bg: "#F9D0CD" },
   { color: "#008000", name: "Active", bg: "#E5FFE5" },
@@ -1360,6 +1422,15 @@ export const clientInvoiceListOption = [
   },
 ];
 
+export const staffDetailsTab = [
+  "General Information",
+  "Employee Documents",
+  "Schedule",
+  "Loan History",
+  "Leave History",
+  "Medical Assistance",
+];
+
 export const viewDeleteOption = [
   {
     name: "View",
@@ -1469,19 +1540,19 @@ export const companyPayToParkHeader = [
 export const operatorDashCards = [
   {
     title: "Locations",
-    img: "/assets/locationassets/n.jpg",
+    img: "/assets/locationn.jpg",
   },
   {
     title: "Zones",
-    img: "/assets/zoneassets/s.jpg",
+    img: "/assets/zones.jpg",
   },
   {
     title: "Attendants",
-    img: "/assets/attendanassets/t.jpg",
+    img: "/assets/attendant.jpg",
   },
   {
     title: "Transactions",
-    img: "/assets/tranassets/s.jpg",
+    img: "/assets/trans.jpg",
   },
 ];
 
@@ -1489,7 +1560,7 @@ export const operatorDahboard = [
   {
     title: "Valeted Vehicles",
     color: "#EE383A",
-    img: "/assets/valeteassets/d.jpg",
+    img: "/assets/valeted.jpg",
   },
   {
     title: "Parked Vehicles",
@@ -1509,21 +1580,21 @@ export const clientDahboard = [
     opt: "Inactive",
     color: "#EE383A",
     secOpt: "Active",
-    img: "/assets/subassets/s.jpg",
+    img: "/assets/subs.jpg",
   },
   {
     title: "Users",
     opt: "Inactive",
     color: "#0B841D",
     secOpt: "Active",
-    img: "/assets/userassets/s.jpg",
+    img: "/assets/users.jpg",
   },
   {
     title: "Events",
     color: "#242628",
     opt: "Upcoming",
     secOpt: "Past",
-    img: "/assets/eventassets/s.jpg",
+    img: "/assets/events.jpg",
   },
 ];
 
@@ -1533,21 +1604,21 @@ export const eventClientDahboard = [
     opt: "Inactive",
     color: "#EE383A",
     secOpt: "Active",
-    img: "/assets/subassets/s.jpg",
+    img: "/assets/subs.jpg",
   },
   // {
   //   title: "Users",
   //   opt: "Inactive",
   //   color: "#0B841D",
   //   secOpt: "Active",
-  //   img: "/assets/userassets/s.jpg",
+  //   img: "/assets/users.jpg",
   // },
   {
     title: "Events",
     color: "#242628",
     opt: "Upcoming",
     secOpt: "Past",
-    img: "/assets/eventassets/s.jpg",
+    img: "/assets/events.jpg",
   },
 ];
 
@@ -1557,33 +1628,33 @@ export const busClientDashboard = [
     color: "#EE383A",
     opt: "Upcoming",
     secOpt: "Past",
-    img: "/assets/eventassets/s.jpg",
+    img: "/assets/events.jpg",
   },
   {
     title: "Parking Logs",
     color: "#0B841D",
     opt: "Upcoming",
     secOpt: "Past",
-    img: "/assets/eventassets/s.jpg",
+    img: "/assets/events.jpg",
   },
   {
     title: "Serviced Logs",
     color: "#242628",
     opt: "Upcoming",
     secOpt: "Past",
-    img: "/assets/eventassets/s.jpg",
+    img: "/assets/events.jpg",
   },
 ];
 
 export const customerHelp = [
   {
     title: "Frequently Asked Questions",
-    img: "/assets/faassets/q.jpg",
+    img: "/assets/faq.jpg",
     link: "/customer/help-center/FAQs",
   },
   {
     title: "Send us an email",
-    img: "/assets/helassets/p.jpg",
+    img: "/assets/help.jpg",
     link: "/customer/help-center/contact-us",
   },
 ];
@@ -1997,6 +2068,12 @@ export const locationsOptions = [
   { label: "Created At", value: "createdAt" },
 ];
 
+export const staffOptions = [
+  { label: "Staff ID", value: "staffId" },
+  { label: "Full Name", value: "fullName" },
+  { label: "Created At", value: "createdAt" },
+];
+
 export const valetedVehiclesOptions = [
   { label: "Ticket Number", value: "ticketNumber" },
   { label: "License Plate", value: "vehicle.licensePlate" },
@@ -2100,7 +2177,7 @@ export const feedbackOptions = [
 
 export const supportType = [
   { name: "FEEDBACK", value: "FEEDBACK" },
-  { name: "COMPLAINTS", value: "COMPLAINT" },
+  { name: "ISSUES", value: "COMPLAINT" },
   { name: "ENQUIRIES", value: "ENQUIRY" },
 ];
 

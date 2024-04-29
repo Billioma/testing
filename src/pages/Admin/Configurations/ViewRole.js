@@ -11,6 +11,7 @@ import {
   AccordionPanel,
   Checkbox,
   Spinner,
+  Switch,
 } from "@chakra-ui/react";
 import CustomInput from "../../../components/common/CustomInput";
 import { useNavigate, useParams } from "react-router-dom";
@@ -28,6 +29,7 @@ export default function ViewRole() {
     name: "",
     displayName: "",
     permissions: [],
+    isStaffRole: false,
   });
   const isEdit = sessionStorage.getItem("edit");
   const [edit, setEdit] = useState(false);
@@ -68,6 +70,7 @@ export default function ViewRole() {
       body: {
         name: values?.name,
         displayName: values?.displayName,
+        isStaffRole: values?.isStaffRole,
         permissions: values?.permissions?.map((item) => item),
       },
     });
@@ -125,6 +128,7 @@ export default function ViewRole() {
       ...values,
       name: data?.name,
       displayName: data?.displayName,
+      isStaffRole: data?.isStaffRole,
       permissions: data?.permissions?.map((permission) =>
         parseInt(permission?.id)
       ),
@@ -209,6 +213,28 @@ export default function ViewRole() {
                     dis={edit ? false : true}
                   />
                 </Box>
+
+                <Flex
+                  align="center"
+                  justifyContent={"space-between"}
+                  gap="15px"
+                  mb="16px"
+                >
+                  <Text fontSize="12px" fontWeight={500} color="#444648">
+                    Set as Staff Role
+                  </Text>
+                  <Switch
+                    onChange={() =>
+                      setValues({
+                        ...values,
+                        isStaffRole: values.isStaffRole ? false : true,
+                      })
+                    }
+                    size="sm"
+                    variant="adminPrimary"
+                    isChecked={values.isStaffRole}
+                  />
+                </Flex>
 
                 <Flex gap={4} mt={4}>
                   <Button

@@ -15,7 +15,9 @@ html {
 .check {
   color: red
 }
-
+.react-switch-bg {
+  border: 1px solid #949698 !important
+}
 /* Firefox */
 /* For Firefox 64+ */
 * {
