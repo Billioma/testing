@@ -292,6 +292,8 @@ export const STAFF_LIST = (filterString = "", limit = "", page = "") =>
 export const STAFF = (id = "") => `admin/staff/${id}`;
 export const UPDATE_EMPLOYEE_DOC = (id = "") =>
   `admin/employee-documents/${id}`;
+export const APPROVE_LICENSE = (id = "") =>
+  `admin/staff/approve-driver-license/${id}`;
 export const EMPLOYEE_DOC = "admin/employee-documents";
 
 export const ADMIN_RATES = "admin/rates";

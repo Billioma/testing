@@ -32,6 +32,11 @@ export const editEmployeeDoc = async ({ query, body }) => {
   return response.data;
 };
 
+export const approveLicense = async (query) => {
+  const response = await axiosInstance.patch(API.APPROVE_LICENSE(query));
+  return response.data;
+};
+
 export const deleteStaff = async (id) => {
   const response = await axiosInstance.delete(`${API.STAFFS}/${id}`);
   return response.data;

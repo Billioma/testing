@@ -3,6 +3,7 @@ import {
   addStaff,
   addStaffDoc,
   approveLeave,
+  approveLicense,
   delEmployeeDoc,
   deleteStaff,
   editEmployeeDoc,
@@ -68,6 +69,15 @@ export const useEditStaff = (options = {}) => {
 export const useEditEmployeeDoc = (options = {}) => {
   const { isLoading, data, mutate } = useMutation(editEmployeeDoc, {
     mutationKey: ["editEmployeeDoc"],
+    ...options,
+  });
+
+  return { isLoading, data, mutate };
+};
+
+export const useApproveLicense = (options = {}) => {
+  const { isLoading, data, mutate } = useMutation(approveLicense, {
+    mutationKey: ["approveLicense"],
     ...options,
   });
 

@@ -80,7 +80,7 @@ const AddStaff = () => {
         : "",
     });
   };
-
+  const [dept, setDept] = useState("");
   const staffOptions = staffs?.data?.map((role) => ({
     label: role?.fullName,
     value: Number(role?.id),
@@ -94,10 +94,13 @@ const AddStaff = () => {
     label: dept?.name,
     value: Number(dept?.id),
   }));
-  const jobsOptions = jobs?.data?.map((job) => ({
-    label: job?.name,
-    value: Number(job?.id),
-  }));
+
+  const jobsOptions = jobs?.data
+    ?.filter((item) => Number(item?.department?.id) === Number(dept?.value))
+    ?.map((job) => ({
+      label: job?.name,
+      value: Number(job?.id),
+    }));
 
   return (
     <Box minH="75vh">
@@ -543,12 +546,13 @@ const AddStaff = () => {
                             placeholder="Select department"
                             options={deptsOptions}
                             name="department"
-                            onChange={(selectedOption) =>
+                            onChange={(selectedOption) => {
                               setValues({
                                 ...values,
                                 department: selectedOption,
-                              })
-                            }
+                              });
+                              setDept(selectedOption);
+                            }}
                             onBlur={handleBlur}
                             components={{
                               IndicatorSeparator: () => (
@@ -592,6 +596,7 @@ const AddStaff = () => {
                                 ? errorCustomStyles
                                 : customStyles
                             }
+                            isDisabled={!dept}
                             placeholder="Select Job Title"
                             options={jobsOptions}
                             name="jobTitle"

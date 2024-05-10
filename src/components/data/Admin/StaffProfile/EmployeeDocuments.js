@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Box, Flex, Image, Spinner, Text } from "@chakra-ui/react";
 import {
+  useApproveLicense,
   useEditEmployeeDoc,
   useEditStaff,
 } from "../../../../services/admin/query/staff";
@@ -97,6 +98,18 @@ const EmployeeDocuments = ({ refetch, data }) => {
     },
   });
 
+  const { mutate: approveMutate, isLoading: isApprove } = useApproveLicense({
+    onSuccess: () => {
+      successToast("Driver license approved!");
+      refetch();
+    },
+    onError: (error) => {
+      errorToast(
+        error?.response?.data?.message || error?.message || "An Error occurred"
+      );
+    },
+  });
+
   const handleApprove = (id) => {
     updateMutate({
       query: id?.id,
@@ -104,6 +117,10 @@ const EmployeeDocuments = ({ refetch, data }) => {
         status: "VERIFIED",
       },
     });
+  };
+
+  const handleApproveLicense = () => {
+    approveMutate(data?.id);
   };
 
   const documents = data?.documents;
@@ -145,9 +162,6 @@ const EmployeeDocuments = ({ refetch, data }) => {
   return (
     <Box mt="24px">
       <Box>
-        <Text mb="8px" fontSize="10px" color="#444648" fontWeight={500}>
-          Employee Letter
-        </Text>
         <Box w="full">
           <Flex
             border="1px solid #d4d6d8"
@@ -229,20 +243,37 @@ const EmployeeDocuments = ({ refetch, data }) => {
                   )}
                 </Flex>
               ) : (
-                <Flex
-                  py="8px"
-                  px="16px"
-                  gap="20px"
-                  align="center"
-                  justifyContent="space-between"
-                  border="1px solid #CCCCCC"
-                  borderRadius="4px"
-                >
-                  <Text fontSize="12px" fontWeight={500}>
-                    Unsubmitted
-                  </Text>
-                  <IoIosArrowDown />
-                </Flex>
+                <Select
+                  styles={customStyles}
+                  options={submitOptions}
+                  placeholder="Unsubmitted"
+                  value={newValues?.employmentLetter}
+                  components={{
+                    IndicatorSeparator: () => (
+                      <div style={{ display: "none" }}></div>
+                    ),
+                    DropdownIndicator: () => (
+                      <div>
+                        {isUpdating && ids === "employmentLetter" ? (
+                          <Spinner size="sm" />
+                        ) : (
+                          <IoIosArrowDown size="15px" color="#646668" />
+                        )}
+                      </div>
+                    ),
+                  }}
+                  onChange={(selectedOption) => {
+                    setNewValues({
+                      ...newValues,
+                      employmentLetter: selectedOption,
+                    });
+                    setIds("employmentLetter");
+                    handleSubmit(
+                      selectedOption?.value,
+                      mainFiles?.employmentLetter
+                    );
+                  }}
+                />
               )}
             </Flex>
           </Flex>
@@ -250,14 +281,11 @@ const EmployeeDocuments = ({ refetch, data }) => {
       </Box>
 
       <Box mt="24px">
-        <Text mb="8px" fontSize="10px" color="#444648" fontWeight={500}>
-          Guarantor 1 Form
-        </Text>
         <Box w="full">
           <Flex
             border="1px solid #d4d6d8"
             borderRadius="4px"
-            py="12px"
+            py="20px"
             align="center"
             px="16px"
             justifyContent="space-between"
@@ -358,14 +386,11 @@ const EmployeeDocuments = ({ refetch, data }) => {
       </Box>
 
       <Box mt="24px">
-        <Text mb="8px" fontSize="10px" color="#444648" fontWeight={500}>
-          Guarantor 2 Form
-        </Text>
         <Box w="full">
           <Flex
             border="1px solid #d4d6d8"
             borderRadius="4px"
-            py="12px"
+            py="20px"
             align="center"
             px="16px"
             justifyContent="space-between"
@@ -443,20 +468,37 @@ const EmployeeDocuments = ({ refetch, data }) => {
                   )}
                 </Flex>
               ) : (
-                <Flex
-                  py="8px"
-                  px="16px"
-                  gap="20px"
-                  align="center"
-                  justifyContent="space-between"
-                  border="1px solid #CCCCCC"
-                  borderRadius="4px"
-                >
-                  <Text fontSize="12px" fontWeight={500}>
-                    Unsubmitted
-                  </Text>
-                  <IoIosArrowDown />
-                </Flex>
+                <Select
+                  styles={customStyles}
+                  options={submitOptions}
+                  placeholder="Unsubmitted"
+                  value={newValues?.guarantorForm}
+                  components={{
+                    IndicatorSeparator: () => (
+                      <div style={{ display: "none" }}></div>
+                    ),
+                    DropdownIndicator: () => (
+                      <div>
+                        {isUpdating && ids === "guarantorForm" ? (
+                          <Spinner size="sm" />
+                        ) : (
+                          <IoIosArrowDown size="15px" color="#646668" />
+                        )}
+                      </div>
+                    ),
+                  }}
+                  onChange={(selectedOption) => {
+                    setNewValues({
+                      ...newValues,
+                      guarantorForm: selectedOption,
+                    });
+                    setIds("guarantorForm");
+                    handleSubmit(
+                      selectedOption?.value,
+                      mainFiles?.guarantorForm
+                    );
+                  }}
+                />
               )}
             </Flex>
           </Flex>
@@ -464,14 +506,11 @@ const EmployeeDocuments = ({ refetch, data }) => {
       </Box>
 
       <Box mt="24px">
-        <Text mb="8px" fontSize="10px" color="#444648" fontWeight={500}>
-          Confidentiality Agreement
-        </Text>
         <Box w="full">
           <Flex
             border="1px solid #d4d6d8"
             borderRadius="4px"
-            py="12px"
+            py="20px"
             align="center"
             px="16px"
             justifyContent="space-between"
@@ -549,20 +588,37 @@ const EmployeeDocuments = ({ refetch, data }) => {
                   )}
                 </Flex>
               ) : (
-                <Flex
-                  py="8px"
-                  px="16px"
-                  gap="20px"
-                  align="center"
-                  justifyContent="space-between"
-                  border="1px solid #CCCCCC"
-                  borderRadius="4px"
-                >
-                  <Text fontSize="12px" fontWeight={500}>
-                    Unsubmitted
-                  </Text>
-                  <IoIosArrowDown />
-                </Flex>
+                <Select
+                  styles={customStyles}
+                  options={submitOptions}
+                  placeholder="Unsubmitted"
+                  value={newValues?.confidentialityAgreement}
+                  components={{
+                    IndicatorSeparator: () => (
+                      <div style={{ display: "none" }}></div>
+                    ),
+                    DropdownIndicator: () => (
+                      <div>
+                        {isUpdating && ids === "confidentialityAgreement" ? (
+                          <Spinner size="sm" />
+                        ) : (
+                          <IoIosArrowDown size="15px" color="#646668" />
+                        )}
+                      </div>
+                    ),
+                  }}
+                  onChange={(selectedOption) => {
+                    setNewValues({
+                      ...newValues,
+                      confidentialityAgreement: selectedOption,
+                    });
+                    setIds("confidentialityAgreement");
+                    handleSubmit(
+                      selectedOption?.value,
+                      mainFiles?.confidentialityAgreement
+                    );
+                  }}
+                />
               )}
             </Flex>
           </Flex>
@@ -570,14 +626,11 @@ const EmployeeDocuments = ({ refetch, data }) => {
       </Box>
 
       <Box mt="24px">
-        <Text mb="8px" fontSize="10px" color="#444648" fontWeight={500}>
-          Non-Solicitation & Non-Competition Agreement
-        </Text>
         <Box w="full">
           <Flex
             border="1px solid #d4d6d8"
             borderRadius="4px"
-            py="12px"
+            py="20px"
             align="center"
             px="16px"
             justifyContent="space-between"
@@ -655,20 +708,37 @@ const EmployeeDocuments = ({ refetch, data }) => {
                   )}
                 </Flex>
               ) : (
-                <Flex
-                  py="8px"
-                  px="16px"
-                  gap="20px"
-                  align="center"
-                  justifyContent="space-between"
-                  border="1px solid #CCCCCC"
-                  borderRadius="4px"
-                >
-                  <Text fontSize="12px" fontWeight={500}>
-                    Unsubmitted
-                  </Text>
-                  <IoIosArrowDown />
-                </Flex>
+                <Select
+                  styles={customStyles}
+                  options={submitOptions}
+                  placeholder="Unsubmitted"
+                  value={newValues?.nonSolicitationAgreement}
+                  components={{
+                    IndicatorSeparator: () => (
+                      <div style={{ display: "none" }}></div>
+                    ),
+                    DropdownIndicator: () => (
+                      <div>
+                        {isUpdating && ids === "nonSolicitationAgreement" ? (
+                          <Spinner size="sm" />
+                        ) : (
+                          <IoIosArrowDown size="15px" color="#646668" />
+                        )}
+                      </div>
+                    ),
+                  }}
+                  onChange={(selectedOption) => {
+                    setNewValues({
+                      ...newValues,
+                      nonSolicitationAgreement: selectedOption,
+                    });
+                    setIds("nonSolicitationAgreement");
+                    handleSubmit(
+                      selectedOption?.value,
+                      mainFiles?.nonSolicitationAgreement
+                    );
+                  }}
+                />
               )}
             </Flex>
           </Flex>
@@ -676,14 +746,11 @@ const EmployeeDocuments = ({ refetch, data }) => {
       </Box>
 
       <Box mt="24px">
-        <Text mb="8px" fontSize="10px" color="#444648" fontWeight={500}>
-          Exclusivity & Non-Conflict of Interest Agreement
-        </Text>
         <Box w="full">
           <Flex
             border="1px solid #d4d6d8"
             borderRadius="4px"
-            py="12px"
+            py="20px"
             align="center"
             px="16px"
             justifyContent="space-between"
@@ -796,14 +863,11 @@ const EmployeeDocuments = ({ refetch, data }) => {
       </Box>
 
       <Box mt="24px">
-        <Text mb="8px" fontSize="10px" color="#444648" fontWeight={500}>
-          Identification Document
-        </Text>
         <Box w="full">
           <Flex
             border="1px solid #d4d6d8"
             borderRadius="4px"
-            py="12px"
+            py="20px"
             align="center"
             px="16px"
             justifyContent="space-between"
@@ -881,21 +945,119 @@ const EmployeeDocuments = ({ refetch, data }) => {
                   )}
                 </Flex>
               ) : (
-                <Flex
-                  py="8px"
-                  px="16px"
-                  gap="20px"
-                  align="center"
-                  justifyContent="space-between"
-                  border="1px solid #CCCCCC"
-                  borderRadius="4px"
-                >
-                  <Text fontSize="12px" fontWeight={500}>
-                    Unsubmitted
-                  </Text>
-                  <IoIosArrowDown />
-                </Flex>
+                <Select
+                  styles={customStyles}
+                  options={submitOptions}
+                  placeholder="Unsubmitted"
+                  value={newValues?.identificationDocument}
+                  components={{
+                    IndicatorSeparator: () => (
+                      <div style={{ display: "none" }}></div>
+                    ),
+                    DropdownIndicator: () => (
+                      <div>
+                        {isUpdating && ids === "identificationDocument" ? (
+                          <Spinner size="sm" />
+                        ) : (
+                          <IoIosArrowDown size="15px" color="#646668" />
+                        )}
+                      </div>
+                    ),
+                  }}
+                  onChange={(selectedOption) => {
+                    setNewValues({
+                      ...newValues,
+                      identificationDocument: selectedOption,
+                    });
+                    setIds("identificationDocument");
+                    handleSubmit(
+                      selectedOption?.value,
+                      mainFiles?.identificationDocument
+                    );
+                  }}
+                />
               )}
+            </Flex>
+          </Flex>
+        </Box>
+      </Box>
+
+      <Box mt="24px">
+        <Box w="full">
+          <Flex
+            border="1px solid #d4d6d8"
+            borderRadius="4px"
+            py="20px"
+            align="center"
+            px="16px"
+            justifyContent="space-between"
+            w="full"
+          >
+            <Flex
+              align={{ base: "flex-start", md: "center" }}
+              flexDir={{ base: "column", md: "row" }}
+              gap={{ base: "10px", md: "" }}
+              w="full"
+              justifyContent="space-between"
+            >
+              <Flex align="flex-start" gap="30px">
+                <Flex align="center" gap="10px">
+                  <Image src="/assets/folder.jpg" w="24px" h="24px" />
+                  <Box>
+                    <Text color="#646668" fontSize="14px">
+                      Driver's License
+                    </Text>
+                  </Box>
+                </Flex>
+
+                <Flex
+                  justifyContent="center"
+                  align="center"
+                  py="5px"
+                  px="16px"
+                  borderRadius="4px"
+                  fontWeight={500}
+                  fontSize="13px"
+                  bg={
+                    data?.driverLicenseStatus === "VERIFIED"
+                      ? "#E5FFE5"
+                      : "#FDF6E7"
+                  }
+                  color={
+                    data?.driverLicenseStatus === "VERIFIED"
+                      ? "#008000"
+                      : "#F9A11E"
+                  }
+                >
+                  {data?.driverLicenseStatus === "VERIFIED"
+                    ? "Approved"
+                    : "Pending"}
+                </Flex>
+              </Flex>
+
+              <Flex
+                border="1px solid #cccccc"
+                borderRadius="4px"
+                py="8px"
+                px="16px"
+                display={
+                  data?.driverLicenseStatus === "VERIFIED" ? "none" : "flex"
+                }
+                fontSize="12px"
+                cursor={isApprove ? "" : "pointer"}
+                onClick={() =>
+                  isApprove ? "" : (handleApproveLicense(), setIds("license"))
+                }
+                fontWeight={500}
+                bg="#090C02"
+                color="#fff"
+              >
+                {isApprove && ids == "license" ? (
+                  <Spinner size="md" />
+                ) : (
+                  "Approve"
+                )}
+              </Flex>
             </Flex>
           </Flex>
         </Box>

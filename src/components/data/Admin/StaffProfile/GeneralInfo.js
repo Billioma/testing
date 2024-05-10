@@ -223,6 +223,7 @@ const GeneralInfo = ({ data, refetch, id }) => {
       nextOfKinPhone,
       secondaryPhoneNumber,
       department,
+      jobTitle,
       ...rest
     } = values;
     updateMutate({
@@ -231,6 +232,7 @@ const GeneralInfo = ({ data, refetch, id }) => {
         ...rest,
         role: role?.value,
         department: department?.value,
+        jobTitle: jobTitle?.value,
         phoneNumber: !phoneNumber ? "" : `+234${phoneNumber}`,
         secondaryPhoneNumber: !secondaryPhoneNumber
           ? ""
