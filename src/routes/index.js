@@ -1,19 +1,30 @@
 import React from "react";
-import { useLocation, useRoutes } from "react-router-dom";
-import { ROUTES } from "./routes";
-import PageLayout from "../components/layout/PageLayout";
+import { useRoutes, useLocation } from "react-router-dom";
+import { AuthLayout, NonAuthLayout } from "../layout/PageLayout";
+import { PRIVATE_ROUTES, PUBLIC_ROUTES } from "./routes";
 
-const RouteWrapper = () => {
-  const routes = useRoutes(ROUTES);
+const PublicRouteWrapper = () => {
+  const routes = useRoutes(PUBLIC_ROUTES);
+  return routes;
+};
+
+const PrivateRouteWrapper = () => {
+  const routes = useRoutes(PRIVATE_ROUTES);
   return routes;
 };
 
 const Pages = () => {
   const location = useLocation();
-  return (
-    <PageLayout>
-      <RouteWrapper key={location.pathname} />
-    </PageLayout>
+  const user = localStorage.getItem("managr");
+
+  return user ? (
+    <AuthLayout>
+      <PrivateRouteWrapper key={location.pathname} />
+    </AuthLayout>
+  ) : (
+    <NonAuthLayout>
+      <PublicRouteWrapper key={location.pathname} />
+    </NonAuthLayout>
   );
 };
 

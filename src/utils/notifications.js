@@ -10,6 +10,7 @@ const BaseAlert = (props) => {
       justifyContent="center"
       {...style}
       mt={8}
+      fontFamily="Satoshi"
       ml={{ base: "unset", md: "150px" }}
       px={4}
       w="full"
@@ -20,7 +21,6 @@ const BaseAlert = (props) => {
     >
       <Box pt="10px" textAlign="center" w="full">
         <Heading
-          fontFamily="Sailec"
           fontSize="16px"
           lineHeight="100%"
           color={`${style.colorScheme}.700`}

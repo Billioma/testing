@@ -1,0 +1,125 @@
+.loader {
+  width: 20px;
+  height: 20px;
+  border: 3px dotted #086375;
+  border-radius: 50%;
+  display: inline-block;
+  position: relative;
+  box-sizing: border-box;
+  animation: rotation 2s linear infinite;
+}
+
+@keyframes rotation {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* Chrome, Safari, and Opera */
+.no_scroller::-webkit-scrollbar {
+  width: 0;
+  border-radius: 8px;
+  background-color: transparent;
+}
+
+.no_scroller::-webkit-scrollbar-thumb {
+  background-color: transparent;
+}
+
+.hovered_image {
+  display: none;
+}
+
+.parent_nav:hover .child_nav {
+  color: #ee383a;
+  border-color: #ee383a;
+}
+
+.parent_nav:hover .hovered_image {
+  display: flex;
+}
+
+.parent_nav:hover .initial_image {
+  display: none;
+}
+
+.rmdp-shadow {
+  box-shadow: none !important;
+  border: none;
+}
+.rmdp-arrow {
+  color: #83b1ba !important;
+}
+.rmdp-header button:hover {
+  background: #83b1ba !important;
+}
+.rmdp-week {
+  margin-bottom: 10px !important;
+}
+.rmdp-week-day {
+  color: #83b1ba !important;
+}
+.rmdp-wrapper {
+  width: 100% !important;
+}
+
+.rmdp-calendar {
+  width: 100% !important;
+}
+
+.rmdp-calendar div {
+  width: 100% !important;
+}
+
+.rmdp-range {
+  background-color: #e5eff1 !important;
+  box-shadow: none !important;
+  color: #090c02 !important;
+}
+
+.rmdp-range:hover {
+  background-color: #e5eff1 !important;
+  color: #090c02 !important;
+}
+
+.rmdp-range-hover {
+  background-color: #e5eff1 !important;
+  color: #090c02 !important;
+}
+
+.rmdp-day:hover {
+  background: transparent !important;
+}
+
+.rmdp-day span {
+  background: transparent;
+}
+
+.rmdp-day span:hover {
+  background: transparent !important;
+  color: #090c02 !important;
+}
+.rmdp-range:hover {
+  background-color: #e5eff1 !important;
+}
+.rmdp-range-hover.start:not(.force),
+.rmdp-range.start:not(.force) {
+  border-top-left-radius: 4px !important;
+  background-color: #83b1ba !important;
+  border-bottom-left-radius: 4px !important;
+}
+
+.rmdp-range-hover.end:not(.force),
+.rmdp-range.end:not(.force) {
+  border-top-right-radius: 4px !important;
+  background-color: #83b1ba !important;
+  border-bottom-right-radius: 4px !important;
+}
+
+.rmdp-today span {
+  background: transparent !important;
+  color: #090c02 !important;
+}

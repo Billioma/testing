@@ -1,27 +1,30 @@
 {
-  "name": "parkinspace-website",
+  "name": "managr",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@chakra-ui/react": "^2.7.1",
-    "@emotion/react": "^11.11.1",
-    "@emotion/styled": "^11.11.0",
+    "@chakra-ui/icons": "^2.1.1",
+    "@chakra-ui/react": "^2.8.2",
+    "@emotion/react": "^11.11.4",
+    "@emotion/styled": "^11.11.5",
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^13.0.0",
     "@testing-library/user-event": "^13.2.1",
-    "axios": "^1.4.0",
-    "formik": "^2.4.2",
-    "framer-motion": "^10.12.18",
+    "axios": "^1.6.8",
+    "date-fns": "^3.6.0",
+    "formik": "^2.4.5",
+    "framer-motion": "^11.1.7",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-icons": "^4.10.1",
-    "react-modern-drawer": "^1.2.0",
+    "react-google-recaptcha": "^3.1.0",
+    "react-icons": "^5.1.0",
+    "react-multi-date-picker": "^4.4.1",
     "react-query": "^3.39.3",
-    "react-router-dom": "^6.13.0",
+    "react-router-dom": "^6.23.0",
     "react-scripts": "5.0.1",
-    "react-scroll": "^1.9.0",
+    "react-select": "^5.8.0",
     "web-vitals": "^2.1.0",
-    "yup": "^1.2.0"
+    "yup": "^1.4.0"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -50,12 +53,13 @@
     ]
   },
   "devDependencies": {
-    "@babel/eslint-parser": "^7.22.5",
-    "@babel/preset-react": "^7.22.5",
-    "eslint-config-prettier": "^8.8.0",
-    "eslint-plugin-prettier": "^4.2.1",
-    "eslint-plugin-react": "^7.32.2",
-    "prettier": "^2.8.8",
-    "tailwindcss": "^3.3.2"
+    "@babel/eslint-parser": "^7.24.5",
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
+    "@babel/preset-react": "^7.24.1",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-prettier": "^5.1.3",
+    "eslint-plugin-react": "^7.34.1",
+    "prettier": "^3.2.5",
+    "react-app-rewired": "^2.2.1"
   }
 }

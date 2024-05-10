@@ -3,8 +3,11 @@ import ReactDOM from "react-dom/client";
 import App from "./App";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { BrowserRouter } from "react-router-dom";
-import "./index.css";
+import { customTheme } from "./styles/theme";
 import { ChakraProvider } from "@chakra-ui/react";
+import "./styles/custom.css";
+import "./styles/satoshi.css";
+import Fonts from "./styles/Fonts";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 const queryClient = new QueryClient({
@@ -21,12 +24,13 @@ const queryClient = new QueryClient({
 
 root.render(
   <React.StrictMode>
-    <QueryClientProvider client={queryClient}>
-      <ChakraProvider>
+    <ChakraProvider theme={customTheme}>
+      <QueryClientProvider client={queryClient}>
         <BrowserRouter>
+          <Fonts />
           <App />
         </BrowserRouter>
-      </ChakraProvider>
-    </QueryClientProvider>
-  </React.StrictMode>
+      </QueryClientProvider>
+    </ChakraProvider>
+  </React.StrictMode>,
 );
