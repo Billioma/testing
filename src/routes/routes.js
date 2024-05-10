@@ -1,5 +1,5 @@
 import { lazy } from "react";
-import WithSuspense from "../components/Loaders/WithSuspense";
+import WithSuspense from "../components/loaders/WithSuspense";
 import { PUBLIC_PATHS, PRIVATE_PATHS } from "./constants";
 import { Navigate } from "react-router-dom";
 
