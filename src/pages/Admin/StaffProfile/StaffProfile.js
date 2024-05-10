@@ -3,7 +3,6 @@ import StaffProfileTableLayer from "../../../components/data/Admin/StaffProfile/
 import { Box, Button, Flex, Image, Text } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import { PRIVATE_PATHS } from "../../../routes/constants";
-import { useGetLocations } from "../../../services/admin/query/locations";
 import Filter from "../../../components/common/Filter";
 import { staffOptions } from "../../../components/common/constants";
 import { MdAdd } from "react-icons/md";

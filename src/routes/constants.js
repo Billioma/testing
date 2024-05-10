@@ -270,7 +270,10 @@ export const PRIVATE_PATHS = {
   ADMIN_STAFF_PROFILE_DETAILS: "/admin/staff-profiles/:id",
   ADMIN_ADD_STAFF: "/admin/staff-profiles/create",
   ADMIN_LOAN: "/admin/loans",
+  ADMIN_LOAN_DETAILS: "/admin/loans/:id",
   ADMIN_LEAVE_MGT: "/admin/leave-mgt",
+  ADMIN_LEAVE_MGT_DEETAILS: "/admin/leave-mgt/:id",
   ADMIN_MEDICAL_ASSISTANCE: "/admin/medical-assistance",
+  ADMIN_MEDICAL_ASSISTANCE_DETAILS: "/admin/medical-assistance/:id",
   ADMIN_STAFF_SCHEDULE: "/admin/staff-schedule",
 };

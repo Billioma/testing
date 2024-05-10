@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { Box, Flex, Image, Text } from "@chakra-ui/react";
 import HistoryTableLayer from "../../../components/data/Admin/Reports/HistoryTableLayer";
 import { useGetTran } from "../../../services/admin/query/reports";
-import HistoryExport from "../../../components/data/Admin/Reports/HistoryExport";
 import Filter from "../../../components/common/Filter";
 import { paymentHistoryReportOptions } from "../../../components/common/constants";
 import { formatFilterDate } from "../../../utils/helpers";
@@ -114,8 +113,6 @@ const History = () => {
           gap
           main={
             <>
-              {" "}
-              {data?.data?.length ? <HistoryExport data={data?.data} /> : ""}
               <Flex
                 justifyContent="center"
                 align="center"

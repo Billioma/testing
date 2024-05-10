@@ -1,49 +1,49 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Box, Button, Text } from "@chakra-ui/react";
-import { CSVLink } from "react-csv";
 import { PiExportLight } from "react-icons/pi";
 
-const LogExport = ({ data }) => {
-  const columns = [
-    { name: "Location", selector: "location" },
-    { name: "Customer", selector: "customer" },
-    { name: "Service Type", selector: "serviceType" },
-    { name: "Vehicle", selector: "vehicle" },
-    { name: "Ticket Number", selector: "ticketNumber" },
-    { name: "Billing Type", selector: "billingType" },
-    { name: "Amount", selector: "amount" },
-    { name: "Amount Paid", selector: "amountPaid" },
-    { name: "Status", selector: "status" },
-    { name: "Date Created", selector: "createdAt" },
-  ];
+const LogsExport = ({ data, action, isExporting, limit }) => {
+  const [exportable, setExportable] = useState(false);
+
+  useEffect(() => {
+    if (data && exportable) {
+      const a = document.createElement("a"),
+        fileName = "Logs Report.csv";
+      document.body.appendChild(a);
+      a.style = "display: none";
+
+      const blob = new Blob([data], { type: "octet/stream" }),
+        url = window.URL.createObjectURL(blob);
+      a.href = url;
+      a.download = fileName;
+      a.click();
+      window.URL.revokeObjectURL(url);
+      setExportable(false);
+    }
+  }, [data, exportable]);
 
   return (
     <Box w="fit-content">
-      {data?.length ? (
-        <CSVLink
-          data={data}
-          headers={columns.map((column) => ({
-            label: column.name,
-            key: column.selector,
-          }))}
-          filename={"Logs Report.csv"}
-        >
-          <Button
-            display="flex"
-            bg="#000"
-            _hover={{ bg: "#000" }}
-            borderRadius="8px"
-            _active={{ bg: "#000" }}
-            _focus={{ bg: "#000" }}
-            gap="8px"
-          >
-            <PiExportLight size="20px" />
-            <Text>Export Data</Text>
-          </Button>
-        </CSVLink>
-      ) : null}
+      <Button
+        display="flex"
+        bg="#000"
+        _hover={{ bg: "#000" }}
+        onClick={() => {
+          action();
+          setExportable(true);
+        }}
+        borderRadius="8px"
+        isLoading={isExporting}
+        isDisabled={limit > 50000}
+        _active={{ bg: "#000" }}
+        _focus={{ bg: "#000" }}
+        gap="8px"
+      >
+        <Text>Export Data</Text>
+        <PiExportLight size="20px" />
+      </Button>
     </Box>
   );
 };
 
-export default LogExport;
+export default LogsExport;

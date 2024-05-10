@@ -9,7 +9,10 @@ import {
   Text,
 } from "@chakra-ui/react";
 import CustomerTableLayer from "../../../components/data/Admin/Reports/CustomerTableLayer";
-import { useGetReports } from "../../../services/admin/query/reports";
+import {
+  useGetReportExports,
+  useGetReports,
+} from "../../../services/admin/query/reports";
 import CustomerExport from "../../../components/data/Admin/Reports/CustomerExport";
 import Filter from "../../../components/common/Filter";
 import { customersReportOptions } from "../../../components/common/constants";
@@ -36,6 +39,9 @@ const Customers = () => {
           filterObj?.filter
         }"`;
   });
+  const createdAtFilters = convertedFilters.filter((filterString) => {
+    return filterString.startsWith("filter=createdAt");
+  });
 
   const query =
     filtArray?.length === 0
@@ -58,6 +64,27 @@ const Customers = () => {
       ? `${convertedFilters?.join("&")}`
       : convertedFilters?.join("&");
 
+  const dateQuery =
+    filtArray?.length === 0
+      ? `filter=createdAt||$lte||${year}-12-31T23:59:59`
+      : filtArray?.filter((item) => item?.gte)?.length > 0 &&
+        filtArray?.filter((item) => item?.lte)?.length === 0
+      ? `${createdAtFilters?.join(
+          "&"
+        )}&filter=createdAt||$lte||${year}-12-31T23:59:59`
+      : filtArray?.filter((item) => item?.gte)?.length === 0 &&
+        filtArray?.filter((item) => item?.lte)?.length === 0
+      ? `${createdAtFilters?.join(
+          "&"
+        )}&filter=createdAt||$lte||${year}-12-31T23:59:59`
+      : filtArray?.filter((item) => item?.gte)?.length === 0 &&
+        filtArray?.filter((item) => item?.lte)?.length > 0
+      ? `${createdAtFilters?.join("&")}`
+      : filtArray?.filter((item) => item?.gte)?.length &&
+        filtArray?.filter((item) => item?.lte)?.length
+      ? `${createdAtFilters?.join("&")}`
+      : createdAtFilters?.join("&");
+
   const [isRefetch, setIsRefetch] = useState(false);
   const { data, isLoading, refetch } = useGetReports(
     {
@@ -78,9 +105,11 @@ const Customers = () => {
     query
   );
 
-  useEffect(() => {
-    refetch();
-  }, []);
+  const {
+    data: dataExports,
+    isLoading: isExporting,
+    mutate: exporMutate,
+  } = useGetReportExports();
 
   const handleRefreshClick = async () => {
     setIsRefetch(true);
@@ -167,7 +196,18 @@ const Customers = () => {
           gap
           main={
             <>
-              {data?.data?.length ? <CustomerExport data={data?.data} /> : ""}
+              {!isLoading ? (
+                <CustomerExport
+                  limit={data?.total}
+                  action={() =>
+                    exporMutate({ type: "customers", query: dateQuery })
+                  }
+                  isExporting={isExporting}
+                  data={dataExports}
+                />
+              ) : (
+                ""
+              )}
 
               <Flex
                 justifyContent="center"

@@ -13,7 +13,10 @@ import {
   adminInvoiceGrid,
   invoicesReportOptions,
 } from "../../../components/common/constants";
-import { useGetReports } from "../../../services/admin/query/reports";
+import {
+  useGetReportExports,
+  useGetReports,
+} from "../../../services/admin/query/reports";
 import InvoiceExport from "../../../components/data/Admin/Reports/InvoiceExport";
 import Filter from "../../../components/common/Filter";
 import { formatFilterDate } from "../../../utils/helpers";
@@ -81,6 +84,36 @@ const Invoices = () => {
     limit,
     query
   );
+
+  const createdAtFilters = convertedFilters.filter((filterString) => {
+    return filterString.startsWith("filter=createdAt");
+  });
+  const dateQuery =
+    filtArray?.length === 0
+      ? `filter=createdAt||$lte||${year}-12-31T23:59:59`
+      : filtArray?.filter((item) => item?.gte)?.length > 0 &&
+        filtArray?.filter((item) => item?.lte)?.length === 0
+      ? `${createdAtFilters?.join(
+          "&"
+        )}filter=createdAt||$lte||${year}-12-31T23:59:59`
+      : filtArray?.filter((item) => item?.gte)?.length === 0 &&
+        filtArray?.filter((item) => item?.lte)?.length === 0
+      ? `${createdAtFilters?.join(
+          "&"
+        )}filter=createdAt||$lte||${year}-12-31T23:59:59`
+      : filtArray?.filter((item) => item?.gte)?.length === 0 &&
+        filtArray?.filter((item) => item?.lte)?.length > 0
+      ? `${createdAtFilters?.join("&")}`
+      : filtArray?.filter((item) => item?.gte)?.length &&
+        filtArray?.filter((item) => item?.lte)?.length
+      ? `${createdAtFilters?.join("&")}`
+      : createdAtFilters?.join("&");
+
+  const {
+    data: dataExports,
+    isLoading: isExporting,
+    mutate: exporMutate,
+  } = useGetReportExports();
 
   useEffect(() => {
     refetch();
@@ -202,7 +235,18 @@ const Invoices = () => {
           gap
           main={
             <>
-              {data?.data?.length ? <InvoiceExport data={data?.data} /> : ""}
+              {!isLoading ? (
+                <InvoiceExport
+                  limit={data?.total}
+                  action={() =>
+                    exporMutate({ type: "invoices", query: dateQuery })
+                  }
+                  isExporting={isExporting}
+                  data={dataExports}
+                />
+              ) : (
+                ""
+              )}
               <Flex
                 justifyContent="center"
                 align="center"

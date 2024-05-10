@@ -9,7 +9,10 @@ import {
   Text,
 } from "@chakra-ui/react";
 import VehicleTableLayer from "../../../components/data/Admin/Reports/VehicleTableLayer";
-import { useGetReports } from "../../../services/admin/query/reports";
+import {
+  useGetReportExports,
+  useGetReports,
+} from "../../../services/admin/query/reports";
 import VehicleExport from "../../../components/data/Admin/Reports/VehicleExport";
 import Filter from "../../../components/common/Filter";
 import { vehiclesReportOptions } from "../../../components/common/constants";
@@ -78,6 +81,36 @@ const Vehicles = () => {
     limit,
     query
   );
+
+  const createdAtFilters = convertedFilters.filter((filterString) => {
+    return filterString.startsWith("filter=createdAt");
+  });
+  const dateQuery =
+    filtArray?.length === 0
+      ? `filter=createdAt||$lte||${year}-12-31T23:59:59`
+      : filtArray?.filter((item) => item?.gte)?.length > 0 &&
+        filtArray?.filter((item) => item?.lte)?.length === 0
+      ? `${createdAtFilters?.join(
+          "&"
+        )}&filter=createdAt||$lte||${year}-12-31T23:59:59`
+      : filtArray?.filter((item) => item?.gte)?.length === 0 &&
+        filtArray?.filter((item) => item?.lte)?.length === 0
+      ? `${createdAtFilters?.join(
+          "&"
+        )}&filter=createdAt||$lte||${year}-12-31T23:59:59`
+      : filtArray?.filter((item) => item?.gte)?.length === 0 &&
+        filtArray?.filter((item) => item?.lte)?.length > 0
+      ? `${createdAtFilters?.join("&")}`
+      : filtArray?.filter((item) => item?.gte)?.length &&
+        filtArray?.filter((item) => item?.lte)?.length
+      ? `${createdAtFilters?.join("&")}`
+      : createdAtFilters?.join("&");
+
+  const {
+    data: dataExports,
+    isLoading: isExporting,
+    mutate: exporMutate,
+  } = useGetReportExports();
 
   useEffect(() => {
     refetch();
@@ -168,7 +201,18 @@ const Vehicles = () => {
           gap
           main={
             <>
-              {data?.data?.length ? <VehicleExport data={data?.data} /> : ""}
+              {!isLoading ? (
+                <VehicleExport
+                  limit={data?.total}
+                  action={() =>
+                    exporMutate({ type: "vehicles", query: dateQuery })
+                  }
+                  isExporting={isExporting}
+                  data={dataExports}
+                />
+              ) : (
+                ""
+              )}
               <Flex
                 justifyContent="center"
                 align="center"

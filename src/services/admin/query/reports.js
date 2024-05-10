@@ -4,6 +4,8 @@ import {
   getAdminTran,
   getPoints,
   getReports,
+  getReportsExport,
+  getReportsExports,
   getTrans,
 } from "../api/report";
 
@@ -35,6 +37,26 @@ export const useGetReports = (
   const { data, isLoading, refetch } = useQuery(
     ["GET_ADMIN_REPORT", type, page, limit, query],
     () => getReports(type, page, limit, query),
+    {
+      ...options,
+    }
+  );
+
+  return { isLoading, data, refetch };
+};
+
+export const useGetReportExports = (options = {}) => {
+  const { mutate, isLoading, data } = useMutation(getReportsExports, {
+    mutationKey: "getReportsExport",
+    ...options,
+  });
+  return { mutate, isLoading, data };
+};
+
+export const useGetReportExport = (options = {}, type = "", query) => {
+  const { data, isLoading, refetch } = useQuery(
+    ["getReportsExport", type, query],
+    () => getReportsExport(type, query),
     {
       ...options,
     }

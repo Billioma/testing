@@ -1,51 +1,47 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Box, Button, Text } from "@chakra-ui/react";
-import { CSVLink } from "react-csv";
 import { PiExportLight } from "react-icons/pi";
 
-const ZoneExport = ({ data }) => {
-  const columns = [
-    { name: "ID", selector: "id" },
-    { name: "Location", selector: "location" },
-    { name: "Zone Code ", selector: "zoneCode" },
-    { name: "Zone", selector: "name" },
-    { name: "Description", selector: "description" },
-    { name: "Capacity", selector: "capacity" },
-    { name: "Reservable", selector: "reservable" },
-    { name: "Reservable Space", selector: "reservableSpace" },
-    { name: "Geolocation", selector: "geoLocation" },
-    { name: "Minimum Duration", selector: "minimumDuration" },
-    { name: "Service", selector: "service" },
-    { name: "Amenities", selector: "amenities" },
-    { name: "Status", selector: "status" },
-    { name: "Date Created", selector: "createdAt" },
-  ];
+const ZoneExport = ({ data, action, isExporting, limit }) => {
+  const [exportable, setExportable] = useState(false);
+
+  useEffect(() => {
+    if (data && exportable) {
+      const a = document.createElement("a"),
+        fileName = "Zones Report.csv";
+      document.body.appendChild(a);
+      a.style = "display: none";
+
+      const blob = new Blob([data], { type: "octet/stream" }),
+        url = window.URL.createObjectURL(blob);
+      a.href = url;
+      a.download = fileName;
+      a.click();
+      window.URL.revokeObjectURL(url);
+      setExportable(false);
+    }
+  }, [data, exportable]);
 
   return (
     <Box w="fit-content">
-      {data?.length && (
-        <CSVLink
-          data={data}
-          headers={columns.map((column) => ({
-            label: column.name,
-            key: column.selector,
-          }))}
-          filename={"Zones Report.csv"}
-        >
-          <Button
-            display="flex"
-            bg="#000"
-            _hover={{ bg: "#000" }}
-            borderRadius="8px"
-            _active={{ bg: "#000" }}
-            _focus={{ bg: "#000" }}
-            gap="8px"
-          >
-            <PiExportLight size="20px" />
-            <Text>Export Data</Text>
-          </Button>
-        </CSVLink>
-      )}
+      <Button
+        display="flex"
+        bg="#000"
+        _hover={{ bg: "#000" }}
+        onClick={() => {
+          action();
+          setExportable(true);
+        }}
+        borderRadius="8px"
+        isLoading={isExporting}
+        _active={{ bg: "#000" }}
+        isDisabled={limit > 50000}
+        _focus={{ bg: "#000" }}
+        gap="8px"
+      >
+        <Text>Export Data</Text>
+        <PiExportLight size="20px" />
+      </Button>
     </Box>
   );
 };

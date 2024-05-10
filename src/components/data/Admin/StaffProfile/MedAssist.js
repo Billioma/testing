@@ -75,7 +75,7 @@ const MedAssist = ({ page, setPage, startRow = 1, endRow }) => {
               {!item?.approvedBy ? (
                 "N/A"
               ) : (
-                <Flex align="center" w="full" >
+                <Flex align="center" w="full">
                   <Flex
                     border="1px solid #D4D6D8"
                     align="center"

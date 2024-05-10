@@ -19,7 +19,6 @@ import { useNavigate } from "react-router-dom";
 import AdminDeleteModal from "../../../modals/AdminDeleteModal";
 import useCustomToast from "../../../../utils/notifications";
 import { BsChevronDown } from "react-icons/bs";
-import { useDeleteLocation } from "../../../../services/admin/query/locations";
 import { viewDeleteOption } from "../../../common/constants";
 import { PRIVATE_PATHS } from "../../../../routes/constants";
 import { Add } from "../../../common/images";

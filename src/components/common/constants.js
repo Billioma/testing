@@ -49,7 +49,7 @@ export const staffSidebar = [
   },
   {
     id: 1,
-    name: "Staff Profiles",
+    name: "Profiles",
     path: "/admin/staff-profiles",
     icon: <StaffProfileIcon fill={"#000"} />,
     hover: <StaffProfileIcon fill="#EE383A" />,
@@ -65,7 +65,7 @@ export const staffSidebar = [
   },
   {
     id: 3,
-    name: "Leave Management",
+    name: "Leave",
     path: "/admin/leave-mgt",
     icon: <LeaveMgtIcon fill={"#000"} />,
     hover: <LeaveMgtIcon fill="#EE383A" />,
@@ -73,7 +73,7 @@ export const staffSidebar = [
   },
   {
     id: 4,
-    name: "Medical Assistance",
+    name: "Medical",
     path: "/admin/medical-assistance",
     icon: <MedicalIcon fill={"#000"} />,
     hover: <MedicalIcon fill="#EE383A" />,
@@ -81,7 +81,7 @@ export const staffSidebar = [
   },
   {
     id: 5,
-    name: "Staff Schedule",
+    name: "Schedule",
     path: "/admin/staff-schedule",
     icon: <StaffScheduleIcon fill={"#000"} />,
     hover: <StaffScheduleIcon fill="#EE383A" />,
@@ -710,6 +710,11 @@ export const LocationTypes = [
   "GARAGE_PARKING_LOT",
 ];
 
+export const types = [
+  { label: "Paid", value: true },
+  { label: "Unpaid", value: false },
+];
+
 export const cities = ["Ikoyi", "VI", "Ikeja", "Lekki", "Wuse", "Maitama"];
 
 export const allStates = [
@@ -782,6 +787,11 @@ export const clientSubHeader = [
 ];
 
 export const operatorDashboardFilter = ["All Time", "Year", "Month", "Week"];
+
+export const submits = [
+  { name: "Submitted", value: true },
+  { name: "Unsubmitted", value: false },
+];
 
 export const businessSidebar = [
   {
@@ -1303,6 +1313,14 @@ export const SecStatus = [
   { color: "#F9A11E", name: "Pending", bg: "#FDF6E7" },
 ];
 
+export const LeaveStatus = [
+  { color: "#DB0101", name: "Rejected", bg: "#F09898", border: "#DB0101" },
+  { color: "#0B841D", name: "Approved", bg: "#E5FFE5", border: "#BAE0D9" },
+  { color: "#0B841D", name: "Completed", bg: "#E5FFE5", border: "#BAE0D9" },
+  { color: "#0B841D", name: "Active", bg: "#E5FFE5", border: "#BAE0D9" },
+  { color: "#F9A11E", name: "Pending", bg: "#FCF2C4", border: "#F6DC52" },
+];
+
 export const ratings = [
   { img: "/assets/1.jpg", label: "Poor!" },
   { img: "/assets/2.jpg", label: "Fair!" },
@@ -1461,6 +1479,13 @@ export const accountType = ["VALET", "PARKING", "GENERAL", "SERVICE"];
 export const statusType = ["Inactive", "Active"];
 export const newStatusType = ["Inactive", "Active", "Pending"];
 export const invoiceStatusType = ["Unpaid", "Paid", "Pending"];
+export const leaveStatusType = [
+  { name: "Declined", value: "REJECTED" },
+  { name: "Approved", value: "APPROVED" },
+  { name: "Completed", value: "COMPLETED" },
+  { name: "Active", value: "ACTIVE" },
+  { name: "Pending", value: "PENDING" },
+];
 
 export const eventOptions = ["Edit Event", "Delete Event"];
 
@@ -2071,6 +2096,15 @@ export const locationsOptions = [
 export const staffOptions = [
   { label: "Staff ID", value: "staffId" },
   { label: "Full Name", value: "fullName" },
+  { label: "Created At", value: "createdAt" },
+];
+
+export const leaveOptions = [
+  { label: "Staff ID", value: "staff.id" },
+  { label: "Staff Name", value: "staff.fullName" },
+  { label: "Start Date", value: "startDate" },
+  { label: "End Date", value: "endDate" },
+  { label: "Leave Status", value: "status" },
   { label: "Created At", value: "createdAt" },
 ];
 

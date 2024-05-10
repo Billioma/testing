@@ -52,7 +52,7 @@ const LoanHistory = ({ page, setPage, startRow = 1, endRow }) => {
         alignFirstHeader
         alignSecondHeader
         alignThirdHeader
-        alignFifthHeader
+        alignForthHeader
         paginationValues={{
           startRow,
           endRow,

@@ -9,7 +9,10 @@ import {
   Text,
 } from "@chakra-ui/react";
 import ZoneTableLayer from "../../../components/data/Admin/Reports/ZoneTableLayer";
-import { useGetReports } from "../../../services/admin/query/reports";
+import {
+  useGetReportExports,
+  useGetReports,
+} from "../../../services/admin/query/reports";
 import ZoneExport from "../../../components/data/Admin/Reports/ZoneExport";
 import Filter from "../../../components/common/Filter";
 import { adminZonesReportOptions } from "../../../components/common/constants";
@@ -58,6 +61,36 @@ const Zones = () => {
         filtArray?.filter((item) => item?.lte)?.length
       ? `${convertedFilters?.join("&")}`
       : convertedFilters?.join("&");
+
+  const createdAtFilters = convertedFilters.filter((filterString) => {
+    return filterString.startsWith("filter=createdAt");
+  });
+  const dateQuery =
+    filtArray?.length === 0
+      ? `filter=createdAt||$lte||${year}-12-31T23:59:59`
+      : filtArray?.filter((item) => item?.gte)?.length > 0 &&
+        filtArray?.filter((item) => item?.lte)?.length === 0
+      ? `${createdAtFilters?.join(
+          "&"
+        )}&filter=createdAt||$lte||${year}-12-31T23:59:59`
+      : filtArray?.filter((item) => item?.gte)?.length === 0 &&
+        filtArray?.filter((item) => item?.lte)?.length === 0
+      ? `${createdAtFilters?.join(
+          "&"
+        )}&filter=createdAt||$lte||${year}-12-31T23:59:59`
+      : filtArray?.filter((item) => item?.gte)?.length === 0 &&
+        filtArray?.filter((item) => item?.lte)?.length > 0
+      ? `${createdAtFilters?.join("&")}`
+      : filtArray?.filter((item) => item?.gte)?.length &&
+        filtArray?.filter((item) => item?.lte)?.length
+      ? `${createdAtFilters?.join("&")}`
+      : createdAtFilters?.join("&");
+
+  const {
+    data: dataExports,
+    isLoading: isExporting,
+    mutate: exporMutate,
+  } = useGetReportExports();
 
   const [isRefetch, setIsRefetch] = useState(false);
   const { data, isLoading, refetch } = useGetReports(
@@ -168,7 +201,18 @@ const Zones = () => {
           gap
           main={
             <>
-              {data?.data?.length ? <ZoneExport data={data?.data} /> : ""}
+              {!isLoading ? (
+                <ZoneExport
+                  limit={data?.total}
+                  action={() =>
+                    exporMutate({ type: "zones", query: dateQuery })
+                  }
+                  isExporting={isExporting}
+                  data={dataExports}
+                />
+              ) : (
+                ""
+              )}
               <Flex
                 justifyContent="center"
                 align="center"

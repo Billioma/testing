@@ -1,16 +1,41 @@
-import React, { useEffect, useRef, useState } from "react";
-import { Box, Flex, Image, Input, Spinner, Text } from "@chakra-ui/react";
-import { trim } from "../../../../utils/helpers";
-import { useCustomerUploadPic } from "../../../../services/customer/query/user";
+import React, { useEffect, useState } from "react";
+import { Box, Flex, Image, Spinner, Text } from "@chakra-ui/react";
 import {
-  useAddStaffDoc,
-  useDelEmployeeDoc,
   useEditEmployeeDoc,
+  useEditStaff,
 } from "../../../../services/admin/query/staff";
 import useCustomToast from "../../../../utils/notifications";
+import { IoIosArrowDown } from "react-icons/io";
+import Select from "react-select";
+import { submits } from "../../../common/constants";
 
-const EmployeeDocuments = ({ refetch, id, data }) => {
-  //   const [file, setFile] = useState("");
+const EmployeeDocuments = ({ refetch, data }) => {
+  const customStyles = {
+    control: (provided, state) => ({
+      ...provided,
+      width: "100%",
+      minHeight: "35px",
+      fontWeight: 500,
+      color: "#646668",
+      fontSize: "13px",
+      cursor: "pointer",
+      borderRadius: "4px",
+      border: state.hasValue ? "none" : "1px solid #D4D6D8",
+      paddingRight: "16px",
+      background: state.hasValue ? "#f4f6f8" : "unset",
+    }),
+    menu: (provided) => ({
+      ...provided,
+      fontSize: "15px",
+      backgroundColor: "#fff",
+    }),
+    option: (provided, state) => ({
+      ...provided,
+      color: state.isFocused ? "" : "",
+      backgroundColor: state.isFocused ? "#f4f6f8" : "",
+    }),
+  };
+
   const [mainFiles, setMainFiles] = useState({
     id: "",
     employmentLetter: "",
@@ -21,25 +46,27 @@ const EmployeeDocuments = ({ refetch, id, data }) => {
     exclusivity: "",
     identificationDocument: "",
   });
-  const [ids, setIds] = useState("");
 
-  const {
-    mutate: uploadMutate,
-    isLoading: isUploading,
-    data: profilePicData,
-  } = useCustomerUploadPic({
-    onError: (err) => {
-      errorToast(
-        err?.response?.data?.message || err?.message || "An Error occurred"
-      );
-    },
+  const [newValues, setNewValues] = useState({
+    employmentLetter: "",
+    guarantorForm: "",
+    guarantorForm2: "",
+    confidentialityAgreement: "",
+    nonSolicitationAgreement: "",
+    exclusivity: "",
+    identificationDocument: "",
   });
 
+  const submitOptions = submits?.map((item) => ({
+    value: item?.value,
+    label: item?.name,
+  }));
+  const [ids, setIds] = useState("");
   const { successToast, errorToast } = useCustomToast();
 
-  const { mutate, isLoading } = useAddStaffDoc({
+  const { mutate: editMutate, isLoading: isEditing } = useEditStaff({
     onSuccess: () => {
-      successToast("Employee Document added successfully!");
+      successToast("Doc updated successfully!");
       refetch();
     },
     onError: (error) => {
@@ -48,6 +75,15 @@ const EmployeeDocuments = ({ refetch, id, data }) => {
       );
     },
   });
+
+  const handleSubmit = (dat, id) => {
+    updateMutate({
+      query: id?.id,
+      body: {
+        isSubmitted: dat,
+      },
+    });
+  };
 
   const { mutate: updateMutate, isLoading: isUpdating } = useEditEmployeeDoc({
     onSuccess: () => {
@@ -61,51 +97,19 @@ const EmployeeDocuments = ({ refetch, id, data }) => {
     },
   });
 
-  const idToDelete = useRef(null);
-
-  const { mutate: delMutate, isLoading: isDeleting } = useDelEmployeeDoc({
-    onSuccess: () => {
-      successToast("Employee Document deleted successfully!");
-      refetch();
-      const id = idToDelete.current;
-      setMainFiles((prevFiles) => {
-        const updatedFiles = { ...prevFiles };
-        Object.keys(updatedFiles).forEach((key) => {
-          if (updatedFiles[key]?.id === id) {
-            updatedFiles[key] = "";
-          }
-        });
-        return updatedFiles;
-      });
-      idToDelete.current = null;
-    },
-    onError: (error) => {
-      errorToast(
-        error?.response?.data?.message || error?.message || "An Error occurred"
-      );
-    },
-  });
-
-  const handleDelete = (id) => {
-    idToDelete.current = id;
-    delMutate(id);
+  const handleApprove = (id) => {
+    updateMutate({
+      query: id?.id,
+      body: {
+        status: "VERIFIED",
+      },
+    });
   };
 
-  useEffect(() => {
-    if (profilePicData?.path) {
-      mutate({
-        url: profilePicData?.path,
-        name: ids,
-        staff: id,
-      });
-    }
-  }, [profilePicData]);
-
-  const loading = isUploading || isLoading;
-
   const documents = data?.documents;
+
   useEffect(() => {
-    const updatedFiles = { ...mainFiles }; // Create a copy of the current state
+    const updatedFiles = { ...mainFiles };
 
     documents.forEach((document) => {
       switch (document.name) {
@@ -148,135 +152,99 @@ const EmployeeDocuments = ({ refetch, id, data }) => {
           <Flex
             border="1px solid #d4d6d8"
             borderRadius="4px"
-            py="12px"
+            py="20px"
             align="center"
             px="16px"
             justifyContent="space-between"
             w="full"
           >
-            {mainFiles?.employmentLetter ? (
-              <Flex
-                align={{ base: "flex-start", md: "center" }}
-                flexDir={{ base: "column", md: "row" }}
-                gap={{ base: "10px", md: "" }}
-                w="full"
-                justifyContent="space-between"
-              >
-                <Flex
-                  align="center"
-                  gap="10px"
-                  cursor={loading ? "" : "pointer"}
-                >
-                  <Image src="/assets/folder.jpg" w="24px" h="24px" />
+            <Flex
+              align={{ base: "flex-start", md: "center" }}
+              flexDir={{ base: "column", md: "row" }}
+              gap={{ base: "10px", md: "" }}
+              w="full"
+              justifyContent="space-between"
+            >
+              <Flex align="flex-start" gap="30px">
+                <Flex align="center" gap="10px">
+                  <Image src="/assets/folder.jpg" w="20px" h="20px" />
                   <Box>
-                    <Text color="#646668">
-                      {trim(mainFiles?.employmentLetter?.name) ||
-                        "Employment Letter"}
-                    </Text>
-                    <Text fontSize="12px" fontWeight={500} color="#444648">
-                      {mainFiles?.employmentLetter?.type || "MetaData"}
+                    <Text fontSize="14px" color="#646668">
+                      Employment Letter
                     </Text>
                   </Box>
                 </Flex>
-
-                <Flex align="center" gap="12px">
-                  <Flex
-                    border="1px solid #cccccc"
-                    borderRadius="4px"
-                    py="8px"
-                    fontSize="12px"
-                    fontWeight={500}
-                    color="#090C02"
-                    cursor={isDeleting ? "" : "pointer"}
-                    px="16px"
-                    onClick={() =>
-                      isDeleting
-                        ? ""
-                        : (handleDelete(mainFiles?.employmentLetter?.id),
-                          setIds("employmentLetter"))
-                    }
-                  >
-                    {isDeleting && ids == "employmentLetter" ? (
-                      <Spinner color="red" size="md" />
-                    ) : (
-                      "Delete"
-                    )}
-                  </Flex>
-                  <Flex
-                    border="1px solid #cccccc"
-                    borderRadius="4px"
-                    py="8px"
-                    fontSize="12px"
-                    fontWeight={500}
-                    color="#090C02"
-                    px="16px"
-                  >
-                    Download
-                  </Flex>
-                  <Flex
-                    border="1px solid #cccccc"
-                    borderRadius="4px"
-                    py="8px"
-                    px="16px"
-                    fontSize="12px"
-                    fontWeight={500}
-                    bg="#090C02"
-                    color="#fff"
-                  >
-                    Approve
-                  </Flex>
+                <Flex
+                  justifyContent="center"
+                  align="center"
+                  py="5px"
+                  px="16px"
+                  borderRadius="4px"
+                  fontWeight={500}
+                  fontSize="13px"
+                  bg={
+                    mainFiles?.employmentLetter?.status === "VERIFIED"
+                      ? "#E5FFE5"
+                      : "#FDF6E7"
+                  }
+                  color={
+                    mainFiles?.employmentLetter?.status === "VERIFIED"
+                      ? "#008000"
+                      : "#F9A11E"
+                  }
+                >
+                  {mainFiles?.employmentLetter?.status === "VERIFIED"
+                    ? "Verified"
+                    : "Pending"}
                 </Flex>
               </Flex>
-            ) : (
-              <>
-                <Flex align="center" justifyContent="space-between" w="full">
-                  <Text color="#661819" fontWeight={500}>
-                    Nothing found!
-                  </Text>
-                  {loading && ids === "EMPLOYMENT LETTER" ? (
-                    <Spinner color="red" size="md" />
+
+              {mainFiles?.employmentLetter?.isSubmitted ? (
+                <Flex
+                  border="1px solid #cccccc"
+                  borderRadius="4px"
+                  py="8px"
+                  px="16px"
+                  fontSize="12px"
+                  cursor={isUpdating ? "" : "pointer"}
+                  display={
+                    mainFiles?.employmentLetter?.status === "VERIFIED"
+                      ? "none"
+                      : "flex"
+                  }
+                  onClick={() =>
+                    isUpdating
+                      ? ""
+                      : (handleApprove(mainFiles?.employmentLetter),
+                        setIds("employmentLetter"))
+                  }
+                  fontWeight={500}
+                  bg="#090C02"
+                  color="#fff"
+                >
+                  {isUpdating && ids == "employmentLetter" ? (
+                    <Spinner size="md" />
                   ) : (
-                    <>
-                      <Input
-                        isDisabled={loading}
-                        id="image_upload"
-                        onChange={(e) => {
-                          setIds("EMPLOYMENT LETTER");
-                          const formData = new FormData();
-                          formData.append("file", e.target.files[0]);
-                          if (e.target.files[0]) {
-                            {
-                              uploadMutate({
-                                fileType: "image",
-                                entityType: "staff",
-                                file: formData.get("file"),
-                              });
-                            }
-                          }
-                        }}
-                        type="file"
-                        display="none"
-                      />
-                      <label htmlFor="image_upload">
-                        <Flex
-                          border="1px solid #cccccc"
-                          borderRadius="4px"
-                          py="8px"
-                          px="16px"
-                          fontSize="12px"
-                          cursor={loading ? "" : "pointer"}
-                          fontWeight={500}
-                          bg="#090C02"
-                          color="#fff"
-                        >
-                          Upload
-                        </Flex>
-                      </label>
-                    </>
+                    "Approve"
                   )}
                 </Flex>
-              </>
-            )}
+              ) : (
+                <Flex
+                  py="8px"
+                  px="16px"
+                  gap="20px"
+                  align="center"
+                  justifyContent="space-between"
+                  border="1px solid #CCCCCC"
+                  borderRadius="4px"
+                >
+                  <Text fontSize="12px" fontWeight={500}>
+                    Unsubmitted
+                  </Text>
+                  <IoIosArrowDown />
+                </Flex>
+              )}
+            </Flex>
           </Flex>
         </Box>
       </Box>
@@ -295,130 +263,96 @@ const EmployeeDocuments = ({ refetch, id, data }) => {
             justifyContent="space-between"
             w="full"
           >
-            {mainFiles?.guarantorForm ? (
-              <Flex
-                align={{ base: "flex-start", md: "center" }}
-                flexDir={{ base: "column", md: "row" }}
-                gap={{ base: "10px", md: "" }}
-                w="full"
-                justifyContent="space-between"
-              >
-                <Flex
-                  align="center"
-                  gap="10px"
-                  cursor={loading ? "" : "pointer"}
-                >
-                  <Image src="/assets/folder.jpg" w="24px" h="24px" />
+            <Flex
+              align={{ base: "flex-start", md: "center" }}
+              flexDir={{ base: "column", md: "row" }}
+              gap={{ base: "10px", md: "" }}
+              w="full"
+              justifyContent="space-between"
+            >
+              <Flex align="flex-start" gap="30px">
+                <Flex align="center" gap="10px">
+                  <Image src="/assets/folder.jpg" w="20px" h="20px" />
                   <Box>
-                    <Text color="#646668">
-                      {trim(
-                        mainFiles?.guarantorForm?.name?.replace("_", " ")
-                      ) || "Guarantor 1 Form"}
-                    </Text>
-                    <Text fontSize="12px" fontWeight={500} color="#444648">
-                      {mainFiles?.guarantorForm?.type || "MetaData"}
+                    <Text color="#646668" fontSize="14px">
+                      Guarantor 1 Form
                     </Text>
                   </Box>
                 </Flex>
 
-                <Flex align="center" gap="12px">
+                <Flex
+                  justifyContent="center"
+                  align="center"
+                  py="5px"
+                  px="16px"
+                  borderRadius="4px"
+                  fontWeight={500}
+                  fontSize="13px"
+                  bg={
+                    mainFiles?.guarantorForm?.status === "VERIFIED"
+                      ? "#E5FFE5"
+                      : "#FDF6E7"
+                  }
+                  color={
+                    mainFiles?.guarantorForm?.status === "VERIFIED"
+                      ? "#008000"
+                      : "#F9A11E"
+                  }
+                >
+                  {mainFiles?.guarantorForm?.status === "VERIFIED"
+                    ? "Approved"
+                    : "Pending"}
+                </Flex>
+              </Flex>
+
+              <Flex align="center" gap="12px">
+                {mainFiles?.guarantorForm?.isSubmitted ? (
                   <Flex
                     border="1px solid #cccccc"
                     borderRadius="4px"
                     py="8px"
-                    fontSize="12px"
-                    fontWeight={500}
-                    color="#090C02"
-                    cursor={isDeleting ? "" : "pointer"}
                     px="16px"
+                    display={
+                      mainFiles?.guarantorForm?.status === "VERIFIED"
+                        ? "none"
+                        : "flex"
+                    }
+                    fontSize="12px"
+                    cursor={isUpdating ? "" : "pointer"}
                     onClick={() =>
-                      isDeleting
+                      isUpdating
                         ? ""
-                        : (handleDelete(mainFiles?.guarantorForm?.id),
+                        : (handleApprove(mainFiles?.guarantorForm),
                           setIds("guarantorForm"))
                     }
-                  >
-                    {isDeleting && ids === "guarantorForm" ? (
-                      <Spinner color="red" size="md" />
-                    ) : (
-                      "Delete"
-                    )}
-                  </Flex>
-                  <Flex
-                    border="1px solid #cccccc"
-                    borderRadius="4px"
-                    py="8px"
-                    fontSize="12px"
-                    fontWeight={500}
-                    color="#090C02"
-                    px="16px"
-                  >
-                    Download
-                  </Flex>
-                  <Flex
-                    border="1px solid #cccccc"
-                    borderRadius="4px"
-                    py="8px"
-                    px="16px"
-                    fontSize="12px"
                     fontWeight={500}
                     bg="#090C02"
                     color="#fff"
                   >
-                    Approve
+                    {isUpdating && ids == "guarantorForm" ? (
+                      <Spinner size="md" />
+                    ) : (
+                      "Approve"
+                    )}
                   </Flex>
-                </Flex>
+                ) : (
+                  <Flex
+                    py="8px"
+                    px="16px"
+                    gap="20px"
+                    align="center"
+                    justifyContent="space-between"
+                    border="1px solid #CCCCCC"
+                    borderRadius="4px"
+                  >
+                    <Text fontSize="12px" fontWeight={500}>
+                      Unsubmitted
+                    </Text>
+                    <IoIosArrowDown />
+                  </Flex>
+                )}
               </Flex>
-            ) : (
-              <>
-                <Flex align="center" justifyContent="space-between" w="full">
-                  <Text color="#661819" fontWeight={500}>
-                    Nothing found!
-                  </Text>
-                  {loading && ids === "GUARANTOR FORM" ? (
-                    <Spinner color="red" size="md" />
-                  ) : (
-                    <>
-                      <Input
-                        isDisabled={loading}
-                        id="guarantorForm"
-                        onChange={(e) => {
-                          setIds("GUARANTOR FORM");
-                          const formData = new FormData();
-                          formData.append("file", e.target.files[0]);
-                          if (e.target.files[0]) {
-                            {
-                              uploadMutate({
-                                fileType: "image",
-                                entityType: "staff",
-                                file: formData.get("file"),
-                              });
-                            }
-                          }
-                        }}
-                        type="file"
-                        display="none"
-                      />
-                      <label htmlFor="guarantorForm">
-                        <Flex
-                          border="1px solid #cccccc"
-                          borderRadius="4px"
-                          py="8px"
-                          px="16px"
-                          fontSize="12px"
-                          cursor={loading ? "" : "pointer"}
-                          fontWeight={500}
-                          bg="#090C02"
-                          color="#fff"
-                        >
-                          Upload
-                        </Flex>
-                      </label>
-                    </>
-                  )}
-                </Flex>
-              </>
-            )}
+            </Flex>
           </Flex>
         </Box>
       </Box>
@@ -437,130 +371,94 @@ const EmployeeDocuments = ({ refetch, id, data }) => {
             justifyContent="space-between"
             w="full"
           >
-            {mainFiles?.guarantorForm2 ? (
-              <Flex
-                align={{ base: "flex-start", md: "center" }}
-                flexDir={{ base: "column", md: "row" }}
-                gap={{ base: "10px", md: "" }}
-                w="full"
-                justifyContent="space-between"
-              >
-                <Flex
-                  align="center"
-                  gap="10px"
-                  cursor={loading ? "" : "pointer"}
-                >
+            <Flex
+              align={{ base: "flex-start", md: "center" }}
+              flexDir={{ base: "column", md: "row" }}
+              gap={{ base: "10px", md: "" }}
+              w="full"
+              justifyContent="space-between"
+            >
+              <Flex align="flex-start" gap="30px">
+                <Flex align="center" gap="10px">
                   <Image src="/assets/folder.jpg" w="24px" h="24px" />
                   <Box>
-                    <Text color="#646668">
-                      {trim(
-                        mainFiles?.guarantorForm2?.name?.replace("_", " ")
-                      ) || "Guarantor 2 Form"}
-                    </Text>
-                    <Text fontSize="12px" fontWeight={500} color="#444648">
-                      {mainFiles?.guarantorForm2?.type || "MetaData"}
+                    <Text fontSize="14px" color="#646668">
+                      Guarantor 2 Form
                     </Text>
                   </Box>
                 </Flex>
 
-                <Flex align="center" gap="12px">
-                  <Flex
-                    border="1px solid #cccccc"
-                    borderRadius="4px"
-                    py="8px"
-                    fontSize="12px"
-                    fontWeight={500}
-                    color="#090C02"
-                    cursor={isDeleting ? "" : "pointer"}
-                    px="16px"
-                    onClick={() =>
-                      isDeleting
-                        ? ""
-                        : (handleDelete(mainFiles?.guarantorForm2?.id),
-                          setIds("guarantorForm2"))
-                    }
-                  >
-                    {isDeleting && ids === "guarantorForm2" ? (
-                      <Spinner color="red" size="md" />
-                    ) : (
-                      "Delete"
-                    )}
-                  </Flex>
-                  <Flex
-                    border="1px solid #cccccc"
-                    borderRadius="4px"
-                    py="8px"
-                    fontSize="12px"
-                    fontWeight={500}
-                    color="#090C02"
-                    px="16px"
-                  >
-                    Download
-                  </Flex>
-                  <Flex
-                    border="1px solid #cccccc"
-                    borderRadius="4px"
-                    py="8px"
-                    px="16px"
-                    fontSize="12px"
-                    fontWeight={500}
-                    bg="#090C02"
-                    color="#fff"
-                  >
-                    Approve
-                  </Flex>
+                <Flex
+                  justifyContent="center"
+                  align="center"
+                  py="5px"
+                  px="16px"
+                  borderRadius="4px"
+                  fontWeight={500}
+                  fontSize="13px"
+                  bg={
+                    mainFiles?.guarantorForm2?.status === "VERIFIED"
+                      ? "#E5FFE5"
+                      : "#FDF6E7"
+                  }
+                  color={
+                    mainFiles?.guarantorForm2?.status === "VERIFIED"
+                      ? "#008000"
+                      : "#F9A11E"
+                  }
+                >
+                  {mainFiles?.guarantorForm2?.status === "VERIFIED"
+                    ? "Approved"
+                    : "Pending"}
                 </Flex>
               </Flex>
-            ) : (
-              <>
-                <Flex align="center" justifyContent="space-between" w="full">
-                  <Text color="#661819" fontWeight={500}>
-                    Nothing found!
-                  </Text>
-                  {loading && ids === "GUARANTOR FORM 2" ? (
-                    <Spinner color="red" size="md" />
+
+              {mainFiles?.guarantorForm2?.isSubmitted ? (
+                <Flex
+                  border="1px solid #cccccc"
+                  borderRadius="4px"
+                  py="8px"
+                  px="16px"
+                  fontSize="12px"
+                  cursor={isUpdating ? "" : "pointer"}
+                  display={
+                    mainFiles?.guarantorForm2?.status === "VERIFIED"
+                      ? "none"
+                      : "flex"
+                  }
+                  onClick={() =>
+                    isUpdating
+                      ? ""
+                      : (handleApprove(mainFiles?.guarantorForm2),
+                        setIds("guarantorForm2"))
+                  }
+                  fontWeight={500}
+                  bg="#090C02"
+                  color="#fff"
+                >
+                  {isUpdating && ids == "guarantorForm2" ? (
+                    <Spinner size="md" />
                   ) : (
-                    <>
-                      <Input
-                        isDisabled={loading}
-                        id="guarantorForm2"
-                        onChange={(e) => {
-                          setIds("GUARANTOR FORM 2");
-                          const formData = new FormData();
-                          formData.append("file", e.target.files[0]);
-                          if (e.target.files[0]) {
-                            {
-                              uploadMutate({
-                                fileType: "image",
-                                entityType: "staff",
-                                file: formData.get("file"),
-                              });
-                            }
-                          }
-                        }}
-                        type="file"
-                        display="none"
-                      />
-                      <label htmlFor="guarantorForm2">
-                        <Flex
-                          border="1px solid #cccccc"
-                          borderRadius="4px"
-                          py="8px"
-                          px="16px"
-                          fontSize="12px"
-                          cursor={loading ? "" : "pointer"}
-                          fontWeight={500}
-                          bg="#090C02"
-                          color="#fff"
-                        >
-                          Upload
-                        </Flex>
-                      </label>
-                    </>
+                    "Approve"
                   )}
                 </Flex>
-              </>
-            )}
+              ) : (
+                <Flex
+                  py="8px"
+                  px="16px"
+                  gap="20px"
+                  align="center"
+                  justifyContent="space-between"
+                  border="1px solid #CCCCCC"
+                  borderRadius="4px"
+                >
+                  <Text fontSize="12px" fontWeight={500}>
+                    Unsubmitted
+                  </Text>
+                  <IoIosArrowDown />
+                </Flex>
+              )}
+            </Flex>
           </Flex>
         </Box>
       </Box>
@@ -579,135 +477,94 @@ const EmployeeDocuments = ({ refetch, id, data }) => {
             justifyContent="space-between"
             w="full"
           >
-            {mainFiles?.confidentialityAgreement ? (
-              <Flex
-                align={{ base: "flex-start", md: "center" }}
-                flexDir={{ base: "column", md: "row" }}
-                gap={{ base: "10px", md: "" }}
-                w="full"
-                justifyContent="space-between"
-              >
-                <Flex
-                  align="center"
-                  gap="10px"
-                  cursor={loading ? "" : "pointer"}
-                >
+            <Flex
+              align={{ base: "flex-start", md: "center" }}
+              flexDir={{ base: "column", md: "row" }}
+              gap={{ base: "10px", md: "" }}
+              w="full"
+              justifyContent="space-between"
+            >
+              <Flex align="flex-start" gap="30px">
+                <Flex align="center" gap="10px">
                   <Image src="/assets/folder.jpg" w="24px" h="24px" />
                   <Box>
-                    <Text color="#646668">
-                      {trim(
-                        mainFiles?.confidentialityAgreement?.name?.replace(
-                          "_",
-                          " "
-                        )
-                      ) || "Confidentiality Agreement"}
-                    </Text>
-                    <Text fontSize="12px" fontWeight={500} color="#444648">
-                      {mainFiles?.confidentialityAgreement?.type || "MetaData"}
+                    <Text color="#646668" fontSize="14px">
+                      Confidentiality Agreement
                     </Text>
                   </Box>
                 </Flex>
 
-                <Flex align="center" gap="12px">
-                  <Flex
-                    border="1px solid #cccccc"
-                    borderRadius="4px"
-                    py="8px"
-                    fontSize="12px"
-                    fontWeight={500}
-                    color="#090C02"
-                    cursor={isDeleting ? "" : "pointer"}
-                    px="16px"
-                    onClick={() =>
-                      isDeleting
-                        ? ""
-                        : (handleDelete(
-                            mainFiles?.confidentialityAgreement?.id
-                          ),
-                          setIds("confidentialityAgreement"))
-                    }
-                  >
-                    {isDeleting && ids === "confidentialityAgreement" ? (
-                      <Spinner color="red" size="md" />
-                    ) : (
-                      "Delete"
-                    )}
-                  </Flex>
-                  <Flex
-                    border="1px solid #cccccc"
-                    borderRadius="4px"
-                    py="8px"
-                    fontSize="12px"
-                    fontWeight={500}
-                    color="#090C02"
-                    px="16px"
-                  >
-                    Download
-                  </Flex>
-                  <Flex
-                    border="1px solid #cccccc"
-                    borderRadius="4px"
-                    py="8px"
-                    px="16px"
-                    fontSize="12px"
-                    fontWeight={500}
-                    bg="#090C02"
-                    color="#fff"
-                  >
-                    Approve
-                  </Flex>
+                <Flex
+                  justifyContent="center"
+                  align="center"
+                  py="5px"
+                  px="16px"
+                  borderRadius="4px"
+                  fontWeight={500}
+                  fontSize="13px"
+                  bg={
+                    mainFiles?.confidentialityAgreement?.status === "VERIFIED"
+                      ? "#E5FFE5"
+                      : "#FDF6E7"
+                  }
+                  color={
+                    mainFiles?.confidentialityAgreement?.status === "VERIFIED"
+                      ? "#008000"
+                      : "#F9A11E"
+                  }
+                >
+                  {mainFiles?.confidentialityAgreement?.status === "VERIFIED"
+                    ? "Approved"
+                    : "Pending"}
                 </Flex>
               </Flex>
-            ) : (
-              <>
-                <Flex align="center" justifyContent="space-between" w="full">
-                  <Text color="#661819" fontWeight={500}>
-                    Nothing found!
-                  </Text>
-                  {loading && ids === "CONFIDENTIALITY AGREEMENT" ? (
-                    <Spinner color="red" size="md" />
+
+              {mainFiles?.confidentialityAgreement?.isSubmitted ? (
+                <Flex
+                  border="1px solid #cccccc"
+                  borderRadius="4px"
+                  py="8px"
+                  px="16px"
+                  fontSize="12px"
+                  cursor={isUpdating ? "" : "pointer"}
+                  display={
+                    mainFiles?.confidentialityAgreement?.status === "VERIFIED"
+                      ? "none"
+                      : "flex"
+                  }
+                  onClick={() =>
+                    isUpdating
+                      ? ""
+                      : (handleApprove(mainFiles?.confidentialityAgreement),
+                        setIds("confidentialityAgreement"))
+                  }
+                  fontWeight={500}
+                  bg="#090C02"
+                  color="#fff"
+                >
+                  {isUpdating && ids == "confidentialityAgreement" ? (
+                    <Spinner size="md" />
                   ) : (
-                    <>
-                      <Input
-                        isDisabled={loading}
-                        id="confidentialityAgreement"
-                        onChange={(e) => {
-                          setIds("CONFIDENTIALITY AGREEMENT");
-                          const formData = new FormData();
-                          formData.append("file", e.target.files[0]);
-                          if (e.target.files[0]) {
-                            {
-                              uploadMutate({
-                                fileType: "image",
-                                entityType: "staff",
-                                file: formData.get("file"),
-                              });
-                            }
-                          }
-                        }}
-                        type="file"
-                        display="none"
-                      />
-                      <label htmlFor="confidentialityAgreement">
-                        <Flex
-                          border="1px solid #cccccc"
-                          borderRadius="4px"
-                          py="8px"
-                          px="16px"
-                          fontSize="12px"
-                          cursor={loading ? "" : "pointer"}
-                          fontWeight={500}
-                          bg="#090C02"
-                          color="#fff"
-                        >
-                          Upload
-                        </Flex>
-                      </label>
-                    </>
+                    "Approve"
                   )}
                 </Flex>
-              </>
-            )}
+              ) : (
+                <Flex
+                  py="8px"
+                  px="16px"
+                  gap="20px"
+                  align="center"
+                  justifyContent="space-between"
+                  border="1px solid #CCCCCC"
+                  borderRadius="4px"
+                >
+                  <Text fontSize="12px" fontWeight={500}>
+                    Unsubmitted
+                  </Text>
+                  <IoIosArrowDown />
+                </Flex>
+              )}
+            </Flex>
           </Flex>
         </Box>
       </Box>
@@ -726,138 +583,94 @@ const EmployeeDocuments = ({ refetch, id, data }) => {
             justifyContent="space-between"
             w="full"
           >
-            {mainFiles?.nonSolicitationAgreement ? (
-              <Flex
-                align={{ base: "flex-start", md: "center" }}
-                flexDir={{ base: "column", md: "row" }}
-                gap={{ base: "10px", md: "" }}
-                w="full"
-                justifyContent="space-between"
-              >
-                <Flex
-                  align="center"
-                  gap="10px"
-                  cursor={loading ? "" : "pointer"}
-                >
+            <Flex
+              align={{ base: "flex-start", md: "center" }}
+              flexDir={{ base: "column", md: "row" }}
+              gap={{ base: "10px", md: "" }}
+              w="full"
+              justifyContent="space-between"
+            >
+              <Flex align="flex-start" gap="30px">
+                <Flex align="center" gap="10px">
                   <Image src="/assets/folder.jpg" w="24px" h="24px" />
                   <Box>
-                    <Text color="#646668">
-                      {trim(
-                        mainFiles?.nonSolicitationAgreement?.name?.replace(
-                          "_",
-                          " "
-                        )
-                      ) || "Non-Solicitation & Non-Competition Agreement"}
-                    </Text>
-                    <Text fontSize="12px" fontWeight={500} color="#444648">
-                      {mainFiles?.nonSolicitationAgreement?.type || "MetaData"}
+                    <Text color="#646668" fontSize="14px">
+                      Non-Solicitation & Non-Competition Agreement
                     </Text>
                   </Box>
                 </Flex>
 
-                <Flex align="center" gap="12px">
-                  <Flex
-                    border="1px solid #cccccc"
-                    borderRadius="4px"
-                    py="8px"
-                    fontSize="12px"
-                    fontWeight={500}
-                    color="#090C02"
-                    cursor={isDeleting ? "" : "pointer"}
-                    px="16px"
-                    onClick={() =>
-                      isDeleting
-                        ? ""
-                        : (handleDelete(
-                            mainFiles?.nonSolicitationAgreement?.id
-                          ),
-                          setIds("nonSolicitationAgreement"))
-                    }
-                  >
-                    {isDeleting && ids === "nonSolicitationAgreement" ? (
-                      <Spinner color="red" size="md" />
-                    ) : (
-                      "Delete"
-                    )}
-                  </Flex>
-                  <Flex
-                    border="1px solid #cccccc"
-                    borderRadius="4px"
-                    py="8px"
-                    fontSize="12px"
-                    fontWeight={500}
-                    color="#090C02"
-                    px="16px"
-                  >
-                    Download
-                  </Flex>
-                  <Flex
-                    border="1px solid #cccccc"
-                    borderRadius="4px"
-                    py="8px"
-                    px="16px"
-                    fontSize="12px"
-                    fontWeight={500}
-                    bg="#090C02"
-                    color="#fff"
-                  >
-                    Approve
-                  </Flex>
+                <Flex
+                  justifyContent="center"
+                  align="center"
+                  py="5px"
+                  px="16px"
+                  borderRadius="4px"
+                  fontWeight={500}
+                  fontSize="13px"
+                  bg={
+                    mainFiles?.nonSolicitationAgreement?.status === "VERIFIED"
+                      ? "#E5FFE5"
+                      : "#FDF6E7"
+                  }
+                  color={
+                    mainFiles?.nonSolicitationAgreement?.status === "VERIFIED"
+                      ? "#008000"
+                      : "#F9A11E"
+                  }
+                >
+                  {mainFiles?.nonSolicitationAgreement?.status === "VERIFIED"
+                    ? "Approved"
+                    : "Pending"}
                 </Flex>
               </Flex>
-            ) : (
-              <>
-                <Flex align="center" justifyContent="space-between" w="full">
-                  <Text color="#661819" fontWeight={500}>
-                    Nothing found!
-                  </Text>
-                  {loading &&
-                  ids === "NON-SOLICITATION & NON COMPETITION AGREEMENT" ? (
-                    <Spinner color="red" size="md" />
+
+              {mainFiles?.nonSolicitationAgreement?.isSubmitted ? (
+                <Flex
+                  border="1px solid #cccccc"
+                  borderRadius="4px"
+                  py="8px"
+                  px="16px"
+                  fontSize="12px"
+                  cursor={isUpdating ? "" : "pointer"}
+                  display={
+                    mainFiles?.nonSolicitationAgreement?.status === "VERIFIED"
+                      ? "none"
+                      : "flex"
+                  }
+                  onClick={() =>
+                    isUpdating
+                      ? ""
+                      : (handleApprove(mainFiles?.nonSolicitationAgreement),
+                        setIds("nonSolicitationAgreement"))
+                  }
+                  fontWeight={500}
+                  bg="#090C02"
+                  color="#fff"
+                >
+                  {isUpdating && ids == "nonSolicitationAgreement" ? (
+                    <Spinner size="md" />
                   ) : (
-                    <>
-                      <Input
-                        isDisabled={loading}
-                        id="nonSolicitationAgreement"
-                        onChange={(e) => {
-                          setIds(
-                            "NON-SOLICITATION & NON COMPETITION AGREEMENT"
-                          );
-                          const formData = new FormData();
-                          formData.append("file", e.target.files[0]);
-                          if (e.target.files[0]) {
-                            {
-                              uploadMutate({
-                                fileType: "image",
-                                entityType: "staff",
-                                file: formData.get("file"),
-                              });
-                            }
-                          }
-                        }}
-                        type="file"
-                        display="none"
-                      />
-                      <label htmlFor="nonSolicitationAgreement">
-                        <Flex
-                          border="1px solid #cccccc"
-                          borderRadius="4px"
-                          py="8px"
-                          px="16px"
-                          fontSize="12px"
-                          cursor={loading ? "" : "pointer"}
-                          fontWeight={500}
-                          bg="#090C02"
-                          color="#fff"
-                        >
-                          Upload
-                        </Flex>
-                      </label>
-                    </>
+                    "Approve"
                   )}
                 </Flex>
-              </>
-            )}
+              ) : (
+                <Flex
+                  py="8px"
+                  px="16px"
+                  gap="20px"
+                  align="center"
+                  justifyContent="space-between"
+                  border="1px solid #CCCCCC"
+                  borderRadius="4px"
+                >
+                  <Text fontSize="12px" fontWeight={500}>
+                    Unsubmitted
+                  </Text>
+                  <IoIosArrowDown />
+                </Flex>
+              )}
+            </Flex>
           </Flex>
         </Box>
       </Box>
@@ -876,140 +689,115 @@ const EmployeeDocuments = ({ refetch, id, data }) => {
             justifyContent="space-between"
             w="full"
           >
-            {mainFiles?.exclusivity ? (
-              <Flex
-                align={{ base: "flex-start", md: "center" }}
-                flexDir={{ base: "column", md: "row" }}
-                gap={{ base: "10px", md: "" }}
-                w="full"
-                justifyContent="space-between"
-              >
-                <Flex
-                  align="center"
-                  gap="10px"
-                  cursor={loading ? "" : "pointer"}
-                >
+            <Flex
+              align={{ base: "flex-start", md: "center" }}
+              flexDir={{ base: "column", md: "row" }}
+              gap={{ base: "10px", md: "" }}
+              w="full"
+              justifyContent="space-between"
+            >
+              <Flex align="flex-start" gap="30px">
+                <Flex align="center" gap="10px">
                   <Image src="/assets/folder.jpg" w="24px" h="24px" />
                   <Box>
-                    <Text color="#646668">
-                      {trim(mainFiles?.exclusivity?.name?.replace("_", " ")) ||
-                        "Exclusivity & Non-Conflict of Interest Agreement"}
-                    </Text>
-                    <Text fontSize="12px" fontWeight={500} color="#444648">
-                      {mainFiles?.exclusivity?.type || "MetaData"}
+                    <Text color="#646668" fontSize="14px">
+                      Exclusivity & Non-Conflict of Interest Agreement
                     </Text>
                   </Box>
                 </Flex>
 
-                <Flex align="center" gap="12px">
-                  <Flex
-                    border="1px solid #cccccc"
-                    borderRadius="4px"
-                    py="8px"
-                    fontSize="12px"
-                    fontWeight={500}
-                    color="#090C02"
-                    cursor={isDeleting ? "" : "pointer"}
-                    px="16px"
-                    onClick={() =>
-                      isDeleting
-                        ? ""
-                        : (handleDelete(mainFiles?.exclusivity?.id),
-                          setIds("exclusivity"))
-                    }
-                  >
-                    {isDeleting && ids === "exclusivity" ? (
-                      <Spinner color="red" size="md" />
-                    ) : (
-                      "Delete"
-                    )}
-                  </Flex>
-                  <Flex
-                    border="1px solid #cccccc"
-                    borderRadius="4px"
-                    py="8px"
-                    fontSize="12px"
-                    fontWeight={500}
-                    color="#090C02"
-                    px="16px"
-                  >
-                    Download
-                  </Flex>
-                  <Flex
-                    border="1px solid #cccccc"
-                    borderRadius="4px"
-                    py="8px"
-                    px="16px"
-                    fontSize="12px"
-                    fontWeight={500}
-                    bg="#090C02"
-                    color="#fff"
-                  >
-                    Approve
-                  </Flex>
+                <Flex
+                  justifyContent="center"
+                  align="center"
+                  py="5px"
+                  px="16px"
+                  borderRadius="4px"
+                  fontWeight={500}
+                  fontSize="13px"
+                  bg={
+                    mainFiles?.exclusivity?.status === "VERIFIED"
+                      ? "#E5FFE5"
+                      : "#FDF6E7"
+                  }
+                  color={
+                    mainFiles?.exclusivity?.status === "VERIFIED"
+                      ? "#008000"
+                      : "#F9A11E"
+                  }
+                >
+                  {mainFiles?.exclusivity?.status === "VERIFIED"
+                    ? "Approved"
+                    : "Pending"}
                 </Flex>
               </Flex>
-            ) : (
-              <>
-                <Flex align="center" justifyContent="space-between" w="full">
-                  <Text color="#661819" fontWeight={500}>
-                    Nothing found!
-                  </Text>
-                  {loading &&
-                  ids ===
-                    "EXCLUSIVITY AND NON-CONFLICT OF INTEREST AGREEMENT" ? (
-                    <Spinner color="red" size="md" />
+
+              {mainFiles?.exclusivity?.isSubmitted ? (
+                <Flex
+                  border="1px solid #cccccc"
+                  borderRadius="4px"
+                  py="8px"
+                  px="16px"
+                  fontSize="12px"
+                  cursor={isUpdating ? "" : "pointer"}
+                  display={
+                    mainFiles?.exclusivity?.status === "VERIFIED"
+                      ? "none"
+                      : "flex"
+                  }
+                  onClick={() =>
+                    isUpdating
+                      ? ""
+                      : (handleApprove(mainFiles?.exclusivity),
+                        setIds("exclusivity"))
+                  }
+                  fontWeight={500}
+                  bg="#090C02"
+                  color="#fff"
+                >
+                  {isUpdating && ids == "exclusivity" ? (
+                    <Spinner size="md" />
                   ) : (
-                    <>
-                      <Input
-                        isDisabled={loading}
-                        id="exclusivity"
-                        onChange={(e) => {
-                          setIds(
-                            "EXCLUSIVITY AND NON-CONFLICT OF INTEREST AGREEMENT"
-                          );
-                          const formData = new FormData();
-                          formData.append("file", e.target.files[0]);
-                          if (e.target.files[0]) {
-                            {
-                              uploadMutate({
-                                fileType: "image",
-                                entityType: "staff",
-                                file: formData.get("file"),
-                              });
-                            }
-                          }
-                        }}
-                        type="file"
-                        display="none"
-                      />
-                      <label htmlFor="exclusivity">
-                        <Flex
-                          border="1px solid #cccccc"
-                          borderRadius="4px"
-                          py="8px"
-                          px="16px"
-                          fontSize="12px"
-                          cursor={loading ? "" : "pointer"}
-                          fontWeight={500}
-                          bg="#090C02"
-                          color="#fff"
-                        >
-                          Upload
-                        </Flex>
-                      </label>
-                    </>
+                    "Approve"
                   )}
                 </Flex>
-              </>
-            )}
+              ) : (
+                <Select
+                  styles={customStyles}
+                  options={submitOptions}
+                  placeholder="Unsubmitted"
+                  value={newValues?.exclusivity}
+                  components={{
+                    IndicatorSeparator: () => (
+                      <div style={{ display: "none" }}></div>
+                    ),
+                    DropdownIndicator: () => (
+                      <div>
+                        {isUpdating && ids === "exclusivity" ? (
+                          <Spinner size="sm" />
+                        ) : (
+                          <IoIosArrowDown size="15px" color="#646668" />
+                        )}
+                      </div>
+                    ),
+                  }}
+                  onChange={(selectedOption) => {
+                    setNewValues({
+                      ...newValues,
+                      exclusivity: selectedOption,
+                    });
+                    setIds("exclusivity");
+                    handleSubmit(selectedOption?.value, mainFiles?.exclusivity);
+                  }}
+                />
+              )}
+            </Flex>
           </Flex>
         </Box>
       </Box>
 
       <Box mt="24px">
         <Text mb="8px" fontSize="10px" color="#444648" fontWeight={500}>
-          International Passport
+          Identification Document
         </Text>
         <Box w="full">
           <Flex
@@ -1021,133 +809,94 @@ const EmployeeDocuments = ({ refetch, id, data }) => {
             justifyContent="space-between"
             w="full"
           >
-            {mainFiles?.identificationDocument ? (
-              <Flex
-                align={{ base: "flex-start", md: "center" }}
-                flexDir={{ base: "column", md: "row" }}
-                gap={{ base: "10px", md: "" }}
-                w="full"
-                justifyContent="space-between"
-              >
-                <Flex
-                  align="center"
-                  gap="10px"
-                  cursor={loading ? "" : "pointer"}
-                >
+            <Flex
+              align={{ base: "flex-start", md: "center" }}
+              flexDir={{ base: "column", md: "row" }}
+              gap={{ base: "10px", md: "" }}
+              w="full"
+              justifyContent="space-between"
+            >
+              <Flex align="flex-start" gap="30px">
+                <Flex align="center" gap="10px">
                   <Image src="/assets/folder.jpg" w="24px" h="24px" />
                   <Box>
-                    <Text color="#646668">
-                      {trim(
-                        mainFiles?.identificationDocument?.name?.replace(
-                          "_",
-                          " "
-                        )
-                      ) || "International Passport"}
-                    </Text>
-                    <Text fontSize="12px" fontWeight={500} color="#444648">
-                      {mainFiles?.identificationDocument?.type || "MetaData"}
+                    <Text color="#646668" fontSize="14px">
+                      Identification Document
                     </Text>
                   </Box>
                 </Flex>
 
-                <Flex align="center" gap="12px">
-                  <Flex
-                    border="1px solid #cccccc"
-                    borderRadius="4px"
-                    py="8px"
-                    fontSize="12px"
-                    fontWeight={500}
-                    color="#090C02"
-                    cursor={isDeleting ? "" : "pointer"}
-                    px="16px"
-                    onClick={() =>
-                      isDeleting
-                        ? ""
-                        : (handleDelete(mainFiles?.identificationDocument?.id),
-                          setIds("identificationDocument"))
-                    }
-                  >
-                    {isDeleting && ids === "identificationDocument" ? (
-                      <Spinner color="red" size="md" />
-                    ) : (
-                      "Delete"
-                    )}
-                  </Flex>
-                  <Flex
-                    border="1px solid #cccccc"
-                    borderRadius="4px"
-                    py="8px"
-                    fontSize="12px"
-                    fontWeight={500}
-                    color="#090C02"
-                    px="16px"
-                  >
-                    Download
-                  </Flex>
-                  <Flex
-                    border="1px solid #cccccc"
-                    borderRadius="4px"
-                    py="8px"
-                    px="16px"
-                    fontSize="12px"
-                    fontWeight={500}
-                    bg="#090C02"
-                    color="#fff"
-                  >
-                    Approve
-                  </Flex>
+                <Flex
+                  justifyContent="center"
+                  align="center"
+                  py="5px"
+                  px="16px"
+                  borderRadius="4px"
+                  fontWeight={500}
+                  fontSize="13px"
+                  bg={
+                    mainFiles?.identificationDocument?.status === "VERIFIED"
+                      ? "#E5FFE5"
+                      : "#FDF6E7"
+                  }
+                  color={
+                    mainFiles?.identificationDocument?.status === "VERIFIED"
+                      ? "#008000"
+                      : "#F9A11E"
+                  }
+                >
+                  {mainFiles?.identificationDocument?.status === "VERIFIED"
+                    ? "Approved"
+                    : "Pending"}
                 </Flex>
               </Flex>
-            ) : (
-              <>
-                <Flex align="center" justifyContent="space-between" w="full">
-                  <Text color="#661819" fontWeight={500}>
-                    Nothing found!
-                  </Text>
-                  {loading && ids === "IDENTIFICATION DOCUMENT" ? (
-                    <Spinner color="red" size="md" />
+
+              {mainFiles?.identificationDocument?.isSubmitted ? (
+                <Flex
+                  border="1px solid #cccccc"
+                  borderRadius="4px"
+                  py="8px"
+                  px="16px"
+                  fontSize="12px"
+                  display={
+                    mainFiles?.identificationDocument?.status === "VERIFIED"
+                      ? "none"
+                      : "flex"
+                  }
+                  cursor={isUpdating ? "" : "pointer"}
+                  onClick={() =>
+                    isUpdating
+                      ? ""
+                      : (handleApprove(mainFiles?.identificationDocument),
+                        setIds("identificationDocument"))
+                  }
+                  fontWeight={500}
+                  bg="#090C02"
+                  color="#fff"
+                >
+                  {isUpdating && ids == "identificationDocument" ? (
+                    <Spinner size="md" />
                   ) : (
-                    <>
-                      <Input
-                        isDisabled={loading}
-                        id="identificationDocument"
-                        onChange={(e) => {
-                          setIds("IDENTIFICATION DOCUMENT");
-                          const formData = new FormData();
-                          formData.append("file", e.target.files[0]);
-                          if (e.target.files[0]) {
-                            {
-                              uploadMutate({
-                                fileType: "image",
-                                entityType: "staff",
-                                file: formData.get("file"),
-                              });
-                            }
-                          }
-                        }}
-                        type="file"
-                        display="none"
-                      />
-                      <label htmlFor="identificationDocument">
-                        <Flex
-                          border="1px solid #cccccc"
-                          borderRadius="4px"
-                          py="8px"
-                          px="16px"
-                          fontSize="12px"
-                          cursor={loading ? "" : "pointer"}
-                          fontWeight={500}
-                          bg="#090C02"
-                          color="#fff"
-                        >
-                          Upload
-                        </Flex>
-                      </label>
-                    </>
+                    "Approve"
                   )}
                 </Flex>
-              </>
-            )}
+              ) : (
+                <Flex
+                  py="8px"
+                  px="16px"
+                  gap="20px"
+                  align="center"
+                  justifyContent="space-between"
+                  border="1px solid #CCCCCC"
+                  borderRadius="4px"
+                >
+                  <Text fontSize="12px" fontWeight={500}>
+                    Unsubmitted
+                  </Text>
+                  <IoIosArrowDown />
+                </Flex>
+              )}
+            </Flex>
           </Flex>
         </Box>
       </Box>

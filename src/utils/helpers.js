@@ -2,6 +2,7 @@ export const useLogOut = () => {
   return () => {
     const clearAndRedirect = (path) => {
       localStorage.removeItem(path);
+      sessionStorage.removeItem("staff");
       window.location.href = `/${path}/auth/login`;
     };
 
@@ -15,6 +16,16 @@ export const useLogOut = () => {
       clearAndRedirect("customer");
     }
   };
+};
+
+export const formatDat = (date, fallback = "") => {
+  if (!date) return fallback;
+
+  return new Date(date).toLocaleDateString("en-US", {
+    month: "long",
+    day: "numeric",
+    year: "numeric",
+  });
 };
 
 export const trim = (str) => {

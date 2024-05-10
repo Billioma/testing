@@ -19,7 +19,13 @@ const StaffProfileDetails = () => {
 
   const { id } = useParams();
 
-  const { data, refetch, isLoading } = useGetStaff(id);
+  const { data, refetch, isLoading } = useGetStaff(id, {
+    refetchOnWindowFocus: true,
+  });
+
+  useEffect(() => {
+    refetch();
+  }, []);
 
   const { successToast, errorToast } = useCustomToast();
   const { mutate: updateMutate } = useEditStaff({
@@ -143,11 +149,11 @@ const StaffProfileDetails = () => {
             <GeneralInfo refetch={refetch} id={id} data={data} />
           )}
           {tab === "Employee Documents" && (
-            <EmployeeDocuments data={data} id={id} refetch={refetch} />
+            <EmployeeDocuments data={data} refetch={refetch} />
           )}
           {tab === "Schedule" && <Schedule />}
           {tab === "Loan History" && <LoanHistory />}
-          {tab === "Leave History" && <LeaveHistory />}
+          {tab === "Leave History" && <LeaveHistory data={data} />}
           {tab === "Medical Assistance" && <MedAssist />}
         </>
       )}

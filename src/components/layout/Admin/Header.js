@@ -71,6 +71,12 @@ const Header = ({ showSidebar }) => {
       case locationRoute.includes("support"):
         return setTitle("Support");
 
+      case locationRoute.includes("leave"):
+        return setTitle("Leave Management");
+
+      case locationRoute.includes("loan"):
+        return setTitle("Loans");
+
       default:
         return setTitle("");
     }

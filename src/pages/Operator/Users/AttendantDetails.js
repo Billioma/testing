@@ -178,7 +178,7 @@ const AttendantDetails = () => {
       });
     }
   };
-  
+
   useEffect(() => {
     if (isEdit !== null) {
       setEdit(true);

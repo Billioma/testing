@@ -1,13 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-  Box,
-  Button,
-  Flex,
-  Image,
-  Input,
-  Spinner,
-  Text,
-} from "@chakra-ui/react";
+import { Box, Button, Checkbox, Flex, Text } from "@chakra-ui/react";
 import GoBackTab from "../../../components/data/Admin/GoBackTab";
 import { IoIosArrowDown, IoIosArrowForward } from "react-icons/io";
 import { Form, Formik } from "formik";
@@ -22,13 +14,14 @@ import {
   errorCustomStyles,
 } from "../../../components/common/constants";
 import Select from "react-select";
-import { trim } from "../../../utils/helpers";
 import { PRIVATE_PATHS } from "../../../routes/constants";
-import { useCustomerUploadPic } from "../../../services/customer/query/user";
 import useCustomToast from "../../../utils/notifications";
-
 import { useAddStaff, useGetStaffs } from "../../../services/admin/query/staff";
 import { useNavigate } from "react-router-dom";
+import {
+  useGetDepts,
+  useGetJobs,
+} from "../../../services/admin/query/configurations";
 import { useGetRoles } from "../../../services/admin/query/configurations";
 
 const AddStaff = () => {
@@ -38,33 +31,15 @@ const AddStaff = () => {
     step2: false,
     step3: false,
     step4: false,
+    step5: false,
+    step6: false,
   });
-  const { data: roles } = useGetRoles({}, 1, 1000);
+  const { data: depts } = useGetDepts({}, 1, 1000);
+  const { data: jobs } = useGetJobs({}, 1, 1000);
   const { data: staffs } = useGetStaffs({}, 1, 1000);
+  const { data: roles } = useGetRoles({}, 1, 1000);
 
   const { errorToast, successToast } = useCustomToast();
-  const [files, setFiles] = useState({
-    id: "",
-    employmentLetter: "",
-    guarantorForm: "",
-    guarantorForm2: "",
-    confidentialityAgreement: "",
-    nonSolicitationAgreement: "",
-    exclusivity: "",
-    identificationDocument: "",
-  });
-
-  const {
-    mutate: uploadMutate,
-    isLoading: isUploading,
-    data: profilePicData,
-  } = useCustomerUploadPic({
-    onError: (err) => {
-      errorToast(
-        err?.response?.data?.message || err?.message || "An Error occurred"
-      );
-    },
-  });
 
   const navigate = useNavigate();
   const { mutate, isLoading } = useAddStaff({
@@ -81,32 +56,24 @@ const AddStaff = () => {
 
   const handleSubmit = (values = "") => {
     const {
-      employmentLetter,
-      confidentialityAgreement,
-      nonSolicitationAgreement,
-      exclusivity,
-      guarantorForm,
-      guarantorForm2,
-      lineManager,
-      identificationDocument,
       phoneNumber,
+      guarantor1Phone,
+      guarantor2Phone,
+      role,
+      department,
+      jobTitle,
       secondaryPhoneNumber,
       nextOfKinPhone,
-      role,
       ...rest
     } = values;
     mutate({
       ...rest,
-      employmentLetter: files?.employmentLetter,
       role: role?.value,
-      lineManager: lineManager?.value,
-      confidentialityAgreement: files?.confidentialityAgreement,
-      nonSolicitationAgreement: files?.nonSolicitationAgreement,
-      exclusivity: files?.exclusivity,
-      guarantorForm: files?.guarantorForm,
-      guarantorForm2: files?.guarantorForm2,
-      identificationDocument: files?.identificationDocument,
+      department: department?.value,
+      jobTitle: jobTitle?.value,
       phoneNumber: `+234${Number(phoneNumber)}`,
+      guarantor1Phone: `+234${Number(guarantor1Phone)}`,
+      guarantor2Phone: `+234${Number(guarantor2Phone)}`,
       nextOfKinPhone: `+234${Number(nextOfKinPhone)}`,
       secondaryPhoneNumber: secondaryPhoneNumber
         ? `+234${Number(secondaryPhoneNumber)}`
@@ -114,35 +81,22 @@ const AddStaff = () => {
     });
   };
 
-  useEffect(() => {
-    if (files?.id === "employmentLetter") {
-      setFiles({ ...files, employmentLetter: profilePicData?.path });
-    } else if (files?.id === "guarantorForm") {
-      setFiles({ ...files, guarantorForm: profilePicData?.path }, "kkl");
-    } else if (files?.id === "guarantorForm2") {
-      setFiles({ ...files, guarantorForm2: profilePicData?.path }, "kkl");
-    } else if (files?.id === "confidentialityAgreement") {
-      setFiles(
-        { ...files, confidentialityAgreement: profilePicData?.path },
-        "sa"
-      );
-    } else if (files?.id === "nonSolicitationAgreement") {
-      setFiles({ ...files, nonSolicitationAgreement: profilePicData?.path });
-    } else if (files?.id === "exclusivity") {
-      setFiles({ ...files, exclusivity: profilePicData?.path });
-    } else if (files?.id === "identificationDocument") {
-      setFiles({ ...files, identificationDocument: profilePicData?.path });
-    }
-  }, [profilePicData]);
-
+  const staffOptions = staffs?.data?.map((role) => ({
+    label: role?.fullName,
+    value: Number(role?.id),
+  }));
   const rolesToMap = roles?.data?.filter((item) => item?.isStaffRole);
   const roleOptions = rolesToMap?.map((role) => ({
     label: role?.displayName,
     value: Number(role?.id),
   }));
-  const staffOptions = staffs?.data?.map((role) => ({
-    label: role?.fullName,
-    value: Number(role?.id),
+  const deptsOptions = depts?.data?.map((dept) => ({
+    label: dept?.name,
+    value: Number(dept?.id),
+  }));
+  const jobsOptions = jobs?.data?.map((job) => ({
+    label: job?.name,
+    value: Number(job?.id),
   }));
 
   return (
@@ -200,9 +154,7 @@ const AddStaff = () => {
                         values?.phoneNumber &&
                         values?.email &&
                         values?.dateOfBirth &&
-                        values?.residentialAddress &&
-                        values?.guarantor1 &&
-                        values?.guarantor2
+                        values?.residentialAddress
                           ? "#0B841D"
                           : "#090C02"
                       }
@@ -285,40 +237,6 @@ const AddStaff = () => {
                             fontWeight={500}
                             color="#444648"
                           >
-                            Line Manager{" "}
-                          </Text>
-                          <Select
-                            styles={customStyles}
-                            placeholder="Select Line Manager"
-                            options={staffOptions}
-                            name="lineManager"
-                            onChange={(selectedOption) =>
-                              setValues({
-                                ...values,
-                                lineManager: selectedOption,
-                              })
-                            }
-                            onBlur={handleBlur}
-                            components={{
-                              IndicatorSeparator: () => (
-                                <div style={{ display: "none" }}></div>
-                              ),
-                              DropdownIndicator: () => (
-                                <div>
-                                  <IoIosArrowDown size="15px" color="#646668" />
-                                </div>
-                              ),
-                            }}
-                          />
-                        </Box>
-
-                        <Box w="full" mb={4}>
-                          <Text
-                            mb="8px"
-                            fontSize="12px"
-                            fontWeight={500}
-                            color="#444648"
-                          >
                             Phone Number 1 (Primary){" "}
                             <span
                               style={{
@@ -354,7 +272,6 @@ const AddStaff = () => {
                             holder="Enter Phone Number 1 (Primary)"
                           />
                         </Box>
-
                         <Box w="full" mb={4}>
                           <Text
                             mb="8px"
@@ -485,7 +402,12 @@ const AddStaff = () => {
                           />
                         </Box>
 
-                        <Box w="full" mb={4}>
+                        <Box
+                          w="full"
+                          mb={4}
+                          pb="24px"
+                          borderBottom="1px solid #E4E6E8"
+                        >
                           <Text
                             mb="8px"
                             fontSize="12px"
@@ -509,84 +431,16 @@ const AddStaff = () => {
                             }
                           />
                         </Box>
-
-                        <Box w="full" mb={4}>
-                          <Text
-                            mb="8px"
-                            fontSize="12px"
-                            fontWeight={500}
-                            color="#444648"
-                          >
-                            Guarantor 1{" "}
-                            <span
-                              style={{
-                                color: "tomato",
-                                fontSize: "15px",
-                              }}
-                            >
-                              *
-                            </span>
-                          </Text>
-                          <CustomInput
-                            auth
-                            mb
-                            holder="Enter Guarantor 1"
-                            name="guarantor1"
-                            value={values?.guarantor1}
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                            error={
-                              (formSubmitted || touched?.guarantor1) &&
-                              errors?.guarantor1
-                            }
-                          />
-                        </Box>
-
-                        <Box
-                          w="full"
-                          mb={4}
-                          pb="24px"
-                          borderBottom="1px solid #E4E6E8"
-                        >
-                          <Text
-                            mb="8px"
-                            fontSize="12px"
-                            fontWeight={500}
-                            color="#444648"
-                          >
-                            Guarantor 2{" "}
-                            <span
-                              style={{
-                                color: "tomato",
-                                fontSize: "15px",
-                              }}
-                            >
-                              *
-                            </span>
-                          </Text>
-                          <CustomInput
-                            auth
-                            mb
-                            holder="Enter Guarantor 2"
-                            name="guarantor2"
-                            value={values?.guarantor2}
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                            error={
-                              (formSubmitted || touched?.guarantor2) &&
-                              errors?.guarantor2
-                            }
-                          />
-                        </Box>
                       </Box>
                     )}
 
                     <Flex
                       justifyContent="space-between"
                       color={
-                        values?.nextOfKin &&
-                        values?.nextOfKinAddress &&
-                        values?.nextOfKinPhone
+                        values?.staffId &&
+                        values?.department &&
+                        values?.role &&
+                        values?.jobTitle
                           ? "#0B841D"
                           : "#090C02"
                       }
@@ -619,7 +473,7 @@ const AddStaff = () => {
                           <Text>2</Text>
                         </Flex>
 
-                        <Text fontWeight={500}>Next of Kin</Text>
+                        <Text fontWeight={500}>Company Information</Text>
                       </Flex>
 
                       {steps?.step2 ? (
@@ -630,6 +484,246 @@ const AddStaff = () => {
                     </Flex>
 
                     {steps?.step2 && (
+                      <>
+                        <Box w="full" mb={4} mt="24px">
+                          <Text
+                            mb="8px"
+                            fontSize="12px"
+                            fontWeight={500}
+                            color="#444648"
+                          >
+                            Staff ID{" "}
+                            <span
+                              style={{
+                                color: "tomato",
+                                fontSize: "15px",
+                              }}
+                            >
+                              *
+                            </span>
+                          </Text>
+                          <CustomInput
+                            auth
+                            mb
+                            holder="Enter Staff ID"
+                            name="staffId"
+                            value={values?.staffId}
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            error={
+                              (formSubmitted || touched?.staffId) &&
+                              errors?.staffId
+                            }
+                          />
+                        </Box>
+
+                        <Box w="full" mb={4}>
+                          <Text
+                            mb="8px"
+                            fontSize="12px"
+                            fontWeight={500}
+                            color="#444648"
+                          >
+                            Department{" "}
+                            <span
+                              style={{
+                                color: "tomato",
+                                fontSize: "15px",
+                              }}
+                            >
+                              *
+                            </span>
+                          </Text>
+                          <Select
+                            styles={
+                              formSubmitted && !values?.department
+                                ? errorCustomStyles
+                                : customStyles
+                            }
+                            placeholder="Select department"
+                            options={deptsOptions}
+                            name="department"
+                            onChange={(selectedOption) =>
+                              setValues({
+                                ...values,
+                                department: selectedOption,
+                              })
+                            }
+                            onBlur={handleBlur}
+                            components={{
+                              IndicatorSeparator: () => (
+                                <div style={{ display: "none" }}></div>
+                              ),
+                              DropdownIndicator: () => (
+                                <div>
+                                  <IoIosArrowDown size="15px" color="#646668" />
+                                </div>
+                              ),
+                            }}
+                          />
+
+                          {formSubmitted && !values?.department && (
+                            <Text mt="8px" fontSize="13px" color="tomato">
+                              Department is required
+                            </Text>
+                          )}
+                        </Box>
+
+                        <Box w="full" mb={4}>
+                          <Text
+                            mb="8px"
+                            fontSize="12px"
+                            fontWeight={500}
+                            color="#444648"
+                          >
+                            Job Title{" "}
+                            <span
+                              style={{
+                                color: "tomato",
+                                fontSize: "15px",
+                              }}
+                            >
+                              *
+                            </span>
+                          </Text>
+                          <Select
+                            styles={
+                              formSubmitted && !values?.jobTitle
+                                ? errorCustomStyles
+                                : customStyles
+                            }
+                            placeholder="Select Job Title"
+                            options={jobsOptions}
+                            name="jobTitle"
+                            onChange={(selectedOption) =>
+                              setValues({
+                                ...values,
+                                jobTitle: selectedOption,
+                              })
+                            }
+                            onBlur={handleBlur}
+                            components={{
+                              IndicatorSeparator: () => (
+                                <div style={{ display: "none" }}></div>
+                              ),
+                              DropdownIndicator: () => (
+                                <div>
+                                  <IoIosArrowDown size="15px" color="#646668" />
+                                </div>
+                              ),
+                            }}
+                          />
+
+                          {formSubmitted && !values?.jobTitle && (
+                            <Text mt="8px" fontSize="13px" color="tomato">
+                              Job Title is required
+                            </Text>
+                          )}
+                        </Box>
+
+                        <Box w="full" mb={4}>
+                          <Text
+                            mb="8px"
+                            fontSize="12px"
+                            fontWeight={500}
+                            color="#444648"
+                          >
+                            Role{" "}
+                            <span
+                              style={{
+                                color: "tomato",
+                                fontSize: "15px",
+                              }}
+                            >
+                              *
+                            </span>
+                          </Text>
+                          <Select
+                            styles={
+                              formSubmitted && !values?.role
+                                ? errorCustomStyles
+                                : customStyles
+                            }
+                            placeholder="Select role"
+                            options={roleOptions}
+                            name="role"
+                            onChange={(selectedOption) =>
+                              setValues({
+                                ...values,
+                                role: selectedOption,
+                              })
+                            }
+                            onBlur={handleBlur}
+                            components={{
+                              IndicatorSeparator: () => (
+                                <div style={{ display: "none" }}></div>
+                              ),
+                              DropdownIndicator: () => (
+                                <div>
+                                  <IoIosArrowDown size="15px" color="#646668" />
+                                </div>
+                              ),
+                            }}
+                          />
+
+                          {formSubmitted && !values?.role && (
+                            <Text mt="8px" fontSize="13px" color="tomato">
+                              Role is required
+                            </Text>
+                          )}
+                        </Box>
+                      </>
+                    )}
+
+                    <Flex
+                      justifyContent="space-between"
+                      color={
+                        values?.nextOfKin &&
+                        values?.nextOfKinAddress &&
+                        values?.nextOfKinPhone
+                          ? "#0B841D"
+                          : "#090C02"
+                      }
+                      mt="24px"
+                      align="center"
+                      w="full"
+                      cursor="pointer"
+                      pb={steps?.step3 ? "" : "24px"}
+                      borderBottom={steps?.step3 ? "none" : "1px solid #E4E6E8"}
+                      onClick={() =>
+                        setSteps({
+                          step1: false,
+                          step2: false,
+                          step3: !steps.step3,
+                          step4: false,
+                        })
+                      }
+                    >
+                      <Flex align="center" gap="12px">
+                        <Flex
+                          justifyContent="center"
+                          align="center"
+                          border="1px solid"
+                          rounded="full"
+                          w="23px"
+                          fontWeight={500}
+                          fontSize="14px"
+                          h="23px"
+                        >
+                          <Text>3</Text>
+                        </Flex>
+
+                        <Text fontWeight={500}>Next of Kin</Text>
+                      </Flex>
+
+                      {steps?.step3 ? (
+                        <IoIosArrowDown size="20px" />
+                      ) : (
+                        <IoIosArrowForward size="20px" />
+                      )}
+                    </Flex>
+
+                    {steps?.step3 && (
                       <>
                         <Box w="full" mb={4} mt="24px">
                           <Text
@@ -748,151 +842,12 @@ const AddStaff = () => {
                     <Flex
                       justifyContent="space-between"
                       color={
-                        values?.staffId && values?.role ? "#0B841D" : "#090C02"
-                      }
-                      mt="24px"
-                      align="center"
-                      w="full"
-                      cursor="pointer"
-                      pb={steps?.step3 ? "" : "24px"}
-                      borderBottom={steps?.step3 ? "none" : "1px solid #E4E6E8"}
-                      onClick={() =>
-                        setSteps({
-                          step1: false,
-                          step2: false,
-                          step3: !steps.step3,
-                          step4: false,
-                        })
-                      }
-                    >
-                      <Flex align="center" gap="12px">
-                        <Flex
-                          justifyContent="center"
-                          align="center"
-                          border="1px solid"
-                          rounded="full"
-                          w="23px"
-                          fontWeight={500}
-                          fontSize="14px"
-                          h="23px"
-                        >
-                          <Text>3</Text>
-                        </Flex>
-
-                        <Text fontWeight={500}>Company Information</Text>
-                      </Flex>
-
-                      {steps?.step3 ? (
-                        <IoIosArrowDown size="20px" />
-                      ) : (
-                        <IoIosArrowForward size="20px" />
-                      )}
-                    </Flex>
-
-                    {steps?.step3 && (
-                      <>
-                        <Box w="full" mb={4} mt="24px">
-                          <Text
-                            mb="8px"
-                            fontSize="12px"
-                            fontWeight={500}
-                            color="#444648"
-                          >
-                            Staff ID{" "}
-                            <span
-                              style={{
-                                color: "tomato",
-                                fontSize: "15px",
-                              }}
-                            >
-                              *
-                            </span>
-                          </Text>
-                          <CustomInput
-                            auth
-                            mb
-                            holder="Enter Staff ID"
-                            name="staffId"
-                            value={values?.staffId}
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                            error={
-                              (formSubmitted || touched?.staffId) &&
-                              errors?.staffId
-                            }
-                          />
-                        </Box>
-
-                        <Box
-                          w="full"
-                          mb={4}
-                          mt="24px"
-                          pb="24px"
-                          borderBottom="1px solid #E4E6E8"
-                        >
-                          <Text
-                            mb="8px"
-                            fontSize="12px"
-                            fontWeight={500}
-                            color="#444648"
-                          >
-                            Role{" "}
-                            <span
-                              style={{
-                                color: "tomato",
-                                fontSize: "15px",
-                              }}
-                            >
-                              *
-                            </span>
-                          </Text>
-                          <Select
-                            styles={
-                              formSubmitted && !values?.role
-                                ? errorCustomStyles
-                                : customStyles
-                            }
-                            placeholder="Select role"
-                            options={roleOptions}
-                            name="role"
-                            onChange={(selectedOption) =>
-                              setValues({
-                                ...values,
-                                role: selectedOption,
-                              })
-                            }
-                            onBlur={handleBlur}
-                            components={{
-                              IndicatorSeparator: () => (
-                                <div style={{ display: "none" }}></div>
-                              ),
-                              DropdownIndicator: () => (
-                                <div>
-                                  <IoIosArrowDown size="15px" color="#646668" />
-                                </div>
-                              ),
-                            }}
-                          />
-
-                          {formSubmitted && !values?.role && (
-                            <Text mt="8px" fontSize="13px" color="tomato">
-                              Role is required
-                            </Text>
-                          )}
-                        </Box>
-                      </>
-                    )}
-
-                    <Flex
-                      justifyContent="space-between"
-                      color={
-                        values?.guarantorForm &&
-                        values?.employmentLetter &&
-                        values?.guarantorForm2 &&
-                        values?.confidentialityAgreement &&
-                        values?.nonSolicitationAgreement &&
-                        values?.exclusivity &&
-                        values?.identificationDocument
+                        values?.guarantor1 &&
+                        values?.guarantor1Address &&
+                        values?.guarantor1Phone &&
+                        values?.guarantor2 &&
+                        values?.guarantor2Address &&
+                        values?.guarantor2Phone
                           ? "#0B841D"
                           : "#090C02"
                       }
@@ -925,7 +880,7 @@ const AddStaff = () => {
                           <Text>4</Text>
                         </Flex>
 
-                        <Text fontWeight={500}>Employee Documents</Text>
+                        <Text fontWeight={500}>Guarantor Information</Text>
                       </Flex>
 
                       {steps?.step4 ? (
@@ -944,7 +899,7 @@ const AddStaff = () => {
                             fontWeight={500}
                             color="#444648"
                           >
-                            Employment Letter{" "}
+                            Guarantor 1{" "}
                             <span
                               style={{
                                 color: "tomato",
@@ -954,366 +909,63 @@ const AddStaff = () => {
                               *
                             </span>
                           </Text>
-
-                          <Input
-                            isDisabled={isUploading}
-                            id="image_upload"
-                            onChange={(e) => {
-                              setValues({
-                                ...values,
-                                employmentLetter: e.target.files[0]
-                                  ? e.target.files[0]
-                                  : values?.employmentLetter,
-                              });
-                              setFiles({
-                                ...files,
-                                id: "employmentLetter",
-                              });
-                              const formData = new FormData();
-                              formData.append("file", e.target.files[0]);
-                              if (e.target.files[0]) {
-                                {
-                                  uploadMutate({
-                                    fileType: "image",
-                                    entityType: "staff",
-                                    file: formData.get("file"),
-                                  });
-                                }
-                              }
-                            }}
-                            type="file"
-                            display="none"
-                          />
-                          <Flex
-                            border={
-                              formSubmitted && !values?.employmentLetter
-                                ? "1px solid red"
-                                : "1px solid #d4d6d8"
+                          <CustomInput
+                            auth
+                            mb
+                            holder="Full Name"
+                            name="guarantor1"
+                            value={values?.guarantor1}
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            error={
+                              (formSubmitted || touched?.guarantor1) &&
+                              errors?.guarantor1
                             }
-                            borderRadius="4px"
-                            py="12px"
-                            align="center"
-                            px="16px"
-                            justifyContent="space-between"
-                            w="full"
-                          >
-                            <label htmlFor="image_upload">
-                              <Flex
-                                align="center"
-                                gap="10px"
-                                cursor={isUploading ? "" : "pointer"}
-                              >
-                                <Image
-                                  src="/assets/folder.jpg"
-                                  w="24px"
-                                  h="24px"
-                                />
-                                <Box>
-                                  <Text color="#646668">
-                                    {trim(values?.employmentLetter?.name) ||
-                                      "Employment Letter"}
-                                  </Text>
-                                  <Text
-                                    fontSize="12px"
-                                    fontWeight={500}
-                                    color="#444648"
-                                  >
-                                    {values?.employmentLetter?.type ||
-                                      "MetaData"}
-                                  </Text>
-                                </Box>
-                              </Flex>
-                            </label>
-
-                            {isUploading && files?.id === "employmentLetter" ? (
-                              <Spinner color="red" size="md" />
-                            ) : values?.employmentLetter ? (
-                              <Flex
-                                border="1px solid #cccccc"
-                                borderRadius="8px"
-                                py="12px"
-                                fontSize="12px"
-                                cursor={isUploading ? "" : "pointer"}
-                                fontWeight={500}
-                                color="#090C02"
-                                px="16px"
-                                onClick={() => {
-                                  isUploading
-                                    ? ""
-                                    : (setFiles({
-                                        ...files,
-                                        employmentLetter: "",
-                                      }),
-                                      setValues({
-                                        ...values,
-                                        employmentLetter: "",
-                                      }));
-                                }}
-                              >
-                                Delete
-                              </Flex>
-                            ) : (
-                              ""
-                            )}
-                          </Flex>
-
-                          {formSubmitted && !values?.employmentLetter && (
-                            <Text mt="8px" fontSize="13px" color="tomato">
-                              Employment Letter is required
-                            </Text>
-                          )}
+                          />
                         </Box>
 
-                        <Box w="full" mb={4} mt="24px">
-                          <Text
-                            mb="8px"
-                            fontSize="12px"
-                            fontWeight={500}
-                            color="#444648"
-                          >
-                            Guarantor 1 Form{" "}
-                            <span
-                              style={{
-                                color: "tomato",
-                                fontSize: "15px",
-                              }}
-                            >
-                              *
-                            </span>
-                          </Text>
-
-                          <Input
-                            isDisabled={isUploading}
-                            id="guarantorForm"
+                        <Box w="full" mb={4}>
+                          <Text mb="8px"></Text>
+                          <CustomInput
+                            mb
+                            auth
+                            ngn
+                            name="guarantor1Phone"
+                            value={`${values?.guarantor1Phone}`}
                             onChange={(e) => {
-                              setValues({
-                                ...values,
-                                guarantorForm: e.target.files[0]
-                                  ? e.target.files[0]
-                                  : values?.guarantorForm,
+                              const inputPhone = e.target.value
+                                .replace(/\D/g, "")
+                                .slice(0, 11);
+                              handleChange({
+                                target: {
+                                  name: "guarantor1Phone",
+                                  value: `${inputPhone}`,
+                                },
                               });
-                              setFiles({
-                                ...files,
-                                id: "guarantorForm",
-                              });
-                              const formData = new FormData();
-                              formData.append("file", e.target.files[0]);
-                              if (e.target.files[0]) {
-                                {
-                                  uploadMutate({
-                                    fileType: "image",
-                                    entityType: "staff",
-                                    file: formData.get("file"),
-                                  });
-                                }
-                              }
                             }}
-                            type="file"
-                            display="none"
-                          />
-                          <Flex
-                            border={
-                              formSubmitted && !values?.guarantorForm
-                                ? "1px solid red"
-                                : "1px solid #d4d6d8"
+                            onBlur={handleBlur}
+                            error={
+                              (formSubmitted || touched?.guarantor1Phone) &&
+                              errors?.guarantor1Phone
                             }
-                            borderRadius="4px"
-                            py="12px"
-                            align="center"
-                            px="16px"
-                            justifyContent="space-between"
-                            w="full"
-                          >
-                            <label htmlFor="guarantorForm">
-                              <Flex
-                                align="center"
-                                gap="10px"
-                                cursor={isUploading ? "" : "pointer"}
-                              >
-                                <Image
-                                  src="/assets/folder.jpg"
-                                  w="24px"
-                                  h="24px"
-                                />
-                                <Box>
-                                  <Text color="#646668">
-                                    {trim(values?.guarantorForm?.name) ||
-                                      "Guarantor Form"}
-                                  </Text>
-                                  <Text
-                                    fontSize="12px"
-                                    fontWeight={500}
-                                    color="#444648"
-                                  >
-                                    {values?.guarantorForm?.type || "MetaData"}
-                                  </Text>
-                                </Box>
-                              </Flex>
-                            </label>
-
-                            {isUploading && files?.id === "guarantorForm" ? (
-                              <Spinner color="red" size="md" />
-                            ) : values?.guarantorForm ? (
-                              <Flex
-                                border="1px solid #cccccc"
-                                borderRadius="8px"
-                                py="12px"
-                                fontSize="12px"
-                                cursor={isUploading ? "" : "pointer"}
-                                fontWeight={500}
-                                color="#090C02"
-                                px="16px"
-                                onClick={() => {
-                                  isUploading
-                                    ? ""
-                                    : (setFiles({
-                                        ...files,
-                                        guarantorForm: "",
-                                      }),
-                                      setValues({
-                                        ...values,
-                                        guarantorForm: "",
-                                      }));
-                                }}
-                              >
-                                Delete
-                              </Flex>
-                            ) : (
-                              ""
-                            )}
-                          </Flex>
-
-                          {formSubmitted && !values?.guarantorForm && (
-                            <Text mt="8px" fontSize="13px" color="tomato">
-                              Guarantor 1 Form is required
-                            </Text>
-                          )}
+                          />
                         </Box>
 
-                        <Box w="full" mb={4} mt="24px">
-                          <Text
-                            mb="8px"
-                            fontSize="12px"
-                            fontWeight={500}
-                            color="#444648"
-                          >
-                            Guarantor 2 Form{" "}
-                            <span
-                              style={{
-                                color: "tomato",
-                                fontSize: "15px",
-                              }}
-                            >
-                              *
-                            </span>
-                          </Text>
-
-                          <Input
-                            isDisabled={isUploading}
-                            id="guarantorForm2"
-                            onChange={(e) => {
-                              setValues({
-                                ...values,
-                                guarantorForm2: e.target.files[0]
-                                  ? e.target.files[0]
-                                  : values?.guarantorForm2,
-                              });
-                              setFiles({
-                                ...files,
-                                id: "guarantorForm2",
-                              });
-                              const formData = new FormData();
-                              formData.append("file", e.target.files[0]);
-                              if (e.target.files[0]) {
-                                {
-                                  uploadMutate({
-                                    fileType: "image",
-                                    entityType: "staff",
-                                    file: formData.get("file"),
-                                  });
-                                }
-                              }
-                            }}
-                            type="file"
-                            display="none"
-                          />
-                          <Flex
-                            border={
-                              formSubmitted && !values?.guarantorForm2
-                                ? "1px solid red"
-                                : "1px solid #d4d6d8"
+                        <Box w="full" mb={4}>
+                          <Text mb="8px"></Text>
+                          <CustomInput
+                            auth
+                            mb
+                            holder="Address"
+                            name="guarantor1Address"
+                            value={values?.guarantor1Address}
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            error={
+                              (formSubmitted || touched?.guarantor1Address) &&
+                              errors?.guarantor1Address
                             }
-                            borderRadius="4px"
-                            py="12px"
-                            align="center"
-                            px="16px"
-                            justifyContent="space-between"
-                            w="full"
-                          >
-                            <label htmlFor="guarantorForm2">
-                              <Flex
-                                align="center"
-                                gap="10px"
-                                cursor={isUploading ? "" : "pointer"}
-                              >
-                                <Image
-                                  src="/assets/folder.jpg"
-                                  w="24px"
-                                  h="24px"
-                                />
-                                <Box>
-                                  <Text color="#646668">
-                                    {trim(values?.guarantorForm2?.name) ||
-                                      "Guarantor Form"}
-                                  </Text>
-                                  <Text
-                                    fontSize="12px"
-                                    fontWeight={500}
-                                    color="#444648"
-                                  >
-                                    {values?.guarantorForm2?.type || "MetaData"}
-                                  </Text>
-                                </Box>
-                              </Flex>
-                            </label>
-
-                            {isUploading && files?.id === "guarantorForm2" ? (
-                              <Spinner color="red" size="md" />
-                            ) : values?.guarantorForm2 ? (
-                              <Flex
-                                border="1px solid #cccccc"
-                                borderRadius="8px"
-                                py="12px"
-                                fontSize="12px"
-                                cursor={isUploading ? "" : "pointer"}
-                                fontWeight={500}
-                                color="#090C02"
-                                px="16px"
-                                onClick={() => {
-                                  isUploading
-                                    ? ""
-                                    : (setFiles({
-                                        ...files,
-                                        guarantorForm2: "",
-                                      }),
-                                      setValues({
-                                        ...values,
-                                        guarantorForm2: "",
-                                      }));
-                                }}
-                              >
-                                Delete
-                              </Flex>
-                            ) : (
-                              ""
-                            )}
-                          </Flex>
-
-                          {formSubmitted && !values?.guarantorForm2 && (
-                            <Text mt="8px" fontSize="13px" color="tomato">
-                              Guarantor 2 Form is required
-                            </Text>
-                          )}
+                          />
                         </Box>
 
                         <Box w="full" mb={4}>
@@ -1323,7 +975,7 @@ const AddStaff = () => {
                             fontWeight={500}
                             color="#444648"
                           >
-                            Confidentiality Agreement{" "}
+                            Guarantor 2{" "}
                             <span
                               style={{
                                 color: "tomato",
@@ -1333,514 +985,444 @@ const AddStaff = () => {
                               *
                             </span>
                           </Text>
-
-                          <Input
-                            isDisabled={isUploading}
-                            id="confidentialityAgreement"
-                            onChange={(e) => {
-                              setValues({
-                                ...values,
-                                confidentialityAgreement: e.target.files[0]
-                                  ? e.target.files[0]
-                                  : values?.confidentialityAgreement,
-                              });
-                              setFiles({
-                                ...files,
-                                id: "confidentialityAgreement",
-                              });
-
-                              const formData = new FormData();
-                              formData.append("file", e.target.files[0]);
-                              if (e.target.files[0]) {
-                                {
-                                  uploadMutate({
-                                    fileType: "image",
-                                    entityType: "staff",
-                                    file: formData.get("file"),
-                                  });
-                                }
-                              }
-                            }}
-                            type="file"
-                            display="none"
-                          />
-                          <Flex
-                            border={
-                              formSubmitted && !values?.confidentialityAgreement
-                                ? "1px solid red"
-                                : "1px solid #d4d6d8"
+                          <CustomInput
+                            auth
+                            mb
+                            holder="Full Name"
+                            name="guarantor2"
+                            value={values?.guarantor2}
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            error={
+                              (formSubmitted || touched?.guarantor2) &&
+                              errors?.guarantor2
                             }
-                            borderRadius="4px"
-                            py="12px"
-                            align="center"
-                            px="16px"
-                            justifyContent="space-between"
-                            w="full"
-                          >
-                            <label htmlFor="confidentialityAgreement">
-                              <Flex
-                                align="center"
-                                gap="10px"
-                                cursor={isUploading ? "" : "pointer"}
-                              >
-                                <Image
-                                  src="/assets/folder.jpg"
-                                  w="24px"
-                                  h="24px"
-                                />
-                                <Box>
-                                  <Text color="#646668">
-                                    {trim(
-                                      values?.confidentialityAgreement?.name
-                                    ) || "Confidentiality Agreement"}
-                                  </Text>
-                                  <Text
-                                    fontSize="12px"
-                                    fontWeight={500}
-                                    color="#444648"
-                                  >
-                                    {values?.confidentialityAgreement?.type ||
-                                      "MetaData"}
-                                  </Text>
-                                </Box>
-                              </Flex>
-                            </label>
-
-                            {isUploading &&
-                            files?.id === "confidentialityAgreement" ? (
-                              <Spinner color="red" size="md" />
-                            ) : values?.confidentialityAgreement ? (
-                              <Flex
-                                border="1px solid #cccccc"
-                                borderRadius="8px"
-                                py="12px"
-                                fontSize="12px"
-                                cursor={isUploading ? "" : "pointer"}
-                                fontWeight={500}
-                                color="#090C02"
-                                px="16px"
-                                onClick={() => {
-                                  isUploading
-                                    ? ""
-                                    : (setFiles({
-                                        ...files,
-                                        confidentialityAgreement: "",
-                                      }),
-                                      setValues({
-                                        ...values,
-                                        confidentialityAgreement: "",
-                                      }));
-                                }}
-                              >
-                                Delete
-                              </Flex>
-                            ) : (
-                              ""
-                            )}
-                          </Flex>
-
-                          {formSubmitted &&
-                            !values?.confidentialityAgreement && (
-                              <Text mt="8px" fontSize="13px" color="tomato">
-                                Confidentiality Agreement is required
-                              </Text>
-                            )}
+                          />
                         </Box>
 
                         <Box w="full" mb={4}>
-                          <Text
-                            mb="8px"
-                            fontSize="12px"
-                            fontWeight={500}
-                            color="#444648"
-                          >
-                            Non-Solicitation & Non-Competition Agreement{" "}
-                            <span
-                              style={{
-                                color: "tomato",
-                                fontSize: "15px",
-                              }}
-                            >
-                              *
-                            </span>
-                          </Text>
-
-                          <Input
-                            isDisabled={isUploading}
-                            id="nonSolicitationAgreement"
+                          <Text mb="8px"></Text>
+                          <CustomInput
+                            mb
+                            auth
+                            ngn
+                            name="guarantor2Phone"
+                            value={`${values?.guarantor2Phone}`}
                             onChange={(e) => {
-                              setValues({
-                                ...values,
-                                nonSolicitationAgreement: e.target.files[0]
-                                  ? e.target.files[0]
-                                  : values?.nonSolicitationAgreement,
+                              const inputPhone = e.target.value
+                                .replace(/\D/g, "")
+                                .slice(0, 11);
+                              handleChange({
+                                target: {
+                                  name: "guarantor2Phone",
+                                  value: `${inputPhone}`,
+                                },
                               });
-
-                              setFiles({
-                                ...files,
-                                id: "nonSolicitationAgreement",
-                              });
-                              const formData = new FormData();
-                              formData.append("file", e.target.files[0]);
-                              if (e.target.files[0]) {
-                                {
-                                  uploadMutate({
-                                    fileType: "image",
-                                    entityType: "staff",
-                                    file: formData.get("file"),
-                                  });
-                                }
-                              }
                             }}
-                            type="file"
-                            display="none"
-                          />
-                          <Flex
-                            border={
-                              formSubmitted && !values?.nonSolicitationAgreement
-                                ? "1px solid red"
-                                : "1px solid #d4d6d8"
+                            onBlur={handleBlur}
+                            error={
+                              (formSubmitted || touched?.guarantor2Phone) &&
+                              errors?.guarantor2Phone
                             }
-                            borderRadius="4px"
-                            py="12px"
-                            align="center"
-                            px="16px"
-                            justifyContent="space-between"
-                            w="full"
-                          >
-                            <label htmlFor="nonSolicitationAgreement">
-                              <Flex
-                                align="center"
-                                gap="10px"
-                                cursor={isUploading ? "" : "pointer"}
-                              >
-                                <Image
-                                  src="/assets/folder.jpg"
-                                  w="24px"
-                                  h="24px"
-                                />
-                                <Box>
-                                  <Text color="#646668">
-                                    {trim(
-                                      values?.nonSolicitationAgreement?.name
-                                    ) || "Non-Solicitation & Non-Comp..."}
-                                  </Text>
-                                  <Text
-                                    fontSize="12px"
-                                    fontWeight={500}
-                                    color="#444648"
-                                  >
-                                    {values?.nonSolicitationAgreement?.type ||
-                                      "MetaData"}
-                                  </Text>
-                                </Box>
-                              </Flex>
-                            </label>
-
-                            {isUploading &&
-                            files?.id === "nonSolicitationAgreement" ? (
-                              <Spinner color="red" size="md" />
-                            ) : values?.nonSolicitationAgreement ? (
-                              <Flex
-                                border="1px solid #cccccc"
-                                borderRadius="8px"
-                                py="12px"
-                                fontSize="12px"
-                                cursor={isUploading ? "" : "pointer"}
-                                fontWeight={500}
-                                color="#090C02"
-                                px="16px"
-                                onClick={() => {
-                                  isUploading
-                                    ? ""
-                                    : (setFiles({
-                                        ...files,
-                                        nonSolicitationAgreement: "",
-                                      }),
-                                      setValues({
-                                        ...values,
-                                        nonSolicitationAgreement: "",
-                                      }));
-                                }}
-                              >
-                                Delete
-                              </Flex>
-                            ) : (
-                              ""
-                            )}
-                          </Flex>
-
-                          {formSubmitted &&
-                            !values?.nonSolicitationAgreement && (
-                              <Text mt="8px" fontSize="13px" color="tomato">
-                                Non-Solicitation & Non-Competition Agreement is
-                                required
-                              </Text>
-                            )}
+                          />
                         </Box>
 
                         <Box w="full" mb={4}>
-                          <Text
-                            mb="8px"
-                            fontSize="12px"
-                            fontWeight={500}
-                            color="#444648"
-                          >
-                            Exclusivity & Non-Conflict of Interest Agreement{" "}
-                            <span
-                              style={{
-                                color: "tomato",
-                                fontSize: "15px",
-                              }}
-                            >
-                              *
-                            </span>
-                          </Text>
-
-                          <Input
-                            isDisabled={isUploading}
-                            id="exclusivity"
-                            onChange={(e) => {
-                              setValues({
-                                ...values,
-                                exclusivity: e.target.files[0]
-                                  ? e.target.files[0]
-                                  : values?.exclusivity,
-                              });
-
-                              setFiles({
-                                ...files,
-                                id: "exclusivity",
-                              });
-                              const formData = new FormData();
-                              formData.append("file", e.target.files[0]);
-                              if (e.target.files[0]) {
-                                {
-                                  uploadMutate({
-                                    fileType: "image",
-                                    entityType: "staff",
-                                    file: formData.get("file"),
-                                  });
-                                }
-                              }
-                            }}
-                            type="file"
-                            display="none"
-                          />
-                          <Flex
-                            border={
-                              formSubmitted && !values?.exclusivity
-                                ? "1px solid red"
-                                : "1px solid #d4d6d8"
+                          <Text mb="8px"></Text>
+                          <CustomInput
+                            auth
+                            mb
+                            holder="Address"
+                            name="guarantor2Address"
+                            value={values?.guarantor2Address}
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            error={
+                              (formSubmitted || touched?.guarantor2Address) &&
+                              errors?.guarantor2Address
                             }
-                            borderRadius="4px"
-                            py="12px"
-                            align="center"
-                            px="16px"
-                            justifyContent="space-between"
-                            w="full"
-                          >
-                            <label htmlFor="exclusivity">
-                              <Flex
-                                align="center"
-                                gap="10px"
-                                cursor={isUploading ? "" : "pointer"}
-                              >
-                                <Image
-                                  src="/assets/folder.jpg"
-                                  w="24px"
-                                  h="24px"
-                                />
-                                <Box>
-                                  <Text color="#646668">
-                                    {trim(values?.exclusivity?.name) ||
-                                      "Exclusivity & Non-Conflict of Int..."}
-                                  </Text>
-                                  <Text
-                                    fontSize="12px"
-                                    fontWeight={500}
-                                    color="#444648"
-                                  >
-                                    {values?.exclusivity?.type || "MetaData"}
-                                  </Text>
-                                </Box>
-                              </Flex>
-                            </label>
-                            {isUploading && files?.id === "exclusivity" ? (
-                              <Spinner color="red" size="md" />
-                            ) : values?.exclusivity ? (
-                              <Flex
-                                border="1px solid #cccccc"
-                                borderRadius="8px"
-                                py="12px"
-                                fontSize="12px"
-                                cursor={isUploading ? "" : "pointer"}
-                                fontWeight={500}
-                                color="#090C02"
-                                px="16px"
-                                onClick={() => {
-                                  isUploading
-                                    ? ""
-                                    : (setFiles({
-                                        ...files,
-                                        exclusivity: "",
-                                      }),
-                                      setValues({
-                                        ...values,
-                                        exclusivity: "",
-                                      }));
-                                }}
-                              >
-                                Delete
-                              </Flex>
-                            ) : (
-                              ""
-                            )}
-                          </Flex>
-
-                          {formSubmitted && !values?.exclusivity && (
-                            <Text mt="8px" fontSize="13px" color="tomato">
-                              Exclusivity & Non-Conflict of Interest Agreement
-                              is required
-                            </Text>
-                          )}
+                          />
                         </Box>
+                      </>
+                    )}
 
-                        <Box
+                    <Flex
+                      justifyContent="space-between"
+                      color={
+                        values?.guarantorForm &&
+                        values?.employmentLetter &&
+                        values?.guarantorForm2 &&
+                        values?.confidentialityAgreement &&
+                        values?.nonSolicitationAgreement &&
+                        values?.exclusivity &&
+                        values?.identificationDocument
+                          ? "#0B841D"
+                          : "#090C02"
+                      }
+                      mt="24px"
+                      align="center"
+                      w="full"
+                      cursor="pointer"
+                      pb={steps?.step5 ? "" : "24px"}
+                      borderBottom={steps?.step5 ? "none" : "1px solid #E4E6E8"}
+                      onClick={() =>
+                        setSteps({
+                          step1: false,
+                          step2: false,
+                          step3: false,
+                          step4: false,
+                          step5: !steps.step5,
+                        })
+                      }
+                    >
+                      <Flex align="center" gap="12px">
+                        <Flex
+                          justifyContent="center"
+                          align="center"
+                          border="1px solid"
+                          rounded="full"
+                          w="23px"
+                          fontWeight={500}
+                          fontSize="14px"
+                          h="23px"
+                        >
+                          <Text>5</Text>
+                        </Flex>
+
+                        <Text fontWeight={500}>Employee Documents</Text>
+                      </Flex>
+
+                      {steps?.step5 ? (
+                        <IoIosArrowDown size="20px" />
+                      ) : (
+                        <IoIosArrowForward size="20px" />
+                      )}
+                    </Flex>
+
+                    {steps?.step5 && (
+                      <>
+                        <Text mt="12px" fontSize="13px" color="#444648">
+                          Please confirm if you have received the following
+                          documents from the employee
+                        </Text>
+                        <Flex
+                          align="center"
+                          gap="12px"
+                          cursor="pointer"
+                          onClick={() =>
+                            setValues({
+                              ...values,
+                              employmentLetter: !values?.employmentLetter,
+                            })
+                          }
                           w="full"
                           mb={4}
-                          pb="24px"
-                          borderBottom="1px solid #E4E6E8"
+                          mt="24px"
                         >
-                          <Flex align="flex-start" gap="8px" w="fit-content">
-                            <Text
-                              mb="8px"
-                              fontSize="12px"
-                              fontWeight={500}
-                              color="#444648"
-                            >
-                              Identification Document
-                            </Text>
-
-                            <span
-                              style={{
-                                color: "tomato",
-                                fontSize: "15px",
-                              }}
-                            >
-                              *
-                            </span>
-                          </Flex>
-
-                          <Input
-                            isDisabled={isUploading}
-                            id="identificationDocument"
-                            onChange={(e) => {
+                          <Checkbox
+                            isChecked={values?.employmentLetter}
+                            onChange={(e) =>
                               setValues({
                                 ...values,
-                                identificationDocument: e.target.files[0]
-                                  ? e.target.files[0]
-                                  : values?.identificationDocument,
-                              });
-                              setFiles({
-                                ...files,
-                                id: "identificationDocument",
-                              });
-                              const formData = new FormData();
-                              formData.append("file", e.target.files[0]);
-                              if (e.target.files[0]) {
-                                {
-                                  uploadMutate({
-                                    fileType: "image",
-                                    entityType: "staff",
-                                    file: formData.get("file"),
-                                  });
-                                }
-                              }
-                            }}
-                            type="file"
-                            display="none"
-                          />
-                          <Flex
-                            border={
-                              formSubmitted && !values?.identificationDocument
-                                ? "1px solid red"
-                                : "1px solid #d4d6d8"
+                                employmentLetter: e.target.checked,
+                              })
                             }
-                            borderRadius="4px"
-                            py="12px"
-                            align="center"
-                            px="16px"
-                            justifyContent="space-between"
-                            w="full"
+                          />
+
+                          <Text color="#444648" fontSize="14px">
+                            Employment Letter
+                          </Text>
+                        </Flex>
+
+                        <Flex
+                          align="center"
+                          gap="12px"
+                          w="full"
+                          mb={4}
+                          cursor="pointer"
+                          onClick={() =>
+                            setValues({
+                              ...values,
+                              guarantorForm: !values?.guarantorForm,
+                            })
+                          }
+                          mt="24px"
+                        >
+                          <Checkbox
+                            isChecked={values?.guarantorForm}
+                            onChange={(e) =>
+                              setValues({
+                                ...values,
+                                guarantorForm: e.target.checked,
+                              })
+                            }
+                          />
+
+                          <Text color="#444648" fontSize="14px">
+                            Guarantor Form 1
+                          </Text>
+                        </Flex>
+
+                        <Flex
+                          align="center"
+                          gap="12px"
+                          w="full"
+                          cursor="pointer"
+                          onClick={() =>
+                            setValues({
+                              ...values,
+                              guarantorForm2: !values?.guarantorForm2,
+                            })
+                          }
+                          mb={4}
+                          mt="24px"
+                        >
+                          <Checkbox
+                            isChecked={values?.guarantorForm2}
+                            onChange={(e) =>
+                              setValues({
+                                ...values,
+                                guarantorForm2: e.target.checked,
+                              })
+                            }
+                          />
+
+                          <Text color="#444648" fontSize="14px">
+                            Guarantor Form 2
+                          </Text>
+                        </Flex>
+
+                        <Flex
+                          align="center"
+                          gap="12px"
+                          w="full"
+                          mb={4}
+                          mt="24px"
+                          cursor="pointer"
+                          onClick={() =>
+                            setValues({
+                              ...values,
+                              confidentialityAgreement:
+                                !values?.confidentialityAgreement,
+                            })
+                          }
+                        >
+                          <Checkbox
+                            isChecked={values?.confidentialityAgreement}
+                            onChange={(e) =>
+                              setValues({
+                                ...values,
+                                confidentialityAgreement: e.target.checked,
+                              })
+                            }
+                          />
+
+                          <Text color="#444648" fontSize="14px">
+                            Confidentiality Agreement
+                          </Text>
+                        </Flex>
+
+                        <Flex
+                          align="center"
+                          gap="12px"
+                          w="full"
+                          mb={4}
+                          mt="24px"
+                          cursor="pointer"
+                          onClick={() =>
+                            setValues({
+                              ...values,
+                              nonSolicitationAgreement:
+                                !values?.nonSolicitationAgreement,
+                            })
+                          }
+                        >
+                          <Checkbox
+                            isChecked={values?.nonSolicitationAgreement}
+                            onChange={(e) =>
+                              setValues({
+                                ...values,
+                                nonSolicitationAgreement: e.target.checked,
+                              })
+                            }
+                          />
+
+                          <Text color="#444648" fontSize="14px">
+                            Non-Solicication & Non-Competition Agreement
+                          </Text>
+                        </Flex>
+
+                        <Flex
+                          align="center"
+                          gap="12px"
+                          w="full"
+                          mb={4}
+                          cursor="pointer"
+                          onClick={() =>
+                            setValues({
+                              ...values,
+                              exclusivity: !values?.exclusivity,
+                            })
+                          }
+                          mt="24px"
+                        >
+                          <Checkbox
+                            isChecked={values?.exclusivity}
+                            onChange={(e) =>
+                              setValues({
+                                ...values,
+                                exclusivity: e.target.checked,
+                              })
+                            }
+                          />
+
+                          <Text color="#444648" fontSize="14px">
+                            Exclusivity & Non-Conflict of Interest Agreement
+                          </Text>
+                        </Flex>
+
+                        <Flex
+                          align="center"
+                          gap="12px"
+                          w="full"
+                          mb={4}
+                          cursor="pointer"
+                          onClick={() =>
+                            setValues({
+                              ...values,
+                              identificationDocument:
+                                !values?.identificationDocument,
+                            })
+                          }
+                          mt="24px"
+                        >
+                          <Checkbox
+                            isChecked={values?.identificationDocument}
+                            onChange={(e) =>
+                              setValues({
+                                ...values,
+                                identificationDocument: e.target.checked,
+                              })
+                            }
+                          />
+
+                          <Text color="#444648" fontSize="14px">
+                            Government Issued ID
+                          </Text>
+                        </Flex>
+                      </>
+                    )}
+
+                    <Flex
+                      justifyContent="space-between"
+                      color={
+                        values?.driverLicenseNumber &&
+                        values?.issueDate &&
+                        values?.expiryDate
+                          ? "#0B841D"
+                          : "#090C02"
+                      }
+                      mt="24px"
+                      align="center"
+                      w="full"
+                      cursor="pointer"
+                      pb={steps?.step6 ? "" : "24px"}
+                      borderBottom={steps?.step6 ? "none" : "1px solid #E4E6E8"}
+                      onClick={() =>
+                        setSteps({
+                          step1: false,
+                          step2: false,
+                          step3: false,
+                          step4: false,
+                          step5: false,
+                          step6: !steps.step4,
+                        })
+                      }
+                    >
+                      <Flex align="center" gap="12px">
+                        <Flex
+                          justifyContent="center"
+                          align="center"
+                          border="1px solid"
+                          rounded="full"
+                          w="23px"
+                          fontWeight={500}
+                          fontSize="14px"
+                          h="23px"
+                        >
+                          <Text>6</Text>
+                        </Flex>
+
+                        <Text fontWeight={500}>
+                          Driver's License (Optional)
+                        </Text>
+                      </Flex>
+
+                      {steps?.step6 ? (
+                        <IoIosArrowDown size="20px" />
+                      ) : (
+                        <IoIosArrowForward size="20px" />
+                      )}
+                    </Flex>
+
+                    {steps?.step6 && (
+                      <>
+                        <Box w="full" mb={4} mt="24px">
+                          <Text
+                            mb="8px"
+                            fontSize="12px"
+                            fontWeight={500}
+                            color="#444648"
                           >
-                            <label htmlFor="identificationDocument">
-                              <Flex
-                                align="center"
-                                gap="10px"
-                                cursor={isUploading ? "" : "pointer"}
-                              >
-                                <Image
-                                  src="/assets/folder.jpg"
-                                  w="24px"
-                                  h="24px"
-                                />
-                                <Box>
-                                  <Text color="#646668">
-                                    {trim(
-                                      values?.identificationDocument?.name
-                                    ) || "Identification Document"}
-                                  </Text>
-                                  <Text
-                                    fontSize="12px"
-                                    fontWeight={500}
-                                    color="#444648"
-                                  >
-                                    {values?.identificationDocument?.type ||
-                                      "MetaData"}
-                                  </Text>
-                                </Box>
-                              </Flex>
-                            </label>
+                            License Number
+                          </Text>
+                          <CustomInput
+                            auth
+                            mb
+                            holder="License Number"
+                            name="driverLicenseNumber"
+                            value={values?.driverLicenseNumber}
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            error={
+                              (formSubmitted || touched?.driverLicenseNumber) &&
+                              errors?.driverLicenseNumber
+                            }
+                          />
+                        </Box>
 
-                            {isUploading &&
-                            files?.id === "identificationDocument" ? (
-                              <Spinner color="red" size="md" />
-                            ) : values?.identificationDocument ? (
-                              <Flex
-                                border="1px solid #cccccc"
-                                borderRadius="8px"
-                                py="12px"
-                                fontSize="12px"
-                                cursor={isUploading ? "" : "pointer"}
-                                fontWeight={500}
-                                color="#090C02"
-                                px="16px"
-                                onClick={() => {
-                                  isUploading
-                                    ? ""
-                                    : (setFiles({
-                                        ...files,
-                                        identificationDocument: "",
-                                      }),
-                                      setValues({
-                                        ...values,
-                                        identificationDocument: "",
-                                      }));
-                                }}
-                              >
-                                Delete
-                              </Flex>
-                            ) : (
-                              ""
-                            )}
-                          </Flex>
+                        <Box w="full" mb={4}>
+                          <Text
+                            mb="8px"
+                            fontSize="12px"
+                            fontWeight={500}
+                            color="#444648"
+                          >
+                            Issue Date
+                          </Text>
+                          <DateTimePicker
+                            selectedDate={values?.issueDate}
+                            onChange={(date) => {
+                              setValues({ ...values, issueDate: date });
+                            }}
+                          />
+                        </Box>
 
-                          {formSubmitted && !values?.identificationDocument && (
-                            <Text mt="8px" fontSize="13px" color="tomato">
-                              Identification Document is required
-                            </Text>
-                          )}
+                        <Box w="full" mb={4}>
+                          <Text
+                            mb="8px"
+                            fontSize="12px"
+                            fontWeight={500}
+                            color="#444648"
+                          >
+                            Expiry Date
+                          </Text>
+                          <DateTimePicker
+                            selectedDate={values?.expiryDate}
+                            onChange={(date) => {
+                              setValues({ ...values, expiryDate: date });
+                            }}
+                          />
                         </Box>
                       </>
                     )}

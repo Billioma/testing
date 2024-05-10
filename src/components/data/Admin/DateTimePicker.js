@@ -3,7 +3,7 @@ import { Box, Button, Flex, Icon, useDisclosure } from "@chakra-ui/react";
 import { CalendarIcon } from "@chakra-ui/icons";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { formatDate } from "../../../utils/helpers";
+import { formatNewDate } from "../../../utils/helpers";
 
 const DateTimePicker = ({
   onChange,
@@ -14,7 +14,7 @@ const DateTimePicker = ({
   const { onOpen } = useDisclosure();
 
   const handleDateChange = (date) => {
-    const temp = formatDate(date, null, hasTime);
+    const temp = formatNewDate(date, null, hasTime);
     onChange(temp);
   };
 
@@ -52,7 +52,7 @@ const DateTimePicker = ({
             fontWeight={400}
             textAlign={"left"}
           >
-            {formatDate(selectedDate, null, hasTime)}
+            {formatNewDate(selectedDate, null, hasTime)}
           </Box>
         }
       />

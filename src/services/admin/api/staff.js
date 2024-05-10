@@ -42,7 +42,35 @@ export const delEmployeeDoc = async (query) => {
   return response.data;
 };
 
+export const approveLeave = async ({ query, body }) => {
+  const response = await axiosInstance.patch(API.APPROVE_LEAVE(query), body);
+  return response.data;
+};
+
+export const rejectLeave = async ({ query, body }) => {
+  const response = await axiosInstance.patch(API.REJECT_LEAVE(query), body);
+  return response.data;
+};
+
 export const getStaff = async (id) => {
   const res = await axiosInstance.get(API.STAFFS + `/${id}`);
+  return res.data;
+};
+
+export const getLeave = async (type, page, limit, query) => {
+  const res = await axiosInstance.get(
+    type
+      ? API.REQUEST_LEAVE +
+          `?page=${page}&limit=${limit}&sort=createdAt,DESC&${
+            query || ""
+          }&filter=status||$eq||${type}`
+      : API.REQUEST_LEAVE +
+          `?page=${page}&limit=${limit}&sort=createdAt,DESC&${query || ""}`
+  );
+  return res.data;
+};
+
+export const getLeaveDetails = async (id) => {
+  const res = await axiosInstance.get(API.REQUEST_LEAVE + `/${id}`);
   return res.data;
 };

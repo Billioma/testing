@@ -1,45 +1,49 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Box, Button, Text } from "@chakra-ui/react";
-import { CSVLink } from "react-csv";
 import { PiExportLight } from "react-icons/pi";
 
-const TipsExport = ({ data }) => {
-  const columns = [
-    { name: "ID", selector: "id" },
-    { name: "Name", selector: "name" },
-    { name: "State", selector: "state" },
-    { name: "Location Type", selector: "locationType" },
-    { name: "Status", selector: "status" },
-    { name: "Date Created", selector: "createdAt" },
-  ];
+const TipsExports = ({ data, action, isExporting, limit }) => {
+  const [exportable, setExportable] = useState(false);
+
+  useEffect(() => {
+    if (data && exportable) {
+      const a = document.createElement("a"),
+        fileName = "Tips Report.csv";
+      document.body.appendChild(a);
+      a.style = "display: none";
+
+      const blob = new Blob([data], { type: "octet/stream" }),
+        url = window.URL.createObjectURL(blob);
+      a.href = url;
+      a.download = fileName;
+      a.click();
+      window.URL.revokeObjectURL(url);
+      setExportable(false);
+    }
+  }, [data, exportable]);
 
   return (
     <Box w="fit-content">
-      {data?.length && (
-        <CSVLink
-          data={data}
-          headers={columns.map((column) => ({
-            label: column.name,
-            key: column.selector,
-          }))}
-          filename={"Locations Report.csv"}
-        >
-          <Button
-            display="flex"
-            bg="#000"
-            _hover={{ bg: "#000" }}
-            borderRadius="8px"
-            _active={{ bg: "#000" }}
-            _focus={{ bg: "#000" }}
-            gap="8px"
-          >
-            <Text>Export Data</Text>
-            <PiExportLight size="20px" />
-          </Button>
-        </CSVLink>
-      )}
+      <Button
+        display="flex"
+        bg="#000"
+        _hover={{ bg: "#000" }}
+        onClick={() => {
+          action();
+          setExportable(true);
+        }}
+        isDisabled={limit > 50000}
+        borderRadius="8px"
+        isLoading={isExporting}
+        _active={{ bg: "#000" }}
+        _focus={{ bg: "#000" }}
+        gap="8px"
+      >
+        <Text>Export Data</Text>
+        <PiExportLight size="20px" />
+      </Button>
     </Box>
   );
 };
 
-export default TipsExport;
+export default TipsExports;

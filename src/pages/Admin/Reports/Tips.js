@@ -9,7 +9,10 @@ import {
   Text,
 } from "@chakra-ui/react";
 import TipsTableLayer from "../../../components/data/Operator/Reports/TipsTableLayer";
-import { useGetReports } from "../../../services/admin/query/reports";
+import {
+  useGetReportExports,
+  useGetReports,
+} from "../../../services/admin/query/reports";
 import TipsExport from "../../../components/data/Admin/Reports/TipsExport";
 import Filter from "../../../components/common/Filter";
 import { adminTipReportOptions } from "../../../components/common/constants";
@@ -78,6 +81,35 @@ const Tips = () => {
     limit,
     query
   );
+  const createdAtFilters = convertedFilters.filter((filterString) => {
+    return filterString.startsWith("filter=createdAt");
+  });
+  const dateQuery =
+    filtArray?.length === 0
+      ? `filter=createdAt||$lte||${year}-12-31T23:59:59`
+      : filtArray?.filter((item) => item?.gte)?.length > 0 &&
+        filtArray?.filter((item) => item?.lte)?.length === 0
+      ? `${createdAtFilters?.join(
+          "&"
+        )}&filter=createdAt||$lte||${year}-12-31T23:59:59`
+      : filtArray?.filter((item) => item?.gte)?.length === 0 &&
+        filtArray?.filter((item) => item?.lte)?.length === 0
+      ? `${createdAtFilters?.join(
+          "&"
+        )}&filter=createdAt||$lte||${year}-12-31T23:59:59`
+      : filtArray?.filter((item) => item?.gte)?.length === 0 &&
+        filtArray?.filter((item) => item?.lte)?.length > 0
+      ? `${createdAtFilters?.join("&")}`
+      : filtArray?.filter((item) => item?.gte)?.length &&
+        filtArray?.filter((item) => item?.lte)?.length
+      ? `${createdAtFilters?.join("&")}`
+      : createdAtFilters?.join("&");
+
+  const {
+    data: dataExports,
+    isLoading: isExporting,
+    mutate: exporMutate,
+  } = useGetReportExports();
 
   useEffect(() => {
     refetch();
@@ -168,7 +200,16 @@ const Tips = () => {
           gap
           main={
             <>
-              {data?.data?.length ? <TipsExport data={data?.data} /> : ""}
+              {!isLoading ? (
+                <TipsExport
+                  limit={data?.total}
+                  action={() => exporMutate({ type: "tips", query: dateQuery })}
+                  isExporting={isExporting}
+                  data={dataExports}
+                />
+              ) : (
+                ""
+              )}
               <Flex
                 justifyContent="center"
                 align="center"

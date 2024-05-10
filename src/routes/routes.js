@@ -179,8 +179,10 @@ const {
 
   ADMIN_STAFF_PROFILE,
   ADMIN_LOAN,
+  ADMIN_LOAN_DETAILS,
   ADMIN_LEAVE_MGT,
   ADMIN_MEDICAL_ASSISTANCE,
+  ADMIN_MEDICAL_ASSISTANCE_DETAILS,
   ADMIN_STAFF_SCHEDULE,
 } = PRIVATE_PATHS;
 
@@ -959,12 +961,24 @@ const AdminLoan = WithSuspense(
   lazy(() => import("../pages/Admin/Loans/Loans"))
 );
 
+const AdminLoanDetails = WithSuspense(
+  lazy(() => import("../pages/Admin/Loans/LoanDetails"))
+);
+
 const AdminLeaveMgt = WithSuspense(
   lazy(() => import("../pages/Admin/LeaveMgt/LeaveMgt"))
 );
 
+const AdminLeaveMgtDetails = WithSuspense(
+  lazy(() => import("../pages/Admin/LeaveMgt/LeaveMgtDetails"))
+);
+
 const AdminMedicalAssistance = WithSuspense(
   lazy(() => import("../pages/Admin/MedicalAssistance/MedicalAssistance"))
+);
+
+const AdminMedicalAssistanceDetails = WithSuspense(
+  lazy(() => import("../pages/Admin/MedicalAssistance/MedDetails"))
 );
 
 const AdminStaffSchedule = WithSuspense(
@@ -1332,13 +1346,28 @@ export const PRIVATE_ROUTES = [
   },
 
   {
+    path: PRIVATE_PATHS.ADMIN_LEAVE_MGT_DEETAILS,
+    element: <AdminLeaveMgtDetails />,
+  },
+
+  {
     path: ADMIN_LOAN,
     element: <AdminLoan />,
   },
 
   {
+    path: ADMIN_LOAN_DETAILS,
+    element: <AdminLoanDetails />,
+  },
+
+  {
     path: ADMIN_MEDICAL_ASSISTANCE,
     element: <AdminMedicalAssistance />,
+  },
+
+  {
+    path: ADMIN_MEDICAL_ASSISTANCE_DETAILS,
+    element: <AdminMedicalAssistanceDetails />,
   },
 
   {

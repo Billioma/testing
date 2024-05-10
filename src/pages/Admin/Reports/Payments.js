@@ -13,7 +13,10 @@ import {
   operatorPayGrid,
   paymentsOptions,
 } from "../../../components/common/constants";
-import { useGetReports } from "../../../services/admin/query/reports";
+import {
+  useGetReportExports,
+  useGetReports,
+} from "../../../services/admin/query/reports";
 import PayExport from "../../../components/data/Admin/Reports/PayExport";
 import Filter from "../../../components/common/Filter";
 import { formatFilterDate } from "../../../utils/helpers";
@@ -63,6 +66,7 @@ const Payments = () => {
       : convertedFilters?.join("&");
 
   const [isRefetch, setIsRefetch] = useState(false);
+
   const { data, isLoading, refetch } = useGetReports(
     {
       refetchOnWindowFocus: true,
@@ -81,6 +85,36 @@ const Payments = () => {
     limit,
     query
   );
+
+  const createdAtFilters = convertedFilters.filter((filterString) => {
+    return filterString.startsWith("filter=createdAt");
+  });
+  const dateQuery =
+    filtArray?.length === 0
+      ? `filter=createdAt||$lte||${year}-12-31T23:59:59`
+      : filtArray?.filter((item) => item?.gte)?.length > 0 &&
+        filtArray?.filter((item) => item?.lte)?.length === 0
+      ? `${createdAtFilters?.join(
+          "&"
+        )}&filter=createdAt||$lte||${year}-12-31T23:59:59`
+      : filtArray?.filter((item) => item?.gte)?.length === 0 &&
+        filtArray?.filter((item) => item?.lte)?.length === 0
+      ? `${createdAtFilters?.join(
+          "&"
+        )}&filter=createdAt||$lte||${year}-12-31T23:59:59`
+      : filtArray?.filter((item) => item?.gte)?.length === 0 &&
+        filtArray?.filter((item) => item?.lte)?.length > 0
+      ? `${createdAtFilters?.join("&")}`
+      : filtArray?.filter((item) => item?.gte)?.length &&
+        filtArray?.filter((item) => item?.lte)?.length
+      ? `${createdAtFilters?.join("&")}`
+      : createdAtFilters?.join("&");
+
+  const {
+    data: dataExports,
+    isLoading: isExporting,
+    mutate: exporMutate,
+  } = useGetReportExports();
 
   useEffect(() => {
     refetch();
@@ -179,7 +213,7 @@ const Payments = () => {
                           ? Number(
                               data?.aggregate?.totalAmountPaid
                             )?.toLocaleString()
-                          : i === 2 && data?.count?.toLocaleString()}
+                          : i === 2 && data?.total?.toLocaleString()}
                       </Text>
                     </Box>
                   </Flex>
@@ -203,7 +237,18 @@ const Payments = () => {
           gap
           main={
             <>
-              {data?.data?.length ? <PayExport data={data?.data} /> : ""}
+              {!isLoading ? (
+                <PayExport
+                  limit={data?.total}
+                  action={() =>
+                    exporMutate({ type: "payments", query: dateQuery })
+                  }
+                  isExporting={isExporting}
+                  data={dataExports}
+                />
+              ) : (
+                ""
+              )}
               <Flex
                 justifyContent="center"
                 align="center"

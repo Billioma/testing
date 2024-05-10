@@ -10,7 +10,10 @@ import {
 } from "@chakra-ui/react";
 import LogsTableLayer from "../../../components/data/Admin/Reports/LogsTableLayer";
 import LogsExport from "../../../components/data/Admin/Reports/LogsExport";
-import { useGetReports } from "../../../services/admin/query/reports";
+import {
+  useGetReportExports,
+  useGetReports,
+} from "../../../services/admin/query/reports";
 import Filter from "../../../components/common/Filter";
 import { logsReportOptions } from "../../../components/common/constants";
 import { formatFilterDate } from "../../../utils/helpers";
@@ -38,6 +41,10 @@ const Logs = () => {
         }"`;
   });
 
+  const createdAtFilters = convertedFilters.filter((filterString) => {
+    return filterString.startsWith("filter=createdAt");
+  });
+
   const query =
     filtArray?.length === 0
       ? `filter=createdAt||$lte||${year}-12-31T23:59:59`
@@ -59,7 +66,29 @@ const Logs = () => {
       ? `${convertedFilters?.join("&")}`
       : convertedFilters?.join("&");
 
+  const dateQuery =
+    filtArray?.length === 0
+      ? `filter=createdAt||$lte||${year}-12-31T23:59:59`
+      : filtArray?.filter((item) => item?.gte)?.length > 0 &&
+        filtArray?.filter((item) => item?.lte)?.length === 0
+      ? `${createdAtFilters?.join(
+          "&"
+        )}&filter=createdAt||$lte||${year}-12-31T23:59:59`
+      : filtArray?.filter((item) => item?.gte)?.length === 0 &&
+        filtArray?.filter((item) => item?.lte)?.length === 0
+      ? `${createdAtFilters?.join(
+          "&"
+        )}&filter=createdAt||$lte||${year}-12-31T23:59:59`
+      : filtArray?.filter((item) => item?.gte)?.length === 0 &&
+        filtArray?.filter((item) => item?.lte)?.length > 0
+      ? `${createdAtFilters?.join("&")}`
+      : filtArray?.filter((item) => item?.gte)?.length &&
+        filtArray?.filter((item) => item?.lte)?.length
+      ? `${createdAtFilters?.join("&")}`
+      : createdAtFilters?.join("&");
+
   const [isRefetch, setIsRefetch] = useState(false);
+
   const { data, isLoading, refetch } = useGetReports(
     {
       refetchOnWindowFocus: true,
@@ -78,6 +107,12 @@ const Logs = () => {
     limit,
     query
   );
+
+  const {
+    data: dataExports,
+    isLoading: isExporting,
+    mutate: exporMutate,
+  } = useGetReportExports();
 
   useEffect(() => {
     refetch();
@@ -168,7 +203,18 @@ const Logs = () => {
           gap
           main={
             <>
-              {data?.data?.length ? <LogsExport data={data?.data} /> : ""}
+              {!isLoading ? (
+                <LogsExport
+                  limit={data?.total}
+                  action={() =>
+                    exporMutate({ type: "parking", query: dateQuery })
+                  }
+                  isExporting={isExporting}
+                  data={dataExports}
+                />
+              ) : (
+                ""
+              )}
               <Flex
                 justifyContent="center"
                 align="center"

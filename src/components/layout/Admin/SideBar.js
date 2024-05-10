@@ -15,7 +15,6 @@ const SideBar = ({ show, setShow }) => {
   const navigate = useNavigate();
 
   const { data: userData, isLoading: isUser } = useGetProfile();
-  const staff = sessionStorage.getItem("staff");
   const [currentDisplay, setCurrentDisplay] = useState(false);
 
   const handleUpClick = () => {
@@ -50,39 +49,101 @@ const SideBar = ({ show, setShow }) => {
     >
       <Box flex="1">
         <Box
-          mx="-16px"
-          mt="-32px"
-          pt="32px"
           bg="#fff"
-          zIndex={33}
+          mt="-24px"
+          pt="24px"
+          mx="-16px"
+          px="16px"
           pos="sticky"
-          display={show ? "block" : "none"}
-          top="-32px"
+          top="-24px"
+          zIndex={33}
         >
-          <Text
-            fontSize="28px"
-            lineHeight="120%"
-            textAlign="center"
-            fontWeight={900}
-            fontFamily="Cooper"
-          >
-            <span style={{ color: "red" }}>Parkin</span>
-            Space
-          </Text>
-          <Text textAlign="center" fontSize="15px" mt="12px" color="#444648">
-            Admin
-          </Text>
+          <Box bg="#fff" display={show ? "block" : "none"}>
+            <Flex
+              pt="18px"
+              pb="14px"
+              px="16px"
+              w="full"
+              justifyContent="space-between"
+              border="1px solid #EE383A"
+              borderRadius="4px"
+            >
+              <Flex align="center" gap="12px">
+                <Image
+                  w="32px"
+                  h="32px"
+                  objectFit="cover"
+                  rounded="full"
+                  src={
+                    isUser
+                      ? "/assets/pfp.svg"
+                      : !userData?.avatar === null
+                      ? userData?.avatar
+                      : "/assets/pfp.svg"
+                  }
+                />
+                {currentDisplay ? (
+                  <Box>
+                    <Text
+                      fontSize="17px"
+                      lineHeight="120%"
+                      textAlign="center"
+                      fontWeight={900}
+                      fontFamily="Cooper"
+                      color="#444648"
+                    >
+                      Managr
+                    </Text>
+                    <Text fontSize="13px" color="#444648">
+                      Admin
+                    </Text>
+                  </Box>
+                ) : (
+                  <Box>
+                    <Text
+                      fontSize="17px"
+                      lineHeight="120%"
+                      textAlign="center"
+                      fontWeight={900}
+                      fontFamily="Cooper"
+                    >
+                      <span style={{ color: "red" }}>Parkin</span>
+                      Space
+                    </Text>
+                    <Text fontSize="13px" color="#444648">
+                      Admin
+                    </Text>
+                  </Box>
+                )}
+              </Flex>
 
-          <Flex
-            display={show ? "flex" : "none"}
-            pr="16px"
-            pb="10px"
-            justifyContent="flex-end"
-            w="full"
-          >
-            <FiChevronsLeft cursor="pointer" onClick={() => setShow(false)} />
-          </Flex>
+              <Box>
+                <IoIosArrowUp
+                  color={!currentDisplay ? "#EE383A" : ""}
+                  cursor="pointer"
+                  size="15px"
+                  onClick={handleUpClick}
+                />
+                <IoIosArrowDown
+                  cursor="pointer"
+                  color={currentDisplay ? "#EE383A" : ""}
+                  size="15px"
+                  onClick={handleDownClick}
+                />
+              </Box>
+            </Flex>
+          </Box>
         </Box>
+
+        <Flex
+          display={show ? "flex" : "none"}
+          pb="10px"
+          mt="15px"
+          justifyContent="flex-end"
+          w="full"
+        >
+          <FiChevronsLeft cursor="pointer" onClick={() => setShow(false)} />
+        </Flex>
 
         <Flex
           pb="20px"

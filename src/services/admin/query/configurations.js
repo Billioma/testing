@@ -36,12 +36,38 @@ import {
   getAdminFaq,
   getAdminBank,
   getAdminBanks,
+  getDepts,
+  getJobs,
 } from "../api/configurations";
 
 export const useGetRoles = (options = {}, page = 1, limit = 25, query) => {
   const { data, isLoading, refetch } = useQuery(
     ["ADMIN_GET_CONFIG_ROLES", page, limit, query],
     () => getRoles(page, limit, query),
+    {
+      ...options,
+    }
+  );
+
+  return { isLoading, data, refetch };
+};
+
+export const useGetJobs = (options = {}, page = 1, limit = 25, query) => {
+  const { data, isLoading, refetch } = useQuery(
+    ["getJobs", page, limit, query],
+    () => getJobs(page, limit, query),
+    {
+      ...options,
+    }
+  );
+
+  return { isLoading, data, refetch };
+};
+
+export const useGetDepts = (options = {}, page = 1, limit = 25, query) => {
+  const { data, isLoading, refetch } = useQuery(
+    ["getDepts", page, limit, query],
+    () => getDepts(page, limit, query),
     {
       ...options,
     }

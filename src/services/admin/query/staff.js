@@ -2,12 +2,16 @@ import { useMutation, useQuery } from "react-query";
 import {
   addStaff,
   addStaffDoc,
+  approveLeave,
   delEmployeeDoc,
   deleteStaff,
   editEmployeeDoc,
   editStaff,
+  getLeave,
+  getLeaveDetails,
   getStaff,
   getStaffs,
+  rejectLeave,
 } from "../api/staff";
 
 export const useAddStaff = (options = {}) => {
@@ -79,6 +83,24 @@ export const useDeleteStaff = (options = {}) => {
   return { isLoading, mutate };
 };
 
+export const useApproveLeave = (options = {}) => {
+  const { isLoading, mutate } = useMutation(approveLeave, {
+    mutationKey: ["approveLeave"],
+    ...options,
+  });
+
+  return { isLoading, mutate };
+};
+
+export const useRejectLeave = (options = {}) => {
+  const { isLoading, mutate } = useMutation(rejectLeave, {
+    mutationKey: ["rejectLeave"],
+    ...options,
+  });
+
+  return { isLoading, mutate };
+};
+
 export const useDelEmployeeDoc = (options = {}) => {
   const { isLoading, data, mutate } = useMutation(delEmployeeDoc, {
     mutationKey: ["delEmployeeDoc"],
@@ -86,4 +108,34 @@ export const useDelEmployeeDoc = (options = {}) => {
   });
 
   return { isLoading, data, mutate };
+};
+
+export const useGetLeaveRequest = (
+  options = {},
+  type = "",
+  page = 1,
+  limit = 25,
+  query
+) => {
+  const { data, isLoading, refetch } = useQuery(
+    ["getLeave", type, page, limit, query],
+    () => getLeave(type, page, limit, query),
+    {
+      ...options,
+    }
+  );
+
+  return { data, isLoading, refetch };
+};
+
+export const useGetLeave = (id = "", options = {}) => {
+  const { data, isLoading, refetch } = useQuery(
+    ["getLeaveDetails", id],
+    () => getLeaveDetails(id),
+    {
+      ...options,
+    }
+  );
+
+  return { isLoading, data, refetch };
 };

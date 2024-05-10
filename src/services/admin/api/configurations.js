@@ -10,6 +10,24 @@ export const getRoles = async (page, limit, query) => {
   return response.data;
 };
 
+export const getJobs = async (page, limit, query) => {
+  const response = await axiosInstance.get(
+    `${API.ADMIN_JOBS}?page=${page}&limit=${limit}&sort=createdAt,DESC&${
+      query || ""
+    }`
+  );
+  return response.data;
+};
+
+export const getDepts = async (page, limit, query) => {
+  const response = await axiosInstance.get(
+    `${API.ADMIN_DEPTS}?page=${page}&limit=${limit}&sort=createdAt,DESC&${
+      query || ""
+    }`
+  );
+  return response.data;
+};
+
 export const getAdminRoles = async (query) => {
   const res = await axiosInstance.get(
     API.ADMIN_ROLES_LIST(query.filterString, query.limit, query.page)
