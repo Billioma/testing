@@ -426,7 +426,7 @@ const SideDrawer = ({ isOpen, onClose }) => {
                     align="center"
                     color="#646668"
                   >
-                    <LogoutIcon fill="#646668" /> <Text>Log Out</Text>
+                    <LogoutIcon /> <Text>Log Out</Text>
                   </Flex>
                 )}
               </Flex>

@@ -98,6 +98,7 @@ const SideBar = () => {
           mt="60px"
           cursor="pointer"
           onClick={action}
+          w="fit-content"
           align="center"
           gap="8px"
           px="10px"
@@ -108,8 +109,8 @@ const SideBar = () => {
               <Spinner size="sm" /> <Text>Logging Out</Text>
             </Flex>
           ) : (
-            <Flex gap="5px" align="center" color="#fff">
-              <LogoutIcon fill="#fff" /> <Text>Log Out</Text>
+            <Flex gap="12px" align="center" color="#fff">
+              <Text>Log Out</Text> <LogoutIcon />
             </Flex>
           )}
         </Flex>

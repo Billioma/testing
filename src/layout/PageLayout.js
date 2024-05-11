@@ -15,6 +15,7 @@ export const AuthLayout = ({ children }) => {
       h="100vh"
       px={isMobile ? "20px" : "37px"}
       py={isMobile ? "0" : "40px"}
+      pb="40px"
     >
       <Box overflowX="hidden" h="full" className="no_scroller">
         <Box

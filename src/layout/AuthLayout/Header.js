@@ -27,6 +27,9 @@ const Header = () => {
       case locationRoute.includes("leave"):
         return setTitle("Leave");
 
+      case locationRoute.includes("profile"):
+        return setTitle("Profile");
+
       default:
         return setTitle("");
     }
