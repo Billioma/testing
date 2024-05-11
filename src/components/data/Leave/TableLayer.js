@@ -14,7 +14,7 @@ import {
   Button,
 } from "@chakra-ui/react";
 import { LeaveStatus } from "../../common/constants";
-import TableLoader from "../../Loaders/TableLoader";
+import TableLoader from "../../loader/TableLoader";
 import { formatDate } from "../../../utils/helper";
 import Pagination from "../../common/Pagination";
 import { useNavigate } from "react-router-dom";
