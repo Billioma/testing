@@ -30,6 +30,7 @@ export const Layout = ({ label, data, email }) => {
 
 const Profile = () => {
   const { data: userData } = useGetUser();
+  console.log(userData);
   return (
     <Box>
       <Flex align="center" gap="18px">
@@ -46,7 +47,7 @@ const Profile = () => {
               objectFit="contain"
             />
             <Text fontSize="12px" fontWeight={500}>
-              {userData?.jobTitle || "N/A"}
+              {userData?.jobTitle?.name || "N/A"}
             </Text>
           </Flex>
 
@@ -128,7 +129,7 @@ const Profile = () => {
             >
               <Flex rounded="full" bg="#D9D9D9" w="16px" h="16px"></Flex>
               <Text fontSize="14px" color="#090c02">
-                Adenike Ajibola
+                {userData?.department?.lineManager?.fullName}
               </Text>
             </Flex>
           </Flex>
