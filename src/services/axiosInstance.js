@@ -18,7 +18,8 @@ export const uploadInstance = axios.create({
 });
 
 const onRequest = (request) => {
-  const user = JSON.parse(localStorage.getItem("managr"));
+  const staff = JSON.parse(localStorage.getItem("staff"));
+  const admin = JSON.parse(localStorage.getItem("admin"));
   const new_token = JSON.parse(sessionStorage.getItem("new_token"));
   const id = JSON.parse(sessionStorage.getItem("id"));
   if (new_token) {
@@ -26,7 +27,10 @@ const onRequest = (request) => {
   } else if (id) {
     request.headers.Authorization = `Bearer ${id?.access_token}` || "";
   } else {
-    request.headers.Authorization = `Bearer ${user?.access_token}` || "";
+    request.headers.Authorization =
+      `Bearer ${
+        (location.pathname.includes("admin/") ? admin : staff)?.access_token
+      }` || "";
   }
   return request;
 };

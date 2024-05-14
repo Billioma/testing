@@ -1,6 +1,10 @@
 import React from "react";
 import { useRoutes, useLocation } from "react-router-dom";
-import { AuthLayout, NonAuthLayout } from "../layout/PageLayout";
+import { AuthLayout, NonAuthLayout } from "../layout/Staff/PageLayout";
+import {
+  AuthLayout as AdminAuthLayout,
+  NonAuthLayout as AdminNonAuthLayout,
+} from "../layout/Admin/PageLayout";
 import { PRIVATE_ROUTES, PUBLIC_ROUTES } from "./routes";
 
 const PublicRouteWrapper = () => {
@@ -15,9 +19,20 @@ const PrivateRouteWrapper = () => {
 
 const Pages = () => {
   const location = useLocation();
-  const user = localStorage.getItem("managr");
+  const staff = localStorage.getItem("staff");
+  const admin = localStorage.getItem("admin");
 
-  return user ? (
+  return location.pathname.includes("admin") ? (
+    admin ? (
+      <AdminAuthLayout>
+        <PrivateRouteWrapper key={location.pathname} />
+      </AdminAuthLayout>
+    ) : (
+      <AdminNonAuthLayout>
+        <PublicRouteWrapper key={location.pathname} />
+      </AdminNonAuthLayout>
+    )
+  ) : staff ? (
     <AuthLayout>
       <PrivateRouteWrapper key={location.pathname} />
     </AuthLayout>

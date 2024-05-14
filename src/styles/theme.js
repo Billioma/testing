@@ -1,10 +1,21 @@
 import { extendTheme } from "@chakra-ui/react";
 
+const breakpoints = {
+  base: "0px",
+  sm: "320px",
+  md: "768px",
+  lg: "960px",
+  xl: "1200px",
+  "2xl": "1536px",
+  "3xl": "1636px",
+};
+
 export const customTheme = extendTheme({
   fonts: {
     heading: `Poppins`,
     body: `Poppins`,
   },
+  breakpoints,
   components: {
     Input: {
       defaultProps: {
@@ -148,6 +159,95 @@ export const customTheme = extendTheme({
           _active: {
             bgColor: "purpleColor",
             color: "#fff",
+          },
+        },
+        adminPrimary: {
+          border: "none",
+          bgColor: "#0D0718",
+          borderRadius: "4px",
+          color: "#fff",
+          fontSize: "14px",
+          fontWeight: "500",
+          height: "45px",
+          _focus: {
+            color: "#fff",
+          },
+          _active: {
+            color: "#fff",
+          },
+          _hover: {
+            _disabled: {
+              background: "#0D0718",
+              border: "1px solid #7B47CC",
+            },
+          },
+        },
+
+        adminDanger: {
+          bgColor: "#fff",
+          borderRadius: "4px",
+          color: "#A11212",
+          fontSize: "14px",
+          fontWeight: "500",
+          borderColor: "#A11212",
+          borderWidth: "1px",
+          height: "45px",
+          _focus: {
+            color: "#fff",
+          },
+          _active: {
+            color: "#fff",
+          },
+          _hover: {
+            _disabled: {
+              background: "#fff",
+              border: "1px solid #A11212",
+            },
+          },
+        },
+
+        adminSecondary: {
+          bgColor: "#fff",
+          borderRadius: "4px",
+          color: "#0D0718",
+          fontSize: "14px",
+          fontWeight: "500",
+          borderColor: "#0D0718",
+          borderWidth: "1px",
+          height: "45px",
+          _focus: {
+            color: "#0D0718",
+          },
+          _active: {
+            color: "#0D0718",
+          },
+          _hover: {
+            _disabled: {
+              background: "#0D0718",
+              border: "1px solid #7B47CC",
+            },
+          },
+        },
+
+        adminAlt: {
+          border: "none",
+          bgColor: "#1BC5BD",
+          borderRadius: "4px",
+          color: "#fff",
+          fontSize: "14px",
+          fontWeight: "500",
+          height: "45px",
+          _focus: {
+            color: "#fff",
+          },
+          _active: {
+            color: "#fff",
+          },
+          _hover: {
+            _disabled: {
+              background: "#1BC5BD",
+              border: "1px solid #7B47CC",
+            },
           },
         },
       },
