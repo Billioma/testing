@@ -472,14 +472,14 @@ const EmployeeDocuments = ({ refetch, data }) => {
                   styles={customStyles}
                   options={submitOptions}
                   placeholder="Unsubmitted"
-                  value={newValues?.guarantorForm}
+                  value={newValues?.guarantorForm2}
                   components={{
                     IndicatorSeparator: () => (
                       <div style={{ display: "none" }}></div>
                     ),
                     DropdownIndicator: () => (
                       <div>
-                        {isUpdating && ids === "guarantorForm" ? (
+                        {isUpdating && ids === "guarantorForm2" ? (
                           <Spinner size="sm" />
                         ) : (
                           <IoIosArrowDown size="15px" color="#646668" />
@@ -490,12 +490,12 @@ const EmployeeDocuments = ({ refetch, data }) => {
                   onChange={(selectedOption) => {
                     setNewValues({
                       ...newValues,
-                      guarantorForm: selectedOption,
+                      guarantorForm2: selectedOption,
                     });
-                    setIds("guarantorForm");
+                    setIds("guarantorForm2");
                     handleSubmit(
                       selectedOption?.value,
-                      mainFiles?.guarantorForm
+                      mainFiles?.guarantorForm2
                     );
                   }}
                 />

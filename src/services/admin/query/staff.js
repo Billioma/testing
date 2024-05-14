@@ -1,5 +1,6 @@
 import { useMutation, useQuery } from "react-query";
 import {
+  activateStaff,
   addStaff,
   addStaffDoc,
   approveLeave,
@@ -60,6 +61,15 @@ export const useGetStaff = (id = "", options = {}) => {
 export const useEditStaff = (options = {}) => {
   const { isLoading, data, mutate } = useMutation(editStaff, {
     mutationKey: ["EDIT_STAFF"],
+    ...options,
+  });
+
+  return { isLoading, data, mutate };
+};
+
+export const useActivateStaff = (options = {}) => {
+  const { isLoading, data, mutate } = useMutation(activateStaff, {
+    mutationKey: ["activateStaff"],
     ...options,
   });
 

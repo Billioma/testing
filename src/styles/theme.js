@@ -12,8 +12,8 @@ const breakpoints = {
 
 export const customTheme = extendTheme({
   fonts: {
-    heading: `Poppins`,
-    body: `Poppins`,
+    heading: `Cooper`,
+    body: `Sailec`,
   },
   breakpoints,
   components: {

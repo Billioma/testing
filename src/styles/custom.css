@@ -127,3 +127,7 @@
 .react-datepicker-wrapper {
   width: 100%;
 }
+
+.react-switch-bg {
+  border: 1px solid #949698 !important;
+}

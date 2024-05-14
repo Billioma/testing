@@ -290,6 +290,7 @@ export const REQUEST_LEAVE = "admin/leave-request";
 export const STAFF_LIST = (filterString = "", limit = "", page = "") =>
   `admin/staff?${filterString}&limit=${limit}&page=${page}&sort=createdAt,DESC`;
 export const STAFF = (id = "") => `admin/staff/${id}`;
+export const ACTIVATE_STAFF = (id = "") => `admin/staff/activate/${id}`;
 export const UPDATE_EMPLOYEE_DOC = (id = "") =>
   `admin/employee-documents/${id}`;
 export const APPROVE_LICENSE = (id = "") =>

@@ -4,7 +4,11 @@ import GoBackTab from "../../../components/data/Admin/GoBackTab";
 import Switch from "react-switch";
 import { staffDetailsTab } from "../../../components/common/constants";
 import GeneralInfo from "../../../components/data/Admin/StaffProfile/GeneralInfo";
-import { useEditStaff, useGetStaff } from "../../../services/admin/query/staff";
+import {
+  useActivateStaff,
+  useEditStaff,
+  useGetStaff,
+} from "../../../services/admin/query/staff";
 import { useParams } from "react-router-dom";
 import useCustomToast from "../../../utils/notifications";
 import EmployeeDocuments from "../../../components/data/Admin/StaffProfile/EmployeeDocuments";
@@ -31,6 +35,18 @@ const StaffProfileDetails = () => {
   const { mutate: updateMutate } = useEditStaff({
     onSuccess: () => {
       successToast("Status updated successfully!");
+      refetch();
+    },
+    onError: (error) => {
+      errorToast(
+        error?.response?.data?.message || error?.message || "An Error occurred"
+      );
+    },
+  });
+
+  const { mutate: activateMutate } = useActivateStaff({
+    onSuccess: () => {
+      successToast("Status activated successfully!");
       refetch();
     },
     onError: (error) => {
@@ -83,15 +99,17 @@ const StaffProfileDetails = () => {
                 </Box>
                 <Switch
                   checked={checked}
-                  onChange={(e) => {
-                    setChecked(!checked);
-                    updateMutate({
-                      query: id,
-                      body: {
-                        status: e ? "ACTIVE" : "INACTIVE",
-                      },
-                    });
-                  }}
+                  onChange={(e) =>
+                    checked
+                      ? (setChecked(!checked),
+                        updateMutate({
+                          query: id,
+                          body: {
+                            status: e ? "ACTIVE" : "INACTIVE",
+                          },
+                        }))
+                      : activateMutate(id)
+                  }
                   handleDiameter={15}
                   offColor="#fff"
                   onColor="#0B841D"

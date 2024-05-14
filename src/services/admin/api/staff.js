@@ -24,6 +24,11 @@ export const editStaff = async ({ query, body }) => {
   return response.data;
 };
 
+export const activateStaff = async (query) => {
+  const response = await axiosInstance.patch(API.ACTIVATE_STAFF(query));
+  return response.data;
+};
+
 export const editEmployeeDoc = async ({ query, body }) => {
   const response = await axiosInstance.patch(
     API.UPDATE_EMPLOYEE_DOC(query),
