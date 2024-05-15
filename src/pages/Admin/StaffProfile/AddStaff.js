@@ -1319,7 +1319,8 @@ const AddStaff = () => {
                       color={
                         values?.driverLicenseNumber &&
                         values?.issueDate &&
-                        values?.expiryDate
+                        values?.expiryDate &&
+                        values?.expiryDate > values?.issueDate
                           ? "#0B841D"
                           : "#090C02"
                       }
@@ -1425,6 +1426,14 @@ const AddStaff = () => {
                             }}
                           />
                         </Box>
+
+                        {values?.issueDate &&
+                          values?.expiryDate &&
+                          values?.expiryDate < values?.issueDate && (
+                            <Text mt="8px" fontSize="14px" color="red">
+                              Expiry Date is earlier than Issue Date
+                            </Text>
+                          )}
                       </>
                     )}
 
@@ -1440,6 +1449,7 @@ const AddStaff = () => {
                       </Button>
                       <Button
                         variant="adminPrimary"
+                        isDisabled={values?.expiryDate < values?.issueDate}
                         w="55%"
                         isLoading={isLoading}
                         type="submit"

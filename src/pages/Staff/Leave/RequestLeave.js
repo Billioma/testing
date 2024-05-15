@@ -138,7 +138,7 @@ const RequestLeave = () => {
               p="10px"
             >
               <Image
-                src="../assets/calendar.svg"
+                src="/assets/calendar.svg"
                 w="24px"
                 h="24px"
                 objectFit={"contain"}
@@ -163,7 +163,7 @@ const RequestLeave = () => {
               p="10px"
             >
               <Image
-                src="../assets/calendar.svg"
+                src="/assets/calendar.svg"
                 w="24px"
                 h="24px"
                 objectFit={"contain"}

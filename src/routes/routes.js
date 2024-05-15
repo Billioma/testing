@@ -28,6 +28,8 @@ const {
   REQUEST_LEAVE,
   LEAVE_DETAILS,
   MEDICAL,
+  REQUEST_MEDICAL,
+  MEDICAL_DETAILS,
 
   // ADMIN
 
@@ -78,6 +80,12 @@ const LeaveDetails = WithSuspense(
 );
 const Medical = WithSuspense(
   lazy(() => import("../pages/Staff/Medical/Medical"))
+);
+const RequestMedical = WithSuspense(
+  lazy(() => import("../pages/Staff/Medical/RequestMedical"))
+);
+const MedicalDetails = WithSuspense(
+  lazy(() => import("../pages/Staff/Medical/MedicalDetails"))
 );
 
 // ADMIN PAGES
@@ -184,6 +192,8 @@ export const PRIVATE_ROUTES = [
   { path: MEDICAL, element: <Medical /> },
   { path: REQUEST_LEAVE, element: <RequestLeave /> },
   { path: LEAVE_DETAILS, element: <LeaveDetails /> },
+  { path: REQUEST_MEDICAL, element: <RequestMedical /> },
+  { path: MEDICAL_DETAILS, element: <MedicalDetails /> },
 
   // ADMIN
   {
@@ -257,7 +267,7 @@ export const PRIVATE_ROUTES = [
         to={
           location.pathname.includes("admin")
             ? "/admin/dashboard"
-            : "/admin/dashboard"
+            : "/staff/dashboard"
         }
         replace
       />

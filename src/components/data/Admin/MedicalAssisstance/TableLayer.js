@@ -1,11 +1,11 @@
-import React, { useState } from "react";
+import React from "react";
 import { Box, Flex, Image, Td, Text, Tr } from "@chakra-ui/react";
 import TableFormat from "../../../common/TableFormat";
 
 import { LeaveStatus } from "../../../common/constants";
 import { useNavigate } from "react-router-dom";
 import TableLoader from "../../../loader/TableLoader";
-import { formatDateNewTime } from "../../../../utils/helpers";
+import { formatDate } from "../../../../utils/helpers";
 
 const TableLayer = ({
   type,
@@ -70,7 +70,7 @@ const TableLayer = ({
                 <Td>{item?.staff?.id}</Td>
                 <Td>{item?.staff?.fullName}</Td>
                 <Td textAlign="center">₦ {(20000).toLocaleString()}</Td>
-                <Td textAlign="center">{formatDateNewTime(item?.startDate)}</Td>
+                <Td textAlign="center">{formatDate(item?.startDate)}</Td>
                 <Td textAlign="center">Adenike AJibola</Td>
                 <Td display={type === "" ? "" : "none"}>
                   <Flex align="center" w="full" justifyContent="center">

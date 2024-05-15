@@ -178,7 +178,7 @@ export const general = [
   {
     id: 5,
     name: "Medical",
-    path: "/staff/medical",
+    path: "/staff/medical-assistance",
     icon: <MedicalIcon fill="#fff" />,
     sec: <MedicalIcon fill="#086375" />,
   },

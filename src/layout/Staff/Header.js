@@ -5,7 +5,12 @@ import { Avatar, Image, useMediaQuery } from "@chakra-ui/react";
 import { useLocation } from "react-router-dom";
 import { useGetUser } from "../../services/staff/query/user";
 import { useLogOut } from "../../utils/helpers";
-import { LeaveIcon } from "../../components/common/images";
+import {
+  DashboardIcon,
+  LeaveIcon,
+  MedicalIcon,
+  ProfileIcon,
+} from "../../components/common/images";
 
 const Header = () => {
   const [isMobile] = useMediaQuery("(max-width: 991px)");
@@ -13,28 +18,29 @@ const Header = () => {
   const { data: userData } = useGetUser();
   const [show, setShow] = useState(false);
   const [title, setTitle] = useState("");
+  const [icon, setIcon] = useState("");
   const [secTitle, setSecTitle] = useState("");
 
-  const location = useLocation();
-  const locationRoute = location.pathname;
+  const { pathname } = useLocation();
 
   useEffect(() => {
     switch (true) {
-      case locationRoute.includes("dashboard"):
-        return setTitle("Dashboard");
+      case pathname.includes("dashboard"):
+        return setTitle("Dashboard"), setIcon(<DashboardIcon fill="#086375" />);
 
-      case locationRoute.includes("leave"):
-        return setTitle("Leave");
+      case pathname.includes("leave"):
+        return setTitle("Leave"), setIcon(<LeaveIcon fill="#086375" />);
 
-      case locationRoute.includes("profile"):
-        return setTitle("Profile");
+      case pathname.includes("profile"):
+        return setTitle("Profile"), setIcon(<ProfileIcon fill="#086375" />);
+
+      case pathname.includes("medical"):
+        return setTitle("Medical"), setIcon(<MedicalIcon fill="#086375" />);
 
       default:
-        return setTitle("");
+        return setTitle(""), setIcon("");
     }
-  }, [locationRoute]);
-
-  const { pathname } = useLocation();
+  }, [pathname]);
 
   const parts = pathname.split("/");
   const lastPart = parts[parts.length - 1];
@@ -42,16 +48,22 @@ const Header = () => {
 
   useEffect(() => {
     switch (true) {
-      case locationRoute.includes("leave/request"):
+      case pathname.includes("leave/request"):
         return setSecTitle("Request Leave");
 
-      case locationRoute.includes("leave-request"):
+      case pathname.includes("leave-request"):
         return setSecTitle(`Leave ID: ${number}`);
+
+      case pathname.includes("medical-assistance/request"):
+        return setSecTitle("Request Medical Assistance");
+
+      case pathname.includes("medical-assistance/"):
+        return setSecTitle(`Medical Assistance ID: ${number}`);
 
       default:
         return setSecTitle("");
     }
-  }, [locationRoute]);
+  }, [pathname]);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -92,7 +104,7 @@ const Header = () => {
         <Flex justifyContent="space-between" align="center" w="full">
           <Flex align="flex-end" gap="5px">
             <Flex align="center" gap="12px">
-              <LeaveIcon fill="#086375" />
+              {icon}
               <Text color="#086375" fontSize="18px" fontWeight={500}>
                 {title}
               </Text>
@@ -126,7 +138,7 @@ const Header = () => {
                 justifyContent="center"
               >
                 <Image
-                  src="../assets/bell.svg"
+                  src="/assets/bell.svg"
                   w="24px"
                   h="24px"
                   objectFit="contain"

@@ -41,8 +41,8 @@ const TableLayer = ({
               <Thead>
                 <Tr h="73px" alignContent="center" mb="14px" bg="#CEDFE3">
                   {[
-                    "Start Date",
-                    "End Date",
+                    "Amount",
+                    "No. of Attachments",
                     "Status",
                     "Request Date",
                     "Action",
@@ -84,7 +84,7 @@ const TableLayer = ({
                       border="1px solid #CEDFE3"
                       borderRight="none"
                     >
-                      {formatDate(item?.startDate)}
+                      ₦ {(80000).toLocaleString()}
                     </Td>
                     <Td
                       textAlign="center"
@@ -92,7 +92,15 @@ const TableLayer = ({
                       borderRight="none"
                       borderLeft="none"
                     >
-                      {formatDate(item?.endDate)}
+                      <Flex align="center" justifyContent="center" gap="10px">
+                        <Image
+                          src="/assets/file.svg"
+                          w="24px"
+                          h="24px"
+                          objectFit="contain"
+                        />
+                        1 Document
+                      </Flex>
                     </Td>
                     <Td
                       border="1px solid #CEDFE3"
@@ -142,7 +150,7 @@ const TableLayer = ({
                       border="1px solid #CEDFE3"
                       borderLeft="none"
                       onClick={() =>
-                        navigate(`/staff/leave-request/${item?.id}`)
+                        navigate(`/staff/medical-assistance/${item?.id}`)
                       }
                       textDecor="underline"
                       cursor="pointer"

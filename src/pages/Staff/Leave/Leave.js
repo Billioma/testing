@@ -123,7 +123,7 @@ const Leave = () => {
 
               <Button
                 mt="24px"
-                onClick={() => navigate("/leave/request")}
+                onClick={() => navigate("/staff/leave/request")}
                 h="60px"
                 w="full"
               >
@@ -188,12 +188,12 @@ const Leave = () => {
                       borderRadius="8px"
                       py={{ base: "13px", md: "16px" }}
                       cursor="pointer"
-                      onClick={() => navigate("/leave/request")}
+                      onClick={() => navigate("/staff/leave/request")}
                       _hover={{ opacity: 0.8 }}
                       transition=".3s ease-in-out"
                       px={{ base: "13px", md: "24px" }}
                     >
-                      <Image src="../assets/copy.svg" />
+                      <Image src="/assets/copy.svg" />
                       <Text
                         color="#fff"
                         fontWeight={500}

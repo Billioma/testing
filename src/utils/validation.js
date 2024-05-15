@@ -38,7 +38,7 @@ export const initAdminStaffValues = {
   email: "",
   staffId: "",
   department: "",
-  dateOfBirth: new Date(),
+  dateOfBirth: null,
   nextOfKin: "",
   guarantor1: "",
   guarantor1Address: "",
@@ -61,8 +61,8 @@ export const initAdminStaffValues = {
   jobTitle: "",
   secondaryResidentialAddress: "",
   driverLicenseNumber: "",
-  issueDate: new Date(),
-  expiryDate: new Date(),
+  issueDate: null,
+  expiryDate: null,
 };
 
 export const validateAdminStaffSchema = Yup.object().shape({

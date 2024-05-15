@@ -5,7 +5,7 @@ import { useGetLeave } from "../../../services/staff/query/leave";
 import { LeaveStatus } from "../../../components/common/constants";
 import { formatDate } from "../../../utils/helpers";
 
-const LeaveDetails = () => {
+const MedicalDetails = () => {
   const { id } = useParams();
 
   const { data, isLoading, refetch } = useGetLeave(id);
@@ -106,50 +106,31 @@ const LeaveDetails = () => {
           >
             <Flex
               align="center"
-              justifyContent="space-between"
+              gap="16px"
               fontWeight={500}
-              w="full"
               fontSize={{ base: "14px", md: "16px" }}
             >
-              <Flex align="center" gap="16px">
-                <Flex
-                  justifyContent="center"
-                  align="center"
-                  border="1px solid #BAE0D9"
-                  rounded="full"
-                  py="4px"
-                  color="#090C02"
-                  px="10px"
-                  opacity={0.6}
-                >
-                  Leave ID: {id}
-                </Flex>
-                <Flex
-                  justifyContent="center"
-                  align="center"
-                  color="#075666"
-                  border="1px solid #BAE0D9"
-                  rounded="full"
-                  py="4px"
-                  px="10px"
-                >
-                  {data?.purpose}
-                </Flex>
+              <Flex
+                justifyContent="center"
+                align="center"
+                color="#090C02"
+                opacity={0.6}
+              >
+                Medical Assistance ID: {id}
               </Flex>
-
               <Flex
                 justifyContent="center"
                 align="center"
                 color={
                   LeaveStatus.find(
                     (dat) =>
-                      dat.name?.toLowerCase() === data?.status?.toLowerCase(),
+                      dat.name?.toLowerCase() === data?.status?.toLowerCase()
                   )?.color || ""
                 }
                 bg={
                   LeaveStatus.find(
                     (dat) =>
-                      dat.name?.toLowerCase() === data?.status?.toLowerCase(),
+                      dat.name?.toLowerCase() === data?.status?.toLowerCase()
                   )?.bg || ""
                 }
                 rounded="full"
@@ -157,7 +138,7 @@ const LeaveDetails = () => {
                 borderColor={
                   LeaveStatus.find(
                     (dat) =>
-                      dat.name?.toLowerCase() === data?.status?.toLowerCase(),
+                      dat.name?.toLowerCase() === data?.status?.toLowerCase()
                   )?.border || ""
                 }
                 py="4px"
@@ -179,34 +160,33 @@ const LeaveDetails = () => {
             >
               <Box fontWeight={700}>
                 <Text opacity={0.4} fontSize="12px">
-                  {data?.status === "PENDING" || data?.status === "REJECTED"
-                    ? "PROPOSED"
-                    : ""}{" "}
-                  START DATE
+                  AMOUNT
                 </Text>
                 <Text mt="8px" fontSize={{ base: "20px", md: "24px" }}>
-                  {formatDate(data?.startDate)}
+                  ₦ {(80000).toLocaleString()}
                 </Text>
               </Box>
 
               <Box fontWeight={700}>
                 <Text opacity={0.4} fontSize="12px">
-                  {data?.status === "PENDING" || data?.status === "REJECTED"
-                    ? "PROPOSED"
-                    : ""}{" "}
-                  END DATE
+                  NO. OF ATTACHMENTS
                 </Text>
-                <Text mt="8px" fontSize={{ base: "20px", md: "24px" }}>
-                  {formatDate(data?.endDate)}
-                </Text>
+                <Flex align="center" justifyContent="center" gap="10px">
+                  <Image
+                    src="/assets/file.svg"
+                    w="24px"
+                    h="24px"
+                    objectFit="contain"
+                  />
+                  <Text mt="8px" fontSize={{ base: "20px", md: "24px" }}>
+                    1 Document
+                  </Text>
+                </Flex>
               </Box>
 
               <Box fontWeight={700}>
                 <Text opacity={0.4} fontSize="12px">
-                  DATE{" "}
-                  {data?.status === "PENDING" || data?.status === "REJECTED"
-                    ? "SUBMITTED"
-                    : "APPROVED"}
+                  DATE REQUESTED
                 </Text>
                 <Text mt="8px" fontSize={{ base: "20px", md: "24px" }}>
                   {formatDate(data?.createdAt)}
@@ -221,12 +201,65 @@ const LeaveDetails = () => {
             py="16px"
             px="30px"
           >
-            {data?.additionalComments}
+            {data?.additionalComments || "N/A"}
           </Box>
+
+          <Flex
+            mt="24px"
+            border="1px solid #BAE0D9"
+            borderRadius="12px"
+            py="16px"
+            px="30px"
+            justifyContent="space-between"
+            w="full"
+          >
+            <Box>
+              <Text fontWeight={500} mb="4px">
+                Doctor's Letter
+              </Text>
+              <Text fontSize="13px">220KB</Text>
+            </Box>
+
+            <Flex align="center" gap="12px">
+              <Flex
+                border="1px solid #08637533"
+                borderRadius="4px"
+                cursor="pointer"
+                w="32px"
+                h="32px"
+                justifyContent="center"
+                align="center"
+              >
+                <Image
+                  src="/assets/green-eye.svg"
+                  w="16px"
+                  h="16px"
+                  objectFit="contain"
+                />
+              </Flex>
+
+              <Flex
+                border="1px solid #08637533"
+                borderRadius="4px"
+                cursor="pointer"
+                w="32px"
+                h="32px"
+                justifyContent="center"
+                align="center"
+              >
+                <Image
+                  src="/assets/green-download.svg"
+                  w="16px"
+                  h="16px"
+                  objectFit="contain"
+                />
+              </Flex>
+            </Flex>
+          </Flex>
         </>
       )}
     </Box>
   );
 };
 
-export default LeaveDetails;
+export default MedicalDetails;

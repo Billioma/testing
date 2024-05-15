@@ -30,7 +30,7 @@ export const Layout = ({ label, data, email }) => {
 
 const Profile = () => {
   const { data: userData } = useGetUser();
-  console.log(userData);
+
   return (
     <Box>
       <Flex align="center" gap="18px">
