@@ -46,7 +46,7 @@ const onResponse = (response) => {
 const onResponseError = (error) => {
   const statusCode = error?.response?.status;
   if (statusCode === 401) {
-    sessionStorage.clear();
+    localStorage.clear();
     setTimeout(() => {
       window.location.href = "/login";
     }, 500);
