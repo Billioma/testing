@@ -129,7 +129,40 @@ const LeaveMgtDetails = () => {
             color="#000"
             flexDir="column"
             border="1px solid #E4E6E8"
+            fontSize="14px"
           >
+            <Flex
+              display={
+                data?.status === "ACTIVE" ||
+                data?.status === "APPROVED" ||
+                data?.status === "COMPLETED"
+                  ? "flex"
+                  : "none"
+              }
+              mb="24px"
+              mt="4px"
+              align="center"
+              gap="12px"
+            >
+              <Text fontWeight={500} color="#090c02">
+                Approved By:
+              </Text>
+
+              <Flex
+                border="1px solid #D4D6D8"
+                align="center"
+                gap="8px"
+                borderRadius="100px"
+                p="4px"
+              >
+                <Flex rounded="full" bg="#D9D9D9" w="16px" h="16px"></Flex>
+                <Text fontSize="14px" color="#090c02">
+                  {data?.finalApprovalBy?.firstName}{" "}
+                  {data?.finalApprovalBy?.lastName}
+                </Text>
+              </Flex>
+            </Flex>
+
             <Flex
               gap="8px"
               flexDir={{ base: "column", md: "row" }}
@@ -138,7 +171,7 @@ const LeaveMgtDetails = () => {
               fontWeight={700}
             >
               <Flex gap="8px">
-                <Text>Leave ID: {id}</Text>
+                <Text>Staff ID: {data?.staff?.staffId}</Text>
                 <Text>|</Text>
                 <Text textTransform="capitalize">{data?.staff?.fullName}</Text>
               </Flex>
@@ -203,6 +236,7 @@ const LeaveMgtDetails = () => {
               bg="#F4F6F8"
               borderRadius="4px"
               p="16px"
+              display={data?.additionalComments ? "block" : "none"}
               mt="20px"
               fontSize="15px"
               color="#000"
@@ -235,7 +269,9 @@ const LeaveMgtDetails = () => {
               gap="24px"
               fontWeight={500}
               display={
-                data?.status === "APPROVED" || data?.status === "COMPLETED"
+                data?.status === "APPROVED" ||
+                data?.status === "COMPLETED" ||
+                data?.status === "ACTIVE"
                   ? "flex"
                   : "none"
               }

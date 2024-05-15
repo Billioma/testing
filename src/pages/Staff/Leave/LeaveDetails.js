@@ -25,7 +25,7 @@ const LeaveDetails = () => {
           <Flex
             flexDir="column"
             justifyContent="center"
-            display="none"
+            display={data?.status === "ACTIVE" ? "flex" : "none"}
             h="168px"
             borderRadius="12px"
             bg="#075666"
@@ -62,7 +62,7 @@ const LeaveDetails = () => {
                   py="4px"
                   px="10px"
                 >
-                  Housing
+                  {data?.purpose}
                 </Flex>
               </Flex>
 
@@ -72,7 +72,7 @@ const LeaveDetails = () => {
                     START DATE
                   </Text>
                   <Text mt="8px" color="#fff" fontSize="24px">
-                    March 20, 2024
+                    {formatDate(data?.startDate)}
                   </Text>
                 </Box>
 
@@ -81,7 +81,7 @@ const LeaveDetails = () => {
                     END DATE
                   </Text>
                   <Text mt="8px" color="#fff" fontSize="24px">
-                    March 20, 2024
+                    {formatDate(data?.endDate)}
                   </Text>
                 </Box>
               </Flex>
@@ -97,12 +97,14 @@ const LeaveDetails = () => {
               right="0"
             />
           </Flex>
+
           <Flex
             flexDir="column"
             borderRadius="12px"
             border="1px solid #BAE0D9"
             p={{ base: "20px", md: "60px" }}
             pos="relative"
+            display={data?.status === "ACTIVE" ? "none" : "flex"}
           >
             <Flex
               align="center"
@@ -143,13 +145,13 @@ const LeaveDetails = () => {
                 color={
                   LeaveStatus.find(
                     (dat) =>
-                      dat.name?.toLowerCase() === data?.status?.toLowerCase(),
+                      dat.name?.toLowerCase() === data?.status?.toLowerCase()
                   )?.color || ""
                 }
                 bg={
                   LeaveStatus.find(
                     (dat) =>
-                      dat.name?.toLowerCase() === data?.status?.toLowerCase(),
+                      dat.name?.toLowerCase() === data?.status?.toLowerCase()
                   )?.bg || ""
                 }
                 rounded="full"
@@ -157,7 +159,7 @@ const LeaveDetails = () => {
                 borderColor={
                   LeaveStatus.find(
                     (dat) =>
-                      dat.name?.toLowerCase() === data?.status?.toLowerCase(),
+                      dat.name?.toLowerCase() === data?.status?.toLowerCase()
                   )?.border || ""
                 }
                 py="4px"
@@ -218,6 +220,7 @@ const LeaveDetails = () => {
             mt="24px"
             border="1px solid #BAE0D9"
             borderRadius="12px"
+            display={data?.additionalComments ? "block" : "none"}
             py="16px"
             px="30px"
           >

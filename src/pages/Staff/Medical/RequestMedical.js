@@ -108,7 +108,7 @@ const RequestMedical = () => {
   const { mutate, isLoading } = useRequestLeave({
     onSuccess: (res) => {
       successToast(res?.message);
-      navigate("/leave");
+      navigate("/staff/medical-assistance");
     },
     onError: (err) => {
       errorToast(

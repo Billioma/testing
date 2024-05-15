@@ -89,7 +89,7 @@ const RequestLeave = () => {
   const { mutate, isLoading } = useRequestLeave({
     onSuccess: (res) => {
       successToast(res?.message);
-      navigate("/leave");
+      navigate("/staff/leave");
     },
     onError: (err) => {
       errorToast(
