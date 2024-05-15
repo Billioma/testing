@@ -35,15 +35,13 @@ const ApproveDeny = ({
     value: type?.value,
     label: type?.label,
   }));
-
-  console.log(values);
   return (
     <Modal isCentered trapFocus={false} isOpen={isOpen} onClose={onClose}>
       <ModalOverlay backdropFilter="auto" backdropBlur="2px" />
       <ModalContent
         px="32px"
         py="24px"
-        h="600px"
+        h={type === "decline" ? "" : "600px"}
         overflowY="auto"
         borderRadius="8px"
         bg="#fff"

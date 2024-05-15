@@ -331,13 +331,17 @@ const Filter = ({
         w="full"
       >
         {title}
-        <Flex align="center" gap={gap ? "15px" : "24px"}>
+        <Flex
+          align="center"
+          gap={gap ? "15px" : "24px"}
+          w={{ base: "100%", md: "unset" }}
+        >
           {main}
           <Button
             border="1px solid #d4d6d8"
             display="flex"
             py="10px"
-            px="16px"
+            px={{ base: "7px", md: "16px" }}
             bg="transparent"
             borderRadius="8px"
             onClick={() =>
@@ -345,7 +349,7 @@ const Filter = ({
                 ? (setShow(false), resetAllValues(), setFiltArray([]))
                 : setShow(true)
             }
-            gap="16px"
+            gap={{ base: "7px", md: "16px" }}
             fontSize="14px"
           >
             <Text color="#646668">Filter</Text>

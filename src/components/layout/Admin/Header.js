@@ -433,6 +433,7 @@ const Header = ({ showSidebar }) => {
                 color="#646668"
                 pb="3px"
                 fontWeight={700}
+                display={{ base: "none", md: "flex" }}
                 lineHeight="100%"
               >
                 {">"} {secTitle}
@@ -442,6 +443,7 @@ const Header = ({ showSidebar }) => {
             {finTitle && (
               <Text
                 fontSize="12px"
+                display={{ base: "none", md: "flex" }}
                 color="#646668"
                 pb="3px"
                 fontWeight={700}

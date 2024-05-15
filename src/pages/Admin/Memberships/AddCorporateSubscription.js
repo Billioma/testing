@@ -166,7 +166,14 @@ export default function AddCorporateSubscription() {
 
             {isPlanning ? (
               <Box border="1px solid #E4E6E8" w="full" p={5} borderRadius="8px">
-                <SimpleGrid templateColumns="1fr 1fr 1fr" gap={4} w="full">
+                <SimpleGrid
+                  templateColumns={{
+                    base: "repeat(1,1fr)",
+                    md: "repeat(3,1fr)",
+                  }}
+                  gap={4}
+                  w="full"
+                >
                   <Skeleton h="150px" borderRadius="8px"></Skeleton>
                   <Skeleton h="150px" borderRadius="8px"></Skeleton>
                   <Skeleton h="150px" borderRadius="8px"></Skeleton>
@@ -459,7 +466,7 @@ export default function AddCorporateSubscription() {
               borderRadius="8px"
             >
               <SimpleGrid
-                templateColumns={{ base: "1fr", md: "1fr 1fr 1fr" }}
+                templateColumns={{ base: "repeat(1,1fr)", md: "repeat(3,1fr)" }}
                 gap={4}
                 w="full"
               >
@@ -470,7 +477,9 @@ export default function AddCorporateSubscription() {
                     borderRadius="8px"
                     justifyContent="space-between"
                     p={3}
-                    alignItems="center"
+                    flexDir={{ base: "column", md: "row" }}
+                    gap={{ base: "15px", md: "unset" }}
+                    alignItems={{ base: "flex-start", md: "center" }}
                   >
                     <Box>
                       <Text color="#848688" fontWeight={500} mb={2}>
@@ -491,6 +500,7 @@ export default function AddCorporateSubscription() {
                       </Flex>
                     </Box>
                     <Button
+                      w={{ base: "100%", md: "unset" }}
                       variant="adminPrimary"
                       onClick={() => handlePlanSelection(plan)}
                     >

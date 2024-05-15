@@ -328,7 +328,7 @@ const EmployeeDocuments = ({ refetch, data }) => {
                   }
                 >
                   {mainFiles?.guarantorForm?.status === "VERIFIED"
-                    ? "Approved"
+                    ? "Verified"
                     : "Pending"}
                 </Flex>
               </Flex>
@@ -433,7 +433,7 @@ const EmployeeDocuments = ({ refetch, data }) => {
                   }
                 >
                   {mainFiles?.guarantorForm2?.status === "VERIFIED"
-                    ? "Approved"
+                    ? "Verified"
                     : "Pending"}
                 </Flex>
               </Flex>
@@ -553,7 +553,7 @@ const EmployeeDocuments = ({ refetch, data }) => {
                   }
                 >
                   {mainFiles?.confidentialityAgreement?.status === "VERIFIED"
-                    ? "Approved"
+                    ? "Verified"
                     : "Pending"}
                 </Flex>
               </Flex>
@@ -673,7 +673,7 @@ const EmployeeDocuments = ({ refetch, data }) => {
                   }
                 >
                   {mainFiles?.nonSolicitationAgreement?.status === "VERIFIED"
-                    ? "Approved"
+                    ? "Verified"
                     : "Pending"}
                 </Flex>
               </Flex>
@@ -793,7 +793,7 @@ const EmployeeDocuments = ({ refetch, data }) => {
                   }
                 >
                   {mainFiles?.exclusivity?.status === "VERIFIED"
-                    ? "Approved"
+                    ? "Verified"
                     : "Pending"}
                 </Flex>
               </Flex>
@@ -910,7 +910,7 @@ const EmployeeDocuments = ({ refetch, data }) => {
                   }
                 >
                   {mainFiles?.identificationDocument?.status === "VERIFIED"
-                    ? "Approved"
+                    ? "Verified"
                     : "Pending"}
                 </Flex>
               </Flex>
@@ -1030,7 +1030,7 @@ const EmployeeDocuments = ({ refetch, data }) => {
                   }
                 >
                   {data?.driverLicenseStatus === "VERIFIED"
-                    ? "Approved"
+                    ? "Verified"
                     : "Pending"}
                 </Flex>
               </Flex>

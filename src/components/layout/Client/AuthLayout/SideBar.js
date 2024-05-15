@@ -315,7 +315,7 @@ const SideBar = ({ show, setShow }) => {
             {isLoading ? (
               <Flex
                 _hover={{ color: "#ee383a" }}
-                gap="5px"
+                gap={3}
                 color="red"
                 align="center"
               >
@@ -325,7 +325,7 @@ const SideBar = ({ show, setShow }) => {
             ) : (
               <Flex
                 _hover={{ color: "#ee383a" }}
-                gap="5px"
+                gap={3}
                 align="center"
                 color="#646668"
               >

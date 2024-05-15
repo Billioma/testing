@@ -139,10 +139,15 @@ const GeneralInfo = ({ data, refetch, id }) => {
     value: Number(dept?.id),
   }));
 
-  const jobsOptions = jobs?.data?.map((job) => ({
-    label: job?.name,
-    value: Number(job?.id),
-  }));
+  const jobsOptions = jobs?.data
+    ?.filter(
+      (item) =>
+        Number(item?.department?.id) === Number(values?.department?.value)
+    )
+    ?.map((job) => ({
+      label: job?.name,
+      value: Number(job?.id),
+    }));
 
   const rolesToMap = roles?.data?.filter((item) => item?.isStaffRole);
 

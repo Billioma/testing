@@ -4,7 +4,6 @@ import { PiExportLight } from "react-icons/pi";
 
 const LocationExport = ({ data, action, limit, isExporting }) => {
   const [exportable, setExportable] = useState(false);
-  console.log(limit);
 
   useEffect(() => {
     if (data && exportable) {

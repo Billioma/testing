@@ -173,6 +173,7 @@ const AddSubscription = () => {
       paymentMethod: "",
     });
   }, []);
+  
   const locationToMap = locations?.filter((item) => item?.isSubApplicable);
 
   const locationOptions = locationToMap?.map((location) => ({
@@ -311,7 +312,6 @@ const AddSubscription = () => {
           justifyContent="center"
           w={{
             base: "full",
-            sm: "30rem",
             lg: step === 2 || !plans?.length ? "30rem" : "unset",
             "3xl": step === 2 || !plans?.length ? "35rem" : "unset",
           }}
@@ -393,6 +393,8 @@ const AddSubscription = () => {
                           <Flex
                             align="flex-start"
                             justifyContent="space-between"
+                            flexDir={{ base: "column", md: "row" }}
+                            gap={{ base: "15px", md: "unset" }}
                             w="full"
                           >
                             <Box w="full">
@@ -404,7 +406,7 @@ const AddSubscription = () => {
                                 Subscription Name
                               </Text>
                               <Text
-                                mt="8px"
+                                mt={{ base: "4px", md: "8px" }}
                                 color="#848688"
                                 fontWeight={500}
                                 lineHeight="100%"
@@ -422,7 +424,7 @@ const AddSubscription = () => {
                                 Duration
                               </Text>
                               <Text
-                                mt="8px"
+                                mt={{ base: "4px", md: "8px" }}
                                 color="#848688"
                                 fontWeight={500}
                                 lineHeight="100%"
@@ -431,7 +433,11 @@ const AddSubscription = () => {
                               </Text>
                             </Box>
 
-                            <Flex justifyContent="flex-end" w="30%">
+                            <Flex
+                              display={{ base: "none", md: "flex" }}
+                              justifyContent="flex-end"
+                              w="30%"
+                            >
                               <Text
                                 fontSize="14px"
                                 color="#242628"
@@ -446,6 +452,7 @@ const AddSubscription = () => {
                           <Flex
                             mt="30px"
                             align="center"
+                            display={{ base: "none", md: "flex" }}
                             justifyContent="space-between"
                             w="full"
                           >
@@ -511,6 +518,80 @@ const AddSubscription = () => {
                               </Button>
                             </Flex>
                           </Flex>
+
+                          <Flex
+                            mt={{ base: "20px", md: "30px" }}
+                            align="center"
+                            display={{ base: "flex", md: "none" }}
+                            justifyContent="space-between"
+                            w="full"
+                          >
+                            <Box w="full">
+                              <Text
+                                fontSize="14px"
+                                color="#242628"
+                                lineHeight="100%"
+                              >
+                                Price
+                              </Text>
+                              <Text
+                                mt="8px"
+                                color="#848688"
+                                fontWeight={500}
+                                lineHeight="100%"
+                              >
+                                ₦{" "}
+                                {dat?.amount?.toLocaleString(undefined, {
+                                  maximumFractionDigits: 2,
+                                }) || "0.00"}
+                              </Text>
+                            </Box>
+
+                            <Box w="70%">
+                              <Text
+                                fontSize="14px"
+                                color="#242628"
+                                lineHeight="100%"
+                              >
+                                Features
+                              </Text>
+                              <Flex mt="8px" align="center" gap="16px">
+                                {dat?.features?.slice(0, 2)?.map((item, i) => (
+                                  <Flex align="center" gap="4px">
+                                    {i === 0 ? (
+                                      <Image src="/assets/location.svg" />
+                                    ) : (
+                                      <CarIcon fill="#EE383A" />
+                                    )}
+                                    <Text
+                                      color="#838688"
+                                      lineHeight="100%"
+                                      fontWeight={500}
+                                    >
+                                      {item?.value}
+                                    </Text>
+                                  </Flex>
+                                ))}
+                              </Flex>
+                            </Box>
+                          </Flex>
+
+                          <Flex
+                            w="100%"
+                            mt="20px"
+                            display={{ base: "flex", md: "none" }}
+                          >
+                            <Button
+                              onClick={() =>
+                                step === 1 ? handlePlanSelection(dat) : ""
+                              }
+                              w="full"
+                              py="17px"
+                              px="26px"
+                            >
+                              Select
+                            </Button>
+                          </Flex>
                         </Box>
                       </GridItem>
                     ))
@@ -530,6 +611,8 @@ const AddSubscription = () => {
               >
                 <Flex
                   align="flex-start"
+                  flexDir={{ base: "column", md: "row" }}
+                  gap={{ base: "15px", md: "unset" }}
                   justifyContent="space-between"
                   w="full"
                 >
@@ -538,7 +621,7 @@ const AddSubscription = () => {
                       Subscription Name
                     </Text>
                     <Text
-                      mt="8px"
+                      mt={{ base: "4px", md: "8px" }}
                       color="#848688"
                       fontWeight={500}
                       lineHeight="100%"
@@ -552,7 +635,7 @@ const AddSubscription = () => {
                       Duration
                     </Text>
                     <Text
-                      mt="8px"
+                      mt={{ base: "4px", md: "8px" }}
                       color="#848688"
                       fontWeight={500}
                       lineHeight="100%"
@@ -561,7 +644,11 @@ const AddSubscription = () => {
                     </Text>
                   </Box>
 
-                  <Flex justifyContent="flex-end" w="30%">
+                  <Flex
+                    display={{ base: "none", md: "flex" }}
+                    justifyContent="flex-end"
+                    w="30%"
+                  >
                     <Text
                       fontSize="14px"
                       color="#242628"
@@ -576,6 +663,7 @@ const AddSubscription = () => {
                 <Flex
                   mt="30px"
                   align="center"
+                  display={{ base: "none", md: "flex" }}
                   justifyContent="space-between"
                   w="full"
                 >
@@ -649,6 +737,85 @@ const AddSubscription = () => {
                       <AiOutlineEdit size="15px" />
                     </Button>
                   </Flex>
+                </Flex>
+
+                <Flex
+                  mt={{ base: "20px", md: "30px" }}
+                  display={{ base: "flex", md: "none" }}
+                  align="center"
+                  justifyContent="space-between"
+                  w="full"
+                >
+                  <Box w="full">
+                    <Text fontSize="14px" color="#242628" lineHeight="100%">
+                      Price
+                    </Text>
+                    <Text
+                      mt="8px"
+                      color="#848688"
+                      fontWeight={500}
+                      lineHeight="100%"
+                    >
+                      ₦{" "}
+                      {currentSub?.amount?.toLocaleString(undefined, {
+                        maximumFractionDigits: 2,
+                      }) || "0.00"}
+                    </Text>
+                  </Box>
+
+                  <Box w="70%">
+                    <Text fontSize="14px" color="#242628" lineHeight="100%">
+                      Features
+                    </Text>
+                    <Flex mt="8px" align="center" gap="16px">
+                      {currentSub?.features?.slice(0, 2)?.map((item, i) => (
+                        <Flex align="center" gap="4px">
+                          {i === 0 ? (
+                            <Image src="/assets/location.svg" />
+                          ) : (
+                            <CarIcon fill="#EE383A" />
+                          )}
+                          <Text
+                            color="#838688"
+                            lineHeight="100%"
+                            fontWeight={500}
+                          >
+                            {item?.value}
+                          </Text>
+                        </Flex>
+                      ))}
+                    </Flex>
+                  </Box>
+                </Flex>
+
+                <Flex mt="20px" w="100%" display={{ base: "flex", md: "none" }}>
+                  <Button
+                    onClick={() => {
+                      setState({
+                        membershipPlan: "",
+                        subscriptionOptions: [
+                          {
+                            planFeature: 0,
+                            data: [],
+                          },
+                        ],
+                        autoRenewal: false,
+                        paymentMethod: "",
+                      });
+                      setCurrentSub({});
+                      setStep(1);
+                      setFormSubmitted(false);
+                    }}
+                    w="full"
+                    py="6px"
+                    px="16px"
+                    display="flex"
+                    align="center"
+                    gap="8px"
+                  >
+                    <Text>Change</Text>
+                    <AiOutlineEdit size="15px" />
+                  </Button>
                 </Flex>
               </Box>
               <form
@@ -867,7 +1034,7 @@ const AddSubscription = () => {
                       }}
                       align="center"
                       display="flex"
-                      gap="24px"
+                      gap={{ base: "15px", md: "24px" }}
                     >
                       <Radio size="sm" value={"1"}>
                         <Text> Pay via Wallet</Text>
@@ -1015,6 +1182,7 @@ const AddSubscription = () => {
                   >
                     <Text
                       cursor="pointer"
+                      fontSize={{ base: "13px", md: "16px" }}
                       onClick={() => setShowFunds(true)}
                       textDecor="underline"
                     >

@@ -146,6 +146,7 @@ const Header = ({ showSidebar }) => {
               <Text
                 fontSize="10px"
                 color="#848688"
+                display={{ base: "none", md: "flex" }}
                 fontWeight={500}
                 pb={{ base: "2px", md: "1px" }}
                 lineHeight="100%"
@@ -159,6 +160,7 @@ const Header = ({ showSidebar }) => {
                 fontSize="10px"
                 color="#848688"
                 fontWeight={500}
+                display={{ base: "none", md: "flex" }}
                 pb={{ base: "2px", md: "1px" }}
                 lineHeight="100%"
               >

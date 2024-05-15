@@ -192,6 +192,7 @@ const Header = ({ showSidebar }) => {
                 fontSize="12px"
                 color="#848688"
                 pb={{ base: "2px", md: "1px" }}
+                display={{ base: "none", md: "flex" }}
                 fontWeight={500}
                 lineHeight="100%"
               >
@@ -203,6 +204,7 @@ const Header = ({ showSidebar }) => {
               <Text
                 fontSize="12px"
                 color="#848688"
+                display={{ base: "none", md: "flex" }}
                 pb={{ base: "2px", md: "1px" }}
                 fontWeight={500}
                 lineHeight="100%"

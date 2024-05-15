@@ -221,7 +221,11 @@ export default function AddCustomerSubscription() {
 
           {isPlanning ? (
             <Box border="1px solid #E4E6E8" w="full" p={5} borderRadius="8px">
-              <SimpleGrid templateColumns="1fr 1fr 1fr" gap={4} w="full">
+              <SimpleGrid
+                templateColumns={{ base: "repeat(1,1fr)", md: "repeat(3,1fr)" }}
+                gap={4}
+                w="full"
+              >
                 <Skeleton h="150px" borderRadius="8px"></Skeleton>
                 <Skeleton h="150px" borderRadius="8px"></Skeleton>
                 <Skeleton h="150px" borderRadius="8px"></Skeleton>
@@ -566,15 +570,21 @@ export default function AddCustomerSubscription() {
             p={5}
             borderRadius="8px"
           >
-            <SimpleGrid templateColumns="1fr 1fr 1fr" gap={4} w="full">
+            <SimpleGrid
+              templateColumns={{ base: "repeat(1,1fr)", md: "repeat(3,1fr)" }}
+              gap={4}
+              w="full"
+            >
               {plans?.data?.map((plan) => (
                 <Flex
                   key={plan.id}
                   border="1px solid #E4E6E8"
                   borderRadius="8px"
+                  flexDir={{ base: "column", md: "row" }}
+                  gap={{ base: "15px", md: "unset" }}
+                  alignItems={{ base: "flex-start", md: "center" }}
                   justifyContent="space-between"
                   p={3}
-                  alignItems="center"
                 >
                   <Box>
                     <Text color="#848688" fontWeight={500} mb={2}>
@@ -595,6 +605,7 @@ export default function AddCustomerSubscription() {
                     </Flex>
                   </Box>
                   <Button
+                    w={{ base: "100%", md: "unset" }}
                     variant="adminPrimary"
                     onClick={() => handlePlanSelection(plan)}
                   >
