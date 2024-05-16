@@ -17,28 +17,36 @@ const SideBarr = () => {
     >
       <Flex
         flexDir="column"
-        ml={pathname === "/staff/auth/new-login" ? "-255px" : "unset"}
+        ml={
+          pathname === "/staff/auth/new-login" ||
+          pathname === "/staff/auth/new-user"
+            ? "-255px"
+            : "unset"
+        }
         align="center"
         justifyContent="center"
         flex="1"
       >
         <Image
           src={
-            pathname === "/staff/auth/new-login"
+            pathname === "/staff/auth/new-login" ||
+            pathname === "/staff/auth/new-user"
               ? "/assets/new-login.jpg"
               : pathname === "/staff/auth/code-verification"
                 ? "/assets/verify.jpg"
                 : "/assets/people.jpg"
           }
           w={
-            pathname === "/staff/auth/new-login"
+            pathname === "/staff/auth/new-login" ||
+            pathname === "/staff/auth/new-user"
               ? "752px"
               : pathname === "/staff/auth/code-verification"
                 ? "540px"
                 : "607px"
           }
           h={
-            pathname === "/staff/auth/new-login"
+            pathname === "/staff/auth/new-login" ||
+            pathname === "/staff/auth/new-user"
               ? "651px"
               : pathname === "/staff/auth/code-verification"
                 ? "540px"

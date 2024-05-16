@@ -1,6 +1,7 @@
 export const PUBLIC_PATHS = {
   //STAFF
   NEW_LOGIN: "/staff/auth/new-login",
+  NEW_USER: "/staff/auth/new-user",
   LOGIN: "/staff/auth/login",
   NEW_PASS: "/staff/auth/new-password",
   FORGOT_PASS: "/staff/auth/forgot-password",

@@ -23,7 +23,7 @@ const CodeVerification = () => {
   const navigate = useNavigate();
   const { mutate, isLoading } = useVerifyPassOtp({
     onSuccess: (res) => {
-      navigate("/reset-password");
+      navigate("/staff/auth/reset-password");
       sessionStorage.removeItem("staffId");
       sessionStorage.setItem(
         "new_token",

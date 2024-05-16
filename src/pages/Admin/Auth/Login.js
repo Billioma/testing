@@ -138,7 +138,7 @@ const Login = () => {
                 </Flex>
 
                 <Text
-                  onClick={() => navigate("/reset-password")}
+                  onClick={() => navigate("/staff/auth/reset-password")}
                   cursor="pointer"
                   fontWeight={700}
                   color="black"

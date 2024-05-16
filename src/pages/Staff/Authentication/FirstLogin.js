@@ -16,7 +16,7 @@ const FirstLogin = () => {
   const { mutate, isLoading } = useLogin({
     onSuccess: (res) => {
       sessionStorage.setItem("id", JSON.stringify(res));
-      navigate("/new-password");
+      navigate("/staff/auth/new-user");
     },
     onError: (err) => {
       errorToast(

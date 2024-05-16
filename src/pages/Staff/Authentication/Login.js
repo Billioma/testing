@@ -152,7 +152,7 @@ const Login = () => {
                 </Flex>
 
                 <Text
-                  onClick={() => navigate("/forgot-password")}
+                  onClick={() => navigate("/staff/auth/forgot-password")}
                   cursor="pointer"
                   fontWeight={500}
                   color="#086375"

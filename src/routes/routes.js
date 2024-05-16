@@ -8,6 +8,7 @@ const {
   LOGIN,
   NEW_PASS,
   NEW_LOGIN,
+  NEW_USER,
   FORGOT_PASS,
   CODE_VERIFICATION,
   RESET_PASS,
@@ -51,6 +52,9 @@ const Login = WithSuspense(
 );
 const FirstLogin = WithSuspense(
   lazy(() => import("../pages/Staff/Authentication/FirstLogin"))
+);
+const NewUser = WithSuspense(
+  lazy(() => import("../pages/Staff/Authentication/NewUser"))
 );
 const ForgotPassword = WithSuspense(
   lazy(() => import("../pages/Staff/Authentication/ForgotPassword"))
@@ -157,6 +161,7 @@ export const PUBLIC_ROUTES = [
   // STAFF ROUTES
   { path: LOGIN, element: <Login /> },
   { path: NEW_LOGIN, element: <FirstLogin /> },
+  { path: NEW_USER, element: <NewUser /> },
   { path: FORGOT_PASS, element: <ForgotPassword /> },
   { path: CODE_VERIFICATION, element: <CodeVerification /> },
   { path: RESET_PASS, element: <CreateNewPassword /> },

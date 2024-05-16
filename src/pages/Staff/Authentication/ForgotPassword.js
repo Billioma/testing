@@ -14,7 +14,7 @@ const ForgotPassword = () => {
   const { mutate, isLoading } = useSendPassOtp({
     onSuccess: (res) => {
       sessionStorage.setItem("phone", res?.data?.phone);
-      navigate("/code-verification");
+      navigate("/staff/auth/code-verification");
     },
     onError: (err) => {
       errorToast(
