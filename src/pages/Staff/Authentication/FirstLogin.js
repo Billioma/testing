@@ -20,7 +20,7 @@ const FirstLogin = () => {
     },
     onError: (err) => {
       errorToast(
-        err?.response?.data?.message || err?.message || "An Error occurred",
+        err?.response?.data?.message || err?.message || "An Error occurred"
       );
     },
   });
@@ -154,19 +154,6 @@ const FirstLogin = () => {
             </Form>
           )}
         </Formik>
-
-        <Flex
-          fontSize="14px"
-          fontWeight={500}
-          align="center"
-          gap="4px"
-          justifyContent="center"
-        >
-          <Text color="#090c02">Don't have an account?</Text>
-          <Text color="#086375" cursor="pointer">
-            Contact Administrator
-          </Text>
-        </Flex>
       </Box>
     </Box>
   );
