@@ -233,6 +233,7 @@ const RequestLeave = () => {
         >
           <Calendar
             value={dates}
+            className="alt-rmdp"
             onChange={setDates}
             minDate={startDateRange}
             range

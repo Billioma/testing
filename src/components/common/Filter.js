@@ -11,6 +11,7 @@ import { formatDate } from "../../utils/helpers";
 const Filter = ({
   main,
   setFiltArray,
+  alt,
   filtArray,
   gap,
   fieldToCompare,
@@ -213,8 +214,8 @@ const Filter = ({
           {main}
           <Button
             border="1px solid #d4d6d8"
-            display="flex"
             py="10px"
+            display={alt ? "none" : "flex"}
             px="16px"
             bg="transparent"
             borderRadius="8px"

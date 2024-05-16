@@ -74,15 +74,15 @@ const TableFormat = ({
                       data.toLowerCase() === "action"
                         ? "center"
                         : act ||
-                          (alignFirstHeader && i === 0) ||
-                          (alignSecondHeader && i === 1) ||
-                          (alignThirdHeader && i === 2) ||
-                          (alignForthHeader && i === 3) ||
-                          (alignFifthHeader && i === 4) ||
-                          (alignSixthHeader && i === 5) ||
-                          (alignSeventhHeader && i === 6)
-                        ? "start"
-                        : "center"
+                            (alignFirstHeader && i === 0) ||
+                            (alignSecondHeader && i === 1) ||
+                            (alignThirdHeader && i === 2) ||
+                            (alignForthHeader && i === 3) ||
+                            (alignFifthHeader && i === 4) ||
+                            (alignSixthHeader && i === 5) ||
+                            (alignSeventhHeader && i === 6)
+                          ? "start"
+                          : "center"
                     }
                     key={i}
                     pos="sticky"
@@ -140,7 +140,13 @@ const DefaultPagination = ({
 }) => {
   return (
     <Flex justifyContent="center" align="center" flexDir="column" w="full">
-      <Flex justifyContent="center" gap="32px" align="center" pb={5}>
+      <Flex
+        justifyContent="center"
+        flexDir={{ base: "column", md: "row" }}
+        gap="32px"
+        align="center"
+        pb={5}
+      >
         <Text fontSize="14px" color="#242628" lineHeight="100%">
           Showing rows {startRow} to {endRow} of {total}
         </Text>

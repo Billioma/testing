@@ -42,7 +42,13 @@ const DefaultPagination = ({
 }) => {
   return (
     <Flex justifyContent="center" align="center" flexDir="column" w="full">
-      <Flex justifyContent="center" gap="32px" align="center" pb={5}>
+      <Flex
+        flexDir={{ base: "column", md: "row" }}
+        justifyContent="center"
+        gap="32px"
+        align="center"
+        pb={5}
+      >
         <Text fontSize="14px" color="#242628" lineHeight="100%">
           Showing rows {startRow} to {endRow} of {total}
         </Text>

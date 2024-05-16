@@ -166,7 +166,9 @@ const LeaveDetails = () => {
                 textTransform="capitalize"
                 px="10px"
               >
-                {data?.status?.toLowerCase()}
+                {data?.status === "REJECTED"
+                  ? "Declined"
+                  : data?.status?.toLowerCase()}
               </Flex>
             </Flex>
 

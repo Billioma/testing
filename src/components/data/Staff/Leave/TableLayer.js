@@ -124,7 +124,9 @@ const TableLayer = ({
                           fontSize={{ base: "13px", md: "16px" }}
                           w="fit-content"
                         >
-                          {item?.status?.toLowerCase()}
+                          {item?.status === "REJECTED"
+                            ? "Declined"
+                            : item?.status?.toLowerCase()}
                         </Flex>
                       </Flex>
                     </Td>
