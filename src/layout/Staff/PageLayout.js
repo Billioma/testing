@@ -3,10 +3,11 @@ import { Box, Flex, Text, useMediaQuery } from "@chakra-ui/react";
 import SideBarr from "./SideBarr";
 import Header from "./Header";
 import SideBar from "./SideBar";
+import { useLocation } from "react-router-dom";
 
 export const AuthLayout = ({ children }) => {
   const [isMobile] = useMediaQuery("(max-width: 1226px)");
-
+  const { pathname } = useLocation();
   return (
     <Box
       color="#000"
@@ -19,6 +20,7 @@ export const AuthLayout = ({ children }) => {
     >
       <Box overflowX="hidden" h="full" className="no_scroller">
         <Box
+          display={pathname === "/staff/dashboard" ? "none" : "flex"}
           mx={isMobile ? "-40px" : "unset"}
           px={!isMobile ? "310px" : "20px"}
         >
@@ -28,7 +30,15 @@ export const AuthLayout = ({ children }) => {
 
         <Box
           w="100%"
-          pt={isMobile ? "100px" : "95px"}
+          pt={
+            isMobile
+              ? pathname === "/staff/dashboard"
+                ? ""
+                : "100px"
+              : pathname === "/staff/dashboard"
+                ? ""
+                : "95px"
+          }
           color="#090c02"
           pl={!isMobile ? "310px" : "0px"}
           pr={!isMobile ? "" : "0"}
