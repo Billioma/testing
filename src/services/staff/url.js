@@ -10,3 +10,4 @@ export const GET_USER = "staff/auth/profile";
 export const REQUEST_LEAVE = "staff/leave-request";
 export const LEAVE_BALANCE = "staff/leave-request/leave-balance";
 export const REFRESH_TOKEN = "/auth/refresh";
+export const UPDATE_LEAVE = (id = "") => `staff/leave-request/${id}`;

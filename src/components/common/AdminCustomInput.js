@@ -12,6 +12,7 @@ import { BsSearch } from "react-icons/bs";
 
 const CustomInput = ({
   value,
+  naira,
   values,
   reserve,
   opt,
@@ -88,6 +89,10 @@ const CustomInput = ({
         ) : reserve ? (
           <InputLeftElement cursor="pointer" h="40px">
             <BsSearch />
+          </InputLeftElement>
+        ) : naira ? (
+          <InputLeftElement fontSize="13px" cursor="pointer" h="44px">
+            ₦
           </InputLeftElement>
         ) : (
           ""

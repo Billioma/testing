@@ -28,9 +28,11 @@ const {
   LEAVE,
   REQUEST_LEAVE,
   LEAVE_DETAILS,
+  UPDATE_LEAVE,
   MEDICAL,
   REQUEST_MEDICAL,
   MEDICAL_DETAILS,
+  UPDATE_MED,
 
   // ADMIN
 
@@ -79,6 +81,9 @@ const Leave = WithSuspense(lazy(() => import("../pages/Staff/Leave/Leave")));
 const RequestLeave = WithSuspense(
   lazy(() => import("../pages/Staff/Leave/RequestLeave"))
 );
+const UpdateLeave = WithSuspense(
+  lazy(() => import("../pages/Staff/Leave/UpdateLeave"))
+);
 const LeaveDetails = WithSuspense(
   lazy(() => import("../pages/Staff/Leave/LeaveDetails"))
 );
@@ -87,6 +92,9 @@ const Medical = WithSuspense(
 );
 const RequestMedical = WithSuspense(
   lazy(() => import("../pages/Staff/Medical/RequestMedical"))
+);
+const UpdateMed = WithSuspense(
+  lazy(() => import("../pages/Staff/Medical/UpdateMed"))
 );
 const MedicalDetails = WithSuspense(
   lazy(() => import("../pages/Staff/Medical/MedicalDetails"))
@@ -199,6 +207,8 @@ export const PRIVATE_ROUTES = [
   { path: LEAVE_DETAILS, element: <LeaveDetails /> },
   { path: REQUEST_MEDICAL, element: <RequestMedical /> },
   { path: MEDICAL_DETAILS, element: <MedicalDetails /> },
+  { path: UPDATE_LEAVE, element: <UpdateLeave /> },
+  { path: UPDATE_MED, element: <UpdateMed /> },
 
   // ADMIN
   {

@@ -61,6 +61,8 @@ export const initAdminStaffValues = {
   jobTitle: "",
   secondaryResidentialAddress: "",
   driverLicenseNumber: "",
+  startDate: null,
+  monthlySalary: "",
   issueDate: null,
   expiryDate: null,
 };

@@ -13,7 +13,7 @@ import CustomInput from "../../../components/common/CustomInput";
 import { FileUploader } from "react-drag-drop-files";
 import { MdClose } from "react-icons/md";
 
-const RequestMedical = () => {
+const UpdateMed = () => {
   const [values, setValues] = useState({
     startDate: "",
     endDate: "",
@@ -132,7 +132,7 @@ const RequestMedical = () => {
         fontWeight={500}
         color="#090c02"
       >
-        Request Medical Assistance
+        Edit Medical Assistance
       </Text>
 
       <Box mt="40px" align="flex-start">
@@ -271,4 +271,4 @@ const RequestMedical = () => {
   );
 };
 
-export default RequestMedical;
+export default UpdateMed;

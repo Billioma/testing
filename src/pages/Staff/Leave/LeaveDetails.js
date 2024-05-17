@@ -1,14 +1,16 @@
 import React, { useEffect } from "react";
-import { Box, Flex, Image, Spinner, Text } from "@chakra-ui/react";
-import { useParams } from "react-router-dom";
+import { Box, Button, Flex, Image, Spinner, Text } from "@chakra-ui/react";
+import { useNavigate, useParams } from "react-router-dom";
 import { useGetLeave } from "../../../services/staff/query/leave";
 import { LeaveStatus } from "../../../components/common/constants";
 import { formatDate } from "../../../utils/helpers";
 
 const LeaveDetails = () => {
   const { id } = useParams();
-
-  const { data, isLoading, refetch } = useGetLeave(id);
+  const navigate = useNavigate();
+  const { data, isLoading, refetch } = useGetLeave(id, {
+    refetchOnWindowFocus: true,
+  });
 
   useEffect(() => {
     refetch();
@@ -228,6 +230,36 @@ const LeaveDetails = () => {
           >
             {data?.additionalComments}
           </Box>
+
+          <Flex
+            gap="24px"
+            display={data?.status === "PENDING" ? "flex" : "none"}
+            w="30%"
+            mt="24px"
+            align="center"
+          >
+            <Button
+              onClick={() => navigate(`/staff/leave-request/${id}/update`)}
+              bg="transparent"
+              border="1px solid #086375"
+              color="#086375"
+              borderRadius="8px"
+              h="60px"
+              w="full"
+            >
+              Edit
+            </Button>
+            <Button
+              color="#fff"
+              bg="#A11212"
+              variant="adminPrimary"
+              borderRadius="8px"
+              h="60px"
+              w="full"
+            >
+              Delete
+            </Button>
+          </Flex>
         </>
       )}
     </Box>

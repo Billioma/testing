@@ -23,9 +23,11 @@ export const PRIVATE_PATHS = {
   LEAVE: "/staff/leave",
   REQUEST_LEAVE: "/staff/leave/request",
   LEAVE_DETAILS: "/staff/leave-request/:id",
+  UPDATE_LEAVE: "/staff/leave-request/:id/update",
   MEDICAL: "/staff/medical-assistance",
   REQUEST_MEDICAL: "/staff/medical-assistance/request",
   MEDICAL_DETAILS: "/staff/medical-assistance/:id",
+  UPDATE_MED: "/staff/medical-assistance/:id/update",
 
   // ADMIN ROUTES
   ADMIN_DASHBOARD: "/admin/dashboard",

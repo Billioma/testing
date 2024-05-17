@@ -22,3 +22,8 @@ export const getLeaveDetails = async (id) => {
   const res = await axiosInstance.get(API.REQUEST_LEAVE + `/${id}`);
   return res.data;
 };
+
+export const updateLeave = async ({ query, body }) => {
+  const response = await axiosInstance.patch(API.UPDATE_LEAVE(query), body);
+  return response.data;
+};

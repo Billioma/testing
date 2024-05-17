@@ -64,7 +64,7 @@ const Leave = () => {
         <Flex minH="60vh" w="full" justifyContent="center" align="center">
           <Spinner />
         </Flex>
-      ) : userData?.isLeaveEligible ? (
+      ) : !userData?.isLeaveEligible ? (
         <Flex
           h="55vh"
           gap="49px"

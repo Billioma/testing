@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Flex, Text } from "@chakra-ui/layout";
 import { IoMdMenu } from "react-icons/io";
 import { Avatar, Image, useMediaQuery } from "@chakra-ui/react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import { useGetUser } from "../../services/staff/query/user";
 import { useLogOut } from "../../utils/helpers";
 import {
@@ -20,7 +20,6 @@ const Header = () => {
   const [title, setTitle] = useState("");
   const [icon, setIcon] = useState("");
   const [secTitle, setSecTitle] = useState("");
-
   const { pathname } = useLocation();
 
   useEffect(() => {
@@ -44,7 +43,8 @@ const Header = () => {
 
   const parts = pathname.split("/");
   const lastPart = parts[parts.length - 1];
-  const number = parseInt(lastPart, 10);
+  const prevPart = parts[parts.length - 2];
+  const number = parseInt(Number(prevPart) ? prevPart : lastPart, 10);
 
   useEffect(() => {
     switch (true) {
@@ -146,13 +146,13 @@ const Header = () => {
               </Flex>
               <Flex
                 gap="8px"
-                onClick={() => setShow(true)}
+                // onClick={() => setShow(true)}
                 border="1px solid #e2e5dc"
                 className="box"
                 rounded="full"
                 align="center"
                 color="#242628"
-                cursor="pointer"
+                // cursor="pointer"
                 p="12px"
               >
                 <Avatar w="20px" h="20px" rounded="full" />

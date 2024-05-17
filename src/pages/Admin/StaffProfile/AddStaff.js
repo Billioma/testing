@@ -23,6 +23,7 @@ import {
   useGetJobs,
 } from "../../../services/admin/query/configurations";
 import { useGetRoles } from "../../../services/admin/query/configurations";
+import { formatDate, formatNewDate } from "../../../utils/helpers";
 
 const AddStaff = () => {
   const [formSubmitted, setFormSubmitted] = useState(false);
@@ -439,6 +440,8 @@ const AddStaff = () => {
                         values?.staffId &&
                         values?.department &&
                         values?.role &&
+                        values?.monthlySalary &&
+                        values?.startDate &&
                         values?.jobTitle
                           ? "#0B841D"
                           : "#090C02"
@@ -514,6 +517,37 @@ const AddStaff = () => {
                               errors?.staffId
                             }
                           />
+                        </Box>
+
+                        <Box w="full" mb={4}>
+                          <Text
+                            mb="8px"
+                            fontSize="12px"
+                            fontWeight={500}
+                            color="#444648"
+                          >
+                            Start Date{" "}
+                            <span
+                              style={{
+                                color: "tomato",
+                                fontSize: "15px",
+                              }}
+                            >
+                              *
+                            </span>
+                          </Text>
+                          <DateTimePicker
+                            selectedDate={values?.startDate}
+                            onChange={(date) => {
+                              setValues({ ...values, startDate: date });
+                            }}
+                          />
+
+                          {formSubmitted && !values?.startDate && (
+                            <Text mt="8px" fontSize="12px" color="tomato">
+                              Start Date is required
+                            </Text>
+                          )}
                         </Box>
 
                         <Box w="full" mb={4}>
@@ -672,6 +706,45 @@ const AddStaff = () => {
                               Role is required
                             </Text>
                           )}
+                        </Box>
+
+                        <Box
+                          w="full"
+                          mb={4}
+                          pb="24px"
+                          borderBottom="1px solid #E4E6E8"
+                        >
+                          <Text
+                            mb="8px"
+                            fontSize="12px"
+                            fontWeight={500}
+                            color="#444648"
+                          >
+                            Net Monthly Salary{" "}
+                            <span
+                              style={{
+                                color: "tomato",
+                                fontSize: "15px",
+                              }}
+                            >
+                              *
+                            </span>
+                          </Text>
+                          <AdminCustomInput
+                            auth
+                            mb
+                            naira
+                            type="number"
+                            holder="Enter Net Monthly Salary"
+                            name="monthlySalary"
+                            value={values?.monthlySalary}
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            error={
+                              (formSubmitted || touched?.monthlySalary) &&
+                              errors?.monthlySalary
+                            }
+                          />
                         </Box>
                       </>
                     )}

@@ -8,13 +8,15 @@ import { Calendar } from "react-multi-date-picker";
 import { Button, Skeleton } from "@chakra-ui/react";
 import { formatDate, convertDate } from "../../../utils/helpers";
 import useCustomToast from "../../../utils/notifications";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import {
   useGetLeaveBalance,
-  useRequestLeave,
+  useGetLeave,
+  useUpdateLeave,
 } from "../../../services/staff/query/leave";
 
-const RequestLeave = () => {
+const UpdateLeave = () => {
+  const { id } = useParams();
   const [values, setValues] = useState({
     startDate: "",
     endDate: "",
@@ -86,10 +88,10 @@ const RequestLeave = () => {
 
   const { errorToast, successToast } = useCustomToast();
   const navigate = useNavigate();
-  const { mutate, isLoading } = useRequestLeave({
+  const { mutate, isLoading } = useUpdateLeave({
     onSuccess: (res) => {
       successToast(res?.message);
-      navigate("/staff/leave");
+      navigate(`/staff/leave-request/${id}`);
     },
     onError: (err) => {
       errorToast(
@@ -98,12 +100,36 @@ const RequestLeave = () => {
     },
   });
 
+  const { data } = useGetLeave(id);
+
+  useEffect(() => {
+    if (data) {
+      const selectedPurpose = purposesOptions?.find(
+        (option) => option.value === data?.purpose
+      );
+      setValues({
+        ...values,
+        startDate: data?.startDate,
+        endDate: data?.endDate,
+        additionalComments: data?.additionalComments,
+        purpose: selectedPurpose,
+      });
+
+      const startDate = new Date(data?.startDate);
+      const endDate = new Date(data?.endDate);
+      setDates([startDate, endDate]);
+    }
+  }, [data]);
+
   const handleSubmit = () => {
     mutate({
-      startDate: convertDate(new Date(dates[0])),
-      endDate: convertDate(new Date(dates[1])),
-      purpose: values?.purpose?.value,
-      additionalComments: values?.additionalComments,
+      query: id,
+      body: {
+        startDate: convertDate(new Date(dates[0])),
+        endDate: convertDate(new Date(dates[1])),
+        purpose: values?.purpose?.value,
+        additionalComments: values?.additionalComments,
+      },
     });
   };
 
@@ -114,7 +140,7 @@ const RequestLeave = () => {
         fontWeight={500}
         color="#090c02"
       >
-        Request Leave
+        Edit Leave Request
       </Text>
 
       <Flex
@@ -265,4 +291,4 @@ const RequestLeave = () => {
   );
 };
 
-export default RequestLeave;
+export default UpdateLeave;

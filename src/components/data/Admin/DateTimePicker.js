@@ -1,9 +1,17 @@
 import React from "react";
-import { Box, Button, Flex, Icon, useDisclosure } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Flex,
+  Icon,
+  Select,
+  useDisclosure,
+} from "@chakra-ui/react";
 import { CalendarIcon } from "@chakra-ui/icons";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { formatNewDate } from "../../../utils/helpers";
+import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 
 const DateTimePicker = ({
   onChange,
@@ -30,14 +38,78 @@ const DateTimePicker = ({
         timeCaption="Time"
         dateFormat="MMMM d, yyyy h:mm aa"
         popperPlacement="bottom-end"
-        popperModifiers={{
-          flip: {
-            enabled: false,
-          },
-          preventOverflow: {
+        popperModifiers={[
+          {
+            name: "flip",
             enabled: true,
           },
-        }}
+          {
+            name: "preventOverflow",
+            options: {
+              boundary: "viewport",
+            },
+          },
+        ]}
+        showMonthDropdown
+        showYearDropdown
+        showMonthYearDropdown
+        renderCustomHeader={({
+          date,
+          changeYear,
+          changeMonth,
+          decreaseMonth,
+          increaseMonth,
+          prevMonthButtonDisabled,
+          nextMonthButtonDisabled,
+        }) => (
+          <Flex justifyContent="space-between" px="10px">
+            <IoIosArrowBack
+              size="18px"
+              cursor={prevMonthButtonDisabled ? "" : "pointer"}
+              onClick={() => (prevMonthButtonDisabled ? "" : decreaseMonth())}
+            />
+
+            <Select
+              bg="transparent"
+              h="20px"
+              // icon=""
+              fontSize="14px"
+              w="fit-content"
+              cursor="pointer"
+              value={date.getMonth()}
+              onChange={({ target: { value } }) => changeMonth(value)}
+            >
+              {Array.from({ length: 12 }, (_, i) => (
+                <option key={i} value={i}>
+                  {new Date(0, i).toLocaleString("en", { month: "long" })}
+                </option>
+              ))}
+            </Select>
+
+            <Select
+              bg="transparent"
+              h="20px"
+              // icon=""
+              fontSize="14px"
+              w="fit-content"
+              cursor="pointer"
+              value={date.getFullYear()}
+              onChange={({ target: { value } }) => changeYear(value)}
+            >
+              {Array.from({ length: 300 }, (_, i) => (
+                <option key={i} value={i + 1900}>
+                  {i + 1900}
+                </option>
+              ))}
+            </Select>
+
+            <IoIosArrowForward
+              size="18px"
+              cursor={nextMonthButtonDisabled ? "" : "pointer"}
+              onClick={() => (nextMonthButtonDisabled ? "" : increaseMonth())}
+            />
+          </Flex>
+        )}
         customInput={
           <Box
             as={Button}

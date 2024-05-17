@@ -1,7 +1,7 @@
 import { Box, Button, Flex, Image, Text } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
-import CustomInput from "../../../common/CustomInput";
-import { formatNewDate } from "../../../../utils/helpers";
+import CustomInput from "../../../common/AdminCustomInput";
+import { formatDate } from "../../../../utils/helpers";
 import {
   useEditStaff,
   useGetStaffs,
@@ -25,6 +25,7 @@ export const Layout = ({
   holder,
   dis,
   options,
+  naira,
   date,
   onChange,
   select,
@@ -83,6 +84,7 @@ export const Layout = ({
         ) : (
           <CustomInput
             ngn={type === "number"}
+            naira={naira}
             dis={dis}
             auth
             type={type}
@@ -111,7 +113,9 @@ const GeneralInfo = ({ data, refetch, id }) => {
     role: "",
     jobTitle: "",
     dateOfBirth: new Date(),
+    startDate: new Date(),
     nextOfKin: "",
+    monthlySalary: "",
     guarantor1: "",
     guarantor1Phone: "",
     guarantor1Address: "",
@@ -191,10 +195,12 @@ const GeneralInfo = ({ data, refetch, id }) => {
       guarantor2Address: data?.guarantor2Address,
       dateOfBirth: data?.dateOfBirth,
       issueDate: data?.issueDate,
+      startDate: data?.startDate,
       expiryDate: data?.expiryDate,
       driverLicenseNumber: data?.driverLicenseNumber,
       lineManager: selectedStaffOption,
       nextOfKin: data?.nextOfKin,
+      monthlySalary: data?.monthlySalary,
       nextOfKinAddress: data?.nextOfKinAddress,
       nextOfKinPhone: data?.nextOfKinPhone?.replace("+234", ""),
       staffId: data?.staffId,
@@ -285,8 +291,8 @@ const GeneralInfo = ({ data, refetch, id }) => {
               !ids && !form
                 ? (setForm(true), setIds("personal"))
                 : ids !== "personal" && form
-                ? setIds("personal")
-                : setForm((prev) => !prev);
+                  ? setIds("personal")
+                  : setForm((prev) => !prev);
             }}
             display={form && ids === "personal" ? "none" : "flex"}
             cursor="pointer"
@@ -347,7 +353,7 @@ const GeneralInfo = ({ data, refetch, id }) => {
             dis
             form={form && ids === "personal"}
             label="DATE OF BIRTH"
-            data={formatNewDate(values?.dateOfBirth)}
+            data={formatDate(values?.dateOfBirth)}
             onChange={(e) => handleChange("dateOfBirth", e.target.value)}
           />
 
@@ -412,8 +418,8 @@ const GeneralInfo = ({ data, refetch, id }) => {
               !ids && !form
                 ? (setForm(true), setIds("company"))
                 : ids !== "company" && form
-                ? setIds("company")
-                : setForm((prev) => !prev);
+                  ? setIds("company")
+                  : setForm((prev) => !prev);
             }}
             display={form && ids === "company" ? "none" : "flex"}
             cursor="pointer"
@@ -432,11 +438,28 @@ const GeneralInfo = ({ data, refetch, id }) => {
           />
           <Layout
             form={form && ids === "company"}
+            label="START DATE"
+            date
+            data={
+              form && ids === "company"
+                ? values?.startDate
+                : formatDate(values?.startDate)
+            }
+            onChange={(date) => {
+              setValues({ ...values, startDate: date });
+            }}
+          />
+          <Layout
+            form={form && ids === "company"}
             label="DEPARTMENT"
             select
             options={deptsOptions}
             holder="Select department"
-            data={form ? values?.department : values?.department?.label}
+            data={
+              form && ids === "company"
+                ? values?.department
+                : values?.department?.label
+            }
             onChange={(selectedOption) =>
               handleChange("department", selectedOption)
             }
@@ -444,7 +467,11 @@ const GeneralInfo = ({ data, refetch, id }) => {
           <Layout
             label="JOB TITLE"
             select
-            data={form ? values?.jobTitle : values?.jobTitle?.label}
+            data={
+              form && ids === "company"
+                ? values?.jobTitle
+                : values?.jobTitle?.label
+            }
             options={jobsOptions}
             form={form && ids === "company"}
             holder="Select job title"
@@ -461,6 +488,18 @@ const GeneralInfo = ({ data, refetch, id }) => {
             holder="Select role"
             data={form ? values?.role : values?.role?.label}
             onChange={(selectedOption) => handleChange("role", selectedOption)}
+          />
+
+          <Layout
+            label="NET MONTHLY SALARY"
+            naira
+            data={
+              form
+                ? values?.monthlySalary
+                : `₦ ${(values?.monthlySalary)?.toLocaleString() || "0"}`
+            }
+            form={form && ids === "company"}
+            onChange={(e) => handleChange("monthlySalary", e.target.value)}
           />
 
           <Flex mt="4px" align="center" gap="12px">
@@ -544,8 +583,8 @@ const GeneralInfo = ({ data, refetch, id }) => {
               !ids && !form
                 ? (setForm(true), setIds("kin"))
                 : ids !== "kin" && form
-                ? setIds("kin")
-                : setForm((prev) => !prev);
+                  ? setIds("kin")
+                  : setForm((prev) => !prev);
             }}
             display={form && ids === "kin" ? "none" : "flex"}
             cursor="pointer"
@@ -564,7 +603,7 @@ const GeneralInfo = ({ data, refetch, id }) => {
           <Layout
             form={form && ids === "kin"}
             label="PHONE NUMBER"
-            data={form ? values?.nextOfKinPhone : data?.nextOfKinPhone}
+            data={values?.nextOfKinPhone}
             type="number"
             onChange={(e) => handleChange("nextOfKinPhone", e.target.value)}
           />
@@ -637,8 +676,8 @@ const GeneralInfo = ({ data, refetch, id }) => {
               !ids && !form
                 ? (setForm(true), setIds("guarantor"))
                 : ids !== "guarantor" && form
-                ? setIds("guarantor")
-                : setForm((prev) => !prev);
+                  ? setIds("guarantor")
+                  : setForm((prev) => !prev);
             }}
             display={form && ids === "guarantor" ? "none" : "flex"}
             cursor="pointer"
@@ -660,7 +699,7 @@ const GeneralInfo = ({ data, refetch, id }) => {
           <Layout
             form={form && ids === "guarantor"}
             label="PHONE NUMBER"
-            data={form ? values?.guarantor1Phone : data?.guarantor1Phone}
+            data={values?.guarantor1Phone}
             type="number"
             onChange={(e) => handleChange("guarantor1Phone", e.target.value)}
           />
@@ -756,8 +795,8 @@ const GeneralInfo = ({ data, refetch, id }) => {
               !ids && !form
                 ? (setForm(true), setIds("license"))
                 : ids !== "license" && form
-                ? setIds("license")
-                : setForm((prev) => !prev);
+                  ? setIds("license")
+                  : setForm((prev) => !prev);
             }}
             display={form && ids === "license" ? "none" : "flex"}
             cursor="pointer"
@@ -770,7 +809,7 @@ const GeneralInfo = ({ data, refetch, id }) => {
           <Layout
             label="LICENSE NUMBER"
             data={values?.driverLicenseNumber}
-            form={form && ids === "license"}
+            form={form && ids === "license" && ids === "license"}
             onChange={(e) =>
               handleChange("driverLicenseNumber", e.target.value)
             }
@@ -779,7 +818,11 @@ const GeneralInfo = ({ data, refetch, id }) => {
             form={form && ids === "license"}
             label="ISSUE DATE"
             date
-            data={form ? values?.issueDate : formatNewDate(values?.issueDate)}
+            data={
+              form && ids === "license"
+                ? values?.issueDate
+                : formatDate(values?.issueDate)
+            }
             onChange={(date) => {
               setValues({ ...values, issueDate: date });
             }}
@@ -788,7 +831,11 @@ const GeneralInfo = ({ data, refetch, id }) => {
             form={form && ids === "license"}
             label="EXPIRY DATE"
             date
-            data={form ? values?.expiryDate : formatNewDate(values?.expiryDate)}
+            data={
+              form && ids === "license"
+                ? values?.expiryDate
+                : formatDate(values?.expiryDate)
+            }
             onChange={(date) => {
               setValues({ ...values, expiryDate: date });
             }}

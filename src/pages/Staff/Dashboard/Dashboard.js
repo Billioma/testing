@@ -207,7 +207,7 @@ const Dashboard = () => {
                 mt="24px"
                 w="fit-content"
                 cursor="pointer"
-                onClick={() => navigate("/staff/loan/request")}
+                onClick={() => navigate("/staff/loans/request")}
                 align="center"
                 gap="4px"
               >
