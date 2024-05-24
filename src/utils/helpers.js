@@ -2,7 +2,6 @@ export const useLogOut = () => {
   return () => {
     const clearAndRedirect = (path) => {
       localStorage.removeItem(path);
-      sessionStorage.removeItem("staff");
       window.location.href = `/${path}/auth/login`;
     };
 

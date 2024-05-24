@@ -10,7 +10,7 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { MdClose } from "react-icons/md";
-import { rating, ratings } from "../common/constants";
+import { ratings, ratingsText } from "../common/constants";
 import { useNavigate } from "react-router-dom";
 
 const RatingsModal = ({
@@ -25,7 +25,7 @@ const RatingsModal = ({
     if (step !== 2) {
       setStep(step + 1);
     }
-    setRatingsValue({ ...ratingsValue, rating: index + 1 });
+    setRatingsValue({ ...ratingsValue, rating: index + 1, ratingReason: "" });
   };
   const [step, setStep] = useState(1);
 
@@ -146,10 +146,16 @@ const RatingsModal = ({
                       w={ratingsValue?.rating === i + 1 ? "30px" : "24px"}
                       h={ratingsValue?.rating === i + 1 ? "30px" : "24px"}
                       cursor="pointer"
-                      onClick={() => handleStarClick(i)}
+                      onClick={() => {
+                        handleStarClick(i);
+                      }}
                     />
                   ))}
               </Flex>
+              <Text mt="22px" mb="18px" color="#242628" fontSize="12px">
+                What factors had the biggest impact on your rating of this
+                service?
+              </Text>
 
               <Flex
                 mt="14px"
@@ -160,35 +166,37 @@ const RatingsModal = ({
                 justifyContent="center"
               >
                 {ratingsValue?.rating
-                  ? rating.map((item) => (
-                      <Flex
-                        border="1px solid #D4D6D8"
-                        bg={
-                          picked && ratingsValue?.ratingReason === item
-                            ? "#EE383A"
-                            : "transparent"
-                        }
-                        color={
-                          picked && ratingsValue?.ratingReason === item
-                            ? "#fff"
-                            : "#242628"
-                        }
-                        rounded="full"
-                        py="8px"
-                        px="16px"
-                        cursor="pointer"
-                        onClick={() => {
-                          setPicked(true);
-                          setRatingsValue({
-                            ...ratingsValue,
-                            ratingReason: item,
-                          });
-                        }}
-                        fontSize="12px"
-                      >
-                        {item}
-                      </Flex>
-                    ))
+                  ? Object.values(ratingsText[ratingsValue.rating - 1]).map(
+                      (item, index) => (
+                        <Flex
+                          border="1px solid #D4D6D8"
+                          bg={
+                            picked && ratingsValue?.ratingReason === item
+                              ? "#EE383A"
+                              : "transparent"
+                          }
+                          color={
+                            picked && ratingsValue?.ratingReason === item
+                              ? "#fff"
+                              : "#242628"
+                          }
+                          rounded="full"
+                          py="8px"
+                          px="16px"
+                          cursor="pointer"
+                          onClick={() => {
+                            setPicked(true);
+                            setRatingsValue({
+                              ...ratingsValue,
+                              ratingReason: item,
+                            });
+                          }}
+                          fontSize="12px"
+                        >
+                          {item}
+                        </Flex>
+                      )
+                    )
                   : ""}
               </Flex>
 

@@ -8,12 +8,7 @@ import {
   FeedbackIcon,
   HelpIcon,
   HistoryIcon,
-  LeaveMgtIcon,
-  LoanIcon,
   LocateIcon,
-  MedicalIcon,
-  StaffProfileIcon,
-  StaffScheduleIcon,
   SubscriptionIcon,
   VehicleIcon,
 } from "./images";
@@ -37,57 +32,6 @@ import { AiOutlineEdit } from "react-icons/ai";
 import { TbListDetails, TbCalendarEvent } from "react-icons/tb";
 import { HiOutlineInformationCircle } from "react-icons/hi";
 import { FiEdit } from "react-icons/fi";
-
-export const staffSidebar = [
-  {
-    id: 0,
-    name: "Dashboard",
-    path: "/admin/dashboard",
-    icon: <AdminDashboardIcon fill={"#fff"} stroke="#000" />,
-    hover: <AdminDashboardIcon fill="#fff" stroke="#EE383A" />,
-    sec: <AdminDashboardIcon fill="#EE383A" stroke="#fff" />,
-  },
-  {
-    id: 1,
-    name: "Profiles",
-    path: "/admin/staff-profiles",
-    icon: <StaffProfileIcon fill={"#000"} />,
-    hover: <StaffProfileIcon fill="#EE383A" />,
-    sec: <StaffProfileIcon fill="#fff" />,
-  },
-  {
-    id: 2,
-    name: "Loans",
-    path: "/admin/loans",
-    icon: <LoanIcon fill={"#000"} />,
-    hover: <LoanIcon fill="#EE383A" />,
-    sec: <LoanIcon fill="#fff" />,
-  },
-  {
-    id: 3,
-    name: "Leave",
-    path: "/admin/leave-mgt",
-    icon: <LeaveMgtIcon fill={"#000"} />,
-    hover: <LeaveMgtIcon fill="#EE383A" />,
-    sec: <LeaveMgtIcon fill="#fff" />,
-  },
-  {
-    id: 4,
-    name: "Medical",
-    path: "/admin/medical-assistance",
-    icon: <MedicalIcon fill={"#000"} />,
-    hover: <MedicalIcon fill="#EE383A" />,
-    sec: <MedicalIcon fill="#fff" />,
-  },
-  {
-    id: 5,
-    name: "Schedule",
-    path: "/admin/staff-schedule",
-    icon: <StaffScheduleIcon fill={"#000"} />,
-    hover: <StaffScheduleIcon fill="#EE383A" />,
-    sec: <StaffScheduleIcon fill="#fff" />,
-  },
-];
 
 export const sidebarItems = [
   {
@@ -1313,20 +1257,40 @@ export const SecStatus = [
   { color: "#F9A11E", name: "Pending", bg: "#FDF6E7" },
 ];
 
-export const LeaveStatus = [
-  { color: "#DB0101", name: "Rejected", bg: "#F09898", border: "#DB0101" },
-  { color: "#0B841D", name: "Approved", bg: "#E5FFE5", border: "#BAE0D9" },
-  { color: "#0B841D", name: "Completed", bg: "#E5FFE5", border: "#BAE0D9" },
-  { color: "#0B841D", name: "Active", bg: "#E5FFE5", border: "#BAE0D9" },
-  { color: "#F9A11E", name: "Pending", bg: "#FCF2C4", border: "#F6DC52" },
-];
-
 export const ratings = [
   { img: "/assets/1.jpg", label: "Poor!" },
   { img: "/assets/2.jpg", label: "Fair!" },
   { img: "/assets/3.jpg", label: "Okay!" },
   { img: "/assets/4.jpg", label: "Good!" },
   { img: "/assets/5.jpg", label: "Excellent!" },
+];
+
+export const ratingsText = [
+  {
+    0: "Very Bad",
+    1: "Terrible",
+    2: "Difficult to Navigate/Encountered Some Difficulty",
+  },
+  {
+    0: "Bad",
+    1: "Not Good",
+    2: "Slow",
+  },
+  {
+    0: "Satisfactory",
+    1: "Okay",
+    2: "Fast",
+  },
+  {
+    0: "Good",
+    1: "Easy to Navigate",
+    2: "Impressive",
+  },
+  {
+    0: "Very Good",
+    1: "Excellent",
+    2: "Great Service",
+  },
 ];
 
 export const ReservedStatus = ["Pending", "Completed", "Cancelled"];
@@ -1440,15 +1404,6 @@ export const clientInvoiceListOption = [
   },
 ];
 
-export const staffDetailsTab = [
-  "General Information",
-  "Employee Documents",
-  "Schedule",
-  "Loan History",
-  "Leave History",
-  "Medical Assistance",
-];
-
 export const viewDeleteOption = [
   {
     name: "View",
@@ -1479,13 +1434,6 @@ export const accountType = ["VALET", "PARKING", "GENERAL", "SERVICE"];
 export const statusType = ["Inactive", "Active"];
 export const newStatusType = ["Inactive", "Active", "Pending"];
 export const invoiceStatusType = ["Unpaid", "Paid", "Pending"];
-export const leaveStatusType = [
-  { name: "Declined", value: "REJECTED" },
-  { name: "Approved", value: "APPROVED" },
-  { name: "Completed", value: "COMPLETED" },
-  { name: "Active", value: "ACTIVE" },
-  { name: "Pending", value: "PENDING" },
-];
 
 export const eventOptions = ["Edit Event", "Delete Event"];
 
@@ -2093,21 +2041,6 @@ export const locationsOptions = [
   { label: "Created At", value: "createdAt" },
 ];
 
-export const staffOptions = [
-  { label: "Staff ID", value: "staffId" },
-  { label: "Full Name", value: "fullName" },
-  { label: "Created At", value: "createdAt" },
-];
-
-export const leaveOptions = [
-  { label: "Staff ID", value: "staff.id" },
-  { label: "Staff Name", value: "staff.fullName" },
-  { label: "Start Date", value: "startDate" },
-  { label: "End Date", value: "endDate" },
-  { label: "Leave Status", value: "status" },
-  { label: "Created At", value: "createdAt" },
-];
-
 export const valetedVehiclesOptions = [
   { label: "Ticket Number", value: "ticketNumber" },
   { label: "License Plate", value: "vehicle.licensePlate" },
@@ -2187,21 +2120,6 @@ export const vehiclesOptions = [
   { label: "Model", value: "model.name" },
   { label: "Created By", value: "createdBy" },
   { label: "Created At", value: "createdAt" },
-];
-
-export const rating = [
-  "Good",
-  "Bad",
-  "Fast",
-  "Slow",
-  "Convenient",
-  "Satisfactory",
-  "Impressive",
-  "Easy to Navigate",
-  "Great Service",
-  "Difficult to Navigate",
-  "Terrible Service",
-  "Encountered Some Difficulty",
 ];
 
 export const feedbackOptions = [

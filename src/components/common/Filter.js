@@ -22,7 +22,6 @@ import {
   LogsStatus,
   FeatureType,
   PaymentMethods,
-  leaveStatusType,
 } from "./constants";
 import {
   useGetMakes,
@@ -227,11 +226,6 @@ const Filter = ({
   const payStatusOptions = invoiceStatusType?.map((status, i) => ({
     value: i,
     label: status,
-  }));
-
-  const leaveStatusOptions = leaveStatusType?.map((status) => ({
-    value: status?.value,
-    label: status?.name,
   }));
 
   const servicesOptions = ["VALET", "PARKING", "SERVICE", "OTHERS"].map(
@@ -538,7 +532,6 @@ const Filter = ({
                     values?.dropFilter === "Status" ||
                     values?.dropFilter === "Payment Status" ||
                     values?.dropFilter === "Make" ||
-                    values?.dropFilter === "Leave Status" ||
                     values?.dropFilter === "Model" ||
                     values?.dropFilter?.includes("State") ||
                     values?.dropFilter?.includes("Payment_Method") ||
@@ -611,8 +604,6 @@ const Filter = ({
                                 ? statusOptions
                                 : values?.dropFilter === "Payment Status"
                                 ? payStatusOptions
-                                : values?.dropFilter === "Leave Status"
-                                ? leaveStatusOptions
                                 : searchOptions
                             }
                             value={selectedFilter}
@@ -767,10 +758,6 @@ const Filter = ({
                     ? formatDate(dat?.lte)
                     : dat?.dropFilter === "Payment Type"
                     ? PaymentMethods?.find((item, i) => i === dat?.filter)
-                    : dat?.dropFilter === "Leave Status"
-                    ? leaveStatusType?.find(
-                        (item) => item.value === dat?.filter
-                      ).name
                     : dat?.dropFilter === "Payment_Method"
                     ? PaymentMethods?.find((item, i) => i === dat?.filter)
                     : dat?.title === "paymentMethod"

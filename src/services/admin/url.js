@@ -285,25 +285,11 @@ export const GET_ADMIN_TRAN = (filterString = "", limit = "", page = "") =>
 
 export const GET_TRAN = "admin/transactions";
 
-export const STAFFS = "/admin/staff";
-export const REQUEST_LEAVE = "admin/leave-request";
-export const STAFF_LIST = (filterString = "", limit = "", page = "") =>
-  `admin/staff?${filterString}&limit=${limit}&page=${page}&sort=createdAt,DESC`;
-export const STAFF = (id = "") => `admin/staff/${id}`;
-export const UPDATE_EMPLOYEE_DOC = (id = "") =>
-  `admin/employee-documents/${id}`;
-export const APPROVE_LICENSE = (id = "") =>
-  `admin/staff/approve-driver-license/${id}`;
-export const EMPLOYEE_DOC = "admin/employee-documents";
-
 export const ADMIN_RATES = "admin/rates";
 export const ADMIN_RATES_LIST = (filterString = "", limit = "", page = "") =>
   `admin/rates?${filterString}&limit=${limit}&page=${page}&sort=createdAt,DESC`;
 
 export const ADMIN_RATE = (id = "") => `admin/rates/${id}`;
-export const APPROVE_LEAVE = (id = "") => `admin/leave-request/approve/${id}`;
-export const REJECT_LEAVE = (id = "") => `admin/leave-request/reject/${id}`;
-
 export const ADMIN_AMENITIES_LIST = (
   filterString = "",
   limit = "",

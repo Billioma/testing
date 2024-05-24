@@ -176,14 +176,6 @@ const {
   ADMIN_CLIENTS,
   ADMIN_ADD_CLIENT,
   ADMIN_VIEW_CLIENT,
-
-  ADMIN_STAFF_PROFILE,
-  ADMIN_LOAN,
-  ADMIN_LOAN_DETAILS,
-  ADMIN_LEAVE_MGT,
-  ADMIN_MEDICAL_ASSISTANCE,
-  ADMIN_MEDICAL_ASSISTANCE_DETAILS,
-  ADMIN_STAFF_SCHEDULE,
 } = PRIVATE_PATHS;
 
 //CUSTOMER PAGES
@@ -945,46 +937,6 @@ const AdminConfigQrCode = WithSuspense(
   lazy(() => import("../pages/Admin/Configurations/QrCode"))
 );
 
-const AdminStaffProfile = WithSuspense(
-  lazy(() => import("../pages/Admin/StaffProfile/StaffProfile"))
-);
-
-const AdminAddStaffProfile = WithSuspense(
-  lazy(() => import("../pages/Admin/StaffProfile/AddStaff"))
-);
-
-const AdminAddStaffProfileDetails = WithSuspense(
-  lazy(() => import("../pages/Admin/StaffProfile/StaffProfileDetails"))
-);
-
-const AdminLoan = WithSuspense(
-  lazy(() => import("../pages/Admin/Loans/Loans"))
-);
-
-const AdminLoanDetails = WithSuspense(
-  lazy(() => import("../pages/Admin/Loans/LoanDetails"))
-);
-
-const AdminLeaveMgt = WithSuspense(
-  lazy(() => import("../pages/Admin/LeaveMgt/LeaveMgt"))
-);
-
-const AdminLeaveMgtDetails = WithSuspense(
-  lazy(() => import("../pages/Admin/LeaveMgt/LeaveMgtDetails"))
-);
-
-const AdminMedicalAssistance = WithSuspense(
-  lazy(() => import("../pages/Admin/MedicalAssistance/MedicalAssistance"))
-);
-
-const AdminMedicalAssistanceDetails = WithSuspense(
-  lazy(() => import("../pages/Admin/MedicalAssistance/MedDetails"))
-);
-
-const AdminStaffSchedule = WithSuspense(
-  lazy(() => import("../pages/Admin/StaffSchedule/StaffSchedule"))
-);
-
 export const PUBLIC_ROUTES = [
   //CUSTOMER ROUTES
   { path: CUST_LOGIN, element: <CustLogin /> },
@@ -1325,55 +1277,6 @@ export const PRIVATE_ROUTES = [
     element: <AdminRateFeedback />,
   },
 
-  {
-    path: ADMIN_STAFF_PROFILE,
-    element: <AdminStaffProfile />,
-  },
-
-  {
-    path: PRIVATE_PATHS.ADMIN_ADD_STAFF,
-    element: <AdminAddStaffProfile />,
-  },
-
-  {
-    path: PRIVATE_PATHS.ADMIN_STAFF_PROFILE_DETAILS,
-    element: <AdminAddStaffProfileDetails />,
-  },
-
-  {
-    path: ADMIN_LEAVE_MGT,
-    element: <AdminLeaveMgt />,
-  },
-
-  {
-    path: PRIVATE_PATHS.ADMIN_LEAVE_MGT_DEETAILS,
-    element: <AdminLeaveMgtDetails />,
-  },
-
-  {
-    path: ADMIN_LOAN,
-    element: <AdminLoan />,
-  },
-
-  {
-    path: ADMIN_LOAN_DETAILS,
-    element: <AdminLoanDetails />,
-  },
-
-  {
-    path: ADMIN_MEDICAL_ASSISTANCE,
-    element: <AdminMedicalAssistance />,
-  },
-
-  {
-    path: ADMIN_MEDICAL_ASSISTANCE_DETAILS,
-    element: <AdminMedicalAssistanceDetails />,
-  },
-
-  {
-    path: ADMIN_STAFF_SCHEDULE,
-    element: <AdminStaffSchedule />,
-  },
   {
     path: PRIVATE_PATHS.ADMIN_VIEW_FEEDBACK,
     element: <AdminViewFeedback />,

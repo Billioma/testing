@@ -10,7 +10,7 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { MdClose } from "react-icons/md";
-import { rating, ratings } from "../common/constants";
+import { ratings, ratingsText } from "../common/constants";
 import { useNavigate } from "react-router-dom";
 
 const RatingsDrawer = ({
@@ -168,35 +168,37 @@ const RatingsDrawer = ({
                 justifyContent="center"
               >
                 {ratingsValue?.rating
-                  ? rating.map((item) => (
-                      <Flex
-                        border="1px solid #D4D6D8"
-                        bg={
-                          picked && ratingsValue?.ratingReason === item
-                            ? "#EE383A"
-                            : "transparent"
-                        }
-                        color={
-                          picked && ratingsValue?.ratingReason === item
-                            ? "#fff"
-                            : "#242628"
-                        }
-                        rounded="full"
-                        py="8px"
-                        px="16px"
-                        cursor="pointer"
-                        onClick={() => {
-                          setPicked(true);
-                          setRatingsValue({
-                            ...ratingsValue,
-                            ratingReason: item,
-                          });
-                        }}
-                        fontSize="12px"
-                      >
-                        {item}
-                      </Flex>
-                    ))
+                  ? Object.values(ratingsText[ratingsValue.rating - 1]).map(
+                      (item, index) => (
+                        <Flex
+                          border="1px solid #D4D6D8"
+                          bg={
+                            picked && ratingsValue?.ratingReason === item
+                              ? "#EE383A"
+                              : "transparent"
+                          }
+                          color={
+                            picked && ratingsValue?.ratingReason === item
+                              ? "#fff"
+                              : "#242628"
+                          }
+                          rounded="full"
+                          py="8px"
+                          px="16px"
+                          cursor="pointer"
+                          onClick={() => {
+                            setPicked(true);
+                            setRatingsValue({
+                              ...ratingsValue,
+                              ratingReason: item,
+                            });
+                          }}
+                          fontSize="12px"
+                        >
+                          {item}
+                        </Flex>
+                      )
+                    )
                   : ""}
               </Flex>
 

@@ -3,6 +3,7 @@ import React from "react";
 
 const Footer = ({ showSidebar }) => {
   const [isMobile] = useMediaQuery("(max-width: 991px)");
+  const today = new Date();
   return (
     <Box
       pos="fixed"
@@ -34,7 +35,7 @@ const Footer = ({ showSidebar }) => {
 
         <Box>
           <Text fontSize="14px" color="#000" lineHeight="100%">
-            © 2023 EZPark Limited
+            © {today.getFullYear()} EZPark Limited
           </Text>
         </Box>
       </Flex>

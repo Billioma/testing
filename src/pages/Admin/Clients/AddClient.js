@@ -7,7 +7,7 @@ import {
   Image,
   Spinner,
   Input,
-} from "@chakra-ui/react"; 
+} from "@chakra-ui/react";
 import CustomInput from "../../../components/common/CustomInput";
 import { useNavigate } from "react-router-dom";
 import { PRIVATE_PATHS } from "../../../routes/constants";

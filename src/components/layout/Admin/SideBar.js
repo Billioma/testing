@@ -1,11 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Box, Flex, Text, VStack, Collapse, Image } from "@chakra-ui/react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { ChevronDownIcon, ChevronRightIcon } from "@chakra-ui/icons";
-import { IoIosArrowUp, IoIosArrowDown } from "react-icons/io";
-import { sidebarItems, staffSidebar } from "../../common/constants";
+import { sidebarItems } from "../../common/constants";
 import { FiChevronsLeft } from "react-icons/fi";
-import { useGetProfile } from "../../../services/admin/query/auth";
 
 const SideBar = ({ show, setShow }) => {
   const { pathname } = useLocation();
@@ -13,26 +11,6 @@ const SideBar = ({ show, setShow }) => {
   const [currentIndex, setCurrentIndex] = useState("");
 
   const navigate = useNavigate();
-
-  const { data: userData, isLoading: isUser } = useGetProfile();
-  const staff = sessionStorage.getItem("staff");
-  const [currentDisplay, setCurrentDisplay] = useState(false);
-
-  const handleUpClick = () => {
-    setCurrentDisplay(false);
-    sessionStorage.setItem("staff", "false");
-  };
-
-  const handleDownClick = () => {
-    setCurrentDisplay(true);
-    sessionStorage.setItem("staff", "true");
-  };
-
-  useEffect(() => {
-    const staff = sessionStorage.getItem("staff");
-    const staffValue = staff === "true";
-    setCurrentDisplay(staffValue);
-  }, []);
 
   return (
     <Flex
@@ -94,142 +72,108 @@ const SideBar = ({ show, setShow }) => {
         </Flex>
 
         <Box>
-          {(currentDisplay ? staffSidebar : sidebarItems?.slice(0, 9))?.map(
-            (item, i) => {
-              return (
-                <VStack
-                  key={i}
-                  align="stretch"
-                  mb={
-                    show
-                      ? showMenu
-                        ? showMenu && currentIndex === item.id
-                          ? "5px"
-                          : "unset"
-                        : i !== 0 && pathname.includes(item?.path)
+          {sidebarItems?.slice(0, 9)?.map((item, i) => {
+            return (
+              <VStack
+                key={i}
+                align="stretch"
+                mb={
+                  show
+                    ? showMenu
+                      ? showMenu && currentIndex === item.id
                         ? "5px"
                         : "unset"
-                      : "12px"
+                      : i !== 0 && pathname.includes(item?.path)
+                      ? "5px"
+                      : "unset"
+                    : "12px"
+                }
+                className={
+                  showMenu
+                    ? showMenu && currentIndex !== i && "parent_nav"
+                    : !pathname.includes(item?.path) && "parent_nav"
+                }
+                gap={0}
+              >
+                <Flex
+                  align="center"
+                  p={show ? 2 : "unset"}
+                  w={show ? "unset" : "fit-content"}
+                  pt={show ? 3 : "5px"}
+                  px={show ? 2 : "16px"}
+                  pb={show ? 2 : "5px"}
+                  cursor="pointer"
+                  onClick={() =>
+                    item.subItems
+                      ? (showMenu && currentIndex === item.id
+                          ? setShowMenu(false)
+                          : !showMenu && setShowMenu(true),
+                        setCurrentIndex(item.id),
+                        setShow(true))
+                      : (navigate(item.path),
+                        setShowMenu(false),
+                        setCurrentIndex(""))
                   }
-                  className={
+                  bg={
                     showMenu
-                      ? showMenu && currentIndex !== i && "parent_nav"
-                      : !pathname.includes(item?.path) && "parent_nav"
-                  }
-                  gap={0}
-                >
-                  <Flex
-                    align="center"
-                    p={show ? 2 : "unset"}
-                    w={show ? "unset" : "fit-content"}
-                    pt={show ? 3 : "5px"}
-                    px={show ? 2 : "16px"}
-                    pb={show ? 2 : "5px"}
-                    cursor="pointer"
-                    onClick={() =>
-                      item.subItems
-                        ? (showMenu && currentIndex === item.id
-                            ? setShowMenu(false)
-                            : !showMenu && setShowMenu(true),
-                          setCurrentIndex(item.id),
-                          setShow(true))
-                        : (navigate(item.path),
-                          setShowMenu(false),
-                          setCurrentIndex(""))
-                    }
-                    bg={
-                      showMenu
-                        ? showMenu && currentIndex === item.id
-                          ? "#EE383A"
-                          : "transparent"
-                        : pathname.includes(item.path)
+                      ? showMenu && currentIndex === item.id
                         ? "#EE383A"
                         : "transparent"
-                    }
-                    color={
-                      showMenu
-                        ? showMenu && currentIndex === item.id
-                          ? "#fff"
-                          : "#646668"
-                        : pathname.includes(item.path)
+                      : pathname.includes(item.path)
+                      ? "#EE383A"
+                      : "transparent"
+                  }
+                  color={
+                    showMenu
+                      ? showMenu && currentIndex === item.id
                         ? "#fff"
                         : "#646668"
-                    }
-                    fontWeight={500}
-                    _hover={{
-                      bg: showMenu
-                        ? showMenu && currentIndex === item.id
-                          ? ""
-                          : "transparent"
-                        : pathname.includes(item.path)
+                      : pathname.includes(item.path)
+                      ? "#fff"
+                      : "#646668"
+                  }
+                  fontWeight={500}
+                  _hover={{
+                    bg: showMenu
+                      ? showMenu && currentIndex === item.id
                         ? ""
-                        : "transparent",
-                      color: showMenu
-                        ? showMenu && currentIndex === item.id
-                          ? ""
-                          : "#EE383A"
-                        : pathname.includes(item.path)
+                        : "transparent"
+                      : pathname.includes(item.path)
+                      ? ""
+                      : "transparent",
+                    color: showMenu
+                      ? showMenu && currentIndex === item.id
                         ? ""
-                        : "#EE383A",
-                    }}
-                    transition=".3s ease-in-out"
-                    borderRadius={4}
-                    position="relative"
-                  >
-                    <Box className="hovered_image">
-                      {currentIndex === item.id ? item?.sec : item.hover}
-                    </Box>
+                        : "#EE383A"
+                      : pathname.includes(item.path)
+                      ? ""
+                      : "#EE383A",
+                  }}
+                  transition=".3s ease-in-out"
+                  borderRadius={4}
+                  position="relative"
+                >
+                  <Box className="hovered_image">
+                    {currentIndex === item.id ? item?.sec : item.hover}
+                  </Box>
 
-                    <Box className="initial_image">
-                      {showMenu
-                        ? showMenu && currentIndex === item.id
-                          ? item.sec
-                          : item.icon
-                        : pathname.includes(item.path)
+                  <Box className="initial_image">
+                    {showMenu
+                      ? showMenu && currentIndex === item.id
                         ? item.sec
-                        : item.icon}
-                    </Box>
-                    <Box display={show ? "box" : "none"}>
-                      <Text fontSize="15px" ml={4} mb={0}>
-                        {item.name}
-                      </Text>
-                    </Box>
+                        : item.icon
+                      : pathname.includes(item.path)
+                      ? item.sec
+                      : item.icon}
+                  </Box>
+                  <Box display={show ? "box" : "none"}>
+                    <Text fontSize="15px" ml={4} mb={0}>
+                      {item.name}
+                    </Text>
+                  </Box>
 
-                    {showMenu ? (
-                      showMenu && currentIndex === item.id ? (
-                        <Box
-                          position="absolute"
-                          top="50%"
-                          display={show ? "box" : "none"}
-                          right={2}
-                          transform="translateY(-50%)"
-                          w="3px"
-                          h="25px"
-                          bg="#fff"
-                          borderRadius={4}
-                        />
-                      ) : (
-                        item.subItems && (
-                          <Box
-                            flex="1"
-                            textAlign="right"
-                            display={show ? "box" : "none"}
-                            pb={1}
-                            color={
-                              showMenu && currentIndex === item.id
-                                ? "#fff"
-                                : "black"
-                            }
-                          >
-                            {showMenu && currentIndex === item.id ? (
-                              <ChevronDownIcon />
-                            ) : (
-                              <ChevronRightIcon />
-                            )}
-                          </Box>
-                        )
-                      )
-                    ) : pathname.includes(item.path) ? (
+                  {showMenu ? (
+                    showMenu && currentIndex === item.id ? (
                       <Box
                         position="absolute"
                         top="50%"
@@ -248,56 +192,84 @@ const SideBar = ({ show, setShow }) => {
                           textAlign="right"
                           display={show ? "box" : "none"}
                           pb={1}
-                          color={showMenu ? "#fff" : "black"}
+                          color={
+                            showMenu && currentIndex === item.id
+                              ? "#fff"
+                              : "black"
+                          }
                         >
-                          {showMenu ? (
+                          {showMenu && currentIndex === item.id ? (
                             <ChevronDownIcon />
                           ) : (
                             <ChevronRightIcon />
                           )}
                         </Box>
                       )
-                    )}
-                  </Flex>
-
-                  {item.subItems && show && (
-                    <Collapse in={showMenu && currentIndex === item.id}>
-                      <VStack
-                        pl={3}
-                        align="stretch"
-                        borderBottomRadius={4}
-                        pb="2"
-                        gap={0}
+                    )
+                  ) : pathname.includes(item.path) ? (
+                    <Box
+                      position="absolute"
+                      top="50%"
+                      display={show ? "box" : "none"}
+                      right={2}
+                      transform="translateY(-50%)"
+                      w="3px"
+                      h="25px"
+                      bg="#fff"
+                      borderRadius={4}
+                    />
+                  ) : (
+                    item.subItems && (
+                      <Box
+                        flex="1"
+                        textAlign="right"
+                        display={show ? "box" : "none"}
+                        pb={1}
+                        color={showMenu ? "#fff" : "black"}
                       >
-                        {item.subItems.map((subItem) => (
-                          <Flex
-                            align="center"
-                            mt="15px"
-                            style={{
-                              textDecoration: "none",
-                              color: "#444648",
-                              fontWeight: pathname.includes(subItem.path)
-                                ? "700"
-                                : "400",
-                            }}
-                          >
-                            <Box fontSize="13px" ml="26px" mb={0}>
-                              <Link key={subItem.name} to={subItem.path}>
-                                {subItem.name}
-                              </Link>
-                            </Box>
-                          </Flex>
-                        ))}
-                      </VStack>
-                    </Collapse>
+                        {showMenu ? <ChevronDownIcon /> : <ChevronRightIcon />}
+                      </Box>
+                    )
                   )}
-                </VStack>
-              );
-            }
-          )}
+                </Flex>
+
+                {item.subItems && show && (
+                  <Collapse in={showMenu && currentIndex === item.id}>
+                    <VStack
+                      pl={3}
+                      align="stretch"
+                      borderBottomRadius={4}
+                      pb="2"
+                      gap={0}
+                    >
+                      {item.subItems.map((subItem) => (
+                        <Flex
+                          align="center"
+                          mt="15px"
+                          style={{
+                            textDecoration: "none",
+                            color: "#444648",
+                            fontWeight: pathname.includes(subItem.path)
+                              ? "700"
+                              : "400",
+                          }}
+                        >
+                          <Box fontSize="13px" ml="26px" mb={0}>
+                            <Link key={subItem.name} to={subItem.path}>
+                              {subItem.name}
+                            </Link>
+                          </Box>
+                        </Flex>
+                      ))}
+                    </VStack>
+                  </Collapse>
+                )}
+              </VStack>
+            );
+          })}
         </Box>
 
-        <Box my="24px" display={currentDisplay ? "none" : "block"}>
+        <Box my="24px">
           <Text
             color="#444648"
             lineHeight="100%"
