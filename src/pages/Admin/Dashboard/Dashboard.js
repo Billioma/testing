@@ -35,7 +35,7 @@ const Dashboard = () => {
   const today = new Date();
   const year = today.getFullYear();
 
-  const query = `filter=status||$eq||INACTIVE&filter=createdAt||$lte||${year}-12-31T23:59:59`;
+  const query = `filter=createdAt||$lte||${year}-12-31T23:59:59`;
 
   const [isRefetch, setIsRefetch] = useState(false);
 
