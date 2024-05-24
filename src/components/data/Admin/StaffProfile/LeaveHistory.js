@@ -50,9 +50,7 @@ const LeaveHistory = ({ data }) => {
                 >
                   {item?.status === "REJECTED"
                     ? "Declined"
-                    : item?.status === "WITHDRAWN"
-                      ? "Cancelled"
-                      : item?.status?.toLowerCase()}
+                    : item?.status?.toLowerCase()}
                 </Flex>
               </Flex>
             </Td>

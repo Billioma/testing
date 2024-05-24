@@ -57,6 +57,11 @@ export const deleteLoan = async (id) => {
   return response.data;
 };
 
+export const cancelLoan = async (id) => {
+  const response = await axiosInstance.patch(`${API.REQUEST_LOAN}/cancel/${id}`);
+  return response.data;
+};
+
 export const delEmployeeDoc = async (query) => {
   const response = await axiosInstance.delete(API.UPDATE_EMPLOYEE_DOC(query));
   return response.data;

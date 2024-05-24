@@ -117,8 +117,6 @@ const TableLayer = ({
                         >
                           {item?.status === "REJECTED"
                             ? "Declined"
-                            : item?.status === "WITHDRAWN"
-                              ? "Cancelled"
                               : item?.status === "REPAYMENT_IN_PROGRESS"
                                 ? "Repayment In Progress"
                                 : item?.status?.toLowerCase()}

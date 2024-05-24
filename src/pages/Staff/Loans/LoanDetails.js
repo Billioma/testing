@@ -232,8 +232,6 @@ const LoanDetails = () => {
               >
                 {data?.status === "REJECTED"
                   ? "Declined"
-                  : data?.status === "WITHDRAWN"
-                    ? "Cancelled"
                     : data?.status === "REPAYMENT_IN_PROGRESS"
                       ? "Repayment In Progress"
                       : data?.status?.toLowerCase()}
@@ -461,7 +459,7 @@ const LoanDetails = () => {
               onClick={handleSubmit}
               isLoading={isWithdrawing}
             >
-              Cancel
+              Withdraw
             </Button>
           </Flex>
         </>

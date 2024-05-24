@@ -200,9 +200,7 @@ const LeaveMgtDetails = () => {
               >
                 {data?.status === "REJECTED"
                   ? "Declined"
-                  : data?.status === "WITHDRAWN"
-                    ? "Cancelled"
-                    : data?.status?.toLowerCase()}
+                  : data?.status?.toLowerCase()}
               </Flex>
             </Flex>
 

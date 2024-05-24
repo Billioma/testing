@@ -133,6 +133,15 @@ export const useDeleteLoan = (options = {}) => {
   return { isLoading, mutate };
 };
 
+export const useCancelLoan = (options = {}) => {
+  const { isLoading, mutate } = useMutation(cancelLoan, {
+    mutationKey: ["cancelLoan"],
+    ...options,
+  });
+
+  return { isLoading, mutate };
+};
+
 export const useGetStaffLeaveBalance = (options = {}) => {
   const { isLoading, mutate, data } = useMutation(getStaffLeaveBalance, {
     mutationKey: ["getStaffLeaveBalance"],

@@ -98,15 +98,16 @@ const TableLayer = ({
                     >
                       {item?.status === "REJECTED"
                         ? "Declined"
-                        : item?.status === "WITHDRAWN"
-                          ? "Cancelled"  : item?.status?.toLowerCase()}
+                        : item?.status?.toLowerCase()}
                     </Flex>
                   </Flex>
                 </Td>
                 <Td textAlign="center">
                   <Flex justifyContent="center" align="center">
                     <Text
-                      onClick={() => navigate(`/admin/medical-assistance/${item?.id}`)}
+                      onClick={() =>
+                        navigate(`/admin/medical-assistance/${item?.id}`)
+                      }
                       textDecor="underline"
                       cursor="pointer"
                     >

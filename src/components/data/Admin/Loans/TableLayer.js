@@ -13,13 +13,16 @@ import {
   Tr,
 } from "@chakra-ui/react";
 import TableFormat from "../../../common/TableFormat";
-import { LoanStatus, viewDeleteOption } from "../../../common/constants";
+import { LoanStatus, viewCancelDeleteOption, viewDeleteOption } from "../../../common/constants";
 import { useNavigate } from "react-router-dom";
 import TableLoader from "../../../loader/TableLoader";
 import { formatDate } from "../../../../utils/helpers";
 import { BsChevronDown } from "react-icons/bs";
 import useCustomToast from "../../../../utils/notifications";
-import { useDeleteLoan } from "../../../../services/admin/query/staff";
+import {
+  useCancelLoan,
+  useDeleteLoan,
+} from "../../../../services/admin/query/staff";
 import AdminDeleteModal from "../../../modals/AdminDeleteModal";
 
 const TableLayer = ({
@@ -46,6 +49,10 @@ const TableLayer = ({
   const navigate = useNavigate();
 
   const [selectedRow, setSelectedRow] = useState({ isOpen: false, id: null });
+  const [selectedCancel, setSelectedCancel] = useState({
+    isOpen: false,
+    id: null,
+  });
 
   const { errorToast, successToast } = useCustomToast();
 
@@ -62,15 +69,35 @@ const TableLayer = ({
     },
   });
 
+  const { mutate: cancelMutate, isLoading: isCancel } = useCancelLoan({
+    onSuccess: (res) => {
+      successToast(res?.message);
+      refetch();
+      setSelectedCancel({ isOpen: false, id: null });
+    },
+    onError: (err) => {
+      errorToast(
+        err?.response?.data?.message || err?.message || "An Error occurred"
+      );
+    },
+  });
+
   const handleSubmit = (e) => {
     e.preventDefault();
     mutate(selectedRow.id);
   };
 
+  const handleCancel = (e) => {
+    e.preventDefault();
+    cancelMutate(selectedCancel.id);
+  };
+
   const openOption = (i, leave) => {
     i === 0
       ? navigate(`/admin/loans/${leave?.id}`)
-      : i === 1 && setSelectedRow({ isOpen: true, id: leave.id });
+      : i === 1
+        ? setSelectedCancel({ isOpen: true, id: leave.id })
+        : i === 2 && setSelectedRow({ isOpen: true, id: leave.id });
   };
 
   return (
@@ -158,7 +185,7 @@ const TableLayer = ({
                         border="1px solid #F4F6F8"
                         boxShadow="0px 8px 16px 0px rgba(0, 0, 0, 0.08)"
                       >
-                        {viewDeleteOption.map((dat, i) => (
+                        {viewCancelDeleteOption.map((dat, i) => (
                           <MenuItem
                             gap="12px"
                             borderRadius="2px"
@@ -208,6 +235,14 @@ const TableLayer = ({
         subTitle="Are you sure you want to delete this request?"
         handleSubmit={handleSubmit}
         isLoading={isDeleting}
+      />
+      <AdminDeleteModal
+        isOpen={selectedCancel.isOpen}
+        onClose={() => setSelectedCancel({ ...selectedCancel, isOpen: false })}
+        title="Cancel Loan"
+        subTitle="Are you sure you want to cancel this request?"
+        handleSubmit={handleCancel}
+        isLoading={isCancel}
       />
     </Box>
   );
