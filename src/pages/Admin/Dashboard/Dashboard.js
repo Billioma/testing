@@ -248,6 +248,7 @@ const Dashboard = () => {
             overflowY="scroll"
             border="1px solid #d4d6d8"
             borderRadius="8px"
+            className="no_scroller"
             p="16px 23px 24px"
           >
             <Filter
