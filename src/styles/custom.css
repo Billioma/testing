@@ -9,6 +9,18 @@
   animation: rotation 2s linear infinite;
 }
 
+/* Chrome, Safari, and Opera */
+.no_scroller::-webkit-scrollbar {
+  width: 5px;
+  background-color: transparent;
+}
+
+.no_scroller::-webkit-scrollbar-thumb {
+  background-color: #086375;
+  border-radius: 8px;
+  width: 5px;
+}
+
 @keyframes rotation {
   0% {
     transform: rotate(0deg);
@@ -33,13 +45,41 @@
 }
 
 /* Chrome, Safari, and Opera */
-.no_scroller::-webkit-scrollbar {
+::-webkit-scrollbar {
   width: 0;
   border-radius: 8px;
   background-color: transparent;
 }
 
-.no_scroller::-webkit-scrollbar-thumb {
+::-webkit-scrollbar-thumb {
+  background-color: transparent;
+}
+
+/* Firefox */
+/* For Firefox 64+ */
+* {
+  scrollbar-color: transparent transparent;
+  scrollbar-width: thin;
+}
+
+/* For Firefox 63 and below */
+* {
+  scrollbar-color: transparent transparent;
+}
+
+/* Microsoft Edge and IE */
+* {
+  -ms-overflow-style: none;
+  /* Hide the scrollbar in IE and Edge */
+}
+
+*::-webkit-scrollbar {
+  width: 0;
+  border-radius: 0;
+  background-color: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
   background-color: transparent;
 }
 

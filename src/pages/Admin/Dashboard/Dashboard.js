@@ -17,7 +17,6 @@ import {
   useGetStaffs,
   useRejectLeave,
 } from "../../../services/admin/query/staff";
-import { useNavigate } from "react-router-dom";
 import StaffProfileTableLayer from "../../../components/data/Admin/StaffProfile/StaffProfileTableLayer";
 import Filter from "../../../components/common/Filter";
 import { IoIosArrowUp } from "react-icons/io";
