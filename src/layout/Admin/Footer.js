@@ -2,6 +2,7 @@ import React from "react";
 import { Box, Flex, Image, Text, useMediaQuery } from "@chakra-ui/react";
 
 const Footer = ({ showSidebar }) => {
+  const today = new Date();
   const [isMobile] = useMediaQuery("(max-width: 991px)");
   return (
     <Box
@@ -34,7 +35,7 @@ const Footer = ({ showSidebar }) => {
 
         <Box>
           <Text fontSize="14px" color="#000" lineHeight="100%">
-            © 2023 EZPark Limited
+            © {today.getFullYear()} EZPark Limited
           </Text>
         </Box>
       </Flex>

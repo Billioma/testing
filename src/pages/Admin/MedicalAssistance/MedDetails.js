@@ -160,7 +160,9 @@ const MedDetails = () => {
               >
                 {data?.status === "REJECTED"
                   ? "Declined"
-                  : data?.status?.toLowerCase()}
+                  : data?.status === "WITHDRAWN"
+                    ? "Cancelled"
+                    : data?.status?.toLowerCase()}
               </Flex>
             </Flex>
 

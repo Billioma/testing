@@ -21,6 +21,7 @@ const ApproveDeny = ({
   approve,
   reject,
   isApprove,
+  loan,
   isReject,
   values,
   setValues,
@@ -63,7 +64,7 @@ const ApproveDeny = ({
                 fontWeight={500}
                 color={type === "decline" ? "red" : "#09020c"}
               >
-                {type} Leave?
+                {type} {loan ? "Loan" : "Leave"}?
               </Text>
             </Flex>
 
@@ -81,7 +82,8 @@ const ApproveDeny = ({
           </Flex>
 
           <Text my="24px" color="#000">
-            You’re about to {type} this leave, this action cannot be undone.
+            You’re about to {type} this {loan ? "loan" : "leave"}, this action
+            cannot be undone.
           </Text>
 
           <Flex

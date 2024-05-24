@@ -12,12 +12,14 @@ import {
 import CustomInput from "../../../components/common/CustomInput";
 import { FileUploader } from "react-drag-drop-files";
 import { MdClose } from "react-icons/md";
+import TextInput from "../../../components/common/TextInput";
 
 const UpdateMed = () => {
   const [values, setValues] = useState({
     startDate: "",
     endDate: "",
     amount: "",
+    additionalComments: "",
   });
 
   const [dates, setDates] = useState([]);
@@ -122,6 +124,7 @@ const UpdateMed = () => {
       endDate: convertDate(new Date(dates[1])),
       purpose: values?.purpose?.value,
       amount: values?.amount,
+      additionalComments: values?.additionalComments,
     });
   };
 
@@ -253,6 +256,20 @@ const UpdateMed = () => {
             >
               File size exceeds 2MB limit!
             </Text>
+          </Box>
+
+          <Box>
+            <Text fontWeight={700} mb="9px" fontSize="10px">
+              ADDITIONAL COMMENTS
+            </Text>
+            <TextInput
+              value={values?.additionalComments}
+              onChange={(e) =>
+                setValues({ ...values, additionalComments: e.target.value })
+              }
+              h="180px"
+              mb
+            />
           </Box>
 
           <Button

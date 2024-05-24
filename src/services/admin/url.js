@@ -286,13 +286,22 @@ export const GET_ADMIN_TRAN = (filterString = "", limit = "", page = "") =>
 export const GET_TRAN = "admin/transactions";
 
 export const STAFFS = "/admin/staff";
+export const DEPTS = "/admin/department";
 export const REQUEST_LEAVE = "admin/leave-request";
+export const REQUEST_LOAN = "admin/loan-request";
+export const ADMIN_REQUEST_LEAVE = (id = "") => `admin/leave-request/${id}`;
+export const ADMIN_REQUEST_LOAN = (id = "") => `admin/loan-request/${id}`;
 export const STAFF_LIST = (filterString = "", limit = "", page = "") =>
   `admin/staff?${filterString}&limit=${limit}&page=${page}&sort=createdAt,DESC`;
 export const STAFF = (id = "") => `admin/staff/${id}`;
 export const ACTIVATE_STAFF = (id = "") => `admin/staff/activate/${id}`;
 export const UPDATE_EMPLOYEE_DOC = (id = "") =>
   `admin/employee-documents/${id}`;
+export const UPDATE_DEPT = (id = "") => `admin/department/${id}`;
+export const GET_STAFF_LEAVE_BALANCE = (id = "") =>
+  `admin/leave-request/leave-balance/${id}`;
+export const GET_STAFF_LOAN_BALANCE = (id = "") =>
+  `admin/loan-request/loan-balance/${id}`;
 export const APPROVE_LICENSE = (id = "") =>
   `admin/staff/approve-driver-license/${id}`;
 export const EMPLOYEE_DOC = "admin/employee-documents";
@@ -304,6 +313,10 @@ export const ADMIN_RATES_LIST = (filterString = "", limit = "", page = "") =>
 export const ADMIN_RATE = (id = "") => `admin/rates/${id}`;
 export const APPROVE_LEAVE = (id = "") => `admin/leave-request/approve/${id}`;
 export const REJECT_LEAVE = (id = "") => `admin/leave-request/reject/${id}`;
+export const APPROVE_LOAN = (id = "") => `admin/loan-request/approve/${id}`;
+export const LOAN_PAID = (id = "") =>
+  `admin/loan-request/${id}/repayment-plan/set-to-paid`;
+export const REJECT_LOAN = (id = "") => `admin/loan-request/decline/${id}`;
 
 export const ADMIN_AMENITIES_LIST = (
   filterString = "",

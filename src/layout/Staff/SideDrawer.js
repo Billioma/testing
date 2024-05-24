@@ -119,10 +119,10 @@ const SideDrawer = ({ isOpen, onClose }) => {
                       color={
                         showMenu
                           ? showMenu && currentIndex === item.id
-                            ? "#EE383A"
+                            ? "#086375"
                             : "#646668"
                           : pathname.includes(item.path)
-                            ? "#EE383A"
+                            ? "#086375"
                             : "#646668"
                       }
                       fontWeight={500}
@@ -137,10 +137,10 @@ const SideDrawer = ({ isOpen, onClose }) => {
                         color: showMenu
                           ? showMenu && currentIndex === item.id
                             ? ""
-                            : "#EE383A"
+                            : "#086375"
                           : pathname.includes(item.path)
                             ? ""
-                            : "#EE383A",
+                            : "#086375",
                       }}
                       borderRadius={4}
                       position="relative"
@@ -169,7 +169,7 @@ const SideDrawer = ({ isOpen, onClose }) => {
                             transform="translateY(-50%)"
                             w="3px"
                             h="28px"
-                            bg="#EE383A"
+                            bg="#086375"
                             borderRadius={4}
                           />
                         ) : (
@@ -194,7 +194,7 @@ const SideDrawer = ({ isOpen, onClose }) => {
                           transform="translateY(-50%)"
                           w="3px"
                           h="28px"
-                          bg="#EE383A"
+                          bg="#086375"
                           borderRadius={4}
                         />
                       ) : (
@@ -302,10 +302,10 @@ const SideDrawer = ({ isOpen, onClose }) => {
                       color={
                         showMenu
                           ? showMenu && currentIndex === item.id
-                            ? "#EE383A"
+                            ? "#086375"
                             : "#646668"
                           : pathname.includes(item.path)
-                            ? "#EE383A"
+                            ? "#086375"
                             : "#646668"
                       }
                       fontWeight={500}
@@ -320,10 +320,10 @@ const SideDrawer = ({ isOpen, onClose }) => {
                         color: showMenu
                           ? showMenu && currentIndex === item.id
                             ? ""
-                            : "#EE383A"
+                            : "#086375"
                           : pathname.includes(item.path)
                             ? ""
-                            : "#EE383A",
+                            : "#086375",
                       }}
                       borderRadius={4}
                       position="relative"
@@ -352,7 +352,7 @@ const SideDrawer = ({ isOpen, onClose }) => {
                             transform="translateY(-50%)"
                             w="3px"
                             h="28px"
-                            bg="#EE383A"
+                            bg="#086375"
                             borderRadius={4}
                           />
                         ) : (
@@ -377,7 +377,7 @@ const SideDrawer = ({ isOpen, onClose }) => {
                           transform="translateY(-50%)"
                           w="3px"
                           h="28px"
-                          bg="#EE383A"
+                          bg="#086375"
                           borderRadius={4}
                         />
                       ) : (
@@ -411,7 +411,7 @@ const SideDrawer = ({ isOpen, onClose }) => {
               >
                 {isLoading ? (
                   <Flex
-                    _hover={{ color: "#ee383a" }}
+                    _hover={{ color: "#086375" }}
                     gap="5px"
                     color="red"
                     align="center"
@@ -421,7 +421,7 @@ const SideDrawer = ({ isOpen, onClose }) => {
                   </Flex>
                 ) : (
                   <Flex
-                    _hover={{ color: "#ee383a" }}
+                    _hover={{ color: "#086375" }}
                     gap="5px"
                     align="center"
                     color="#646668"

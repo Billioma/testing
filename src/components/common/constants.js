@@ -1,8 +1,10 @@
 import { HiOutlineInformationCircle } from "react-icons/hi";
+import { TiCancel } from "react-icons/ti";
 import {
   AdminDashboardIcon,
   AdminLoanIcon,
   AdminMedicalIcon,
+  ConfigIcon,
   DashboardIcon,
   LeaveIcon,
   LeaveMgtIcon,
@@ -35,6 +37,11 @@ export const submits = [
   { name: "Unsubmitted", value: false },
 ];
 
+export const loanSubmit = [
+  { name: "Paid", value: true },
+  { name: "Pending", value: false },
+];
+
 export const NewStatus = [
   { color: "#E81313", name: "Denied", bg: "#F9D0CD" },
   { color: "#008000", name: "Active", bg: "#E5FFE5" },
@@ -52,21 +59,36 @@ export const viewDeleteOption = [
   },
 ];
 
+export const viewCancelDeleteOption = [
+  {
+    name: "View",
+    icon: HiOutlineInformationCircle,
+  },
+  {
+    name: "Cancel",
+    icon: TiCancel,
+  },
+  {
+    name: "Delete",
+    icon: BsTrash,
+  },
+];
+
 export const staffSidebar = [
   {
     id: 0,
     name: "Dashboard",
     path: "/admin/dashboard",
     icon: <AdminDashboardIcon fill={"#fff"} stroke="#000" />,
-    hover: <AdminDashboardIcon fill="#fff" stroke="#EE383A" />,
-    sec: <AdminDashboardIcon fill="#EE383A" stroke="#fff" />,
+    hover: <AdminDashboardIcon fill="#fff" stroke="#086375" />,
+    sec: <AdminDashboardIcon fill="#086375" stroke="#fff" />,
   },
   {
     id: 1,
     name: "Profiles",
     path: "/admin/staff-profiles",
     icon: <StaffProfileIcon fill={"#000"} />,
-    hover: <StaffProfileIcon fill="#EE383A" />,
+    hover: <StaffProfileIcon fill="#086375" />,
     sec: <StaffProfileIcon fill="#fff" />,
   },
   {
@@ -74,7 +96,7 @@ export const staffSidebar = [
     name: "Loans",
     path: "/admin/loans",
     icon: <AdminLoanIcon fill={"#000"} />,
-    hover: <AdminLoanIcon fill="#EE383A" />,
+    hover: <AdminLoanIcon fill="#086375" />,
     sec: <AdminLoanIcon fill="#fff" />,
   },
   {
@@ -82,7 +104,7 @@ export const staffSidebar = [
     name: "Leave",
     path: "/admin/leave-mgt",
     icon: <LeaveMgtIcon fill={"#000"} />,
-    hover: <LeaveMgtIcon fill="#EE383A" />,
+    hover: <LeaveMgtIcon fill="#086375" />,
     sec: <LeaveMgtIcon fill="#fff" />,
   },
   {
@@ -90,7 +112,7 @@ export const staffSidebar = [
     name: "Medical",
     path: "/admin/medical-assistance",
     icon: <AdminMedicalIcon fill={"#000"} />,
-    hover: <AdminMedicalIcon fill="#EE383A" />,
+    hover: <AdminMedicalIcon fill="#086375" />,
     sec: <AdminMedicalIcon fill="#fff" />,
   },
   {
@@ -98,9 +120,17 @@ export const staffSidebar = [
     name: "Schedule",
     path: "/admin/staff-schedule",
     icon: <StaffScheduleIcon fill={"#000"} />,
-    hover: <StaffScheduleIcon fill="#EE383A" />,
+    hover: <StaffScheduleIcon fill="#086375" />,
     sec: <StaffScheduleIcon fill="#fff" />,
   },
+  // {
+  //   id: 5,
+  //   name: "Settings",
+  //   path: "/admin/settings",
+  //   icon: <ConfigIcon fill={"#000"} />,
+  //   hover: <ConfigIcon fill="#086375" />,
+  //   sec: <ConfigIcon fill="#fff" />,
+  // },
 ];
 
 export const adminHeaderOptions = [
@@ -130,12 +160,20 @@ export const staffOptions = [
 ];
 
 export const leaveOptions = [
-  { label: "Staff ID", value: "staff.id" },
+  { label: "Staff ID", value: "staff.staffId" },
   { label: "Staff Name", value: "staff.fullName" },
   { label: "Start Date", value: "startDate" },
   { label: "End Date", value: "endDate" },
   { label: "Leave Status", value: "status" },
   { label: "Created At", value: "createdAt" },
+];
+
+export const loanOptions = [
+  { label: "Staff ID", value: "staff.staffId" },
+  { label: "Staff Name", value: "staff.fullName" },
+  { label: "Amount Requested", value: "amountRequested" },
+  { label: "Approved By", value: "approvedBy" },
+  { label: "Request Date", value: "createdAt" },
 ];
 
 export const general = [
@@ -192,10 +230,27 @@ export const SecStatus = [
 
 export const LeaveStatus = [
   { color: "#DB0101", name: "Rejected", bg: "#F09898", border: "#DB0101" },
+  { color: "#DB0101", name: "Withdrawn", bg: "#F09898", border: "#DB0101" },
   { color: "#01765F", name: "Approved", bg: "#E8FBF7", border: "#BAE0D9" },
   { color: "#0B841D", name: "Completed", bg: "#E5FFE5", border: "#BAE0D9" },
   { color: "#0B841D", name: "Active", bg: "#E5FFE5", border: "#BAE0D9" },
   { color: "#F9A11E", name: "Pending", bg: "#FCF2C4", border: "#F6DC52" },
+];
+
+export const LoanStatus = [
+  { color: "#DB0101", name: "Rejected", bg: "#F09898", border: "#DB0101" },
+  { color: "#DB0101", name: "Cancelled", bg: "#F09898", border: "#DB0101" },
+  { color: "#DB0101", name: "Withdrawn", bg: "#F09898", border: "#DB0101" },
+  { color: "#01765F", name: "Approved", bg: "#E8FBF7", border: "#BAE0D9" },
+  { color: "#0B841D", name: "Paid", bg: "#E5FFE5", border: "#BAE0D9" },
+  { color: "#0B841D", name: "Active", bg: "#E5FFE5", border: "#BAE0D9" },
+  { color: "#F9A11E", name: "Pending", bg: "#FCF2C4", border: "#F6DC52" },
+  {
+    color: "#F9A11E",
+    name: "Repayment_In_Progress",
+    bg: "#FCF2C4",
+    border: "#F6DC52",
+  },
 ];
 
 export const types = [

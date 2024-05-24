@@ -1,9 +1,13 @@
 import React, { useEffect } from "react";
 import { Box, Button, Flex, Image, Spinner, Text } from "@chakra-ui/react";
 import { useNavigate, useParams } from "react-router-dom";
-import { useGetLeave } from "../../../services/staff/query/leave";
+import {
+  useGetLeave,
+  useWithdrawLeave,
+} from "../../../services/staff/query/leave";
 import { LeaveStatus } from "../../../components/common/constants";
 import { formatDate } from "../../../utils/helpers";
+import useCustomToast from "../../../utils/notifications";
 
 const LeaveDetails = () => {
   const { id } = useParams();
@@ -15,6 +19,23 @@ const LeaveDetails = () => {
   useEffect(() => {
     refetch();
   }, []);
+
+  const { errorToast, successToast } = useCustomToast();
+  const { mutate, isLoading: isWithdrawing } = useWithdrawLeave({
+    onSuccess: (res) => {
+      successToast(res?.message);
+      refetch();
+    },
+    onError: (err) => {
+      errorToast(
+        err?.response?.data?.message || err?.message || "An Error occurred"
+      );
+    },
+  });
+
+  const handleSubmit = () => {
+    mutate(id);
+  };
 
   return (
     <Box>
@@ -170,7 +191,9 @@ const LeaveDetails = () => {
               >
                 {data?.status === "REJECTED"
                   ? "Declined"
-                  : data?.status?.toLowerCase()}
+                  : data?.status === "WITHDRAWN"
+                    ? "Cancelled"
+                    : data?.status?.toLowerCase()}
               </Flex>
             </Flex>
 
@@ -234,7 +257,7 @@ const LeaveDetails = () => {
           <Flex
             gap="24px"
             display={data?.status === "PENDING" ? "flex" : "none"}
-            w="30%"
+            w={{ base: "100%", md: "30%" }}
             mt="24px"
             align="center"
           >
@@ -254,10 +277,12 @@ const LeaveDetails = () => {
               bg="#A11212"
               variant="adminPrimary"
               borderRadius="8px"
+              onClick={handleSubmit}
+              isLoading={isWithdrawing}
               h="60px"
               w="full"
             >
-              Delete
+              Cancel
             </Button>
           </Flex>
         </>

@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { Box, Flex, Image, Text } from "@chakra-ui/react";
+import { Box, Button, Flex, Image, Text } from "@chakra-ui/react";
 import TableLayer from "../../../components/data/Admin/LeaveMgt/TableLayer";
 import { useGetLeaveRequest } from "../../../services/admin/query/staff";
 import { leaveOptions } from "../../../components/common/constants";
 import { formatFilterDate } from "../../../utils/helpers";
 import Filter from "../../../components/common/Filter";
+import { useNavigate } from "react-router-dom";
+import { MdAdd } from "react-icons/md";
 
 const LeaveMgt = () => {
   const [type, setType] = useState("");
@@ -108,6 +110,8 @@ const LeaveMgt = () => {
     { name: "Declined", value: "REJECTED" },
   ];
 
+  const navigate = useNavigate();
+
   return (
     <div>
       <Flex w="100%" mb="24px" bg="#F4F6F8" gap="24px" align="flex-end">
@@ -156,6 +160,15 @@ const LeaveMgt = () => {
           }
           main={
             <>
+              <Button
+                display="flex"
+                bg="#000"
+                gap="8px"
+                onClick={() => navigate("/admin/leave-mgt/create")}
+              >
+                <Text fontSize="14px">Add Absence</Text>
+                <MdAdd size="20px" />
+              </Button>
               <Flex
                 justifyContent="center"
                 align="center"
@@ -187,6 +200,7 @@ const LeaveMgt = () => {
           setPage={setPage}
           startRow={startRow}
           endRow={endRow}
+          refetch={refetch}
           setLimit={setLimit}
         />
       </Box>

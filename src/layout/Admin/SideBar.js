@@ -42,10 +42,11 @@ const SideBar = ({ show, setShow }) => {
       pt="24px"
       h="full"
       overflowY="scroll"
+      borderRightRadius="24px"
       px={show ? "16px" : "4px"}
       w={show ? "275px" : "fit-content"}
       bg="#fff"
-      boxShadow="4px 0px 24px 0px rgba(0, 0, 0, 0.25)"
+      boxShadow="4px 0px 10px 0px #0000000D"
     >
       <Box flex="1">
         <Box
@@ -65,39 +66,36 @@ const SideBar = ({ show, setShow }) => {
               px="16px"
               w="full"
               justifyContent="space-between"
-              border="1px solid #EE383A"
-              borderRadius="4px"
             >
-              <Flex align="center" gap="12px">
-                <Image
-                  w="32px"
-                  h="32px"
-                  objectFit="cover"
-                  rounded="full"
-                  src={
-                    isUser
-                      ? "/assets/pfp.svg"
-                      : !userData?.avatar === null
-                        ? userData?.avatar
-                        : "/assets/pfp.svg"
-                  }
-                />
-                <Box>
-                  <Text
-                    fontSize="17px"
-                    lineHeight="120%"
-                    textAlign="center"
-                    fontWeight={900}
-                    fontFamily="Cooper"
-                    color="#444648"
-                  >
-                    Managr
-                  </Text>
-                  <Text fontSize="13px" color="#444648">
-                    Admin
-                  </Text>
-                </Box>
-              </Flex>
+              <Box>
+                <Text
+                  fontSize="17px"
+                  lineHeight="120%"
+                  textAlign="center"
+                  fontWeight={900}
+                  fontFamily="Cooper"
+                  color="#444648"
+                >
+                  Managr
+                </Text>
+                <Text fontSize="13px" color="#444648">
+                  Admin
+                </Text>
+              </Box>
+
+              <Image
+                w="32px"
+                h="32px"
+                objectFit="cover"
+                rounded="full"
+                src={
+                  isUser
+                    ? "/assets/pfp.svg"
+                    : !userData?.avatar === null
+                      ? userData?.avatar
+                      : "/assets/pfp.svg"
+                }
+              />
             </Flex>
           </Box>
         </Box>
@@ -167,10 +165,10 @@ const SideBar = ({ show, setShow }) => {
                   bg={
                     showMenu
                       ? showMenu && currentIndex === item.id
-                        ? "#EE383A"
+                        ? "#086375"
                         : "transparent"
                       : pathname.includes(item.path)
-                        ? "#EE383A"
+                        ? "#086375"
                         : "transparent"
                   }
                   color={
@@ -194,10 +192,10 @@ const SideBar = ({ show, setShow }) => {
                     color: showMenu
                       ? showMenu && currentIndex === item.id
                         ? ""
-                        : "#EE383A"
+                        : "#086375"
                       : pathname.includes(item.path)
                         ? ""
-                        : "#EE383A",
+                        : "#086375",
                   }}
                   transition=".3s ease-in-out"
                   borderRadius={4}
@@ -256,18 +254,6 @@ const SideBar = ({ show, setShow }) => {
                         </Box>
                       )
                     )
-                  ) : pathname.includes(item.path) ? (
-                    <Box
-                      position="absolute"
-                      top="50%"
-                      display={show ? "box" : "none"}
-                      right={2}
-                      transform="translateY(-50%)"
-                      w="3px"
-                      h="25px"
-                      bg="#fff"
-                      borderRadius={4}
-                    />
                   ) : (
                     item.subItems && (
                       <Box

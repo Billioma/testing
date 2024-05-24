@@ -561,7 +561,7 @@ const Filter = ({
                   {getLabelForValue(dat?.title)}{" "}
                   <span
                     style={{
-                      color: "#EE383A",
+                      color: "#086375",
                       textDecoration: "underline",
                     }}
                   >

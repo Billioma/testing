@@ -16,6 +16,7 @@ const CustomInput = ({
   reserve,
   opt,
   onClick,
+  naira,
   textarea,
   auth,
   show,
@@ -88,6 +89,14 @@ const CustomInput = ({
         ) : reserve ? (
           <InputLeftElement cursor="pointer" h="40px">
             <BsSearch />
+          </InputLeftElement>
+        ) : naira ? (
+          <InputLeftElement
+            fontSize="13px"
+            cursor="pointer"
+            h={opt ? "56px" : reserve ? "40px" : textarea ? textarea : "44px"}
+          >
+            ₦
           </InputLeftElement>
         ) : (
           ""

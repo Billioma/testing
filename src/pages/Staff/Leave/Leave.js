@@ -130,16 +130,6 @@ const Leave = () => {
                 Request Leave
               </Button>
             </Box>
-            <Text
-              textTransform="capitalize"
-              w={{ base: "100%", md: "60%" }}
-              fontSize="28px"
-              display="none"
-              fontWeight={700}
-            >
-              You are <span style={{ color: "#086375" }}>not eligible</span> to
-              Request for Leave at the moment
-            </Text>
           </Flex>
         </Flex>
       ) : (

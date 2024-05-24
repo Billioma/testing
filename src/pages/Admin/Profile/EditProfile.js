@@ -96,7 +96,7 @@ const EditProfile = () => {
               </Text>
 
               <Flex
-                border="4px solid #ee383a"
+                border="4px solid #086375"
                 p="44px"
                 rounded="full"
                 w="fit-content"

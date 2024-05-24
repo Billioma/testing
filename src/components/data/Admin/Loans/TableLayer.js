@@ -1,11 +1,26 @@
-import React from "react";
-import { Box, Flex, Image, Td, Text, Tr } from "@chakra-ui/react";
+import React, { useState } from "react";
+import {
+  Box,
+  Flex,
+  Image,
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
+  Td,
+  Icon,
+  Text,
+  Tr,
+} from "@chakra-ui/react";
 import TableFormat from "../../../common/TableFormat";
-
-import { LeaveStatus } from "../../../common/constants";
+import { LoanStatus, viewDeleteOption } from "../../../common/constants";
 import { useNavigate } from "react-router-dom";
 import TableLoader from "../../../loader/TableLoader";
 import { formatDate } from "../../../../utils/helpers";
+import { BsChevronDown } from "react-icons/bs";
+import useCustomToast from "../../../../utils/notifications";
+import { useDeleteLoan } from "../../../../services/admin/query/staff";
+import AdminDeleteModal from "../../../modals/AdminDeleteModal";
 
 const TableLayer = ({
   type,
@@ -17,18 +32,46 @@ const TableLayer = ({
   endRow,
   limit,
   setLimit,
+  refetch,
 }) => {
   const headers = [
     "STAFF ID",
     "STAFF NAME",
     "AMOUNT REQUESTED",
-    "APPROVED BY",
     "REQUEST DATE",
     "STATUS",
     "ACTIONS",
   ];
 
   const navigate = useNavigate();
+
+  const [selectedRow, setSelectedRow] = useState({ isOpen: false, id: null });
+
+  const { errorToast, successToast } = useCustomToast();
+
+  const { mutate, isLoading: isDeleting } = useDeleteLoan({
+    onSuccess: (res) => {
+      successToast(res?.message);
+      refetch();
+      setSelectedRow({ isOpen: false, id: null });
+    },
+    onError: (err) => {
+      errorToast(
+        err?.response?.data?.message || err?.message || "An Error occurred"
+      );
+    },
+  });
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    mutate(selectedRow.id);
+  };
+
+  const openOption = (i, leave) => {
+    i === 0
+      ? navigate(`/admin/loans/${leave?.id}`)
+      : i === 1 && setSelectedRow({ isOpen: true, id: leave.id });
+  };
 
   return (
     <Box>
@@ -67,23 +110,24 @@ const TableLayer = ({
                 fontSize="14px"
                 lineHeight="100%"
               >
-                <Td>{item?.staff?.id}</Td>
+                <Td>{item?.staff?.staffId}</Td>
                 <Td>{item?.staff?.fullName}</Td>
-                <Td textAlign="center">₦ {(10000).toLocaleString()}</Td>
-                <Td textAlign="center">Bilal Omari</Td>
+                <Td textAlign="center">
+                  ₦ {(item?.amountRequested).toLocaleString()}
+                </Td>
                 <Td textAlign="center">{formatDate(item?.createdAt)}</Td>
                 <Td display={type === "" ? "" : "none"}>
                   <Flex align="center" w="full" justifyContent="center">
                     <Flex
                       color={
-                        LeaveStatus.find(
+                        LoanStatus.find(
                           (dat) =>
                             dat.name?.toLowerCase() ===
                             item?.status?.toLowerCase()
                         )?.color || ""
                       }
                       bg={
-                        LeaveStatus.find(
+                        LoanStatus.find(
                           (dat) =>
                             dat.name?.toLowerCase() ===
                             item?.status?.toLowerCase()
@@ -104,13 +148,34 @@ const TableLayer = ({
                 </Td>
                 <Td textAlign="center">
                   <Flex justifyContent="center" align="center">
-                    <Text
-                      onClick={() => navigate(`/admin/loans/${item?.id}`)}
-                      textDecor="underline"
-                      cursor="pointer"
-                    >
-                      View
-                    </Text>
+                    <Menu>
+                      <MenuButton as={Text} cursor="pointer">
+                        <BsChevronDown />
+                      </MenuButton>
+                      <MenuList
+                        borderRadius="4px"
+                        p="10px"
+                        border="1px solid #F4F6F8"
+                        boxShadow="0px 8px 16px 0px rgba(0, 0, 0, 0.08)"
+                      >
+                        {viewDeleteOption.map((dat, i) => (
+                          <MenuItem
+                            gap="12px"
+                            borderRadius="2px"
+                            mb="8px"
+                            py="6px"
+                            px="8px"
+                            _hover={{ bg: "#F4F6F8" }}
+                            align="center"
+                            fontWeight="500"
+                            onClick={() => openOption(i, item)}
+                          >
+                            <Icon as={dat.icon} />
+                            {dat?.name}
+                          </MenuItem>
+                        ))}
+                      </MenuList>
+                    </Menu>
                   </Flex>
                 </Td>
               </Tr>
@@ -136,6 +201,14 @@ const TableLayer = ({
           </Text>
         </Flex>
       )}
+      <AdminDeleteModal
+        isOpen={selectedRow.isOpen}
+        onClose={() => setSelectedRow({ ...selectedRow, isOpen: false })}
+        title="Delete Loan"
+        subTitle="Are you sure you want to delete this request?"
+        handleSubmit={handleSubmit}
+        isLoading={isDeleting}
+      />
     </Box>
   );
 };

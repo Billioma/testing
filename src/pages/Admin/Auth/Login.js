@@ -1,15 +1,12 @@
 import React, { useState } from "react";
-import { Image } from "@chakra-ui/image";
-import { Box, Flex, Text } from "@chakra-ui/layout";
+import { Box, Button, Flex, Image, Text } from "@chakra-ui/react";
 import AdminCustomInput from "../../../components/common/AdminCustomInput";
-import { Checkbox } from "@chakra-ui/checkbox";
-import { Button } from "@chakra-ui/button";
-import { initValue, validateSchemas } from "../../../utils/validation";
 import { Form, Formik } from "formik";
-import { useNavigate } from "react-router";
 import { useLogin } from "../../../services/admin/query/auth";
+import { useNavigate } from "react-router-dom";
 import useCustomToast from "../../../utils/notifications";
 import ReCAPTCHA from "react-google-recaptcha";
+import { initValue, validateSchemas } from "../../../utils/validation";
 
 const Login = () => {
   const [show, setShow] = useState(false);
@@ -44,129 +41,131 @@ const Login = () => {
   function onChange() {
     setChecked(true);
   }
-
   return (
-    <Flex
-      justifyContent="center"
-      w="full"
-      align="center"
-      h={{ base: "90vh", md: "90vh" }}
-      flexDir="column"
-    >
+    <Box>
       <Flex
-        justifyContent="center"
-        w={{ base: "full", md: "50%", lg: "35%" }}
         flexDir="column"
+        boxShadow="0px 0px 15px 0px #0863751A"
+        py={{ base: "30px", md: "70px" }}
+        bg="#fff"
+        borderRadius="40px"
+        pos="relative"
+        px={{ base: "20px", md: "64px" }}
       >
-        <Flex justifyContent="center" align="center" flexDir="column">
-          <Image src="/assets/logo.svg" w="312px" h="48px" />
+        <Image
+          pos="absolute"
+          right="-12"
+          src="/assets/cal.svg"
+          w="131px"
+          h="131px"
+          display={{ base: "none", md: "flex" }}
+          objectFit="contain"
+        />
+
+        <Flex flexDir="column" justifyContent="center" align="center">
+          <Text textAlign="center" fontWeight={700} fontSize="40px">
+            Admin Login
+          </Text>
+
+          <Text textAlign="center" opacity={0.5} mt="14px">
+            Welcome back! Login to manage employee records and streamline
+            processes
+          </Text>
         </Flex>
-        <Text textAlign="center" fontSize="24px" mt="80px" fontWeight={700}>
-          Admin Login
-        </Text>
 
-        <Formik
-          onSubmit={handleSubmit}
-          initialValues={initValue}
-          validationSchema={validateSchemas}
-        >
-          {({
-            values,
-            errors,
-            touched,
-            handleChange,
-            handleBlur,
-            handleSubmit,
-            isValid,
-            dirty,
-          }) => (
-            <Form onSubmit={handleSubmit}>
-              <Box mt="32px">
-                <Text
-                  mb="10px"
-                  fontWeight={500}
-                  color="#444648"
-                  fontSize="10px"
-                >
-                  Username
-                </Text>
-                <AdminCustomInput
-                  name="username"
-                  mb
-                  value={values?.username}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  error={errors?.username && touched?.username}
-                  placeholder="Enter Username"
+        <Box mt="42px">
+          <Formik
+            onSubmit={handleSubmit}
+            initialValues={initValue}
+            validationSchema={validateSchemas}
+          >
+            {({
+              values,
+              errors,
+              touched,
+              handleChange,
+              handleBlur,
+              handleSubmit,
+              isValid,
+              dirty,
+            }) => (
+              <Form onSubmit={handleSubmit}>
+                <Box w="full">
+                  <AdminCustomInput
+                    name="username"
+                    curve
+                    mb
+                    opt
+                    value={values?.username}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    error={errors?.username && touched?.username}
+                    holder="Email"
+                  />
+                </Box>
+
+                <Box mt="32px" mb="24px" w="full">
+                  <AdminCustomInput
+                    name="password"
+                    curve
+                    mb
+                    opt
+                    value={values?.password}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    error={errors?.password && touched?.password}
+                    holder="Password"
+                    onClick={() => setShow((prev) => !prev)}
+                    password={show ? false : true}
+                    show
+                    type={show ? "text" : "password"}
+                  />
+                </Box>
+
+                <ReCAPTCHA
+                  sitekey="6LdN7d4UAAAAAGGTI0wkD2ZlpJLfm6PbpFOQnFx9"
+                  onChange={onChange}
                 />
-              </Box>
-              <Box mt="24px">
-                <Text
-                  mb="10px"
-                  fontWeight={500}
-                  color="#444648"
-                  fontSize="10px"
+
+                <Button
+                  isDisabled={!isValid || !dirty || !checked}
+                  isLoading={isLoading}
+                  type="submit"
+                  w="full"
+                  mt="80px"
+                  h="60px"
+                  bg="#086375"
                 >
-                  Password
-                </Text>
-                <AdminCustomInput
-                  mb
-                  placeholder="Enter Password"
-                  value={values?.password}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  name="password"
-                  error={
-                    errors?.password && touched?.password && errors?.password
-                  }
-                  onClick={() => setShow((prev) => !prev)}
-                  password={show ? false : true}
-                  show
-                  type={show ? "text" : "password"}
-                />
-              </Box>
-              <Flex
-                fontSize="12px"
-                my="24px"
-                w="full"
-                align="center"
-                justifyContent="space-between"
-              >
-                <Flex gap="8px" align="center">
-                  <Checkbox colorScheme="blackAlpha" iconColor="blackAlpha" />
-                  <Text color="#646668">Remember me</Text>
-                </Flex>
-
-                <Text
-                  onClick={() => navigate("/staff/auth/reset-password")}
-                  cursor="pointer"
-                  fontWeight={700}
-                  color="black"
-                >
-                  Forgot Password
-                </Text>
-              </Flex>
-
-              <ReCAPTCHA
-                sitekey="6LdN7d4UAAAAAGGTI0wkD2ZlpJLfm6PbpFOQnFx9"
-                onChange={onChange}
-              />
-
-              <Button
-                mt="20px"
-                isDisabled={!isValid || !dirty || !checked}
-                type="submit"
-                w="full"
-                isLoading={isLoading}
-                variant="adminPrimary"
-              >
-                Login
-              </Button>
-            </Form>
-          )}
-        </Formik>
+                  Sign In
+                </Button>
+              </Form>
+            )}
+          </Formik>
+        </Box>
+        <Image
+          pos="absolute"
+          bottom="24%"
+          left="-12"
+          src="/assets/note.svg"
+          display={{ base: "none", md: "flex" }}
+          w="120px"
+          h="120px"
+          objectFit="contain"
+        />
       </Flex>
-    </Flex>
+
+      <Box
+        pos="absolute"
+        left="0"
+        zIndex={-1}
+        w="60%"
+        align="center"
+        bottom="20%"
+        transform="translateX(33%)"
+        h="0.5px"
+        bg="#000"
+      ></Box>
+    </Box>
   );
 };
 

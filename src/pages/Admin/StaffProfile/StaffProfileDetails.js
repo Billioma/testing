@@ -32,7 +32,7 @@ const StaffProfileDetails = () => {
   }, []);
 
   const { successToast, errorToast } = useCustomToast();
-  const { mutate: updateMutate } = useEditStaff({
+  const { mutate: updateMutate, isLoading: isUpdating } = useEditStaff({
     onSuccess: () => {
       successToast("Status updated successfully!");
       refetch();
@@ -44,7 +44,7 @@ const StaffProfileDetails = () => {
     },
   });
 
-  const { mutate: activateMutate } = useActivateStaff({
+  const { mutate: activateMutate, isLoading: isActivating } = useActivateStaff({
     onSuccess: () => {
       successToast("Status activated successfully!");
       refetch();
@@ -97,44 +97,59 @@ const StaffProfileDetails = () => {
                     ID: {data?.staffId}
                   </Text>
                 </Box>
-                <Switch
-                  checked={checked}
-                  onChange={(e) =>
-                    checked
-                      ? (setChecked(!checked),
-                        updateMutate({
-                          query: id,
-                          body: {
-                            status: e ? "ACTIVE" : "INACTIVE",
-                          },
-                        }))
-                      : activateMutate(id)
-                  }
-                  handleDiameter={15}
-                  offColor="#fff"
-                  onColor="#0B841D"
-                  offHandleColor="#EE383A"
-                  onHandleColor="#fff"
-                  height={40}
-                  width={95}
-                  borderRadius={100}
-                  uncheckedIcon={
-                    <Text pt="10px" fontSize="15px" w="full" color="#ACB0BD">
-                      Inactive
-                    </Text>
-                  }
-                  checkedIcon={
-                    <Text
-                      pl="10px"
-                      pt="10px"
-                      fontSize="15px"
-                      w="full"
-                      color="#fff"
-                    >
-                      Active
-                    </Text>
-                  }
-                />
+                {isUpdating || isActivating ? (
+                  <Flex
+                    rounded="full"
+                    border="1px solid #949698"
+                    w="90px"
+                    h="35px"
+                    justifyContent="center"
+                    align="center"
+                  >
+                    <Spinner size="sm" />
+                  </Flex>
+                ) : (
+                  <Switch
+                    checked={checked}
+                    onChange={(e) =>
+                      isUpdating || isActivating
+                        ? ""
+                        : checked
+                          ? (setChecked(!checked),
+                            updateMutate({
+                              query: id,
+                              body: {
+                                status: e ? "ACTIVE" : "INACTIVE",
+                              },
+                            }))
+                          : activateMutate(id)
+                    }
+                    handleDiameter={15}
+                    offColor="#EE383A"
+                    onColor="#0B841D"
+                    offHandleColor="#fff"
+                    onHandleColor="#fff"
+                    height={40}
+                    width={95}
+                    borderRadius={100}
+                    uncheckedIcon={
+                      <Text pt="10px" fontSize="15px" w="full" color="#fff">
+                        Inactive
+                      </Text>
+                    }
+                    checkedIcon={
+                      <Text
+                        pl="10px"
+                        pt="10px"
+                        fontSize="15px"
+                        w="full"
+                        color="#fff"
+                      >
+                        Active
+                      </Text>
+                    }
+                  />
+                )}
               </Flex>
             </Flex>
           </Box>

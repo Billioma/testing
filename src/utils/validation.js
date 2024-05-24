@@ -67,6 +67,35 @@ export const initAdminStaffValues = {
   expiryDate: null,
 };
 
+export const initAdminLeaveValues = {
+  staff: "",
+  startDate: null,
+  endDate: null,
+  isPaid: false,
+  purpose: "",
+  additionalComments: "",
+};
+
+export const initAdminLoanValues = {
+  staff: "",
+  amountRequested: "",
+  purpose: "",
+  additionalComments: "",
+};
+
+export const validateAdminLeaveSchema = Yup.object().shape({
+  staff: Yup.object().required("Staff is required"),
+  startDate: Yup.string().required("Start Date is required"),
+  endDate: Yup.string().required("End Date is required"),
+  purpose: Yup.object().required("Purpose is required"),
+});
+
+export const validateAdminLoanSchema = Yup.object().shape({
+  staff: Yup.object().required("Staff is required"),
+  amountRequested: Yup.string().required("Amount is required"),
+  purpose: Yup.object().required("Purpose is required"),
+});
+
 export const validateAdminStaffSchema = Yup.object().shape({
   fullName: Yup.string().required("Full Name is required"),
   phoneNumber: Yup.string().required("Phone Number is required"),

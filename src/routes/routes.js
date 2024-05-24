@@ -25,6 +25,9 @@ const {
   PROFILE,
   SCHEDULE,
   LOANS,
+  REQUEST_LOAN,
+  LOAN_DETAILS,
+  UPDATE_LOAN,
   LEAVE,
   REQUEST_LEAVE,
   LEAVE_DETAILS,
@@ -43,9 +46,15 @@ const {
   ADMIN_LOAN,
   ADMIN_LOAN_DETAILS,
   ADMIN_LEAVE_MGT,
+  ADMIN_ADD_LEAVE_MGT,
   ADMIN_MEDICAL_ASSISTANCE,
   ADMIN_MEDICAL_ASSISTANCE_DETAILS,
   ADMIN_STAFF_SCHEDULE,
+  ADMIN_SETTINGS,
+  ADMIN_ADD_DEPT,
+  ADMIN_ADD_JOB,
+  ADMIN_VIEW_DEPT,
+  ADMIN_VIEW_JOB,
 } = PRIVATE_PATHS;
 
 // STAFF PAGES
@@ -77,6 +86,15 @@ const Schedule = WithSuspense(
   lazy(() => import("../pages/Staff/Schedule/Schedule"))
 );
 const Loans = WithSuspense(lazy(() => import("../pages/Staff/Loans/Loans")));
+const RequestLoan = WithSuspense(
+  lazy(() => import("../pages/Staff/Loans/RequestLoan"))
+);
+const UpdateLoan = WithSuspense(
+  lazy(() => import("../pages/Staff/Loans/UpdateLoan"))
+);
+const LoanDetails = WithSuspense(
+  lazy(() => import("../pages/Staff/Loans/LoanDetails"))
+);
 const Leave = WithSuspense(lazy(() => import("../pages/Staff/Leave/Leave")));
 const RequestLeave = WithSuspense(
   lazy(() => import("../pages/Staff/Leave/RequestLeave"))
@@ -149,6 +167,14 @@ const AdminLeaveMgt = WithSuspense(
   lazy(() => import("../pages/Admin/LeaveMgt/LeaveMgt"))
 );
 
+const AdminAddLoan = WithSuspense(
+  lazy(() => import("../pages/Admin/Loans/AddLoan"))
+);
+
+const AdminAddLeaveMgt = WithSuspense(
+  lazy(() => import("../pages/Admin/LeaveMgt/AddLeave"))
+);
+
 const AdminLeaveMgtDetails = WithSuspense(
   lazy(() => import("../pages/Admin/LeaveMgt/LeaveMgtDetails"))
 );
@@ -163,6 +189,23 @@ const AdminMedicalAssistanceDetails = WithSuspense(
 
 const AdminStaffSchedule = WithSuspense(
   lazy(() => import("../pages/Admin/StaffSchedule/StaffSchedule"))
+);
+
+const AdminSettings = WithSuspense(
+  lazy(() => import("../pages/Admin/Settings/Settings"))
+);
+
+const AdminAddJob = WithSuspense(
+  lazy(() => import("../pages/Admin/Settings/AddJob"))
+);
+const AdminAddDept = WithSuspense(
+  lazy(() => import("../pages/Admin/Settings/AddDept"))
+);
+const AdminViewDept = WithSuspense(
+  lazy(() => import("../pages/Admin/Settings/ViewDept"))
+);
+const AdminViewJob = WithSuspense(
+  lazy(() => import("../pages/Admin/Settings/ViewJob"))
 );
 
 export const PUBLIC_ROUTES = [
@@ -201,6 +244,8 @@ export const PRIVATE_ROUTES = [
   { path: PROFILE, element: <Profile /> },
   { path: SCHEDULE, element: <Schedule /> },
   { path: LOANS, element: <Loans /> },
+  { path: REQUEST_LOAN, element: <RequestLoan /> },
+  { path: LOAN_DETAILS, element: <LoanDetails /> },
   { path: LEAVE, element: <Leave /> },
   { path: MEDICAL, element: <Medical /> },
   { path: REQUEST_LEAVE, element: <RequestLeave /> },
@@ -208,6 +253,7 @@ export const PRIVATE_ROUTES = [
   { path: REQUEST_MEDICAL, element: <RequestMedical /> },
   { path: MEDICAL_DETAILS, element: <MedicalDetails /> },
   { path: UPDATE_LEAVE, element: <UpdateLeave /> },
+  { path: UPDATE_LOAN, element: <UpdateLoan /> },
   { path: UPDATE_MED, element: <UpdateMed /> },
 
   // ADMIN
@@ -237,6 +283,11 @@ export const PRIVATE_ROUTES = [
   },
 
   {
+    path: ADMIN_SETTINGS,
+    element: <AdminSettings />,
+  },
+
+  {
     path: ADMIN_EDIT_PROFILE,
     element: <AdminUpdateProfile />,
   },
@@ -244,6 +295,16 @@ export const PRIVATE_ROUTES = [
   {
     path: ADMIN_LEAVE_MGT,
     element: <AdminLeaveMgt />,
+  },
+
+  {
+    path: ADMIN_ADD_LEAVE_MGT,
+    element: <AdminAddLeaveMgt />,
+  },
+
+  {
+    path: PRIVATE_PATHS.ADMIN_ADD_LOAN,
+    element: <AdminAddLoan />,
   },
 
   {
@@ -264,6 +325,26 @@ export const PRIVATE_ROUTES = [
   {
     path: ADMIN_MEDICAL_ASSISTANCE,
     element: <AdminMedicalAssistance />,
+  },
+
+  {
+    path: ADMIN_ADD_DEPT,
+    element: <AdminAddDept />,
+  },
+
+  {
+    path: ADMIN_VIEW_DEPT,
+    element: <AdminViewDept />,
+  },
+
+  {
+    path: ADMIN_VIEW_JOB,
+    element: <AdminViewJob />,
+  },
+
+  {
+    path: ADMIN_ADD_JOB,
+    element: <AdminAddJob />,
   },
 
   {

@@ -8,6 +8,7 @@ import { useLogOut } from "../../utils/helpers";
 import {
   DashboardIcon,
   LeaveIcon,
+  LoanIcon,
   MedicalIcon,
   ProfileIcon,
 } from "../../components/common/images";
@@ -29,6 +30,9 @@ const Header = () => {
 
       case pathname.includes("leave"):
         return setTitle("Leave"), setIcon(<LeaveIcon fill="#086375" />);
+
+      case pathname.includes("loans"):
+        return setTitle("Loans"), setIcon(<LoanIcon fill="#086375" />);
 
       case pathname.includes("profile"):
         return setTitle("Profile"), setIcon(<ProfileIcon fill="#086375" />);
@@ -53,6 +57,12 @@ const Header = () => {
 
       case pathname.includes("leave-request"):
         return setSecTitle(`Leave ID: ${number}`);
+
+      case pathname.includes("loans/request"):
+        return setSecTitle("Request Loan");
+
+      case pathname.includes("loans/"):
+        return setSecTitle(`Loan ID: ${number}`);
 
       case pathname.includes("medical-assistance/request"):
         return setSecTitle("Request Medical Assistance");

@@ -3,17 +3,29 @@ import {
   activateStaff,
   addStaff,
   addStaffDoc,
+  adminCreateLeave,
+  adminCreateLoan,
   approveLeave,
   approveLicense,
+  approveLoan,
+  cancelLoan,
   delEmployeeDoc,
+  deleteLeave,
+  deleteLoan,
   deleteStaff,
   editEmployeeDoc,
   editStaff,
   getLeave,
   getLeaveDetails,
+  getLoan,
+  getLoanDetails,
   getStaff,
+  getStaffLeaveBalance,
+  getStaffLoanBalance,
   getStaffs,
+  loanPaid,
   rejectLeave,
+  rejectLoan,
 } from "../api/staff";
 
 export const useAddStaff = (options = {}) => {
@@ -103,6 +115,42 @@ export const useDeleteStaff = (options = {}) => {
   return { isLoading, mutate };
 };
 
+export const useDeleteLeave = (options = {}) => {
+  const { isLoading, mutate } = useMutation(deleteLeave, {
+    mutationKey: ["deleteLeave"],
+    ...options,
+  });
+
+  return { isLoading, mutate };
+};
+
+export const useDeleteLoan = (options = {}) => {
+  const { isLoading, mutate } = useMutation(deleteLoan, {
+    mutationKey: ["deleteLoan"],
+    ...options,
+  });
+
+  return { isLoading, mutate };
+};
+
+export const useGetStaffLeaveBalance = (options = {}) => {
+  const { isLoading, mutate, data } = useMutation(getStaffLeaveBalance, {
+    mutationKey: ["getStaffLeaveBalance"],
+    ...options,
+  });
+
+  return { isLoading, mutate, data };
+};
+
+export const useGetStaffLoanBalance = (options = {}) => {
+  const { isLoading, mutate, data } = useMutation(getStaffLoanBalance, {
+    mutationKey: ["getStaffLoanBalance"],
+    ...options,
+  });
+
+  return { isLoading, mutate, data };
+};
+
 export const useApproveLeave = (options = {}) => {
   const { isLoading, mutate } = useMutation(approveLeave, {
     mutationKey: ["approveLeave"],
@@ -121,9 +169,54 @@ export const useRejectLeave = (options = {}) => {
   return { isLoading, mutate };
 };
 
+export const useApproveLoan = (options = {}) => {
+  const { isLoading, mutate } = useMutation(approveLoan, {
+    mutationKey: ["approveLoan"],
+    ...options,
+  });
+
+  return { isLoading, mutate };
+};
+
+export const useLoanPaid = (options = {}) => {
+  const { isLoading, mutate } = useMutation(loanPaid, {
+    mutationKey: ["loanPaid"],
+    ...options,
+  });
+
+  return { isLoading, mutate };
+};
+
+export const useRejectLoan = (options = {}) => {
+  const { isLoading, mutate } = useMutation(rejectLoan, {
+    mutationKey: ["rejectLoan"],
+    ...options,
+  });
+
+  return { isLoading, mutate };
+};
+
 export const useDelEmployeeDoc = (options = {}) => {
   const { isLoading, data, mutate } = useMutation(delEmployeeDoc, {
     mutationKey: ["delEmployeeDoc"],
+    ...options,
+  });
+
+  return { isLoading, data, mutate };
+};
+
+export const useAdminCreateLeave = (options = {}) => {
+  const { isLoading, data, mutate } = useMutation(adminCreateLeave, {
+    mutationKey: ["adminCreateLeave"],
+    ...options,
+  });
+
+  return { isLoading, data, mutate };
+};
+
+export const useAdminCreateLoan = (options = {}) => {
+  const { isLoading, data, mutate } = useMutation(adminCreateLoan, {
+    mutationKey: ["adminCreateLoan"],
     ...options,
   });
 
@@ -152,6 +245,36 @@ export const useGetLeave = (id = "", options = {}) => {
   const { data, isLoading, refetch } = useQuery(
     ["getLeaveDetails", id],
     () => getLeaveDetails(id),
+    {
+      ...options,
+    }
+  );
+
+  return { isLoading, data, refetch };
+};
+
+export const useGetLoanRequest = (
+  options = {},
+  type = "",
+  page = 1,
+  limit = 25,
+  query
+) => {
+  const { data, isLoading, refetch } = useQuery(
+    ["getLoan", type, page, limit, query],
+    () => getLoan(type, page, limit, query),
+    {
+      ...options,
+    }
+  );
+
+  return { data, isLoading, refetch };
+};
+
+export const useGetLoan = (id = "", options = {}) => {
+  const { data, isLoading, refetch } = useQuery(
+    ["getLoanDetails", id],
+    () => getLoanDetails(id),
     {
       ...options,
     }

@@ -41,31 +41,46 @@ export const AuthLayout = ({ children }) => {
 };
 
 export const NonAuthLayout = ({ children }) => {
+  const today = new Date();
   return (
-    <Flex flexDir="column"fontFamily="Sailec" justifyContent="center" align="center" minH="100vh">
-      <Flex
-        flexDir="column"
-        justifyContent="center"
-        align="center"
-        minH="90vh"
-        w={{ base: "full", lg: "1295px" }}
-        px="20px"
-        pb="10px"
-      >
-        {children}
+    <>
+      <Flex pt="51px" pl="39px" align="center" gap="8px">
+        <Image src="/logo.svg" w="38px" h="38px" objectFit="contain" />
+        <Box>
+          <Text fontWeight={500}>Managr</Text>
+          <Text fontSize="11px">Powered by EZPark</Text>
+        </Box>
       </Flex>
       <Flex
-        mt="auto"
-        mb="20px"
         flexDir="column"
+        fontFamily="Sailec"
         justifyContent="center"
         align="center"
+        minH="80vh"
       >
-        <Text fontSize="14px" lineHeight="100%" mb="8px">
-          Powered by
-        </Text>
-        <Image src="/assets/ezlogo.png" />
+        <Flex
+          flexDir="column"
+          justifyContent="center"
+          align="center"
+          minH="80vh"
+          w={{ base: "full", lg: "595px" }}
+          px="20px"
+          pb="10px"
+        >
+          {children}
+        </Flex>
+        <Flex
+          mt="auto"
+          mb="20px"
+          fontSize="14px"
+          fontWeight={500}
+          flexDir="column"
+          justifyContent="center"
+          align="center"
+        >
+          Copyright @EZPark {today.getFullYear()} | Privacy Policy
+        </Flex>
       </Flex>
-    </Flex>
+    </>
   );
 };

@@ -120,10 +120,10 @@ const SideDrawer = ({ isOpen, onClose }) => {
                       bg={
                         showMenu
                           ? showMenu && currentIndex === item.id
-                            ? "#EE383A"
+                            ? "#086375"
                             : "transparent"
                           : pathname.includes(item.path)
-                            ? "#EE383A"
+                            ? "#086375"
                             : "transparent"
                       }
                       color={
@@ -147,10 +147,10 @@ const SideDrawer = ({ isOpen, onClose }) => {
                         color: showMenu
                           ? showMenu && currentIndex === item.id
                             ? ""
-                            : "#EE383A"
+                            : "#086375"
                           : pathname.includes(item.path)
                             ? ""
-                            : "#EE383A",
+                            : "#086375",
                       }}
                       borderRadius={4}
                       position="relative"
@@ -286,7 +286,7 @@ const SideDrawer = ({ isOpen, onClose }) => {
                   onClick={() => navigate("/admin/profile")}
                   bg={
                     pathname.includes("/admin/profile")
-                      ? "#EE383A"
+                      ? "#086375"
                       : "transparent"
                   }
                   color={
@@ -303,12 +303,12 @@ const SideDrawer = ({ isOpen, onClose }) => {
                   position="relative"
                 >
                   <Box className="hovered_image">
-                    <UserIcon fill="#EE383A" stroke="#EE383A" />
+                    <UserIcon fill="#086375" stroke="#086375" />
                   </Box>
 
                   <Box className="initial_image" w="16px" h="16px">
                     {pathname.includes("/admin/profile") ? (
-                      <UserIcon fill="#EE383A" stroke="#fff" />
+                      <UserIcon fill="#086375" stroke="#fff" />
                     ) : (
                       <UserIcon fill={"#fff"} stroke="#000" />
                     )}
@@ -350,7 +350,7 @@ const SideDrawer = ({ isOpen, onClose }) => {
               >
                 {isLoading ? (
                   <Flex
-                    _hover={{ color: "#ee383a" }}
+                    _hover={{ color: "#086375" }}
                     gap="5px"
                     color="red"
                     align="center"
@@ -360,7 +360,7 @@ const SideDrawer = ({ isOpen, onClose }) => {
                   </Flex>
                 ) : (
                   <Flex
-                    _hover={{ color: "#ee383a" }}
+                    _hover={{ color: "#086375" }}
                     gap="5px"
                     align="center"
                     color="#646668"

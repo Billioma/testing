@@ -67,7 +67,7 @@ const Profile = () => {
 
           <Box as="form">
             <Flex
-              border="4px solid #ee383a"
+              border="4px solid #086375"
               rounded="full"
               w="fit-content"
               bg="#D4D6D8"

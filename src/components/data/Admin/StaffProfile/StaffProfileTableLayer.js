@@ -182,7 +182,7 @@ const TableLayer = ({
           my="38px"
           flexDir="column"
         >
-          <Image src="/assets/no-loc.jpg" w="64px" h="64px" />
+          <Image src="/assets/no-user.jpg" w="64px" h="64px" />
           <Text
             color="#848688"
             fontSize="14px"

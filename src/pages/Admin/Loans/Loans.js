@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { Box, Flex, Image, Text } from "@chakra-ui/react";
+import { Box, Button, Flex, Image, Text } from "@chakra-ui/react";
 import Filter from "../../../components/common/Filter";
 import TableLayer from "../../../components/data/Admin/Loans/TableLayer";
-import { useGetLeaveRequest } from "../../../services/admin/query/staff";
-import { leaveOptions } from "../../../components/common/constants";
+import { useGetLoanRequest } from "../../../services/admin/query/staff";
+import { loanOptions } from "../../../components/common/constants";
 import { formatFilterDate } from "../../../utils/helpers";
+import { MdAdd } from "react-icons/md";
+import { useNavigate } from "react-router-dom";
 
 const Loans = () => {
   const [type, setType] = useState("");
@@ -53,7 +55,7 @@ const Loans = () => {
 
   const [isRefetch, setIsRefetch] = useState(false);
 
-  const { data, isLoading, refetch } = useGetLeaveRequest(
+  const { data, isLoading, refetch } = useGetLoanRequest(
     {
       refetchOnWindowFocus: true,
       onSuccess: () => {
@@ -66,7 +68,7 @@ const Loans = () => {
         setIsRefetch(false);
       },
     },
-    "",
+    type,
     page,
     limit,
     query
@@ -84,7 +86,7 @@ const Loans = () => {
   useEffect(() => {
     setPage(1);
   }, [limit]);
-
+  const navigate = useNavigate();
   useEffect(() => {
     if (!data) {
       return;
@@ -106,7 +108,7 @@ const Loans = () => {
     { name: "Pending", value: "PENDING" },
     { name: "Approved", value: "APPROVED" },
     { name: "Declined", value: "REJECTED" },
-    { name: "Repayment In Progress", value: "REPAY" },
+    { name: "Repayment In Progress", value: "REPAYMENT_IN_PROGRESS" },
     { name: "Paid", value: "PAID" },
   ];
 
@@ -149,7 +151,7 @@ const Loans = () => {
         <Filter
           setFiltArray={setFiltArray}
           filtArray={filtArray}
-          fieldToCompare={leaveOptions}
+          fieldToCompare={loanOptions}
           gap
           title={
             <Text fontWeight={500} lineHeight="100%" color="#242628">
@@ -158,6 +160,15 @@ const Loans = () => {
           }
           main={
             <>
+              <Button
+                display="flex"
+                bg="#000"
+                gap="8px"
+                onClick={() => navigate("/admin/loans/create")}
+              >
+                <Text fontSize="14px">Create Loan</Text>
+                <MdAdd size="20px" />
+              </Button>
               <Flex
                 justifyContent="center"
                 align="center"
@@ -189,6 +200,7 @@ const Loans = () => {
           setPage={setPage}
           startRow={startRow}
           endRow={endRow}
+          refetch={refetch}
           setLimit={setLimit}
         />
       </Box>

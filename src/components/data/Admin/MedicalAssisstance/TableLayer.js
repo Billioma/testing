@@ -98,7 +98,8 @@ const TableLayer = ({
                     >
                       {item?.status === "REJECTED"
                         ? "Declined"
-                        : item?.status?.toLowerCase()}
+                        : item?.status === "WITHDRAWN"
+                          ? "Cancelled"  : item?.status?.toLowerCase()}
                     </Flex>
                   </Flex>
                 </Td>

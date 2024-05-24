@@ -6,19 +6,28 @@ import {
   Text,
   useDisclosure,
   Spinner,
+  TableContainer,
+  Table,
+  Thead,
+  Tr,
+  Th,
+  Tbody,
+  Td,
 } from "@chakra-ui/react";
 import { useNavigate, useParams } from "react-router-dom";
-import { LeaveStatus } from "../../../components/common/constants";
+import { LoanStatus, loanSubmit } from "../../../components/common/constants";
 import ApproveDeny from "../../../components/modals/ApproveDeny";
 import GoBackTab from "../../../components/data/Admin/GoBackTab";
 import {
-  useApproveLeave,
-  useGetLeave,
-  useRejectLeave,
+  useApproveLoan,
+  useGetLoan,
+  useLoanPaid,
+  useRejectLoan,
 } from "../../../services/admin/query/staff";
-import { formatDat } from "../../../utils/helpers";
+import { formatDat, formatDates } from "../../../utils/helpers";
 import useCustomToast from "../../../utils/notifications";
 import { IoIosArrowDown } from "react-icons/io";
+import Select from "react-select";
 
 const LoanDetails = () => {
   const { id } = useParams();
@@ -30,18 +39,68 @@ const LoanDetails = () => {
     setType(type);
   };
 
-  const { data, refetch, isLoading } = useGetLeave(id);
+  const customStyles = {
+    control: (provided, state) => ({
+      ...provided,
+      width: "7rem",
+      minHeight: "35px",
+      fontWeight: 500,
+      color: "#646668",
+      fontSize: "13px",
+      cursor: "pointer",
+      borderRadius: "4px",
+      border: state.hasValue ? "none" : "1px solid #D4D6D8",
+      paddingRight: "16px",
+      background: state.hasValue ? "#f4f6f8" : "unset",
+    }),
+    menu: (provided) => ({
+      ...provided,
+      fontSize: "15px",
+      backgroundColor: "#fff",
+    }),
+    option: (provided, state) => ({
+      ...provided,
+      color: state.isFocused ? "" : "",
+      backgroundColor: state.isFocused ? "#f4f6f8" : "",
+    }),
+  };
+
+  const submitOptions = loanSubmit?.map((item) => ({
+    value: item?.value,
+    label: item?.name,
+  }));
+
+  const [paidIndex, setPaidIndex] = useState("");
+  const { data, refetch, isLoading } = useGetLoan(id, {
+    refetchOnWindowFocus: true,
+  });
   const { successToast, errorToast } = useCustomToast();
   const [repayment, setRepayment] = useState("");
   const [showRepayment, setShowRepayment] = useState(false);
   const navigate = useNavigate();
 
-  const { mutate: approveMutate, isLoading: isApprove } = useApproveLeave({
+  const initialPlans =
+    data?.repaymentPlans?.map((plan) => ({
+      ...plan,
+      localStatus: plan.status,
+    })) || [];
+  const [repaymentPlans, setRepaymentPlans] = useState(initialPlans);
+
+  const handleChange = (item, selectedOption) => {
+    setRepaymentPlans(
+      repaymentPlans?.map((plan) =>
+        plan.id === item.id
+          ? { ...plan, localStatus: selectedOption.label }
+          : plan
+      )
+    );
+  };
+
+  const { mutate: approveMutate, isLoading: isApprove } = useApproveLoan({
     onSuccess: () => {
       successToast("Leave request approved successfully!");
       refetch();
-      onClose();
-      navigate("/admin/leave-mgt");
+      // navigate("/admin/loans");
     },
     onError: (error) => {
       errorToast(
@@ -50,12 +109,23 @@ const LoanDetails = () => {
     },
   });
 
-  const { mutate: rejectMutate, isLoading: isReject } = useRejectLeave({
+  const { mutate: payMutate, isLoading: isPaying } = useLoanPaid({
+    onSuccess: () => {
+      refetch();
+    },
+    onError: (error) => {
+      errorToast(
+        error?.response?.data?.message || error?.message || "An Error occurred"
+      );
+    },
+  });
+
+  const { mutate: rejectMutate, isLoading: isReject } = useRejectLoan({
     onSuccess: () => {
       successToast("Leave request rejected successfully!");
       refetch();
       onClose();
-      navigate("/admin/leave-mgt");
+      // navigate("/admin/loans");
     },
     onError: (error) => {
       errorToast(
@@ -68,7 +138,17 @@ const LoanDetails = () => {
     approveMutate({
       query: id,
       body: {
-        isPaid: data?.isPaid,
+        amountLoaned: data?.amountRequested,
+        repaymentTerms: repayment,
+      },
+    });
+  };
+
+  const setPaid = (dat) => {
+    payMutate({
+      query: id,
+      body: {
+        repaymentPlanId: dat,
       },
     });
   };
@@ -78,12 +158,7 @@ const LoanDetails = () => {
   }, []);
 
   const reject = () => {
-    rejectMutate({
-      query: id,
-      body: {
-        isPaid: data?.isPaid,
-      },
-    });
+    rejectMutate(id);
   };
 
   useEffect(() => {
@@ -119,7 +194,20 @@ const LoanDetails = () => {
             flexDir="column"
             border="1px solid #E4E6E8"
           >
-            <Flex mb="24px" mt="4px" align="center" gap="12px">
+            <Flex
+              display={
+                data?.status === "APPROVED" ||
+                data?.status === "REPAYMENT_IN_PROGRESS" ||
+                data?.status === "PAID" ||
+                data?.status === "ACTIVE"
+                  ? "flex"
+                  : "none"
+              }
+              mb="24px"
+              mt="4px"
+              align="center"
+              gap="12px"
+            >
               <Text fontWeight={500} color="#090c02">
                 Approved by:{" "}
               </Text>
@@ -133,7 +221,7 @@ const LoanDetails = () => {
               >
                 <Flex rounded="full" bg="#D9D9D9" w="16px" h="16px"></Flex>
                 <Text fontSize="14px" color="#090c02">
-                  Adenike Ajibola
+                  {data?.approvedBy?.firstName} {data?.approvedBy?.lastName}
                 </Text>
               </Flex>
             </Flex>
@@ -146,20 +234,20 @@ const LoanDetails = () => {
               fontWeight={700}
             >
               <Flex gap="8px">
-                <Text>Staff ID: {id}</Text>
+                <Text>Staff ID: {data?.staff?.staffId}</Text>
                 <Text>|</Text>
                 <Text textTransform="capitalize">{data?.staff?.fullName}</Text>
               </Flex>
 
               <Flex
                 color={
-                  LeaveStatus.find(
+                  LoanStatus.find(
                     (dat) =>
                       dat.name?.toLowerCase() === data?.status?.toLowerCase()
                   )?.color || ""
                 }
                 bg={
-                  LeaveStatus.find(
+                  LoanStatus.find(
                     (dat) =>
                       dat.name?.toLowerCase() === data?.status?.toLowerCase()
                   )?.bg || ""
@@ -175,7 +263,9 @@ const LoanDetails = () => {
               >
                 {data?.status === "REJECTED"
                   ? "Declined"
-                  : data?.status?.toLowerCase()}
+                  : data?.status === "REPAYMENT_IN_PROGRESS"
+                    ? "Repayment In Progress"
+                    : data?.status?.toLowerCase()}
               </Flex>
             </Flex>
 
@@ -184,16 +274,22 @@ const LoanDetails = () => {
               borderRadius="4px"
               p="16px"
               mt="20px"
+              display={data?.additionalComments ? "block" : "none"}
               fontSize="15px"
               color="#000"
             >
               <Text fontWeight={500}>Additional Comments:</Text>
-              <Text color="#646668">
-                Lörem ipsum tregirade religa memäv prengen utan lanat.{" "}
+              <Text color="#646668" mt="10px">
+                {data?.additionalComments}{" "}
               </Text>
             </Box>
 
             <Flex
+              display={
+                data?.status === "PENDING" || data?.status === "CANCELLED"
+                  ? "flex"
+                  : "none"
+              }
               mt="20px"
               color="#090c02"
               flexDir={{ base: "column", md: "row" }}
@@ -205,7 +301,7 @@ const LoanDetails = () => {
                 <Text opacity={0.4} fontSize="14px">
                   Amount Requested:
                 </Text>
-                <Text>₦ {(10000).toLocaleString()}</Text>
+                <Text>₦ {(data?.amountRequested).toLocaleString()}</Text>
               </Flex>
 
               <Box
@@ -220,11 +316,190 @@ const LoanDetails = () => {
                 <Text opacity={0.4} fontSize="14px">
                   Date Submited:
                 </Text>
-                <Text>{formatDat(data?.endDate)}</Text>
+                <Text>{formatDat(data?.createdAt)}</Text>
               </Flex>
             </Flex>
 
-            <Box mt="24px">
+            <Flex
+              display={
+                data?.status === "APPROVED" ||
+                data?.status === "REPAYMENT_IN_PROGRESS" ||
+                data?.status === "PAID" ||
+                data?.status === "ACTIVE"
+                  ? "flex"
+                  : "none"
+              }
+              mt="20px"
+              color="#090c02"
+              flexDir={{ base: "column", md: "row" }}
+              align={{ base: "flex-start", md: "center" }}
+              gap="20px"
+              fontWeight={500}
+            >
+              <Flex align="center" gap="8px">
+                <Text opacity={0.4} fontSize="14px">
+                  Amount Loaned:
+                </Text>
+                <Text>₦ {(data?.amountRequested).toLocaleString()}</Text>
+              </Flex>
+
+              <Box
+                display={{ base: "none", md: "block" }}
+                h="24px"
+                bg="#000000"
+                border="1px solid"
+                opacity={0.4}
+              />
+
+              <Flex align="center" gap="8px">
+                <Text opacity={0.4} fontSize="14px">
+                  Date Submited:
+                </Text>
+                <Text>{formatDat(data?.createdAt)}</Text>
+              </Flex>
+
+              <Box
+                display={{ base: "none", md: "block" }}
+                h="24px"
+                bg="#000000"
+                border="1px solid"
+                opacity={0.4}
+              />
+
+              <Flex align="center" gap="8px">
+                <Text opacity={0.4} fontSize="14px">
+                  Date Approved:
+                </Text>
+                <Text>{formatDat(data?.approvedAt)}</Text>
+              </Flex>
+            </Flex>
+
+            <Box
+              border="1px solid #E2E5DC"
+              borderRadius="8px"
+              mt="24px"
+              display={
+                data?.status === "APPROVED" ||
+                data?.status === "REPAYMENT_IN_PROGRESS" ||
+                data?.status === "PAID" ||
+                data?.status === "ACTIVE"
+                  ? "block"
+                  : "none"
+              }
+              py="16px"
+              px="20px"
+            >
+              <Text fontSize="18px" fontWeight={700}>
+                Repayment Terms
+              </Text>
+
+              <Box mt="14px">
+                <TableContainer pb="100px">
+                  <Table>
+                    <Thead>
+                      <Tr>
+                        {["PERIOD", "DATE", "AMOUNT", "STATUS"].map(
+                          (item, i) => (
+                            <Th
+                              fontFamily="Satoshi"
+                              _last={{ textAlign: "center" }}
+                              key={i}
+                              fontSize="13px"
+                              fontWeight={700}
+                            >
+                              {item}
+                            </Th>
+                          )
+                        )}
+                      </Tr>
+                    </Thead>
+                    <Tbody>
+                      {data?.repaymentPlans?.map((item, i) => (
+                        <Tr key={i} fontSize="14px">
+                          <Td>{i + 1}</Td>
+                          <Td>{formatDates(item?.dueDate)}</Td>
+                          <Td>₦ {(item?.amount).toLocaleString()}</Td>
+                          <Td>
+                            {item?.status === "PENDING" ? (
+                              <Flex
+                                justifyContent="center"
+                                align="center"
+                                w="full"
+                              >
+                                <Select
+                                  styles={customStyles}
+                                  options={submitOptions}
+                                  placeholder="Pending"
+                                  components={{
+                                    IndicatorSeparator: () => (
+                                      <div style={{ display: "none" }}></div>
+                                    ),
+                                    DropdownIndicator: () => (
+                                      <div>
+                                        {isPaying && paidIndex === item?.id ? (
+                                          <Spinner size="sm" />
+                                        ) : (
+                                          <IoIosArrowDown
+                                            size="15px"
+                                            color="#646668"
+                                          />
+                                        )}
+                                      </div>
+                                    ),
+                                  }}
+                                  onChange={(selectedOption) => {
+                                    handleChange(item, selectedOption);
+                                    setPaidIndex(item?.id);
+                                    if (selectedOption?.label == "Paid") {
+                                      setPaid(item?.id);
+                                    }
+                                  }}
+                                />
+                              </Flex>
+                            ) : (
+                              <Flex
+                                justifyContent="center"
+                                align="center"
+                                w="full"
+                              >
+                                <Flex
+                                  justifyContent="center"
+                                  align="center"
+                                  w="fit-content"
+                                  textTransform="capitalize"
+                                  fontWeight={500}
+                                  fontSize="12px"
+                                  borderRadius="4px"
+                                  py="7px"
+                                  px="12px"
+                                  border={
+                                    item?.status === "PAID"
+                                      ? "1px solid #E5FFE5"
+                                      : "1px solid #F8E16C"
+                                  }
+                                  color={
+                                    item?.status === "PAID"
+                                      ? "#0B841D"
+                                      : "#F79E1B"
+                                  }
+                                >
+                                  {item?.status?.toLowerCase()}
+                                </Flex>
+                              </Flex>
+                            )}
+                          </Td>
+                        </Tr>
+                      ))}
+                    </Tbody>
+                  </Table>
+                </TableContainer>
+              </Box>
+            </Box>
+
+            <Box
+              display={data?.status === "PENDING" ? "block" : "none"}
+              mt="24px"
+            >
               <Text fontSize="18px" fontWeight={700}>
                 Repayment Terms
               </Text>
@@ -249,7 +524,6 @@ const LoanDetails = () => {
                   </Text>
                   <IoIosArrowDown />
                 </Flex>
-
                 {showRepayment && (
                   <Box
                     top="60px"
@@ -266,7 +540,7 @@ const LoanDetails = () => {
                         p="10px"
                         cursor="pointer"
                         onClick={() => {
-                          setRepayment(`${item} Month${i > 0 ? "s" : ""}`);
+                          setRepayment(item);
                           setShowRepayment(false);
                         }}
                         key={i}
@@ -281,6 +555,7 @@ const LoanDetails = () => {
 
             <Flex
               gap="24px"
+              display={data?.status === "PENDING" ? "flex" : "none"}
               mt={showRepayment ? "170px" : "24px"}
               w={{ base: "100%", md: "25%" }}
             >
@@ -295,8 +570,10 @@ const LoanDetails = () => {
                 Decline
               </Button>
               <Button
-                onClick={() => open("approve")}
+                onClick={approve}
+                isLoading={isApprove}
                 variant="adminPrimary"
+                isDisabled={!repayment}
                 h="48px"
                 w="60%"
               >
@@ -306,6 +583,7 @@ const LoanDetails = () => {
           </Flex>
 
           <ApproveDeny
+            loan
             approve={approve}
             reject={reject}
             isOpen={isOpen}

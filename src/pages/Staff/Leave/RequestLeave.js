@@ -19,6 +19,7 @@ const RequestLeave = () => {
     startDate: "",
     endDate: "",
     additionalComments: "",
+    purpose: "",
   });
 
   const [dates, setDates] = useState([]);

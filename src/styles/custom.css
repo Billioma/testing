@@ -48,8 +48,8 @@
 }
 
 .parent_nav:hover .child_nav {
-  color: #ee383a;
-  border-color: #ee383a;
+  color: #086375;
+  border-color: #086375;
 }
 
 .parent_nav:hover .hovered_image {
@@ -146,6 +146,26 @@
   border: 1px solid #949698 !important;
 }
 
+.toast {
+  animation: toast-line 5s ease infinite;
+  background: var(--toast-background);
+  height: 3px;
+  width: 0%;
+}
+
+@keyframes toast-line {
+  0% {
+    width: 0%;
+  }
+
+  50% {
+    width: 100%;
+  }
+
+  100% {
+    width: 0%;
+  }
+}
 
 .rmdp-container {
   width: 100% !important;
@@ -159,7 +179,7 @@
 }
 
 .rmdp-day.rmdp-selected span:not(.highlight) {
-  background-color: #ee383a !important;
+  background-color: #086375 !important;
   box-shadow: none !important;
 }
 .rmdp-day span:hover {
@@ -201,4 +221,3 @@
   padding: 12px !important;
   height: 44px !important;
 }
-

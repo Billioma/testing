@@ -5,6 +5,7 @@ import {
   getLeaveDetails,
   requestLeave,
   updateLeave,
+  withdrawLeave,
 } from "../api/leave";
 
 export const useRequestLeave = (options = {}) => {
@@ -58,4 +59,13 @@ export const useGetLeave = (id = "", options = {}) => {
   );
 
   return { isLoading, data, refetch };
+};
+
+export const useWithdrawLeave = (options = {}) => {
+  const { isLoading, mutate } = useMutation(withdrawLeave, {
+    mutationKey: ["withdrawLeave"],
+    ...options,
+  });
+
+  return { isLoading, mutate };
 };

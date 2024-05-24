@@ -29,50 +29,17 @@ const Header = ({ showSidebar }) => {
       case locationRoute.includes("dashboard"):
         return setTitle("Dashboard");
 
-      case locationRoute.includes("clients"):
-        return setTitle("Clients");
-
-      case locationRoute.includes("users"):
-        return setTitle("Users");
-
-      case locationRoute.includes("events"):
-        return setTitle("Events");
-
-      case locationRoute.includes("services"):
-        return setTitle("Services");
-
-      case locationRoute.includes("reports"):
-        return setTitle("Reports");
-
-      case locationRoute.includes("logs"):
-        return setTitle("Logs");
-
-      case locationRoute.includes("vehicles"):
-        return setTitle("Vehicles");
-
       case locationRoute.includes("profiles"):
         return setTitle("Staff Profiles");
 
       case locationRoute.includes("profile"):
         return setTitle("Profile");
 
-      case locationRoute.includes("locations"):
-        return setTitle("Locations");
-
-      case locationRoute.includes("memberships"):
-        return setTitle("Memberships");
-
-      case locationRoute.includes("transactions"):
-        return setTitle("Transactions");
-
-      case locationRoute.includes("configurations"):
-        return setTitle("Configurations");
-
-      case locationRoute.includes("support"):
-        return setTitle("Support");
+      case locationRoute.includes("settings"):
+        return setTitle("Settings");
 
       case locationRoute.includes("leave"):
-        return setTitle("Leave Management");
+        return setTitle("Leaves");
 
       case locationRoute.includes("medical"):
         return setTitle("Medical Assistance");
@@ -87,149 +54,11 @@ const Header = ({ showSidebar }) => {
 
   useEffect(() => {
     switch (true) {
-      case locationRoute.includes("clients/all"):
-        return setSecTitle("Client List");
-
-      case locationRoute.includes("configurations/roles"):
-        return setSecTitle("Roles");
-
-      case locationRoute.includes("configurations/vehicle-make"):
-        return setSecTitle("Vehicle Makes");
-
-      case locationRoute.includes("configurations/vehicle-model"):
-        return setSecTitle("Vehicle Models");
-
-      case locationRoute.includes("configurations/faq"):
-        return setSecTitle("FAQs");
-
-      case locationRoute.includes("update-profile"):
-        return setSecTitle("Update Profile");
-
-      case locationRoute.includes("configurations/permissions"):
-        return setSecTitle("Permissions");
-
-      case locationRoute.includes("configurations/bank-details"):
-        return setSecTitle("Bank Details");
-
-      case locationRoute.includes("configurations/qr-code"):
-        return setSecTitle("Create QR Code");
-
-      case locationRoute.includes("clients/invoices"):
-        return setSecTitle("Client Invoices");
-
-      case locationRoute.includes("reports/payments"):
-        return setSecTitle("Payments");
-
-      case locationRoute.includes("reports/locations"):
-        return setSecTitle("Locations");
-
-      case locationRoute.includes("reports/zones"):
-        return setSecTitle("Zones");
-
-      case locationRoute.includes("reports/vehicles"):
-        return setSecTitle("Vehicles");
-
-      case locationRoute.includes("reports/tips"):
-        return setSecTitle("Tips");
-
-      case locationRoute.includes("reports/customers"):
-        return setSecTitle("Customers");
-
-      case locationRoute.includes("reports/invoices"):
-        return setSecTitle("Invoices");
-
-      case locationRoute.includes("reports/subscriptions"):
-        return setSecTitle("Subscriptions");
-
-      case locationRoute.includes("reports/logs"):
-        return setSecTitle("Logs");
-
-      case locationRoute.includes("reports/payment-history"):
-        return setSecTitle("Payment History");
-
-      case locationRoute.includes("logs/valeted-vehicles"):
-        return setSecTitle("Valeted Vehicles");
-
-      case locationRoute.includes("logs/parked-vehicles"):
-        return setSecTitle("Parked Vehicles");
-
-      case locationRoute.includes("logs/serviced-vehicles"):
-        return setSecTitle("Serviced Vehicles");
-
-      case locationRoute.includes("transactions/pay-to-park"):
-        return setSecTitle("Pay-To-Park");
-
-      case locationRoute.includes("transactions/event-parking"):
-        return setSecTitle("Event Parking");
-
-      case locationRoute.includes("transactions/reserved-parking"):
-        return setSecTitle("Reserved Parking");
-
-      case locationRoute.includes("transactions/car-services"):
-        return setSecTitle("Car Services");
-
-      case locationRoute.includes("memberships/plans"):
-        return setSecTitle("Memberships Plans");
-
-      case locationRoute.includes("memberships/features"):
-        return setSecTitle("Memberships Features");
-
-      case locationRoute.includes("memberships/customer-subscriptions"):
-        return setSecTitle("Customer Subscriptions");
-
-      case locationRoute.includes("memberships/corporate-subscriptions"):
-        return setSecTitle("Corporate Subscriptions");
-
-      case locationRoute.includes("users/customers"):
-        return setSecTitle("Customers");
-
-      case locationRoute.includes("users/attendants"):
-        return setSecTitle("Attendants");
-
-      case locationRoute.includes("users/administrators"):
-        return setSecTitle("Administrators");
-
-      case locationRoute.includes("users/operators"):
-        return setSecTitle("Operators");
-
-      case locationRoute.includes("locations/all"):
-        return setSecTitle("Locations");
-
-      case locationRoute.includes("locations/zones"):
-        return setSecTitle("Zones");
-
-      case locationRoute.includes("locations/rates"):
-        return setSecTitle("Rates");
-
-      case locationRoute.includes("locations/amenities"):
-        return setSecTitle("Amenities");
-
-      case locationRoute.includes("locations/policies"):
-        return setSecTitle("Policies");
-
-      case locationRoute.includes("locations/locations"):
-        return setSecTitle("Locations");
-
-      case locationRoute.includes("events/details"):
-        return setSecTitle("Event Details");
-
-      case locationRoute.includes("events/create"):
-        return setSecTitle("Create Event");
-
-      case locationRoute.includes("vehicles/details"):
-        return setSecTitle("Vehicle Details");
-
-      case locationRoute.includes("vehicles/create"):
-        return setSecTitle("Create Vehicle");
-
-      case locationRoute.includes("feedback"):
-        return setSecTitle("Feedback");
-
-      case locationRoute.includes("ratings"):
-        return setSecTitle("Ratings");
-
       case locationRoute.includes("profiles/create"):
         return setSecTitle("Add New Staff");
+
+      case locationRoute.includes("leave-mgt/create"):
+        return setSecTitle("Add Absence");
 
       default:
         return setSecTitle("");
@@ -405,8 +234,8 @@ const Header = ({ showSidebar }) => {
         isMobile
           ? "calc(100% - 2.4rem)"
           : !showSidebar
-          ? "calc(100% - 120px)"
-          : "calc(100% - 342px)"
+            ? "calc(100% - 120px)"
+            : "calc(100% - 342px)"
       }
       borderRadius="8px"
       zIndex="5"
@@ -487,8 +316,8 @@ const Header = ({ showSidebar }) => {
                     isUser
                       ? "/assets/pfp.svg"
                       : !userData?.avatar === null
-                      ? userData?.avatar
-                      : "/assets/pfp.svg"
+                        ? userData?.avatar
+                        : "/assets/pfp.svg"
                   }
                 />
 

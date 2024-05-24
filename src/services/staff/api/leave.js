@@ -27,3 +27,8 @@ export const updateLeave = async ({ query, body }) => {
   const response = await axiosInstance.patch(API.UPDATE_LEAVE(query), body);
   return response.data;
 };
+
+export const withdrawLeave = async (query) => {
+  const response = await axiosInstance.patch(API.WITHDRAW_LEAVE(query));
+  return response.data;
+};

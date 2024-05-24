@@ -23,7 +23,6 @@ import {
   useGetJobs,
 } from "../../../services/admin/query/configurations";
 import { useGetRoles } from "../../../services/admin/query/configurations";
-import { formatDate, formatNewDate } from "../../../utils/helpers";
 
 const AddStaff = () => {
   const [formSubmitted, setFormSubmitted] = useState(false);
@@ -1429,7 +1428,7 @@ const AddStaff = () => {
                         </Flex>
 
                         <Text fontWeight={500}>
-                          Driver's License (Optional)
+                          Driver's License
                         </Text>
                       </Flex>
 

@@ -47,8 +47,28 @@ export const deleteStaff = async (id) => {
   return response.data;
 };
 
+export const deleteLeave = async (id) => {
+  const response = await axiosInstance.delete(`${API.REQUEST_LEAVE}/${id}`);
+  return response.data;
+};
+
+export const deleteLoan = async (id) => {
+  const response = await axiosInstance.delete(`${API.REQUEST_LOAN}/${id}`);
+  return response.data;
+};
+
 export const delEmployeeDoc = async (query) => {
   const response = await axiosInstance.delete(API.UPDATE_EMPLOYEE_DOC(query));
+  return response.data;
+};
+
+export const getStaffLeaveBalance = async (query) => {
+  const response = await axiosInstance.get(API.GET_STAFF_LEAVE_BALANCE(query));
+  return response.data;
+};
+
+export const getStaffLoanBalance = async (query) => {
+  const response = await axiosInstance.get(API.GET_STAFF_LOAN_BALANCE(query));
   return response.data;
 };
 
@@ -59,6 +79,31 @@ export const approveLeave = async ({ query, body }) => {
 
 export const rejectLeave = async ({ query, body }) => {
   const response = await axiosInstance.patch(API.REJECT_LEAVE(query), body);
+  return response.data;
+};
+
+export const approveLoan = async ({ query, body }) => {
+  const response = await axiosInstance.patch(API.APPROVE_LOAN(query), body);
+  return response.data;
+};
+
+export const loanPaid = async ({ query, body }) => {
+  const response = await axiosInstance.patch(API.LOAN_PAID(query), body);
+  return response.data;
+};
+
+export const rejectLoan = async (query) => {
+  const response = await axiosInstance.patch(API.REJECT_LOAN(query));
+  return response.data;
+};
+
+export const adminCreateLeave = async (body) => {
+  const response = await axiosInstance.post(API.REQUEST_LEAVE, body);
+  return response.data;
+};
+
+export const adminCreateLoan = async (body) => {
+  const response = await axiosInstance.post(API.REQUEST_LOAN, body);
   return response.data;
 };
 
@@ -82,5 +127,23 @@ export const getLeave = async (type, page, limit, query) => {
 
 export const getLeaveDetails = async (id) => {
   const res = await axiosInstance.get(API.REQUEST_LEAVE + `/${id}`);
+  return res.data;
+};
+
+export const getLoan = async (type, page, limit, query) => {
+  const res = await axiosInstance.get(
+    type
+      ? API.REQUEST_LOAN +
+          `?page=${page}&limit=${limit}&sort=createdAt,DESC&${
+            query || ""
+          }&filter=status||$eq||${type}`
+      : API.REQUEST_LOAN +
+          `?page=${page}&limit=${limit}&sort=createdAt,DESC&${query || ""}`
+  );
+  return res.data;
+};
+
+export const getLoanDetails = async (id) => {
+  const res = await axiosInstance.get(API.REQUEST_LOAN + `/${id}`);
   return res.data;
 };

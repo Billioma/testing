@@ -262,7 +262,7 @@ const MedicalDetails = () => {
           <Flex
             gap="24px"
             display={data?.status === "PENDING" ? "flex" : "none"}
-            w="30%"
+            w={{ base: "100%", md: "30%" }}
             mt="24px"
             align="center"
           >
@@ -285,7 +285,7 @@ const MedicalDetails = () => {
               h="60px"
               w="full"
             >
-              Delete
+              Cancel
             </Button>
           </Flex>
         </>

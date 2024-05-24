@@ -11,9 +11,12 @@ import React, { useEffect } from "react";
 import { IoIosArrowForward } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
 import { useGetLeaveBalance } from "../../../services/staff/query/leave";
+import { useGetUser } from "../../../services/staff/query/user";
 
 const Dashboard = () => {
   const navigate = useNavigate();
+
+  const { data: userData } = useGetUser();
   const {
     data: balance,
     refetch: balanceRefetch,
@@ -33,7 +36,7 @@ const Dashboard = () => {
             <Avatar w="30px" h="30px" rounded="full" />
 
             <Box>
-              <Text fontSize="12px">Hello, Munira</Text>
+              <Text fontSize="12px">Hello, {userData?.fullName}</Text>
               <Text fontFamily="Cooper" fontSize="18px">
                 Welcome Back
               </Text>

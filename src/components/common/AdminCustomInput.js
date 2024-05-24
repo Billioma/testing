@@ -24,6 +24,7 @@ const CustomInput = ({
   name,
   isDisabled,
   suffix,
+  curve,
   handleKeyPress,
   error,
   ngn,
@@ -107,7 +108,7 @@ const CustomInput = ({
           onKeyPress={handleKeyPress}
           onChange={handleInputChange}
           bg={reserve ? "#f4f6f8" : getBackgroundColor()}
-          borderRadius={reserve ? "8px" : "4px"}
+          borderRadius={reserve || curve ? "8px" : "4px"}
           border={reserve ? "none" : getBorderColor()}
           onBlur={(e) => (!auth ? handleInputBlur(e) : setIsTyping(false))}
           onFocus={onFocus}
