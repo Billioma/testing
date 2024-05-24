@@ -147,7 +147,7 @@ const CustomInput = ({
         ) : (
           <InputRightElement
             cursor="pointer"
-            h="44px"
+            h={opt ? "60px" : reserve ? "40px" : textarea ? textarea : "44px"}
             display={show ? "flex" : "none"}
             onClick={onClick}
           >
