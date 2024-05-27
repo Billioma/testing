@@ -278,7 +278,14 @@ const LoanDetails = () => {
               color="#090c02"
               align="center"
               mt="40px"
-              display={data?.status === "APPROVED" ? "flex" : "none"}
+              display={
+                data?.status === "PAID" ||
+                data?.status === "APPROVED" ||
+                data?.status === "REPAYMENT_IN_PROGRESS" ||
+                data?.status === "ACTIVE"
+                  ? "flex"
+                  : "none"
+              }
               flexWrap="wrap"
               justifyContent="space-between"
               gap={{ base: "20px", md: "unset" }}
