@@ -264,13 +264,24 @@ const LoanDetails = () => {
               justifyContent="space-between"
               w={{
                 base: "100%",
-                md: data?.status === "PENDING" ? "50%" : "65%",
+                md:
+                  data?.status === "PENDING" ||
+                  data?.status === "CANCELLED" ||
+                  data?.status === "WITHDRAWN"
+                    ? "50%"
+                    : "65%",
               }}
               gap="20px"
             >
               <Box
                 fontSize="13px"
-                display={data?.status === "PENDING" ? "none" : "block"}
+                display={
+                  data?.status === "PENDING" ||
+                  data?.status === "CANCELLED" ||
+                  data?.status === "WITHDRAWN"
+                    ? "none"
+                    : "block"
+                }
               >
                 <Image
                   src="/assets/approve.svg"

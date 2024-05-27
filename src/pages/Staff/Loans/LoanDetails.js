@@ -115,7 +115,7 @@ const LoanDetails = () => {
                       LEFT TO BE REPAID
                     </Text>
                     <Text mt="5px" fontSize="22px">
-                      ₦ {pending?.toLocaleString()}
+                      ₦ {Number(pending?.toFixed(0))?.toLocaleString()}
                     </Text>
                   </Box>
 
@@ -232,9 +232,9 @@ const LoanDetails = () => {
               >
                 {data?.status === "REJECTED"
                   ? "Declined"
-                    : data?.status === "REPAYMENT_IN_PROGRESS"
-                      ? "Repayment In Progress"
-                      : data?.status?.toLowerCase()}
+                  : data?.status === "REPAYMENT_IN_PROGRESS"
+                    ? "Repayment In Progress"
+                    : data?.status?.toLowerCase()}
               </Flex>
             </Flex>
 
@@ -245,6 +245,7 @@ const LoanDetails = () => {
               display={
                 data?.status === "PENDING" ||
                 data?.status === "CANCELLED" ||
+                data?.status === "DECLINED" ||
                 data?.status === "WITHDRAWN"
                   ? "flex"
                   : "none"
@@ -256,7 +257,7 @@ const LoanDetails = () => {
             >
               <Box fontWeight={700}>
                 <Text opacity={0.4} fontSize="12px">
-                  AMOUNT REQUESTD
+                  AMOUNT REQUESTED
                 </Text>
                 <Text mt="8px" fontSize={{ base: "20px", md: "24px" }}>
                   ₦ {data?.amountRequested?.toLocaleString()}
@@ -287,7 +288,7 @@ const LoanDetails = () => {
                   LEFT TO BE REPAID
                 </Text>
                 <Text mt="8px" fontSize={{ base: "20px", md: "24px" }}>
-                  ₦ {pending?.toLocaleString()}
+                  ₦ {Number(pending?.toFixed(0))?.toLocaleString()}
                 </Text>
               </Box>
 
@@ -302,10 +303,19 @@ const LoanDetails = () => {
 
               <Box fontWeight={700}>
                 <Text opacity={0.4} fontSize="12px">
-                  AMOUNT REQUESTD
+                  AMOUNT{" "}
+                  {data?.status === "PAID" ||
+                  data?.status === "APPROVED" ||
+                  data?.status === "REPAYMENT_IN_PROGRESS" ||
+                  data?.status === "ACTIVE"
+                    ? "APPROVED"
+                    : "REQUESTED"}
                 </Text>
                 <Text mt="8px" fontSize={{ base: "20px", md: "24px" }}>
-                  ₦ {data?.amountRequested?.toLocaleString()}
+                  ₦{" "}
+                  {data?.amountLoaned
+                    ? data?.amountLoaned?.toLocaleString()
+                    : data?.amountRequested?.toLocaleString()}
                 </Text>
               </Box>
 
