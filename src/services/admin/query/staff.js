@@ -13,6 +13,7 @@ import {
   deleteLeave,
   deleteLoan,
   deleteStaff,
+  disburseLoan,
   editEmployeeDoc,
   editStaff,
   getLeave,
@@ -190,6 +191,15 @@ export const useApproveLoan = (options = {}) => {
 export const useLoanPaid = (options = {}) => {
   const { isLoading, mutate } = useMutation(loanPaid, {
     mutationKey: ["loanPaid"],
+    ...options,
+  });
+
+  return { isLoading, mutate };
+};
+
+export const useDisburseLoan = (options = {}) => {
+  const { isLoading, mutate } = useMutation(disburseLoan, {
+    mutationKey: ["disburseLoan"],
     ...options,
   });
 

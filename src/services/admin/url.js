@@ -316,6 +316,7 @@ export const REJECT_LEAVE = (id = "") => `admin/leave-request/reject/${id}`;
 export const APPROVE_LOAN = (id = "") => `admin/loan-request/approve/${id}`;
 export const LOAN_PAID = (id = "") =>
   `admin/loan-request/${id}/repayment-plan/set-to-paid`;
+export const DISBURSE_LOAN = (id = "") => `admin/loan-request/disburse/${id}`;
 export const REJECT_LOAN = (id = "") => `admin/loan-request/decline/${id}`;
 
 export const ADMIN_AMENITIES_LIST = (

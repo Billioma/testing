@@ -58,7 +58,9 @@ export const deleteLoan = async (id) => {
 };
 
 export const cancelLoan = async (id) => {
-  const response = await axiosInstance.patch(`${API.REQUEST_LOAN}/cancel/${id}`);
+  const response = await axiosInstance.patch(
+    `${API.REQUEST_LOAN}/cancel/${id}`
+  );
   return response.data;
 };
 
@@ -94,6 +96,11 @@ export const approveLoan = async ({ query, body }) => {
 
 export const loanPaid = async ({ query, body }) => {
   const response = await axiosInstance.patch(API.LOAN_PAID(query), body);
+  return response.data;
+};
+
+export const disburseLoan = async (query) => {
+  const response = await axiosInstance.patch(API.DISBURSE_LOAN(query));
   return response.data;
 };
 

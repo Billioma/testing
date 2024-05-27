@@ -6,8 +6,9 @@ import {
   Text,
   useDisclosure,
   Spinner,
+  Image,
 } from "@chakra-ui/react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { LeaveStatus, types } from "../../../components/common/constants";
 import ApproveDeny from "../../../components/modals/ApproveDeny";
 import GoBackTab from "../../../components/data/Admin/GoBackTab";
@@ -18,6 +19,7 @@ import {
 } from "../../../services/admin/query/staff";
 import { formatDat } from "../../../utils/helpers";
 import useCustomToast from "../../../utils/notifications";
+import { PaidIcon } from "../../../components/common/images";
 
 const LeaveMgtDetails = () => {
   const { id } = useParams();
@@ -36,7 +38,6 @@ const LeaveMgtDetails = () => {
 
   const { data, refetch, isLoading } = useGetLeave(id);
   const { successToast, errorToast } = useCustomToast();
-  const navigate = useNavigate();
 
   const [values, setValues] = useState({
     startDate: "",
@@ -63,7 +64,6 @@ const LeaveMgtDetails = () => {
       successToast("Leave request approved successfully!");
       refetch();
       onClose();
-      navigate("/admin/leave-mgt");
     },
     onError: (error) => {
       errorToast(
@@ -77,7 +77,6 @@ const LeaveMgtDetails = () => {
       successToast("Leave request rejected successfully!");
       refetch();
       onClose();
-      navigate("/admin/leave-mgt");
     },
     onError: (error) => {
       errorToast(
@@ -131,50 +130,21 @@ const LeaveMgtDetails = () => {
             border="1px solid #E4E6E8"
             fontSize="14px"
           >
-            <Flex
-              display={
-                data?.status === "ACTIVE" ||
-                data?.status === "APPROVED" ||
-                data?.status === "COMPLETED"
-                  ? "flex"
-                  : "none"
-              }
-              mb="24px"
-              mt="4px"
-              align="center"
-              gap="12px"
-            >
-              <Text fontWeight={500} color="#090c02">
-                Approved By:
-              </Text>
-
-              <Flex
-                border="1px solid #D4D6D8"
-                align="center"
-                gap="8px"
-                borderRadius="100px"
-                p="4px"
-              >
-                <Flex rounded="full" bg="#D9D9D9" w="16px" h="16px"></Flex>
-                <Text fontSize="14px" color="#090c02">
-                  {data?.finalApprovalBy?.firstName}{" "}
-                  {data?.finalApprovalBy?.lastName}
-                </Text>
-              </Flex>
-            </Flex>
+            <Text color="#999" fontSize="13px" fontWeight={700}>
+              Staff ID: {data?.staff?.staffId}
+            </Text>
 
             <Flex
-              gap="8px"
+              mt="32px"
+              gap="24px"
               flexDir={{ base: "column", md: "row" }}
               align={{ base: "flex-start", md: "center" }}
               fontSize="22px"
               fontWeight={700}
             >
-              <Flex gap="8px">
-                <Text>Staff ID: {data?.staff?.staffId}</Text>
-                <Text>|</Text>
-                <Text textTransform="capitalize">{data?.staff?.fullName}</Text>
-              </Flex>
+              <Text fontSize="32px">
+                {data?.numberOfDays} Day{data?.numberOfDays === 1 ? "" : "s"}
+              </Text>
 
               <Flex
                 color={
@@ -202,6 +172,25 @@ const LeaveMgtDetails = () => {
                   ? "Declined"
                   : data?.status?.toLowerCase()}
               </Flex>
+
+              <Flex
+                border={data?.isPaid ? "1px solid #0B841D" : "1px solid #999"}
+                borderRadius="4px"
+                py="7px"
+                display={data?.isPaid === null ? "none" : "flex"}
+                px="16px"
+                align="center"
+                gap="10px"
+              >
+                <PaidIcon fill={data?.isPaid ? "#0B841D" : "#999999"} />
+                <Text
+                  color={data?.isPaid ? "#0B841D" : "#999999"}
+                  fontSize="12px"
+                  fontWeight={400}
+                >
+                  {data?.isPaid ? "Paid" : "Unpaid"}
+                </Text>
+              </Flex>
             </Flex>
 
             <Flex
@@ -209,110 +198,92 @@ const LeaveMgtDetails = () => {
               color="#090c02"
               flexDir={{ base: "column", md: "row" }}
               align={{ base: "flex-start", md: "center" }}
+              justifyContent="space-between"
+              w={{
+                base: "100%",
+                md: data?.status === "PENDING" ? "50%" : "65%",
+              }}
               gap="20px"
-              fontWeight={500}
-              display={
-                data?.status === "PENDING" || data?.status === "REJECTED"
-                  ? "flex"
-                  : "none"
-              }
             >
-              <Flex align="center" gap="8px">
-                <Text opacity={0.4} fontSize="14px">
-                  Proposed Start Date:
+              <Box
+                fontSize="13px"
+                display={data?.status === "PENDING" ? "none" : "block"}
+              >
+                <Image
+                  src="/assets/approve.svg"
+                  w="15px"
+                  h="15px"
+                  objectFit="contain"
+                />
+                <Text mt="8px" fontWeight={500}>
+                  {data?.rejectedBy ? "Declined by" : "Approved by"}:{" "}
+                  <span style={{ fontWeight: 400, marginLeft: "3px" }}>
+                    {" "}
+                    {data?.rejectedBy
+                      ? data?.rejectedBy?.firstName
+                      : data?.approvedBy?.firstName}{" "}
+                    {data?.rejectedBy
+                      ? data?.rejectedBy?.lastName
+                      : data?.approvedBy?.lastName}
+                  </span>
                 </Text>
-                <Text>{formatDat(data?.startDate)}</Text>
-              </Flex>
+              </Box>
 
-              <Flex align="center" gap="8px">
-                <Text opacity={0.4} fontSize="14px">
-                  Proposed End Date:
+              <Box fontSize="13px">
+                <Image
+                  src="/assets/user.svg"
+                  w="15px"
+                  h="15px"
+                  objectFit="contain"
+                />
+                <Text mt="8px" fontWeight={500}>
+                  Full Name:{" "}
+                  <span style={{ fontWeight: 400, marginLeft: "3px" }}>
+                    {" "}
+                    {data?.staff?.fullName}
+                  </span>
                 </Text>
-                <Text>{formatDat(data?.endDate)}</Text>
-              </Flex>
+              </Box>
+
+              <Box fontSize="13px">
+                <Image
+                  src="/assets/date.svg"
+                  w="15px"
+                  h="15px"
+                  objectFit="contain"
+                />
+                <Text mt="8px" fontWeight={500}>
+                  Date Submitted:{" "}
+                  <span style={{ fontWeight: 400, marginLeft: "3px" }}>
+                    {" "}
+                    {formatDat(data?.createdAt)}
+                  </span>
+                </Text>
+              </Box>
             </Flex>
+
+            <Text
+              fontWeight={700}
+              textTransform="uppercase"
+              color="#999"
+              mt="32px"
+              display={data?.additionalComments ? "block" : "none"}
+              fontSize="14px"
+            >
+              Additional Comments
+            </Text>
 
             <Box
               bg="#F4F6F8"
               borderRadius="4px"
               p="16px"
+              mt="6px"
               display={data?.additionalComments ? "block" : "none"}
-              mt="20px"
               fontSize="15px"
               color="#000"
             >
-              <Text fontWeight={500}>Additional Comments:</Text>
-              <Text color="#646668">{data?.additionalComments}</Text>
+              <Text color="#444648">{data?.additionalComments} </Text>
             </Box>
-
-            <Flex
-              align="center"
-              mt="20px"
-              gap="8px"
-              display={
-                data?.status === "PENDING" || data?.status === "REJECTED"
-                  ? "flex"
-                  : "none"
-              }
-            >
-              <Text opacity={0.4} fontSize="14px">
-                Date Submitted:
-              </Text>
-              <Text>{formatDat(data?.createdAt)}</Text>
-            </Flex>
-
-            <Flex
-              mt="20px"
-              color="#090c02"
-              flexDir={{ base: "column", md: "row" }}
-              align={{ base: "flex-start", md: "center" }}
-              gap="24px"
-              fontWeight={500}
-              display={
-                data?.status === "APPROVED" ||
-                data?.status === "COMPLETED" ||
-                data?.status === "ACTIVE"
-                  ? "flex"
-                  : "none"
-              }
-            >
-              <Flex align="center" gap="8px">
-                <Text opacity={0.4} fontSize="14px">
-                  Date Submitted:
-                </Text>
-                <Text>{formatDat(data?.createdAt)}</Text>
-              </Flex>
-
-              <Box
-                border="1px solid #000"
-                h="20px"
-                opacity={0.4}
-                display={{ base: "none", md: "block" }}
-              />
-
-              <Flex align="center" gap="8px">
-                <Text opacity={0.4} fontSize="14px">
-                  Date Approved:
-                </Text>
-                <Text>{formatDat(data?.approvedAt)}</Text>
-              </Flex>
-
-              <Box
-                border="1px solid #000"
-                h="20px"
-                opacity={0.4}
-                display={{ base: "none", md: "block" }}
-              />
-
-              <Flex align="center" gap="8px">
-                <Text opacity={0.4} fontSize="14px">
-                  Leave Period:
-                </Text>
-                <Text>
-                  {formatDat(data?.startDate)} - {formatDat(data?.endDate)}
-                </Text>
-              </Flex>
-            </Flex>
 
             <Flex
               gap="24px"

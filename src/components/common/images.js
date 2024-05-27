@@ -16,6 +16,65 @@ export const UserIcon = ({ fill, stroke = "white" }) => (
   </svg>
 );
 
+export const PaidIcon = ({ fill }) => (
+  <svg
+    width="12"
+    height="12"
+    viewBox="0 0 12 12"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path
+      d="M8.5 10.25H3.5C2 10.25 1 9.5 1 7.75V4.25C1 2.5 2 1.75 3.5 1.75H8.5C10 1.75 11 2.5 11 4.25V7.75C11 9.5 10 10.25 8.5 10.25Z"
+      stroke={fill}
+      stroke-width="0.75"
+      strokeMiterlimit="10"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+    <path
+      d="M6 7.5C6.82843 7.5 7.5 6.82843 7.5 6C7.5 5.17157 6.82843 4.5 6 4.5C5.17157 4.5 4.5 5.17157 4.5 6C4.5 6.82843 5.17157 7.5 6 7.5Z"
+      stroke={fill}
+      stroke-width="0.75"
+      strokeMiterlimit="10"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+    <path
+      d="M4.25 3H3.5C2.81 3 2.25 3.56 2.25 4.25V5"
+      stroke={fill}
+      stroke-width="0.75"
+      strokeMiterlimit="10"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+    <path
+      d="M7.75 3H8.5C9.19 3 9.75 3.56 9.75 4.25V5"
+      stroke={fill}
+      stroke-width="0.75"
+      strokeMiterlimit="10"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+    <path
+      d="M4.25 9H3.5C2.81 9 2.25 8.44 2.25 7.75V7"
+      stroke={fill}
+      stroke-width="0.75"
+      strokeMiterlimit="10"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+    <path
+      d="M7.75 9H8.5C9.19 9 9.75 8.44 9.75 7.75V7"
+      stroke={fill}
+      stroke-width="0.75"
+      strokeMiterlimit="10"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </svg>
+);
+
 export const ConfigIcon = ({ fill }) => (
   <svg
     width="16"

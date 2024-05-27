@@ -238,7 +238,7 @@ export const LeaveStatus = [
 ];
 
 export const LoanStatus = [
-  { color: "#DB0101", name: "Rejected", bg: "#F09898", border: "#DB0101" },
+  { color: "#DB0101", name: "Declined", bg: "#F09898", border: "#DB0101" },
   { color: "#DB0101", name: "Cancelled", bg: "#F09898", border: "#DB0101" },
   { color: "#DB0101", name: "Withdrawn", bg: "#F09898", border: "#DB0101" },
   { color: "#01765F", name: "Approved", bg: "#E8FBF7", border: "#BAE0D9" },
