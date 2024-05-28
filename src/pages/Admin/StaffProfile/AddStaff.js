@@ -48,7 +48,7 @@ const AddStaff = () => {
     },
     onError: (error) => {
       errorToast(
-        error?.response?.data?.message || error?.message || "An Error occurred"
+        error?.response?.data?.message || error?.message || "An Error occurred",
       );
     },
   });
@@ -1427,9 +1427,7 @@ const AddStaff = () => {
                           <Text>6</Text>
                         </Flex>
 
-                        <Text fontWeight={500}>
-                          Driver's License
-                        </Text>
+                        <Text fontWeight={500}>Driver's License</Text>
                       </Flex>
 
                       {steps?.step6 ? (

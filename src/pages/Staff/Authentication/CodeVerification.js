@@ -27,13 +27,13 @@ const CodeVerification = () => {
       sessionStorage.removeItem("staffId");
       sessionStorage.setItem(
         "new_token",
-        JSON.stringify(res?.data?.access_token)
+        JSON.stringify(res?.data?.access_token),
       );
       sessionStorage.removeItem("phone");
     },
     onError: (err) => {
       errorToast(
-        err?.response?.data?.message || err?.message || "An Error occurred"
+        err?.response?.data?.message || err?.message || "An Error occurred",
       );
     },
   });
@@ -44,7 +44,7 @@ const CodeVerification = () => {
     },
     onError: (err) => {
       errorToast(
-        err?.response?.data?.message || err?.message || "An Error occurred"
+        err?.response?.data?.message || err?.message || "An Error occurred",
       );
     },
   });

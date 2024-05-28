@@ -8,7 +8,7 @@ export const requestLoan = async (body) => {
 
 export const getLoan = async (page, limit) => {
   const res = await axiosInstance.get(
-    `${API.REQUEST_LOAN}?page=${page}&limit=${limit}&sort=createdAt,DESC`
+    `${API.REQUEST_LOAN}?page=${page}&limit=${limit}&sort=createdAt,DESC`,
   );
   return res.data;
 };

@@ -5,13 +5,18 @@ import {
   addStaffDoc,
   adminCreateLeave,
   adminCreateLoan,
+  adminCreateMed,
   approveLeave,
   approveLicense,
   approveLoan,
+  approveMed,
+  cancelLeave,
   cancelLoan,
+  cancelMed,
   delEmployeeDoc,
   deleteLeave,
   deleteLoan,
+  deleteMed,
   deleteStaff,
   disburseLoan,
   editEmployeeDoc,
@@ -20,6 +25,8 @@ import {
   getLeaveDetails,
   getLoan,
   getLoanDetails,
+  getMed,
+  getMedDetails,
   getStaff,
   getStaffLeaveBalance,
   getStaffLoanBalance,
@@ -27,6 +34,7 @@ import {
   loanPaid,
   rejectLeave,
   rejectLoan,
+  rejectMed,
 } from "../api/staff";
 
 export const useAddStaff = (options = {}) => {
@@ -53,7 +61,7 @@ export const useGetStaffs = (options = {}, page = 1, limit = 25, query) => {
     () => getStaffs(page, limit, query),
     {
       ...options,
-    }
+    },
   );
 
   return { isLoading, data, refetch };
@@ -65,7 +73,7 @@ export const useGetStaff = (id = "", options = {}) => {
     () => getStaff(id),
     {
       ...options,
-    }
+    },
   );
 
   return { isLoading, data, refetch };
@@ -134,9 +142,36 @@ export const useDeleteLoan = (options = {}) => {
   return { isLoading, mutate };
 };
 
+export const useDeleteMed = (options = {}) => {
+  const { isLoading, mutate } = useMutation(deleteMed, {
+    mutationKey: ["deleteMed"],
+    ...options,
+  });
+
+  return { isLoading, mutate };
+};
+
 export const useCancelLoan = (options = {}) => {
   const { isLoading, mutate } = useMutation(cancelLoan, {
     mutationKey: ["cancelLoan"],
+    ...options,
+  });
+
+  return { isLoading, mutate };
+};
+
+export const useCancelMed = (options = {}) => {
+  const { isLoading, mutate } = useMutation(cancelMed, {
+    mutationKey: ["cancelMed"],
+    ...options,
+  });
+
+  return { isLoading, mutate };
+};
+
+export const useCancelLeave = (options = {}) => {
+  const { isLoading, mutate } = useMutation(cancelLeave, {
+    mutationKey: ["cancelMed"],
     ...options,
   });
 
@@ -188,6 +223,15 @@ export const useApproveLoan = (options = {}) => {
   return { isLoading, mutate };
 };
 
+export const useApproveMed = (options = {}) => {
+  const { isLoading, mutate } = useMutation(approveMed, {
+    mutationKey: ["approveMed"],
+    ...options,
+  });
+
+  return { isLoading, mutate };
+};
+
 export const useLoanPaid = (options = {}) => {
   const { isLoading, mutate } = useMutation(loanPaid, {
     mutationKey: ["loanPaid"],
@@ -209,6 +253,15 @@ export const useDisburseLoan = (options = {}) => {
 export const useRejectLoan = (options = {}) => {
   const { isLoading, mutate } = useMutation(rejectLoan, {
     mutationKey: ["rejectLoan"],
+    ...options,
+  });
+
+  return { isLoading, mutate };
+};
+
+export const useRejectMed = (options = {}) => {
+  const { isLoading, mutate } = useMutation(rejectMed, {
+    mutationKey: ["rejectMed"],
     ...options,
   });
 
@@ -242,19 +295,28 @@ export const useAdminCreateLoan = (options = {}) => {
   return { isLoading, data, mutate };
 };
 
+export const useAdminCreateMed = (options = {}) => {
+  const { isLoading, data, mutate } = useMutation(adminCreateMed, {
+    mutationKey: ["adminCreateMed"],
+    ...options,
+  });
+
+  return { isLoading, data, mutate };
+};
+
 export const useGetLeaveRequest = (
   options = {},
   type = "",
   page = 1,
   limit = 25,
-  query
+  query,
 ) => {
   const { data, isLoading, refetch } = useQuery(
     ["getLeave", type, page, limit, query],
     () => getLeave(type, page, limit, query),
     {
       ...options,
-    }
+    },
   );
 
   return { data, isLoading, refetch };
@@ -266,7 +328,37 @@ export const useGetLeave = (id = "", options = {}) => {
     () => getLeaveDetails(id),
     {
       ...options,
-    }
+    },
+  );
+
+  return { isLoading, data, refetch };
+};
+
+export const useGetMedRequest = (
+  options = {},
+  type = "",
+  page = 1,
+  limit = 25,
+  query,
+) => {
+  const { data, isLoading, refetch } = useQuery(
+    ["getMed", type, page, limit, query],
+    () => getMed(type, page, limit, query),
+    {
+      ...options,
+    },
+  );
+
+  return { data, isLoading, refetch };
+};
+
+export const useGetMed = (id = "", options = {}) => {
+  const { data, isLoading, refetch } = useQuery(
+    ["getMedDetails", id],
+    () => getMedDetails(id),
+    {
+      ...options,
+    },
   );
 
   return { isLoading, data, refetch };
@@ -277,14 +369,14 @@ export const useGetLoanRequest = (
   type = "",
   page = 1,
   limit = 25,
-  query
+  query,
 ) => {
   const { data, isLoading, refetch } = useQuery(
     ["getLoan", type, page, limit, query],
     () => getLoan(type, page, limit, query),
     {
       ...options,
-    }
+    },
   );
 
   return { data, isLoading, refetch };
@@ -296,7 +388,7 @@ export const useGetLoan = (id = "", options = {}) => {
     () => getLoanDetails(id),
     {
       ...options,
-    }
+    },
   );
 
   return { isLoading, data, refetch };

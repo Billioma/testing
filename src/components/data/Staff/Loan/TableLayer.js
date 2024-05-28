@@ -97,14 +97,14 @@ const TableLayer = ({
                             LoanStatus.find(
                               (dat) =>
                                 dat.name?.toLowerCase() ===
-                                item?.status?.toLowerCase()
+                                item?.status?.toLowerCase(),
                             )?.color || ""
                           }
                           bg={
                             LoanStatus.find(
                               (dat) =>
                                 dat.name?.toLowerCase() ===
-                                item?.status?.toLowerCase()
+                                item?.status?.toLowerCase(),
                             )?.bg || ""
                           }
                           justifyContent="center"
@@ -117,9 +117,9 @@ const TableLayer = ({
                         >
                           {item?.status === "REJECTED"
                             ? "Declined"
-                              : item?.status === "REPAYMENT_IN_PROGRESS"
-                                ? "Repayment In Progress"
-                                : item?.status?.toLowerCase()}
+                            : item?.status === "REPAYMENT_IN_PROGRESS"
+                              ? "Repayment In Progress"
+                              : item?.status?.toLowerCase()}
                         </Flex>
                       </Flex>
                     </Td>

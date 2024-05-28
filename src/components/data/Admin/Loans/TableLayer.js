@@ -13,7 +13,7 @@ import {
   Tr,
 } from "@chakra-ui/react";
 import TableFormat from "../../../common/TableFormat";
-import { LoanStatus, viewCancelDeleteOption, viewDeleteOption } from "../../../common/constants";
+import { LoanStatus, viewCancelDeleteOption } from "../../../common/constants";
 import { useNavigate } from "react-router-dom";
 import TableLoader from "../../../loader/TableLoader";
 import { formatDate } from "../../../../utils/helpers";
@@ -64,7 +64,7 @@ const TableLayer = ({
     },
     onError: (err) => {
       errorToast(
-        err?.response?.data?.message || err?.message || "An Error occurred"
+        err?.response?.data?.message || err?.message || "An Error occurred",
       );
     },
   });
@@ -77,7 +77,7 @@ const TableLayer = ({
     },
     onError: (err) => {
       errorToast(
-        err?.response?.data?.message || err?.message || "An Error occurred"
+        err?.response?.data?.message || err?.message || "An Error occurred",
       );
     },
   });
@@ -92,12 +92,13 @@ const TableLayer = ({
     cancelMutate(selectedCancel.id);
   };
 
-  const openOption = (i, leave) => {
-    i === 0
+  const openOption = (item, leave) => {
+    item.name.includes("View")
       ? navigate(`/admin/loans/${leave?.id}`)
-      : i === 1
+      : item.name.includes("Cancel")
         ? setSelectedCancel({ isOpen: true, id: leave.id })
-        : i === 2 && setSelectedRow({ isOpen: true, id: leave.id });
+        : item.name.includes("Delete") &&
+          setSelectedRow({ isOpen: true, id: leave.id });
   };
 
   return (
@@ -150,14 +151,14 @@ const TableLayer = ({
                         LoanStatus.find(
                           (dat) =>
                             dat.name?.toLowerCase() ===
-                            item?.status?.toLowerCase()
+                            item?.status?.toLowerCase(),
                         )?.color || ""
                       }
                       bg={
                         LoanStatus.find(
                           (dat) =>
                             dat.name?.toLowerCase() ===
-                            item?.status?.toLowerCase()
+                            item?.status?.toLowerCase(),
                         )?.bg || ""
                       }
                       justifyContent={"center"}
@@ -169,7 +170,9 @@ const TableLayer = ({
                     >
                       {item?.status === "REJECTED"
                         ? "Declined"
-                        : item?.status?.toLowerCase()}
+                        : item?.status === "REPAYMENT_IN_PROGRESS"
+                          ? "Repayment In Progress"
+                          : item?.status?.toLowerCase()}
                     </Flex>
                   </Flex>
                 </Td>
@@ -185,8 +188,15 @@ const TableLayer = ({
                         border="1px solid #F4F6F8"
                         boxShadow="0px 8px 16px 0px rgba(0, 0, 0, 0.08)"
                       >
-                        {viewCancelDeleteOption.map((dat, i) => (
+                        {(item?.status === "CANCELLED" ||
+                        item?.status === "REPAYMENT_IN_PROGRESS"
+                          ? viewCancelDeleteOption
+                              .slice(0, 1)
+                              .concat(viewCancelDeleteOption.slice(2, 3))
+                          : viewCancelDeleteOption
+                        ).map((dat, i) => (
                           <MenuItem
+                            ke={i}
                             gap="12px"
                             borderRadius="2px"
                             mb="8px"
@@ -195,7 +205,7 @@ const TableLayer = ({
                             _hover={{ bg: "#F4F6F8" }}
                             align="center"
                             fontWeight="500"
-                            onClick={() => openOption(i, item)}
+                            onClick={() => openOption(dat, item)}
                           >
                             <Icon as={dat.icon} />
                             {dat?.name}

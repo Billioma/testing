@@ -87,7 +87,7 @@ export const convertDate = (originalDate) => {
 
   // Create a new date
   const newDate = new Date(
-    Date.UTC(year, month, day, hour, minute, second, millisecond)
+    Date.UTC(year, month, day, hour, minute, second, millisecond),
   );
 
   // Format the date

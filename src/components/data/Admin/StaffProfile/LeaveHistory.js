@@ -32,13 +32,13 @@ const LeaveHistory = ({ data }) => {
                   color={
                     LeaveStatus.find(
                       (dat) =>
-                        dat.name?.toLowerCase() === item?.status?.toLowerCase()
+                        dat.name?.toLowerCase() === item?.status?.toLowerCase(),
                     )?.color || ""
                   }
                   bg={
                     LeaveStatus.find(
                       (dat) =>
-                        dat.name?.toLowerCase() === item?.status?.toLowerCase()
+                        dat.name?.toLowerCase() === item?.status?.toLowerCase(),
                     )?.bg || ""
                   }
                   justifyContent="center"

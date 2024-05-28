@@ -8,11 +8,16 @@ export const UPDATE_PASS =
 
 export const GET_USER = "staff/auth/profile";
 export const REQUEST_LEAVE = "staff/leave-request";
+export const REQUEST_MED = "staff/medical-assistance";
 export const LEAVE_BALANCE = "staff/leave-request/leave-balance";
 export const REQUEST_LOAN = "staff/loan-request";
 export const LOAN_BALANCE = "staff/loan-request/loan-balance";
+export const UPLOAD_PIC = "system/media-upload";
 export const REFRESH_TOKEN = "/auth/refresh";
 export const UPDATE_LEAVE = (id = "") => `staff/leave-request/${id}`;
 export const WITHDRAW_LEAVE = (id = "") => `staff/leave-request/withdraw/${id}`;
 export const WITHDRAW_LOAN = (id = "") => `staff/loan-request/withdraw/${id}`;
+export const WITHDRAW_MED = (id = "") =>
+  `staff/medical-assistance/withdraw/${id}`;
+export const UPDATE_MED = (id = "") => `staff/medical-assistance/${id}`;
 export const UPDATE_LOAN = (id = "") => `staff/loan-request/${id}`;

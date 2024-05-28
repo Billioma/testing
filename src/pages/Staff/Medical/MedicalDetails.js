@@ -1,14 +1,68 @@
 import React, { useEffect } from "react";
-import { Box, Button, Flex, Image, Spinner, Text } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Flex,
+  Grid,
+  Image,
+  Spinner,
+  Text,
+} from "@chakra-ui/react";
 import { useNavigate, useParams } from "react-router-dom";
-import { useGetLeave } from "../../../services/staff/query/leave";
-import { LeaveStatus } from "../../../components/common/constants";
-import { formatDate } from "../../../utils/helpers";
+import {
+  useGetMed,
+  useWithdrawMed,
+} from "../../../services/staff/query/medical";
+import { LoanStatus } from "../../../components/common/constants";
+import { formatDate, trim } from "../../../utils/helpers";
+import useCustomToast from "../../../utils/notifications";
 
 const MedicalDetails = () => {
   const { id } = useParams();
 
-  const { data, isLoading, refetch } = useGetLeave(id);
+  const { data, isLoading, refetch } = useGetMed(id, {
+    refetchOnWindowFocus: true,
+  });
+
+  const { errorToast, successToast } = useCustomToast();
+  const { mutate, isLoading: isWithdrawing } = useWithdrawMed({
+    onSuccess: (res) => {
+      successToast(res?.message);
+      refetch();
+    },
+    onError: (err) => {
+      errorToast(
+        err?.response?.data?.message || err?.message || "An Error occurred",
+      );
+    },
+  });
+
+  const handleSubmit = () => {
+    mutate(id);
+  };
+
+  async function handleDownload(item) {
+    const urlToDownload = `${process.env.REACT_APP_BASE_URL}${item?.url?.replace("/", "")}`;
+    const fileName = item?.name;
+
+    try {
+      const response = await fetch(urlToDownload);
+      const blob = await response.blob();
+
+      const link = document.createElement("a");
+      document.body.appendChild(link);
+
+      const url = window.URL.createObjectURL(blob);
+      link.href = url;
+      link.download = fileName;
+      link.click();
+
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(link);
+    } catch (error) {
+      console.error("Error downloading the file:", error);
+    }
+  }
 
   useEffect(() => {
     refetch();
@@ -124,23 +178,23 @@ const MedicalDetails = () => {
                 justifyContent="center"
                 align="center"
                 color={
-                  LeaveStatus.find(
+                  LoanStatus.find(
                     (dat) =>
-                      dat.name?.toLowerCase() === data?.status?.toLowerCase()
+                      dat.name?.toLowerCase() === data?.status?.toLowerCase(),
                   )?.color || ""
                 }
                 bg={
-                  LeaveStatus.find(
+                  LoanStatus.find(
                     (dat) =>
-                      dat.name?.toLowerCase() === data?.status?.toLowerCase()
+                      dat.name?.toLowerCase() === data?.status?.toLowerCase(),
                   )?.bg || ""
                 }
                 rounded="full"
                 border="1px solid"
                 borderColor={
-                  LeaveStatus.find(
+                  LoanStatus.find(
                     (dat) =>
-                      dat.name?.toLowerCase() === data?.status?.toLowerCase()
+                      dat.name?.toLowerCase() === data?.status?.toLowerCase(),
                   )?.border || ""
                 }
                 py="4px"
@@ -165,7 +219,7 @@ const MedicalDetails = () => {
                   AMOUNT
                 </Text>
                 <Text mt="8px" fontSize={{ base: "20px", md: "24px" }}>
-                  ₦ {(80000).toLocaleString()}
+                  ₦ {(data?.amount).toLocaleString()}
                 </Text>
               </Box>
 
@@ -181,7 +235,8 @@ const MedicalDetails = () => {
                     objectFit="contain"
                   />
                   <Text mt="8px" fontSize={{ base: "20px", md: "24px" }}>
-                    1 Document
+                    {data?.documents?.length} Document
+                    {data?.documents?.length < 2 ? "" : "s"}
                   </Text>
                 </Flex>
               </Box>
@@ -206,58 +261,84 @@ const MedicalDetails = () => {
             {data?.additionalComments || "N/A"}
           </Box>
 
-          <Flex
-            mt="24px"
-            border="1px solid #BAE0D9"
-            borderRadius="12px"
-            py="16px"
-            px="30px"
-            justifyContent="space-between"
-            w="full"
+          <Grid
+            columnGap={data?.documents?.length < 2 ? "" : "24px"}
+            rowGap="0"
+            templateColumns={{
+              base: "repeat(1,1fr)",
+              md:
+                data?.documents?.length === 1
+                  ? "repeat(1,1fr)"
+                  : data?.documents?.length === 2
+                    ? "repeat(2,1fr)"
+                    : "repeat(3,1fr)",
+            }}
           >
-            <Box>
-              <Text fontWeight={500} mb="4px">
-                Doctor's Letter
-              </Text>
-              <Text fontSize="13px">220KB</Text>
-            </Box>
+            {data?.documents?.length
+              ? data?.documents?.map((item, i) => (
+                  <Flex
+                    key={i}
+                    mt="24px"
+                    border="1px solid #BAE0D9"
+                    borderRadius="12px"
+                    align="center"
+                    py="16px"
+                    px="25px"
+                    justifyContent="space-between"
+                    w="full"
+                  >
+                    <Box>
+                      <Text fontWeight={500} mb="4px">
+                        {trim(item?.name)}
+                      </Text>
+                    </Box>
 
-            <Flex align="center" gap="12px">
-              <Flex
-                border="1px solid #08637533"
-                borderRadius="4px"
-                cursor="pointer"
-                w="32px"
-                h="32px"
-                justifyContent="center"
-                align="center"
-              >
-                <Image
-                  src="/assets/green-eye.svg"
-                  w="16px"
-                  h="16px"
-                  objectFit="contain"
-                />
-              </Flex>
+                    <Flex align="center" gap="12px">
+                      <a
+                        href={`${process.env.REACT_APP_BASE_URL}${item?.url?.replace("/", "")}`}
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        <Flex
+                          border="1px solid #08637533"
+                          borderRadius="4px"
+                          cursor="pointer"
+                          w="32px"
+                          h="32px"
+                          justifyContent="center"
+                          align="center"
+                        >
+                          <Image
+                            src="/assets/green-eye.svg"
+                            w="16px"
+                            h="16px"
+                            objectFit="contain"
+                          />
+                        </Flex>
+                      </a>
 
-              <Flex
-                border="1px solid #08637533"
-                borderRadius="4px"
-                cursor="pointer"
-                w="32px"
-                h="32px"
-                justifyContent="center"
-                align="center"
-              >
-                <Image
-                  src="/assets/green-download.svg"
-                  w="16px"
-                  h="16px"
-                  objectFit="contain"
-                />
-              </Flex>
-            </Flex>
-          </Flex>
+                      <Flex
+                        border="1px solid #08637533"
+                        borderRadius="4px"
+                        cursor="pointer"
+                        w="32px"
+                        h="32px"
+                        onClick={() => handleDownload(item)}
+                        justifyContent="center"
+                        align="center"
+                      >
+                        <Image
+                          src="/assets/green-download.svg"
+                          w="16px"
+                          h="16px"
+                          objectFit="contain"
+                        />
+                      </Flex>
+                    </Flex>
+                  </Flex>
+                ))
+              : ""}
+          </Grid>
 
           <Flex
             gap="24px"
@@ -283,9 +364,11 @@ const MedicalDetails = () => {
               variant="adminPrimary"
               borderRadius="8px"
               h="60px"
+              onClick={handleSubmit}
+              isLoading={isWithdrawing}
               w="full"
             >
-              Cancel
+              Withdraw
             </Button>
           </Flex>
         </>

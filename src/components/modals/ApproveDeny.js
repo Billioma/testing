@@ -19,6 +19,7 @@ import { IoIosArrowDown } from "react-icons/io";
 const ApproveDeny = ({
   isOpen,
   approve,
+  med,
   reject,
   isApprove,
   loan,
@@ -42,7 +43,7 @@ const ApproveDeny = ({
       <ModalContent
         px="32px"
         py="24px"
-        h={type === "decline" ? "" : "600px"}
+        h={type === "decline" || med ? "" : "600px"}
         overflowY="auto"
         borderRadius="8px"
         bg="#fff"
@@ -64,7 +65,7 @@ const ApproveDeny = ({
                 fontWeight={500}
                 color={type === "decline" ? "red" : "#09020c"}
               >
-                {type} {loan ? "Loan" : "Leave"}?
+                {type} {loan ? "Loan" : med ? "medical request" : "Leave"}?
               </Text>
             </Flex>
 
@@ -82,14 +83,15 @@ const ApproveDeny = ({
           </Flex>
 
           <Text my="24px" color="#000">
-            You’re about to {type} this {loan ? "loan" : "leave"}, this action
+            You’re about to {type} this{" "}
+            {loan ? "loan" : med ? "medical request" : "leave"}, this action
             cannot be undone.
           </Text>
 
           <Flex
             gap="12px"
             flexDir="column"
-            display={type === "approve" ? "flex" : "none"}
+            display={type === "approve" && !med ? "flex" : "none"}
           >
             <Box>
               <Text fontSize="13px" mb="8px" color="#444648" fontWeight={500}>

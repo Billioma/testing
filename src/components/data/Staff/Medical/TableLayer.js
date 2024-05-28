@@ -13,7 +13,7 @@ import {
   Image,
   Button,
 } from "@chakra-ui/react";
-import { LeaveStatus } from "../../../common/constants";
+import { LoanStatus } from "../../../common/constants";
 import TableLoader from "../../../loader/TableLoader";
 import { formatDate } from "../../../../utils/helpers";
 import Pagination from "../../../common/Pagination";
@@ -84,7 +84,7 @@ const TableLayer = ({
                       border="1px solid #CEDFE3"
                       borderRight="none"
                     >
-                      ₦ {(80000).toLocaleString()}
+                      ₦ {(item?.amount).toLocaleString()}
                     </Td>
                     <Td
                       textAlign="center"
@@ -99,7 +99,8 @@ const TableLayer = ({
                           h="24px"
                           objectFit="contain"
                         />
-                        1 Document
+                        {item?.documents?.length} Document
+                        {item?.documents?.length < 2 ? "" : "s"}
                       </Flex>
                     </Td>
                     <Td
@@ -111,17 +112,17 @@ const TableLayer = ({
                         <Flex
                           textTransform="capitalize"
                           color={
-                            LeaveStatus.find(
+                            LoanStatus.find(
                               (dat) =>
                                 dat.name?.toLowerCase() ===
-                                item?.status?.toLowerCase()
+                                item?.status?.toLowerCase(),
                             )?.color || ""
                           }
                           bg={
-                            LeaveStatus.find(
+                            LoanStatus.find(
                               (dat) =>
                                 dat.name?.toLowerCase() ===
-                                item?.status?.toLowerCase()
+                                item?.status?.toLowerCase(),
                             )?.bg || ""
                           }
                           justifyContent="center"

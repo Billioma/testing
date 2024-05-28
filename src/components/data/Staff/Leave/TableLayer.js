@@ -106,14 +106,14 @@ const TableLayer = ({
                             LeaveStatus.find(
                               (dat) =>
                                 dat.name?.toLowerCase() ===
-                                item?.status?.toLowerCase()
+                                item?.status?.toLowerCase(),
                             )?.color || ""
                           }
                           bg={
                             LeaveStatus.find(
                               (dat) =>
                                 dat.name?.toLowerCase() ===
-                                item?.status?.toLowerCase()
+                                item?.status?.toLowerCase(),
                             )?.bg || ""
                           }
                           justifyContent="center"
@@ -126,7 +126,7 @@ const TableLayer = ({
                         >
                           {item?.status === "REJECTED"
                             ? "Declined"
-                              : item?.status?.toLowerCase()}
+                            : item?.status?.toLowerCase()}
                         </Flex>
                       </Flex>
                     </Td>

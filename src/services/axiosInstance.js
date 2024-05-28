@@ -73,7 +73,7 @@ const refreshAccessToken = async (refreshToken) => {
         headers: {
           Authorization: `Bearer ${refreshToken}`,
         },
-      }
+      },
     );
 
     const newAccessToken = response.data;
@@ -95,7 +95,7 @@ const onResponseError = async (error) => {
     .map((type) =>
       location.pathname.includes(type)
         ? JSON.parse(localStorage.getItem(type))
-        : null
+        : null,
     )
     .find((user) => user !== null);
   const statusCode = error.response?.status;
@@ -110,5 +110,9 @@ axiosInstance.interceptors.request.use(onRequest, onRequestError);
 axiosInstance.interceptors.response.use(onResponse, onResponseError);
 uploadInstance.interceptors.request.use(onRequest, onRequestError);
 uploadInstance.interceptors.response.use(onResponse, onResponseError);
+
+// Add the interceptor for refreshInstance requests
+refreshInstance.interceptors.request.use(onRefreshRequest, onRequestError);
+refreshInstance.interceptors.response.use(onResponse, onResponseError);
 
 export default axiosInstance;

@@ -5,12 +5,11 @@ import {
   initAdminLoanValues,
   validateAdminLoanSchema,
 } from "../../../utils/validation";
-import TextInput from "../../../components/common/TextInput";
+import AdminTextInput from "../../../components/common/AdminTextInput";
 import { Form, Formik } from "formik";
 import {
   customStyles,
   errorCustomStyles,
-  types,
 } from "../../../components/common/constants";
 import Select from "react-select";
 import useCustomToast from "../../../utils/notifications";
@@ -50,7 +49,7 @@ const AddLoan = () => {
     },
     onError: (error) => {
       errorToast(
-        error?.response?.data?.message || error?.message || "An Error occurred"
+        error?.response?.data?.message || error?.message || "An Error occurred",
       );
     },
   });
@@ -64,11 +63,6 @@ const AddLoan = () => {
     { label: "Housing", value: "Housing" },
     { label: "Others", value: "Others" },
   ];
-
-  const typesOptions = types?.map((type) => ({
-    value: type?.value,
-    label: type?.label,
-  }));
 
   const purposesOptions = purposes?.map((purpose) => ({
     value: purpose?.value,
@@ -284,7 +278,7 @@ const AddLoan = () => {
                       >
                         Additional Comments
                       </Text>
-                      <TextInput
+                      <AdminTextInput
                         h="100px"
                         auth
                         mb

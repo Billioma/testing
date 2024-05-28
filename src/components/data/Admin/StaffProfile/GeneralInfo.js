@@ -146,7 +146,7 @@ const GeneralInfo = ({ data, refetch, id }) => {
   const jobsOptions = jobs?.data
     ?.filter(
       (item) =>
-        Number(item?.department?.id) === Number(values?.department?.value)
+        Number(item?.department?.id) === Number(values?.department?.value),
     )
     ?.map((job) => ({
       label: job?.name,
@@ -168,16 +168,16 @@ const GeneralInfo = ({ data, refetch, id }) => {
 
   useEffect(() => {
     const selectedDeptOption = deptsOptions?.find(
-      (option) => option.value === Number(data?.department?.id)
+      (option) => option.value === Number(data?.department?.id),
     );
     const selectedJobOption = jobsOptions?.find(
-      (option) => option.value === Number(data?.jobTitle?.id)
+      (option) => option.value === Number(data?.jobTitle?.id),
     );
     const selectedRoleOption = roleOptions?.find(
-      (option) => option.value === Number(data?.role?.id)
+      (option) => option.value === Number(data?.role?.id),
     );
     const selectedStaffOption = staffOptions?.find(
-      (option) => option.value === Number(data?.department?.lineManager?.id)
+      (option) => option.value === Number(data?.department?.lineManager?.id),
     );
     setValues({
       ...values,
@@ -221,7 +221,7 @@ const GeneralInfo = ({ data, refetch, id }) => {
     },
     onError: (error) => {
       errorToast(
-        error?.response?.data?.message || error?.message || "An Error occurred"
+        error?.response?.data?.message || error?.message || "An Error occurred",
       );
     },
   });
@@ -496,7 +496,7 @@ const GeneralInfo = ({ data, refetch, id }) => {
             data={
               form
                 ? values?.monthlySalary
-                : `₦ ${(values?.monthlySalary)?.toLocaleString() || "0"}`
+                : `₦ ${values?.monthlySalary?.toLocaleString() || "0"}`
             }
             form={form && ids === "company"}
             onChange={(e) => handleChange("monthlySalary", e.target.value)}

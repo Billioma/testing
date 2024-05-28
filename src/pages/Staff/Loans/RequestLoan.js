@@ -19,8 +19,6 @@ const RequestLoan = () => {
     additionalComments: "",
   });
 
-  const [dates, setDates] = useState([]);
-
   const handleSelectChange = (selectedOption, { name }) => {
     setValues((prevValues) => ({
       ...prevValues,
@@ -89,7 +87,7 @@ const RequestLoan = () => {
     },
     onError: (err) => {
       errorToast(
-        err?.response?.data?.message || err?.message || "An Error occurred"
+        err?.response?.data?.message || err?.message || "An Error occurred",
       );
     },
   });

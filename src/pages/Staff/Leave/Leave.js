@@ -30,7 +30,7 @@ const Leave = () => {
       refetchOnWindowFocus: true,
     },
     page,
-    limit
+    limit,
   );
 
   useEffect(() => {

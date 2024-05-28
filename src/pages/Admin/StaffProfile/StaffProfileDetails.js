@@ -22,7 +22,6 @@ const StaffProfileDetails = () => {
   const [tab, setTab] = useState("General Information");
 
   const { id } = useParams();
-
   const { data, refetch, isLoading } = useGetStaff(id, {
     refetchOnWindowFocus: true,
   });
@@ -39,7 +38,7 @@ const StaffProfileDetails = () => {
     },
     onError: (error) => {
       errorToast(
-        error?.response?.data?.message || error?.message || "An Error occurred"
+        error?.response?.data?.message || error?.message || "An Error occurred",
       );
     },
   });
@@ -51,7 +50,7 @@ const StaffProfileDetails = () => {
     },
     onError: (error) => {
       errorToast(
-        error?.response?.data?.message || error?.message || "An Error occurred"
+        error?.response?.data?.message || error?.message || "An Error occurred",
       );
     },
   });

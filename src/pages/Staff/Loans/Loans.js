@@ -31,7 +31,7 @@ const Loans = () => {
       refetchOnWindowFocus: true,
     },
     page,
-    limit
+    limit,
   );
 
   useEffect(() => {

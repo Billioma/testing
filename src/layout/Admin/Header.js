@@ -140,7 +140,7 @@ const Header = ({ showSidebar }) => {
         return setFinTitle("Add Subscription");
 
       case locationRoute.includes(
-        "memberships/corporate-subscriptions/details"
+        "memberships/corporate-subscriptions/details",
       ):
         return setFinTitle("Corporate Subscription Details");
 

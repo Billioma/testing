@@ -9,7 +9,6 @@ import { useNavigate, useParams } from "react-router-dom";
 import {
   useGetLoanBalance,
   useUpdateLoan,
-  useRequestLoan,
   useGetLoan,
 } from "../../../services/staff/query/loan";
 import CustomInput from "../../../components/common/CustomInput";
@@ -20,8 +19,6 @@ const UpdateLoan = () => {
     purpose: "",
     additionalComments: "",
   });
-
-  const [dates, setDates] = useState([]);
 
   const handleSelectChange = (selectedOption, { name }) => {
     setValues((prevValues) => ({
@@ -91,7 +88,7 @@ const UpdateLoan = () => {
     },
     onError: (err) => {
       errorToast(
-        err?.response?.data?.message || err?.message || "An Error occurred"
+        err?.response?.data?.message || err?.message || "An Error occurred",
       );
     },
   });
@@ -101,7 +98,7 @@ const UpdateLoan = () => {
   useEffect(() => {
     if (data) {
       const selectedPurpose = purposesOptions?.find(
-        (option) => option.value === data?.purpose
+        (option) => option.value === data?.purpose,
       );
       setValues({
         ...values,
@@ -130,7 +127,7 @@ const UpdateLoan = () => {
         fontWeight={500}
         color="#090c02"
       >
-        Request Loan
+        Edit Loan Request
       </Text>
 
       <Flex

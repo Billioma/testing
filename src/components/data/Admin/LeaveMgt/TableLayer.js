@@ -13,14 +13,16 @@ import {
   Tr,
 } from "@chakra-ui/react";
 import TableFormat from "../../../common/TableFormat";
-
-import { LeaveStatus, viewDeleteOption } from "../../../common/constants";
+import { LeaveStatus, viewCancelDeleteOption } from "../../../common/constants";
 import { useNavigate } from "react-router-dom";
 import TableLoader from "../../../loader/TableLoader";
 import { formatDate } from "../../../../utils/helpers";
 import { BsChevronDown } from "react-icons/bs";
 import AdminDeleteModal from "../../../modals/AdminDeleteModal";
-import { useDeleteLeave } from "../../../../services/admin/query/staff";
+import {
+  useCancelLeave,
+  useDeleteLeave,
+} from "../../../../services/admin/query/staff";
 import useCustomToast from "../../../../utils/notifications";
 
 const TableLayer = ({
@@ -48,6 +50,10 @@ const TableLayer = ({
   const navigate = useNavigate();
 
   const [selectedRow, setSelectedRow] = useState({ isOpen: false, id: null });
+  const [selectedCancel, setSelectedCancel] = useState({
+    isOpen: false,
+    id: null,
+  });
   const { errorToast, successToast } = useCustomToast();
 
   const { mutate, isLoading: isDeleting } = useDeleteLeave({
@@ -58,20 +64,41 @@ const TableLayer = ({
     },
     onError: (err) => {
       errorToast(
-        err?.response?.data?.message || err?.message || "An Error occurred"
+        err?.response?.data?.message || err?.message || "An Error occurred",
       );
     },
   });
+
+  const { mutate: cancelMutate, isLoading: isCancel } = useCancelLeave({
+    onSuccess: (res) => {
+      successToast(res?.message);
+      refetch();
+      setSelectedCancel({ isOpen: false, id: null });
+    },
+    onError: (err) => {
+      errorToast(
+        err?.response?.data?.message || err?.message || "An Error occurred",
+      );
+    },
+  });
+
+  const handleCancel = (e) => {
+    e.preventDefault();
+    cancelMutate(selectedCancel.id);
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     mutate(selectedRow.id);
   };
 
-  const openOption = (i, leave) => {
-    i === 0
+  const openOption = (item, leave) => {
+    item.name.includes("View")
       ? navigate(`/admin/leave-mgt/${leave?.id}`)
-      : i === 1 && setSelectedRow({ isOpen: true, id: leave.id });
+      : item.name.includes("Cancel")
+        ? setSelectedCancel({ isOpen: true, id: leave.id })
+        : item.name.includes("Delete") &&
+          setSelectedRow({ isOpen: true, id: leave.id });
   };
 
   return (
@@ -125,14 +152,14 @@ const TableLayer = ({
                         LeaveStatus.find(
                           (dat) =>
                             dat.name?.toLowerCase() ===
-                            item?.status?.toLowerCase()
+                            item?.status?.toLowerCase(),
                         )?.color || ""
                       }
                       bg={
                         LeaveStatus.find(
                           (dat) =>
                             dat.name?.toLowerCase() ===
-                            item?.status?.toLowerCase()
+                            item?.status?.toLowerCase(),
                         )?.bg || ""
                       }
                       justifyContent={"center"}
@@ -160,8 +187,14 @@ const TableLayer = ({
                         border="1px solid #F4F6F8"
                         boxShadow="0px 8px 16px 0px rgba(0, 0, 0, 0.08)"
                       >
-                        {viewDeleteOption.map((dat, i) => (
+                        {(item?.status === "CANCELLED"
+                          ? viewCancelDeleteOption
+                              .slice(0, 1)
+                              .concat(viewCancelDeleteOption.slice(2, 3))
+                          : viewCancelDeleteOption
+                        ).map((dat, i) => (
                           <MenuItem
+                            key={i}
                             gap="12px"
                             borderRadius="2px"
                             mb="8px"
@@ -170,7 +203,7 @@ const TableLayer = ({
                             _hover={{ bg: "#F4F6F8" }}
                             align="center"
                             fontWeight="500"
-                            onClick={() => openOption(i, item)}
+                            onClick={() => openOption(dat, item)}
                           >
                             <Icon as={dat.icon} />
                             {dat?.name}
@@ -210,6 +243,14 @@ const TableLayer = ({
         subTitle="Are you sure you want to delete this request?"
         handleSubmit={handleSubmit}
         isLoading={isDeleting}
+      />
+      <AdminDeleteModal
+        isOpen={selectedCancel.isOpen}
+        onClose={() => setSelectedCancel({ ...selectedCancel, isOpen: false })}
+        title="Cancel Leave Request"
+        subTitle="Are you sure you want to cancel this request?"
+        handleSubmit={handleCancel}
+        isLoading={isCancel}
       />
     </Box>
   );

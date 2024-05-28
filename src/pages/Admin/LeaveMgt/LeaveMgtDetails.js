@@ -48,7 +48,7 @@ const LeaveMgtDetails = () => {
   useEffect(() => {
     if (data) {
       const selectedType = typesOptions?.find(
-        (option) => option.value === data?.isPaid
+        (option) => option.value === data?.isPaid,
       );
       setValues({
         ...values,
@@ -67,7 +67,7 @@ const LeaveMgtDetails = () => {
     },
     onError: (error) => {
       errorToast(
-        error?.response?.data?.message || error?.message || "An Error occurred"
+        error?.response?.data?.message || error?.message || "An Error occurred",
       );
     },
   });
@@ -80,7 +80,7 @@ const LeaveMgtDetails = () => {
     },
     onError: (error) => {
       errorToast(
-        error?.response?.data?.message || error?.message || "An Error occurred"
+        error?.response?.data?.message || error?.message || "An Error occurred",
       );
     },
   });
@@ -150,13 +150,13 @@ const LeaveMgtDetails = () => {
                 color={
                   LeaveStatus.find(
                     (dat) =>
-                      dat.name?.toLowerCase() === data?.status?.toLowerCase()
+                      dat.name?.toLowerCase() === data?.status?.toLowerCase(),
                   )?.color || ""
                 }
                 bg={
                   LeaveStatus.find(
                     (dat) =>
-                      dat.name?.toLowerCase() === data?.status?.toLowerCase()
+                      dat.name?.toLowerCase() === data?.status?.toLowerCase(),
                   )?.bg || ""
                 }
                 justifyContent={"center"}

@@ -1,9 +1,7 @@
-import React from 'react'
+import React from "react";
 
 const ViewJob = () => {
-  return (
-    <div>ViewJob</div>
-  )
-}
+  return <div>ViewJob</div>;
+};
 
-export default ViewJob
+export default ViewJob;

@@ -30,7 +30,7 @@ const UpdateOperatorPasswordModal = ({ isOpen, onClose }) => {
       },
       onError: (err) => {
         errorToast(
-          err?.response?.data?.message || err?.message || "An Error occurred"
+          err?.response?.data?.message || err?.message || "An Error occurred",
         );
       },
     });

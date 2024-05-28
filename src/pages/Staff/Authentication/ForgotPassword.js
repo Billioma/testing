@@ -2,7 +2,10 @@ import React from "react";
 import { Box, Button, Flex, Text } from "@chakra-ui/react";
 import CustomInput from "../../../components/common/CustomInput";
 import { Form, Formik } from "formik";
-import { initResetValues, validateResetSchema } from "../../../utils/validation";
+import {
+  initResetValues,
+  validateResetSchema,
+} from "../../../utils/validation";
 import { useSendPassOtp } from "../../../services/staff/query/auth";
 import useCustomToast from "../../../utils/notifications";
 import { useNavigate } from "react-router-dom";

@@ -4,7 +4,6 @@ import {
   AdminDashboardIcon,
   AdminLoanIcon,
   AdminMedicalIcon,
-  ConfigIcon,
   DashboardIcon,
   LeaveIcon,
   LeaveMgtIcon,
@@ -29,6 +28,8 @@ export const leaveStatusType = [
   { name: "Approved", value: "APPROVED" },
   { name: "Completed", value: "COMPLETED" },
   { name: "Active", value: "ACTIVE" },
+  { name: "Cancelled", value: "CANCELLED" },
+  { name: "Withdrawn", value: "WITHDRAWN" },
   { name: "Pending", value: "PENDING" },
 ];
 
@@ -168,6 +169,15 @@ export const leaveOptions = [
   { label: "Created At", value: "createdAt" },
 ];
 
+export const medOptions = [
+  { label: "Staff ID", value: "staff.staffId" },
+  { label: "Staff Name", value: "staff.fullName" },
+  { label: "Amount", value: "amount" },
+  { label: "Request Date", value: "createdAt" },
+  { label: "Request Status", value: "status" },
+  { label: "Created At", value: "createdAt" },
+];
+
 export const loanOptions = [
   { label: "Staff ID", value: "staff.staffId" },
   { label: "Staff Name", value: "staff.fullName" },
@@ -230,7 +240,8 @@ export const SecStatus = [
 
 export const LeaveStatus = [
   { color: "#DB0101", name: "Rejected", bg: "#F09898", border: "#DB0101" },
-  { color: "#DB0101", name: "Withdrawn", bg: "#F09898", border: "#DB0101" },
+  { color: "#A11212", name: "Cancelled", bg: "#FCE8E8", border: "#DB0101" },
+  { color: "#A11212", name: "Withdrawn", bg: "#FCE8E8", border: "#DB0101" },
   { color: "#01765F", name: "Approved", bg: "#E8FBF7", border: "#BAE0D9" },
   { color: "#0B841D", name: "Completed", bg: "#E5FFE5", border: "#BAE0D9" },
   { color: "#0B841D", name: "Active", bg: "#E5FFE5", border: "#BAE0D9" },

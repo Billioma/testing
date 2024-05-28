@@ -22,37 +22,37 @@ export default function () {
   const convertedFilters = filtArray?.map((filterObj) => {
     return filterObj?.gte
       ? `filter=${filterObj?.title}||$gte||"${formatFilterDate(
-          filterObj?.gte
+          filterObj?.gte,
         )}T00:00:00"`
       : filterObj?.lte
-      ? `filter=${filterObj?.title}||$lte||"${formatFilterDate(
-          filterObj?.lte
-        )}T23:59:59"`
-      : `filter=${filterObj?.title}||${filterObj?.type || "cont"}||"${
-          filterObj?.filter
-        }"`;
+        ? `filter=${filterObj?.title}||$lte||"${formatFilterDate(
+            filterObj?.lte,
+          )}T23:59:59"`
+        : `filter=${filterObj?.title}||${filterObj?.type || "cont"}||"${
+            filterObj?.filter
+          }"`;
   });
 
   const query =
     filtArray?.length === 0
       ? `filter=createdAt||$lte||${year}-12-31T23:59:59`
       : filtArray?.filter((item) => item?.gte)?.length > 0 &&
-        filtArray?.filter((item) => item?.lte)?.length === 0
-      ? `${convertedFilters?.join(
-          "&"
-        )}&filter=createdAt||$lte||${year}-12-31T23:59:59`
-      : filtArray?.filter((item) => item?.gte)?.length === 0 &&
-        filtArray?.filter((item) => item?.lte)?.length === 0
-      ? `${convertedFilters?.join(
-          "&"
-        )}&filter=createdAt||$lte||${year}-12-31T23:59:59`
-      : filtArray?.filter((item) => item?.gte)?.length === 0 &&
-        filtArray?.filter((item) => item?.lte)?.length > 0
-      ? `${convertedFilters?.join("&")}`
-      : filtArray?.filter((item) => item?.gte)?.length &&
-        filtArray?.filter((item) => item?.lte)?.length
-      ? `${convertedFilters?.join("&")}`
-      : convertedFilters?.join("&");
+          filtArray?.filter((item) => item?.lte)?.length === 0
+        ? `${convertedFilters?.join(
+            "&",
+          )}&filter=createdAt||$lte||${year}-12-31T23:59:59`
+        : filtArray?.filter((item) => item?.gte)?.length === 0 &&
+            filtArray?.filter((item) => item?.lte)?.length === 0
+          ? `${convertedFilters?.join(
+              "&",
+            )}&filter=createdAt||$lte||${year}-12-31T23:59:59`
+          : filtArray?.filter((item) => item?.gte)?.length === 0 &&
+              filtArray?.filter((item) => item?.lte)?.length > 0
+            ? `${convertedFilters?.join("&")}`
+            : filtArray?.filter((item) => item?.gte)?.length &&
+                filtArray?.filter((item) => item?.lte)?.length
+              ? `${convertedFilters?.join("&")}`
+              : convertedFilters?.join("&");
 
   const [isRefetch, setIsRefetch] = useState(false);
 
@@ -71,7 +71,7 @@ export default function () {
     },
     page,
     limit,
-    query
+    query,
   );
 
   useEffect(() => {

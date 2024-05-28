@@ -40,7 +40,7 @@ export const useGetLoanRequest = (options = {}, page = 1, limit = 25) => {
     () => getLoan(page, limit),
     {
       ...options,
-    }
+    },
   );
 
   return { data, isLoading, refetch };
@@ -52,7 +52,7 @@ export const useGetLoanBalance = (options = {}) => {
     getLoanBalance,
     {
       ...options,
-    }
+    },
   );
 
   return { data, isLoading, refetch };
@@ -64,7 +64,7 @@ export const useGetLoan = (id = "", options = {}) => {
     () => getLoanDetails(id),
     {
       ...options,
-    }
+    },
   );
 
   return { isLoading, data, refetch };

@@ -3,11 +3,8 @@ import { Image } from "@chakra-ui/image";
 import { Box, Flex, Text } from "@chakra-ui/layout";
 import { useNavigate } from "react-router";
 import TableLayer from "../../../components/data/Staff/Medical/TableLayer";
-import {
-  useGetLeaveBalance,
-  useGetLeaveRequest,
-} from "../../../services/staff/query/leave";
-import { Button, Skeleton, Spinner } from "@chakra-ui/react";
+import { Button, Spinner } from "@chakra-ui/react";
+import { useGetMedRequest } from "../../../services/staff/query/medical";
 
 const Medical = () => {
   const navigate = useNavigate();
@@ -16,24 +13,17 @@ const Medical = () => {
 
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(25);
-  const {
-    data: balance,
-    refetch: balanceRefetch,
-    isLoading: isBalance,
-  } = useGetLeaveBalance({
-    refetchOnWindowFocus: true,
-  });
-  const { data, isLoading, refetch } = useGetLeaveRequest(
+
+  const { data, isLoading, refetch } = useGetMedRequest(
     {
       refetchOnWindowFocus: true,
     },
     page,
-    limit
+    limit,
   );
 
   useEffect(() => {
     refetch();
-    balanceRefetch();
   }, []);
 
   useEffect(() => {
@@ -129,51 +119,40 @@ const Medical = () => {
             </Text>
 
             <Box mt="24px">
-              <Skeleton w="full" isLoaded={!isBalance} borderRadius="20px">
-                <Flex
-                  align="center"
-                  border="1px solid #086375"
-                  borderRadius="20px"
-                  p={{ base: "25px", md: "40px" }}
-                  justifyContent="space-between"
-                  w="full"
-                >
-                  <Box color="#086375" fontWeight={700}>
-                    <Text fontSize="12px" opacity={0.4}>
-                      BALANCE
-                    </Text>
-                    <Text mt="4px" fontSize={{ base: "20px", md: "24px" }}>
-                      ₦ {(80000).toLocaleString()}
-                    </Text>
-                  </Box>
-
-                  <Box>
-                    <Flex
-                      align="center"
-                      gap="10px"
-                      bg="#086375"
-                      borderRadius="8px"
-                      py={{ base: "13px", md: "16px" }}
-                      cursor="pointer"
-                      onClick={() =>
-                        navigate("/staff/medical-assistance/request")
-                      }
-                      _hover={{ opacity: 0.8 }}
-                      transition=".3s ease-in-out"
-                      px={{ base: "13px", md: "24px" }}
+              <Flex
+                align="center"
+                border="1px solid #086375"
+                borderRadius="20px"
+                p={{ base: "25px", md: "40px" }}
+                justifyContent="flex-end"
+                w="full"
+              >
+                <Box>
+                  <Flex
+                    align="center"
+                    gap="10px"
+                    bg="#086375"
+                    borderRadius="8px"
+                    py={{ base: "13px", md: "16px" }}
+                    cursor="pointer"
+                    onClick={() =>
+                      navigate("/staff/medical-assistance/request")
+                    }
+                    _hover={{ opacity: 0.8 }}
+                    transition=".3s ease-in-out"
+                    px={{ base: "13px", md: "24px" }}
+                  >
+                    <Image src="/assets/copy.svg" />
+                    <Text
+                      color="#fff"
+                      fontWeight={500}
+                      fontSize={{ base: "13px", md: "16px" }}
                     >
-                      <Image src="/assets/copy.svg" />
-                      <Text
-                        color="#fff"
-                        fontWeight={500}
-                        fontSize={{ base: "13px", md: "16px" }}
-                      >
-                        Request Assistance
-                      </Text>
-                    </Flex>
-                  </Box>
-                </Flex>
-              </Skeleton>
+                      Request Assistance
+                    </Text>
+                  </Flex>
+                </Box>
+              </Flex>
             </Box>
           </Box>
 

@@ -31,7 +31,7 @@ export const useGetLeaveRequest = (options = {}, page = 1, limit = 25) => {
     () => getLeave(page, limit),
     {
       ...options,
-    }
+    },
   );
 
   return { data, isLoading, refetch };
@@ -43,7 +43,7 @@ export const useGetLeaveBalance = (options = {}) => {
     getLeaveBalance,
     {
       ...options,
-    }
+    },
   );
 
   return { data, isLoading, refetch };
@@ -55,7 +55,7 @@ export const useGetLeave = (id = "", options = {}) => {
     () => getLeaveDetails(id),
     {
       ...options,
-    }
+    },
   );
 
   return { isLoading, data, refetch };

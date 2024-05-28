@@ -1,9 +1,7 @@
-import React from 'react'
+import React from "react";
 
 const ViewDept = () => {
-  return (
-    <div>ViewDept</div>
-  )
-}
+  return <div>ViewDept</div>;
+};
 
-export default ViewDept
+export default ViewDept;

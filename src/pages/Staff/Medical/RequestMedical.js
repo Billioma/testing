@@ -1,18 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { Image } from "@chakra-ui/image";
 import { Box, Flex, Text } from "@chakra-ui/layout";
-import { Button } from "@chakra-ui/react";
-import { convertDate } from "../../../utils/helpers";
+import { Button, Spinner } from "@chakra-ui/react";
 import useCustomToast from "../../../utils/notifications";
 import { useNavigate } from "react-router-dom";
-import {
-  useGetLeaveBalance,
-  useRequestLeave,
-} from "../../../services/staff/query/leave";
+import Select from "react-select";
+import { useRequestMed } from "../../../services/staff/query/medical";
 import CustomInput from "../../../components/common/CustomInput";
 import { FileUploader } from "react-drag-drop-files";
 import { MdClose } from "react-icons/md";
 import TextInput from "../../../components/common/TextInput";
+import { IoIosArrowDown } from "react-icons/io";
+import { useUploadPic } from "../../../services/staff/query/user";
 
 const RequestMedical = () => {
   const [values, setValues] = useState({
@@ -22,45 +21,120 @@ const RequestMedical = () => {
     additionalComments: "",
   });
 
-  const [dates, setDates] = useState([]);
-
   const [fileLimit, setFileLimit] = useState(false);
   const [files, setFiles] = useState([]);
+  const [fileURLs, setFileURLs] = useState([]);
+  const [isUploaderEnabled, setIsUploaderEnabled] = useState(true);
+  const [handleRemoveFileCalled, setHandleRemoveFileCalled] = useState(false);
+
+  const {
+    mutate: uploadMutate,
+    isLoading: isUploading,
+    data: profilePicData,
+  } = useUploadPic({
+    onSuccess: () => {
+      setIsUploaderEnabled(true);
+    },
+    onError: (err) => {
+      errorToast(
+        err?.response?.data?.message || err?.message || "An Error occurred",
+      );
+    },
+  });
+  const [currentImage, setCurrentImage] = useState("");
 
   const handleChange = (newFiles) => {
-    const selectedFile = newFiles[0];
-    if (!selectedFile) {
+    const selected = newFiles[0];
+    if (!selected) {
+      return;
+    }
+    setCurrentImage(newFiles[0].name);
+    const formData = new FormData();
+    formData.append("file", selected);
+
+    const filesArray = Array.isArray(newFiles)
+      ? newFiles
+      : Array.from(newFiles);
+
+    if (filesArray.length === 0) {
       return;
     }
 
+    const selectedFile = filesArray[0];
     const fileSizeInBytes = selectedFile.size;
-
     const limitInMB = Math.ceil(fileSizeInBytes / 1048576);
+
     if (limitInMB > 2) {
       setFileLimit(true);
     } else {
       setFileLimit(false);
-      setFiles((prevFiles) => [...prevFiles, ...newFiles]);
+
+      const isFileUnique = (file, fileList) => {
+        return !fileList.some(
+          (existingFile) =>
+            existingFile.name === file.name && existingFile.size === file.size,
+        );
+      };
+
+      const newUniqueFiles = filesArray.filter((newFile) =>
+        isFileUnique(newFile, files),
+      );
+
+      if (newUniqueFiles.length === 0) {
+        return;
+      }
+
+      setFiles((prevFiles) => [...prevFiles, ...newUniqueFiles]);
+
+      if (isFileUnique(selectedFile, files)) {
+        setIsUploaderEnabled(false);
+        setHandleRemoveFileCalled(false);
+        uploadMutate({
+          fileType: "pdf",
+          entityType: "staff",
+          file: formData.get("file"),
+        });
+      }
     }
   };
-
-  const handleRemoveFile = (indexToRemove) => {
-    setFiles((prevFiles) =>
-      prevFiles.filter((_, index) => index !== indexToRemove)
-    );
-  };
-
-  const {
-    data: balance,
-    refetch: balanceRefetch,
-    isLoading: isBalance,
-  } = useGetLeaveBalance({
-    refetchOnWindowFocus: true,
-  });
+  const [cleanedFileURLs, setCleanedFileURLs] = useState([]);
 
   useEffect(() => {
-    balanceRefetch();
-  }, []);
+    if (profilePicData && !isUploading && !handleRemoveFileCalled) {
+      setFileURLs((prevFileURLs) => {
+        const newFileURLs = files.map((file) => ({
+          name: file.name,
+          url: profilePicData?.path,
+        }));
+        return [...prevFileURLs, ...newFileURLs];
+      });
+    }
+  }, [profilePicData, isUploading, handleRemoveFileCalled]);
+
+  useEffect(() => {
+    const removeDuplicates = (arr, prop) => {
+      return arr.filter(
+        (obj, index, self) =>
+          index === self.findIndex((el) => el[prop] === obj[prop]),
+      );
+    };
+    const cleanedFiles = removeDuplicates(fileURLs, "name");
+
+    setCleanedFileURLs(cleanedFiles);
+  }, [fileURLs]);
+
+  const handleRemoveFile = (indexToRemove) => {
+    setHandleRemoveFileCalled(true);
+    setFiles((prevFiles) =>
+      prevFiles.filter((_, index) => _?.name !== indexToRemove),
+    );
+    setFileURLs((prevFiles) =>
+      prevFiles.filter((_, index) => _?.name !== indexToRemove),
+    );
+    setCleanedFileURLs((prevFiles) =>
+      prevFiles.filter((_, index) => _?.name !== indexToRemove),
+    );
+  };
 
   const customStyles = {
     control: (provided, state) => ({
@@ -71,7 +145,7 @@ const RequestMedical = () => {
       fontSize: "16px",
       cursor: "pointer",
       borderRadius: "8px",
-      border: state.hasValue ? "1px solid #086375" : "1px solid #3d3d3d",
+      border: state.hasValue ? "1px solid #086375" : "1px solid #999999",
       paddingRight: "16px",
       background: state.hasValue ? "#E8FBF7" : "unset",
     }),
@@ -102,29 +176,26 @@ const RequestMedical = () => {
     label: purpose?.label,
   }));
 
-  const startDateRange = new Date();
-
   const { errorToast, successToast } = useCustomToast();
   const navigate = useNavigate();
-  const { mutate, isLoading } = useRequestLeave({
+  const { mutate, isLoading } = useRequestMed({
     onSuccess: (res) => {
       successToast(res?.message);
       navigate("/staff/medical-assistance");
     },
     onError: (err) => {
       errorToast(
-        err?.response?.data?.message || err?.message || "An Error occurred"
+        err?.response?.data?.message || err?.message || "An Error occurred",
       );
     },
   });
 
   const handleSubmit = () => {
     mutate({
-      startDate: convertDate(new Date(dates[0])),
-      endDate: convertDate(new Date(dates[1])),
+      amount: Number(values?.amount),
       purpose: values?.purpose?.value,
-      amount: values?.amount,
       additionalComments: values?.additionalComments,
+      documents: cleanedFileURLs,
     });
   };
 
@@ -147,6 +218,8 @@ const RequestMedical = () => {
             <CustomInput
               opt
               value={values?.amount}
+              naira
+              type="number"
               onChange={(e) => setValues({ ...values, amount: e.target.value })}
               h="180px"
               mb
@@ -157,14 +230,23 @@ const RequestMedical = () => {
             <Text fontWeight={700} mb="9px" fontSize="10px">
               PURPOSE
             </Text>
-            <CustomInput
-              opt
-              value={values?.purpose}
-              onChange={(e) =>
-                setValues({ ...values, purpose: e.target.value })
+            <Select
+              styles={customStyles}
+              options={purposesOptions}
+              components={{
+                IndicatorSeparator: () => (
+                  <div style={{ display: "none" }}></div>
+                ),
+                DropdownIndicator: () => (
+                  <div>
+                    <IoIosArrowDown size="15px" color="#646668" />
+                  </div>
+                ),
+              }}
+              value={values.purpose}
+              onChange={(selectedOption) =>
+                setValues({ ...values, purpose: selectedOption })
               }
-              h="180px"
-              mb
             />
           </Box>
 
@@ -194,59 +276,66 @@ const RequestMedical = () => {
                         {Math.floor(
                           item?.size < 1048576
                             ? item?.size / 1024
-                            : item?.size / 1048576
+                            : item?.size / 1048576,
                         )}{" "}
                         {item?.size < 1048576 ? "KB" : "MB"}
                       </Text>
                     </Box>
 
                     <Flex align="center" gap="12px">
-                      <Flex
-                        border="1px solid #08637533"
-                        borderRadius="4px"
-                        cursor="pointer"
-                        w="32px"
-                        onClick={() => handleRemoveFile(i)}
-                        h="32px"
-                        justifyContent="center"
-                        align="center"
-                      >
-                        <MdClose />
-                      </Flex>
+                      {isUploading && currentImage === item?.name ? (
+                        <Spinner size="md" color="#086375" />
+                      ) : (
+                        <Flex
+                          border="1px solid #08637533"
+                          borderRadius="4px"
+                          cursor="pointer"
+                          w="32px"
+                          onClick={() => handleRemoveFile(item?.name)}
+                          h="32px"
+                          justifyContent="center"
+                          align="center"
+                        >
+                          <MdClose />
+                        </Flex>
+                      )}
                     </Flex>
                   </Flex>
                 ))
               : ""}
 
-            <FileUploader
-              multiple={true}
-              handleChange={handleChange}
-              name="file"
-            >
-              <Flex
-                cursor="pointer"
-                border="1px dashed #E2E5DC"
-                borderRadius="4px"
-                w="full"
-                justifyContent="center"
-                h="72px"
-                gap="10px"
-                align="center"
+            {isUploaderEnabled && (
+              <FileUploader
+                multiple={true}
+                handleChange={handleChange}
+                name="file"
               >
-                <Image
-                  w="16px"
-                  h="16px"
-                  objectFit="contain"
-                  src="/assets/uploader.svg"
-                />
-                <Text fontSize="14px">
-                  Drag and drop your files here or{" "}
-                  <span style={{ textDecoration: "underline" }}>
-                    choose file
-                  </span>
-                </Text>
-              </Flex>
-            </FileUploader>
+                <Flex
+                  cursor="pointer"
+                  border="1px dashed #E2E5DC"
+                  borderRadius="4px"
+                  w="full"
+                  justifyContent="center"
+                  h="72px"
+                  gap="10px"
+                  align="center"
+                >
+                  <Image
+                    w="16px"
+                    h="16px"
+                    objectFit="contain"
+                    src="/assets/uploader.svg"
+                  />
+                  <Text fontSize="14px">
+                    Drag and drop your files here or{" "}
+                    <span style={{ textDecoration: "underline" }}>
+                      choose file
+                    </span>
+                  </Text>
+                </Flex>
+              </FileUploader>
+            )}
+
             <Text
               color="tomato"
               display={fileLimit ? "block" : "none"}

@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { Box, Flex, Image, Text } from "@chakra-ui/react";
+import { Box, Button, Flex, Image, Text } from "@chakra-ui/react";
 import Filter from "../../../components/common/Filter";
 import TableLayer from "../../../components/data/Admin/MedicalAssisstance/TableLayer";
-import { useGetLeaveRequest } from "../../../services/admin/query/staff";
-import { leaveOptions } from "../../../components/common/constants";
+import { useGetMedRequest } from "../../../services/admin/query/staff";
+import { medOptions } from "../../../components/common/constants";
 import { formatFilterDate } from "../../../utils/helpers";
+import { MdAdd } from "react-icons/md";
+import { useNavigate } from "react-router-dom";
 
 const MedicalAssistance = () => {
   const [type, setType] = useState("");
@@ -19,11 +21,11 @@ const MedicalAssistance = () => {
   const convertedFilters = filtArray?.map((filterObj) => {
     return filterObj?.gte
       ? `filter=${filterObj?.title}||$gte||"${formatFilterDate(
-          filterObj?.gte
+          filterObj?.gte,
         )}T00:00:00"`
       : filterObj?.lte
         ? `filter=${filterObj?.title}||$lte||"${formatFilterDate(
-            filterObj?.lte
+            filterObj?.lte,
           )}T23:59:59"`
         : `filter=${filterObj?.title}||${filterObj?.type || "cont"}||"${
             filterObj?.filter
@@ -36,12 +38,12 @@ const MedicalAssistance = () => {
       : filtArray?.filter((item) => item?.gte)?.length > 0 &&
           filtArray?.filter((item) => item?.lte)?.length === 0
         ? `${convertedFilters?.join(
-            "&"
+            "&",
           )}&filter=createdAt||$lte||${year}-12-31T23:59:59`
         : filtArray?.filter((item) => item?.gte)?.length === 0 &&
             filtArray?.filter((item) => item?.lte)?.length === 0
           ? `${convertedFilters?.join(
-              "&"
+              "&",
             )}&filter=createdAt||$lte||${year}-12-31T23:59:59`
           : filtArray?.filter((item) => item?.gte)?.length === 0 &&
               filtArray?.filter((item) => item?.lte)?.length > 0
@@ -53,7 +55,7 @@ const MedicalAssistance = () => {
 
   const [isRefetch, setIsRefetch] = useState(false);
 
-  const { data, isLoading, refetch } = useGetLeaveRequest(
+  const { data, isLoading, refetch } = useGetMedRequest(
     {
       refetchOnWindowFocus: true,
       onSuccess: () => {
@@ -69,7 +71,7 @@ const MedicalAssistance = () => {
     type,
     page,
     limit,
-    query
+    query,
   );
 
   useEffect(() => {
@@ -100,6 +102,8 @@ const MedicalAssistance = () => {
     setStartRow(currentStartRow);
     setEndRow(currentEndRow);
   }, [data, page, limit]);
+
+  const navigate = useNavigate();
 
   const typeToMap = [
     { name: "All", value: "" },
@@ -147,7 +151,7 @@ const MedicalAssistance = () => {
         <Filter
           setFiltArray={setFiltArray}
           filtArray={filtArray}
-          fieldToCompare={leaveOptions}
+          fieldToCompare={medOptions}
           gap
           title={
             <Text fontWeight={500} lineHeight="100%" color="#242628">
@@ -156,6 +160,15 @@ const MedicalAssistance = () => {
           }
           main={
             <>
+              <Button
+                display="flex"
+                bg="#000"
+                gap="8px"
+                onClick={() => navigate("/admin/medical-assistance/create")}
+              >
+                <Text fontSize="14px">Add Medical Assistance</Text>
+                <MdAdd size="20px" />
+              </Button>
               <Flex
                 justifyContent="center"
                 align="center"
@@ -185,6 +198,7 @@ const MedicalAssistance = () => {
           page={page}
           limit={limit}
           setPage={setPage}
+          refetch={refetch}
           startRow={startRow}
           endRow={endRow}
           setLimit={setLimit}

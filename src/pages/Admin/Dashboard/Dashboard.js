@@ -53,7 +53,7 @@ const Dashboard = () => {
     },
     page,
     limit,
-    query
+    query,
   );
 
   const {
@@ -67,7 +67,7 @@ const Dashboard = () => {
     "PENDING",
     1,
     10,
-    `&filter=createdAt||$gte||${formatDates(today)}T00:00:00&filter=createdAt||$lte||2024-12-31T23:59:59`
+    `&filter=createdAt||$gte||${formatDates(today)}T00:00:00&filter=createdAt||$lte||2024-12-31T23:59:59`,
   );
 
   const { isOpen, onClose, onOpen } = useDisclosure();
@@ -94,7 +94,7 @@ const Dashboard = () => {
   useEffect(() => {
     if (currentLeave) {
       const selectedType = typesOptions?.find(
-        (option) => option.value === currentLeave?.isPaid
+        (option) => option.value === currentLeave?.isPaid,
       );
       setValues({
         ...values,
@@ -114,7 +114,7 @@ const Dashboard = () => {
     },
     onError: (error) => {
       errorToast(
-        error?.response?.data?.message || error?.message || "An Error occurred"
+        error?.response?.data?.message || error?.message || "An Error occurred",
       );
     },
   });
@@ -127,7 +127,7 @@ const Dashboard = () => {
     },
     onError: (error) => {
       errorToast(
-        error?.response?.data?.message || error?.message || "An Error occurred"
+        error?.response?.data?.message || error?.message || "An Error occurred",
       );
     },
   });
@@ -235,7 +235,7 @@ const Dashboard = () => {
                 </Box>
               </Box>
             </GridItem>
-          )
+          ),
         )}
       </Grid>
 

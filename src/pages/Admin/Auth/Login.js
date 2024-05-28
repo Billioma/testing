@@ -23,7 +23,7 @@ const Login = () => {
       errorToast(
         error?.response?.data?.message ||
           error?.message ||
-          "Unable to login. Try again."
+          "Unable to login. Try again.",
       );
     },
   });

@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Box, Flex, Text, VStack, Collapse, Image } from "@chakra-ui/react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { ChevronDownIcon, ChevronRightIcon } from "@chakra-ui/icons";
-import { IoIosArrowUp, IoIosArrowDown } from "react-icons/io";
 import { staffSidebar } from "../../components/common/constants";
 import { FiChevronsLeft } from "react-icons/fi";
 import { useGetProfile } from "../../services/admin/query/auth";
@@ -15,23 +14,6 @@ const SideBar = ({ show, setShow }) => {
   const navigate = useNavigate();
 
   const { data: userData, isLoading: isUser } = useGetProfile();
-  const [currentDisplay, setCurrentDisplay] = useState(false);
-
-  const handleUpClick = () => {
-    setCurrentDisplay(false);
-    sessionStorage.setItem("staff", "false");
-  };
-
-  const handleDownClick = () => {
-    setCurrentDisplay(true);
-    sessionStorage.setItem("staff", "true");
-  };
-
-  useEffect(() => {
-    const staff = sessionStorage.getItem("staff");
-    const staffValue = staff === "true";
-    setCurrentDisplay(staffValue);
-  }, []);
 
   return (
     <Flex

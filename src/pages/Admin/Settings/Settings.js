@@ -37,7 +37,7 @@ const Settings = () => {
               >
                 {item}
               </Flex>
-            )
+            ),
           )}
         </Flex>
       </Flex>

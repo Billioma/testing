@@ -1,9 +1,7 @@
-import React from 'react'
+import React from "react";
 
 const AddDept = () => {
-  return (
-    <div>AddDept</div>
-  )
-}
+  return <div>AddDept</div>;
+};
 
-export default AddDept
+export default AddDept;

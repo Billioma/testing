@@ -3,14 +3,21 @@ import { Box, Flex, Image, Spinner, Text } from "@chakra-ui/react";
 import {
   useApproveLicense,
   useEditEmployeeDoc,
-  useEditStaff,
 } from "../../../../services/admin/query/staff";
 import useCustomToast from "../../../../utils/notifications";
 import { IoIosArrowDown } from "react-icons/io";
 import Select from "react-select";
 import { submits } from "../../../common/constants";
+import ApproveDoc from "../../../modals/ApproveDoc";
 
 const EmployeeDocuments = ({ refetch, data }) => {
+  const [showApprove, setShowApprove] = useState(false);
+  const [currentFile, setCurrentFile] = useState("");
+
+  const open = (main) => {
+    setShowApprove(true);
+    setCurrentFile(main);
+  };
   const customStyles = {
     control: (provided, state) => ({
       ...provided,
@@ -65,18 +72,6 @@ const EmployeeDocuments = ({ refetch, data }) => {
   const [ids, setIds] = useState("");
   const { successToast, errorToast } = useCustomToast();
 
-  const { mutate: editMutate, isLoading: isEditing } = useEditStaff({
-    onSuccess: () => {
-      successToast("Doc updated successfully!");
-      refetch();
-    },
-    onError: (error) => {
-      errorToast(
-        error?.response?.data?.message || error?.message || "An Error occurred"
-      );
-    },
-  });
-
   const handleSubmit = (dat, id) => {
     updateMutate({
       query: id?.id,
@@ -90,10 +85,11 @@ const EmployeeDocuments = ({ refetch, data }) => {
     onSuccess: () => {
       successToast("Employee Document updated successfully!");
       refetch();
+      setShowApprove(false);
     },
     onError: (error) => {
       errorToast(
-        error?.response?.data?.message || error?.message || "An Error occurred"
+        error?.response?.data?.message || error?.message || "An Error occurred",
       );
     },
   });
@@ -101,11 +97,12 @@ const EmployeeDocuments = ({ refetch, data }) => {
   const { mutate: approveMutate, isLoading: isApprove } = useApproveLicense({
     onSuccess: () => {
       successToast("Driver license approved!");
+      setShowApprove(false);
       refetch();
     },
     onError: (error) => {
       errorToast(
-        error?.response?.data?.message || error?.message || "An Error occurred"
+        error?.response?.data?.message || error?.message || "An Error occurred",
       );
     },
   });
@@ -161,6 +158,17 @@ const EmployeeDocuments = ({ refetch, data }) => {
 
   return (
     <Box mt="24px">
+      <ApproveDoc
+        isOpen={showApprove}
+        isLoading={isApprove || isUpdating}
+        id={ids}
+        action={() =>
+          ids === "Driver's License"
+            ? handleApproveLicense()
+            : handleApprove(currentFile)
+        }
+        onClose={() => setShowApprove(false)}
+      />
       <Box>
         <Box w="full">
           <Flex
@@ -229,18 +237,14 @@ const EmployeeDocuments = ({ refetch, data }) => {
                   onClick={() =>
                     isUpdating
                       ? ""
-                      : (handleApprove(mainFiles?.employmentLetter),
-                        setIds("employmentLetter"))
+                      : (open(mainFiles?.employmentLetter),
+                        setIds("Employment Letter"))
                   }
                   fontWeight={500}
                   bg="#090C02"
                   color="#fff"
                 >
-                  {isUpdating && ids == "employmentLetter" ? (
-                    <Spinner size="md" />
-                  ) : (
-                    "Approve"
-                  )}
+                  Approve
                 </Flex>
               ) : (
                 <Select
@@ -254,7 +258,7 @@ const EmployeeDocuments = ({ refetch, data }) => {
                     ),
                     DropdownIndicator: () => (
                       <div>
-                        {isUpdating && ids === "employmentLetter" ? (
+                        {isUpdating && ids === "Employment Letter" ? (
                           <Spinner size="sm" />
                         ) : (
                           <IoIosArrowDown size="15px" color="#646668" />
@@ -267,10 +271,10 @@ const EmployeeDocuments = ({ refetch, data }) => {
                       ...newValues,
                       employmentLetter: selectedOption,
                     });
-                    setIds("employmentLetter");
+                    setIds("Employment Letter");
                     handleSubmit(
                       selectedOption?.value,
-                      mainFiles?.employmentLetter
+                      mainFiles?.employmentLetter,
                     );
                   }}
                 />
@@ -350,34 +354,47 @@ const EmployeeDocuments = ({ refetch, data }) => {
                     onClick={() =>
                       isUpdating
                         ? ""
-                        : (handleApprove(mainFiles?.guarantorForm),
-                          setIds("guarantorForm"))
+                        : (open(mainFiles?.guarantorForm),
+                          setIds("Guarantor Form"))
                     }
                     fontWeight={500}
                     bg="#090C02"
                     color="#fff"
                   >
-                    {isUpdating && ids == "guarantorForm" ? (
-                      <Spinner size="md" />
-                    ) : (
-                      "Approve"
-                    )}
+                    Approve
                   </Flex>
                 ) : (
-                  <Flex
-                    py="8px"
-                    px="16px"
-                    gap="20px"
-                    align="center"
-                    justifyContent="space-between"
-                    border="1px solid #CCCCCC"
-                    borderRadius="4px"
-                  >
-                    <Text fontSize="12px" fontWeight={500}>
-                      Unsubmitted
-                    </Text>
-                    <IoIosArrowDown />
-                  </Flex>
+                  <Select
+                    styles={customStyles}
+                    options={submitOptions}
+                    placeholder="Unsubmitted"
+                    value={newValues?.guarantorForm}
+                    components={{
+                      IndicatorSeparator: () => (
+                        <div style={{ display: "none" }}></div>
+                      ),
+                      DropdownIndicator: () => (
+                        <div>
+                          {isUpdating && ids === "Guarantor Form" ? (
+                            <Spinner size="sm" />
+                          ) : (
+                            <IoIosArrowDown size="15px" color="#646668" />
+                          )}
+                        </div>
+                      ),
+                    }}
+                    onChange={(selectedOption) => {
+                      setNewValues({
+                        ...newValues,
+                        guarantorForm: selectedOption,
+                      });
+                      setIds("Guarantor Form");
+                      handleSubmit(
+                        selectedOption?.value,
+                        mainFiles?.guarantorForm,
+                      );
+                    }}
+                  />
                 )}
               </Flex>
             </Flex>
@@ -454,18 +471,14 @@ const EmployeeDocuments = ({ refetch, data }) => {
                   onClick={() =>
                     isUpdating
                       ? ""
-                      : (handleApprove(mainFiles?.guarantorForm2),
-                        setIds("guarantorForm2"))
+                      : (open(mainFiles?.guarantorForm2),
+                        setIds("Guarantor Form 2"))
                   }
                   fontWeight={500}
                   bg="#090C02"
                   color="#fff"
                 >
-                  {isUpdating && ids == "guarantorForm2" ? (
-                    <Spinner size="md" />
-                  ) : (
-                    "Approve"
-                  )}
+                  Approve
                 </Flex>
               ) : (
                 <Select
@@ -479,7 +492,7 @@ const EmployeeDocuments = ({ refetch, data }) => {
                     ),
                     DropdownIndicator: () => (
                       <div>
-                        {isUpdating && ids === "guarantorForm2" ? (
+                        {isUpdating && ids === "Guarantor Form 2" ? (
                           <Spinner size="sm" />
                         ) : (
                           <IoIosArrowDown size="15px" color="#646668" />
@@ -492,10 +505,10 @@ const EmployeeDocuments = ({ refetch, data }) => {
                       ...newValues,
                       guarantorForm2: selectedOption,
                     });
-                    setIds("guarantorForm2");
+                    setIds("Guarantor Form 2");
                     handleSubmit(
                       selectedOption?.value,
-                      mainFiles?.guarantorForm2
+                      mainFiles?.guarantorForm2,
                     );
                   }}
                 />
@@ -574,18 +587,14 @@ const EmployeeDocuments = ({ refetch, data }) => {
                   onClick={() =>
                     isUpdating
                       ? ""
-                      : (handleApprove(mainFiles?.confidentialityAgreement),
-                        setIds("confidentialityAgreement"))
+                      : (open(mainFiles?.confidentialityAgreement),
+                        setIds("Confidentiality Agreement"))
                   }
                   fontWeight={500}
                   bg="#090C02"
                   color="#fff"
                 >
-                  {isUpdating && ids == "confidentialityAgreement" ? (
-                    <Spinner size="md" />
-                  ) : (
-                    "Approve"
-                  )}
+                  Approve
                 </Flex>
               ) : (
                 <Select
@@ -599,7 +608,7 @@ const EmployeeDocuments = ({ refetch, data }) => {
                     ),
                     DropdownIndicator: () => (
                       <div>
-                        {isUpdating && ids === "confidentialityAgreement" ? (
+                        {isUpdating && ids === "Confidentiality Agreement" ? (
                           <Spinner size="sm" />
                         ) : (
                           <IoIosArrowDown size="15px" color="#646668" />
@@ -612,10 +621,10 @@ const EmployeeDocuments = ({ refetch, data }) => {
                       ...newValues,
                       confidentialityAgreement: selectedOption,
                     });
-                    setIds("confidentialityAgreement");
+                    setIds("Confidentiality Agreement");
                     handleSubmit(
                       selectedOption?.value,
-                      mainFiles?.confidentialityAgreement
+                      mainFiles?.confidentialityAgreement,
                     );
                   }}
                 />
@@ -694,18 +703,14 @@ const EmployeeDocuments = ({ refetch, data }) => {
                   onClick={() =>
                     isUpdating
                       ? ""
-                      : (handleApprove(mainFiles?.nonSolicitationAgreement),
-                        setIds("nonSolicitationAgreement"))
+                      : (open(mainFiles?.nonSolicitationAgreement),
+                        setIds("Non-Solicitation & Non-Competition Agreement"))
                   }
                   fontWeight={500}
                   bg="#090C02"
                   color="#fff"
                 >
-                  {isUpdating && ids == "nonSolicitationAgreement" ? (
-                    <Spinner size="md" />
-                  ) : (
-                    "Approve"
-                  )}
+                  Approve
                 </Flex>
               ) : (
                 <Select
@@ -719,7 +724,9 @@ const EmployeeDocuments = ({ refetch, data }) => {
                     ),
                     DropdownIndicator: () => (
                       <div>
-                        {isUpdating && ids === "nonSolicitationAgreement" ? (
+                        {isUpdating &&
+                        ids ===
+                          "Non-Solicitation & Non-Competition Agreement" ? (
                           <Spinner size="sm" />
                         ) : (
                           <IoIosArrowDown size="15px" color="#646668" />
@@ -732,10 +739,10 @@ const EmployeeDocuments = ({ refetch, data }) => {
                       ...newValues,
                       nonSolicitationAgreement: selectedOption,
                     });
-                    setIds("nonSolicitationAgreement");
+                    setIds("Non-Solicitation & Non-Competition Agreement");
                     handleSubmit(
                       selectedOption?.value,
-                      mainFiles?.nonSolicitationAgreement
+                      mainFiles?.nonSolicitationAgreement,
                     );
                   }}
                 />
@@ -814,18 +821,16 @@ const EmployeeDocuments = ({ refetch, data }) => {
                   onClick={() =>
                     isUpdating
                       ? ""
-                      : (handleApprove(mainFiles?.exclusivity),
-                        setIds("exclusivity"))
+                      : (open(mainFiles?.exclusivity),
+                        setIds(
+                          "Exclusivity & Non-Conflict of Interest Agreement",
+                        ))
                   }
                   fontWeight={500}
                   bg="#090C02"
                   color="#fff"
                 >
-                  {isUpdating && ids == "exclusivity" ? (
-                    <Spinner size="md" />
-                  ) : (
-                    "Approve"
-                  )}
+                  Approve
                 </Flex>
               ) : (
                 <Select
@@ -839,7 +844,9 @@ const EmployeeDocuments = ({ refetch, data }) => {
                     ),
                     DropdownIndicator: () => (
                       <div>
-                        {isUpdating && ids === "exclusivity" ? (
+                        {isUpdating &&
+                        ids ===
+                          "Exclusivity & Non-Conflict of Interest Agreement" ? (
                           <Spinner size="sm" />
                         ) : (
                           <IoIosArrowDown size="15px" color="#646668" />
@@ -852,7 +859,7 @@ const EmployeeDocuments = ({ refetch, data }) => {
                       ...newValues,
                       exclusivity: selectedOption,
                     });
-                    setIds("exclusivity");
+                    setIds("Exclusivity & Non-Conflict of Interest Agreement");
                     handleSubmit(selectedOption?.value, mainFiles?.exclusivity);
                   }}
                 />
@@ -931,18 +938,14 @@ const EmployeeDocuments = ({ refetch, data }) => {
                   onClick={() =>
                     isUpdating
                       ? ""
-                      : (handleApprove(mainFiles?.identificationDocument),
-                        setIds("identificationDocument"))
+                      : (open(mainFiles?.identificationDocument),
+                        setIds("Identification Document"))
                   }
                   fontWeight={500}
                   bg="#090C02"
                   color="#fff"
                 >
-                  {isUpdating && ids == "identificationDocument" ? (
-                    <Spinner size="md" />
-                  ) : (
-                    "Approve"
-                  )}
+                  Approve
                 </Flex>
               ) : (
                 <Select
@@ -956,7 +959,7 @@ const EmployeeDocuments = ({ refetch, data }) => {
                     ),
                     DropdownIndicator: () => (
                       <div>
-                        {isUpdating && ids === "identificationDocument" ? (
+                        {isUpdating && ids === "Identification Document" ? (
                           <Spinner size="sm" />
                         ) : (
                           <IoIosArrowDown size="15px" color="#646668" />
@@ -969,10 +972,10 @@ const EmployeeDocuments = ({ refetch, data }) => {
                       ...newValues,
                       identificationDocument: selectedOption,
                     });
-                    setIds("identificationDocument");
+                    setIds("Identification Document");
                     handleSubmit(
                       selectedOption?.value,
-                      mainFiles?.identificationDocument
+                      mainFiles?.identificationDocument,
                     );
                   }}
                 />
@@ -1046,17 +1049,17 @@ const EmployeeDocuments = ({ refetch, data }) => {
                 fontSize="12px"
                 cursor={isApprove ? "" : "pointer"}
                 onClick={() =>
-                  isApprove ? "" : (handleApproveLicense(), setIds("license"))
+                  isApprove
+                    ? ""
+                    : (open(""),
+                      // handleApproveLicense(),
+                      setIds("Driver's License"))
                 }
                 fontWeight={500}
                 bg="#090C02"
                 color="#fff"
               >
-                {isApprove && ids == "license" ? (
-                  <Spinner size="md" />
-                ) : (
-                  "Approve"
-                )}
+                Approve
               </Flex>
             </Flex>
           </Flex>

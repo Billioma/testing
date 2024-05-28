@@ -2,9 +2,8 @@ import React, { useEffect, useState } from "react";
 import { Flex, Text } from "@chakra-ui/layout";
 import { IoMdMenu } from "react-icons/io";
 import { Avatar, Image, useMediaQuery } from "@chakra-ui/react";
-import { useLocation, useParams } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { useGetUser } from "../../services/staff/query/user";
-import { useLogOut } from "../../utils/helpers";
 import {
   DashboardIcon,
   LeaveIcon,
@@ -17,7 +16,6 @@ const Header = () => {
   const [isMobile] = useMediaQuery("(max-width: 991px)");
 
   const { data: userData } = useGetUser();
-  const [show, setShow] = useState(false);
   const [title, setTitle] = useState("");
   const [icon, setIcon] = useState("");
   const [secTitle, setSecTitle] = useState("");
@@ -74,30 +72,6 @@ const Header = () => {
         return setSecTitle("");
     }
   }, [pathname]);
-
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (event.target.closest(".box") === null) {
-        setShow(false);
-      }
-    };
-
-    document.addEventListener("click", handleClickOutside);
-    return () => {
-      document.removeEventListener("click", handleClickOutside);
-    };
-  }, []);
-
-  const logout = useLogOut();
-  const [isLoading, setIsLoading] = useState(false);
-
-  const action = () => {
-    setIsLoading(true);
-    setTimeout(() => {
-      logout();
-      setIsLoading(false);
-    }, 1000);
-  };
 
   return (
     <Flex
@@ -156,67 +130,17 @@ const Header = () => {
               </Flex>
               <Flex
                 gap="8px"
-                // onClick={() => setShow(true)}
                 border="1px solid #e2e5dc"
                 className="box"
                 rounded="full"
                 align="center"
                 color="#242628"
-                // cursor="pointer"
                 p="12px"
               >
                 <Avatar w="20px" h="20px" rounded="full" />
 
                 <Text fontWeight={500}>{userData?.fullName || ""}</Text>
               </Flex>
-              {show && (
-                <Flex
-                  flexDir="column"
-                  align="center"
-                  justifyContent="center"
-                  bg="#F4F6F8"
-                  pos="absolute"
-                  top="35px"
-                  right="0"
-                  boxShadow="0px 4px 24px 0px rgba(0, 0, 0, 0.05)"
-                  border="1px solid #E4E6E8"
-                  borderRadius="4px"
-                  py="12px"
-                  px="16px"
-                >
-                  {[""].map((data, i) => (
-                    <Text
-                      key={i}
-                      fontSize="14px"
-                      _hover={{
-                        bg: "red",
-                        color: "#fff",
-                        borderRadius: "4px",
-                      }}
-                      textAlign="center"
-                      w="full"
-                      cursor="pointer"
-                      lineHeight="100%"
-                      py="10px"
-                      // onClick={() =>
-                      //   i === 3
-                      //     ? action()
-                      //     : (navigate(data?.link), setShow(false))
-                      // }
-                      px="20px"
-                      fontWeight={500}
-                      color="#242628"
-                      mb="16px"
-                    >
-                      {i === 3
-                        ? isLoading
-                          ? "Logging Out"
-                          : "Logout"
-                        : " data?.name"}
-                    </Text>
-                  ))}
-                </Flex>
-              )}
             </Flex>
 
             {isMobile && (

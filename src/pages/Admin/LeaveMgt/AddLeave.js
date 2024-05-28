@@ -5,7 +5,7 @@ import {
   initAdminLeaveValues,
   validateAdminLeaveSchema,
 } from "../../../utils/validation";
-import TextInput from "../../../components/common/TextInput";
+import AdminTextInput from "../../../components/common/AdminTextInput";
 import { Form, Formik } from "formik";
 import {
   customStyles,
@@ -50,7 +50,7 @@ const AddLeave = () => {
     },
     onError: (error) => {
       errorToast(
-        error?.response?.data?.message || error?.message || "An Error occurred"
+        error?.response?.data?.message || error?.message || "An Error occurred",
       );
     },
   });
@@ -354,7 +354,7 @@ const AddLeave = () => {
                       >
                         Additional Comments
                       </Text>
-                      <TextInput
+                      <AdminTextInput
                         h="100px"
                         auth
                         mb

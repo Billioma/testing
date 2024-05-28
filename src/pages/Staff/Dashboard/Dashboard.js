@@ -17,11 +17,7 @@ const Dashboard = () => {
   const navigate = useNavigate();
 
   const { data: userData } = useGetUser();
-  const {
-    data: balance,
-    refetch: balanceRefetch,
-    isLoading: isBalance,
-  } = useGetLeaveBalance({
+  const { data: balance, refetch: balanceRefetch } = useGetLeaveBalance({
     refetchOnWindowFocus: true,
   });
 

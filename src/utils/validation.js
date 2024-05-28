@@ -19,13 +19,13 @@ export const opPassSchema = Yup.object().shape({
     .required("Old Password is required")
     .matches(
       passwordRegex,
-      "Minimum of 8 characters, and must contain at least one uppercase, one lowercase and one number"
+      "Minimum of 8 characters, and must contain at least one uppercase, one lowercase and one number",
     ),
   password: Yup.string()
     .required("Password is required")
     .matches(
       passwordRegex,
-      "Minimum of 8 characters, and must contain at least one uppercase, one lowercase and one number"
+      "Minimum of 8 characters, and must contain at least one uppercase, one lowercase and one number",
     ),
   passwordConfirmation: Yup.string()
     .required("Confirm password is required")
@@ -83,10 +83,23 @@ export const initAdminLoanValues = {
   additionalComments: "",
 };
 
+export const initAdminMedValues = {
+  staffId: "",
+  amount: "",
+  purpose: "",
+  additionalComments: "",
+};
+
 export const validateAdminLeaveSchema = Yup.object().shape({
   staff: Yup.object().required("Staff is required"),
   startDate: Yup.string().required("Start Date is required"),
   endDate: Yup.string().required("End Date is required"),
+  purpose: Yup.object().required("Purpose is required"),
+});
+
+export const validateAdminMedSchema = Yup.object().shape({
+  staffId: Yup.object().required("Staff is required"),
+  amount: Yup.string().required("Amount is required"),
   purpose: Yup.object().required("Purpose is required"),
 });
 
@@ -104,12 +117,12 @@ export const validateAdminStaffSchema = Yup.object().shape({
   residentialAddress: Yup.string().required("Residential Address is required"),
   guarantor1: Yup.string().required("Guarantor 1 is required"),
   guarantor1Phone: Yup.string().required(
-    "Guarantor 1 Phone Number is required"
+    "Guarantor 1 Phone Number is required",
   ),
   guarantor1Address: Yup.string().required("Guarantor 1 Address is required"),
   guarantor2: Yup.string().required("Guarantor 2 is required"),
   guarantor2Phone: Yup.string().required(
-    "Guarantor 2 Phone Number is required"
+    "Guarantor 2 Phone Number is required",
   ),
   guarantor2Address: Yup.string().required("Guarantor 2 Address is required"),
 
@@ -126,14 +139,14 @@ export const validateAdminStaffSchema = Yup.object().shape({
   guarantorForm: Yup.string().required("Guarantor Form is required"),
   guarantorForm2: Yup.string().required("Guarantor Form 2 is required"),
   confidentialityAgreement: Yup.string().required(
-    "Confidentiality Agreement is required"
+    "Confidentiality Agreement is required",
   ),
   nonSolicitationAgreement: Yup.string().required(
-    "Non-Solicitation Agreement is required"
+    "Non-Solicitation Agreement is required",
   ),
   exclusivity: Yup.string().required("exclusivity Agreement is required"),
   identificationDocument: Yup.string().required(
-    "Identification Document is required"
+    "Identification Document is required",
   ),
 });
 
@@ -162,7 +175,7 @@ export const validateSchemas = Yup.object().shape({
     .required("Password required")
     .matches(
       passwordRegex,
-      "Minimum of 8 characters, and must contain at least one uppercase, one lowercase and one number"
+      "Minimum of 8 characters, and must contain at least one uppercase, one lowercase and one number",
     ),
 });
 
@@ -171,7 +184,7 @@ export const passwordSchema = Yup.object().shape({
     .required("Password is required")
     .matches(
       passwordRegex,
-      "Minimum of 8 characters, and must contain at least one uppercase, one lowercase and one number"
+      "Minimum of 8 characters, and must contain at least one uppercase, one lowercase and one number",
     ),
   passwordConfirmation: Yup.string()
     .required("Confirm password is required")

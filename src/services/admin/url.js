@@ -23,14 +23,14 @@ export const ADMIN_ATTENDANT = (id = "") => `admin/attendants/${id}`;
 export const ADMIN_ATTENDANTS_LIST = (
   filterString = "",
   limit = "",
-  page = ""
+  page = "",
 ) =>
   `admin/attendants?${filterString}&limit=${limit}&page=${page}&sort=createdAt,DESC`;
 export const ADMIN_CUSTOMERS = "admin/customers";
 export const ADMIN_CUSTOMERS_LIST = (
   filterString = "",
   limit = "",
-  page = ""
+  page = "",
 ) =>
   `admin/customers?${filterString}&limit=${limit}&page=${page}&sort=createdAt,DESC`;
 
@@ -42,7 +42,7 @@ export const ADMIN_OPERATOR = (id = "") => `admin/operators/${id}`;
 export const ADMIN_OPERATORS_LIST = (
   filterString = "",
   limit = "",
-  page = ""
+  page = "",
 ) =>
   `admin/operators?${filterString}&limit=${limit}&page=${page}&sort=createdAt,DESC`;
 
@@ -51,7 +51,7 @@ export const ADMIN_ADMINISTRATOR = (id = "") => `admin/users/${id}`;
 export const ADMIN_ADMINISTRATORS_LIST = (
   filterString = "",
   limit = "",
-  page = ""
+  page = "",
 ) =>
   `admin/users?${filterString}&limit=${limit}&page=${page}&sort=createdAt,DESC`;
 export const CLIENT_USERS = (id = "") => `admin/clients/users/${id}`;
@@ -66,7 +66,7 @@ export const ADMIN_LOCATIONS = "admin/locations";
 export const ADMIN_LOCATIONS_LIST = (
   filterString = "",
   limit = "",
-  page = ""
+  page = "",
 ) =>
   `admin/locations?${filterString}&limit=${limit}&page=${page}&sort=createdAt,DESC`;
 
@@ -90,7 +90,7 @@ export const ADMIN_ROLE = (id = "") => `admin/roles/${id}`;
 export const ADMIN_PERMISSIONS_LIST = (
   filterString = "",
   limit = "",
-  page = ""
+  page = "",
 ) =>
   `admin/permissions?${filterString}&limit=${limit}&page=${page}&sort=createdAt,DESC`;
 
@@ -99,7 +99,7 @@ export const ADMIN_PERMISSION = (id = "") => `admin/permissions/${id}`;
 export const ADMIN_VEHICLE_MAKES_LIST = (
   filterString = "",
   limit = "",
-  page = ""
+  page = "",
 ) =>
   `admin/vehicle-makes?${filterString}&limit=${limit}&page=${page}&sort=createdAt,DESC`;
 
@@ -108,7 +108,7 @@ export const ADMIN_VEHICLE_MAKE = (id = "") => `admin/vehicle-makes/${id}`;
 export const ADMIN_VEHICLE_MODELS_LIST = (
   filterString = "",
   limit = "",
-  page = ""
+  page = "",
 ) =>
   `admin/vehicle-models?${filterString}&limit=${limit}&page=${page}&sort=createdAt,DESC`;
 
@@ -138,7 +138,7 @@ export const ADMIN_MEMBERSHIP_PLANS = "admin/membership-plans";
 export const ADMIN_MEMBERSHIP_PLANS_LIST = (
   filterString = "",
   limit = "",
-  page = ""
+  page = "",
 ) =>
   `admin/membership-plans?${filterString}&limit=${limit}&page=${page}&sort=createdAt,DESC`;
 
@@ -148,7 +148,7 @@ export const ADMIN_MEMBERSHIP_PLAN = (id = "") =>
 export const ADMIN_MEMBERSHIP_FEATURES_LIST = (
   filterString = "",
   limit = "",
-  page = ""
+  page = "",
 ) =>
   `admin/membership-plan-features?${filterString}&limit=${limit}&page=${page}&sort=createdAt,DESC`;
 
@@ -158,7 +158,7 @@ export const ADMIN_MEMBERSHIP_FEATURE = (id = "") =>
 export const ADMIN_CUSTOMER_SUBS_LIST = (
   filterString = "",
   limit = "",
-  page = ""
+  page = "",
 ) =>
   `admin/membership-subscriptions?${filterString}&limit=${limit}&page=${page}&sort=createdAt,DESC`;
 
@@ -168,7 +168,7 @@ export const ADMIN_CUSTOMER_SUB = (id = "") =>
 export const ADMIN_CORP_SUBS_LIST = (
   filterString = "",
   limit = "",
-  page = ""
+  page = "",
 ) =>
   `admin/corporate-subscriptions?${filterString}&limit=${limit}&page=${page}&sort=createdAt,DESC`;
 
@@ -198,21 +198,21 @@ export const ADMIN_CLIENT_INVOICE = (id = "") => `admin/client-invoices/${id}`;
 export const ADMIN_CLIENTS_INVOICES_LIST = (
   filterString = "",
   limit = "",
-  page = ""
+  page = "",
 ) =>
   `admin/client-invoices?${filterString}&limit=${limit}&page=${page}&sort=createdAt,DESC`;
 export const ADMIN_PAY_TO_PARK = "admin/pay-to-park";
 export const ADMIN_PAY_TO_PARK_LIST = (
   filterString = "",
   limit = "",
-  page = ""
+  page = "",
 ) =>
   `admin/pay-to-park?${filterString}&limit=${limit}&page=${page}&sort=createdAt,DESC`;
 export const ADMIN_PAY_TO_PARK_DETAIL = (id = "") => `admin/pay-to-park/${id}`;
 export const ADMIN_EVENT_PARKING_LIST = (
   filterString = "",
   limit = "",
-  page = ""
+  page = "",
 ) =>
   `admin/event-parking?${filterString}&limit=${limit}&page=${page}&sort=createdAt,DESC`;
 
@@ -226,7 +226,7 @@ export const ADMIN_RESERVED_PARKING = "admin/reservations";
 export const ADMIN_RESERVED_PARKING_LIST = (
   filterString = "",
   limit = "",
-  page = ""
+  page = "",
 ) =>
   `admin/reservations?${filterString}&limit=${limit}&page=${page}&sort=createdAt,DESC`;
 
@@ -242,7 +242,7 @@ export const ADMIN_CAR_SERVICES = "admin/service-bookings";
 export const ADMIN_CAR_SERVICES_LIST = (
   filterString = "",
   limit = "",
-  page = ""
+  page = "",
 ) =>
   `admin/service-bookings?${filterString}&limit=${limit}&page=${page}&sort=createdAt,DESC`;
 
@@ -258,7 +258,7 @@ export const ADMIN_SERVICE_LOGS_LIST = (
   type = "",
   filterString = "",
   limit = "",
-  page = ""
+  page = "",
 ) =>
   `admin/service-logs?filter=service.serviceType||$eq||${type}&${filterString}&limit=${limit}&page=${page}&sort=createdAt,DESC`;
 
@@ -274,7 +274,7 @@ export const GET_ADMIN_REPORTS = (
   type = "",
   filterString = "",
   limit = "",
-  page = ""
+  page = "",
 ) =>
   `admin/reports/${type}?${filterString}&limit=${limit}&page=${page}&sort=createdAt,DESC`;
 
@@ -288,6 +288,7 @@ export const GET_TRAN = "admin/transactions";
 export const STAFFS = "/admin/staff";
 export const DEPTS = "/admin/department";
 export const REQUEST_LEAVE = "admin/leave-request";
+export const REQUEST_MED = "admin/medical-assistance";
 export const REQUEST_LOAN = "admin/loan-request";
 export const ADMIN_REQUEST_LEAVE = (id = "") => `admin/leave-request/${id}`;
 export const ADMIN_REQUEST_LOAN = (id = "") => `admin/loan-request/${id}`;
@@ -314,15 +315,18 @@ export const ADMIN_RATE = (id = "") => `admin/rates/${id}`;
 export const APPROVE_LEAVE = (id = "") => `admin/leave-request/approve/${id}`;
 export const REJECT_LEAVE = (id = "") => `admin/leave-request/reject/${id}`;
 export const APPROVE_LOAN = (id = "") => `admin/loan-request/approve/${id}`;
+export const APPROVE_MED = (id = "") =>
+  `admin/medical-assistance/approve/${id}`;
 export const LOAN_PAID = (id = "") =>
   `admin/loan-request/${id}/repayment-plan/set-to-paid`;
 export const DISBURSE_LOAN = (id = "") => `admin/loan-request/disburse/${id}`;
 export const REJECT_LOAN = (id = "") => `admin/loan-request/decline/${id}`;
+export const REJECT_MED = (id = "") => `admin/medical-assistance/decline/${id}`;
 
 export const ADMIN_AMENITIES_LIST = (
   filterString = "",
   limit = "",
-  page = ""
+  page = "",
 ) =>
   `admin/amenities?${filterString}&limit=${limit}&page=${page}&sort=createdAt,DESC`;
 

@@ -8,7 +8,7 @@ export const requestLeave = async (body) => {
 
 export const getLeave = async (page, limit) => {
   const res = await axiosInstance.get(
-    `${API.REQUEST_LEAVE}?page=${page}&limit=${limit}&sort=createdAt,DESC`
+    `${API.REQUEST_LEAVE}?page=${page}&limit=${limit}&sort=createdAt,DESC`,
   );
   return res.data;
 };

@@ -46,7 +46,7 @@ export const useGetRoles = (options = {}, page = 1, limit = 25, query) => {
     () => getRoles(page, limit, query),
     {
       ...options,
-    }
+    },
   );
 
   return { isLoading, data, refetch };
@@ -58,7 +58,7 @@ export const useGetJobs = (options = {}, page = 1, limit = 25, query) => {
     () => getJobs(page, limit, query),
     {
       ...options,
-    }
+    },
   );
 
   return { isLoading, data, refetch };
@@ -70,7 +70,7 @@ export const useGetDepts = (options = {}, page = 1, limit = 25, query) => {
     () => getDepts(page, limit, query),
     {
       ...options,
-    }
+    },
   );
 
   return { isLoading, data, refetch };
@@ -194,14 +194,14 @@ export const useGetPermissions = (
   options = {},
   page = 1,
   limit = 25,
-  query
+  query,
 ) => {
   const { data, isLoading, refetch } = useQuery(
     ["GET_PERMISSIONS", page, limit, query],
     () => getPermissions(page, limit, query),
     {
       ...options,
-    }
+    },
   );
 
   return { isLoading, data, refetch };
@@ -257,7 +257,7 @@ export const useGetModels = (options = {}, page = 1, limit = 25, query) => {
     () => getModels(page, limit, query),
     {
       ...options,
-    }
+    },
   );
 
   return { isLoading, data, refetch };
@@ -296,7 +296,7 @@ export const useGetMakes = (options = {}, page = 1, limit = 25, query) => {
     () => getMakes(page, limit, query),
     {
       ...options,
-    }
+    },
   );
 
   return { isLoading, data, refetch };
@@ -333,14 +333,14 @@ export const useGetBankDetails = (
   options = {},
   page = 1,
   limit = 25,
-  query
+  query,
 ) => {
   const { data, isLoading, refetch } = useQuery(
     ["ADMIN_GET_CONFIG_BANK_DETAILS", page, limit, query],
     () => getBankDetails(page, limit, query),
     {
       ...options,
-    }
+    },
   );
 
   return { isLoading, data, refetch };
@@ -379,7 +379,7 @@ export const useGetFaqs = (options = {}, page = 1, limit = 25, query) => {
     () => getFaqs(page, limit, query),
     {
       ...options,
-    }
+    },
   );
 
   return { isLoading, data, refetch };

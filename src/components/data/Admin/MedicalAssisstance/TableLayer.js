@@ -1,15 +1,35 @@
-import React from "react";
-import { Box, Flex, Image, Td, Text, Tr } from "@chakra-ui/react";
+import React, { useState } from "react";
+import {
+  Box,
+  Flex,
+  Icon,
+  Image,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuList,
+  Td,
+  Text,
+  Tr,
+} from "@chakra-ui/react";
 import TableFormat from "../../../common/TableFormat";
 
-import { LeaveStatus } from "../../../common/constants";
+import { LoanStatus, viewCancelDeleteOption } from "../../../common/constants";
 import { useNavigate } from "react-router-dom";
 import TableLoader from "../../../loader/TableLoader";
 import { formatDate } from "../../../../utils/helpers";
+import {
+  useCancelMed,
+  useDeleteMed,
+} from "../../../../services/admin/query/staff";
+import useCustomToast from "../../../../utils/notifications";
+import { BsChevronDown } from "react-icons/bs";
+import AdminDeleteModal from "../../../modals/AdminDeleteModal";
 
 const TableLayer = ({
   type,
   data,
+  refetch,
   isLoading,
   page,
   setPage,
@@ -23,12 +43,63 @@ const TableLayer = ({
     "STAFF NAME",
     "AMOUNT REQUESTED",
     "REQUEST DATE",
-    "APPROVED BY",
     "STATUS",
     "ACTIONS",
   ];
 
   const navigate = useNavigate();
+  const [selectedRow, setSelectedRow] = useState({ isOpen: false, id: null });
+  const [selectedCancel, setSelectedCancel] = useState({
+    isOpen: false,
+    id: null,
+  });
+
+  const { errorToast, successToast } = useCustomToast();
+
+  const { mutate, isLoading: isDeleting } = useDeleteMed({
+    onSuccess: (res) => {
+      successToast(res?.message);
+      refetch();
+      setSelectedRow({ isOpen: false, id: null });
+    },
+    onError: (err) => {
+      errorToast(
+        err?.response?.data?.message || err?.message || "An Error occurred",
+      );
+    },
+  });
+
+  const { mutate: cancelMutate, isLoading: isCancel } = useCancelMed({
+    onSuccess: (res) => {
+      successToast(res?.message);
+      refetch();
+      setSelectedCancel({ isOpen: false, id: null });
+    },
+    onError: (err) => {
+      errorToast(
+        err?.response?.data?.message || err?.message || "An Error occurred",
+      );
+    },
+  });
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    mutate(selectedRow.id);
+  };
+
+  const handleCancel = (e) => {
+    e.preventDefault();
+    cancelMutate(selectedCancel.id);
+  };
+
+  const openOption = (item, med) => {
+    item.name.includes("View")
+      ? navigate(`/admin/medical-assistance/${med?.id}`)
+      : item.name.includes("Cancel")
+        ? setSelectedCancel({ isOpen: true, id: med.id })
+        : item.name.includes("Delete") &&
+          setSelectedRow({ isOpen: true, id: med.id });
+  };
 
   return (
     <Box>
@@ -69,24 +140,24 @@ const TableLayer = ({
               >
                 <Td>{item?.staff?.id}</Td>
                 <Td>{item?.staff?.fullName}</Td>
-                <Td textAlign="center">₦ {(20000).toLocaleString()}</Td>
-                <Td textAlign="center">{formatDate(item?.startDate)}</Td>
-                <Td textAlign="center">Adenike AJibola</Td>
+                <Td textAlign="center">₦ {(item?.amount).toLocaleString()}</Td>
+                <Td textAlign="center">{formatDate(item?.createdAt)}</Td>
+
                 <Td display={type === "" ? "" : "none"}>
                   <Flex align="center" w="full" justifyContent="center">
                     <Flex
                       color={
-                        LeaveStatus.find(
+                        LoanStatus.find(
                           (dat) =>
                             dat.name?.toLowerCase() ===
-                            item?.status?.toLowerCase()
+                            item?.status?.toLowerCase(),
                         )?.color || ""
                       }
                       bg={
-                        LeaveStatus.find(
+                        LoanStatus.find(
                           (dat) =>
                             dat.name?.toLowerCase() ===
-                            item?.status?.toLowerCase()
+                            item?.status?.toLowerCase(),
                         )?.bg || ""
                       }
                       justifyContent={"center"}
@@ -104,15 +175,40 @@ const TableLayer = ({
                 </Td>
                 <Td textAlign="center">
                   <Flex justifyContent="center" align="center">
-                    <Text
-                      onClick={() =>
-                        navigate(`/admin/medical-assistance/${item?.id}`)
-                      }
-                      textDecor="underline"
-                      cursor="pointer"
-                    >
-                      View
-                    </Text>
+                    <Menu>
+                      <MenuButton as={Text} cursor="pointer">
+                        <BsChevronDown />
+                      </MenuButton>
+                      <MenuList
+                        borderRadius="4px"
+                        p="10px"
+                        border="1px solid #F4F6F8"
+                        boxShadow="0px 8px 16px 0px rgba(0, 0, 0, 0.08)"
+                      >
+                        {(item?.status === "CANCELLED"
+                          ? viewCancelDeleteOption
+                              .slice(0, 1)
+                              .concat(viewCancelDeleteOption.slice(2, 3))
+                          : viewCancelDeleteOption
+                        ).map((dat, i) => (
+                          <MenuItem
+                            key={i}
+                            gap="12px"
+                            borderRadius="2px"
+                            mb="8px"
+                            py="6px"
+                            px="8px"
+                            _hover={{ bg: "#F4F6F8" }}
+                            align="center"
+                            fontWeight="500"
+                            onClick={() => openOption(dat, item)}
+                          >
+                            <Icon as={dat.icon} />
+                            {dat?.name}
+                          </MenuItem>
+                        ))}
+                      </MenuList>
+                    </Menu>
                   </Flex>
                 </Td>
               </Tr>
@@ -134,10 +230,26 @@ const TableLayer = ({
             lineHeight="100%"
             fontWeight={500}
           >
-            No Leave Request Data
+            No Medical Request
           </Text>
         </Flex>
       )}
+      <AdminDeleteModal
+        isOpen={selectedRow.isOpen}
+        onClose={() => setSelectedRow({ ...selectedRow, isOpen: false })}
+        title="Delete Medical Request"
+        subTitle="Are you sure you want to delete this request?"
+        handleSubmit={handleSubmit}
+        isLoading={isDeleting}
+      />
+      <AdminDeleteModal
+        isOpen={selectedCancel.isOpen}
+        onClose={() => setSelectedCancel({ ...selectedCancel, isOpen: false })}
+        title="Cancel Medical Request"
+        subTitle="Are you sure you want to cancel this request?"
+        handleSubmit={handleCancel}
+        isLoading={isCancel}
+      />
     </Box>
   );
 };

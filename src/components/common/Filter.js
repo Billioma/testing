@@ -57,11 +57,11 @@ const Filter = ({
   const handleClick = () => {
     const existingGteIndex = filtArray.findIndex(
       (filter) =>
-        filter.gteType === "gte" && filter.dropFilter === values?.dropFilter
+        filter.gteType === "gte" && filter.dropFilter === values?.dropFilter,
     );
     const existingLteIndex = filtArray.findIndex(
       (filter) =>
-        filter.lteType === "lte" && filter.dropFilter === values?.dropFilter
+        filter.lteType === "lte" && filter.dropFilter === values?.dropFilter,
     );
 
     if (values.gte !== "") {
@@ -135,7 +135,7 @@ const Filter = ({
   };
   const removeFilter = (indexToRemove) => {
     setFiltArray((prevFiltArray) =>
-      prevFiltArray?.filter((_, index) => index !== indexToRemove)
+      prevFiltArray?.filter((_, index) => index !== indexToRemove),
     );
   };
 
@@ -204,13 +204,13 @@ const Filter = ({
     <Box pos="relative" zIndex="3" py={3} px={{ base: 0, md: 5 }}>
       <Flex
         align={{ base: "flex-start", md: "center" }}
-        gap={{ base: "20px", md: "unset" }}
         flexDirection={{ base: "column", md: "row" }}
+        gap={{ base: "20px", md: "unset" }}
         justifyContent="space-between"
         w="full"
       >
         {title}
-        <Flex align="center" gap={gap ? "15px" : "24px"}>
+        <Flex flexWrap="wrap" gap={gap ? "15px" : "24px"}>
           {main}
           <Button
             border="1px solid #d4d6d8"
@@ -403,6 +403,7 @@ const Filter = ({
 
                     {values?.dropFilter?.includes("Type") ||
                     values?.dropFilter === "Status" ||
+                    values?.dropFilter === "Request Status" ||
                     values?.dropFilter === "Leave Status" ? (
                       <Flex
                         width="100%"
@@ -427,7 +428,8 @@ const Filter = ({
                               DropdownIndicator: () => <div></div>,
                             }}
                             options={
-                              values?.dropFilter === "Leave Status"
+                              values?.dropFilter === "Leave Status" ||
+                              values?.dropFilter === "Request Status"
                                 ? leaveStatusOptions
                                 : searchOptions
                             }
@@ -453,7 +455,7 @@ const Filter = ({
                               const existingIndex = filtArray.findIndex(
                                 (filter) =>
                                   filter.title === values.title &&
-                                  filter.dropFilter === values.dropFilter
+                                  filter.dropFilter === values.dropFilter,
                               );
 
                               if (existingIndex !== -1) {
@@ -485,7 +487,7 @@ const Filter = ({
                           const existingIndex = filtArray.findIndex(
                             (filter) =>
                               filter.title === values.title &&
-                              filter.dropFilter === values.dropFilter
+                              filter.dropFilter === values.dropFilter,
                           );
 
                           if (existingIndex !== -1) {
@@ -581,9 +583,10 @@ const Filter = ({
                     ? formatDate(dat?.gte)
                     : dat?.lteType
                       ? formatDate(dat?.lte)
-                      : dat?.dropFilter === "Leave Status"
+                      : dat?.dropFilter === "Leave Status" ||
+                          dat?.dropFilter === "Request Status"
                         ? leaveStatusType?.find(
-                            (item) => item.value === dat?.filter
+                            (item) => item.value === dat?.filter,
                           ).name
                         : dat?.title === "status"
                           ? newStatusType?.find((item, i) => i === dat?.filter)

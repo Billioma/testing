@@ -14,7 +14,7 @@ export const addStaffDoc = async (data) => {
 export const getStaffs = async (page, limit, query) => {
   const response = await axiosInstance.get(
     API.STAFFS +
-      `?page=${page}&limit=${limit}&sort=createdAt,DESC&${query || ""}`
+      `?page=${page}&limit=${limit}&sort=createdAt,DESC&${query || ""}`,
   );
   return response.data;
 };
@@ -32,7 +32,7 @@ export const activateStaff = async (query) => {
 export const editEmployeeDoc = async ({ query, body }) => {
   const response = await axiosInstance.patch(
     API.UPDATE_EMPLOYEE_DOC(query),
-    body
+    body,
   );
   return response.data;
 };
@@ -57,9 +57,26 @@ export const deleteLoan = async (id) => {
   return response.data;
 };
 
+export const deleteMed = async (id) => {
+  const response = await axiosInstance.delete(`${API.REQUEST_MED}/${id}`);
+  return response.data;
+};
+
+export const cancelMed = async (id) => {
+  const response = await axiosInstance.patch(`${API.REQUEST_MED}/cancel/${id}`);
+  return response.data;
+};
+
+export const cancelLeave = async (id) => {
+  const response = await axiosInstance.patch(
+    `${API.REQUEST_LEAVE}/cancel/${id}`,
+  );
+  return response.data;
+};
+
 export const cancelLoan = async (id) => {
   const response = await axiosInstance.patch(
-    `${API.REQUEST_LOAN}/cancel/${id}`
+    `${API.REQUEST_LOAN}/cancel/${id}`,
   );
   return response.data;
 };
@@ -94,6 +111,11 @@ export const approveLoan = async ({ query, body }) => {
   return response.data;
 };
 
+export const approveMed = async (query) => {
+  const response = await axiosInstance.patch(API.APPROVE_MED(query));
+  return response.data;
+};
+
 export const loanPaid = async ({ query, body }) => {
   const response = await axiosInstance.patch(API.LOAN_PAID(query), body);
   return response.data;
@@ -109,8 +131,18 @@ export const rejectLoan = async (query) => {
   return response.data;
 };
 
+export const rejectMed = async (query) => {
+  const response = await axiosInstance.patch(API.REJECT_MED(query));
+  return response.data;
+};
+
 export const adminCreateLeave = async (body) => {
   const response = await axiosInstance.post(API.REQUEST_LEAVE, body);
+  return response.data;
+};
+
+export const adminCreateMed = async (body) => {
+  const response = await axiosInstance.post(API.REQUEST_MED, body);
   return response.data;
 };
 
@@ -132,13 +164,31 @@ export const getLeave = async (type, page, limit, query) => {
             query || ""
           }&filter=status||$eq||${type}`
       : API.REQUEST_LEAVE +
-          `?page=${page}&limit=${limit}&sort=createdAt,DESC&${query || ""}`
+          `?page=${page}&limit=${limit}&sort=createdAt,DESC&${query || ""}`,
   );
   return res.data;
 };
 
 export const getLeaveDetails = async (id) => {
   const res = await axiosInstance.get(API.REQUEST_LEAVE + `/${id}`);
+  return res.data;
+};
+
+export const getMed = async (type, page, limit, query) => {
+  const res = await axiosInstance.get(
+    type
+      ? API.REQUEST_MED +
+          `?page=${page}&limit=${limit}&sort=createdAt,DESC&${
+            query || ""
+          }&filter=status||$eq||${type}`
+      : API.REQUEST_MED +
+          `?page=${page}&limit=${limit}&sort=createdAt,DESC&${query || ""}`,
+  );
+  return res.data;
+};
+
+export const getMedDetails = async (id) => {
+  const res = await axiosInstance.get(API.REQUEST_MED + `/${id}`);
   return res.data;
 };
 
@@ -150,7 +200,7 @@ export const getLoan = async (type, page, limit, query) => {
             query || ""
           }&filter=status||$eq||${type}`
       : API.REQUEST_LOAN +
-          `?page=${page}&limit=${limit}&sort=createdAt,DESC&${query || ""}`
+          `?page=${page}&limit=${limit}&sort=createdAt,DESC&${query || ""}`,
   );
   return res.data;
 };

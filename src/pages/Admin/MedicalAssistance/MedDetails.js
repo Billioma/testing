@@ -7,17 +7,18 @@ import {
   useDisclosure,
   Spinner,
   Image,
+  Grid,
 } from "@chakra-ui/react";
-import { useNavigate, useParams } from "react-router-dom";
-import { LeaveStatus } from "../../../components/common/constants";
+import { useParams } from "react-router-dom";
+import { LoanStatus } from "../../../components/common/constants";
 import ApproveDeny from "../../../components/modals/ApproveDeny";
 import GoBackTab from "../../../components/data/Admin/GoBackTab";
 import {
-  useApproveLeave,
-  useGetLeave,
-  useRejectLeave,
+  useApproveMed,
+  useGetMed,
+  useRejectMed,
 } from "../../../services/admin/query/staff";
-import { formatDat } from "../../../utils/helpers";
+import { formatDat, trim } from "../../../utils/helpers";
 import useCustomToast from "../../../utils/notifications";
 
 const MedDetails = () => {
@@ -30,45 +31,60 @@ const MedDetails = () => {
     setType(type);
   };
 
-  const { data, refetch, isLoading } = useGetLeave(id);
+  const { data, refetch, isLoading } = useGetMed(id);
   const { successToast, errorToast } = useCustomToast();
-  const navigate = useNavigate();
 
-  const { mutate: approveMutate, isLoading: isApprove } = useApproveLeave({
+  async function handleDownload(item) {
+    const urlToDownload = `${process.env.REACT_APP_BASE_URL}${item?.url?.replace("/", "")}`;
+    const fileName = item?.name;
+
+    try {
+      const response = await fetch(urlToDownload);
+      const blob = await response.blob();
+
+      const link = document.createElement("a");
+      document.body.appendChild(link);
+
+      const url = window.URL.createObjectURL(blob);
+      link.href = url;
+      link.download = fileName;
+      link.click();
+
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(link);
+    } catch (error) {
+      console.error("Error downloading the file:", error);
+    }
+  }
+
+  const { mutate: approveMutate, isLoading: isApprove } = useApproveMed({
     onSuccess: () => {
-      successToast("Leave request approved successfully!");
+      successToast("Medical request approved successfully!");
       refetch();
       onClose();
-      navigate("/admin/leave-mgt");
     },
     onError: (error) => {
       errorToast(
-        error?.response?.data?.message || error?.message || "An Error occurred"
+        error?.response?.data?.message || error?.message || "An Error occurred",
       );
     },
   });
 
-  const { mutate: rejectMutate, isLoading: isReject } = useRejectLeave({
+  const { mutate: rejectMutate, isLoading: isReject } = useRejectMed({
     onSuccess: () => {
-      successToast("Leave request rejected successfully!");
+      successToast("Medical request rejected successfully!");
       refetch();
       onClose();
-      navigate("/admin/leave-mgt");
     },
     onError: (error) => {
       errorToast(
-        error?.response?.data?.message || error?.message || "An Error occurred"
+        error?.response?.data?.message || error?.message || "An Error occurred",
       );
     },
   });
 
   const approve = () => {
-    approveMutate({
-      query: id,
-      body: {
-        isPaid: data?.isPaid,
-      },
-    });
+    approveMutate(id);
   };
 
   useEffect(() => {
@@ -76,12 +92,7 @@ const MedDetails = () => {
   }, []);
 
   const reject = () => {
-    rejectMutate({
-      query: id,
-      body: {
-        isPaid: data?.isPaid,
-      },
-    });
+    rejectMutate(id);
   };
 
   return (
@@ -104,49 +115,31 @@ const MedDetails = () => {
             flexDir="column"
             border="1px solid #E4E6E8"
           >
-            <Flex mb="24px" mt="4px" align="center" gap="12px">
-              <Text fontWeight={500} color="#090c02">
-                Approved by:{" "}
-              </Text>
-
-              <Flex
-                border="1px solid #D4D6D8"
-                align="center"
-                gap="8px"
-                borderRadius="100px"
-                p="4px"
-              >
-                <Flex rounded="full" bg="#D9D9D9" w="16px" h="16px"></Flex>
-                <Text fontSize="14px" color="#090c02">
-                  Adenike Ajibola
-                </Text>
-              </Flex>
-            </Flex>
+            <Text color="#999" fontSize="13px" fontWeight={700}>
+              Staff ID: {data?.staff?.staffId}
+            </Text>
 
             <Flex
-              gap="8px"
+              mt="32px"
+              gap="24px"
               flexDir={{ base: "column", md: "row" }}
               align={{ base: "flex-start", md: "center" }}
               fontSize={{ base: "18px", md: "22px" }}
               fontWeight={700}
             >
-              <Flex gap="8px">
-                <Text>Staff ID: {id}</Text>
-                <Text>|</Text>
-                <Text textTransform="capitalize">{data?.staff?.fullName}</Text>
-              </Flex>
+              <Text fontSize="32px">₦ {data?.amount.toLocaleString()}</Text>
 
               <Flex
                 color={
-                  LeaveStatus.find(
+                  LoanStatus.find(
                     (dat) =>
-                      dat.name?.toLowerCase() === data?.status?.toLowerCase()
+                      dat.name?.toLowerCase() === data?.status?.toLowerCase(),
                   )?.color || ""
                 }
                 bg={
-                  LeaveStatus.find(
+                  LoanStatus.find(
                     (dat) =>
-                      dat.name?.toLowerCase() === data?.status?.toLowerCase()
+                      dat.name?.toLowerCase() === data?.status?.toLowerCase(),
                   )?.bg || ""
                 }
                 justifyContent={"center"}
@@ -160,54 +153,203 @@ const MedDetails = () => {
               >
                 {data?.status === "REJECTED"
                   ? "Declined"
-                  : data?.status?.toLowerCase()}
+                  : data?.status === "REPAYMENT_IN_PROGRESS"
+                    ? "Repayment In Progress"
+                    : data?.status?.toLowerCase()}
               </Flex>
             </Flex>
-
-            <Box
-              bg="#F4F6F8"
-              borderRadius="4px"
-              p="16px"
-              mt="20px"
-              fontSize="15px"
-              color="#000"
-            >
-              <Text fontWeight={500}>Additional Comments:</Text>
-              <Text color="#646668">
-                Lörem ipsum tregirade religa memäv prengen utan lanat.{" "}
-              </Text>
-            </Box>
 
             <Flex
               mt="20px"
               color="#090c02"
               flexDir={{ base: "column", md: "row" }}
               align={{ base: "flex-start", md: "center" }}
+              justifyContent="space-between"
+              w={{
+                base: "100%",
+                md:
+                  data?.status === "PENDING" ||
+                  data?.status === "CANCELLED" ||
+                  data?.status === "WITHDRAWN"
+                    ? "50%"
+                    : "65%",
+              }}
               gap="20px"
-              fontWeight={500}
             >
-              <Flex align="center" gap="8px">
-                <Text opacity={0.4} fontSize="14px">
-                  Amount Given:
-                </Text>
-                <Text>₦ {(10000).toLocaleString()}</Text>
-              </Flex>
-
               <Box
-                display={{ base: "none", md: "block" }}
-                h="24px"
-                bg="#000000"
-                border="1px solid"
-                opacity={0.4}
-              />
-
-              <Flex align="center" gap="8px">
-                <Text opacity={0.4} fontSize="14px">
-                  Date Submited:
+                fontSize="13px"
+                display={
+                  data?.status === "PENDING" ||
+                  data?.status === "CANCELLED" ||
+                  data?.status === "WITHDRAWN"
+                    ? "none"
+                    : "block"
+                }
+              >
+                <Image
+                  src="/assets/approve.svg"
+                  w="15px"
+                  h="15px"
+                  objectFit="contain"
+                />
+                <Text mt="8px" fontWeight={500}>
+                  {data?.declinedBy ? "Declined by" : "Approved by"}:{" "}
+                  <span style={{ fontWeight: 400, marginLeft: "3px" }}>
+                    {" "}
+                    {data?.declinedBy
+                      ? data?.declinedBy?.firstName
+                      : data?.approvedBy?.firstName}{" "}
+                    {data?.declinedBy
+                      ? data?.declinedBy?.lastName
+                      : data?.approvedBy?.lastName}
+                  </span>
                 </Text>
-                <Text>{formatDat(data?.endDate)}</Text>
-              </Flex>
+              </Box>
+
+              <Box fontSize="13px">
+                <Image
+                  src="/assets/user.svg"
+                  w="15px"
+                  h="15px"
+                  objectFit="contain"
+                />
+                <Text mt="8px" fontWeight={500}>
+                  Full Name:{" "}
+                  <span style={{ fontWeight: 400, marginLeft: "3px" }}>
+                    {" "}
+                    {data?.staff?.fullName}
+                  </span>
+                </Text>
+              </Box>
+
+              <Box fontSize="13px">
+                <Image
+                  src="/assets/date.svg"
+                  w="15px"
+                  h="15px"
+                  objectFit="contain"
+                />
+                <Text mt="8px" fontWeight={500}>
+                  Date Submitted:{" "}
+                  <span style={{ fontWeight: 400, marginLeft: "3px" }}>
+                    {" "}
+                    {formatDat(data?.createdAt)}
+                  </span>
+                </Text>
+              </Box>
             </Flex>
+
+            <Text
+              fontWeight={700}
+              textTransform="uppercase"
+              color="#999"
+              mt="32px"
+              display={data?.additionalComments ? "block" : "none"}
+              fontSize="13px"
+            >
+              Additional Comments
+            </Text>
+
+            <Box
+              bg="#F4F6F8"
+              borderRadius="4px"
+              p="16px"
+              mt="6px"
+              display={data?.additionalComments ? "block" : "none"}
+              fontSize="15px"
+              color="#000"
+            >
+              <Text color="#444648">{data?.additionalComments} </Text>
+            </Box>
+
+            <Text
+              mt="24px"
+              mb="6px"
+              fontWeight={700}
+              textTransform="uppercase"
+              display={data?.documents?.length ? "block" : "none"}
+              color="#999"
+              fontSize="13px"
+            >
+              Supporting Documents
+            </Text>
+
+            <Grid
+              columnGap={data?.documents?.length < 2 ? "" : "24px"}
+              rowGap="24px"
+              templateColumns={{
+                base: "repeat(1,1fr)",
+                md:
+                  data?.documents?.length === 1
+                    ? "repeat(1,1fr)"
+                    : data?.documents?.length === 2
+                      ? "repeat(2,1fr)"
+                      : "repeat(3,1fr)",
+              }}
+            >
+              {data?.documents?.length
+                ? data?.documents?.map((item, i) => (
+                    <Flex
+                      key={i}
+                      border="1px solid #D4D6D8"
+                      borderRadius="8px"
+                      py="18px"
+                      px={{ base: "17px", md: "24px" }}
+                      justifyContent="space-between"
+                      w="full"
+                    >
+                      <Box>
+                        <Text fontWeight={500} mb="4px">
+                          {trim(item?.name)}
+                        </Text>
+                      </Box>
+
+                      <Flex align="center" gap="12px">
+                        <a
+                          href={`${process.env.REACT_APP_BASE_URL}${item?.url?.replace("/", "")}`}
+                          target="_blank"
+                          rel="noreferrer"
+                        >
+                          <Flex
+                            border="1px solid #D4D6D8"
+                            borderRadius="4px"
+                            cursor="pointer"
+                            w="32px"
+                            h="32px"
+                            justifyContent="center"
+                            align="center"
+                          >
+                            <Image
+                              src="/assets/eye.svg"
+                              w="16px"
+                              h="16px"
+                              objectFit="contain"
+                            />
+                          </Flex>
+                        </a>
+
+                        <Flex
+                          border="1px solid #D4D6D8"
+                          borderRadius="4px"
+                          cursor="pointer"
+                          w="32px"
+                          h="32px"
+                          justifyContent="center"
+                          onClick={() => handleDownload(item)}
+                          align="center"
+                        >
+                          <Image
+                            src="/assets/download.svg"
+                            w="16px"
+                            h="16px"
+                            objectFit="contain"
+                          />
+                        </Flex>
+                      </Flex>
+                    </Flex>
+                  ))
+                : ""}
+            </Grid>
 
             <Flex
               display={data?.status === "PENDING" ? "flex" : "none"}
@@ -236,78 +378,10 @@ const MedDetails = () => {
             </Flex>
           </Flex>
 
-          <Flex
-            bg="#fff"
-            borderRadius="8px"
-            py={{ base: "15px", md: "30px" }}
-            px={{ base: "20px", md: "34px" }}
-            justifyContent="center"
-            w="full"
-            color="#000"
-            flexDir="column"
-            mt="20px"
-            border="1px solid #E4E6E8"
-          >
-            <Text mb="12px" fontWeight={500} fontSize="14px">
-              Supporting Documents
-            </Text>
-
-            <Flex
-              border="1px solid #D4D6D8"
-              borderRadius="8px"
-              py="18px"
-              px={{ base: "17px", md: "24px" }}
-              justifyContent="space-between"
-              w="full"
-            >
-              <Box>
-                <Text fontWeight={500} mb="4px">
-                  Doctor's Letter
-                </Text>
-                <Text fontSize="13px">220KB</Text>
-              </Box>
-
-              <Flex align="center" gap="12px">
-                <Flex
-                  border="1px solid #D4D6D8"
-                  borderRadius="4px"
-                  cursor="pointer"
-                  w="32px"
-                  h="32px"
-                  justifyContent="center"
-                  align="center"
-                >
-                  <Image
-                    src="/assets/eye.svg"
-                    w="16px"
-                    h="16px"
-                    objectFit="contain"
-                  />
-                </Flex>
-
-                <Flex
-                  border="1px solid #D4D6D8"
-                  borderRadius="4px"
-                  cursor="pointer"
-                  w="32px"
-                  h="32px"
-                  justifyContent="center"
-                  align="center"
-                >
-                  <Image
-                    src="/assets/download.svg"
-                    w="16px"
-                    h="16px"
-                    objectFit="contain"
-                  />
-                </Flex>
-              </Flex>
-            </Flex>
-          </Flex>
-
           <ApproveDeny
             approve={approve}
             reject={reject}
+            med
             isOpen={isOpen}
             type={type}
             isReject={isReject}

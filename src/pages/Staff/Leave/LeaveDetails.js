@@ -28,7 +28,7 @@ const LeaveDetails = () => {
     },
     onError: (err) => {
       errorToast(
-        err?.response?.data?.message || err?.message || "An Error occurred"
+        err?.response?.data?.message || err?.message || "An Error occurred",
       );
     },
   });
@@ -168,13 +168,13 @@ const LeaveDetails = () => {
                 color={
                   LeaveStatus.find(
                     (dat) =>
-                      dat.name?.toLowerCase() === data?.status?.toLowerCase()
+                      dat.name?.toLowerCase() === data?.status?.toLowerCase(),
                   )?.color || ""
                 }
                 bg={
                   LeaveStatus.find(
                     (dat) =>
-                      dat.name?.toLowerCase() === data?.status?.toLowerCase()
+                      dat.name?.toLowerCase() === data?.status?.toLowerCase(),
                   )?.bg || ""
                 }
                 rounded="full"
@@ -182,7 +182,7 @@ const LeaveDetails = () => {
                 borderColor={
                   LeaveStatus.find(
                     (dat) =>
-                      dat.name?.toLowerCase() === data?.status?.toLowerCase()
+                      dat.name?.toLowerCase() === data?.status?.toLowerCase(),
                   )?.border || ""
                 }
                 py="4px"

@@ -4,7 +4,7 @@ import * as API from "../url";
 export const getDepts = async (page, limit, query) => {
   const response = await axiosInstance.get(
     API.DEPTS +
-      `?page=${page}&limit=${limit}&sort=createdAt,DESC&${query || ""}`
+      `?page=${page}&limit=${limit}&sort=createdAt,DESC&${query || ""}`,
   );
   return response.data;
 };

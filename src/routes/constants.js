@@ -47,6 +47,7 @@ export const PRIVATE_PATHS = {
   ADMIN_ADD_LEAVE_MGT: "/admin/leave-mgt/create",
   ADMIN_LEAVE_MGT_DEETAILS: "/admin/leave-mgt/:id",
   ADMIN_MEDICAL_ASSISTANCE: "/admin/medical-assistance",
+  ADMIN_ADD_MEDICAL_ASSISTANCE: "/admin/medical-assistance/create",
   ADMIN_MEDICAL_ASSISTANCE_DETAILS: "/admin/medical-assistance/:id",
   ADMIN_STAFF_SCHEDULE: "/admin/staff-schedule",
   ADMIN_SETTINGS: "/admin/settings",
