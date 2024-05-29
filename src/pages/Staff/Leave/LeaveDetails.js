@@ -280,7 +280,7 @@ const LeaveDetails = () => {
               h="60px"
               w="full"
             >
-              Cancel
+              Withdraw
             </Button>
           </Flex>
         </>

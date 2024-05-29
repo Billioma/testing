@@ -109,7 +109,9 @@ const MedicalAssistance = () => {
     { name: "All", value: "" },
     { name: "Pending", value: "PENDING" },
     { name: "Approved", value: "APPROVED" },
-    { name: "Declined", value: "REJECTED" },
+    { name: "Declined", value: "DECLINED" },
+    { name: "Cancelled", value: "CANCELLED" },
+    { name: "Withdrawn", value: "WITHDRAWN" },
   ];
 
   return (

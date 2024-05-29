@@ -108,6 +108,8 @@ const LeaveMgt = () => {
     { name: "Pending", value: "PENDING" },
     { name: "Approved", value: "APPROVED" },
     { name: "Declined", value: "REJECTED" },
+    { name: "Cancelled", value: "CANCELLED" },
+    { name: "Withdrawn", value: "WITHDRAWN" },
   ];
 
   const navigate = useNavigate();
