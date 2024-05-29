@@ -4,13 +4,18 @@ import * as API from "../url";
 export const getDepts = async (page, limit, query) => {
   const response = await axiosInstance.get(
     API.DEPTS +
-      `?page=${page}&limit=${limit}&sort=createdAt,DESC&${query || ""}`,
+      `?page=${page}&limit=${limit}&sort=createdAt,DESC&${query || ""}`
   );
   return response.data;
 };
 
 export const getDept = async (id) => {
   const res = await axiosInstance.get(API.DEPTS + `/${id}`);
+  return res.data;
+};
+
+export const getMetrics = async () => {
+  const res = await axiosInstance.get(API.GET_ADMIN_DASHBOARD_DATA);
   return res.data;
 };
 

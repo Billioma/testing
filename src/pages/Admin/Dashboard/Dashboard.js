@@ -24,6 +24,7 @@ import { formatDate, formatDates } from "../../../utils/helpers";
 import { types } from "../../../components/common/constants";
 import ApproveDeny from "../../../components/modals/ApproveDeny";
 import useCustomToast from "../../../utils/notifications";
+import { useGetMetrics } from "../../../services/admin/query/settings";
 
 const Dashboard = () => {
   const [page, setPage] = useState(1);
@@ -37,7 +38,15 @@ const Dashboard = () => {
   const query = `filter=status||$eq||INACTIVE&filter=createdAt||$lte||${year}-12-31T23:59:59`;
 
   const [isRefetch, setIsRefetch] = useState(false);
+  const {
+    data: metrics,
+    isLoading: isMetrics,
+    refetch: refetchMetrics,
+  } = useGetMetrics({
+    refetchOnWindowFocus: true,
+  });
 
+  console.log(metrics);
   const { data, isLoading, refetch } = useGetStaffs(
     {
       refetchOnWindowFocus: true,
@@ -53,7 +62,7 @@ const Dashboard = () => {
     },
     page,
     limit,
-    query,
+    query
   );
 
   const {
@@ -67,7 +76,7 @@ const Dashboard = () => {
     "PENDING",
     1,
     10,
-    `&filter=createdAt||$gte||${formatDates(today)}T00:00:00&filter=createdAt||$lte||2024-12-31T23:59:59`,
+    `&filter=createdAt||$gte||${formatDates(today)}T00:00:00&filter=createdAt||$lte||2024-12-31T23:59:59`
   );
 
   const { isOpen, onClose, onOpen } = useDisclosure();
@@ -94,7 +103,7 @@ const Dashboard = () => {
   useEffect(() => {
     if (currentLeave) {
       const selectedType = typesOptions?.find(
-        (option) => option.value === currentLeave?.isPaid,
+        (option) => option.value === currentLeave?.isPaid
       );
       setValues({
         ...values,
@@ -114,7 +123,7 @@ const Dashboard = () => {
     },
     onError: (error) => {
       errorToast(
-        error?.response?.data?.message || error?.message || "An Error occurred",
+        error?.response?.data?.message || error?.message || "An Error occurred"
       );
     },
   });
@@ -127,7 +136,7 @@ const Dashboard = () => {
     },
     onError: (error) => {
       errorToast(
-        error?.response?.data?.message || error?.message || "An Error occurred",
+        error?.response?.data?.message || error?.message || "An Error occurred"
       );
     },
   });
@@ -154,6 +163,7 @@ const Dashboard = () => {
 
   useEffect(() => {
     refetch();
+    refetchMetrics();
   }, []);
 
   const handleRefreshClick = async () => {
@@ -228,14 +238,20 @@ const Dashboard = () => {
                         color="#646668"
                         fontWeight={500}
                       >
-                        32
+                        {i === 0
+                          ? metrics?.pendingLeaveRequests
+                          : i === 1
+                            ? metrics?.pendingLoanRequests
+                            : i === 2
+                              ? metrics?.pendingMedicalAssistance
+                              : "0"}
                       </Text>
                     </Box>
                   </Flex>
                 </Box>
               </Box>
             </GridItem>
-          ),
+          )
         )}
       </Grid>
 

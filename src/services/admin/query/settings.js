@@ -1,5 +1,11 @@
 import { useMutation, useQuery } from "react-query";
-import { addDept, editDept, getDept, getDepts } from "../api/settings";
+import {
+  addDept,
+  editDept,
+  getDept,
+  getDepts,
+  getMetrics,
+} from "../api/settings";
 
 export const useAddDept = (options = {}) => {
   const { isLoading, data, mutate } = useMutation(addDept, {
@@ -16,7 +22,7 @@ export const useGetDepts = (options = {}, page = 1, limit = 25, query) => {
     () => getDepts(page, limit, query),
     {
       ...options,
-    },
+    }
   );
 
   return { isLoading, data, refetch };
@@ -28,7 +34,19 @@ export const useGetDept = (id = "", options = {}) => {
     () => getDept(id),
     {
       ...options,
-    },
+    }
+  );
+
+  return { isLoading, data, refetch };
+};
+
+export const useGetMetrics = (options = {}) => {
+  const { data, isLoading, refetch } = useQuery(
+    "getMetrics",
+    () => getMetrics(),
+    {
+      ...options,
+    }
   );
 
   return { isLoading, data, refetch };
