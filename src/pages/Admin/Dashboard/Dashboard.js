@@ -205,52 +205,54 @@ const Dashboard = () => {
       >
         {["Leave", "Loan", "Medical Assistance", "Total Staff on Duty"]?.map(
           (dat, i) => (
-            <GridItem key={i}>
-              <Box
-                borderRadius="8px"
-                bg="#F4F6F8"
-                pt="5px"
-                px="5px"
-                border="1px solid #E4E6E8"
-              >
-                <Box h="6px" w="full" bg="#242628" borderRadius="full" />
-                <Box px="15px" pt="0px" pb="20px">
-                  <Text
-                    mt="24px"
-                    lineHeight="100%"
-                    fontWeight={700}
-                    color="#242628"
-                  >
-                    {i < 3 ? "Pending" : ""} {dat} {i < 2 ? "Requests" : ""}
-                  </Text>
+            <Skeleton isLoaded={!isMetrics} borderRadius="8px">
+              <GridItem key={i}>
+                <Box
+                  borderRadius="8px"
+                  bg="#F4F6F8"
+                  pt="5px"
+                  px="5px"
+                  border="1px solid #E4E6E8"
+                >
+                  <Box h="6px" w="full" bg="#242628" borderRadius="full" />
+                  <Box px="15px" pt="0px" pb="20px">
+                    <Text
+                      mt="24px"
+                      lineHeight="100%"
+                      fontWeight={700}
+                      color="#242628"
+                    >
+                      {i < 3 ? "Pending" : ""} {dat} {i < 2 ? "Requests" : ""}
+                    </Text>
 
-                  <Flex
-                    mt="24px"
-                    align="flex-end"
-                    justifyContent="space-between"
-                    w="full"
-                  >
-                    <Box w="full">
-                      <Text
-                        mt="24px"
-                        fontSize="28px"
-                        lineHeight="100%"
-                        color="#646668"
-                        fontWeight={500}
-                      >
-                        {i === 0
-                          ? metrics?.pendingLeaveRequests
-                          : i === 1
-                            ? metrics?.pendingLoanRequests
-                            : i === 2
-                              ? metrics?.pendingMedicalAssistance
-                              : "0"}
-                      </Text>
-                    </Box>
-                  </Flex>
+                    <Flex
+                      mt="24px"
+                      align="flex-end"
+                      justifyContent="space-between"
+                      w="full"
+                    >
+                      <Box w="full">
+                        <Text
+                          mt="24px"
+                          fontSize="28px"
+                          lineHeight="100%"
+                          color="#646668"
+                          fontWeight={500}
+                        >
+                          {i === 0
+                            ? metrics?.pendingLeaveRequests
+                            : i === 1
+                              ? metrics?.pendingLoanRequests
+                              : i === 2
+                                ? metrics?.pendingMedicalAssistance
+                                : "0"}
+                        </Text>
+                      </Box>
+                    </Flex>
+                  </Box>
                 </Box>
-              </Box>
-            </GridItem>
+              </GridItem>
+            </Skeleton>
           )
         )}
       </Grid>
