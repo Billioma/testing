@@ -37,7 +37,7 @@ const RequestMedical = () => {
     },
     onError: (err) => {
       errorToast(
-        err?.response?.data?.message || err?.message || "An Error occurred",
+        err?.response?.data?.message || err?.message || "An Error occurred"
       );
     },
   });
@@ -72,12 +72,12 @@ const RequestMedical = () => {
       const isFileUnique = (file, fileList) => {
         return !fileList.some(
           (existingFile) =>
-            existingFile.name === file.name && existingFile.size === file.size,
+            existingFile.name === file.name && existingFile.size === file.size
         );
       };
 
       const newUniqueFiles = filesArray.filter((newFile) =>
-        isFileUnique(newFile, files),
+        isFileUnique(newFile, files)
       );
 
       if (newUniqueFiles.length === 0) {
@@ -115,7 +115,7 @@ const RequestMedical = () => {
     const removeDuplicates = (arr, prop) => {
       return arr.filter(
         (obj, index, self) =>
-          index === self.findIndex((el) => el[prop] === obj[prop]),
+          index === self.findIndex((el) => el[prop] === obj[prop])
       );
     };
     const cleanedFiles = removeDuplicates(fileURLs, "name");
@@ -126,13 +126,13 @@ const RequestMedical = () => {
   const handleRemoveFile = (indexToRemove) => {
     setHandleRemoveFileCalled(true);
     setFiles((prevFiles) =>
-      prevFiles.filter((_, index) => _?.name !== indexToRemove),
+      prevFiles.filter((_, index) => _?.name !== indexToRemove)
     );
     setFileURLs((prevFiles) =>
-      prevFiles.filter((_, index) => _?.name !== indexToRemove),
+      prevFiles.filter((_, index) => _?.name !== indexToRemove)
     );
     setCleanedFileURLs((prevFiles) =>
-      prevFiles.filter((_, index) => _?.name !== indexToRemove),
+      prevFiles.filter((_, index) => _?.name !== indexToRemove)
     );
   };
 
@@ -162,12 +162,12 @@ const RequestMedical = () => {
   };
 
   const purposes = [
-    { label: "Medical", value: "Medical" },
-    { label: "Travel", value: "Travel" },
-    { label: "Personal", value: "Personal" },
-    { label: "Emergency", value: "Emergency" },
-    { label: "Transportation", value: "Transportation" },
-    { label: "Housing", value: "Housing" },
+    { label: "Hospitalization", value: "Hospitalization" },
+    { label: "Medication", value: "Medication" },
+    { label: "Laboratory", value: "Laboratory" },
+    { label: "Urgent Care", value: "Urgent Care" },
+    { label: "Childcare", value: "Childcare" },
+    { label: "Paternal/Maternal Care", value: "Paternal/Maternal Care" },
     { label: "Others", value: "Others" },
   ];
 
@@ -185,7 +185,7 @@ const RequestMedical = () => {
     },
     onError: (err) => {
       errorToast(
-        err?.response?.data?.message || err?.message || "An Error occurred",
+        err?.response?.data?.message || err?.message || "An Error occurred"
       );
     },
   });
@@ -276,7 +276,7 @@ const RequestMedical = () => {
                         {Math.floor(
                           item?.size < 1048576
                             ? item?.size / 1024
-                            : item?.size / 1048576,
+                            : item?.size / 1048576
                         )}{" "}
                         {item?.size < 1048576 ? "KB" : "MB"}
                       </Text>
