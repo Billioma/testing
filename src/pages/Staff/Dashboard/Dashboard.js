@@ -16,13 +16,16 @@ import { useGetUser } from "../../../services/staff/query/user";
 const Dashboard = () => {
   const navigate = useNavigate();
 
-  const { data: userData } = useGetUser();
+  const { data: userData, refetch } = useGetUser({
+    refetchOnWindowFocus: true,
+  });
   const { data: balance, refetch: balanceRefetch } = useGetLeaveBalance({
     refetchOnWindowFocus: true,
   });
 
   useEffect(() => {
     balanceRefetch();
+    refetch();
   }, []);
   return (
     <Box bg="#FCFFF7" py="40px" px="35px" borderRadius="24px">
@@ -198,7 +201,7 @@ const Dashboard = () => {
                 Outstanding Loan
               </Text>
               <Text fontSize="32px" fontWeight={700}>
-                ₦ {(0).toLocaleString()}
+                ₦ {userData?.outStandingLoan.toLocaleString()}
               </Text>
 
               <Flex
