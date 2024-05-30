@@ -5,6 +5,7 @@ import {
   Grid,
   GridItem,
   Image,
+  Skeleton,
   Text,
 } from "@chakra-ui/react";
 import React, { useEffect } from "react";
@@ -16,10 +17,18 @@ import { useGetUser } from "../../../services/staff/query/user";
 const Dashboard = () => {
   const navigate = useNavigate();
 
-  const { data: userData, refetch } = useGetUser({
+  const {
+    data: userData,
+    refetch,
+    isLoading,
+  } = useGetUser({
     refetchOnWindowFocus: true,
   });
-  const { data: balance, refetch: balanceRefetch } = useGetLeaveBalance({
+  const {
+    data: balance,
+    refetch: balanceRefetch,
+    isLoading: isLeave,
+  } = useGetLeaveBalance({
     refetchOnWindowFocus: true,
   });
 
@@ -146,80 +155,84 @@ const Dashboard = () => {
           alignContent="center"
           templateColumns={{ base: "repeat(1,1fr)", md: "repeat(2,1fr)" }}
         >
-          <GridItem
-            bg="#fff"
-            border="1px solid #086375"
-            borderRadius="12px"
-            h="146px"
-            display="flex"
-            flexDir="column"
-            justifyContent="center"
-            px="24px"
-          >
-            <Box>
-              <Text fontSize="12px" mb="4px">
-                Leave Balance
-              </Text>
-              <Text fontSize="32px" fontWeight={700}>
-                {balance?.data?.leaveBalance < 0 ||
-                balance?.data?.leaveBalance === 0
-                  ? "0"
-                  : balance?.data?.leaveBalance}{" "}
-                Day
-                {balance?.data?.leaveBalance > 0 ? "s" : ""}
-              </Text>
-
-              <Flex
-                color="#086375"
-                mt="24px"
-                w="fit-content"
-                cursor="pointer"
-                onClick={() => navigate("/staff/leave/request")}
-                align="center"
-                gap="4px"
-              >
-                <Text fontSize="12px" fontWeight={700}>
-                  Request Leave
+          <Skeleton borderRadius="12px" isLoaded={!isLeave}>
+            <GridItem
+              bg="#fff"
+              border="1px solid #086375"
+              borderRadius="12px"
+              h="146px"
+              display="flex"
+              flexDir="column"
+              justifyContent="center"
+              px="24px"
+            >
+              <Box>
+                <Text fontSize="12px" mb="4px">
+                  Leave Balance
                 </Text>
-                <IoIosArrowForward />
-              </Flex>
-            </Box>
-          </GridItem>
-
-          <GridItem
-            bg="#fff"
-            border="1px solid #086375"
-            borderRadius="12px"
-            h="146px"
-            display="flex"
-            flexDir="column"
-            justifyContent="center"
-            px="24px"
-          >
-            <Box>
-              <Text fontSize="12px" mb="4px">
-                Outstanding Loan
-              </Text>
-              <Text fontSize="32px" fontWeight={700}>
-                ₦ {userData?.outStandingLoan.toLocaleString()}
-              </Text>
-
-              <Flex
-                color="#086375"
-                mt="24px"
-                w="fit-content"
-                cursor="pointer"
-                onClick={() => navigate("/staff/loans/request")}
-                align="center"
-                gap="4px"
-              >
-                <Text fontSize="12px" fontWeight={700}>
-                  Request Loan
+                <Text fontSize="32px" fontWeight={700}>
+                  {balance?.data?.leaveBalance < 0 ||
+                  balance?.data?.leaveBalance === 0
+                    ? "0"
+                    : balance?.data?.leaveBalance}{" "}
+                  Day
+                  {balance?.data?.leaveBalance > 0 ? "s" : ""}
                 </Text>
-                <IoIosArrowForward />
-              </Flex>
-            </Box>
-          </GridItem>
+
+                <Flex
+                  color="#086375"
+                  mt="24px"
+                  w="fit-content"
+                  cursor="pointer"
+                  onClick={() => navigate("/staff/leave/request")}
+                  align="center"
+                  gap="4px"
+                >
+                  <Text fontSize="12px" fontWeight={700}>
+                    Request Leave
+                  </Text>
+                  <IoIosArrowForward />
+                </Flex>
+              </Box>
+            </GridItem>
+          </Skeleton>
+
+          <Skeleton borderRadius="12px" isLoaded={!isLoading}>
+            <GridItem
+              bg="#fff"
+              border="1px solid #086375"
+              borderRadius="12px"
+              h="146px"
+              display="flex"
+              flexDir="column"
+              justifyContent="center"
+              px="24px"
+            >
+              <Box>
+                <Text fontSize="12px" mb="4px">
+                  Outstanding Loan
+                </Text>
+                <Text fontSize="32px" fontWeight={700}>
+                  ₦ {userData?.outStandingLoan.toLocaleString()}
+                </Text>
+
+                <Flex
+                  color="#086375"
+                  mt="24px"
+                  w="fit-content"
+                  cursor="pointer"
+                  onClick={() => navigate("/staff/loans/request")}
+                  align="center"
+                  gap="4px"
+                >
+                  <Text fontSize="12px" fontWeight={700}>
+                    Request Loan
+                  </Text>
+                  <IoIosArrowForward />
+                </Flex>
+              </Box>
+            </GridItem>
+          </Skeleton>
         </Grid>
       </Box>
 
