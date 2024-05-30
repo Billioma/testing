@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Flex, Text } from "@chakra-ui/layout";
 import { IoMdMenu } from "react-icons/io";
 import { Avatar, Image, useMediaQuery } from "@chakra-ui/react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useGetUser } from "../../services/staff/query/user";
 import {
   DashboardIcon,
@@ -20,6 +20,7 @@ const Header = () => {
   const [icon, setIcon] = useState("");
   const [secTitle, setSecTitle] = useState("");
   const { pathname } = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     switch (true) {
@@ -131,8 +132,9 @@ const Header = () => {
               <Flex
                 gap="8px"
                 border="1px solid #e2e5dc"
-                className="box"
+                cursor="pointer"
                 rounded="full"
+                onClick={() => navigate("/staff/profile")}
                 align="center"
                 color="#242628"
                 p="12px"
