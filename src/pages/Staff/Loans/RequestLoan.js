@@ -3,7 +3,7 @@ import { Box, Flex, Text } from "@chakra-ui/layout";
 import Select from "react-select";
 import { IoIosArrowDown } from "react-icons/io";
 import TextInput from "../../../components/common/TextInput";
-import { Button, Skeleton } from "@chakra-ui/react";
+import { Button, Skeleton, useDisclosure } from "@chakra-ui/react";
 import useCustomToast from "../../../utils/notifications";
 import { useNavigate } from "react-router-dom";
 import {
@@ -11,6 +11,7 @@ import {
   useRequestLoan,
 } from "../../../services/staff/query/loan";
 import CustomInput from "../../../components/common/CustomInput";
+import Submitted from "../../../components/modals/Submitted";
 
 const RequestLoan = () => {
   const [values, setValues] = useState({
@@ -78,16 +79,16 @@ const RequestLoan = () => {
     label: purpose?.label,
   }));
 
-  const { errorToast, successToast } = useCustomToast();
+  const { errorToast } = useCustomToast();
+  const { isOpen, onOpen } = useDisclosure();
   const navigate = useNavigate();
   const { mutate, isLoading } = useRequestLoan({
     onSuccess: (res) => {
-      successToast(res?.message);
-      navigate("/staff/loans");
+      onOpen();
     },
     onError: (err) => {
       errorToast(
-        err?.response?.data?.message || err?.message || "An Error occurred",
+        err?.response?.data?.message || err?.message || "An Error occurred"
       );
     },
   });
@@ -102,6 +103,11 @@ const RequestLoan = () => {
 
   return (
     <Box>
+      <Submitted
+        isOpen={isOpen}
+        onClick={() => navigate("/staff/loans")}
+        onClose={() => navigate("/staff/loans")}
+      />
       <Text
         fontSize={{ base: "35px", md: "48px" }}
         fontWeight={500}

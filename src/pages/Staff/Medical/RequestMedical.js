@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Image } from "@chakra-ui/image";
 import { Box, Flex, Text } from "@chakra-ui/layout";
-import { Button, Spinner } from "@chakra-ui/react";
+import { Button, Spinner, useDisclosure } from "@chakra-ui/react";
 import useCustomToast from "../../../utils/notifications";
 import { useNavigate } from "react-router-dom";
 import Select from "react-select";
@@ -12,6 +12,7 @@ import { MdClose } from "react-icons/md";
 import TextInput from "../../../components/common/TextInput";
 import { IoIosArrowDown } from "react-icons/io";
 import { useUploadPic } from "../../../services/staff/query/user";
+import Submitted from "../../../components/modals/Submitted";
 
 const RequestMedical = () => {
   const [values, setValues] = useState({
@@ -176,12 +177,13 @@ const RequestMedical = () => {
     label: purpose?.label,
   }));
 
-  const { errorToast, successToast } = useCustomToast();
+  const { errorToast } = useCustomToast();
   const navigate = useNavigate();
+
+  const { isOpen, onOpen } = useDisclosure();
   const { mutate, isLoading } = useRequestMed({
     onSuccess: (res) => {
-      successToast(res?.message);
-      navigate("/staff/medical-assistance");
+      onOpen();
     },
     onError: (err) => {
       errorToast(
@@ -201,6 +203,11 @@ const RequestMedical = () => {
 
   return (
     <Box>
+      <Submitted
+        isOpen={isOpen}
+        onClose={() => navigate("/staff/medical-assistance")}
+        onClick={() => navigate("/staff/medical-assistance")}
+      />
       <Text
         fontSize={{ base: "35px", md: "48px" }}
         fontWeight={500}

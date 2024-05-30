@@ -279,12 +279,13 @@ const MedicalDetails = () => {
           </Flex>
           <Box
             mt="24px"
+            display={data?.additionalComments ? "block" : "none"}
             border="1px solid #BAE0D9"
             borderRadius="12px"
             py="16px"
             px="30px"
           >
-            {data?.additionalComments || "N/A"}
+            {data?.additionalComments}
           </Box>
 
           <Grid

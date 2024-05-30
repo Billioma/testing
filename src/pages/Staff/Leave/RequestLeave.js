@@ -5,7 +5,7 @@ import Select from "react-select";
 import { IoIosArrowDown } from "react-icons/io";
 import TextInput from "../../../components/common/TextInput";
 import { Calendar } from "react-multi-date-picker";
-import { Button, Skeleton } from "@chakra-ui/react";
+import { Button, Skeleton, useDisclosure } from "@chakra-ui/react";
 import { formatDate, convertDate } from "../../../utils/helpers";
 import useCustomToast from "../../../utils/notifications";
 import { useNavigate } from "react-router-dom";
@@ -13,6 +13,7 @@ import {
   useGetLeaveBalance,
   useRequestLeave,
 } from "../../../services/staff/query/leave";
+import Submitted from "../../../components/modals/Submitted";
 
 const RequestLeave = () => {
   const [values, setValues] = useState({
@@ -84,17 +85,16 @@ const RequestLeave = () => {
   }));
 
   const startDateRange = new Date();
-
-  const { errorToast, successToast } = useCustomToast();
+  const { isOpen, onOpen } = useDisclosure();
+  const { errorToast } = useCustomToast();
   const navigate = useNavigate();
   const { mutate, isLoading } = useRequestLeave({
-    onSuccess: (res) => {
-      successToast(res?.message);
-      navigate("/staff/leave");
+    onSuccess: () => {
+      onOpen();
     },
     onError: (err) => {
       errorToast(
-        err?.response?.data?.message || err?.message || "An Error occurred",
+        err?.response?.data?.message || err?.message || "An Error occurred"
       );
     },
   });
@@ -110,6 +110,11 @@ const RequestLeave = () => {
 
   return (
     <Box>
+      <Submitted
+        isOpen={isOpen}
+        onClose={() => navigate("/staff/leave")}
+        onClick={() => navigate("/staff/leave")}
+      />
       <Text
         fontSize={{ base: "35px", md: "48px" }}
         fontWeight={500}

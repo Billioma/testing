@@ -10,6 +10,7 @@ import {
   LoanIcon,
   MedicalIcon,
   ProfileIcon,
+  ScheduleIcon,
 } from "../../components/common/images";
 
 const Header = () => {
@@ -38,6 +39,9 @@ const Header = () => {
 
       case pathname.includes("medical"):
         return setTitle("Medical"), setIcon(<MedicalIcon fill="#086375" />);
+
+      case pathname.includes("schedule"):
+        return setTitle("Schedule"), setIcon(<ScheduleIcon fill="#086375" />);
 
       default:
         return setTitle(""), setIcon("");
