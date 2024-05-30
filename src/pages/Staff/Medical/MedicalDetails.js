@@ -32,7 +32,7 @@ const MedicalDetails = () => {
     },
     onError: (err) => {
       errorToast(
-        err?.response?.data?.message || err?.message || "An Error occurred",
+        err?.response?.data?.message || err?.message || "An Error occurred"
       );
     },
   });
@@ -153,6 +153,7 @@ const MedicalDetails = () => {
               right="0"
             />
           </Flex>
+
           <Flex
             flexDir="column"
             borderRadius="12px"
@@ -161,32 +162,57 @@ const MedicalDetails = () => {
             pos="relative"
           >
             <Flex
-              align="center"
-              gap="16px"
+              align={{ base: "flex-start", md: "center" }}
+              gap={{ base: "15px", md: "unset" }}
+              justifyContent="space-between"
+              w="full"
+              flexDir={{ base: "column", md: "row" }}
               fontWeight={500}
               fontSize={{ base: "14px", md: "16px" }}
             >
-              <Flex
-                justifyContent="center"
-                align="center"
-                color="#090C02"
-                opacity={0.6}
-              >
-                Medical Assistance ID: {id}
+              <Flex align="center" gap="10px">
+                <Flex
+                  justifyContent="center"
+                  align="center"
+                  color="#090c02"
+                  rounded="full"
+                  border="1px solid"
+                  borderColor="#08637533"
+                  py="4px"
+                  textTransform="capitalize"
+                  px="10px"
+                  opacity={0.6}
+                >
+                  Medical Assistance ID: {id}
+                </Flex>
+                <Flex
+                  justifyContent="center"
+                  align="center"
+                  color="#086375"
+                  rounded="full"
+                  border="1px solid"
+                  borderColor="#08637533"
+                  py="4px"
+                  textTransform="capitalize"
+                  px="10px"
+                >
+                  {data?.purpose}
+                </Flex>
               </Flex>
+
               <Flex
                 justifyContent="center"
                 align="center"
                 color={
                   LoanStatus.find(
                     (dat) =>
-                      dat.name?.toLowerCase() === data?.status?.toLowerCase(),
+                      dat.name?.toLowerCase() === data?.status?.toLowerCase()
                   )?.color || ""
                 }
                 bg={
                   LoanStatus.find(
                     (dat) =>
-                      dat.name?.toLowerCase() === data?.status?.toLowerCase(),
+                      dat.name?.toLowerCase() === data?.status?.toLowerCase()
                   )?.bg || ""
                 }
                 rounded="full"
@@ -194,7 +220,7 @@ const MedicalDetails = () => {
                 borderColor={
                   LoanStatus.find(
                     (dat) =>
-                      dat.name?.toLowerCase() === data?.status?.toLowerCase(),
+                      dat.name?.toLowerCase() === data?.status?.toLowerCase()
                   )?.border || ""
                 }
                 py="4px"
