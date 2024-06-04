@@ -11,7 +11,7 @@ const Settings = () => {
       <Flex w="100%" mb="24px" bg="#F4F6F8">
         <Flex
           flexDir={{ base: "column", md: "row" }}
-          w={{ base: "100%", md: "100%" }}
+          w="100%"
           gap="24px"
           align={{ base: "flex-start", md: "center" }}
         >

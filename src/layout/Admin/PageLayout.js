@@ -22,7 +22,7 @@ export const AuthLayout = ({ children }) => {
           <Box
             w="100%"
             pt={isMobile ? "150px" : "125px"}
-            color="#828282"
+            color="#090c02"
             maxHeight="92vh"
             pl={!isMobile ? (show ? "310px" : "88px") : "20px"}
             pr={!isMobile ? "32px" : "20px"}

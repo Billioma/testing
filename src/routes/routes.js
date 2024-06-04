@@ -51,6 +51,8 @@ const {
   ADMIN_MEDICAL_ASSISTANCE_DETAILS,
   ADMIN_ADD_MEDICAL_ASSISTANCE,
   ADMIN_STAFF_SCHEDULE,
+  ADMIN_ADD_STAFF_SCHEDULE_LOCATION,
+  ADMIN_ADD_STAFF_SCHEDULE_STAFF,
   ADMIN_SETTINGS,
   ADMIN_ADD_DEPT,
   ADMIN_ADD_JOB,
@@ -60,157 +62,165 @@ const {
 
 // STAFF PAGES
 const Login = WithSuspense(
-  lazy(() => import("../pages/Staff/Authentication/Login")),
+  lazy(() => import("../pages/Staff/Authentication/Login"))
 );
 const FirstLogin = WithSuspense(
-  lazy(() => import("../pages/Staff/Authentication/FirstLogin")),
+  lazy(() => import("../pages/Staff/Authentication/FirstLogin"))
 );
 const NewUser = WithSuspense(
-  lazy(() => import("../pages/Staff/Authentication/NewUser")),
+  lazy(() => import("../pages/Staff/Authentication/NewUser"))
 );
 const ForgotPassword = WithSuspense(
-  lazy(() => import("../pages/Staff/Authentication/ForgotPassword")),
+  lazy(() => import("../pages/Staff/Authentication/ForgotPassword"))
 );
 const CodeVerification = WithSuspense(
-  lazy(() => import("../pages/Staff/Authentication/CodeVerification")),
+  lazy(() => import("../pages/Staff/Authentication/CodeVerification"))
 );
 const CreateNewPassword = WithSuspense(
-  lazy(() => import("../pages/Staff/Authentication/CreateNewPassword")),
+  lazy(() => import("../pages/Staff/Authentication/CreateNewPassword"))
 );
 const Dashboard = WithSuspense(
-  lazy(() => import("../pages/Staff/Dashboard/Dashboard")),
+  lazy(() => import("../pages/Staff/Dashboard/Dashboard"))
 );
 const Profile = WithSuspense(
-  lazy(() => import("../pages/Staff/Profile/Profile")),
+  lazy(() => import("../pages/Staff/Profile/Profile"))
 );
 const Schedule = WithSuspense(
-  lazy(() => import("../pages/Staff/Schedule/Schedule")),
+  lazy(() => import("../pages/Staff/Schedule/Schedule"))
 );
 const Loans = WithSuspense(lazy(() => import("../pages/Staff/Loans/Loans")));
 const RequestLoan = WithSuspense(
-  lazy(() => import("../pages/Staff/Loans/RequestLoan")),
+  lazy(() => import("../pages/Staff/Loans/RequestLoan"))
 );
 const UpdateLoan = WithSuspense(
-  lazy(() => import("../pages/Staff/Loans/UpdateLoan")),
+  lazy(() => import("../pages/Staff/Loans/UpdateLoan"))
 );
 const LoanDetails = WithSuspense(
-  lazy(() => import("../pages/Staff/Loans/LoanDetails")),
+  lazy(() => import("../pages/Staff/Loans/LoanDetails"))
 );
 const Leave = WithSuspense(lazy(() => import("../pages/Staff/Leave/Leave")));
 const RequestLeave = WithSuspense(
-  lazy(() => import("../pages/Staff/Leave/RequestLeave")),
+  lazy(() => import("../pages/Staff/Leave/RequestLeave"))
 );
 const UpdateLeave = WithSuspense(
-  lazy(() => import("../pages/Staff/Leave/UpdateLeave")),
+  lazy(() => import("../pages/Staff/Leave/UpdateLeave"))
 );
 const LeaveDetails = WithSuspense(
-  lazy(() => import("../pages/Staff/Leave/LeaveDetails")),
+  lazy(() => import("../pages/Staff/Leave/LeaveDetails"))
 );
 const Medical = WithSuspense(
-  lazy(() => import("../pages/Staff/Medical/Medical")),
+  lazy(() => import("../pages/Staff/Medical/Medical"))
 );
 const RequestMedical = WithSuspense(
-  lazy(() => import("../pages/Staff/Medical/RequestMedical")),
+  lazy(() => import("../pages/Staff/Medical/RequestMedical"))
 );
 const UpdateMed = WithSuspense(
-  lazy(() => import("../pages/Staff/Medical/UpdateMed")),
+  lazy(() => import("../pages/Staff/Medical/UpdateMed"))
 );
 const MedicalDetails = WithSuspense(
-  lazy(() => import("../pages/Staff/Medical/MedicalDetails")),
+  lazy(() => import("../pages/Staff/Medical/MedicalDetails"))
 );
 
 // ADMIN PAGES
 const AdminDashboard = WithSuspense(
-  lazy(() => import("../pages/Admin/Dashboard/Dashboard")),
+  lazy(() => import("../pages/Admin/Dashboard/Dashboard"))
 );
 
 const AdminLogin = WithSuspense(
-  lazy(() => import("../pages/Admin/Auth/Login")),
+  lazy(() => import("../pages/Admin/Auth/Login"))
 );
 
 const AdminResetPassword = WithSuspense(
-  lazy(() => import("../pages/Admin/Auth/ResetPassword")),
+  lazy(() => import("../pages/Admin/Auth/ResetPassword"))
 );
 
 const AdminResetPasswordLink = WithSuspense(
-  lazy(() => import("../pages/Admin/Auth/ResetPasswordLinkConfirmation")),
+  lazy(() => import("../pages/Admin/Auth/ResetPasswordLinkConfirmation"))
 );
 
 const AdminProfile = WithSuspense(
-  lazy(() => import("../pages/Admin/Profile/Profile")),
+  lazy(() => import("../pages/Admin/Profile/Profile"))
 );
 
 const AdminUpdateProfile = WithSuspense(
-  lazy(() => import("../pages/Admin/Profile/EditProfile")),
+  lazy(() => import("../pages/Admin/Profile/EditProfile"))
 );
 
 const AdminStaffProfile = WithSuspense(
-  lazy(() => import("../pages/Admin/StaffProfile/StaffProfile")),
+  lazy(() => import("../pages/Admin/StaffProfile/StaffProfile"))
 );
 
 const AdminAddStaffProfile = WithSuspense(
-  lazy(() => import("../pages/Admin/StaffProfile/AddStaff")),
+  lazy(() => import("../pages/Admin/StaffProfile/AddStaff"))
 );
 
 const AdminAddStaffProfileDetails = WithSuspense(
-  lazy(() => import("../pages/Admin/StaffProfile/StaffProfileDetails")),
+  lazy(() => import("../pages/Admin/StaffProfile/StaffProfileDetails"))
 );
 
 const AdminLoan = WithSuspense(
-  lazy(() => import("../pages/Admin/Loans/Loans")),
+  lazy(() => import("../pages/Admin/Loans/Loans"))
 );
 
 const AdminLoanDetails = WithSuspense(
-  lazy(() => import("../pages/Admin/Loans/LoanDetails")),
+  lazy(() => import("../pages/Admin/Loans/LoanDetails"))
 );
 
 const AdminLeaveMgt = WithSuspense(
-  lazy(() => import("../pages/Admin/LeaveMgt/LeaveMgt")),
+  lazy(() => import("../pages/Admin/LeaveMgt/LeaveMgt"))
 );
 
 const AdminAddLoan = WithSuspense(
-  lazy(() => import("../pages/Admin/Loans/AddLoan")),
+  lazy(() => import("../pages/Admin/Loans/AddLoan"))
 );
 
 const AdminAddLeaveMgt = WithSuspense(
-  lazy(() => import("../pages/Admin/LeaveMgt/AddLeave")),
+  lazy(() => import("../pages/Admin/LeaveMgt/AddLeave"))
 );
 
 const AdminLeaveMgtDetails = WithSuspense(
-  lazy(() => import("../pages/Admin/LeaveMgt/LeaveMgtDetails")),
+  lazy(() => import("../pages/Admin/LeaveMgt/LeaveMgtDetails"))
 );
 
 const AdminMedicalAssistance = WithSuspense(
-  lazy(() => import("../pages/Admin/MedicalAssistance/MedicalAssistance")),
+  lazy(() => import("../pages/Admin/MedicalAssistance/MedicalAssistance"))
 );
 
 const AdminMedicalAssistanceDetails = WithSuspense(
-  lazy(() => import("../pages/Admin/MedicalAssistance/MedDetails")),
+  lazy(() => import("../pages/Admin/MedicalAssistance/MedDetails"))
 );
 
 const AdminAddMed = WithSuspense(
-  lazy(() => import("../pages/Admin/MedicalAssistance/AddMed")),
+  lazy(() => import("../pages/Admin/MedicalAssistance/AddMed"))
 );
 
 const AdminStaffSchedule = WithSuspense(
-  lazy(() => import("../pages/Admin/StaffSchedule/StaffSchedule")),
+  lazy(() => import("../pages/Admin/StaffSchedule/StaffSchedule"))
+);
+
+const AdminAddStaffScheduleLocation = WithSuspense(
+  lazy(() => import("../pages/Admin/StaffSchedule/AddScheduleLocation"))
+);
+
+const AdminAddStaffScheduleStaff = WithSuspense(
+  lazy(() => import("../pages/Admin/StaffSchedule/AddScheduleStaff"))
 );
 
 const AdminSettings = WithSuspense(
-  lazy(() => import("../pages/Admin/Settings/Settings")),
+  lazy(() => import("../pages/Admin/Settings/Settings"))
 );
 
 const AdminAddJob = WithSuspense(
-  lazy(() => import("../pages/Admin/Settings/AddJob")),
+  lazy(() => import("../pages/Admin/Settings/AddJob"))
 );
 const AdminAddDept = WithSuspense(
-  lazy(() => import("../pages/Admin/Settings/AddDept")),
+  lazy(() => import("../pages/Admin/Settings/AddDept"))
 );
 const AdminViewDept = WithSuspense(
-  lazy(() => import("../pages/Admin/Settings/ViewDept")),
+  lazy(() => import("../pages/Admin/Settings/ViewDept"))
 );
 const AdminViewJob = WithSuspense(
-  lazy(() => import("../pages/Admin/Settings/ViewJob")),
+  lazy(() => import("../pages/Admin/Settings/ViewJob"))
 );
 
 export const PUBLIC_ROUTES = [
@@ -365,6 +375,16 @@ export const PRIVATE_ROUTES = [
   {
     path: ADMIN_STAFF_SCHEDULE,
     element: <AdminStaffSchedule />,
+  },
+
+  {
+    path: ADMIN_ADD_STAFF_SCHEDULE_LOCATION,
+    element: <AdminAddStaffScheduleLocation />,
+  },
+
+  {
+    path: ADMIN_ADD_STAFF_SCHEDULE_STAFF,
+    element: <AdminAddStaffScheduleStaff />,
   },
   {
     path: "*",

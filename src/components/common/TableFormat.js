@@ -127,7 +127,7 @@ const TableFormat = ({
 
 export default TableFormat;
 
-const DefaultPagination = ({
+export const DefaultPagination = ({
   total,
   startRow,
   endRow,

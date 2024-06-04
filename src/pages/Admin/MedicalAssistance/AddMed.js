@@ -157,7 +157,7 @@ const AddMed = () => {
 
   const { mutate, isLoading } = useAdminCreateMed({
     onSuccess: () => {
-      successToast("Loan created successfully!");
+      successToast("Request created successfully!");
       navigate(PRIVATE_PATHS.ADMIN_MEDICAL_ASSISTANCE);
     },
     onError: (error) => {
@@ -511,7 +511,7 @@ const AddMed = () => {
                     <Button
                       variant="adminSecondary"
                       w="45%"
-                      onClick={() => navigate(PRIVATE_PATHS.ADMIN_LOAN)}
+                      // onClick={() => navigate(PRIVATE_PATHS.ADMIN_LOAN)}
                     >
                       Cancel
                     </Button>

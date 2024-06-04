@@ -22,11 +22,11 @@ export default function () {
   const convertedFilters = filtArray?.map((filterObj) => {
     return filterObj?.gte
       ? `filter=${filterObj?.title}||$gte||"${formatFilterDate(
-          filterObj?.gte,
+          filterObj?.gte
         )}T00:00:00"`
       : filterObj?.lte
         ? `filter=${filterObj?.title}||$lte||"${formatFilterDate(
-            filterObj?.lte,
+            filterObj?.lte
           )}T23:59:59"`
         : `filter=${filterObj?.title}||${filterObj?.type || "cont"}||"${
             filterObj?.filter
@@ -39,12 +39,12 @@ export default function () {
       : filtArray?.filter((item) => item?.gte)?.length > 0 &&
           filtArray?.filter((item) => item?.lte)?.length === 0
         ? `${convertedFilters?.join(
-            "&",
+            "&"
           )}&filter=createdAt||$lte||${year}-12-31T23:59:59`
         : filtArray?.filter((item) => item?.gte)?.length === 0 &&
             filtArray?.filter((item) => item?.lte)?.length === 0
           ? `${convertedFilters?.join(
-              "&",
+              "&"
             )}&filter=createdAt||$lte||${year}-12-31T23:59:59`
           : filtArray?.filter((item) => item?.gte)?.length === 0 &&
               filtArray?.filter((item) => item?.lte)?.length > 0
@@ -71,7 +71,7 @@ export default function () {
     },
     page,
     limit,
-    query,
+    query
   );
 
   useEffect(() => {

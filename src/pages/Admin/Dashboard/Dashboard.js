@@ -46,7 +46,6 @@ const Dashboard = () => {
     refetchOnWindowFocus: true,
   });
 
-  console.log(metrics);
   const { data, isLoading, refetch } = useGetStaffs(
     {
       refetchOnWindowFocus: true,

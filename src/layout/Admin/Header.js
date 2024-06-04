@@ -47,6 +47,9 @@ const Header = ({ showSidebar }) => {
       case locationRoute.includes("loan"):
         return setTitle("Loans");
 
+      case locationRoute.includes("schedule"):
+        return setTitle("Schedule");
+
       default:
         return setTitle("");
     }
@@ -59,6 +62,9 @@ const Header = ({ showSidebar }) => {
 
       case locationRoute.includes("leave-mgt/create"):
         return setSecTitle("Add Absence");
+
+      case locationRoute.includes("staff-schedule/create"):
+        return setSecTitle("Add Schedule");
 
       default:
         return setSecTitle("");
@@ -140,7 +146,7 @@ const Header = ({ showSidebar }) => {
         return setFinTitle("Add Subscription");
 
       case locationRoute.includes(
-        "memberships/corporate-subscriptions/details",
+        "memberships/corporate-subscriptions/details"
       ):
         return setFinTitle("Corporate Subscription Details");
 

@@ -209,21 +209,21 @@ export const customTheme = extendTheme({
         adminSecondary: {
           bgColor: "#fff",
           borderRadius: "4px",
-          color: "#0D0718",
+          color: "#A11212",
           fontSize: "14px",
           fontWeight: "500",
-          borderColor: "#0D0718",
+          borderColor: "#A11212",
           borderWidth: "1px",
           height: "45px",
           _focus: {
-            color: "#0D0718",
+            color: "#A11212",
           },
           _active: {
-            color: "#0D0718",
+            color: "#A11212",
           },
           _hover: {
             _disabled: {
-              background: "#0D0718",
+              background: "#A11212",
               border: "1px solid #7B47CC",
             },
           },
