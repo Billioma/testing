@@ -106,7 +106,7 @@ const StaffSchedule = () => {
     setStartRow(currentStartRow);
     setEndRow(currentEndRow);
   }, [data, page, limit, type, search]);
-console.log(search)
+  console.log(search);
   useEffect(() => {
     if (!daySchedule) {
       return;
@@ -121,7 +121,6 @@ console.log(search)
     setDayStartRow(currentStartRow);
     setDayEndRow(currentEndRow);
   }, [daySchedule, dayPage, dayLimit, type, daySearch]);
-
 
   return (
     <Box minH="75vh">
@@ -244,7 +243,11 @@ console.log(search)
               />
             </InputGroup>
 
-            <Box pos="relative" className="box">
+            <Box
+              pos="relative"
+              className="box"
+              w={{ base: "full", md: "14rem" }}
+            >
               <Flex
                 bg="#242628"
                 borderRadius="8px"
