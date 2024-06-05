@@ -27,6 +27,8 @@ const AllTableLayer = ({
     <Box mt="16px">
       {isLoading ? (
         <TableLoader />
+      ) : !data?.locations?.length ? (
+        ""
       ) : (
         <>
           <TableContainer>

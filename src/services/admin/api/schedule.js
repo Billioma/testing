@@ -37,3 +37,17 @@ export const getScheduleDay = async (query) => {
   );
   return response.data;
 };
+
+export const delScheduleLocation = async (query) => {
+  const response = await axiosInstance.delete(
+    API.DEL_SCHEDULES_LOCATION(query)
+  );
+  return response.data;
+};
+
+export const getScheduleLocation = async (query) => {
+  const response = await axiosInstance.get(
+    API.GET_SCHEDULES_LOCATION(query.week, query.day, query.id)
+  );
+  return response.data;
+};

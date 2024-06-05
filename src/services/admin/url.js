@@ -152,3 +152,8 @@ export const GET_SCHEDULES_DAY = (
   search = ""
 ) =>
   `/admin/schedule/day?week=${week}&dayOfWeek=${day}&page=${page}&limit=${limit}&search=${search}`;
+
+export const GET_SCHEDULES_LOCATION = (week = "", day = "", id = "") =>
+  `/admin/schedule/location?week=${week}&dayOfWeek=${day}&locationId=${id}`;
+export const DEL_SCHEDULES_LOCATION = (id = "") =>
+  `/admin/schedule/location/${id}`;

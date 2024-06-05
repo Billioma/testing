@@ -2,13 +2,24 @@ import { useMutation, useQuery } from "react-query";
 import {
   createScheduleByLocation,
   createScheduleByStaff,
+  delScheduleLocation,
   getScheduleDay,
+  getScheduleLocation,
   getSchedules,
 } from "../api/schedule";
 
 export const useCreateScheduleByLocation = (options = {}) => {
   const { mutate, isLoading } = useMutation(createScheduleByLocation, {
     mutationKey: "createScheduleByLocation",
+    ...options,
+  });
+
+  return { mutate, isLoading };
+};
+
+export const useDelScheduleLocation = (options = {}) => {
+  const { mutate, isLoading } = useMutation(delScheduleLocation, {
+    mutationKey: "delScheduleLocation",
     ...options,
   });
 
@@ -27,6 +38,15 @@ export const useCreateScheduleByStaff = (options = {}) => {
 export const useGetScheduleDay = (options = {}) => {
   const { mutate, isLoading, data } = useMutation(getScheduleDay, {
     mutationKey: "getScheduleDay",
+    ...options,
+  });
+
+  return { mutate, isLoading, data };
+};
+
+export const useGetScheduleLocation = (options = {}) => {
+  const { mutate, isLoading, data } = useMutation(getScheduleLocation, {
+    mutationKey: "getScheduleLocation",
     ...options,
   });
 

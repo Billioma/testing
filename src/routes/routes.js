@@ -52,6 +52,8 @@ const {
   ADMIN_ADD_MEDICAL_ASSISTANCE,
   ADMIN_STAFF_SCHEDULE,
   ADMIN_ADD_STAFF_SCHEDULE_LOCATION,
+  ADMIN_EDIT_STAFF_SCHEDULE_LOCATION,
+  ADMIN_STAFF_SCHEDULE_LOCATION,
   ADMIN_ADD_STAFF_SCHEDULE_STAFF,
   ADMIN_SETTINGS,
   ADMIN_ADD_DEPT,
@@ -200,6 +202,14 @@ const AdminStaffSchedule = WithSuspense(
 
 const AdminAddStaffScheduleLocation = WithSuspense(
   lazy(() => import("../pages/Admin/StaffSchedule/AddScheduleLocation"))
+);
+
+const AdminEditStaffScheduleLocation = WithSuspense(
+  lazy(() => import("../pages/Admin/StaffSchedule/EditScheduleLocation"))
+);
+
+const AdminViewScheduleLocation = WithSuspense(
+  lazy(() => import("../pages/Admin/StaffSchedule/ViewLocationSchedule"))
 );
 
 const AdminAddStaffScheduleStaff = WithSuspense(
@@ -380,6 +390,16 @@ export const PRIVATE_ROUTES = [
   {
     path: ADMIN_ADD_STAFF_SCHEDULE_LOCATION,
     element: <AdminAddStaffScheduleLocation />,
+  },
+
+  {
+    path: ADMIN_EDIT_STAFF_SCHEDULE_LOCATION,
+    element: <AdminEditStaffScheduleLocation />,
+  },
+
+  {
+    path: ADMIN_STAFF_SCHEDULE_LOCATION,
+    element: <AdminViewScheduleLocation />,
   },
 
   {

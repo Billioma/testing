@@ -15,21 +15,27 @@ import { AiOutlineEdit } from "react-icons/ai";
 import { BsEye } from "react-icons/bs";
 import TableLoader from "../../../loader/TableLoader";
 import { DefaultPagination } from "../../../common/TableFormat";
+import { useNavigate } from "react-router-dom";
 
 const ScheduleStaffTableLayer = ({
   data,
   isLoading,
+  week,
   page,
   setPage,
+  day,
   startRow,
   endRow,
   limit,
   setLimit,
 }) => {
+  const navigate = useNavigate();
   return (
     <Box mt="16px">
       {isLoading ? (
         <TableLoader />
+      ) : !data?.locations?.length ? (
+        ""
       ) : (
         <>
           <TableContainer>
@@ -57,7 +63,7 @@ const ScheduleStaffTableLayer = ({
                   <Tr key={i} color="#646668" fontSize="13px">
                     <Td fontWeight={500}>{item?.name}</Td>
                     <Td>
-                      <Flex align="center" gap="12px">
+                      <Flex align="center" w="100%" flexWrap="wrap" gap="12px">
                         {item?.scheduledStaff?.length
                           ? item?.scheduledStaff?.map((item, i) => (
                               <Flex
@@ -69,20 +75,33 @@ const ScheduleStaffTableLayer = ({
                                 px="8px"
                                 justifyContent="center"
                                 key={i}
+                                align="center"
+                                gap="10px"
                               >
                                 {item?.fullName}
+
+                                <Flex
+                                  bg="#F4F6F8"
+                                  borderRadius="2px"
+                                  py="6px"
+                                  px="8px"
+                                  fontSize="12px"
+                                >
+                                  {item?.jobTitle?.name || "N/A"}
+                                </Flex>
                               </Flex>
                             ))
                           : "N/A"}
                       </Flex>
                     </Td>
-
                     <Td>
                       <Flex gap="10px" align="center" justifyContent="flex-end">
                         <Flex
-                          // onClick={() =>
-                          //   navigate(`/operator/locations/all/${item?.id}`)
-                          // }
+                          onClick={() =>
+                            navigate(
+                              `/admin/staff-schedule/location/${day}/${week}/${item?.id}`
+                            )
+                          }
                           border="1px solid #999999"
                           borderRadius="8px"
                           w="32px"
@@ -97,9 +116,11 @@ const ScheduleStaffTableLayer = ({
 
                         <Flex
                           cursor="pointer"
-                          // onClick={() =>
-                          //   navigate(`/operator/locations/all/${item?.id}`)
-                          // }
+                          onClick={() =>
+                            navigate(
+                              `/admin/staff-schedule/edit/location/${day}/${week}/${item?.id}`
+                            )
+                          }
                           border="1px solid #999999"
                           borderRadius="8px"
                           w="32px"
