@@ -156,4 +156,4 @@ export const GET_SCHEDULES_DAY = (
 export const GET_SCHEDULES_LOCATION = (week = "", day = "", id = "") =>
   `/admin/schedule/location?week=${week}&dayOfWeek=${day}&locationId=${id}`;
 export const DEL_SCHEDULES_LOCATION = (id = "") =>
-  `/admin/schedule/location/${id}`;
+  `/admin/schedule/day/${id}`;

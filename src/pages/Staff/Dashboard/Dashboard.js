@@ -13,6 +13,7 @@ import { IoIosArrowForward } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
 import { useGetLeaveBalance } from "../../../services/staff/query/leave";
 import { useGetUser } from "../../../services/staff/query/user";
+import { useGetSchedule } from "../../../services/staff/query/schedule";
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -32,10 +33,34 @@ const Dashboard = () => {
     refetchOnWindowFocus: true,
   });
 
+  const {
+    data,
+    isLoading: isSchedule,
+    refetch: refetchSchedule,
+  } = useGetSchedule({
+    refetchOnWindowFocus: true,
+  });
+
   useEffect(() => {
     balanceRefetch();
+    refetchSchedule();
     refetch();
   }, []);
+
+  const today = new Date();
+  const daysOfWeek = [
+    "sunday",
+    "monday",
+    "tuesday",
+    "wednesday",
+    "thursday",
+    "friday",
+    "saturday",
+  ];
+
+  const dayName = daysOfWeek[today.getDay()];
+
+  const currentSchedule = data?.[dayName] && data?.[dayName][0];
   return (
     <Box bg="#FCFFF7" py="40px" px="35px" borderRadius="24px">
       <Flex align="center" justifyContent="space-between" w="full">
@@ -119,33 +144,35 @@ const Dashboard = () => {
             </Flex>
           </GridItem>
 
-          <GridItem
-            bg="#086375"
-            borderRadius="12px"
-            h="120px"
-            display="flex"
-            flexDir="column"
-            justifyContent="center"
-            px="24px"
-          >
-            <Flex align="center" justifyContent="space-between" w="full">
-              <Box>
-                <Text color="#fff" fontSize="12px" mb="4px">
-                  Today's Schedule
-                </Text>
-                <Text color="#fff" fontSize="18px" fontWeight={700}>
-                  Ziya Delicacy Boutique
-                </Text>
-              </Box>
+          <Skeleton borderRadius="12px" isLoaded={!isSchedule}>
+            <GridItem
+              bg="#086375"
+              borderRadius="12px"
+              h="120px"
+              display="flex"
+              flexDir="column"
+              justifyContent="center"
+              px="24px"
+            >
+              <Flex align="center" justifyContent="space-between" w="full">
+                <Box>
+                  <Text color="#fff" fontSize="12px" mb="4px">
+                    Today's Schedule
+                  </Text>
+                  <Text color="#fff" fontSize="18px" fontWeight={700}>
+                    {currentSchedule?.location?.name || "N/A"}
+                  </Text>
+                </Box>
 
-              <Image
-                src="/assets/loc.svg"
-                w="20px"
-                h="20px"
-                objectFit="contain"
-              />
-            </Flex>
-          </GridItem>
+                <Image
+                  src="/assets/loc.svg"
+                  w="20px"
+                  h="20px"
+                  objectFit="contain"
+                />
+              </Flex>
+            </GridItem>
+          </Skeleton>
         </Grid>
       </Box>
 

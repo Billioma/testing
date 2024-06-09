@@ -96,7 +96,7 @@ const ViewLocationSchedule = () => {
                 border="1px solid #242628"
                 borderRadius="8px"
                 py="10px"
-                onClick={() => deleteMutate(id)}
+                onClick={() => deleteMutate(day)}
                 color="#242628"
                 px="16px"
                 align="center"

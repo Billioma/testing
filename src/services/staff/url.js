@@ -13,6 +13,7 @@ export const LEAVE_BALANCE = "staff/leave-request/leave-balance";
 export const REQUEST_LOAN = "staff/loan-request";
 export const LOAN_BALANCE = "staff/loan-request/loan-balance";
 export const UPLOAD_PIC = "system/media-upload";
+export const SCHEDULE = "staff/schedule/current-week";
 export const REFRESH_TOKEN = "/auth/refresh";
 export const UPDATE_LEAVE = (id = "") => `staff/leave-request/${id}`;
 export const WITHDRAW_LEAVE = (id = "") => `staff/leave-request/withdraw/${id}`;

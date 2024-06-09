@@ -1,7 +1,68 @@
-import { Box, Flex, Text } from "@chakra-ui/react";
-import React from "react";
+import { Box, Flex, Skeleton, Text } from "@chakra-ui/react";
+import React, { useEffect } from "react";
+import { useGetSchedule } from "../../../services/staff/query/schedule";
+import { format } from "date-fns";
+import dayjs from "dayjs";
+
+const getCurrentWeekDates = () => {
+  const now = dayjs();
+  const startOfWeek = now.startOf("week").add(1, "day");
+  const dates = Array.from({ length: 7 }).map((_, i) => ({
+    day: startOfWeek.add(i, "day").format("dddd").toLowerCase(),
+    date: startOfWeek.add(i, "day").format("DD"),
+  }));
+  return dates;
+};
+
+const weekDates = getCurrentWeekDates();
+
+const daysMap = [
+  { label: "monday", value: "MON" },
+  { label: "tuesday", value: "TUE" },
+  { label: "wednesday", value: "WED" },
+  { label: "thursday", value: "THU" },
+  { label: "friday", value: "FRI" },
+  { label: "saturday", value: "SAT" },
+  { label: "sunday", value: "SUN" },
+];
 
 const Schedule = () => {
+  const { data, isLoading, refetch } = useGetSchedule({
+    refetchOnWindowFocus: true,
+  });
+
+  useEffect(() => {
+    refetch();
+  }, []);
+
+  const getDaySchedule = (day) => {
+    const schedules = data?.[day.toLowerCase()] || [];
+    return schedules.map((schedule, index) => (
+      <Box key={index} display={index > 0 ? "none" : "block"}>
+        <Text mb="10px" fontSize="18px" fontWeight={500}>
+          {schedule.location.name}
+        </Text>
+        <Text fontSize="13px" fontWeight={700} opacity={0.6}>
+          {format(new Date(schedule.scheduleDate), "h:mm a")} - 4PM
+        </Text>
+      </Box>
+    ));
+  };
+
+  const today = new Date();
+  const daysOfWeek = [
+    "sunday",
+    "monday",
+    "tuesday",
+    "wednesday",
+    "thursday",
+    "friday",
+    "saturday",
+  ];
+
+  const dayName = daysOfWeek[today.getDay()];
+
+  const currentSchedule = data?.[dayName] && data?.[dayName][0];
   return (
     <Flex align="flex-start" gap="64px" flexDir={{ base: "column", md: "row" }}>
       <Box w={{ base: "100%", md: "60%" }}>
@@ -14,46 +75,59 @@ const Schedule = () => {
           Schedule
         </Text>
 
-        {["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"].map((item, i) => (
-          <Flex
-            key={i}
-            align="center"
-            gap="12px"
-            py="16px"
-            _first={{ pt: 0 }}
-            borderBottom="1px solid #E2E5DC"
-          >
-            <Box opacity={0.6}>
-              <Text fontSize="13px" fontWeight={500}>
-                MON
-              </Text>
-              <Text fontSize="24px" fontWeight={500}>
-                09
-              </Text>
-            </Box>
-
-            <Box
-              h="64px"
-              w="2px"
-              bg={i === 3 || i === 5 ? "#E2E5DC" : "#086375"}
-            />
-
-            <Box display={i === 3 || i === 5 ? "none" : "block"}>
-              <Text mb="10px" fontSize="18px" fontWeight={500}>
-                Ziya Delicacy Boutique
-              </Text>
-              <Text fontSize="13px" fontWeight={700} opacity={0.6}>
-                9AM - 4PM
-              </Text>
-            </Box>
-
-            <Flex mt="10px" display={i === 3 || i === 5 ? "block" : "none"}>
-              <Text mb="10px" color="#090C0280">
-                No Active Schedule
-              </Text>
-            </Flex>
+        {isLoading ? (
+          <Flex flexDir="column" gap="16px">
+            <Skeleton borderRadius="8px" h="7rem"></Skeleton>
+            <Skeleton borderRadius="8px" h="7rem"></Skeleton>
+            <Skeleton borderRadius="8px" h="7rem"></Skeleton>
           </Flex>
-        ))}
+        ) : (
+          daysMap?.map((day, i) => {
+            const weekDate = weekDates.find(
+              (weekDate) => weekDate.day === day.label
+            );
+
+            return (
+              <Flex
+                key={i}
+                align="center"
+                gap="12px"
+                py="16px"
+                _first={{ pt: 0 }}
+                borderBottom="1px solid #E2E5DC"
+              >
+                <Box opacity={0.6} w="8%">
+                  <Text fontSize="13px" fontWeight={500}>
+                    {day?.value}
+                  </Text>
+                  <Text fontSize="24px" fontWeight={500}>
+                    {weekDate?.date}
+                  </Text>
+                </Box>
+
+                <Box
+                  h="64px"
+                  w="2px"
+                  bg={
+                    getDaySchedule(day?.label?.toLowerCase()).length === 0
+                      ? "#E2E5DC"
+                      : "#086375"
+                  }
+                />
+
+                {getDaySchedule(day?.label?.toLowerCase()).length > 0 ? (
+                  getDaySchedule(day?.label?.toLowerCase())
+                ) : (
+                  <Flex mt="10px">
+                    <Text mb="10px" color="#090C0280">
+                      No Active Schedule
+                    </Text>
+                  </Flex>
+                )}
+              </Flex>
+            );
+          })
+        )}
       </Box>
 
       <Box w={{ base: "100%", md: "40%" }}>
@@ -69,7 +143,7 @@ const Schedule = () => {
               LOCATION
             </Text>
             <Text fontSize="18px" fontWeight={500}>
-              Ziya Delicacy Boutique
+              {currentSchedule?.location?.name || "N/A"}
             </Text>
           </Box>
 
