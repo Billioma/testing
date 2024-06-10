@@ -5,11 +5,13 @@ import { useNavigate } from "react-router";
 import TableLayer from "../../../components/data/Staff/Medical/TableLayer";
 import { Button, Spinner } from "@chakra-ui/react";
 import { useGetMedRequest } from "../../../services/staff/query/medical";
+import { useGetUser } from "../../../services/staff/query/user";
 
 const Medical = () => {
   const navigate = useNavigate();
   const [startRow, setStartRow] = useState(1);
   const [endRow, setEndRow] = useState(0);
+  const { data: userData } = useGetUser();
 
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(25);
@@ -19,7 +21,7 @@ const Medical = () => {
       refetchOnWindowFocus: true,
     },
     page,
-    limit,
+    limit
   );
 
   useEffect(() => {
@@ -51,6 +53,31 @@ const Medical = () => {
       {isLoading ? (
         <Flex minH="60vh" w="full" justifyContent="center" align="center">
           <Spinner />
+        </Flex>
+      ) : !userData?.isMedicalAssistanceEligible ? (
+        <Flex
+          h="55vh"
+          gap="49px"
+          justifyContent="center"
+          align="center"
+          flexDir="column"
+        >
+          <Image
+            src="/assets/no-leave.jpg"
+            w="180px"
+            h="180px"
+            objectFit="contain"
+          />
+          <Text
+            textTransform="capitalize"
+            textAlign="center"
+            w={{ base: "100%", md: "30rem" }}
+            fontSize="28px"
+            fontWeight={700}
+          >
+            You are <span style={{ color: "#086375" }}>not eligible</span> to
+            Request for Medical Assistance at the moment
+          </Text>
         </Flex>
       ) : !data?.data?.length ? (
         <Flex
