@@ -1,7 +1,6 @@
 import { Box, Flex, Skeleton, Text } from "@chakra-ui/react";
 import React, { useEffect } from "react";
 import { useGetSchedule } from "../../../services/staff/query/schedule";
-import { format } from "date-fns";
 import dayjs from "dayjs";
 
 const getCurrentWeekDates = () => {
@@ -41,9 +40,6 @@ const Schedule = () => {
       <Box key={index} display={index > 0 ? "none" : "block"}>
         <Text mb="10px" fontSize="18px" fontWeight={500}>
           {schedule.location.name}
-        </Text>
-        <Text fontSize="13px" fontWeight={700} opacity={0.6}>
-          {format(new Date(schedule.scheduleDate), "h:mm a")} - 4PM
         </Text>
       </Box>
     ));
@@ -131,31 +127,29 @@ const Schedule = () => {
       </Box>
 
       <Box w={{ base: "100%", md: "40%" }}>
-        <Box border="1px solid #E2E5DC" borderRadius="16px" py="24px" px="28px">
-          <Box pb="10px" borderBottom="1px solid #E2E5DC">
-            <Text fontSize="18px" fontWeight={500}>
-              Summary
-            </Text>
-          </Box>
+        <Skeleton isLoaded={!isLoading} borderRadius="16px">
+          <Box
+            border="1px solid #E2E5DC"
+            borderRadius="16px"
+            py="24px"
+            px="28px"
+          >
+            <Box pb="10px" borderBottom="1px solid #E2E5DC">
+              <Text fontSize="18px" fontWeight={500}>
+                Summary
+              </Text>
+            </Box>
 
-          <Box mt="32px" pb="12px" borderBottom="1px solid #E2E5DC">
-            <Text fontSize="13px" fontWeight={700} opacity={0.6} mb="8px">
-              LOCATION
-            </Text>
-            <Text fontSize="18px" fontWeight={500}>
-              {currentSchedule?.location?.name || "N/A"}
-            </Text>
+            <Box mt="32px">
+              <Text fontSize="13px" fontWeight={700} opacity={0.6} mb="8px">
+                LOCATION
+              </Text>
+              <Text fontSize="18px" fontWeight={500}>
+                {currentSchedule?.location?.name || "N/A"}
+              </Text>
+            </Box>
           </Box>
-
-          <Box mt="32px">
-            <Text fontSize="13px" fontWeight={700} opacity={0.6} mb="8px">
-              BUSINESS HOURS
-            </Text>
-            <Text fontSize="18px" fontWeight={500}>
-              9 am - 4 pm
-            </Text>
-          </Box>
-        </Box>
+        </Skeleton>
       </Box>
     </Flex>
   );

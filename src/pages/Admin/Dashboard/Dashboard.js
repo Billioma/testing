@@ -244,7 +244,7 @@ const Dashboard = () => {
                               ? metrics?.pendingLoanRequests
                               : i === 2
                                 ? metrics?.pendingMedicalAssistance
-                                : "0"}
+                                : i === 3 && metrics?.totalStaffOnDuty}
                         </Text>
                       </Box>
                     </Flex>
