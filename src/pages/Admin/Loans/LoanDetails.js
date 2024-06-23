@@ -94,15 +94,9 @@ const LoanDetails = () => {
   const updateTextView = (event) => {
     const num = getNumber(event.target.value);
     if (num === 0) {
-      setValues({
-        ...values,
-        amount: "",
-      });
+      setAmount("");
     } else {
-      setValues({
-        ...values,
-        amount: num.toLocaleString(),
-      });
+      setAmount(num.toLocaleString());
     }
   };
 
