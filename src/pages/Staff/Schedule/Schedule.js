@@ -136,7 +136,7 @@ const Schedule = () => {
           >
             <Box pb="10px" borderBottom="1px solid #E2E5DC">
               <Text fontSize="18px" fontWeight={500}>
-                Summary
+                Today's Schedule
               </Text>
             </Box>
 
