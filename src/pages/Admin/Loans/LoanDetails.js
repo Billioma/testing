@@ -79,6 +79,33 @@ const LoanDetails = () => {
   });
   const { successToast, errorToast } = useCustomToast();
   const [amount, setAmount] = useState("");
+
+  const getNumber = (str) => {
+    const arr = str.split("");
+    const out = [];
+    for (let i = 0; i < arr.length; i++) {
+      if (!isNaN(arr[i])) {
+        out.push(arr[i]);
+      }
+    }
+    return Number(out?.join(""));
+  };
+
+  const updateTextView = (event) => {
+    const num = getNumber(event.target.value);
+    if (num === 0) {
+      setValues({
+        ...values,
+        amount: "",
+      });
+    } else {
+      setValues({
+        ...values,
+        amount: num.toLocaleString(),
+      });
+    }
+  };
+
   const [repayment, setRepayment] = useState("");
   const [showRepayment, setShowRepayment] = useState(false);
 
@@ -151,7 +178,7 @@ const LoanDetails = () => {
     approveMutate({
       query: id,
       body: {
-        amountLoaned: amount,
+        amountLoaned: Number(amount.replace(/\D/g, "")),
         repaymentTerms: repayment,
       },
     });
@@ -520,9 +547,8 @@ const LoanDetails = () => {
                 <AdminCustomInput
                   naira
                   holder="Enter Amount"
-                  type="number"
                   value={amount}
-                  onChange={(e) => setAmount(e.target.value)}
+                  onChange={updateTextView}
                 />
               </Box>
 
