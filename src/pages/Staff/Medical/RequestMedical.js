@@ -22,6 +22,32 @@ const RequestMedical = () => {
     additionalComments: "",
   });
 
+  const getNumber = (str) => {
+    const arr = str.split("");
+    const out = [];
+    for (let i = 0; i < arr.length; i++) {
+      if (!isNaN(arr[i])) {
+        out.push(arr[i]);
+      }
+    }
+    return Number(out?.join(""));
+  };
+
+  const updateTextView = (event) => {
+    const num = getNumber(event.target.value);
+    if (num === 0) {
+      setValues({
+        ...values,
+        amount: "",
+      });
+    } else {
+      setValues({
+        ...values,
+        amount: num.toLocaleString(),
+      });
+    }
+  };
+
   const [fileLimit, setFileLimit] = useState(false);
   const [files, setFiles] = useState([]);
   const [fileURLs, setFileURLs] = useState([]);
@@ -194,7 +220,7 @@ const RequestMedical = () => {
 
   const handleSubmit = () => {
     mutate({
-      amount: Number(values?.amount),
+      amount: Number(values.amount.replace(/\D/g, "")),
       purpose: values?.purpose?.value,
       additionalComments: values?.additionalComments,
       documents: cleanedFileURLs,
@@ -204,6 +230,7 @@ const RequestMedical = () => {
   return (
     <Box>
       <Submitted
+      med
         isOpen={isOpen}
         onClose={() => navigate("/staff/medical-assistance")}
         onClick={() => navigate("/staff/medical-assistance")}
@@ -226,8 +253,7 @@ const RequestMedical = () => {
               opt
               value={values?.amount}
               naira
-              type="number"
-              onChange={(e) => setValues({ ...values, amount: e.target.value })}
+              onChange={updateTextView}
               h="180px"
               mb
             />

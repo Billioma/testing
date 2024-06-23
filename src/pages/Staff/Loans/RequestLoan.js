@@ -20,6 +20,32 @@ const RequestLoan = () => {
     additionalComments: "",
   });
 
+  const getNumber = (str) => {
+    const arr = str.split("");
+    const out = [];
+    for (let i = 0; i < arr.length; i++) {
+      if (!isNaN(arr[i])) {
+        out.push(arr[i]);
+      }
+    }
+    return Number(out?.join(""));
+  };
+
+  const updateTextView = (event) => {
+    const num = getNumber(event.target.value);
+    if (num === 0) {
+      setValues({
+        ...values,
+        amountRequested: "",
+      });
+    } else {
+      setValues({
+        ...values,
+        amountRequested: num.toLocaleString(),
+      });
+    }
+  };
+
   const handleSelectChange = (selectedOption, { name }) => {
     setValues((prevValues) => ({
       ...prevValues,
@@ -95,7 +121,7 @@ const RequestLoan = () => {
 
   const handleSubmit = () => {
     mutate({
-      amountRequested: Number(values?.amountRequested),
+      amountRequested: Number(values.amountRequested.replace(/\D/g, "")),
       purpose: values?.purpose?.value,
       additionalComments: values?.additionalComments,
     });
@@ -149,12 +175,9 @@ const RequestLoan = () => {
             </Text>
             <CustomInput
               opt
-              type="number"
               naira
               value={values?.amountRequested}
-              onChange={(e) =>
-                setValues({ ...values, amountRequested: e.target.value })
-              }
+              onChange={updateTextView}
               mb
             />
           </Box>

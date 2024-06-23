@@ -111,6 +111,7 @@ const RequestLeave = () => {
   return (
     <Box>
       <Submitted
+        leave
         isOpen={isOpen}
         onClose={() => navigate("/staff/leave")}
         onClick={() => navigate("/staff/leave")}

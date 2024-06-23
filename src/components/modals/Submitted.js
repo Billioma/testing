@@ -11,11 +11,9 @@ import {
   ModalOverlay,
   Text,
 } from "@chakra-ui/react";
-import { useNavigate } from "react-router";
 import { IoMdClose } from "react-icons/io";
 
-const Submitted = ({ isOpen, onClose, onClick }) => {
-  const navigate = useNavigate();
+const Submitted = ({ isOpen, leave, med, onClose, onClick }) => {
   return (
     <Modal
       isCentered
@@ -70,8 +68,12 @@ const Submitted = ({ isOpen, onClose, onClick }) => {
             </Text>
 
             <Text color="#086375" textAlign="center" fontSize="18px" mt="8px">
-              Application Submitted Successfully. If you encounter any problems
-              or need further clarification, Contact Administrator.
+              {med
+                ? "Medical assistance"
+                : leave
+                  ? "Leave request"
+                  : "Loan request"}{" "}
+              application submitted successfully.
             </Text>
 
             <Flex mt="32px" justifyContent="center" align="center" w="full">

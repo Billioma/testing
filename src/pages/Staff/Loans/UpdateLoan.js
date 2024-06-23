@@ -27,6 +27,32 @@ const UpdateLoan = () => {
     }));
   };
 
+  const getNumber = (str) => {
+    const arr = str.split("");
+    const out = [];
+    for (let i = 0; i < arr.length; i++) {
+      if (!isNaN(arr[i])) {
+        out.push(arr[i]);
+      }
+    }
+    return Number(out?.join(""));
+  };
+
+  const updateTextView = (event) => {
+    const num = getNumber(event.target.value);
+    if (num === 0) {
+      setValues({
+        ...values,
+        amountRequested: "",
+      });
+    } else {
+      setValues({
+        ...values,
+        amountRequested: num.toLocaleString(),
+      });
+    }
+  };
+
   const {
     data: balance,
     refetch: balanceRefetch,
@@ -88,7 +114,7 @@ const UpdateLoan = () => {
     },
     onError: (err) => {
       errorToast(
-        err?.response?.data?.message || err?.message || "An Error occurred",
+        err?.response?.data?.message || err?.message || "An Error occurred"
       );
     },
   });
@@ -98,11 +124,11 @@ const UpdateLoan = () => {
   useEffect(() => {
     if (data) {
       const selectedPurpose = purposesOptions?.find(
-        (option) => option.value === data?.purpose,
+        (option) => option.value === data?.purpose
       );
       setValues({
         ...values,
-        amountRequested: data?.amountRequested,
+        amountRequested: Number(data?.amountRequested)?.toLocaleString(),
         additionalComments: data?.additionalComments,
         purpose: selectedPurpose,
       });
@@ -113,7 +139,7 @@ const UpdateLoan = () => {
     mutate({
       query: id,
       body: {
-        amountRequested: Number(values?.amountRequested),
+        amountRequested: Number(values.amountRequested.replace(/\D/g, "")),
         purpose: values?.purpose?.value,
         additionalComments: values?.additionalComments,
       },
@@ -163,12 +189,9 @@ const UpdateLoan = () => {
             </Text>
             <CustomInput
               opt
-              type="number"
               naira
               value={values?.amountRequested}
-              onChange={(e) =>
-                setValues({ ...values, amountRequested: e.target.value })
-              }
+              onChange={updateTextView}
               mb
             />
           </Box>
