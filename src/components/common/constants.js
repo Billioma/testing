@@ -260,8 +260,8 @@ export const LeaveStatus = [
 
 export const LoanStatus = [
   { color: "#DB0101", name: "Declined", bg: "#F09898", border: "#DB0101" },
-  { color: "#DB0101", name: "Cancelled", bg: "#F09898", border: "#DB0101" },
-  { color: "#DB0101", name: "Withdrawn", bg: "#F09898", border: "#DB0101" },
+  { color: "#A11212", name: "Cancelled", bg: "#FCE8E8", border: "#DB0101" },
+  { color: "#A11212", name: "Withdrawn", bg: "#FCE8E8", border: "#DB0101" },
   { color: "#01765F", name: "Approved", bg: "#E8FBF7", border: "#BAE0D9" },
   { color: "#0B841D", name: "Paid", bg: "#E5FFE5", border: "#BAE0D9" },
   { color: "#0B841D", name: "Active", bg: "#E5FFE5", border: "#BAE0D9" },

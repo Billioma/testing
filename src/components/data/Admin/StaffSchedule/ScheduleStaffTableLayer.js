@@ -99,7 +99,7 @@ const ScheduleStaffTableLayer = ({
                         <Flex
                           onClick={() =>
                             navigate(
-                              `/admin/staff-schedule/location/${day}/${week}/${item?.id}`
+                              `/admin/staff-schedule/location/${day}/${week}/${item?.id}`,
                             )
                           }
                           border="1px solid #999999"
@@ -118,7 +118,7 @@ const ScheduleStaffTableLayer = ({
                           cursor="pointer"
                           onClick={() =>
                             navigate(
-                              `/admin/staff-schedule/edit/location/${day}/${week}/${item?.id}`
+                              `/admin/staff-schedule/edit/location/${day}/${week}/${item?.id}`,
                             )
                           }
                           border="1px solid #999999"

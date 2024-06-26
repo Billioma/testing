@@ -39,7 +39,7 @@ const Header = ({ showSidebar }) => {
         return setTitle("Settings");
 
       case locationRoute.includes("leave"):
-        return setTitle("Leaves");
+        return setTitle("Leave");
 
       case locationRoute.includes("medical"):
         return setTitle("Medical Assistance");
@@ -146,7 +146,7 @@ const Header = ({ showSidebar }) => {
         return setFinTitle("Add Subscription");
 
       case locationRoute.includes(
-        "memberships/corporate-subscriptions/details"
+        "memberships/corporate-subscriptions/details",
       ):
         return setFinTitle("Corporate Subscription Details");
 

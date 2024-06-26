@@ -46,7 +46,7 @@ const AddMed = () => {
     },
     onError: (err) => {
       errorToast(
-        err?.response?.data?.message || err?.message || "An Error occurred"
+        err?.response?.data?.message || err?.message || "An Error occurred",
       );
     },
   });
@@ -91,12 +91,12 @@ const AddMed = () => {
       const isFileUnique = (file, fileList) => {
         return !fileList.some(
           (existingFile) =>
-            existingFile.name === file.name && existingFile.size === file.size
+            existingFile.name === file.name && existingFile.size === file.size,
         );
       };
 
       const newUniqueFiles = filesArray.filter((newFile) =>
-        isFileUnique(newFile, files)
+        isFileUnique(newFile, files),
       );
 
       if (newUniqueFiles.length === 0) {
@@ -134,7 +134,7 @@ const AddMed = () => {
     const removeDuplicates = (arr, prop) => {
       return arr.filter(
         (obj, index, self) =>
-          index === self.findIndex((el) => el[prop] === obj[prop])
+          index === self.findIndex((el) => el[prop] === obj[prop]),
       );
     };
     const cleanedFiles = removeDuplicates(fileURLs, "name");
@@ -145,13 +145,13 @@ const AddMed = () => {
   const handleRemoveFile = (indexToRemove) => {
     setHandleRemoveFileCalled(true);
     setFiles((prevFiles) =>
-      prevFiles.filter((_, index) => _?.name !== indexToRemove)
+      prevFiles.filter((_, index) => _?.name !== indexToRemove),
     );
     setFileURLs((prevFiles) =>
-      prevFiles.filter((_, index) => _?.name !== indexToRemove)
+      prevFiles.filter((_, index) => _?.name !== indexToRemove),
     );
     setCleanedFileURLs((prevFiles) =>
-      prevFiles.filter((_, index) => _?.name !== indexToRemove)
+      prevFiles.filter((_, index) => _?.name !== indexToRemove),
     );
   };
 
@@ -162,7 +162,7 @@ const AddMed = () => {
     },
     onError: (error) => {
       errorToast(
-        error?.response?.data?.message || error?.message || "An Error occurred"
+        error?.response?.data?.message || error?.message || "An Error occurred",
       );
     },
   });
@@ -422,7 +422,7 @@ const AddMed = () => {
                                   {Math.floor(
                                     item?.size < 1048576
                                       ? item?.size / 1024
-                                      : item?.size / 1048576
+                                      : item?.size / 1048576,
                                   )}{" "}
                                   {item?.size < 1048576 ? "KB" : "MB"}
                                 </Text>

@@ -141,7 +141,10 @@ const TableLayer = ({
                 <Td>{item?.staff?.staffId}</Td>
                 <Td>{item?.staff?.fullName}</Td>
                 <Td textAlign="center">
-                  ₦ {(item?.amountRequested).toLocaleString()}
+                  ₦{" "}
+                  {item?.amountLoaned
+                    ? item?.amountLoaned.toLocaleString()
+                    : item?.amountRequested.toLocaleString()}{" "}
                 </Td>
                 <Td textAlign="center">{formatDate(item?.createdAt)}</Td>
                 <Td display={type === "" ? "" : "none"}>

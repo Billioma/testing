@@ -115,8 +115,8 @@ const LoanDetails = () => {
       repaymentPlans?.map((plan) =>
         plan.id === item.id
           ? { ...plan, localStatus: selectedOption.label }
-          : plan
-      )
+          : plan,
+      ),
     );
   };
 
@@ -127,7 +127,7 @@ const LoanDetails = () => {
     },
     onError: (error) => {
       errorToast(
-        error?.response?.data?.message || error?.message || "An Error occurred"
+        error?.response?.data?.message || error?.message || "An Error occurred",
       );
     },
   });
@@ -138,7 +138,7 @@ const LoanDetails = () => {
     },
     onError: (error) => {
       errorToast(
-        error?.response?.data?.message || error?.message || "An Error occurred"
+        error?.response?.data?.message || error?.message || "An Error occurred",
       );
     },
   });
@@ -150,7 +150,7 @@ const LoanDetails = () => {
     },
     onError: (error) => {
       errorToast(
-        error?.response?.data?.message || error?.message || "An Error occurred"
+        error?.response?.data?.message || error?.message || "An Error occurred",
       );
     },
   });
@@ -163,7 +163,7 @@ const LoanDetails = () => {
     },
     onError: (error) => {
       errorToast(
-        error?.response?.data?.message || error?.message || "An Error occurred"
+        error?.response?.data?.message || error?.message || "An Error occurred",
       );
     },
   });
@@ -251,13 +251,13 @@ const LoanDetails = () => {
                 color={
                   LoanStatus.find(
                     (dat) =>
-                      dat.name?.toLowerCase() === data?.status?.toLowerCase()
+                      dat.name?.toLowerCase() === data?.status?.toLowerCase(),
                   )?.color || ""
                 }
                 bg={
                   LoanStatus.find(
                     (dat) =>
-                      dat.name?.toLowerCase() === data?.status?.toLowerCase()
+                      dat.name?.toLowerCase() === data?.status?.toLowerCase(),
                   )?.bg || ""
                 }
                 justifyContent={"center"}
@@ -417,7 +417,7 @@ const LoanDetails = () => {
                               >
                                 {item}
                               </Th>
-                            )
+                            ),
                           )}
                         </Tr>
                       </Thead>
@@ -464,7 +464,7 @@ const LoanDetails = () => {
                                 </Flex>
                               ) : (
                                 <Flex
-                                  justifyContent="center"
+                                  justifyContent="flex-start"
                                   align="center"
                                   w="full"
                                 >

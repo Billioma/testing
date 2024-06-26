@@ -25,7 +25,7 @@ const ViewLocationSchedule = () => {
         errorToast(
           error?.response?.data?.message ||
             error?.message ||
-            "An Error occurred"
+            "An Error occurred",
         );
       },
     });
@@ -77,7 +77,7 @@ const ViewLocationSchedule = () => {
                 cursor="pointer"
                 onClick={() =>
                   navigate(
-                    `/admin/staff-schedule/edit/location/${day}/${week}/${id}`
+                    `/admin/staff-schedule/edit/location/${day}/${week}/${id}`,
                   )
                 }
                 align="center"

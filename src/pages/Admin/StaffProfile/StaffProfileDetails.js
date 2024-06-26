@@ -183,10 +183,10 @@ const StaffProfileDetails = () => {
           {tab === "Employee Documents" && (
             <EmployeeDocuments data={data} refetch={refetch} />
           )}
-          {tab === "Schedule" && <Schedule />}
-          {tab === "Loan History" && <LoanHistory />}
+          {tab === "Schedule" && <Schedule data={data} />}
+          {tab === "Loan History" && <LoanHistory data={data} />}
           {tab === "Leave History" && <LeaveHistory data={data} />}
-          {tab === "Medical Assistance" && <MedAssist />}
+          {tab === "Medical Assistance" && <MedAssist data={data} />}
         </>
       )}
     </Box>

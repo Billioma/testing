@@ -48,7 +48,7 @@ const AddStaff = () => {
     },
     onError: (error) => {
       errorToast(
-        error?.response?.data?.message || error?.message || "An Error occurred"
+        error?.response?.data?.message || error?.message || "An Error occurred",
       );
     },
   });
@@ -1206,28 +1206,31 @@ const AddStaff = () => {
                         <Flex
                           align="center"
                           gap="12px"
-                          cursor="pointer"
-                          onClick={() =>
-                            setValues({
-                              ...values,
-                              employmentLetter: !values?.employmentLetter,
-                            })
-                          }
                           w="full"
                           mb={4}
                           mt="24px"
                         >
                           <Checkbox
                             isChecked={values?.employmentLetter}
-                            onChange={(e) =>
+                            onChange={(e) => {
+                              e.stopPropagation();
                               setValues({
                                 ...values,
                                 employmentLetter: e.target.checked,
+                              });
+                            }}
+                          />
+                          <Text
+                            color="#444648"
+                            cursor="pointer"
+                            onClick={() =>
+                              setValues({
+                                ...values,
+                                employmentLetter: !values?.employmentLetter,
                               })
                             }
-                          />
-
-                          <Text color="#444648" fontSize="14px">
+                            fontSize="14px"
+                          >
                             Employment Letter
                           </Text>
                         </Flex>
@@ -1237,13 +1240,6 @@ const AddStaff = () => {
                           gap="12px"
                           w="full"
                           mb={4}
-                          cursor="pointer"
-                          onClick={() =>
-                            setValues({
-                              ...values,
-                              guarantorForm: !values?.guarantorForm,
-                            })
-                          }
                           mt="24px"
                         >
                           <Checkbox
@@ -1256,7 +1252,17 @@ const AddStaff = () => {
                             }
                           />
 
-                          <Text color="#444648" fontSize="14px">
+                          <Text
+                            cursor="pointer"
+                            onClick={() =>
+                              setValues({
+                                ...values,
+                                guarantorForm: !values?.guarantorForm,
+                              })
+                            }
+                            color="#444648"
+                            fontSize="14px"
+                          >
                             Guarantor Form 1
                           </Text>
                         </Flex>
@@ -1265,13 +1271,6 @@ const AddStaff = () => {
                           align="center"
                           gap="12px"
                           w="full"
-                          cursor="pointer"
-                          onClick={() =>
-                            setValues({
-                              ...values,
-                              guarantorForm2: !values?.guarantorForm2,
-                            })
-                          }
                           mb={4}
                           mt="24px"
                         >
@@ -1285,7 +1284,17 @@ const AddStaff = () => {
                             }
                           />
 
-                          <Text color="#444648" fontSize="14px">
+                          <Text
+                            cursor="pointer"
+                            onClick={() =>
+                              setValues({
+                                ...values,
+                                guarantorForm2: !values?.guarantorForm2,
+                              })
+                            }
+                            color="#444648"
+                            fontSize="14px"
+                          >
                             Guarantor Form 2
                           </Text>
                         </Flex>
@@ -1296,14 +1305,6 @@ const AddStaff = () => {
                           w="full"
                           mb={4}
                           mt="24px"
-                          cursor="pointer"
-                          onClick={() =>
-                            setValues({
-                              ...values,
-                              confidentialityAgreement:
-                                !values?.confidentialityAgreement,
-                            })
-                          }
                         >
                           <Checkbox
                             isChecked={values?.confidentialityAgreement}
@@ -1315,7 +1316,18 @@ const AddStaff = () => {
                             }
                           />
 
-                          <Text color="#444648" fontSize="14px">
+                          <Text
+                            cursor="pointer"
+                            onClick={() =>
+                              setValues({
+                                ...values,
+                                confidentialityAgreement:
+                                  !values?.confidentialityAgreement,
+                              })
+                            }
+                            color="#444648"
+                            fontSize="14px"
+                          >
                             Confidentiality Agreement
                           </Text>
                         </Flex>
@@ -1326,14 +1338,6 @@ const AddStaff = () => {
                           w="full"
                           mb={4}
                           mt="24px"
-                          cursor="pointer"
-                          onClick={() =>
-                            setValues({
-                              ...values,
-                              nonSolicitationAgreement:
-                                !values?.nonSolicitationAgreement,
-                            })
-                          }
                         >
                           <Checkbox
                             isChecked={values?.nonSolicitationAgreement}
@@ -1345,7 +1349,18 @@ const AddStaff = () => {
                             }
                           />
 
-                          <Text color="#444648" fontSize="14px">
+                          <Text
+                            cursor="pointer"
+                            onClick={() =>
+                              setValues({
+                                ...values,
+                                nonSolicitationAgreement:
+                                  !values?.nonSolicitationAgreement,
+                              })
+                            }
+                            color="#444648"
+                            fontSize="14px"
+                          >
                             Non-Solicication & Non-Competition Agreement
                           </Text>
                         </Flex>
@@ -1355,13 +1370,6 @@ const AddStaff = () => {
                           gap="12px"
                           w="full"
                           mb={4}
-                          cursor="pointer"
-                          onClick={() =>
-                            setValues({
-                              ...values,
-                              exclusivity: !values?.exclusivity,
-                            })
-                          }
                           mt="24px"
                         >
                           <Checkbox
@@ -1374,7 +1382,17 @@ const AddStaff = () => {
                             }
                           />
 
-                          <Text color="#444648" fontSize="14px">
+                          <Text
+                            cursor="pointer"
+                            onClick={() =>
+                              setValues({
+                                ...values,
+                                exclusivity: !values?.exclusivity,
+                              })
+                            }
+                            color="#444648"
+                            fontSize="14px"
+                          >
                             Exclusivity & Non-Conflict of Interest Agreement
                           </Text>
                         </Flex>
@@ -1384,14 +1402,6 @@ const AddStaff = () => {
                           gap="12px"
                           w="full"
                           mb={4}
-                          cursor="pointer"
-                          onClick={() =>
-                            setValues({
-                              ...values,
-                              identificationDocument:
-                                !values?.identificationDocument,
-                            })
-                          }
                           mt="24px"
                         >
                           <Checkbox
@@ -1404,7 +1414,18 @@ const AddStaff = () => {
                             }
                           />
 
-                          <Text color="#444648" fontSize="14px">
+                          <Text
+                            cursor="pointer"
+                            onClick={() =>
+                              setValues({
+                                ...values,
+                                identificationDocument:
+                                  !values?.identificationDocument,
+                              })
+                            }
+                            color="#444648"
+                            fontSize="14px"
+                          >
                             Government Issued ID
                           </Text>
                         </Flex>

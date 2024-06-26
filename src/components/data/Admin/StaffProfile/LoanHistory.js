@@ -1,49 +1,15 @@
-import React, { useState } from "react";
-import { Box, Flex, Td, Text, Tr } from "@chakra-ui/react";
+import React from "react";
+import { Box, Button, Flex, Td, Text, Tr } from "@chakra-ui/react";
 import TableFormat from "../../../common/TableFormat";
+import { LoanStatus } from "../../../common/constants";
+import { formatDat } from "../../../../utils/helpers";
+import { useNavigate } from "react-router-dom";
+import { MdAdd } from "react-icons/md";
 
-import { NewStatus } from "../../../common/constants";
+const LoanHistory = ({ data }) => {
+  const headers = ["AMOUNT REQUESTED", "CREATED AT", "STATUS", "ACTIONS"];
 
-const LoanHistory = ({ page, setPage, startRow = 1, endRow }) => {
-  const headers = [
-    "LOAN ID",
-    "AMOUNT REQUESTED",
-    "REPAYMENT TENURE",
-    "DUE DATE",
-    "STATUS",
-    "ACTIONS",
-  ];
-  const data = {
-    total: 3,
-    pageCount: 1,
-    page: 1,
-    data: [
-      {
-        loanId: "12324",
-        amount: "100,000",
-        repaymentTenure: "2 Months",
-        status: 2,
-        dueDate: "2024-03-13",
-      },
-      {
-        loanId: "48493",
-        amount: "50,000",
-        repaymentTenure: null,
-        status: 0,
-        dueDate: "2024-03-13",
-      },
-      {
-        loanId: "04832",
-        amount: "80,000",
-        repaymentTenure: "2 Months",
-        status: 1,
-        dueDate: "2024-03-13",
-      },
-    ],
-  };
-
-  const [limit, setLimit] = useState(25);
-
+  const navigate = useNavigate();
   return (
     <Box mt="24px">
       <TableFormat
@@ -53,21 +19,8 @@ const LoanHistory = ({ page, setPage, startRow = 1, endRow }) => {
         alignSecondHeader
         alignThirdHeader
         alignForthHeader
-        paginationValues={{
-          startRow,
-          endRow,
-          total: data?.total,
-          page: data?.page,
-          pageCount: data?.pageCount,
-          onNext: () =>
-            data?.page !== data?.pageCount ? setPage(page + 1) : null,
-          onPrevious: () => (data?.page !== 1 ? setPage(page - 1) : null),
-          setLimit,
-          limit,
-        }}
-        useDefaultPagination
       >
-        {data?.data?.map((item, i) => (
+        {data?.loanRequests?.map((item, i) => (
           <Tr
             key={i}
             color="#646668"
@@ -75,27 +28,45 @@ const LoanHistory = ({ page, setPage, startRow = 1, endRow }) => {
             fontSize="14px"
             lineHeight="100%"
           >
-            <Td>{item?.loanId}</Td>
-            <Td>₦ {item?.amount?.toLocaleString()}</Td>
-            <Td>{item?.repaymentTenure || "N/A"}</Td>
-            <Td>{item?.dueDate}</Td>
+            <Td>₦ {item?.amountRequested.toLocaleString()}</Td>
+
+            <Td>{formatDat(item?.createdAt)}</Td>
             <Td>
               <Flex align="center" w="full" justifyContent="center">
                 <Flex
-                  color={Object?.values(NewStatus[item?.status])[0]}
-                  bg={Object?.values(NewStatus[item?.status])[2]}
+                  color={
+                    LoanStatus.find(
+                      (dat) =>
+                        dat.name?.toLowerCase() === item?.status?.toLowerCase(),
+                    )?.color || ""
+                  }
+                  bg={
+                    LoanStatus.find(
+                      (dat) =>
+                        dat.name?.toLowerCase() === item?.status?.toLowerCase(),
+                    )?.bg || ""
+                  }
                   justifyContent={"center"}
                   alignItems="center"
                   py="5px"
+                  textTransform="capitalize"
                   px="16px"
                   borderRadius="4px"
                 >
-                  {Object?.values(NewStatus[item?.status])[1]}
+                  {data?.status === "REJECTED"
+                    ? "Declined"
+                    : data?.status === "REPAYMENT_IN_PROGRESS"
+                      ? "Repayment In Progress"
+                      : item?.status?.toLowerCase()}
                 </Flex>
               </Flex>
             </Td>
             <Td textAlign="center">
-              <Flex justifyContent="center" align="center">
+              <Flex
+                onClick={() => navigate(`/admin/loans/${item?.id}`)}
+                justifyContent="center"
+                align="center"
+              >
                 <Text textDecor="underline" cursor="pointer">
                   View
                 </Text>
@@ -104,6 +75,18 @@ const LoanHistory = ({ page, setPage, startRow = 1, endRow }) => {
           </Tr>
         ))}
       </TableFormat>
+
+      <Flex justifyContent="flex-end">
+        <Button
+          display="flex"
+          bg="#000"
+          gap="8px"
+          onClick={() => navigate("/admin/loans/create")}
+        >
+          <Text fontSize="14px">Create Loan</Text>
+          <MdAdd size="20px" />
+        </Button>
+      </Flex>
     </Box>
   );
 };

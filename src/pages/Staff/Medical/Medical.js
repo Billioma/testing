@@ -21,7 +21,7 @@ const Medical = () => {
       refetchOnWindowFocus: true,
     },
     page,
-    limit
+    limit,
   );
 
   useEffect(() => {

@@ -114,7 +114,7 @@ const UpdateLoan = () => {
     },
     onError: (err) => {
       errorToast(
-        err?.response?.data?.message || err?.message || "An Error occurred"
+        err?.response?.data?.message || err?.message || "An Error occurred",
       );
     },
   });
@@ -124,7 +124,7 @@ const UpdateLoan = () => {
   useEffect(() => {
     if (data) {
       const selectedPurpose = purposesOptions?.find(
-        (option) => option.value === data?.purpose
+        (option) => option.value === data?.purpose,
       );
       setValues({
         ...values,

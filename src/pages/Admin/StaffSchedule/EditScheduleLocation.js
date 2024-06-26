@@ -23,7 +23,7 @@ const getCurrentWeekDates = () => {
   const now = dayjs();
   const startOfWeek = now.startOf("week").add(1, "day");
   const dates = Array.from({ length: 7 }).map((_, i) =>
-    startOfWeek.add(i, "day").format("dddd, DD MMM")
+    startOfWeek.add(i, "day").format("dddd, DD MMM"),
   );
   return dates;
 };
@@ -66,7 +66,7 @@ const EditScheduleLocation = () => {
             ...schedule,
             [key]: selectedOptions?.map((option) => option?.value),
           }
-        : schedule
+        : schedule,
     );
 
     setValues((prevValues) => ({
@@ -79,7 +79,7 @@ const EditScheduleLocation = () => {
     setOpenSchedules((prevOpenSchedules) =>
       prevOpenSchedules?.includes(index)
         ? prevOpenSchedules?.filter((i) => i !== index)
-        : [...prevOpenSchedules, index]
+        : [...prevOpenSchedules, index],
     );
   };
 
@@ -90,7 +90,7 @@ const EditScheduleLocation = () => {
       schedules: updatedSchedules,
     }));
     setOpenSchedules((prevOpenSchedules) =>
-      prevOpenSchedules?.filter((i) => i !== index)
+      prevOpenSchedules?.filter((i) => i !== index),
     );
   };
 
@@ -106,7 +106,7 @@ const EditScheduleLocation = () => {
     },
     onError: (error) => {
       errorToast(
-        error?.response?.data?.message || error?.message || "An Error occurred"
+        error?.response?.data?.message || error?.message || "An Error occurred",
       );
     },
   });
@@ -138,7 +138,7 @@ const EditScheduleLocation = () => {
   }, []);
 
   const selectedLocationOption = locationOptions?.find(
-    (option) => Number(option.value) === Number(id)
+    (option) => Number(option.value) === Number(id),
   );
 
   useEffect(() => {
@@ -263,7 +263,7 @@ const EditScheduleLocation = () => {
                       isDisabled
                       placeholder="Select Days"
                       value={daysOfWeekOptions?.filter((option) =>
-                        schedule?.daysOfWeek?.includes(option?.value)
+                        schedule?.daysOfWeek?.includes(option?.value),
                       )}
                       components={{
                         IndicatorSeparator: () => (
@@ -284,7 +284,7 @@ const EditScheduleLocation = () => {
                       isMulti
                       placeholder="Select Staffs"
                       value={staffOptions?.filter((option) =>
-                        schedule?.staffIds?.includes(option?.value)
+                        schedule?.staffIds?.includes(option?.value),
                       )}
                       components={{
                         IndicatorSeparator: () => (
@@ -353,7 +353,7 @@ const EditScheduleLocation = () => {
 
               {schedule?.staffIds?.map((staffId) => {
                 const staff = staffOptions?.find(
-                  (option) => option.value === staffId
+                  (option) => option.value === staffId,
                 );
 
                 return (
@@ -377,7 +377,7 @@ const EditScheduleLocation = () => {
 
               {schedule?.daysOfWeek?.map((dayValue) => {
                 const dayIndex = DayOfWeekEnum.findIndex(
-                  (day) => day.value === dayValue
+                  (day) => day.value === dayValue,
                 );
 
                 return (

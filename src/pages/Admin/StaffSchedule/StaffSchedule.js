@@ -39,10 +39,8 @@ const StaffSchedule = () => {
     },
     page,
     limit,
-    search
+    search,
   );
-
-  console.log(data)
 
   const { mutate, data: daySchedule, isLoading: isDay } = useGetScheduleDay();
 
@@ -108,7 +106,7 @@ const StaffSchedule = () => {
     setStartRow(currentStartRow);
     setEndRow(currentEndRow);
   }, [data, page, limit, type, search]);
-  console.log(search);
+
   useEffect(() => {
     if (!daySchedule) {
       return;
@@ -318,6 +316,8 @@ const StaffSchedule = () => {
           isLoading={isLoading}
           data={data}
           setLimit={setLimit}
+          week={data?.currentWeek?.id}
+          day={type}
         />
       ) : (
         type && (

@@ -210,6 +210,7 @@ const Dashboard = () => {
                   color="#086375"
                   mt="24px"
                   w="fit-content"
+                  display={!userData?.isLeaveEligible ? "none" : "flex"}
                   cursor="pointer"
                   onClick={() => navigate("/staff/leave/request")}
                   align="center"
@@ -248,6 +249,7 @@ const Dashboard = () => {
                   mt="24px"
                   w="fit-content"
                   cursor="pointer"
+                  display={!userData?.isLoanEligible ? "none" : "flex"}
                   onClick={() => navigate("/staff/loans/request")}
                   align="center"
                   gap="4px"

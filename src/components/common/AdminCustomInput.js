@@ -82,17 +82,26 @@ const CustomInput = ({
     <FormControl mb={mb ? 0 : 5} isInvalid={error}>
       <InputGroup>
         {ngn ? (
-          <InputLeftElement h="44px">
+          <InputLeftElement
+            h={opt ? "60px" : reserve ? "40px" : textarea ? textarea : "44px"}
+          >
             <Text color="#646668" fontSize="13px">
               +234
             </Text>
           </InputLeftElement>
         ) : reserve ? (
-          <InputLeftElement cursor="pointer" h="40px">
+          <InputLeftElement
+            cursor="pointer"
+            h={opt ? "60px" : reserve ? "40px" : textarea ? textarea : "44px"}
+          >
             <BsSearch />
           </InputLeftElement>
         ) : naira ? (
-          <InputLeftElement fontSize="13px" cursor="pointer" h="44px">
+          <InputLeftElement
+            fontSize="13px"
+            cursor="pointer"
+            h={opt ? "60px" : reserve ? "40px" : textarea ? textarea : "44px"}
+          >
             ₦
           </InputLeftElement>
         ) : (
@@ -123,11 +132,17 @@ const CustomInput = ({
           autoComplete="new-password"
         />
         {suffix ? (
-          <InputRightElement cursor="pointer" h={opt ? "60px" : "44px"}>
+          <InputRightElement
+            cursor="pointer"
+            h={opt ? "60px" : reserve ? "40px" : textarea ? textarea : "44px"}
+          >
             <Text>%</Text>
           </InputRightElement>
         ) : search ? (
-          <InputRightElement cursor="pointer" h={opt ? "60px" : "44px"}>
+          <InputRightElement
+            cursor="pointer"
+            h={opt ? "60px" : reserve ? "40px" : textarea ? textarea : "44px"}
+          >
             <BsSearch />
           </InputRightElement>
         ) : add ? (
@@ -140,7 +155,7 @@ const CustomInput = ({
                 ? ""
                 : "pointer"
             }
-            h={opt ? "60px" : "44px"}
+            h={opt ? "60px" : reserve ? "40px" : textarea ? textarea : "44px"}
           >
             <BsSearch fill="#646668" size="15px" />
           </InputRightElement>

@@ -59,7 +59,7 @@ export const useGetSchedules = (options = {}, page = 1, limit = 25, search) => {
     () => getSchedules(page, limit, search),
     {
       ...options,
-    }
+    },
   );
 
   return { isLoading, data, refetch };

@@ -80,7 +80,7 @@ const Schedule = () => {
         ) : (
           daysMap?.map((day, i) => {
             const weekDate = weekDates.find(
-              (weekDate) => weekDate.day === day.label
+              (weekDate) => weekDate.day === day.label,
             );
 
             return (

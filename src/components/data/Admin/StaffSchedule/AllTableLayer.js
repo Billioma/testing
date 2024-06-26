@@ -12,9 +12,12 @@ import {
 } from "@chakra-ui/react";
 import TableLoader from "../../../loader/TableLoader";
 import { DefaultPagination } from "../../../common/TableFormat";
+import { useNavigate } from "react-router-dom";
 
 const AllTableLayer = ({
   data,
+  day,
+  week,
   isLoading,
   page,
   setPage,
@@ -23,6 +26,7 @@ const AllTableLayer = ({
   limit,
   setLimit,
 }) => {
+  const navigate = useNavigate();
   return (
     <Box mt="16px">
       {isLoading ? (
@@ -63,7 +67,16 @@ const AllTableLayer = ({
               <Tbody>
                 {data?.locations?.map((item, i) => (
                   <Tr key={i} color="#646668" fontSize="13px">
-                    <Td borderRight="1px solid #F4F6F8" fontWeight={500}>
+                    <Td
+                      cursor="pointer"
+                      onClick={() =>
+                        console.log(
+                          `/admin/staff-schedule/edit/location/${day}/${week}/${item?.id}`,
+                        )
+                      }
+                      borderRight="1px solid #F4F6F8"
+                      fontWeight={500}
+                    >
                       {item?.name}
                     </Td>
                     <Td>

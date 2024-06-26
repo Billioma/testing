@@ -119,7 +119,7 @@ const MedicalAssistance = () => {
       <Flex w="100%" mb="24px" bg="#F4F6F8" gap="24px" align="flex-end">
         <Flex
           flexDir={{ base: "column", md: "row" }}
-          w={{ base: "100%", md: "70%" }}
+          w="100%"
           align={{ base: "flex-start", md: "center" }}
         >
           {typeToMap.map((item, i) => (

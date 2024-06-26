@@ -22,7 +22,7 @@ export const useGetDepts = (options = {}, page = 1, limit = 25, query) => {
     () => getDepts(page, limit, query),
     {
       ...options,
-    }
+    },
   );
 
   return { isLoading, data, refetch };
@@ -34,7 +34,7 @@ export const useGetDept = (id = "", options = {}) => {
     () => getDept(id),
     {
       ...options,
-    }
+    },
   );
 
   return { isLoading, data, refetch };
@@ -46,7 +46,7 @@ export const useGetMetrics = (options = {}) => {
     () => getMetrics(),
     {
       ...options,
-    }
+    },
   );
 
   return { isLoading, data, refetch };

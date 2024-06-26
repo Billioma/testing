@@ -10,7 +10,7 @@ export const ADMIN_LOCATIONS = "admin/locations";
 export const ADMIN_LOCATIONS_LIST = (
   filterString = "",
   limit = "",
-  page = ""
+  page = "",
 ) =>
   `admin/locations?${filterString}&limit=${limit}&page=${page}&sort=createdAt,DESC`;
 
@@ -34,7 +34,7 @@ export const ADMIN_ROLE = (id = "") => `admin/roles/${id}`;
 export const ADMIN_PERMISSIONS_LIST = (
   filterString = "",
   limit = "",
-  page = ""
+  page = "",
 ) =>
   `admin/permissions?${filterString}&limit=${limit}&page=${page}&sort=createdAt,DESC`;
 
@@ -43,7 +43,7 @@ export const ADMIN_PERMISSION = (id = "") => `admin/permissions/${id}`;
 export const ADMIN_VEHICLE_MAKES_LIST = (
   filterString = "",
   limit = "",
-  page = ""
+  page = "",
 ) =>
   `admin/vehicle-makes?${filterString}&limit=${limit}&page=${page}&sort=createdAt,DESC`;
 
@@ -52,7 +52,7 @@ export const ADMIN_VEHICLE_MAKE = (id = "") => `admin/vehicle-makes/${id}`;
 export const ADMIN_VEHICLE_MODELS_LIST = (
   filterString = "",
   limit = "",
-  page = ""
+  page = "",
 ) =>
   `admin/vehicle-models?${filterString}&limit=${limit}&page=${page}&sort=createdAt,DESC`;
 
@@ -111,7 +111,7 @@ export const REJECT_MED = (id = "") => `admin/medical-assistance/decline/${id}`;
 export const ADMIN_AMENITIES_LIST = (
   filterString = "",
   limit = "",
-  page = ""
+  page = "",
 ) =>
   `admin/amenities?${filterString}&limit=${limit}&page=${page}&sort=createdAt,DESC`;
 
@@ -149,11 +149,10 @@ export const GET_SCHEDULES_DAY = (
   day = "",
   page = "",
   limit = "",
-  search = ""
+  search = "",
 ) =>
   `/admin/schedule/day?week=${week}&dayOfWeek=${day}&page=${page}&limit=${limit}&search=${search}`;
 
 export const GET_SCHEDULES_LOCATION = (week = "", day = "", id = "") =>
   `/admin/schedule/location?week=${week}&dayOfWeek=${day}&locationId=${id}`;
-export const DEL_SCHEDULES_LOCATION = (id = "") =>
-  `/admin/schedule/day/${id}`;
+export const DEL_SCHEDULES_LOCATION = (id = "") => `/admin/schedule/day/${id}`;

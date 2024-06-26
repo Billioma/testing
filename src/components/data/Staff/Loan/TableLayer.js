@@ -83,7 +83,10 @@ const TableLayer = ({
                       border="1px solid #CEDFE3"
                       borderRight="none"
                     >
-                      ₦ {item?.amountRequested?.toLocaleString() || "0"}
+                      ₦{" "}
+                      {item?.amountLoaned
+                        ? item?.amountLoaned.toLocaleString()
+                        : item?.amountRequested.toLocaleString()}
                     </Td>
                     <Td
                       border="1px solid #CEDFE3"

@@ -1,57 +1,47 @@
-import { Box, Flex, Image, Text } from "@chakra-ui/react";
 import React from "react";
+import { Box, Flex, Td, Text, Tr } from "@chakra-ui/react";
+import TableFormat from "../../../common/TableFormat";
+import { formatDat } from "../../../../utils/helpers";
 
-const Schedule = () => {
+const Schedule = ({ data }) => {
+  const headers = ["LOCATION", "SCHEDULED DATE", "ACTION"];
+
+  const schedulesArray = [];
+
+  for (const day in data?.schedule) {
+    schedulesArray.push(...data?.schedule[day]);
+  }
+
   return (
-    <Box>
-      <Flex
-        bg="#fff"
-        borderRadius="8px"
-        py="30px"
-        px={{ base: "15px", md: "34px" }}
-        mt="24px"
-        justifyContent="center"
-        w="full"
-        flexDir="column"
-        border="1px solid #D9DBF1"
-      >
-        <Flex
-          fontSize="18px"
-          color="#090c02"
-          justifyContent="space-between"
-          w="full"
-          borderBottom="1px solid #D9DBF1"
-          pb="12px"
-        >
-          <Text fontWeight={700}>Schedule</Text>
+    <Box mt="24px">
+      <TableFormat header={headers} opt act>
+        {schedulesArray?.map((item, i) => (
+          <Tr
+            key={i}
+            color="#646668"
+            fontWeight={500}
+            fontSize="14px"
+            lineHeight="100%"
+          >
+            <Td> {item?.location?.name}</Td>
 
-          <Flex align="center" gap="8px" cursor="pointer">
-            <Image src="/assets/edit.jpg" w="24px" h="24px" />
-            <Text fontWeight={500}>Edit</Text>
-          </Flex>
-        </Flex>
+            <Td>{formatDat(item?.createdAt)}</Td>
 
-        <Box py="12px" px="10px" borderBottom="1px solid #e2e5dc" my="20px">
-          <Text color="#090c02" opacity={0.6} fontWeight={700} fontSize="12px">
-            LOCATION
-          </Text>
-          <Text mt="8px" color="#000" fontWeight={500}>
-            Ziya Delicacy Boutique
-          </Text>
-        </Box>
-
-        <Box pt="12px" px="10px" my="20px">
-          <Text color="#090c02" opacity={0.6} fontWeight={700} fontSize="12px">
-            DAY(S)
-          </Text>
-          <Text mt="8px" color="#000" fontWeight={500}>
-            Monday, April 8, 2024
-          </Text>
-          <Text mt="8px" color="#000" fontWeight={500}>
-            Wednesday, April 10, 2024
-          </Text>
-        </Box>
-      </Flex>
+            <Td>
+              <Flex
+                justifyContent="center"
+                // onClick={() =>
+                //   navigate(`/admin/staff-schedule/location/monday/4/65`)
+                // }
+              >
+                <Text textDecor="underline" cursor="pointer">
+                  View
+                </Text>
+              </Flex>
+            </Td>
+          </Tr>
+        ))}
+      </TableFormat>
     </Box>
   );
 };
