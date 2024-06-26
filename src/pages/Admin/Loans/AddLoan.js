@@ -112,7 +112,7 @@ const AddLoan = () => {
               pb="10px"
               borderBottom="1px solid #E4E6E8"
             >
-              Add Absense
+              Add Loan
             </Text>
 
             <Skeleton
