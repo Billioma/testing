@@ -106,7 +106,7 @@ const AddLeave = () => {
               pb="10px"
               borderBottom="1px solid #E4E6E8"
             >
-              Add Absense
+              Add Absence
             </Text>
 
             <Skeleton

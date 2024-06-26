@@ -77,7 +77,7 @@ const LeaveHistory = ({ data }) => {
           gap="8px"
           onClick={() => navigate("/admin/leave-mgt/create")}
         >
-          <Text fontSize="14px">Add Absense</Text>
+          <Text fontSize="14px">Add Absence</Text>
           <MdAdd size="20px" />
         </Button>
       </Flex>
