@@ -97,11 +97,12 @@ const ScheduleStaffTableLayer = ({
                     <Td>
                       <Flex gap="10px" align="center" justifyContent="flex-end">
                         <Flex
-                          onClick={() =>
+                           onClick={() => {
                             navigate(
-                              `/admin/staff-schedule/location/${day}/${week}/${item?.id}`,
-                            )
-                          }
+                              `/admin/staff-schedule/location/${week}/${item?.id}`
+                            );
+                            sessionStorage.setItem("days", JSON.stringify(day));
+                          }}
                           border="1px solid #999999"
                           borderRadius="8px"
                           w="32px"
@@ -116,11 +117,12 @@ const ScheduleStaffTableLayer = ({
 
                         <Flex
                           cursor="pointer"
-                          onClick={() =>
+                          onClick={() => {
                             navigate(
-                              `/admin/staff-schedule/edit/location/${day}/${week}/${item?.id}`,
-                            )
-                          }
+                              `/admin/staff-schedule/edit/location/${week}/${item?.id}`
+                            );
+                            sessionStorage.setItem("days", JSON.stringify(day));
+                          }}
                           border="1px solid #999999"
                           borderRadius="8px"
                           w="32px"

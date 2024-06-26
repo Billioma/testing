@@ -68,12 +68,13 @@ const AllTableLayer = ({
                 {data?.locations?.map((item, i) => (
                   <Tr key={i} color="#646668" fontSize="13px">
                     <Td
-                      cursor="pointer"
-                      onClick={() =>
-                        console.log(
-                          `/admin/staff-schedule/edit/location/${day}/${week}/${item?.id}`,
-                        )
-                      }
+                      // cursor="pointer"
+                      // onClick={() => {
+                      //   navigate(
+                      //     `/admin/staff-schedule/location/${week}/${item?.id}`
+                      //   );
+                      //   sessionStorage.setItem("days", JSON.stringify(day));
+                      // }}
                       borderRight="1px solid #F4F6F8"
                       fontWeight={500}
                     >

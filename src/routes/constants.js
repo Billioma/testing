@@ -52,10 +52,10 @@ export const PRIVATE_PATHS = {
   ADMIN_STAFF_SCHEDULE: "/admin/staff-schedule",
   ADMIN_ADD_STAFF_SCHEDULE_LOCATION: "/admin/staff-schedule/create/location",
   ADMIN_EDIT_STAFF_SCHEDULE_LOCATION:
-    "/admin/staff-schedule/edit/location/:day/:week/:id",
+    "/admin/staff-schedule/edit/location/:week/:id",
   ADMIN_ADD_STAFF_SCHEDULE_STAFF: "/admin/staff-schedule/create/staff",
   ADMIN_STAFF_SCHEDULE_LOCATION:
-    "/admin/staff-schedule/location/:day/:week/:id",
+    "/admin/staff-schedule/location/:week/:id",
   ADMIN_SETTINGS: "/admin/settings",
   ADMIN_ADD_DEPT: "/admin/settings/department/create",
   ADMIN_VIEW_DEPT: "/admin/settings/department/:id",

@@ -10,7 +10,9 @@ import GoBackTab from "../../../components/data/Admin/GoBackTab";
 import useCustomToast from "../../../utils/notifications";
 
 const ViewLocationSchedule = () => {
-  const { id, week, day } = useParams();
+  const { id, week } = useParams();
+  const days = JSON.parse(sessionStorage.getItem("days"))
+
   const { mutate, data, isLoading } = useGetScheduleLocation();
   const { successToast, errorToast } = useCustomToast();
   const navigate = useNavigate();
@@ -33,7 +35,7 @@ const ViewLocationSchedule = () => {
   const handleFind = () => {
     mutate({
       week: week,
-      day: day,
+      day: days,
       id: id,
     });
   };
@@ -77,7 +79,7 @@ const ViewLocationSchedule = () => {
                 cursor="pointer"
                 onClick={() =>
                   navigate(
-                    `/admin/staff-schedule/edit/location/${day}/${week}/${id}`,
+                    `/admin/staff-schedule/edit/location/${week}/${id}`,
                   )
                 }
                 align="center"
@@ -96,7 +98,7 @@ const ViewLocationSchedule = () => {
                 border="1px solid #242628"
                 borderRadius="8px"
                 py="10px"
-                onClick={() => deleteMutate(day)}
+                onClick={() => deleteMutate(days)}
                 color="#242628"
                 px="16px"
                 align="center"

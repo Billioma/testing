@@ -16,7 +16,6 @@ import {
   useCreateScheduleByLocation,
   useGetScheduleLocation,
 } from "../../../services/admin/query/schedule";
-import { PRIVATE_PATHS } from "../../../routes/constants";
 import { useNavigate, useParams } from "react-router-dom";
 
 const getCurrentWeekDates = () => {
@@ -32,6 +31,8 @@ const EditScheduleLocation = () => {
   const { data: locationsData, isLoading: isLocation } = useGetAllLocations();
   const { data: staffs, isLoading: isStaff } = useGetStaffs({}, 1, 1000);
 
+  const days = JSON.parse(sessionStorage.getItem("days"))
+  
   const [values, setValues] = useState({
     location: "",
     schedules: [
@@ -96,7 +97,7 @@ const EditScheduleLocation = () => {
 
   const { errorToast, successToast } = useCustomToast();
 
-  const { id, week, day } = useParams();
+  const { id, week } = useParams();
 
   const navigate = useNavigate();
   const { mutate, isLoading } = useCreateScheduleByLocation({
@@ -128,7 +129,7 @@ const EditScheduleLocation = () => {
   const handleFind = () => {
     detailsMutate({
       week: week,
-      day: day,
+      day: days,
       id: id,
     });
   };
@@ -147,7 +148,7 @@ const EditScheduleLocation = () => {
       location: selectedLocationOption,
       schedules: [
         {
-          daysOfWeek: [day],
+          daysOfWeek: [days],
           staffIds: data?.staffProfiles?.map((item) => item?.id),
         },
       ],
@@ -411,7 +412,7 @@ const EditScheduleLocation = () => {
                   location: selectedLocationOption,
                   schedules: [
                     {
-                      daysOfWeek: [day],
+                      daysOfWeek: [days],
                       staffIds: data?.staffProfiles?.map((item) => item?.id),
                     },
                   ],
