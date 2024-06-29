@@ -20,7 +20,7 @@ const getCurrentWeekDates = () => {
   const now = dayjs();
   const startOfWeek = now.startOf("week").add(1, "day");
   const dates = Array.from({ length: 7 }).map((_, i) =>
-    startOfWeek.add(i, "day").format("dddd, DD MMM"),
+    startOfWeek.add(i, "day").format("dddd, DD MMM")
   );
   return dates;
 };
@@ -57,19 +57,23 @@ const AddScheduleLocation = () => {
   }));
 
   const handleScheduleChange = (index, key, selectedOptions) => {
-    const updatedSchedules = values?.schedules?.map((schedule, i) =>
-      i === index
-        ? {
-            ...schedule,
-            [key]: selectedOptions?.map((option) => option?.value),
-          }
-        : schedule,
-    );
+    if (selectedOptions.length <= 5) {
+      const updatedSchedules = values?.schedules?.map((schedule, i) =>
+        i === index
+          ? {
+              ...schedule,
+              [key]: selectedOptions?.map((option) => option?.value),
+            }
+          : schedule
+      );
 
-    setValues((prevValues) => ({
-      ...prevValues,
-      schedules: updatedSchedules,
-    }));
+      setValues((prevValues) => ({
+        ...prevValues,
+        schedules: updatedSchedules,
+      }));
+    } else {
+      alert("You can select up to 5 staff members only.");
+    }
   };
 
   const addSchedule = () => {
@@ -96,7 +100,7 @@ const AddScheduleLocation = () => {
     setOpenSchedules((prevOpenSchedules) =>
       prevOpenSchedules?.includes(index)
         ? prevOpenSchedules?.filter((i) => i !== index)
-        : [...prevOpenSchedules, index],
+        : [...prevOpenSchedules, index]
     );
   };
 
@@ -107,7 +111,7 @@ const AddScheduleLocation = () => {
       schedules: updatedSchedules,
     }));
     setOpenSchedules((prevOpenSchedules) =>
-      prevOpenSchedules?.filter((i) => i !== index),
+      prevOpenSchedules?.filter((i) => i !== index)
     );
   };
 
@@ -121,7 +125,7 @@ const AddScheduleLocation = () => {
     },
     onError: (error) => {
       errorToast(
-        error?.response?.data?.message || error?.message || "An Error occurred",
+        error?.response?.data?.message || error?.message || "An Error occurred"
       );
     },
   });
@@ -256,7 +260,7 @@ const AddScheduleLocation = () => {
                       isMulti
                       placeholder="Select Days"
                       value={daysOfWeekOptions?.filter((option) =>
-                        schedule?.daysOfWeek?.includes(option?.value),
+                        schedule?.daysOfWeek?.includes(option?.value)
                       )}
                       components={{
                         IndicatorSeparator: () => (
@@ -272,7 +276,7 @@ const AddScheduleLocation = () => {
                         handleScheduleChange(
                           index,
                           "daysOfWeek",
-                          selectedOptions,
+                          selectedOptions
                         )
                       }
                     />
@@ -288,7 +292,7 @@ const AddScheduleLocation = () => {
                       isMulti
                       placeholder="Select Staffs"
                       value={staffOptions?.filter((option) =>
-                        schedule?.staffIds?.includes(option?.value),
+                        schedule?.staffIds?.includes(option?.value)
                       )}
                       components={{
                         IndicatorSeparator: () => (
@@ -366,7 +370,7 @@ const AddScheduleLocation = () => {
 
               {schedule?.staffIds?.map((staffId) => {
                 const staff = staffOptions?.find(
-                  (option) => option.value === staffId,
+                  (option) => option.value === staffId
                 );
 
                 return (
@@ -390,7 +394,7 @@ const AddScheduleLocation = () => {
 
               {schedule?.daysOfWeek?.map((dayValue) => {
                 const dayIndex = DayOfWeekEnum.findIndex(
-                  (day) => day.value === dayValue,
+                  (day) => day.value === dayValue
                 );
 
                 return (

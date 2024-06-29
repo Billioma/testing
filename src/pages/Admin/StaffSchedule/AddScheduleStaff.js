@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Box, Flex, Image, Button, Spinner, Text } from "@chakra-ui/react";
 import { IoIosArrowDown } from "react-icons/io";
 import { MdClose } from "react-icons/md";
@@ -20,12 +20,12 @@ const getCurrentWeekDates = () => {
   const now = dayjs();
   const startOfWeek = now.startOf("week").add(1, "day");
   const dates = Array.from({ length: 7 }).map((_, i) =>
-    startOfWeek.add(i, "day").format("dddd, DD MMM"),
+    startOfWeek.add(i, "day").format("dddd, DD MMM")
   );
   return dates;
 };
 
-const AddScheduleStaff = () => {
+const AddScheduleStaff = ({ none, staff }) => {
   const { data: locationsData, isLoading: isLocation } = useGetAllLocations();
   const { data: staffs, isLoading: isStaff } = useGetStaffs({}, 1, 1000);
 
@@ -51,6 +51,15 @@ const AddScheduleStaff = () => {
     value: staff?.id,
   }));
 
+  useEffect(() => {
+    if (staff) {
+      const selectedStaffOption = staffOptions?.find(
+        (option) => Number(option.value) === Number(staff)
+      );
+      setValues({ ...values, staff: selectedStaffOption });
+    }
+  }, [staff, staffs]);
+
   const daysOfWeekOptions = DayOfWeekEnum?.map((day) => ({
     label: day?.name,
     value: day?.value,
@@ -61,9 +70,9 @@ const AddScheduleStaff = () => {
       i === index
         ? {
             ...schedule,
-            [key]: selectedOptions?.map((option) => option?.value),
+            [key]: selectedOptions,
           }
-        : schedule,
+        : schedule
     );
 
     setValues((prevValues) => ({
@@ -96,7 +105,7 @@ const AddScheduleStaff = () => {
     setOpenSchedules((prevOpenSchedules) =>
       prevOpenSchedules?.includes(index)
         ? prevOpenSchedules?.filter((i) => i !== index)
-        : [...prevOpenSchedules, index],
+        : [...prevOpenSchedules, index]
     );
   };
 
@@ -107,7 +116,7 @@ const AddScheduleStaff = () => {
       schedules: updatedSchedules,
     }));
     setOpenSchedules((prevOpenSchedules) =>
-      prevOpenSchedules?.filter((i) => i !== index),
+      prevOpenSchedules?.filter((i) => i !== index)
     );
   };
 
@@ -121,13 +130,22 @@ const AddScheduleStaff = () => {
     },
     onError: (error) => {
       errorToast(
-        error?.response?.data?.message || error?.message || "An Error occurred",
+        error?.response?.data?.message || error?.message || "An Error occurred"
       );
     },
   });
 
   const handleSubmit = () => {
     const { staff, ...rest } = values;
+
+    // If `none` is true, add `isOffDaySchedule: true` to each schedule object
+    if (none) {
+      rest.schedules = rest.schedules.map((schedule) => ({
+        ...schedule,
+        isOffDaySchedule: true,
+      }));
+    }
+
     mutate({
       staff: Number(staff?.value),
       ...rest,
@@ -138,8 +156,11 @@ const AddScheduleStaff = () => {
 
   return (
     <Box minH="75vh">
-      <GoBackTab />
+      <Box display={none ? "none" : "block"}>
+        <GoBackTab />
+      </Box>
       <Flex
+        mt={none ? "28px" : "unset"}
         align="flex-start"
         gap="24px"
         flexDir={{ base: "column", md: "row" }}
@@ -187,6 +208,7 @@ const AddScheduleStaff = () => {
                 <Select
                   styles={customStyles}
                   options={staffOptions}
+                  isDisabled={none}
                   placeholder="Select Staff"
                   value={values?.staff}
                   components={{
@@ -234,7 +256,9 @@ const AddScheduleStaff = () => {
                   >
                     {index + 2}
                   </Flex>
-                  <Text fontSize="14px">Schedule {index + 1}</Text>
+                  <Text fontSize="14px">
+                    {none ? "Off Day" : ""} Schedule {index + 1}
+                  </Text>
                 </Flex>
 
                 {openSchedules?.includes(index) ? (
@@ -256,7 +280,7 @@ const AddScheduleStaff = () => {
                       isMulti
                       placeholder="Select Days"
                       value={daysOfWeekOptions?.filter((option) =>
-                        schedule?.daysOfWeek?.includes(option?.value),
+                        schedule?.daysOfWeek?.includes(option?.value)
                       )}
                       components={{
                         IndicatorSeparator: () => (
@@ -272,7 +296,7 @@ const AddScheduleStaff = () => {
                         handleScheduleChange(
                           index,
                           "daysOfWeek",
-                          selectedOptions,
+                          selectedOptions?.map((option) => option?.value)
                         )
                       }
                     />
@@ -280,15 +304,14 @@ const AddScheduleStaff = () => {
 
                   <Box mt="24px" pb="24px" borderBottom="1px solid #E2E5DC">
                     <Text fontSize="11px" color="#444648" mb="8px">
-                      Select up to 5 locations
+                      Location
                     </Text>
                     <Select
                       styles={customStyles}
                       options={locationOptions}
-                      isMulti
-                      placeholder="Select Locations"
-                      value={locationOptions?.filter((option) =>
-                        schedule?.locationIds?.includes(option?.value),
+                      placeholder="Select Location"
+                      value={locationOptions?.find((option) =>
+                        schedule?.locationIds?.includes(option?.value)
                       )}
                       components={{
                         IndicatorSeparator: () => (
@@ -304,13 +327,16 @@ const AddScheduleStaff = () => {
                           </div>
                         ),
                       }}
-                      onChange={(selectedOptions) =>
+                      onChange={(selectedOption) => {
+                        const updatedLocationIds = selectedOption
+                          ? [selectedOption.value]
+                          : [];
                         handleScheduleChange(
                           index,
                           "locationIds",
-                          selectedOptions,
-                        )
-                      }
+                          updatedLocationIds
+                        );
+                      }}
                     />
                   </Box>
                 </Box>
@@ -361,7 +387,7 @@ const AddScheduleStaff = () => {
             >
               <Flex align="center" gap="8px">
                 <Text opacity={0.6} fontSize="12px" fontWeight={700}>
-                  SCHEDULE
+                  {none ? "OFF DAY" : ""} SCHEDULE
                 </Text>
                 <Text opacity={0.6} fontSize="12px" fontWeight={700}>
                   {values?.schedules?.length === 1 ? "" : i + 1}
@@ -370,7 +396,7 @@ const AddScheduleStaff = () => {
 
               {schedule?.locationIds?.map((locationId) => {
                 const location = locationOptions?.find(
-                  (option) => option.value === locationId,
+                  (option) => option.value === locationId
                 );
 
                 return (
@@ -393,8 +419,8 @@ const AddScheduleStaff = () => {
               })}
 
               {schedule?.daysOfWeek?.map((dayValue) => {
-                const dayIndex = DayOfWeekEnum.findIndex(
-                  (day) => day.value === dayValue,
+                const dayIndex = DayOfWeekEnum?.findIndex(
+                  (day) => day.value === dayValue
                 );
 
                 return (

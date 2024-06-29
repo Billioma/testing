@@ -38,7 +38,7 @@ const StaffProfileDetails = () => {
     },
     onError: (error) => {
       errorToast(
-        error?.response?.data?.message || error?.message || "An Error occurred",
+        error?.response?.data?.message || error?.message || "An Error occurred"
       );
     },
   });
@@ -50,7 +50,7 @@ const StaffProfileDetails = () => {
     },
     onError: (error) => {
       errorToast(
-        error?.response?.data?.message || error?.message || "An Error occurred",
+        error?.response?.data?.message || error?.message || "An Error occurred"
       );
     },
   });
@@ -183,7 +183,10 @@ const StaffProfileDetails = () => {
           {tab === "Employee Documents" && (
             <EmployeeDocuments data={data} refetch={refetch} />
           )}
-          {tab === "Schedule" && <Schedule data={data} />}
+          {tab === "Schedule" && (
+            <Schedule staff={data?.id} data={data} />
+          )}
+          
           {tab === "Loan History" && <LoanHistory data={data} />}
           {tab === "Leave History" && <LeaveHistory data={data} />}
           {tab === "Medical Assistance" && <MedAssist data={data} />}

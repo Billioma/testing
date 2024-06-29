@@ -11,8 +11,8 @@ import useCustomToast from "../../../utils/notifications";
 
 const ViewLocationSchedule = () => {
   const { id, week } = useParams();
-  const days = JSON.parse(sessionStorage.getItem("days"))
-
+  const days = JSON.parse(sessionStorage.getItem("days"));
+console.log(days)
   const { mutate, data, isLoading } = useGetScheduleLocation();
   const { successToast, errorToast } = useCustomToast();
   const navigate = useNavigate();
@@ -27,7 +27,7 @@ const ViewLocationSchedule = () => {
         errorToast(
           error?.response?.data?.message ||
             error?.message ||
-            "An Error occurred",
+            "An Error occurred"
         );
       },
     });
@@ -77,11 +77,9 @@ const ViewLocationSchedule = () => {
                 color="#fff"
                 px="16px"
                 cursor="pointer"
-                onClick={() =>
-                  navigate(
-                    `/admin/staff-schedule/edit/location/${week}/${id}`,
-                  )
-                }
+                onClick={() => {
+                  navigate(`/admin/staff-schedule/edit/location/${week}/${id}`);
+                }}
                 align="center"
                 _hover={{ opacity: 0.7 }}
                 transition=".3s ease-in-out"

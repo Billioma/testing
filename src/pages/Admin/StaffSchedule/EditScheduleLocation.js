@@ -22,7 +22,7 @@ const getCurrentWeekDates = () => {
   const now = dayjs();
   const startOfWeek = now.startOf("week").add(1, "day");
   const dates = Array.from({ length: 7 }).map((_, i) =>
-    startOfWeek.add(i, "day").format("dddd, DD MMM"),
+    startOfWeek.add(i, "day").format("dddd, DD MMM")
   );
   return dates;
 };
@@ -31,8 +31,8 @@ const EditScheduleLocation = () => {
   const { data: locationsData, isLoading: isLocation } = useGetAllLocations();
   const { data: staffs, isLoading: isStaff } = useGetStaffs({}, 1, 1000);
 
-  const days = JSON.parse(sessionStorage.getItem("days"))
-  
+  const days = JSON.parse(sessionStorage.getItem("days"));
+
   const [values, setValues] = useState({
     location: "",
     schedules: [
@@ -61,26 +61,30 @@ const EditScheduleLocation = () => {
   }));
 
   const handleScheduleChange = (index, key, selectedOptions) => {
-    const updatedSchedules = values?.schedules?.map((schedule, i) =>
-      i === index
-        ? {
-            ...schedule,
-            [key]: selectedOptions?.map((option) => option?.value),
-          }
-        : schedule,
-    );
+    if (selectedOptions.length <= 5) {
+      const updatedSchedules = values?.schedules?.map((schedule, i) =>
+        i === index
+          ? {
+              ...schedule,
+              [key]: selectedOptions?.map((option) => option?.value),
+            }
+          : schedule
+      );
 
-    setValues((prevValues) => ({
-      ...prevValues,
-      schedules: updatedSchedules,
-    }));
+      setValues((prevValues) => ({
+        ...prevValues,
+        schedules: updatedSchedules,
+      }));
+    } else {
+      alert("You can select up to 5 staff members only.");
+    }
   };
 
   const toggleSchedule = (index) => {
     setOpenSchedules((prevOpenSchedules) =>
       prevOpenSchedules?.includes(index)
         ? prevOpenSchedules?.filter((i) => i !== index)
-        : [...prevOpenSchedules, index],
+        : [...prevOpenSchedules, index]
     );
   };
 
@@ -91,7 +95,7 @@ const EditScheduleLocation = () => {
       schedules: updatedSchedules,
     }));
     setOpenSchedules((prevOpenSchedules) =>
-      prevOpenSchedules?.filter((i) => i !== index),
+      prevOpenSchedules?.filter((i) => i !== index)
     );
   };
 
@@ -107,7 +111,7 @@ const EditScheduleLocation = () => {
     },
     onError: (error) => {
       errorToast(
-        error?.response?.data?.message || error?.message || "An Error occurred",
+        error?.response?.data?.message || error?.message || "An Error occurred"
       );
     },
   });
@@ -119,6 +123,7 @@ const EditScheduleLocation = () => {
       ...rest,
     });
   };
+
   const weekDates = getCurrentWeekDates();
   const {
     mutate: detailsMutate,
@@ -139,7 +144,7 @@ const EditScheduleLocation = () => {
   }, []);
 
   const selectedLocationOption = locationOptions?.find(
-    (option) => Number(option.value) === Number(id),
+    (option) => Number(option.value) === Number(id)
   );
 
   useEffect(() => {
@@ -261,10 +266,10 @@ const EditScheduleLocation = () => {
                     <Select
                       styles={customStyles}
                       options={daysOfWeekOptions}
-                      isDisabled
+                      isMulti
                       placeholder="Select Days"
                       value={daysOfWeekOptions?.filter((option) =>
-                        schedule?.daysOfWeek?.includes(option?.value),
+                        schedule?.daysOfWeek?.includes(option?.value)
                       )}
                       components={{
                         IndicatorSeparator: () => (
@@ -272,6 +277,13 @@ const EditScheduleLocation = () => {
                         ),
                         DropdownIndicator: () => "",
                       }}
+                      onChange={(selectedOptions) =>
+                        handleScheduleChange(
+                          index,
+                          "daysOfWeek",
+                          selectedOptions
+                        )
+                      }
                     />
                   </Box>
 
@@ -285,7 +297,7 @@ const EditScheduleLocation = () => {
                       isMulti
                       placeholder="Select Staffs"
                       value={staffOptions?.filter((option) =>
-                        schedule?.staffIds?.includes(option?.value),
+                        schedule?.staffIds?.includes(option?.value)
                       )}
                       components={{
                         IndicatorSeparator: () => (
@@ -354,7 +366,7 @@ const EditScheduleLocation = () => {
 
               {schedule?.staffIds?.map((staffId) => {
                 const staff = staffOptions?.find(
-                  (option) => option.value === staffId,
+                  (option) => option.value === staffId
                 );
 
                 return (
@@ -378,7 +390,7 @@ const EditScheduleLocation = () => {
 
               {schedule?.daysOfWeek?.map((dayValue) => {
                 const dayIndex = DayOfWeekEnum.findIndex(
-                  (day) => day.value === dayValue,
+                  (day) => day.value === dayValue
                 );
 
                 return (

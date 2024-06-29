@@ -1,6 +1,8 @@
 import React from "react";
 import {
   Box,
+  Flex,
+  Image,
   Table,
   TableContainer,
   Tbody,
@@ -13,6 +15,25 @@ import {
 import TableLoader from "../../../loader/TableLoader";
 import { DefaultPagination } from "../../../common/TableFormat";
 import { useNavigate } from "react-router-dom";
+
+const mergeSchedules = (schedule, offDaySchedule) => {
+  const combinedSchedule = { ...schedule };
+
+  Object.keys(offDaySchedule).forEach((day) => {
+    if (!combinedSchedule[day]) {
+      combinedSchedule[day] = [];
+    }
+    combinedSchedule[day] = [
+      ...combinedSchedule[day],
+      ...offDaySchedule[day].map((offDayItem) => ({
+        ...offDayItem,
+        isOffDay: true,
+      })),
+    ];
+  });
+
+  return combinedSchedule;
+};
 
 const AllTableLayer = ({
   data,
@@ -27,6 +48,7 @@ const AllTableLayer = ({
   setLimit,
 }) => {
   const navigate = useNavigate();
+
   return (
     <Box mt="16px">
       {isLoading ? (
@@ -65,86 +87,62 @@ const AllTableLayer = ({
                 </Tr>
               </Thead>
               <Tbody>
-                {data?.locations?.map((item, i) => (
-                  <Tr key={i} color="#646668" fontSize="13px">
-                    <Td
-                      // cursor="pointer"
-                      // onClick={() => {
-                      //   navigate(
-                      //     `/admin/staff-schedule/location/${week}/${item?.id}`
-                      //   );
-                      //   sessionStorage.setItem("days", JSON.stringify(day));
-                      // }}
-                      borderRight="1px solid #F4F6F8"
-                      fontWeight={500}
-                    >
-                      {item?.name}
-                    </Td>
-                    <Td>
-                      {item?.schedule?.monday?.length
-                        ? item?.schedule?.monday?.map((item, i) => (
-                            <Box key={i}>
-                              <Text>{item?.fullName}</Text>
-                            </Box>
-                          ))
-                        : "N/A"}
-                    </Td>
-                    <Td>
-                      {item?.schedule?.tuesday?.length
-                        ? item?.schedule?.tuesday?.map((item, i) => (
-                            <Box key={i}>
-                              <Text>{item?.fullName}</Text>
-                            </Box>
-                          ))
-                        : "N/A"}
-                    </Td>
-                    <Td>
-                      {item?.schedule?.wednesday?.length
-                        ? item?.schedule?.wednesday?.map((item, i) => (
-                            <Box key={i}>
-                              <Text>{item?.fullName}</Text>
-                            </Box>
-                          ))
-                        : "N/A"}
-                    </Td>
-                    <Td>
-                      {item?.schedule?.thursday?.length
-                        ? item?.schedule?.thursday?.map((item, i) => (
-                            <Box key={i}>
-                              <Text>{item?.fullName}</Text>
-                            </Box>
-                          ))
-                        : "N/A"}
-                    </Td>
-                    <Td>
-                      {item?.schedule?.friday?.length
-                        ? item?.schedule?.friday?.map((item, i) => (
-                            <Box key={i}>
-                              <Text>{item?.fullName}</Text>
-                            </Box>
-                          ))
-                        : "N/A"}
-                    </Td>
-                    <Td>
-                      {item?.schedule?.saturday?.length
-                        ? item?.schedule?.saturday?.map((item, i) => (
-                            <Box key={i}>
-                              <Text>{item?.fullName}</Text>
-                            </Box>
-                          ))
-                        : "N/A"}
-                    </Td>
-                    <Td>
-                      {item?.schedule?.sunday?.length
-                        ? item?.schedule?.sunday?.map((item, i) => (
-                            <Box key={i}>
-                              <Text>{item?.fullName}</Text>
-                            </Box>
-                          ))
-                        : "N/A"}
-                    </Td>
-                  </Tr>
-                ))}
+                {data?.locations?.map((item, i) => {
+                  const combinedSchedule = mergeSchedules(
+                    item.schedule,
+                    item.offDaySchedule
+                  );
+
+                  return (
+                    <Tr key={i} color="#646668" fontSize="13px">
+                      <Td
+                        cursor="pointer"
+                        onClick={() => {
+                          navigate(
+                            `/admin/staff-schedule/location/${week}/${item?.id}`
+                          );
+                          sessionStorage.setItem("days", JSON.stringify(day));
+                        }}
+                        borderRight="1px solid #F4F6F8"
+                        fontWeight={500}
+                      >
+                        {item?.name}
+                      </Td>
+                      {[
+                        "monday",
+                        "tuesday",
+                        "wednesday",
+                        "thursday",
+                        "friday",
+                        "saturday",
+                        "sunday",
+                      ].map((day, dayIndex) => (
+                        <Td key={dayIndex}>
+                          {combinedSchedule[day]?.length
+                            ? combinedSchedule[day].map(
+                                (schedItem, schedIndex) => (
+                                  <Box key={schedIndex}>
+                                    <Flex align="center" gap="4px">
+                                      <Image
+                                        display={
+                                          schedItem.isOffDay ? "flex" : "none"
+                                        }
+                                        src="/assets/warnn.svg"
+                                        w="18px"
+                                        h="18px"
+                                        objectFit="contain"
+                                      />
+                                      <Text>{schedItem?.fullName}</Text>
+                                    </Flex>
+                                  </Box>
+                                )
+                              )
+                            : "N/A"}
+                        </Td>
+                      ))}
+                    </Tr>
+                  );
+                })}
               </Tbody>
             </Table>
           </TableContainer>

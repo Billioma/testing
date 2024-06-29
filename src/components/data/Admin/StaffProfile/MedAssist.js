@@ -28,7 +28,7 @@ const MedAssist = ({ data }) => {
             fontSize="14px"
             lineHeight="100%"
           >
-            <Td>₦ {item?.amountRequested?.toLocaleString()}</Td>
+            <Td>₦ {item?.amount?.toLocaleString()}</Td>
 
             <Td>{formatDat(item?.createdAt)}</Td>
             <Td>
@@ -38,13 +38,13 @@ const MedAssist = ({ data }) => {
                   color={
                     LoanStatus.find(
                       (dat) =>
-                        dat.name?.toLowerCase() === item?.status?.toLowerCase(),
+                        dat.name?.toLowerCase() === item?.status?.toLowerCase()
                     )?.color || ""
                   }
                   bg={
                     LoanStatus.find(
                       (dat) =>
-                        dat.name?.toLowerCase() === item?.status?.toLowerCase(),
+                        dat.name?.toLowerCase() === item?.status?.toLowerCase()
                     )?.bg || ""
                   }
                   justifyContent={"center"}
