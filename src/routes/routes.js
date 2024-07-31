@@ -62,6 +62,8 @@ const {
   CUST_PAYMENT,
   CUST_PROFILE,
   CUST_EDIT_PROFILE,
+  CUST_INCIDENT,
+  CUST_INCIDENT_DETAILS,
 
   // CLIENt ROUTES
   CLIENT_DASHBOARD,
@@ -218,6 +220,12 @@ const CustPayment = WithSuspense(
 );
 const CustEditProfile = WithSuspense(
   lazy(() => import("../pages/Customer/Account/EditProfile"))
+);
+const CustIncidents = WithSuspense(
+  lazy(() => import("../pages/Customer/Incidents/index"))
+);
+const CustIncidentsDetails = WithSuspense(
+  lazy(() => import("../pages/Customer/Incidents/IncidentDetails"))
 );
 
 const CustDashboard = WithSuspense(
@@ -937,6 +945,18 @@ const AdminConfigQrCode = WithSuspense(
   lazy(() => import("../pages/Admin/Configurations/QrCode"))
 );
 
+const AdminIncidents = WithSuspense(
+  lazy(() => import("../pages/Admin/Incidents/index"))
+);
+
+const AdminCreateIncidents = WithSuspense(
+  lazy(() => import("../pages/Admin/Incidents/CreateIncident"))
+);
+
+const AdminIncidentsDetails = WithSuspense(
+  lazy(() => import("../pages/Admin/Incidents/IncidentDetails"))
+);
+
 export const PUBLIC_ROUTES = [
   //CUSTOMER ROUTES
   { path: CUST_LOGIN, element: <CustLogin /> },
@@ -1029,6 +1049,8 @@ export const PRIVATE_ROUTES = [
   { path: CUST_PROFILE, element: <CustProfile /> },
   { path: CUST_SERVICES_CAR_SERVICE, element: <CustServicesCar /> },
   { path: CUST_EDIT_PROFILE, element: <CustEditProfile /> },
+  { path: CUST_INCIDENT, element: <CustIncidents /> },
+  { path: CUST_INCIDENT_DETAILS, element: <CustIncidentsDetails /> },
 
   // CLIENT ROUTES
   { path: CLIENT_DASHBOARD, element: <ClientDashboard /> },
@@ -1524,6 +1546,21 @@ export const PRIVATE_ROUTES = [
   {
     path: PRIVATE_PATHS.ADMIN_CONFIG_QR_CODE,
     element: <AdminConfigQrCode />,
+  },
+
+  {
+    path: PRIVATE_PATHS.ADMIN_INCIDENTS,
+    element: <AdminIncidents />,
+  },
+
+  {
+    path: PRIVATE_PATHS.ADMIN_CREATE_INCIDENTS,
+    element: <AdminCreateIncidents />,
+  },
+
+  {
+    path: PRIVATE_PATHS.ADMIN_INCIDENTS_DETAILS,
+    element: <AdminIncidentsDetails />,
   },
 
   {

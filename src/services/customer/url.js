@@ -13,7 +13,11 @@ export const REFRESH_TOKEN = "/auth/refresh";
 export const PUBLIC_MAKES = "self-parking/get-makes";
 export const PUBLIC_MODELS = "self-parking/get-models";
 export const GET_VEHICLES = "vehicles";
+export const INCIDENTS = "customer/incident-report";
 export const DEL_VEHICLES = (id = "") => `vehicles/${id}`;
+export const INCIDENT = (id = "") => `customer/incident-report/${id}`;
+export const INCIDENT_STATUS = (id = "") =>
+  `/admin/incident-report/${id}/update-status`;
 export const CLAIM_VEHICLES = (id = "") =>
   `vehicles/claim-vehicle?licenseNumber=${id}`;
 export const DEL_CARDS = (id = "") => `cards/${id}`;

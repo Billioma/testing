@@ -8,6 +8,19 @@ export const initOpPassValues = {
   passwordConfirmation: "",
 };
 
+export const initAdminStaffValues = {
+  manager: "",
+  dateOfIncident: new Date(),
+  summary: "",
+  staffInvolved: [""],
+};
+
+export const validateAdminStaffSchema = Yup.object().shape({
+  manager: Yup.object().required("Manager on Duty is required"),
+  summary: Yup.string().required("Summary is required"),
+  staffInvolved: Yup.array().required("Staff is required"),
+});
+
 export const initClientPassValues = {
   password: "",
   passwordConfirmation: "",

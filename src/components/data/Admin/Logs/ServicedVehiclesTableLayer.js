@@ -138,7 +138,7 @@ const TableLayer = ({
                 <Td>{item?.vehicle?.licensePlate}</Td>
                 <Td textAlign="center">
                   {item?.customer
-                    ? item?.customer?.name
+                    ? `${item?.customer?.profile?.firstName} ${item?.customer?.profile?.lastName}`
                     : item?.vehicle?.customerName}
                 </Td>
                 <Td textAlign="center">₦ {item?.amount?.toLocaleString()}</Td>

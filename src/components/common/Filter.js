@@ -22,6 +22,7 @@ import {
   LogsStatus,
   FeatureType,
   PaymentMethods,
+  incidentStatus,
 } from "./constants";
 import {
   useGetMakes,
@@ -221,6 +222,11 @@ const Filter = ({
   )?.map((status, i) => ({
     value: i,
     label: status,
+  }));
+
+  const incidentStatusOptions = incidentStatus?.map((status) => ({
+    value: status?.value,
+    label: status?.name,
   }));
 
   const payStatusOptions = invoiceStatusType?.map((status, i) => ({
@@ -530,6 +536,7 @@ const Filter = ({
                     values?.dropFilter === "Corporate" ||
                     values?.dropFilter === "Upgradeable" ||
                     values?.dropFilter === "Status" ||
+                    values?.dropFilter === "Incident Status" ||
                     values?.dropFilter === "Payment Status" ||
                     values?.dropFilter === "Make" ||
                     values?.dropFilter === "Model" ||
@@ -602,6 +609,8 @@ const Filter = ({
                                 ? booleanOptions
                                 : values?.dropFilter === "Status"
                                 ? statusOptions
+                                : values?.dropFilter === "Incident Status"
+                                ? incidentStatusOptions
                                 : values?.dropFilter === "Payment Status"
                                 ? payStatusOptions
                                 : searchOptions
@@ -773,6 +782,10 @@ const Filter = ({
                     : dat?.title === "isUpgradable" ||
                       dat?.title === "isCorporate"
                     ? ["FALSE", "TRUE"]?.find((item, i) => i === dat?.filter)
+                    : dat?.dropFilter === "Incident Status"
+                    ? incidentStatusOptions?.find(
+                        (item) => item.value === dat?.filter
+                      ).label
                     : dat?.title === "status"
                     ? (pathname?.includes("/transactions")
                         ? ReservedStatus
@@ -791,6 +804,7 @@ const Filter = ({
                     : dat?.filter && dat?.filter}
                   "
                 </Text>
+                {console.log(dat?.title)}
 
                 <MdClose
                   cursor="pointer"

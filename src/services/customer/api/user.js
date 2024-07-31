@@ -16,6 +16,29 @@ export const getPreference = async () => {
   return res.data;
 };
 
+export const uploadIncidentDocs = async ({ query, body }) => {
+  const res = await axiosInstance.patch(API.INCIDENT(query), body);
+  return res.data;
+};
+
+export const incidentStatus = async ({ query, body }) => {
+  const res = await axiosInstance.patch(API.INCIDENT_STATUS(query), body);
+  return res.data;
+};
+
+export const getIncident = async (query) => {
+  const res = await axiosInstance.get(API.INCIDENT(query));
+  return res.data;
+};
+
+export const getIncidents = async ({ queryKey }) => {
+  const [, limit, page] = queryKey;
+  const res = await axiosInstance.get(
+    `${API.INCIDENTS}?limit=${limit}&page=${page}&sort=createdAt,DESC`
+  );
+  return res.data;
+};
+
 export const getFaq = async () => {
   const res = await axiosInstance.get(API.GET_FAQ);
   return res.data;

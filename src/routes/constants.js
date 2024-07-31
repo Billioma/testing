@@ -61,6 +61,8 @@ export const PRIVATE_PATHS = {
   CUST_PROFILE: "/customer/account/profile",
   CUST_SETTINGS: "/customer/account/settings",
   CUST_PAYMENT: "/customer/account/payment",
+  CUST_INCIDENT: "/customer/claims",
+  CUST_INCIDENT_DETAILS: "/customer/claims/:id",
   CUST_EDIT_PROFILE: "/customer/account/update-profile",
 
   //CLIENT ROUTES
@@ -265,4 +267,7 @@ export const PRIVATE_PATHS = {
   ADMIN_REP_LOGS: "/admin/reports/logs",
   ADMIN_REP_HISTORY: "/admin/reports/payment-history",
   ADMIN_REP_TIPS: "/admin/reports/tips",
+  ADMIN_INCIDENTS: "/admin/claims",
+  ADMIN_CREATE_INCIDENTS: "/admin/logs/valeted-vehicles/:id/report-incident",
+  ADMIN_INCIDENTS_DETAILS: "/admin/claims/:id",
 };

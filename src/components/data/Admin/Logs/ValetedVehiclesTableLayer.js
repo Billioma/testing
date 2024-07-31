@@ -23,7 +23,7 @@ import {
   useRetrieveTickets,
 } from "../../../../services/admin/query/logs";
 import TableLoader from "../../../loaders/TableLoader";
-import { LogStatus, viewClaimOption } from "../../../common/constants";
+import { LogStatus, viewClaimsOption } from "../../../common/constants";
 import AdminRetrieveTicketModal from "../../../modals/AdminRetrieveTicketModal";
 
 const TableLayer = ({
@@ -51,6 +51,10 @@ const TableLayer = ({
   ];
   const [selectedRow, setSelectedRow] = useState({ isOpen: false, id: null });
   const [selectedClaim, setSelectedClaim] = useState({
+    isOpen: false,
+    id: null,
+  });
+  const [selectedIncident, setSelectedIncident] = useState({
     isOpen: false,
     id: null,
   });
@@ -93,12 +97,16 @@ const TableLayer = ({
     retrieveMutate(selectedClaim.id);
   };
 
-  const openOption = (i, item) => {
-    i === 0
+  const openOption = (dat, item) => {
+    dat?.name?.includes("View")
       ? navigate(`/admin/logs/valeted-vehicles/details/${item?.id}`)
-      : i === 1
+      : dat?.name?.includes("Delete")
       ? setSelectedRow({ isOpen: true, id: item.id })
-      : i === 2 && setSelectedClaim({ isOpen: true, id: item.id });
+      : dat?.name?.includes("Report")
+      ? (sessionStorage.setItem("incident", JSON.stringify(item)),
+        navigate(`/admin/logs/valeted-vehicles/${item?.id}/report-incident`))
+      : dat?.name?.includes("Claim") &&
+        setSelectedClaim({ isOpen: true, id: item.id });
   };
 
   return (
@@ -138,7 +146,7 @@ const TableLayer = ({
                 <Td>{item?.vehicle?.licensePlate}</Td>
                 <Td textAlign="center">
                   {item?.customer
-                    ? item?.customer?.name
+                    ? `${item?.customer?.profile?.firstName} ${item?.customer?.profile?.lastName}`
                     : item?.vehicle?.customerName}
                 </Td>
                 <Td textAlign="center">₦ {item?.amount?.toLocaleString()}</Td>
@@ -175,8 +183,8 @@ const TableLayer = ({
                         boxShadow="0px 8px 16px 0px rgba(0, 0, 0, 0.08)"
                       >
                         {(item?.status
-                          ? viewClaimOption?.slice(0, 2)
-                          : viewClaimOption
+                          ? viewClaimsOption?.slice(0, 3)
+                          : viewClaimsOption
                         ).map((dat, i) => (
                           <MenuItem
                             gap="12px"
@@ -187,7 +195,7 @@ const TableLayer = ({
                             _hover={{ bg: "#F4F6F8" }}
                             align="center"
                             fontWeight="500"
-                            onClick={() => openOption(i, item)}
+                            onClick={() => openOption(dat, item)}
                           >
                             <Icon as={dat.icon} />
                             {dat?.name}

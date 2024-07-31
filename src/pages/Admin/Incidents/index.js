@@ -1,17 +1,20 @@
-import React, { useState, useEffect } from "react";
-import ValetedVehiclesTableLayer from "../../../components/data/Admin/Logs/ValetedVehiclesTableLayer";
+import React, { useEffect, useState } from "react";
 import { Box, Flex, Image, Text } from "@chakra-ui/react";
-import { useGetValetedVehicles } from "../../../services/admin/query/logs";
-import { valetedVehiclesOptions } from "../../../components/common/constants";
+import TableLayer from "../../../components/data/Admin/Incidents/TableLayer";
 import Filter from "../../../components/common/Filter";
+import { useNavigate } from "react-router-dom";
+import { useGetAdminIncidents } from "../../../services/admin/query/reports";
+import { incidentOptions } from "../../../components/common/constants";
 import { formatFilterDate } from "../../../utils/helpers";
 
-export default function () {
+const index = () => {
+  const [type, setType] = useState("");
   const [page, setPage] = useState(1);
-  const [limit, setLimit] = useState(25);
+  const [limit, setLimit] = useState(50);
   const [startRow, setStartRow] = useState(1);
-  const [endRow, setEndRow] = useState(0);
+  const [endRow, setEndRow] = useState(50);
   const [filtArray, setFiltArray] = useState([]);
+
   const today = new Date();
   const year = today.getFullYear();
   const convertedFilters = filtArray?.map((filterObj) => {
@@ -50,8 +53,7 @@ export default function () {
       : convertedFilters?.join("&");
 
   const [isRefetch, setIsRefetch] = useState(false);
-
-  const { data, isLoading, refetch } = useGetValetedVehicles(
+  const { data, isLoading, refetch } = useGetAdminIncidents(
     {
       refetchOnWindowFocus: true,
       onSuccess: () => {
@@ -64,6 +66,7 @@ export default function () {
         setIsRefetch(false);
       },
     },
+    type,
     page,
     limit,
     query
@@ -71,7 +74,6 @@ export default function () {
 
   useEffect(() => {
     refetch();
-    sessionStorage.removeItem("incident");
   }, []);
 
   const handleRefreshClick = async () => {
@@ -99,20 +101,59 @@ export default function () {
     setEndRow(currentEndRow);
   }, [data, page, limit]);
 
+  const typeToMap = [
+    { name: "All", value: "" },
+    { name: "Pending", value: "PENDING" },
+    { name: "In Progress", value: "IN_PROGRESS" },
+    { name: "Under Review", value: "UNDER_REVIEW" },
+    { name: "Completed", value: "COMPLETED" },
+  ];
+
   return (
-    <Box border="1px solid #d4d6d8" borderRadius="8px" p="16px 23px 24px">
-      <Filter
-        setFiltArray={setFiltArray}
-        filtArray={filtArray}
-        fieldToCompare={valetedVehiclesOptions}
-        gap
-        title={
-          <Text fontWeight={500} lineHeight="100%" color="#242628">
-            All Valeted Vehicles
-          </Text>
-        }
-        main={
-          <>
+    <div>
+      <Flex w="100%" mb="24px" bg="#F4F6F8" gap="24px" align="flex-end">
+        <Flex
+          flexDir={{ base: "column", md: "row" }}
+          w="100%"
+          align={{ base: "flex-start", md: "center" }}
+        >
+          {typeToMap.map((item, i) => (
+            <Flex
+              py="11px"
+              px={{ base: "20px", md: "unset" }}
+              fontSize="13px"
+              fontWeight={500}
+              w={{ base: "fit-content", md: "10%" }}
+              cursor="pointer"
+              _hover={{ color: "#000" }}
+              transition=".3s ease-in-out"
+              justifyContent={{ base: "flex-start", md: "center" }}
+              color={type === item?.value ? "#444648" : "#949698"}
+              align="center"
+              key={i}
+              borderBottom={type === item?.value ? "2px solid #000" : "none"}
+              onClick={() => {
+                setType(item?.value);
+              }}
+            >
+              {item?.name}
+            </Flex>
+          ))}
+        </Flex>
+      </Flex>
+
+      <Box border="1px solid #d4d6d8" borderRadius="8px" p="16px 23px 24px">
+        <Filter
+          setFiltArray={setFiltArray}
+          filtArray={filtArray}
+          fieldToCompare={incidentOptions}
+          gap
+          title={
+            <Text fontWeight={500} lineHeight="100%" color="#242628">
+              All Incidents
+            </Text>
+          }
+          main={
             <Flex
               justifyContent="center"
               align="center"
@@ -131,21 +172,23 @@ export default function () {
                 h="20px"
               />
             </Flex>
-          </>
-        }
-      />
+          }
+        />
 
-      <ValetedVehiclesTableLayer
-        data={data}
-        isLoading={isLoading}
-        page={page}
-        limit={limit}
-        setPage={setPage}
-        startRow={startRow}
-        endRow={endRow || 25}
-        refetch={refetch}
-        setLimit={setLimit}
-      />
-    </Box>
+        <TableLayer
+          data={data}
+          isLoading={isLoading}
+          page={page}
+          limit={limit}
+          setPage={setPage}
+          startRow={startRow}
+          endRow={endRow}
+          refetch={refetch}
+          setLimit={setLimit}
+        />
+      </Box>
+    </div>
   );
-}
+};
+
+export default index;

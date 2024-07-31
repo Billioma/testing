@@ -1,5 +1,9 @@
 import { useMutation, useQuery } from "react-query";
 import {
+  createIncident,
+  delAdminIncident,
+  getAdminIncident,
+  getAdminIncidents,
   getAdminReport,
   getAdminTran,
   getPoints,
@@ -7,6 +11,8 @@ import {
   getReportsExport,
   getReportsExports,
   getTrans,
+  reUpload,
+  uploadIncidentDocs,
 } from "../api/report";
 
 export const useGetAdminReport = (
@@ -75,6 +81,64 @@ export const useGetTran = (options = {}, page = 1, limit = 50, query) => {
   );
 
   return { isLoading, data, refetch };
+};
+
+export const useGetAdminIncidents = (
+  options = {},
+  type = "",
+  page = 1,
+  limit = 50,
+  query
+) => {
+  const { data, isLoading, refetch } = useQuery(
+    ["getAdminIncidents", type, page, limit, query],
+    () => getAdminIncidents(type, page, limit, query),
+    {
+      ...options,
+    }
+  );
+
+  return { isLoading, data, refetch };
+};
+
+export const useGetAdminIncident = (options = {}) => {
+  const { mutate, isLoading, data } = useMutation(getAdminIncident, {
+    mutationKey: "getAdminIncident",
+    ...options,
+  });
+  return { mutate, isLoading, data };
+};
+
+export const useCreateIncident = (options = {}) => {
+  const { mutate, isLoading, data } = useMutation(createIncident, {
+    mutationKey: "createIncident",
+    ...options,
+  });
+  return { mutate, isLoading, data };
+};
+
+export const useReUpload = (options = {}) => {
+  const { mutate, isLoading, data } = useMutation(reUpload, {
+    mutationKey: "reUpload",
+    ...options,
+  });
+  return { mutate, isLoading, data };
+};
+
+export const useDelAdminIncident = (options = {}) => {
+  const { mutate, isLoading, data } = useMutation(delAdminIncident, {
+    mutationKey: "delAdminIncident",
+    ...options,
+  });
+  return { mutate, isLoading, data };
+};
+
+export const useUploadIncidentDocs = (options = {}) => {
+  const { mutate, isLoading, data } = useMutation(uploadIncidentDocs, {
+    mutationKey: "uploadIncidentDocs",
+    ...options,
+  });
+  return { mutate, isLoading, data };
 };
 
 export const useGetPoints = (options = {}, page = 1, limit = 50, query) => {

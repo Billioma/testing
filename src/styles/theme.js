@@ -17,6 +17,16 @@ export const customTheme = extendTheme({
   },
   breakpoints,
   components: {
+    Checkbox: {
+      baseStyle: {
+        control: {
+          _checked: {
+            bg: "#EE383A",
+            borderColor: "#EE383A",
+          },
+        },
+      },
+    },
     Radio: {
       variants: {
         primary: {

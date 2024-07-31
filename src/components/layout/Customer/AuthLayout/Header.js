@@ -30,8 +30,8 @@ const Header = ({ showSidebar }) => {
       case locationRoute.includes("services"):
         return setTitle("Services");
 
-      case locationRoute.includes("services/park"):
-        return setSecTitle("Parkc");
+      case locationRoute.includes("claims"):
+        return setTitle("Claims");
 
       case locationRoute.includes("subscription"):
         return setTitle("Subscription");
@@ -57,6 +57,9 @@ const Header = ({ showSidebar }) => {
     switch (true) {
       case locationRoute.includes("services/pay-to-park/"):
         return setSecTitle("Parking Details");
+
+      case locationRoute.includes("claims/"):
+        return setSecTitle("Incident Details");
 
       case locationRoute.includes("history/pay-to-park/"):
         return setSecTitle("Parking Details");

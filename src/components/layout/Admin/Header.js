@@ -32,6 +32,9 @@ const Header = ({ showSidebar }) => {
       case locationRoute.includes("clients"):
         return setTitle("Clients");
 
+      case locationRoute.includes("claims"):
+        return setTitle("Claims");
+
       case locationRoute.includes("users"):
         return setTitle("Users");
 

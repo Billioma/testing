@@ -10,13 +10,17 @@ import {
   customerUploadPic,
   deleteCard,
   getFaq,
+  getIncident,
+  getIncidents,
   getPreference,
   getUser,
   getUserSub,
   getUserSubs,
   getUserSubscriptions,
+  incidentStatus,
   renewSub,
   sendMail,
+  uploadIncidentDocs,
 } from "../api/user";
 
 export const useGetUser = (options = {}) => {
@@ -33,6 +37,41 @@ export const useGetFaq = (options = {}) => {
   });
 
   return { data, isLoading, refetch };
+};
+
+export const useGetIncidents = (options = {}, limit = "", page = "") => {
+  const { data, isLoading, refetch } = useQuery(
+    ["getIncidents", limit, page],
+    getIncidents,
+    {
+      ...options,
+    }
+  );
+  return { data, isLoading, refetch };
+};
+
+export const useUploadIncidentDocs = (options = {}) => {
+  const { mutate, isLoading, data } = useMutation(uploadIncidentDocs, {
+    mutationKey: "uploadIncidentDocs",
+    ...options,
+  });
+  return { mutate, isLoading, data };
+};
+
+export const useIncidentStatus = (options = {}) => {
+  const { mutate, isLoading, data } = useMutation(incidentStatus, {
+    mutationKey: "incidentStatus",
+    ...options,
+  });
+  return { mutate, isLoading, data };
+};
+
+export const useGetIncident = (options = {}) => {
+  const { mutate, isLoading, data } = useMutation(getIncident, {
+    mutationKey: "getIncident",
+    ...options,
+  });
+  return { mutate, isLoading, data };
 };
 
 export const useGetPreference = (options = {}) => {

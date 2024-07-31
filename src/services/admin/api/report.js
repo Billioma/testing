@@ -45,6 +45,44 @@ export const getTrans = async (page, limit, query) => {
   return res.data;
 };
 
+export const getAdminIncidents = async (type, page, limit, query) => {
+  const res = await axiosInstance.get(
+    type
+      ? API.INCIDENTS +
+          `?page=${page}&limit=${limit}&sort=createdAt,DESC&${
+            query || ""
+          }&filter=status||$eq||${type}`
+      : API.INCIDENTS +
+          `?page=${page}&limit=${limit}&sort=createdAt,DESC&${query || ""}`
+  );
+  return res.data;
+};
+
+export const getAdminIncident = async (query) => {
+  const res = await axiosInstance.get(API.INCIDENT(query));
+  return res.data;
+};
+
+export const createIncident = async (body) => {
+  const res = await axiosInstance.post(API.INCIDENTS, body);
+  return res.data;
+};
+
+export const reUpload = async ({ query, body }) => {
+  const res = await axiosInstance.patch(API.RE_UPLOAD(query), body);
+  return res.data;
+};
+
+export const delAdminIncident = async (query) => {
+  const res = await axiosInstance.delete(API.INCIDENT(query));
+  return res.data;
+};
+
+export const uploadIncidentDocs = async ({ query, body }) => {
+  const res = await axiosInstance.patch(API.INCIDENT(query), body);
+  return res.data;
+};
+
 export const getPoints = async (page, limit, query) => {
   const res = await axiosInstance.get(
     `${

@@ -50,6 +50,22 @@ export const formatDate = (date, fallback = "", withTime = false) => {
   return `${year}-${month}-${day} ${withTime ? `${hours}:${minutes}` : ""}`;
 };
 
+export const formatNewDates = (date, fallback = "", withTime = false) => {
+  const formattedDate = new Date(date);
+
+  // Check if the date is valid
+  if (isNaN(formattedDate)) return fallback;
+
+  const year = formattedDate.getFullYear();
+  const month = (formattedDate.getMonth() + 1).toString().padStart(2, "0");
+  const day = formattedDate.getDate().toString().padStart(2, "0");
+
+  const hours = formattedDate.getHours().toString().padStart(2, "0");
+  const minutes = formattedDate.getMinutes().toString().padStart(2, "0");
+
+  return `${year}-${month}-${day} ${withTime ? `${hours}:${minutes}` : ""}`;
+};
+
 export const formatNewDate = (date, fallback = "", withTime = false) => {
   if (!date) return fallback;
 

@@ -8,6 +8,7 @@ import {
   FeedbackIcon,
   HelpIcon,
   HistoryIcon,
+  IncidentIcon,
   LocateIcon,
   SubscriptionIcon,
   VehicleIcon,
@@ -208,7 +209,6 @@ export const sidebarItems = [
       },
     ],
   },
-
   {
     id: 9,
     name: "Logs",
@@ -233,8 +233,16 @@ export const sidebarItems = [
   },
   {
     id: 10,
+    name: "Claims",
+    path: "/admin/claims",
+    icon: <IncidentIcon fill={"#000"} />,
+    hover: <IncidentIcon fill="#EE383A" />,
+    sec: <IncidentIcon fill="#fff" />,
+  },
+  {
+    id: 11,
     name: "Reports",
-    path: "/admin/reports",
+    path: "/admin/indic",
     icon: <ReportsIcon fill={"#fff"} stroke="#000" />,
     hover: <ReportsIcon fill="#fff" stroke="#EE383A" />,
     sec: <ReportsIcon fill="#EE383A" stroke="#fff" />,
@@ -282,7 +290,7 @@ export const sidebarItems = [
     ],
   },
   {
-    id: 11,
+    id: 12,
     name: "Support",
     path: "/admin/support",
     icon: <FeedbackIcon fill={"#fff"} stroke="#000" />,
@@ -300,7 +308,7 @@ export const sidebarItems = [
     ],
   },
   {
-    id: 12,
+    id: 13,
     name: "Configurations",
     path: "/admin/configurations",
     icon: <ConfigIcon fill={"#fff"} stroke="#000" />,
@@ -384,6 +392,13 @@ export const general = [
   },
   {
     id: 3,
+    name: "Claims",
+    path: "/customer/claims",
+    icon: <IncidentIcon fill="#242628" />,
+    sec: <IncidentIcon fill="#EE383A" />,
+  },
+  {
+    id: 4,
     name: "Subscriptions",
     path: "/customer/subscriptions",
     icon: <SubscriptionIcon fill="#242628" />,
@@ -391,7 +406,7 @@ export const general = [
   },
 
   {
-    id: 4,
+    id: 5,
     name: "Help Center",
     path: "/customer/help-center",
     icon: <HelpIcon fill="#242628" />,
@@ -1303,6 +1318,23 @@ export const Status = [
   { color: "#E81313", name: "Cancelled", bg: "#F9D0CD" },
 ];
 
+export const IncidentStatus = [
+  { color: "#F9A11E", name: "Pending", bg: "#FDF6E7", border: "transparent" },
+  {
+    color: "#008000",
+    name: "In_Progress",
+    bg: "#E5FFE5",
+    border: "transparent",
+  },
+  {
+    color: "#008000",
+    name: "Under_Review",
+    bg: "#E5FFE5",
+    border: "transparent",
+  },
+  { color: "#0B841D", name: "Completed", bg: "transparent", border: "#E5FFE5" },
+];
+
 export const LogStatus = [
   { color: "#F9A11E", name: "In Service", bg: "#FDF6E7" },
   { color: "#008000", name: "Completed", bg: "#E5FFE5" },
@@ -1423,6 +1455,25 @@ export const viewClaimOption = [
   {
     name: "Delete",
     icon: BsTrash,
+  },
+  {
+    name: "Claim",
+    icon: FiEdit,
+  },
+];
+
+export const viewClaimsOption = [
+  {
+    name: "View",
+    icon: HiOutlineInformationCircle,
+  },
+  {
+    name: "Delete",
+    icon: BsTrash,
+  },
+  {
+    name: "Report an Incident",
+    icon: FiEdit,
   },
   {
     name: "Claim",
@@ -1705,12 +1756,26 @@ export const searchOption = [
   { label: "Equals to", value: "eq" },
 ];
 
+export const incidentStatus = [
+  { name: "Pending", value: "PENDING" },
+  { name: "In Progress", value: "IN_PROGRESS" },
+  { name: "Under Review", value: "UNDER_REVIEW" },
+  { name: "Completed", value: "COMPLETED" },
+];
+
 export const subFieldOption = [
   { label: "Plan", value: "membershipPlan.name" },
   { label: "Amount", value: "membershipPlan.amount" },
   { label: "Duration", value: "membershipPlan.interval" },
   { label: "Next Payment", value: "nextPaymentDate" },
   { label: "Status", value: "status" },
+  { label: "Created At", value: "createdAt" },
+];
+
+export const incidentOptions = [
+  { label: "Incident ID", value: "id" },
+  // { label: "Zone", value: "membershipPlan.amount" },
+  { label: "Incident Status", value: "status" },
   { label: "Created At", value: "createdAt" },
 ];
 

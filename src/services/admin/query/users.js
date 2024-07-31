@@ -29,6 +29,7 @@ import {
   editAdminOperator,
   getAdminEvent,
   fundCustomer,
+  getAllStaffs,
 } from "../api/users";
 
 export const useGetAttendants = (options = {}, page, limit, query) => {
@@ -291,4 +292,14 @@ export const useGetAdminCustomers = (options = {}) => {
     ...options,
   });
   return { mutate, isLoading, data };
+};
+
+export const useGetAllStaff = (options = {}) => {
+  const { data, isLoading, refetch } = useQuery({
+    queryKey: ["allSTaff"],
+    queryFn: getAllStaffs,
+    options,
+  });
+
+  return { data, isLoading, refetch };
 };

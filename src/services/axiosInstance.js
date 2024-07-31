@@ -80,7 +80,7 @@ const pathPrefix =
 const newPath = pathPrefix?.replace("/", "");
 const refreshAccessToken = async (refreshToken) => {
   try {
-    const response = await refreshInstance.get(
+    const response = await axiosInstance.get(
       `${`${newPath}` + REFRESH_TOKEN}`,
       {
         headers: {

@@ -14,6 +14,11 @@ export const getAdminAttendant = async (query) => {
   return res.data;
 };
 
+export const getAllStaffs = async () => {
+  const res = await axiosInstance.get(API.ALL_STAFFS);
+  return res.data;
+};
+
 export const getAdminEvent = async (query) => {
   const res = await axiosInstance.get(API.ADMIN_EVENT(query.id));
   return res.data;

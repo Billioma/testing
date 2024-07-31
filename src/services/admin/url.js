@@ -61,6 +61,8 @@ export const ATTACH_CLIENT_USER = (id = "", email = "") =>
   `admin/clients/attach-user/${id}/?email=${email}`;
 export const MANAGERS = "admin/entity-selectors/users/?search=&manager=1";
 export const CUSTOMERS = "admin/entity-selectors/customers/";
+export const INCIDENTS = "admin/incident-report";
+export const INCIDENT = (id = "") => `admin/incident-report/${id}`;
 
 export const ADMIN_LOCATIONS = "admin/locations";
 export const ADMIN_LOCATIONS_LIST = (
@@ -86,6 +88,9 @@ export const ADMIN_ROLES_LIST = (filterString = "", limit = "", page = "") =>
   `admin/roles?${filterString}&limit=${limit}&page=${page}&sort=createdAt,DESC`;
 
 export const ADMIN_ROLE = (id = "") => `admin/roles/${id}`;
+export const ALL_STAFFS = "admin/all-staff";
+export const RE_UPLOAD = (id = "") =>
+  `/admin/incident-report/${id}/request-upload`;
 
 export const ADMIN_PERMISSIONS_LIST = (
   filterString = "",
