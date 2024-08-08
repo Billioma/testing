@@ -10,6 +10,7 @@ import {
   HistoryIcon,
   IncidentIcon,
   LocateIcon,
+  MetricsIcon,
   SubscriptionIcon,
   VehicleIcon,
 } from "./images";
@@ -34,6 +35,106 @@ import { TbListDetails, TbCalendarEvent } from "react-icons/tb";
 import { HiOutlineInformationCircle } from "react-icons/hi";
 import { FiEdit } from "react-icons/fi";
 
+export const analyticsRoutes = [
+  {
+    id: 0,
+    name: "Dashboard",
+    path: "/analytics/dashboard",
+    icon: <AdminDashboardIcon fill={"#fff"} stroke="#000" />,
+    hover: <AdminDashboardIcon fill="#fff" stroke="#EE383A" />,
+    sec: <AdminDashboardIcon fill="#EE383A" stroke="#fff" />,
+  },
+  {
+    id: 1,
+    name: "Metrics",
+    path: "/analytics/metrics",
+    icon: <MetricsIcon fill={"#fff"} stroke="#000" />,
+    hover: <MetricsIcon fill="#fff" stroke="#EE383A" />,
+    sec: <MetricsIcon fill="#EE383A" stroke="#fff" />,
+    subItems: [
+      {
+        name: "Customers",
+        path: "/analytics/metrics/customers",
+      },
+      {
+        name: "Reserve Parking",
+        path: "/analytics/metrics/reserve-parking",
+      },
+      {
+        name: "Clients & Operators",
+        path: "/analytics/metrics/clients&operators",
+      },
+      {
+        name: "Pay to park Services",
+        path: "/analytics/metrics/pay-to-park",
+      },
+      {
+        name: "Valet Parking",
+        path: "/analytics/metrics/valet",
+      },
+      {
+        name: "Event Parking",
+        path: "/analytics/metrics/events",
+      },
+      {
+        name: "Car Services",
+        path: "/analytics/metrics/car-services",
+      },
+      {
+        name: "Interactions",
+        path: "/analytics/metrics/interactions",
+      },
+      {
+        name: "Vehicles",
+        path: "/analytics/metrics/vehicles",
+      },
+      {
+        name: "Service Ratings",
+        path: "/analytics/metrics/service-ratings",
+      },
+      {
+        name: "Subscriptions",
+        path: "/analytics/metrics/subscriptions",
+      },
+      {
+        name: "Locations",
+        path: "/analytics/metrics/locations",
+      },
+      {
+        name: "Transactions & Invoices",
+        path: "/analytics/metrics/transacitons&invoices",
+      },
+      {
+        name: "Payments",
+        path: "/analytics/metrics/payments",
+      },
+      {
+        name: "Support",
+        path: "/analytics/metrics/support",
+      },
+      {
+        name: "Incidents/Claims",
+        path: "/analytics/metrics/incidents-claims",
+      },
+    ],
+  },
+  {
+    id: 2,
+    name: "Reports",
+    path: "/analytics/reports",
+    icon: <ReportsIcon fill={"#fff"} stroke="#000" />,
+    hover: <ReportsIcon fill="#fff" stroke="#EE383A" />,
+    sec: <ReportsIcon fill="#EE383A" stroke="#fff" />,
+  },
+  {
+    id: 4,
+    name: "Settings",
+    path: "/analytics/settings",
+    icon: <ConfigIcon fill={"#fff"} stroke="#000" />,
+    hover: <ConfigIcon fill="#fff" stroke="#EE383A" />,
+    sec: <ConfigIcon fill="#EE383A" stroke="#fff" />,
+  },
+];
 export const sidebarItems = [
   {
     id: 0,
@@ -231,14 +332,14 @@ export const sidebarItems = [
       },
     ],
   },
-  {
-    id: 10,
-    name: "Claims",
-    path: "/admin/claims",
-    icon: <IncidentIcon fill={"#000"} />,
-    hover: <IncidentIcon fill="#EE383A" />,
-    sec: <IncidentIcon fill="#fff" />,
-  },
+  // {
+  //   id: 10,
+  //   name: "Claims",
+  //   path: "/admin/claims",
+  //   icon: <IncidentIcon fill={"#000"} />,
+  //   hover: <IncidentIcon fill="#EE383A" />,
+  //   sec: <IncidentIcon fill="#fff" />,
+  // },
   {
     id: 11,
     name: "Reports",
@@ -390,13 +491,13 @@ export const general = [
     icon: <VehicleIcon fill="#242628" />,
     sec: <VehicleIcon fill="#EE383A" />,
   },
-  {
-    id: 3,
-    name: "Claims",
-    path: "/customer/claims",
-    icon: <IncidentIcon fill="#242628" />,
-    sec: <IncidentIcon fill="#EE383A" />,
-  },
+  // {
+  //   id: 3,
+  //   name: "Claims",
+  //   path: "/customer/claims",
+  //   icon: <IncidentIcon fill="#242628" />,
+  //   sec: <IncidentIcon fill="#EE383A" />,
+  // },
   {
     id: 4,
     name: "Subscriptions",
@@ -1471,10 +1572,10 @@ export const viewClaimsOption = [
     name: "Delete",
     icon: BsTrash,
   },
-  {
-    name: "Report an Incident",
-    icon: FiEdit,
-  },
+  // {
+  //   name: "Report an Incident",
+  //   icon: FiEdit,
+  // },
   {
     name: "Claim",
     icon: FiEdit,
@@ -1967,6 +2068,10 @@ export const customStyles = {
     border: state.hasValue ? "none" : "1px solid #D4D6D8",
     paddingRight: "16px",
     background: state.hasValue ? "#f4f6f8" : "unset",
+    boxShadow: state.isFocused ? "none" : "none",
+    "&:hover": {
+      boxShadow: "none",
+    },
   }),
   menu: (provided) => ({
     ...provided,

@@ -150,7 +150,7 @@ const index = () => {
           gap
           title={
             <Text fontWeight={500} lineHeight="100%" color="#242628">
-              All Incidents
+              All Claims
             </Text>
           }
           main={

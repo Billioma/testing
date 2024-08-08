@@ -239,6 +239,19 @@ export const formatDateTime = (date, fallback = "") => {
 
   return formattedDate.toLocaleString("default", options);
 };
+
+export const formatDates = (date, fallback = "") => {
+  if (!date) return fallback;
+
+  const formattedDate = new Date(date);
+
+  const year = formattedDate.getFullYear();
+  const month = (formattedDate.getMonth() + 1).toString().padStart(2, "0");
+  const day = formattedDate.getDate().toString().padStart(2, "0");
+
+  return `${year}-${month}-${day}`;
+};
+
 export const formatDateNewTime = (date, fallback = "") => {
   if (!date) return fallback;
 
@@ -296,4 +309,19 @@ export const formatDateToISOString = (date) => {
 
   const formattedDate = `${year}-${month}-${day}T${hours}:${minutes}:${seconds}.${milliseconds}Z`;
   return formattedDate;
+};
+
+export const convertToDateTimeString = (date) => {
+  const offsetDate = new Date(
+    date.getTime() - date.getTimezoneOffset() * 60000
+  );
+
+  const year = offsetDate.getFullYear();
+  const month = String(offsetDate.getMonth() + 1).padStart(2, "0");
+  const day = String(offsetDate.getDate()).padStart(2, "0");
+  const hours = String(offsetDate.getHours()).padStart(2, "0");
+  const minutes = String(offsetDate.getMinutes()).padStart(2, "0");
+  const seconds = String(offsetDate.getSeconds()).padStart(2, "0");
+
+  return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}`;
 };

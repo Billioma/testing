@@ -945,6 +945,56 @@ const AdminConfigQrCode = WithSuspense(
   lazy(() => import("../pages/Admin/Configurations/QrCode"))
 );
 
+// Analytics
+
+const AnalyticsDashboard = WithSuspense(
+  lazy(() => import("../pages/Analytics/Dashboard/Dashboard"))
+);
+
+const AnalyticsSettings = WithSuspense(
+  lazy(() => import("../pages/Analytics/Settings/Settings"))
+);
+
+const AnalyticsReports = WithSuspense(
+  lazy(() => import("../pages/Analytics/Reports/Reports"))
+);
+
+const CustomerMetrics = WithSuspense(
+  lazy(() => import("../pages/Analytics/Metrics/Customers"))
+);
+
+const ReserveMetrics = WithSuspense(
+  lazy(() => import("../pages/Analytics/Metrics/ReserveParking"))
+);
+
+const ClientMetrics = WithSuspense(
+  lazy(() => import("../pages/Analytics/Metrics/ClientOperators"))
+);
+
+const ParkMetrics = WithSuspense(
+  lazy(() => import("../pages/Analytics/Metrics/PayToPark"))
+);
+
+const EventMetrics = WithSuspense(
+  lazy(() => import("../pages/Analytics/Metrics/Event"))
+);
+
+const ValetMetrics = WithSuspense(
+  lazy(() => import("../pages/Analytics/Metrics/Valet"))
+);
+
+const VehicleMetrics = WithSuspense(
+  lazy(() => import("../pages/Analytics/Metrics/Vehicles"))
+);
+
+const CarMetrics = WithSuspense(
+  lazy(() => import("../pages/Analytics/Metrics/CarService"))
+);
+
+const InteractionMetrics = WithSuspense(
+  lazy(() => import("../pages/Analytics/Metrics/Interactions"))
+);
+
 const AdminIncidents = WithSuspense(
   lazy(() => import("../pages/Admin/Incidents/index"))
 );
@@ -1549,9 +1599,65 @@ export const PRIVATE_ROUTES = [
   },
 
   {
-    path: PRIVATE_PATHS.ADMIN_INCIDENTS,
-    element: <AdminIncidents />,
+    path: PRIVATE_PATHS.ANALYTICS_DASHBOARD,
+    element: <AnalyticsDashboard />,
   },
+
+  {
+    path: PRIVATE_PATHS.ANALYTICS_REPORT,
+    element: <AnalyticsReports />,
+  },
+
+  {
+    path: PRIVATE_PATHS.ANALYTICS_SETTINGS,
+    element: <AnalyticsSettings />,
+  },
+
+  {
+    path: PRIVATE_PATHS.METRICS_CUSTOMERS,
+    element: <CustomerMetrics />,
+  },
+
+  {
+    path: PRIVATE_PATHS.METRICS_RESERVE,
+    element: <ReserveMetrics />,
+  },
+
+  {
+    path: PRIVATE_PATHS.METRICS_CLIENT_OPERATORS,
+    element: <ClientMetrics />,
+  },
+
+  {
+    path: PRIVATE_PATHS.METRICS_PARK,
+    element: <ParkMetrics />,
+  },
+
+  {
+    path: PRIVATE_PATHS.METRICS_EVENT,
+    element: <EventMetrics />,
+  },
+
+  {
+    path: PRIVATE_PATHS.METRICS_VALET,
+    element: <ValetMetrics />,
+  },
+
+  {
+    path: PRIVATE_PATHS.METRICS_VEHICLE,
+    element: <VehicleMetrics />,
+  },
+
+  {
+    path: PRIVATE_PATHS.METRICS_INTERACTION,
+    element: <InteractionMetrics />,
+  },
+
+  {
+    path: PRIVATE_PATHS.METRICS_CAR_SERVICE,
+    element: <CarMetrics />,
+  },
+  { path: PRIVATE_PATHS.ADMIN_INCIDENTS, element: <AdminIncidents /> },
 
   {
     path: PRIVATE_PATHS.ADMIN_CREATE_INCIDENTS,
@@ -1572,6 +1678,8 @@ export const PRIVATE_ROUTES = [
             ? "/operator/dashboard"
             : location.pathname.includes("client")
             ? "/client/dashboard"
+            : location.pathname.includes("analytics")
+            ? "/analytics/dashboard"
             : location.pathname.includes("admin")
             ? "/admin/dashboard"
             : "/customer/dashboard"

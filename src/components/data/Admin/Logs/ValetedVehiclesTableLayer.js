@@ -183,7 +183,7 @@ const TableLayer = ({
                         boxShadow="0px 8px 16px 0px rgba(0, 0, 0, 0.08)"
                       >
                         {(item?.status
-                          ? viewClaimsOption?.slice(0, 3)
+                          ? viewClaimsOption?.slice(0, 2)
                           : viewClaimsOption
                         ).map((dat, i) => (
                           <MenuItem

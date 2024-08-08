@@ -17,6 +17,10 @@ import {
   AuthLayout as AdminAuthLayout,
   NonAuthLayout as AdminNonAuthLayout,
 } from "../components/layout/Admin/PageLayout";
+import {
+  AuthLayout as AnalyticsAuthLayout,
+  NonAuthLayout as AnalyticsNonAuthLayout,
+} from "../components/layout/Analytics/PageLayout";
 
 const PublicRouteWrapper = () => {
   const routes = useRoutes(PUBLIC_ROUTES);
@@ -43,6 +47,16 @@ const Pages = () => {
       <AdminNonAuthLayout>
         <PublicRouteWrapper key={location.pathname} />
       </AdminNonAuthLayout>
+    )
+  ) : location.pathname.includes("analytics") ? (
+    admin ? (
+      <AnalyticsAuthLayout>
+        <PrivateRouteWrapper key={location.pathname} />
+      </AnalyticsAuthLayout>
+    ) : (
+      <AnalyticsNonAuthLayout>
+        <PublicRouteWrapper key={location.pathname} />
+      </AnalyticsNonAuthLayout>
     )
   ) : location.pathname.includes("client") ? (
     client ? (

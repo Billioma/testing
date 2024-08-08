@@ -36,7 +36,8 @@ const onRequest = (request) => {
     `Bearer ${
       (location.pathname.includes("operator/")
         ? operator
-        : location.pathname.includes("admin/")
+        : location.pathname.includes("admin/") ||
+          location.pathname.includes("analytics/")
         ? admin
         : location.pathname.includes("client/")
         ? client
@@ -56,7 +57,8 @@ const onRefreshRequest = (request) => {
     `Bearer ${
       (location.pathname.includes("operator/")
         ? operator
-        : location.pathname.includes("admin/")
+        : location.pathname.includes("admin/") ||
+          location.pathname.includes("analytics/")
         ? admin
         : location.pathname.includes("client/")
         ? client

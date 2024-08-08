@@ -424,6 +424,10 @@ const ReserveParking = () => {
       borderRadius: "4px",
       border: state.hasValue ? "none" : "1px solid #D4D6D8",
       background: state.hasValue ? "#f4f6f8" : "unset",
+      boxShadow: state.isFocused ? "none" : "none",
+      "&:hover": {
+        boxShadow: "none",
+      },
     }),
     menu: (provided) => ({
       ...provided,

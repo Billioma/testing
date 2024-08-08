@@ -65,6 +65,10 @@ const AddLocation = () => {
       border: state.hasValue ? "none" : "1px solid #D4D6D8",
       paddingRight: "16px",
       background: state.hasValue ? "#f4f6f8" : "unset",
+      boxShadow: state.isFocused ? "none" : "none",
+      "&:hover": {
+        boxShadow: "none",
+      },
     }),
     menu: (provided) => ({
       ...provided,

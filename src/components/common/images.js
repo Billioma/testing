@@ -55,7 +55,7 @@ export const ClientUserIcon = ({ fill }) => {
         stroke={fill}
         strokeWidth="1.2"
         strokeLinecap="round"
-        strokeLlinejoin="round"
+        strokeLinejoin="round"
       />
     </svg>
   );
@@ -75,7 +75,7 @@ export const ClientLogIcon = ({ fill }) => {
         stroke={fill}
         strokeWidth="1.2"
         strokeLinecap="round"
-        strokeLlinejoin="round"
+        strokeLinejoin="round"
       />
     </svg>
   );
@@ -95,14 +95,14 @@ export const LocateIcon = ({ fill }) => {
         stroke={fill}
         strokeWidth="1.2"
         strokeLinecap="round"
-        strokeLlinejoin="round"
+        strokeLinejoin="round"
       />
       <path
         d="M6.66927 6C6.66927 6.73638 7.26622 7.33333 8.0026 7.33333C8.73898 7.33333 9.33594 6.73638 9.33594 6C9.33594 5.26362 8.73898 4.66667 8.0026 4.66667C7.26622 4.66667 6.66927 5.26362 6.66927 6Z"
         stroke={fill}
         strokeWidth="1.2"
         strokeLinecap="round"
-        strokeLlinejoin="round"
+        strokeLinejoin="round"
       />
     </svg>
   );
@@ -122,7 +122,7 @@ export const ClientTranIcon = ({ fill }) => {
         stroke={fill}
         strokeWidth="1.2"
         strokeLinecap="round"
-        strokeLlinejoin="round"
+        strokeLinejoin="round"
       />
     </svg>
   );
@@ -142,7 +142,7 @@ export const ClientEventIcon = ({ fill }) => {
         stroke={fill}
         strokeWidth="1.2"
         strokeLinecap="round"
-        strokeLlinejoin="round"
+        strokeLinejoin="round"
       />
     </svg>
   );
@@ -162,14 +162,14 @@ export const ServiceIcon = ({ fill }) => {
         stroke={fill}
         strokeWidth="0.96"
         strokeLinecap="round"
-        strokeLlinejoin="round"
+        strokeLinejoin="round"
       />
       <path
         d="M13.2 13.6V3.86089M13.2 3.86089H12.7304C12.327 3.86089 12 3.53387 12 3.13046V3.13046C12 2.72705 12.327 2.40002 12.7304 2.40002H13.6696C14.073 2.40002 14.4 2.72705 14.4 3.13046V3.13046C14.4 3.53387 14.073 3.86089 13.6696 3.86089H13.2Z"
         stroke={fill}
         strokeWidth="1.2"
         strokeLinecap="round"
-        strokeLlinejoin="round"
+        strokeLinejoin="round"
       />
     </svg>
   );
@@ -189,7 +189,7 @@ export const SubscriptionIcon = ({ fill }) => {
         stroke={fill}
         strokeWidth="1.2"
         strokeLinecap="round"
-        strokeLlinejoin="round"
+        strokeLinejoin="round"
       />
     </svg>
   );
@@ -209,7 +209,7 @@ export const HistoryIcon = ({ fill }) => {
         stroke={fill}
         strokeWidth="1.2"
         strokeLinecap="round"
-        strokeLlinejoin="round"
+        strokeLinejoin="round"
       />
     </svg>
   );
@@ -229,7 +229,7 @@ export const HelpIcon = ({ fill }) => {
         stroke={fill}
         strokeWidth="1.2"
         strokeLinecap="round"
-        strokeLlinejoin="round"
+        strokeLinejoin="round"
       />
     </svg>
   );
@@ -249,14 +249,14 @@ export const LogoutIcon = ({ fill }) => {
         stroke={fill}
         strokeWidth="1.2"
         strokeLinecap="round"
-        strokeLlinejoin="round"
+        strokeLinejoin="round"
       />
       <path
         d="M13.75 4.23438C14.9922 5.04277 15.9399 6.23092 16.4518 7.62174C16.9637 9.01256 17.0126 10.5316 16.5909 11.9524C16.1693 13.3732 15.2999 14.6198 14.1121 15.5062C12.9244 16.3927 11.4821 16.8716 10 16.8716C8.51795 16.8716 7.07557 16.3927 5.88786 15.5062C4.70014 14.6198 3.83068 13.3732 3.40907 11.9524C2.98745 10.5316 3.03625 9.01256 3.5482 7.62174C4.06015 6.23092 5.00783 5.04277 6.25 4.23438"
         stroke={fill}
         strokeWidth="1.2"
         strokeLinecap="round"
-        strokeLlinejoin="round"
+        strokeLinejoin="round"
       />
     </svg>
   );
@@ -324,7 +324,7 @@ export const Add = ({ fill }) => {
         stroke={fill}
         strokeWidth="1.66667"
         strokeLinecap="round"
-        strokeLlinejoin="round"
+        strokeLinejoin="round"
       />
     </svg>
   );
@@ -337,7 +337,7 @@ export const CarIcon = ({ fill }) => {
         d="M1.5 5.5h.523m0 0h7.955m-7.955 0l.02-.076a2.07 2.07 0 0 1 .095-.234l.773-1.74c.153-.344.229-.516.35-.642a1 1 0 0 1 .383-.249c.164-.059.353-.059.729-.059h3.254c.376 0 .565 0 .729.059a1 1 0 0 1 .383.249c.121.126.197.298.35.641l.776 1.747.093.227.02.076m-7.955 0l-.015.087C2 5.649 2 5.713 2 5.84V8.5m7.977-3h.523m-.523 0l.015.087a2.06 2.06 0 0 1 .008.25V8.5m0 0H8m2 0V9a1 1 0 1 1-2 0v-.5m0 0H4m0 0H2m2 0V9a1 1 0 1 1-2 0v-.5"
         stroke={fill}
         strokeLinecap="round"
-        strokeLlinejoin="round"
+        strokeLinejoin="round"
       />
     </svg>
   );
@@ -571,6 +571,44 @@ export const ConfigIcon = ({ stroke = "white" }) => (
       d="M5.33355 6.99997C5.33355 8.47273 6.52746 9.66664 8.00022 9.66664C9.47298 9.66664 10.6669 8.47273 10.6669 6.99997C10.6669 5.52722 9.47298 4.33331 8.00022 4.33331C6.52746 4.33331 5.33355 5.52722 5.33355 6.99997Z"
       stroke={stroke}
       strokeWidth="1.2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </svg>
+);
+
+export const MetricsIcon = ({ stroke = "white" }) => (
+  <svg
+    width="17"
+    height="17"
+    viewBox="0 0 17 17"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path
+      d="M7.23954 7.74219H5.47288C5.05288 7.74219 4.71289 8.08216 4.71289 8.50216V11.9155H7.23954V7.74219V7.74219Z"
+      stroke={stroke}
+      strokeMiterlimit="10"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+    <path
+      d="M9.00771 4.70898H7.99436C7.57436 4.70898 7.23438 5.04899 7.23438 5.46899V11.909H9.76105V5.46899C9.76105 5.04899 9.42771 4.70898 9.00771 4.70898Z"
+      stroke={stroke}
+      strokeMiterlimit="10"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+    <path
+      d="M11.5323 8.875H9.76562V11.9084H12.2923V9.63501C12.2856 9.21501 11.9456 8.875 11.5323 8.875Z"
+      stroke={stroke}
+      strokeMiterlimit="10"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+    <path
+      d="M6.50065 14.9759H10.5007C13.834 14.9759 15.1673 13.6426 15.1673 10.3092V6.30924C15.1673 2.97591 13.834 1.64258 10.5007 1.64258H6.50065C3.16732 1.64258 1.83398 2.97591 1.83398 6.30924V10.3092C1.83398 13.6426 3.16732 14.9759 6.50065 14.9759Z"
+      stroke={stroke}
       strokeLinecap="round"
       strokeLinejoin="round"
     />

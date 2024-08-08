@@ -267,6 +267,21 @@ export const PRIVATE_PATHS = {
   ADMIN_REP_LOGS: "/admin/reports/logs",
   ADMIN_REP_HISTORY: "/admin/reports/payment-history",
   ADMIN_REP_TIPS: "/admin/reports/tips",
+
+  // ANALYTICS
+
+  ANALYTICS_DASHBOARD: "/analytics/dashboard",
+  ANALYTICS_REPORT: "/analytics/reports",
+  ANALYTICS_SETTINGS: "/analytics/settings",
+  METRICS_CUSTOMERS: "/analytics/metrics/customers",
+  METRICS_RESERVE: "/analytics/metrics/reserve-parking",
+  METRICS_PARK: "/analytics/metrics/pay-to-park",
+  METRICS_VALET: "/analytics/metrics/valet",
+  METRICS_EVENT: "/analytics/metrics/events",
+  METRICS_CAR_SERVICE: "/analytics/metrics/car-services",
+  METRICS_INTERACTION: "/analytics/metrics/interactions",
+  METRICS_VEHICLE: "/analytics/metrics/vehicles",
+  METRICS_CLIENT_OPERATORS: "/analytics/metrics/clients&operators",
   ADMIN_INCIDENTS: "/admin/claims",
   ADMIN_CREATE_INCIDENTS: "/admin/logs/valeted-vehicles/:id/report-incident",
   ADMIN_INCIDENTS_DETAILS: "/admin/claims/:id",
