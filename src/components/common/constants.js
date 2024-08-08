@@ -332,14 +332,14 @@ export const sidebarItems = [
       },
     ],
   },
-  // {
-  //   id: 10,
-  //   name: "Claims",
-  //   path: "/admin/claims",
-  //   icon: <IncidentIcon fill={"#000"} />,
-  //   hover: <IncidentIcon fill="#EE383A" />,
-  //   sec: <IncidentIcon fill="#fff" />,
-  // },
+  {
+    id: 10,
+    name: "Claims",
+    path: "/admin/claims",
+    icon: <IncidentIcon fill={"#000"} />,
+    hover: <IncidentIcon fill="#EE383A" />,
+    sec: <IncidentIcon fill="#fff" />,
+  },
   {
     id: 11,
     name: "Reports",
@@ -491,13 +491,13 @@ export const general = [
     icon: <VehicleIcon fill="#242628" />,
     sec: <VehicleIcon fill="#EE383A" />,
   },
-  // {
-  //   id: 3,
-  //   name: "Claims",
-  //   path: "/customer/claims",
-  //   icon: <IncidentIcon fill="#242628" />,
-  //   sec: <IncidentIcon fill="#EE383A" />,
-  // },
+  {
+    id: 3,
+    name: "Claims",
+    path: "/customer/claims",
+    icon: <IncidentIcon fill="#242628" />,
+    sec: <IncidentIcon fill="#EE383A" />,
+  },
   {
     id: 4,
     name: "Subscriptions",
@@ -1572,10 +1572,10 @@ export const viewClaimsOption = [
     name: "Delete",
     icon: BsTrash,
   },
-  // {
-  //   name: "Report an Incident",
-  //   icon: FiEdit,
-  // },
+  {
+    name: "Report an Incident",
+    icon: FiEdit,
+  },
   {
     name: "Claim",
     icon: FiEdit,
