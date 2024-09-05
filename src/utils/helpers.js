@@ -6,7 +6,7 @@ export const useLogOut = () => {
     };
 
     const pathPrefix =
-      location.pathname.match(/(operator|admin|analyitcs|client)\//)?.[0] || "customer";
+      location.pathname.match(/(operator|admin|analytics|client)\//)?.[0] || "customer";
     const newPath = pathPrefix?.replace("/", "");
 
     if (pathPrefix) {
