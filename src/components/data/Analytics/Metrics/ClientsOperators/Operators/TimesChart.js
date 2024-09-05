@@ -2,21 +2,23 @@ import React from "react";
 import { Box, Text } from "@chakra-ui/react";
 import Chart from "react-apexcharts";
 
-const TimesChart = () => {
+const TimesChart = ({ dataa }) => {
   const series = [
     {
       name: "Peak Time",
-      data: [36, 45, 21, 105, 37, 15, 46, 55, 30, 48, 37, 9],
+      data: dataa
+        ?.filter((_, index) => index % 2 === 0)
+        ?.map((item) => Number(item?.count)),
     },
   ];
 
-  const data = series[0].data;
-  const maxValue = Math.max(...data);
-  const maxIndex = data.indexOf(maxValue);
-  const colors = data.map((value) =>
+  const data = series[0]?.data;
+
+  const maxValue = data?.length ? Math.max(...data) : 0;
+  const maxIndex = data?.indexOf(maxValue);
+  const colors = data?.map((value) =>
     value === maxValue ? "#EE383A" : "#F9C8CB"
   );
-
   const categories = [
     "00:00",
     "02:00",
@@ -84,13 +86,6 @@ const TimesChart = () => {
     fill: {
       opacity: 1,
     },
-    tooltip: {
-      y: {
-        formatter: function (val) {
-          return "$ " + val + " thousands";
-        },
-      },
-    },
     annotations: {
       points: [
         {
@@ -128,13 +123,19 @@ const TimesChart = () => {
       </Text>
 
       <Box mt="30px">
-        <Chart
-          options={options}
-          series={series}
-          type="bar"
-          height={300}
-          width={"100%"}
-        />
+        {data?.length > 0 ? (
+          <Chart
+            options={options}
+            series={series}
+            type="bar"
+            height={300}
+            width={"100%"}
+          />
+        ) : (
+          <Text color="#000" fontSize="12px" textAlign="center">
+        
+          </Text>
+        )}
       </Box>
     </Box>
   );

@@ -6,7 +6,7 @@ export const useLogOut = () => {
     };
 
     const pathPrefix =
-      location.pathname.match(/(operator|admin|client)\//)?.[0] || "customer";
+      location.pathname.match(/(operator|admin|analyitcs|client)\//)?.[0] || "customer";
     const newPath = pathPrefix?.replace("/", "");
 
     if (pathPrefix) {
@@ -48,6 +48,12 @@ export const formatDate = (date, fallback = "", withTime = false) => {
   const minutes = formattedDate.getUTCMinutes().toString().padStart(2, "0");
 
   return `${year}-${month}-${day} ${withTime ? `${hours}:${minutes}` : ""}`;
+};
+
+export const getStartOfWeek = (date) => {
+  const day = date.getDay(); // Get the current day of the week (0 = Sunday, 1 = Monday, ..., 6 = Saturday)
+  const diff = date.getDate() - day + (day === 0 ? -6 : 1); // Adjust when day is Sunday (0)
+  return new Date(date.setDate(diff));
 };
 
 export const formatNewDates = (date, fallback = "", withTime = false) => {

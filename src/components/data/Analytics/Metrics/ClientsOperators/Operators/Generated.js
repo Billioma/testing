@@ -2,11 +2,11 @@ import React from "react";
 import { Box, Flex, Text } from "@chakra-ui/react";
 import Chart from "react-apexcharts";
 
-const Generated = () => {
+const Generated = ({ dataa }) => {
   const series = [
     {
       name: "Revenue",
-      data: [150000, 92000, 72463, 54282, 34928, 20182],
+      data: dataa?.data?.map((item) => Number(item?.revenue)) || [],
     },
   ];
 
@@ -40,9 +40,9 @@ const Generated = () => {
         })}`,
       style: {
         fontSize: "12px",
-        colors: ["#fff"],
+        colors: ["#000"],
       },
-      offsetX: 0,
+      offsetX: 30,
     },
     stroke: {
       show: true,
@@ -51,14 +51,7 @@ const Generated = () => {
     },
     colors: colors,
     xaxis: {
-      categories: [
-        "Big Boys Corp",
-        "Landmark Towers",
-        "Landmark Beach",
-        "Gusto Abuja",
-        "Eric Kayser",
-        "John Doe",
-      ],
+      categories: dataa?.data?.map((item) => item?.operatorName) || [],
       axisBorder: {
         show: false,
       },
@@ -86,9 +79,7 @@ const Generated = () => {
     },
     tooltip: {
       y: {
-        formatter: function (val) {
-          return "$ " + val + " thousands";
-        },
+        formatter: (value) => `₦${value.toLocaleString()}`,
       },
     },
   };
@@ -106,10 +97,10 @@ const Generated = () => {
 
       <Flex my="30px" align="flex-end" gap="10px">
         <Text color="#646668" fontSize="28px" fontWeight={500}>
-          ₦521,616,000.00
+          ₦{Number(dataa?.total)?.toLocaleString()}
         </Text>
         <Text color="#0B841D" fontSize="12px">
-          +30.6%
+          {Number(dataa?.percentageChange)?.toFixed(1)}%
         </Text>
       </Flex>
 
@@ -118,7 +109,7 @@ const Generated = () => {
           options={options}
           series={series}
           type="bar"
-          height={270}
+          height={200}
           width={"100%"}
         />
       </Box>

@@ -26,6 +26,7 @@ export const PUBLIC_PATHS = {
 
   // ADMIN ROUTES
   ADMIN_LOGIN: "/admin/auth/login",
+  ANALYTICS_LOGIN: "/analytics/auth/login",
   ADMIN_RESET_PASSWORD: "/admin/auth/reset-password",
   ADMIN_RESET_PASSWORD_LINK: "/admin/auth/reset-password-link",
 };
@@ -274,9 +275,12 @@ export const PRIVATE_PATHS = {
   ANALYTICS_REPORT: "/analytics/reports",
   ANALYTICS_SETTINGS: "/analytics/settings",
   METRICS_CUSTOMERS: "/analytics/metrics/customers",
+  METRICS_SERVICE_RATINGS: "/analytics/metrics/service-ratings",
   METRICS_RESERVE: "/analytics/metrics/reserve-parking",
   METRICS_PARK: "/analytics/metrics/pay-to-park",
   METRICS_VALET: "/analytics/metrics/valet",
+  METRICS_PAYMENT: "/analytics/metrics/payments",
+  METRICS_SUPPORT: "/analytics/metrics/support",
   METRICS_EVENT: "/analytics/metrics/events",
   METRICS_CAR_SERVICE: "/analytics/metrics/car-services",
   METRICS_INTERACTION: "/analytics/metrics/interactions",

@@ -1,9 +1,9 @@
-import { Box, Flex, Text } from "@chakra-ui/layout";
 import React from "react";
+import { Box, Flex, Text } from "@chakra-ui/layout";
 import ReactApexChart from "react-apexcharts";
 
-const Transaction = () => {
-  const data = [65, 35];
+const Transaction = ({ dataa }) => {
+  const data = [dataa?.initiatedByCustomer, dataa?.initiatedByAttendant];
 
   const options = {
     maintainAspectRatio: false,
@@ -54,30 +54,34 @@ const Transaction = () => {
         fontSize="14px"
         fontWeight={700}
       >
-       transaction initiation distribution
+        transaction initiation distribution
       </Text>
 
       <Box mt="30px">
-        <ReactApexChart
-          height={352}
-          options={options}
-          series={data}
-          type="donut"
-        />
+        {dataa ? (
+          <ReactApexChart
+            height={352}
+            options={options}
+            series={data}
+            type="donut"
+          />
+        ) : (
+          <Text color="#000" fontSize="12px" textAlign="center"></Text>
+        )}
       </Box>
 
       <Flex mt="30px" align="center" gap="24px" justifyContent="center">
         <Flex align="center" gap="10px">
           <Box bg="#EE383A" rounded="full" h="10px" w="10px" />
           <Text color="#000" fontSize="12px">
-            Customer (25%)
+            Customer ({dataa?.initiatedByCustomer})
           </Text>
         </Flex>
 
         <Flex align="center" gap="10px">
           <Box bg="#F9C8CB" rounded="full" h="10px" w="10px" />
           <Text color="#000" fontSize="12px">
-            Attendant (25%)
+            Attendant ({dataa?.initiatedByAttendant})
           </Text>
         </Flex>
       </Flex>

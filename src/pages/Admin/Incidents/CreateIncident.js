@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Box, Button, Flex, Text } from "@chakra-ui/react";
 import GoBackTab from "../../../components/data/Admin/GoBackTab";
 import { IoIosArrowDown, IoIosArrowForward } from "react-icons/io";
@@ -65,8 +65,17 @@ const CreateIncident = () => {
     },
   });
 
+  const [fields, setFields] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    phone: "",
+  });
+
+  const isDisabled = Object.values(fields).some((value) => !value);
   const handleSubmit = (values = "") => {
     const { manager, staffInvolved, ...rest } = values;
+
     mutate({
       ...rest,
       serviceLog: Number(incident?.id),
@@ -75,8 +84,22 @@ const CreateIncident = () => {
       location: Number(incident?.location?.id),
       dateOfReport: new Date(),
       staffInvolved: staffInvolved?.map((item) => Number(item?.value)),
+      guestFirstName: fields?.firstName,
+      guestLastName: fields?.lastName,
+      guestPhoneNumber: fields?.phone,
+      guestEmail: fields?.email,
     });
   };
+
+  useEffect(() => {
+    setFields({
+      ...fields,
+      firstName: incident?.customer?.profile?.firstName,
+      lastName: incident?.customer?.profile?.lastName,
+      email: incident?.customer?.profile?.email,
+      phone: incident?.customer?.profile?.phone,
+    });
+  }, []);
 
   return (
     <Box minH="75vh">
@@ -128,7 +151,7 @@ const CreateIncident = () => {
                   >
                     <Flex
                       justifyContent="space-between"
-                      color="#0B841D"
+                      color={isDisabled ? "#090C02" : "#0B841D"}
                       cursor="pointer"
                       pb={steps?.step1 ? "" : "24px"}
                       borderBottom={steps?.step1 ? "none" : "1px solid #E4E6E8"}
@@ -176,17 +199,39 @@ const CreateIncident = () => {
                             fontWeight={500}
                             color="#444648"
                           >
-                            Full Name
+                            First Name
                           </Text>
                           <CustomInput
                             auth
                             mb
-                            value={
-                              incident?.customer
-                                ? `${incident?.customer?.profile?.firstName} ${incident?.customer?.profile?.lastName}`
-                                : incident?.vehicle?.customerName
+                            name="firstName"
+                            value={fields?.firstName}
+                            onChange={(e) =>
+                              setFields({
+                                ...fields,
+                                firstName: e.target.value,
+                              })
                             }
-                            isDisabled
+                          />
+                        </Box>
+
+                        <Box w="full" mb={4}>
+                          <Text
+                            mb="8px"
+                            fontSize="12px"
+                            fontWeight={500}
+                            color="#444648"
+                          >
+                            Last Name
+                          </Text>
+                          <CustomInput
+                            auth
+                            mb
+                            name="lastName"
+                            value={fields?.lastName}
+                            onChange={(e) =>
+                              setFields({ ...fields, lastName: e.target.value })
+                            }
                           />
                         </Box>
 
@@ -202,12 +247,14 @@ const CreateIncident = () => {
                           <CustomInput
                             auth
                             mb
-                            value={
-                              incident?.customer
-                                ? incident?.customer?.email
-                                : "N/A"
+                            name="email"
+                            value={fields?.email}
+                            onChange={(e) =>
+                              setFields({
+                                ...fields,
+                                email: e.target.value,
+                              })
                             }
-                            isDisabled
                           />
                         </Box>
 
@@ -220,17 +267,22 @@ const CreateIncident = () => {
                           >
                             Phone Number
                           </Text>
-                          {console.log(incident)}
+
                           <CustomInput
                             auth
                             mb
+                            name="phone"
                             ngn
-                            value={
-                              incident?.customer
-                                ? incident?.customer?.profile?.phone
-                                : "N/A"
-                            }
-                            isDisabled
+                            value={fields?.phone}
+                            onChange={(e) => {
+                              const inputPhone = e.target.value
+                                .replace(/\D/g, "")
+                                .slice(0, 11);
+                              setFields({
+                                ...fields,
+                                phone: inputPhone,
+                              });
+                            }}
                           />
                         </Box>
                       </Box>

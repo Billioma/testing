@@ -10,6 +10,10 @@ export const initOpPassValues = {
 
 export const initAdminStaffValues = {
   manager: "",
+  guestFirstName: "",
+  guestLastName: "",
+  guestPhoneNumber: "",
+  guestEmail: "",
   dateOfIncident: new Date(),
   summary: "",
   staffInvolved: [""],

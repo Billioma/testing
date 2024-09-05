@@ -2,17 +2,17 @@ import React from "react";
 import { Box, Flex, Text } from "@chakra-ui/react";
 import Chart from "react-apexcharts";
 
-const Paid = () => {
+const Paid = ({ dataa }) => {
   const series = [
     {
       name: "Revenue",
-      data: [56, 75, 81, 90, 67, 105, 76, 85, 90, 98, 87, 79],
+      data: dataa?.monthlyRevenue?.map((item) => Number(item?.revenue)),
     },
   ];
 
-  const data = series[0].data;
-  const maxValue = Math.max(...data);
-  const colors = data.map((value) =>
+  const data = series[0]?.data;
+  const maxValue = data?.length > 0 ? Math.max(...data) : 0;
+  const colors = data?.map((value) =>
     value === maxValue ? "#EE383A" : "#F9C8CB"
   );
 
@@ -76,6 +76,8 @@ const Paid = () => {
     yaxis: {
       labels: {
         show: true,
+
+        formatter: (value) => `₦${value.toLocaleString()}`,
       },
     },
     fill: {
@@ -84,7 +86,7 @@ const Paid = () => {
     tooltip: {
       y: {
         formatter: function (val) {
-          return "$ " + val + " thousands";
+          return `₦${val?.toLocaleString()}`;
         },
       },
     },
@@ -101,12 +103,12 @@ const Paid = () => {
         paid parking sessions Revenue
       </Text>
 
-      <Flex mt="20px" mb="20px" align="flex-end" gap="10px">
+      <Flex my="30px" align="flex-end" gap="10px">
         <Text color="#646668" fontSize="28px" fontWeight={500}>
-          ₦567,900.00
+          ₦{Number(dataa?.totalRevenue)?.toLocaleString()}
         </Text>
         <Text color="#0B841D" fontSize="12px">
-          +30.6%
+          {Number(dataa?.percentageChange)?.toFixed(1)}%
         </Text>
       </Flex>
 

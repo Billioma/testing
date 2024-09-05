@@ -1,19 +1,19 @@
-import { Box, Flex, Text } from "@chakra-ui/layout";
 import React from "react";
+import { Box, Flex, Text } from "@chakra-ui/layout";
 import ReactApexChart from "react-apexcharts";
 
-const LocationDistro = () => {
-  const data = [65, 35];
+const LocationDistro = ({ dataa }) => {
+  const data =
+    dataa
+      ?.filter((item) => item?.state === "Lagos" || item?.state === "FCT")
+      ?.map((dat) => Number(dat?.count)) || [];
 
   const options = {
     maintainAspectRatio: false,
     chart: {
       type: "donut",
     },
-    stroke: {
-      show: true,
-      width: 13,
-    },
+
     dataLabels: {
       enabled: false,
     },
@@ -28,7 +28,10 @@ const LocationDistro = () => {
       show: false,
     },
     colors: ["#EE383A", "#F9C8CB"],
-    labels: ["Lagos", "Abuja"],
+    labels:
+      dataa
+        ?.filter((item) => item?.state === "Lagos" || item?.state === "FCT")
+        ?.map((dat) => dat?.state) || [],
     responsive: [
       {
         breakpoint: 768,
@@ -67,19 +70,21 @@ const LocationDistro = () => {
       </Box>
 
       <Flex mt="50px" align="center" gap="24px" justifyContent="center">
-        <Flex align="center" gap="10px">
-          <Box bg="#EE383A" rounded="full" h="10px" w="10px" />
-          <Text color="#000" fontSize="12px">
-            Lagos (25%)
-          </Text>
-        </Flex>
-
-        <Flex align="center" gap="10px">
-          <Box bg="#F9C8CB" rounded="full" h="10px" w="10px" />
-          <Text color="#000" fontSize="12px">
-            Abuja (25%)
-          </Text>
-        </Flex>
+        {dataa
+          ?.filter((item) => item?.state === "Lagos" || item?.state === "FCT")
+          ?.map((dat, i) => (
+            <Flex align="center" gap="10px">
+              <Box
+                bg={i === 1 ? "#F9C8CB" : "#EE383A"}
+                rounded="full"
+                h="10px"
+                w="10px"
+              />
+              <Text color="#000" fontSize="12px">
+                {dat?.state} ({Number(dat?.count)?.toLocaleString()})
+              </Text>
+            </Flex>
+          ))}
       </Flex>
     </Box>
   );

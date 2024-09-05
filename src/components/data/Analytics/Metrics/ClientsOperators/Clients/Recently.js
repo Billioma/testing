@@ -2,11 +2,12 @@ import React from "react";
 import { Box, Flex, Text } from "@chakra-ui/react";
 import Chart from "react-apexcharts";
 
-const Recently = () => {
+const Recently = ({ dataa }) => {
   const series = [
     {
       name: "Revenue",
-      data: [56, 75, 81, 90, 67, 105, 76, 85, 90, 98, 87, 79],
+      data:
+        dataa?.recentlyAddedClients?.map((item) => Number(item?.count)) || [],
     },
   ];
 
@@ -81,13 +82,6 @@ const Recently = () => {
     fill: {
       opacity: 1,
     },
-    tooltip: {
-      y: {
-        formatter: function (val) {
-          return "$ " + val + " thousands";
-        },
-      },
-    },
   };
 
   return (
@@ -103,10 +97,11 @@ const Recently = () => {
 
       <Flex my="30px" align="flex-end" gap="10px">
         <Text color="#646668" fontSize="28px" fontWeight={500}>
-          56,790
+          {Number(dataa?.total)?.toLocaleString()}
         </Text>
         <Text color="#0B841D" fontSize="12px">
-          +30.6%
+          {dataa?.percentageChange?.startsWith("-") ? "" : "+"}
+          {Number(dataa?.percentageChange)?.toFixed(1)}%
         </Text>
       </Flex>
 

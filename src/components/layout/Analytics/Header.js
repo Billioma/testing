@@ -54,6 +54,15 @@ const Header = ({ showSidebar }) => {
       case locationRoute.includes("vehicles"):
         return setTitle("Vehicles");
 
+      case locationRoute.includes("metrics/payment"):
+        return setTitle("Payments");
+
+      case locationRoute.includes("metrics/support"):
+        return setTitle("Support");
+
+      case locationRoute.includes("service-ratings"):
+        return setTitle("Service Ratings");
+
       default:
         return setTitle("");
     }

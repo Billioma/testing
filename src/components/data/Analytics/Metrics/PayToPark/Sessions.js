@@ -2,17 +2,17 @@ import React from "react";
 import { Box, Flex, Text } from "@chakra-ui/react";
 import Chart from "react-apexcharts";
 
-const Sessions = () => {
+const Sessions = ({ dataa }) => {
   const series = [
     {
       name: "Revenue",
-      data: [56, 75, 81, 90, 67, 105, 76, 85, 90, 98, 87, 79],
+      data: dataa?.monthlyRevenue?.map((item) => Number(item?.count)),
     },
   ];
 
-  const data = series[0].data;
-  const maxValue = Math.max(...data);
-  const colors = data.map((value) =>
+  const data = series[0]?.data;
+  const maxValue = data?.length > 0 ? Math.max(...data) : 0;
+  const colors = data?.map((value) =>
     value === maxValue ? "#EE383A" : "#F9C8CB"
   );
 
@@ -81,13 +81,6 @@ const Sessions = () => {
     fill: {
       opacity: 1,
     },
-    tooltip: {
-      y: {
-        formatter: function (val) {
-          return "$ " + val + " thousands";
-        },
-      },
-    },
   };
 
   return (
@@ -100,13 +93,12 @@ const Sessions = () => {
       >
         paid parking sessions
       </Text>
-
-      <Flex mt="20px" mb="20px" align="flex-end" gap="10px">
+      <Flex my="30px" align="flex-end" gap="10px">
         <Text color="#646668" fontSize="28px" fontWeight={500}>
-          ₦567,900.00
+          {Number(dataa?.totalSessions)?.toLocaleString()}
         </Text>
         <Text color="#0B841D" fontSize="12px">
-          +30.6%
+          {Number(dataa?.percentageChange)?.toFixed(1)}%
         </Text>
       </Flex>
 

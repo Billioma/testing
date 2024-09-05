@@ -4,17 +4,22 @@ import {
   Button,
   Flex,
   Image,
+  Skeleton,
   Text,
   useDisclosure,
 } from "@chakra-ui/react";
 import StartEnd from "../../../components/modals/StartEnd";
-import { formatDates } from "../../../utils/helpers";
+import { formatDates, getStartOfWeek } from "../../../utils/helpers";
 import { IoIosArrowDown, IoIosArrowForward } from "react-icons/io";
 import { PiExportLight } from "react-icons/pi";
 import Select from "react-select";
 
 import Operators from "../../../components/data/Analytics/Metrics/ClientsOperators/Operators/Operators";
 import Clients from "../../../components/data/Analytics/Metrics/ClientsOperators/Clients/Clients";
+import {
+  useGetClientMetrics,
+  useGetOperatorMetrics,
+} from "../../../services/analytics/query/metrics";
 
 const ClientOperators = () => {
   const customStyles = {
@@ -49,9 +54,57 @@ const ClientOperators = () => {
   const [tab, setTab] = useState("Clients");
   const [filter, setFilter] = useState("");
   const [showEndDate, setShowEndDate] = useState(false);
-  const [startValue, startChange] = useState(new Date());
+
+  const [startValue, startChange] = useState(getStartOfWeek(new Date()));
   const [endValue, endChange] = useState(new Date());
   const [showStartDate, setShowStartDate] = useState(false);
+  const [isRefetch, setIsRefetch] = useState(false);
+  const {
+    data: clients,
+    isLoading: isClients,
+    refetch,
+  } = useGetClientMetrics(
+    {
+      refetchOnWindowFocus: true,
+      onSuccess: () => {
+        setIsRefetch(false);
+      },
+      onError: () => {
+        setIsRefetch(false);
+      },
+      onSettled: () => {
+        setIsRefetch(false);
+      },
+    },
+    formatDates(startValue),
+    formatDates(endValue)
+  );
+
+  const {
+    data: operators,
+    isLoading: isOperator,
+    refetch: refetchOperator,
+  } = useGetOperatorMetrics(
+    {
+      refetchOnWindowFocus: true,
+      onSuccess: () => {
+        setIsRefetch(false);
+      },
+      onError: () => {
+        setIsRefetch(false);
+      },
+      onSettled: () => {
+        setIsRefetch(false);
+      },
+    },
+    formatDates(startValue),
+    formatDates(endValue)
+  );
+
+  const handleRefreshClick = async () => {
+    setIsRefetch(true);
+    await refetch(), refetchOperator();
+  };
 
   const {
     isOpen: isDateOpen,
@@ -92,7 +145,7 @@ const ClientOperators = () => {
               h="20px"
               objectFit="contain"
             />
-            <Text>{formatDates(startValue)}</Text>
+            <Text>{startValue ? formatDates(startValue) : "From"}</Text>
           </Flex>
 
           <IoIosArrowForward size="20px" />
@@ -113,7 +166,7 @@ const ClientOperators = () => {
               h="20px"
               objectFit="contain"
             />
-            <Text>{formatDates(endValue)}</Text>
+            <Text>{endValue ? formatDates(endValue) : "To"}</Text>
           </Flex>
         </Flex>
 
@@ -161,13 +214,14 @@ const ClientOperators = () => {
             display={{ base: "none", md: "flex" }}
             transition=".3s ease-in-out"
             _hover={{ bg: "#F4F6F8" }}
+            onClick={handleRefreshClick}
             borderRadius="8px"
             border="1px solid #848688"
             p="10px"
           >
             <Image
               src="/assets/refresh.svg"
-              // className={isRefetch && "mirrored-icon"}
+              className={isRefetch && "mirrored-icon"}
               w="20px"
               h="20px"
             />
@@ -228,62 +282,100 @@ const ClientOperators = () => {
           ? ["Clients on parkinSpace", "Incidents Reported"]
           : ["Operators", "Incidents Reported"]
         ).map((item, i) => (
-          <Box
+          <Skeleton
+            isLoaded={tab === "Clients" ? !isClients : !isOperator}
             borderRadius="8px"
-            key={i}
-            bg="#F4F6F8"
             w="full"
-            pt="5px"
-            my={{ base: "10px", md: "20px" }}
-            px="5px"
-            border="1px solid #E4E6E8"
           >
-            <Box h="6px" w="full" bg="#000" borderRadius="full"></Box>
-            <Box p="15px" pt="0px" pb="20px">
-              <Text
-                mt="24px"
-                lineHeight="100%"
-                fontWeight={700}
-                textTransform="capitalize"
-                color="#242628"
-              >
-                {item}
-              </Text>
-
-              <Flex
-                mt="24px"
-                align="flex-end"
-                justifyContent="space-between"
-                w="full"
-              >
-                <Box w="full">
-                  <Text
-                    mt="24px"
-                    fontSize="28px"
-                    lineHeight="100%"
-                    color="#646668"
-                    fontWeight={500}
-                  >
-                    31
-                  </Text>
-                </Box>
-                <Flex
-                  colot="#000"
-                  fontSize="12px"
-                  p="10px"
-                  rounded="full"
-                  bg="#FFFFFF"
+            <Box
+              borderRadius="8px"
+              key={i}
+              bg="#F4F6F8"
+              w="full"
+              pt="5px"
+              my={{ base: "10px", md: "20px" }}
+              px="5px"
+              border="1px solid #E4E6E8"
+            >
+              <Box h="6px" w="full" bg="#000" borderRadius="full"></Box>
+              <Box p="15px" pt="0px" pb="20px">
+                <Text
+                  mt="24px"
+                  lineHeight="100%"
+                  fontWeight={700}
+                  textTransform="capitalize"
+                  color="#242628"
                 >
-                  +30.6%
+                  {item}
+                </Text>
+
+                <Flex
+                  mt="24px"
+                  align="flex-end"
+                  justifyContent="space-between"
+                  w="full"
+                >
+                  <Box w="full">
+                    <Text
+                      mt="24px"
+                      fontSize="28px"
+                      lineHeight="100%"
+                      color="#646668"
+                      fontWeight={500}
+                    >
+                      {tab === "Clients"
+                        ? i === 0
+                          ? Number(
+                              clients?.data?.clientsCount?.value
+                            )?.toLocaleString()
+                          : Number(
+                              clients?.data?.incidentsCount?.value
+                            )?.toLocaleString()
+                        : i === 0
+                        ? Number(
+                            operators?.data?.operatorsCount?.value
+                          )?.toLocaleString()
+                        : Number(
+                            operators?.data?.incidentsCount?.value
+                          )?.toLocaleString()}
+                    </Text>
+                  </Box>
+                  <Flex
+                    colot="#000"
+                    fontSize="12px"
+                    p="10px"
+                    rounded="full"
+                    bg="#FFFFFF"
+                  >
+                    +
+                    {tab === "Clients"
+                      ? i === 0
+                        ? Number(
+                            clients?.data?.clientsCount?.percentageChange
+                          )?.toFixed(1)
+                        : Number(
+                            clients?.data?.incidentsCount?.percentageChange
+                          )?.toFixed(1)
+                      : i === 0
+                      ? Number(
+                          operators?.data?.operatorsCount?.percentageChange
+                        )?.toFixed(1)
+                      : Number(
+                          operators?.data?.incidentsCount?.percentageChange
+                        )?.toFixed(1)}
+                    %
+                  </Flex>
                 </Flex>
-              </Flex>
+              </Box>
             </Box>
-          </Box>
+          </Skeleton>
         ))}
       </Flex>
 
-      {tab === "Clients" && <Clients />}
-      {tab === "Operators" && <Operators />}
+      {tab === "Clients" && <Clients clients={clients} isClients={isClients} />}
+      {tab === "Operators" && (
+        <Operators operators={operators} isOperator={isOperator} />
+      )}
     </Box>
   );
 };

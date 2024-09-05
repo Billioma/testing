@@ -6,17 +6,15 @@ import {
   Button,
   Text,
   useDisclosure,
-  Skeleton,
 } from "@chakra-ui/react";
 import StartEnd from "../../../components/modals/StartEnd";
 import { formatDates } from "../../../utils/helpers";
 import { IoIosArrowDown, IoIosArrowForward } from "react-icons/io";
 import { PiExportLight } from "react-icons/pi";
 import Select from "react-select";
-import Tips from "../../../components/data/Analytics/Metrics/Valet/Tips";
-import { useGetValetOarkMetrics } from "../../../services/analytics/query/metrics";
+import ServiceChart from "../../../components/data/Analytics/Metrics/ServiceRatings/ServiceChart";
 
-const Event = () => {
+const ServiceRatings = () => {
   const customStyles = {
     control: (provided, state) => ({
       ...provided,
@@ -61,30 +59,6 @@ const Event = () => {
     value: time,
     label: time,
   }));
-
-  const [isRefetch, setIsRefetch] = useState(false);
-
-  const { data, isLoading, refetch } = useGetValetOarkMetrics(
-    {
-      refetchOnWindowFocus: true,
-      onSuccess: () => {
-        setIsRefetch(false);
-      },
-      onError: () => {
-        setIsRefetch(false);
-      },
-      onSettled: () => {
-        setIsRefetch(false);
-      },
-    },
-    formatDates(startValue),
-    formatDates(endValue)
-  );
-
-  const handleRefreshClick = async () => {
-    setIsRefetch(true);
-    await refetch();
-  };
 
   return (
     <Box minH="75vh">
@@ -185,12 +159,11 @@ const Event = () => {
             _hover={{ bg: "#F4F6F8" }}
             borderRadius="8px"
             border="1px solid #848688"
-            onClick={handleRefreshClick}
             p="10px"
           >
             <Image
               src="/assets/refresh.svg"
-              className={isRefetch && "mirrored-icon"}
+              // className={isRefetch && "mirrored-icon"}
               w="20px"
               h="20px"
             />
@@ -210,106 +183,11 @@ const Event = () => {
         />
       </Flex>
 
-      <Flex
-        align="center"
-        flexDir={{ base: "column", md: "row" }}
-        gap={{ base: "usnet", md: "24px" }}
-      >
-        {[
-          // "Average valet Parking rating",
-          "Event requests",
-          "EventmParking Transactions requests",
-          "average event parking price",
-        ].map((item, i) => (
-          <Skeleton
-            isLoaded={!isLoading}
-            borderRadius="8px"
-            my={{ base: "10px", md: "20px" }}
-            w="full"
-          >
-            <Box
-              borderRadius="8px"
-              key={i}
-              bg="#F4F6F8"
-              w="full"
-              pt="5px"
-              my={{ base: "10px", md: "20px" }}
-              px="5px"
-              border="1px solid #E4E6E8"
-            >
-              <Box h="6px" w="full" bg="#000" borderRadius="full"></Box>
-              <Box p="15px" pt="0px" pb="20px">
-                <Text
-                  mt="24px"
-                  lineHeight="100%"
-                  fontWeight={700}
-                  textTransform="capitalize"
-                  color="#242628"
-                >
-                  {item}
-                </Text>
-
-                <Flex
-                  mt="24px"
-                  align="flex-end"
-                  justifyContent="space-between"
-                  w="full"
-                >
-                  <Box w="full">
-                    <Flex mt="24px" align="center" gap="12px">
-                      <Text
-                        fontSize="28px"
-                        lineHeight="100%"
-                        color="#646668"
-                        fontWeight={500}
-                      >
-                        {i === 2 ? "₦" : ""}{" "}
-                        {i === 0
-                          ? Number(
-                              data?.data?.valetRequestsCount?.count
-                            )?.toLocaleString()
-                          : `${Number(
-                              data?.data?.averageValetWaitTime?.value
-                            )?.toLocaleString()}`}
-                      </Text>{" "}
-                    </Flex>
-                  </Box>
-                  <Flex
-                    colot="#000"
-                    fontSize="12px"
-                    p="10px"
-                    rounded="full"
-                    bg="#FFFFFF"
-                  >
-                    +
-                    {i === 0
-                      ? Number(
-                          data?.data?.valetRequestsCount?.percentageChange
-                        )?.toFixed(1)
-                      : Number(
-                          data?.data?.averageValetWaitTime?.percentageChange
-                        )?.toFixed(1)}
-                    %
-                  </Flex>
-                </Flex>
-              </Box>
-            </Box>
-          </Skeleton>
-        ))}
-      </Flex>
-
-      <Flex align="center" gap="24px" flexDir={{ base: "column", md: "row" }}>
-        <Box w={{ base: "100%", md: "100%" }}>
-          <Skeleton isLoaded={!isLoading} borderRadius="8px">
-            <Tips dataa={data?.data?.totalTipsFromValetParking} />
-          </Skeleton>
-        </Box>
-        {/* <Box w={{ base: "100%", md: "40%" }}>
-          <Ratings />
-        </Box> */}
-      </Flex>
+      <Box mt={{ base: "10px", md: "20px" }}>
+        <ServiceChart />
+      </Box>
     </Box>
   );
 };
 
-export default Event;
+export default ServiceRatings;

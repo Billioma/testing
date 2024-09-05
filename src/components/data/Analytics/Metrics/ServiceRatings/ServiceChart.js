@@ -1,16 +1,21 @@
 import React from "react";
 import { Box, Flex, Text } from "@chakra-ui/react";
 import Chart from "react-apexcharts";
+import { IoStar } from "react-icons/io5";
 
-const RetentionChart = ({ data }) => {
+const ServiceChart = () => {
   const series = [
     {
-      name: "Active",
-      data: data?.monthlyRetentionRates?.map((entry) => entry?.active),
+      name: "Service 1",
+      data: [100, 20, 100, 90, 100, 150, 70, 150, 20, 160, 150, 100],
     },
     {
-      name: "Inactive",
-      data: data?.monthlyRetentionRates?.map((entry) => entry?.inactive),
+      name: "Service 2",
+      data: [80, 40, 70, 20, 50, 30, 70, 30, 20, 100, 150, 90],
+    },
+    {
+      name: "Service 3",
+      data: [80, 40, 70, 20, 50, 30, 70, 30, 20, 100, 150, 50],
     },
   ];
 
@@ -40,7 +45,7 @@ const RetentionChart = ({ data }) => {
       width: 2,
       colors: ["transparent"],
     },
-    colors: ["#EE383A", "#F9C8CB"],
+    colors: ["#EE383A", "#F39197", "#F9C8CB"],
     xaxis: {
       categories: [
         "Jan",
@@ -65,7 +70,7 @@ const RetentionChart = ({ data }) => {
       gridLines: {
         show: true,
         borderColor: "#e4e4e4",
-        strokeDashArray: 3, // Make gridlines dotted
+        strokeDashArray: 3,
         offsetX: 0,
         offsetY: 0,
       },
@@ -83,7 +88,7 @@ const RetentionChart = ({ data }) => {
   return (
     <Box border="1px solid #e4e6e8" borderRadius="8px" p="22px">
       <Text color="#242628" fontSize="14px" fontWeight={700}>
-        Customer Retention Rate
+        Average Customer Ratings
       </Text>
 
       <Flex
@@ -93,12 +98,13 @@ const RetentionChart = ({ data }) => {
         gap={{ base: "10px", md: "unset" }}
         flexDir={{ base: "column", md: "row" }}
       >
-        <Flex align="flex-end" gap="10px">
+        <Flex align="center" gap="10px">
+          <IoStar color="#EE383A" size="13px" />
           <Text color="#646668" fontSize="28px" fontWeight={500}>
-            {data?.totalRetentionRate}%
+            4.1
           </Text>
           <Text color="#0B841D" fontSize="12px">
-            {Number(data?.percentageChange)?.toFixed(1)}%
+            +30.6%
           </Text>
         </Flex>
 
@@ -106,14 +112,21 @@ const RetentionChart = ({ data }) => {
           <Flex align="center" gap="10px">
             <Box bg="#EE383A" rounded="full" h="10px" w="10px" />
             <Text color="#000" fontSize="12px">
-              Active
+              Service 1
+            </Text>
+          </Flex>
+
+          <Flex align="center" gap="10px">
+            <Box bg="#F39197" rounded="full" h="10px" w="10px" />
+            <Text color="#000" fontSize="12px">
+              Service 2
             </Text>
           </Flex>
 
           <Flex align="center" gap="10px">
             <Box bg="#F9C8CB" rounded="full" h="10px" w="10px" />
             <Text color="#000" fontSize="12px">
-              Inactive
+              Service 2
             </Text>
           </Flex>
         </Flex>
@@ -132,4 +145,4 @@ const RetentionChart = ({ data }) => {
   );
 };
 
-export default RetentionChart;
+export default ServiceChart;

@@ -3,7 +3,7 @@ import { Box, Flex, Text } from "@chakra-ui/layout";
 import ReactApexChart from "react-apexcharts";
 import { IoStar } from "react-icons/io5";
 
-const Satisfaction = () => {
+const Satisfaction = ({ dataa }) => {
   const data = [44, 55, 41, 50, 30];
 
   const options = {

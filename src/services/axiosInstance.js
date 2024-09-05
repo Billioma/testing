@@ -30,15 +30,17 @@ export const uploadInstance = axios.create({
 const onRequest = (request) => {
   const customer = JSON.parse(localStorage.getItem("customer"));
   const admin = JSON.parse(localStorage.getItem("admin"));
+  const analytics = JSON.parse(localStorage.getItem("analytics"));
   const client = JSON.parse(localStorage.getItem("client"));
   const operator = JSON.parse(localStorage.getItem("operator"));
   request.headers.Authorization =
     `Bearer ${
       (location.pathname.includes("operator/")
         ? operator
-        : location.pathname.includes("admin/") ||
-          location.pathname.includes("analytics/")
+        : location.pathname.includes("admin/")
         ? admin
+        : location.pathname.includes("analytics/")
+        ? analytics
         : location.pathname.includes("client/")
         ? client
         : customer
@@ -57,9 +59,10 @@ const onRefreshRequest = (request) => {
     `Bearer ${
       (location.pathname.includes("operator/")
         ? operator
-        : location.pathname.includes("admin/") ||
-          location.pathname.includes("analytics/")
+        : location.pathname.includes("admin/")
         ? admin
+        : location.pathname.includes("analytics/")
+        ? analytics
         : location.pathname.includes("client/")
         ? client
         : customer
@@ -78,7 +81,8 @@ const onResponse = (response) => {
 };
 
 const pathPrefix =
-  location.pathname.match(/(operator|admin|client)\//)?.[0] || "customer";
+  location.pathname.match(/(operator|admin|analytics|client)\//)?.[0] ||
+  "customer";
 const newPath = pathPrefix?.replace("/", "");
 const refreshAccessToken = async (refreshToken) => {
   try {
@@ -105,7 +109,7 @@ const refreshAccessToken = async (refreshToken) => {
 };
 
 const onResponseError = async (error) => {
-  const userTypes = ["operator", "admin", "client", "customer"];
+  const userTypes = ["operator", "admin", "analytics", "client", "customer"];
   const user = userTypes
     .map((type) =>
       location.pathname.includes(type)

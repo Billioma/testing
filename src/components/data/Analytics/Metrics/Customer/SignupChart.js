@@ -71,9 +71,6 @@ const SignupChart = ({ data }) => {
         <Chart options={options} series={series} type="line" height={350} />
       </Box>
     </Box>
-    // <Box>
-    //   <Chart options={options} series={series} type="line" height={350} />
-    // </Box>
   );
 };
 

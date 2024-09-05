@@ -108,7 +108,7 @@ const RevenueChart = ({ dataa }) => {
           ₦{Number(dataa?.totalRevenue)?.toLocaleString()}
         </Text>
         <Text color="#0B841D" fontSize="12px">
-          +{Number(dataa?.percentageChange)?.toFixed(1)}%
+          {Number(dataa?.percentageChange)?.toFixed(1)}%
         </Text>
       </Flex>
 

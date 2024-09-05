@@ -32,7 +32,7 @@ const {
   // ADMIN routes
   ADMIN_RESET_PASSWORD_LINK,
   ADMIN_RESET_PASSWORD,
-  ADMIN_LOGIN,
+  ADMIN_LOGIN,ANALYTICS_LOGIN,
 } = PUBLIC_PATHS;
 
 const {
@@ -515,6 +515,10 @@ const AdminLogin = WithSuspense(
   lazy(() => import("../pages/Admin/Auth/Login"))
 );
 
+const AnalyticsLogin = WithSuspense(
+  lazy(() => import("../pages/Analytics/Auth/Login"))
+);
+
 const AdminResetPassword = WithSuspense(
   lazy(() => import("../pages/Admin/Auth/ResetPassword"))
 );
@@ -963,6 +967,18 @@ const CustomerMetrics = WithSuspense(
   lazy(() => import("../pages/Analytics/Metrics/Customers"))
 );
 
+const PaymentMetrics = WithSuspense(
+  lazy(() => import("../pages/Analytics/Metrics/Payment"))
+);
+
+const SupportMetrics = WithSuspense(
+  lazy(() => import("../pages/Analytics/Metrics/Support"))
+);
+
+const ServiceRatingsMetrics = WithSuspense(
+  lazy(() => import("../pages/Analytics/Metrics/ServiceRatings"))
+);
+
 const ReserveMetrics = WithSuspense(
   lazy(() => import("../pages/Analytics/Metrics/ReserveParking"))
 );
@@ -1035,6 +1051,7 @@ export const PUBLIC_ROUTES = [
 
   // ADMIN ROUTES
   { path: ADMIN_LOGIN, element: <AdminLogin /> },
+  { path: ANALYTICS_LOGIN, element: <AnalyticsLogin /> },
   { path: ADMIN_RESET_PASSWORD, element: <AdminResetPassword /> },
   { path: ADMIN_RESET_PASSWORD_LINK, element: <AdminResetPasswordLink /> },
 
@@ -1047,6 +1064,8 @@ export const PUBLIC_ROUTES = [
             ? "/operator/auth/login"
             : location.pathname.includes("admin")
             ? "/admin/auth/login"
+            : location.pathname.includes("analytics")
+            ? "/analytics/auth/login"
             : location.pathname.includes("client")
             ? "/client/auth/login"
             : "/customer/auth/login"
@@ -1616,6 +1635,21 @@ export const PRIVATE_ROUTES = [
   {
     path: PRIVATE_PATHS.METRICS_CUSTOMERS,
     element: <CustomerMetrics />,
+  },
+
+  {
+    path: PRIVATE_PATHS.METRICS_PAYMENT,
+    element: <PaymentMetrics />,
+  },
+
+  {
+    path: PRIVATE_PATHS.METRICS_SUPPORT,
+    element: <SupportMetrics />,
+  },
+
+  {
+    path: PRIVATE_PATHS.METRICS_SERVICE_RATINGS,
+    element: <ServiceRatingsMetrics />,
   },
 
   {

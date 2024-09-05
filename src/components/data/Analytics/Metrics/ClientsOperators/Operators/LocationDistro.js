@@ -1,9 +1,9 @@
-import { Box, Flex, Text } from "@chakra-ui/layout";
 import React from "react";
+import { Box, Flex, Text } from "@chakra-ui/layout";
 import ReactApexChart from "react-apexcharts";
 
-const LocationDistro = () => {
-  const data = [65, 35];
+const LocationDistro = ({ dataa }) => {
+  const data = dataa?.map((item) => Number(item?.count));
 
   const options = {
     maintainAspectRatio: false,
@@ -28,7 +28,7 @@ const LocationDistro = () => {
       show: false,
     },
     colors: ["#EE383A", "#F9C8CB"],
-    labels: ["Lagos", "Abuja"],
+    labels: dataa?.map((item) => item?.state),
     responsive: [
       {
         breakpoint: 768,
@@ -58,28 +58,34 @@ const LocationDistro = () => {
       </Text>
 
       <Box mt="40px">
-        <ReactApexChart
-          height={342}
-          options={options}
-          series={data}
-          type="donut"
-        />
+        {data?.length > 0 ? (
+          <ReactApexChart
+            height={342}
+            options={options}
+            series={data}
+            type="donut"
+          />
+        ) : (
+          <Text color="#000" fontSize="12px" textAlign="center">
+            
+          </Text>
+        )}
       </Box>
 
       <Flex mt="50px" align="center" gap="24px" justifyContent="center">
-        <Flex align="center" gap="10px">
-          <Box bg="#EE383A" rounded="full" h="10px" w="10px" />
-          <Text color="#000" fontSize="12px">
-            Lagos (25%)
-          </Text>
-        </Flex>
-
-        <Flex align="center" gap="10px">
-          <Box bg="#F9C8CB" rounded="full" h="10px" w="10px" />
-          <Text color="#000" fontSize="12px">
-            Abuja (25%)
-          </Text>
-        </Flex>
+        {dataa?.map((item, i) => (
+          <Flex align="center" gap="10px">
+            <Box
+              bg={item?.state === "Lagos" ? "#F9C8CB" : "#EE383A"}
+              rounded="full"
+              h="10px"
+              w="10px"
+            />
+            <Text color="#000" fontSize="12px">
+              {item?.state} ({Number(item?.count)?.toLocaleString()})
+            </Text>
+          </Flex>
+        ))}
       </Flex>
     </Box>
   );

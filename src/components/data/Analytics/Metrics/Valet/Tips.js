@@ -2,17 +2,17 @@ import React from "react";
 import { Box, Flex, Text } from "@chakra-ui/react";
 import Chart from "react-apexcharts";
 
-const Tips = () => {
+const Tips = ({ dataa }) => {
   const series = [
     {
       name: "Revenue",
-      data: [56, 75, 81, 90, 67, 105, 76, 85, 90, 98, 87, 79],
+      data: dataa?.monthlyTips?.map((item) => Number(item?.revenue)),
     },
   ];
 
-  const data = series[0].data;
-  const maxValue = Math.max(...data);
-  const colors = data.map((value) =>
+  const data = series[0]?.data;
+  const maxValue = data?.length > 0 ? Math.max(...data) : 0;
+  const colors = data?.map((value) =>
     value === maxValue ? "#EE383A" : "#F9C8CB"
   );
 
@@ -84,7 +84,7 @@ const Tips = () => {
     tooltip: {
       y: {
         formatter: function (val) {
-          return "$ " + val + " thousands";
+          return `₦${val?.toLocaleString()}`;
         },
       },
     },
@@ -101,23 +101,26 @@ const Tips = () => {
         Tips from Valet Parking
       </Text>
 
-      <Flex mt="20px" mb="20px" align="flex-end" gap="10px">
+      <Flex my="30px" align="flex-end" gap="10px">
         <Text color="#646668" fontSize="28px" fontWeight={500}>
-          ₦567,900.00
+          ₦{Number(dataa?.totalTips)?.toLocaleString()}
         </Text>
         <Text color="#0B841D" fontSize="12px">
-          +30.6%
+          {Number(dataa?.percentageChange)?.toFixed(1)}%
         </Text>
       </Flex>
-
       <Box>
-        <Chart
-          options={options}
-          series={series}
-          type="bar"
-          height={270}
-          width={"100%"}
-        />
+        {data?.length > 0 ? (
+          <Chart
+            options={options}
+            series={series}
+            type="bar"
+            height={270}
+            width={"100%"}
+          />
+        ) : (
+          <Text color="#000" fontSize="12px" textAlign="center"></Text>
+        )}
       </Box>
     </Box>
   );

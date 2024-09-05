@@ -1,9 +1,9 @@
-import { Box, Flex, Text } from "@chakra-ui/layout";
 import React from "react";
+import { Box, Flex, Text } from "@chakra-ui/layout";
 import ReactApexChart from "react-apexcharts";
 
-const PaidUnpaid = () => {
-  const data = [65, 35];
+const PaidUnpaid = ({ dataa }) => {
+  const data = dataa?.map((item) => Number(item?.count));
 
   const options = {
     maintainAspectRatio: false,
@@ -28,7 +28,7 @@ const PaidUnpaid = () => {
       show: false,
     },
     colors: ["#EE383A", "#F9C8CB"],
-    labels: ["Paid", "Unpaid"],
+    labels: dataa?.map((item) => item?.status),
     responsive: [
       {
         breakpoint: 768,
@@ -58,28 +58,32 @@ const PaidUnpaid = () => {
       </Text>
 
       <Box mt="30px">
-        <ReactApexChart
-          height={352}
-          options={options}
-          series={data}
-          type="donut"
-        />
+        {data?.length > 0 ? (
+          <ReactApexChart
+            height={352}
+            options={options}
+            series={data}
+            type="donut"
+          />
+        ) : (
+          <Text color="#000" fontSize="12px" textAlign="center"></Text>
+        )}
       </Box>
 
       <Flex mt="30px" align="center" gap="24px" justifyContent="center">
-        <Flex align="center" gap="10px">
-          <Box bg="#EE383A" rounded="full" h="10px" w="10px" />
-          <Text color="#000" fontSize="12px">
-            Paid (25%)
-          </Text>
-        </Flex>
-
-        <Flex align="center" gap="10px">
-          <Box bg="#F9C8CB" rounded="full" h="10px" w="10px" />
-          <Text color="#000" fontSize="12px">
-            Unpaid (25%)
-          </Text>
-        </Flex>
+        {dataa?.map((item, i) => (
+          <Flex align="center" gap="10px">
+            <Box
+              bg={item?.status === "paid" ? "#F9C8CB" : "#EE383A"}
+              rounded="full"
+              h="10px"
+              w="10px"
+            />
+            <Text color="#000" fontSize="12px">
+              {item?.status} ({Number(item?.count)?.toLocaleString()})
+            </Text>
+          </Flex>
+        ))}
       </Flex>
     </Box>
   );

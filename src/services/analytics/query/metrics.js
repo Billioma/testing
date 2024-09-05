@@ -1,5 +1,5 @@
 import { useQuery } from "react-query";
-import { getCustomerMetrics, getReserveParkingMetrics } from "../api/metrics";
+import { getClientMetrics, getCustomerMetrics, getInteractionMetrics, getOperatorMetrics, getPayToParkMetrics, getReserveParkingMetrics, getValetParkMetrics } from "../api/metrics";
 
 const useGetMetrics = (
   key,
@@ -29,6 +29,26 @@ export const useGetCustomerMetrics = (options = {}, from = "", to = "") => {
   );
 };
 
+export const useGetClientMetrics = (options = {}, from = "", to = "") => {
+  return useGetMetrics(
+    "getClientMetrics",
+    getClientMetrics,
+    options,
+    from,
+    to
+  );
+};
+
+export const useGetOperatorMetrics = (options = {}, from = "", to = "") => {
+  return useGetMetrics(
+    "getOperatorMetrics",
+    getOperatorMetrics,
+    options,
+    from,
+    to
+  );
+};
+
 export const useGetReserveParkingMetrics = (
   options = {},
   from = "",
@@ -37,6 +57,48 @@ export const useGetReserveParkingMetrics = (
   return useGetMetrics(
     "getReserveParkingMetrics",
     getReserveParkingMetrics,
+    options,
+    from,
+    to
+  );
+};
+
+export const useGetPayToParkMetrics = (
+  options = {},
+  from = "",
+  to = ""
+) => {
+  return useGetMetrics(
+    "getPayToParkMetrics",
+    getPayToParkMetrics,
+    options,
+    from,
+    to
+  );
+};
+
+export const useGetValetOarkMetrics = (
+  options = {},
+  from = "",
+  to = ""
+) => {
+  return useGetMetrics(
+    "getValetParkMetrics",
+    getValetParkMetrics,
+    options,
+    from,
+    to
+  );
+};
+
+export const useGetInteractionMetrics = (
+  options = {},
+  from = "",
+  to = ""
+) => {
+  return useGetMetrics(
+    "getInteractionMetrics",
+    getInteractionMetrics,
     options,
     from,
     to

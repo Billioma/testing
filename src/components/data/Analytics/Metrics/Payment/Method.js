@@ -2,8 +2,8 @@ import React from "react";
 import { Box, Flex, Text } from "@chakra-ui/layout";
 import ReactApexChart from "react-apexcharts";
 
-const Types = ({ dataa }) => {
-  const data = dataa?.map((item) => Number(item?.count)) || [];
+const Method = () => {
+  const data = [44, 55, 41];
 
   const options = {
     maintainAspectRatio: false,
@@ -27,7 +27,7 @@ const Types = ({ dataa }) => {
       show: false,
     },
     colors: ["#EE383A", "#F39197", "#FDECED"],
-    labels: dataa?.map((item) => item?.type) || [],
+    labels: ["Credit Card", "Mobile Wallet", "Extras"],
     responsive: [
       {
         breakpoint: 768,
@@ -47,36 +47,50 @@ const Types = ({ dataa }) => {
   return (
     <Box border="1px solid #e4e6e8" borderRadius="8px" p="22px">
       <Text textAlign="center" color="#242628" fontSize="14px" fontWeight={700}>
-        Type of Business
+        Payment Method
       </Text>
 
       <Box mt="35px">
         <ReactApexChart
-          height={300}
+          height={325}
           options={options}
           series={data}
           type="donut"
         />
       </Box>
 
-      <Flex align="center" mt="30px" justifyContent="center" gap="24px">
-        {dataa?.map((item, i) => (
+      <Flex
+        mt="30px"
+        align="center"
+        justifyContent="center"
+        flexWrap="wrap"
+        gap="24px"
+      >
+        <Flex align="center" gap="24px">
           <Flex align="center" gap="10px">
-            <Box
-              bg={i === 0 ? "#EE383A" : i === 1 ? "#F39197" : "#FDECED"}
-              rounded="full"
-              h="10px"
-              w="10px"
-            />
-            <Text textTransform="capitalize" color="#000" fontSize="12px">
-              {item?.type?.replace("_", " ")?.toLowerCase()} (
-              {Number(item?.count)?.toLocaleString()})
+            <Box bg="#EE383A" rounded="full" h="10px" w="10px" />
+            <Text color="#000" fontSize="12px">
+              Credit Card (25%)
             </Text>
           </Flex>
-        ))}
+
+          <Flex align="center" gap="10px">
+            <Box bg="#F39197" rounded="full" h="10px" w="10px" />
+            <Text color="#000" fontSize="12px">
+              Mobile Wallet (25%)
+            </Text>
+          </Flex>
+
+          <Flex align="center" gap="10px">
+            <Box bg="#FDECED" rounded="full" h="10px" w="10px" />
+            <Text color="#000" fontSize="12px">
+              Extras (25%)
+            </Text>
+          </Flex>
+        </Flex>
       </Flex>
     </Box>
   );
 };
 
-export default Types;
+export default Method;

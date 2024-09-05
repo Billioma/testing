@@ -37,6 +37,7 @@ const Pages = () => {
   const customer = localStorage.getItem("customer");
   const operator = localStorage.getItem("operator");
   const client = localStorage.getItem("client");
+  const analytics = localStorage.getItem("analytics");
   const location = useLocation();
   return location.pathname.includes("admin") ? (
     admin ? (
@@ -49,7 +50,7 @@ const Pages = () => {
       </AdminNonAuthLayout>
     )
   ) : location.pathname.includes("analytics") ? (
-    admin ? (
+    analytics ? (
       <AnalyticsAuthLayout>
         <PrivateRouteWrapper key={location.pathname} />
       </AnalyticsAuthLayout>

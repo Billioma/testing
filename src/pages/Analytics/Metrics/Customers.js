@@ -9,7 +9,7 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import StartEnd from "../../../components/modals/StartEnd";
-import { formatDates } from "../../../utils/helpers";
+import { formatDates, getStartOfWeek } from "../../../utils/helpers";
 import { IoIosArrowDown, IoIosArrowForward } from "react-icons/io";
 import { PiExportLight } from "react-icons/pi";
 import Select from "react-select";
@@ -49,8 +49,8 @@ const Customers = () => {
   };
   const [filter, setFilter] = useState("");
   const [showEndDate, setShowEndDate] = useState(false);
-  const [startValue, startChange] = useState(null);
-  const [endValue, endChange] = useState(null);
+  const [startValue, startChange] = useState(getStartOfWeek(new Date()));
+  const [endValue, endChange] = useState(new Date());
   const [showStartDate, setShowStartDate] = useState(false);
   const [isRefetch, setIsRefetch] = useState(false);
 

@@ -14,6 +14,7 @@ import { PiExportLight } from "react-icons/pi";
 import Select from "react-select";
 import Inquiry from "../../../components/data/Analytics/Metrics/Interaction/Inquiry";
 import Breakdown from "../../../components/data/Analytics/Metrics/Interaction/Breakdown";
+import { useGetInteractionMetrics } from "../../../services/analytics/query/metrics";
 
 const Interactions = () => {
   const customStyles = {
@@ -60,6 +61,31 @@ const Interactions = () => {
     value: time,
     label: time,
   }));
+
+
+  const [isRefetch, setIsRefetch] = useState(false);
+
+  const { data, isLoading, refetch } = useGetInteractionMetrics(
+    {
+      refetchOnWindowFocus: true,
+      onSuccess: () => {
+        setIsRefetch(false);
+      },
+      onError: () => {
+        setIsRefetch(false);
+      },
+      onSettled: () => {
+        setIsRefetch(false);
+      },
+    },
+    formatDates(startValue),
+    formatDates(endValue)
+  );
+
+  const handleRefreshClick = async () => {
+    setIsRefetch(true);
+    await refetch();
+  };
 
   return (
     <Box minH="75vh">
@@ -158,13 +184,14 @@ const Interactions = () => {
             display={{ base: "none", md: "flex" }}
             transition=".3s ease-in-out"
             _hover={{ bg: "#F4F6F8" }}
+            onClick={handleRefreshClick}
             borderRadius="8px"
             border="1px solid #848688"
             p="10px"
           >
             <Image
               src="/assets/refresh.svg"
-              // className={isRefetch && "mirrored-icon"}
+              className={isRefetch && "mirrored-icon"}
               w="20px"
               h="20px"
             />

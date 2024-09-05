@@ -4,7 +4,6 @@ import ReactApexChart from "react-apexcharts";
 import { IoStar } from "react-icons/io5";
 
 const RatingsChart = ({ dataa }) => {
-  // Ensure dataa is defined and has values
   const data = dataa?.map((item) => Number(item?.count)) || [];
 
   const options = {
@@ -55,7 +54,6 @@ const RatingsChart = ({ dataa }) => {
       </Text>
 
       <Box mt="35px">
-        {/* Render the chart only if data is available */}
         {data?.length > 0 ? (
           <ReactApexChart
             height={300}

@@ -6,6 +6,7 @@ import {
   Button,
   Text,
   useDisclosure,
+  Skeleton,
 } from "@chakra-ui/react";
 import StartEnd from "../../../components/modals/StartEnd";
 import { formatDates } from "../../../utils/helpers";
@@ -15,6 +16,7 @@ import Select from "react-select";
 import { IoStar } from "react-icons/io5";
 import Tips from "../../../components/data/Analytics/Metrics/Valet/Tips";
 import Ratings from "../../../components/data/Analytics/Metrics/Valet/Ratings";
+import { useGetValetOarkMetrics } from "../../../services/analytics/query/metrics";
 
 const Valet = () => {
   const customStyles = {
@@ -61,6 +63,30 @@ const Valet = () => {
     value: time,
     label: time,
   }));
+
+  const [isRefetch, setIsRefetch] = useState(false);
+
+  const { data, isLoading, refetch } = useGetValetOarkMetrics(
+    {
+      refetchOnWindowFocus: true,
+      onSuccess: () => {
+        setIsRefetch(false);
+      },
+      onError: () => {
+        setIsRefetch(false);
+      },
+      onSettled: () => {
+        setIsRefetch(false);
+      },
+    },
+    formatDates(startValue),
+    formatDates(endValue)
+  );
+
+  const handleRefreshClick = async () => {
+    setIsRefetch(true);
+    await refetch();
+  };
 
   return (
     <Box minH="75vh">
@@ -161,11 +187,12 @@ const Valet = () => {
             _hover={{ bg: "#F4F6F8" }}
             borderRadius="8px"
             border="1px solid #848688"
+            onClick={handleRefreshClick}
             p="10px"
           >
             <Image
               src="/assets/refresh.svg"
-              // className={isRefetch && "mirrored-icon"}
+              className={isRefetch && "mirrored-icon"}
               w="20px"
               h="20px"
             />
@@ -191,74 +218,98 @@ const Valet = () => {
         gap={{ base: "usnet", md: "24px" }}
       >
         {[
-          "Average valet Parking rating",
+          // "Average valet Parking rating",
           "Valet requests",
           "average Valet wait time (Minutes)",
         ].map((item, i) => (
-          <Box
+          <Skeleton
+            isLoaded={!isLoading}
             borderRadius="8px"
-            key={i}
-            bg="#F4F6F8"
-            w="full"
-            pt="5px"
             my={{ base: "10px", md: "20px" }}
-            px="5px"
-            border="1px solid #E4E6E8"
+            w="full"
           >
-            <Box h="6px" w="full" bg="#000" borderRadius="full"></Box>
-            <Box p="15px" pt="0px" pb="20px">
-              <Text
-                mt="24px"
-                lineHeight="100%"
-                fontWeight={700}
-                textTransform="capitalize"
-                color="#242628"
-              >
-                {item}
-              </Text>
-
-              <Flex
-                mt="24px"
-                align="flex-end"
-                justifyContent="space-between"
-                w="full"
-              >
-                <Box w="full">
-                  <Flex mt="24px" align="center" gap="12px">
-                    <Text
-                      fontSize="28px"
-                      lineHeight="100%"
-                      color="#646668"
-                      fontWeight={500}
-                    >
-                      {i === 0 || i === 2 ? "3.1" : "31"}
-                    </Text>{" "}
-                    {i === 0 ? <IoStar color="#EE383A" size="15px" /> : ""}
-                  </Flex>
-                </Box>
+            <Box
+              borderRadius="8px"
+              key={i}
+              bg="#F4F6F8"
+              w="full"
+              pt="5px"
+              my={{ base: "10px", md: "20px" }}
+              px="5px"
+              border="1px solid #E4E6E8"
+            >
+              <Box h="6px" w="full" bg="#000" borderRadius="full"></Box>
+              <Box p="15px" pt="0px" pb="20px">
+                <Text
+                  mt="24px"
+                  lineHeight="100%"
+                  fontWeight={700}
+                  textTransform="capitalize"
+                  color="#242628"
+                >
+                  {item}
+                </Text>
 
                 <Flex
-                  colot="#000"
-                  fontSize="12px"
-                  p="10px"
-                  rounded="full"
-                  bg="#FFFFFF"
+                  mt="24px"
+                  align="flex-end"
+                  justifyContent="space-between"
+                  w="full"
                 >
-                  +30.6%
+                  <Box w="full">
+                    <Flex mt="24px" align="center" gap="12px">
+                      <Text
+                        fontSize="28px"
+                        lineHeight="100%"
+                        color="#646668"
+                        fontWeight={500}
+                      >
+                        {i === 0
+                          ? Number(
+                              data?.data?.valetRequestsCount?.count
+                            )?.toLocaleString()
+                          : `${Number(
+                              data?.data?.averageValetWaitTime?.value
+                            )?.toLocaleString()}`}
+                      </Text>{" "}
+                      {/* {i === 0 ? <IoStar color="#EE383A" size="15px" /> : ""} */}
+                    </Flex>
+                  </Box>
+
+                  {console.log(data?.data)}
+                  <Flex
+                    colot="#000"
+                    fontSize="12px"
+                    p="10px"
+                    rounded="full"
+                    bg="#FFFFFF"
+                  >
+                    +
+                    {i === 0
+                      ? Number(
+                          data?.data?.valetRequestsCount?.percentageChange
+                        )?.toFixed(1)
+                      : Number(
+                          data?.data?.averageValetWaitTime?.percentageChange
+                        )?.toFixed(1)}
+                    %
+                  </Flex>
                 </Flex>
-              </Flex>
+              </Box>
             </Box>
-          </Box>
+          </Skeleton>
         ))}
       </Flex>
 
       <Flex align="center" gap="24px" flexDir={{ base: "column", md: "row" }}>
-        <Box w={{ base: "100%", md: "60%" }}>
-          <Tips />
+        <Box w={{ base: "100%", md: "100%" }}>
+          <Skeleton isLoaded={!isLoading} borderRadius="8px">
+            <Tips dataa={data?.data?.totalTipsFromValetParking} />
+          </Skeleton>
         </Box>
-        <Box w={{ base: "100%", md: "40%" }}>
+        {/* <Box w={{ base: "100%", md: "40%" }}>
           <Ratings />
-        </Box>
+        </Box> */}
       </Flex>
     </Box>
   );

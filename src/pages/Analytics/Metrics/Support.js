@@ -1,10 +1,9 @@
 import React, { useState } from "react";
 import {
   Box,
-  Button,
   Flex,
   Image,
-  Skeleton,
+  Button,
   Text,
   useDisclosure,
 } from "@chakra-ui/react";
@@ -13,16 +12,10 @@ import { formatDates } from "../../../utils/helpers";
 import { IoIosArrowDown, IoIosArrowForward } from "react-icons/io";
 import { PiExportLight } from "react-icons/pi";
 import Select from "react-select";
-import { IoStar } from "react-icons/io5";
-import Types from "../../../components/data/Analytics/Metrics/PayToPark/Types";
-import LocationDistro from "../../../components/data/Analytics/Metrics/PayToPark/LocationDistro";
-import PaidUnpaid from "../../../components/data/Analytics/Metrics/PayToPark/PaidUnpaid";
-import Paid from "../../../components/data/Analytics/Metrics/PayToPark/Paid";
-import Transaction from "../../../components/data/Analytics/Metrics/PayToPark/Transaction";
-import Sessions from "../../../components/data/Analytics/Metrics/PayToPark/Sessions";
-import { useGetPayToParkMetrics } from "../../../services/analytics/query/metrics";
+import Method from "../../../components/data/Analytics/Metrics/Payment/Method";
+import Employee from "../../../components/data/Analytics/Metrics/Payment/Employee";
 
-const PayToPark = () => {
+const Support = () => {
   const customStyles = {
     control: (provided, state) => ({
       ...provided,
@@ -67,30 +60,6 @@ const PayToPark = () => {
     value: time,
     label: time,
   }));
-
-  const [isRefetch, setIsRefetch] = useState(false);
-
-  const { data, isLoading, refetch } = useGetPayToParkMetrics(
-    {
-      refetchOnWindowFocus: true,
-      onSuccess: () => {
-        setIsRefetch(false);
-      },
-      onError: () => {
-        setIsRefetch(false);
-      },
-      onSettled: () => {
-        setIsRefetch(false);
-      },
-    },
-    formatDates(startValue),
-    formatDates(endValue)
-  );
-
-  const handleRefreshClick = async () => {
-    setIsRefetch(true);
-    await refetch();
-  };
 
   return (
     <Box minH="75vh">
@@ -191,12 +160,11 @@ const PayToPark = () => {
             _hover={{ bg: "#F4F6F8" }}
             borderRadius="8px"
             border="1px solid #848688"
-            onClick={handleRefreshClick}
             p="10px"
           >
             <Image
               src="/assets/refresh.svg"
-              className={isRefetch && "mirrored-icon"}
+              // className={isRefetch && "mirrored-icon"}
               w="20px"
               h="20px"
             />
@@ -221,17 +189,8 @@ const PayToPark = () => {
         flexDir={{ base: "column", md: "row" }}
         gap={{ base: "usnet", md: "24px" }}
       >
-        {[
-          "Average Pay to Park service Rating",
-          "Pay to Park transactions",
-          "paid parking sessions Revenue",
-        ].map((item, i) => (
-          <Skeleton
-            isLoaded={!isLoading}
-            borderRadius="8px"
-            my={{ base: "10px", md: "20px" }}
-            w="full"
-          >
+        {["Payment Success Rate", "Average Transaction Value"].map(
+          (item, i) => (
             <Box
               borderRadius="8px"
               key={i}
@@ -268,19 +227,8 @@ const PayToPark = () => {
                         color="#646668"
                         fontWeight={500}
                       >
-                        {i === 0
-                          ? Number(
-                              data?.data?.averageRating?.value
-                            )?.toLocaleString()
-                          : i === 1
-                          ? Number(
-                              data?.data?.transactionsCount?.value
-                            )?.toLocaleString()
-                          : `₦${Number(
-                              data?.data?.paidParkingRevenue?.value
-                            )?.toLocaleString()}`}
-                      </Text>{" "}
-                      {i === 0 ? <IoStar color="#EE383A" size="15px" /> : ""}
+                        {i === 0 ? "31%" : "₦300,345,123.00"}
+                      </Text>
                     </Flex>
                   </Box>
 
@@ -291,80 +239,25 @@ const PayToPark = () => {
                     rounded="full"
                     bg="#FFFFFF"
                   >
-                    +
-                    {i === 0
-                      ? Number(
-                          data?.data?.averageRating?.percentageChange
-                        )?.toFixed(1)
-                      : i === 1
-                      ? Number(
-                          data?.data?.transactionsCount?.percentageChange
-                        )?.toFixed(1)
-                      : Number(
-                          data?.data?.paidParkingRevenue?.percentageChange
-                        )?.toFixed(1)}
-                    %
+                    +30.6%
                   </Flex>
                 </Flex>
               </Box>
             </Box>
-          </Skeleton>
-        ))}
-      </Flex>
-
-      <Flex align="center" gap="24px" flexDir={{ base: "column", md: "row" }}>
-        <Box w={{ base: "100%", md: "100%" }}>
-          <Skeleton isLoaded={!isLoading} borderRadius="8px">
-            <Types
-              isLoading={isLoading}
-              dataa={data?.data?.serviceRatingsDistribution}
-            />
-          </Skeleton>
-        </Box>
-        <Box w={{ base: "100%", md: "100%" }}>
-          <Skeleton isLoaded={!isLoading} borderRadius="8px">
-            <LocationDistro
-              isLoading={isLoading}
-              dataa={data?.data?.locationDistribution}
-            />
-          </Skeleton>
-        </Box>
-      </Flex>
-
-      <Flex
-        my="24px"
-        align="center"
-        gap="24px"
-        flexDir={{ base: "column", md: "row" }}
-      >
-        <Box w={{ base: "100%", md: "60%" }}>
-          <Skeleton isLoaded={!isLoading} borderRadius="8px">
-            <Paid dataa={data?.data?.paidParkingSessionsRevenue} />
-          </Skeleton>
-        </Box>
-        <Box w={{ base: "100%", md: "40%" }}>
-          <Skeleton isLoaded={!isLoading} borderRadius="8px">
-            <PaidUnpaid dataa={data?.data?.paidUnpaidInvoices} />
-          </Skeleton>
-        </Box>
+          )
+        )}
       </Flex>
 
       <Flex align="center" gap="24px" flexDir={{ base: "column", md: "row" }}>
         <Box w={{ base: "100%", md: "40%" }}>
-          <Skeleton isLoaded={!isLoading} borderRadius="8px">
-            <Transaction
-              dataa={data?.data?.transactionInitiationDistribution}
-            />
-          </Skeleton>
+          <Method />
         </Box>
         <Box w={{ base: "100%", md: "60%" }}>
-          <Skeleton isLoaded={!isLoading} borderRadius="8px">
-            <Sessions dataa={data?.data?.paidParkingSessions} />
-          </Skeleton>
+          <Employee />
         </Box>
       </Flex>
     </Box>
   );
 };
 
-export default PayToPark;
+export default Support;
