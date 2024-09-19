@@ -3,52 +3,30 @@ import { Box, Flex, Text } from "@chakra-ui/react";
 import Chart from "react-apexcharts";
 
 const Reg = ({ dataa }) => {
-  // Process the dataa to get series data
-  const processedData = useMemo(() => {
-    const months = [
-      "Jan",
-      "February",
-      "March",
-      "April",
-      "May",
-      "June",
-      "July",
-      "August",
-      "September",
-      "October",
-      "November",
-      "December",
-    ];
-    const membershipData = Array(12).fill(0);
-    const corporateData = Array(12).fill(0);
-
-    // Loop through the monthly data and populate the arrays
-    dataa?.monthlyData?.forEach((monthData) => {
-      const [monthName, subscriptions] = Object.entries(monthData)[0]; // Get month and subscription array
-      const monthIndex = months.indexOf(monthName);
-
-      if (monthIndex !== -1) {
-        subscriptions.forEach((sub) => {
-          if (sub.subscriptionType === "membershipSubscription") {
-            membershipData[monthIndex] = Number(sub.count);
-          } else if (sub.subscriptionType === "corporateSubscription") {
-            corporateData[monthIndex] = Number(sub.count);
-          }
-        });
-      }
+   
+    const membershipData = dataa?.monthlyData.map((month) => {
+      const membership = month.subscriptions.find(
+        (sub) => sub.subscriptionType === "membershipSubscription"
+      );
+      return membership?.count || 0;
+    });
+  
+    const corporateData = dataa?.monthlyData.map((month) => {
+      const corporate = month.subscriptions.find(
+        (sub) => sub.subscriptionType === "corporateSubscription"
+      );
+      return corporate?.count || 0;
     });
 
-    return { membershipData, corporateData };
-  }, [dataa]);
 
   const series = [
     {
       name: "Membership sub",
-      data: processedData.membershipData,
+      data: membershipData,
     },
     {
       name: "Corporate",
-      data: processedData.corporateData,
+      data: corporateData,
     },
   ];
 
