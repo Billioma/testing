@@ -6,7 +6,8 @@ export const useLogOut = () => {
     };
 
     const pathPrefix =
-      location.pathname.match(/(operator|admin|analytics|client)\//)?.[0] || "customer";
+      location.pathname.match(/(operator|admin|analytics|client)\//)?.[0] ||
+      "customer";
     const newPath = pathPrefix?.replace("/", "");
 
     if (pathPrefix) {
@@ -51,9 +52,9 @@ export const formatDate = (date, fallback = "", withTime = false) => {
 };
 
 export const getStartOfWeek = (date) => {
-  const day = date.getDay(); // Get the current day of the week (0 = Sunday, 1 = Monday, ..., 6 = Saturday)
-  const diff = date.getDate() - day + (day === 0 ? -6 : 1); // Adjust when day is Sunday (0)
-  return new Date(date.setDate(diff));
+  const currentMonth = date.getMonth(); // Get the current month (0 = January, ..., 11 = December)
+  date.setMonth(currentMonth - 12); // Subtract one month
+  return new Date(date.setDate(1)); // Set the date to the 1st of the previous month
 };
 
 export const formatNewDates = (date, fallback = "", withTime = false) => {

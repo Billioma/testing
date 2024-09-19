@@ -3,7 +3,7 @@ import { Box, Flex, Text } from "@chakra-ui/layout";
 import ReactApexChart from "react-apexcharts";
 import { IoStar } from "react-icons/io5";
 
-const Types = ({ dataa,isLoading }) => {
+const Types = ({ dataa }) => {
   const data = dataa?.map((item) => Number(item?.count)) || [];
 
   const options = {
@@ -80,7 +80,7 @@ const Types = ({ dataa,isLoading }) => {
             <Flex key={i} align="center" gap="10px">
               <IoStar color={colors[i % colors?.length]} size="13px" />
               <Text color="#000" fontSize="12px">
-                {i + 1} ({Number(item?.count)})
+              {item?.rating} ({Number(item?.count)})
               </Text>
             </Flex>
           ))

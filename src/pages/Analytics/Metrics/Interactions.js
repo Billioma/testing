@@ -6,9 +6,10 @@ import {
   Button,
   Text,
   useDisclosure,
+  Skeleton,
 } from "@chakra-ui/react";
 import StartEnd from "../../../components/modals/StartEnd";
-import { formatDates } from "../../../utils/helpers";
+import { formatDates, getStartOfWeek } from "../../../utils/helpers";
 import { IoIosArrowDown, IoIosArrowForward } from "react-icons/io";
 import { PiExportLight } from "react-icons/pi";
 import Select from "react-select";
@@ -47,7 +48,7 @@ const Interactions = () => {
   };
   const [filter, setFilter] = useState("");
   const [showEndDate, setShowEndDate] = useState(false);
-  const [startValue, startChange] = useState(new Date());
+  const [startValue, startChange] = useState(getStartOfWeek(new Date()));
   const [endValue, endChange] = useState(new Date());
   const [showStartDate, setShowStartDate] = useState(false);
 
@@ -61,7 +62,6 @@ const Interactions = () => {
     value: time,
     label: time,
   }));
-
 
   const [isRefetch, setIsRefetch] = useState(false);
 
@@ -217,68 +217,82 @@ const Interactions = () => {
         gap={{ base: "usnet", md: "24px" }}
       >
         {["Interactions", "Average inquiry response time"].map((item, i) => (
-          <Box
-            borderRadius="8px"
-            key={i}
-            bg="#F4F6F8"
-            w="full"
-            pt="5px"
-            my={{ base: "10px", md: "20px" }}
-            px="5px"
-            border="1px solid #E4E6E8"
-          >
-            <Box h="6px" w="full" bg="#000" borderRadius="full"></Box>
-            <Box p="15px" pt="0px" pb="20px">
-              <Text
-                mt="24px"
-                lineHeight="100%"
-                fontWeight={700}
-                textTransform="capitalize"
-                color="#242628"
-              >
-                {item}
-              </Text>
-
-              <Flex
-                mt="24px"
-                align="flex-end"
-                justifyContent="space-between"
-                w="full"
-              >
-                <Box w="full">
-                  <Flex mt="24px" align="center" gap="12px">
-                    <Text
-                      fontSize="28px"
-                      lineHeight="100%"
-                      color="#646668"
-                      fontWeight={500}
-                    >
-                      {i === 1 ? "3.1" : "31"}
-                    </Text>{" "}
-                  </Flex>
-                </Box>
+          <Skeleton isLoaded={!isLoading} borderRadius="8px" w="full">
+            <Box
+              borderRadius="8px"
+              key={i}
+              bg="#F4F6F8"
+              w="full"
+              pt="5px"
+              my={{ base: "10px", md: "20px" }}
+              px="5px"
+              border="1px solid #E4E6E8"
+            >
+              <Box h="6px" w="full" bg="#000" borderRadius="full"></Box>
+              <Box p="15px" pt="0px" pb="20px">
+                <Text
+                  mt="24px"
+                  lineHeight="100%"
+                  fontWeight={700}
+                  textTransform="capitalize"
+                  color="#242628"
+                >
+                  {item}
+                </Text>
 
                 <Flex
-                  colot="#000"
-                  fontSize="12px"
-                  p="10px"
-                  rounded="full"
-                  bg="#FFFFFF"
+                  mt="24px"
+                  align="flex-end"
+                  justifyContent="space-between"
+                  w="full"
                 >
-                  +30.6%
+                  <Box w="full">
+                    <Flex mt="24px" align="center" gap="12px">
+                      <Text
+                        fontSize="28px"
+                        lineHeight="100%"
+                        color="#646668"
+                        fontWeight={500}
+                      >
+                        {i === 0
+                          ? data?.data?.totalInteractions?.value
+                          : data?.data?.averageResponseTime?.value}
+                      </Text>{" "}
+                    </Flex>
+                  </Box>
+
+                  <Flex
+                    colot="#000"
+                    fontSize="12px"
+                    p="10px"
+                    rounded="full"
+                    bg="#FFFFFF"
+                  >
+                    +
+                    {i === 0
+                      ? Number(data?.data?.totalInteractions?.percentageChange)
+                      : Number(
+                          data?.data?.averageResponseTime?.percentageChange
+                        )}
+                    %
+                  </Flex>
                 </Flex>
-              </Flex>
+              </Box>
             </Box>
-          </Box>
+          </Skeleton>
         ))}
       </Flex>
 
       <Flex align="center" gap="24px" flexDir={{ base: "column", md: "row" }}>
         <Box w={{ base: "100%", md: "60%" }}>
-          <Inquiry />
+          <Skeleton isLoaded={!isLoading} borderRadius="8px">
+            <Inquiry dataa={data?.data?.inquiryResolutionRate} />
+          </Skeleton>
         </Box>
         <Box w={{ base: "100%", md: "40%" }}>
-          <Breakdown />
+          <Skeleton isLoaded={!isLoading} borderRadius="8px">
+            <Breakdown dataa={data?.data?.interactionsBreakdown} />
+          </Skeleton>
         </Box>
       </Flex>
     </Box>

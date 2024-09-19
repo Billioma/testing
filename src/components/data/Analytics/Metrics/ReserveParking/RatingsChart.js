@@ -80,7 +80,7 @@ const RatingsChart = ({ dataa }) => {
             <Flex key={i} align="center" gap="10px">
               <IoStar color={colors[i % colors?.length]} size="13px" />
               <Text color="#000" fontSize="12px">
-                {i + 1} ({Number(item?.count)})
+              {item?.rating} ({Number(item?.count)})
               </Text>
             </Flex>
           ))

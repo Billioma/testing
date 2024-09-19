@@ -285,6 +285,7 @@ export const PRIVATE_PATHS = {
   METRICS_CAR_SERVICE: "/analytics/metrics/car-services",
   METRICS_INTERACTION: "/analytics/metrics/interactions",
   METRICS_VEHICLE: "/analytics/metrics/vehicles",
+  METRICS_SUB: "/analytics/metrics/subscriptions",
   METRICS_CLIENT_OPERATORS: "/analytics/metrics/clients&operators",
   ADMIN_INCIDENTS: "/admin/claims",
   ADMIN_CREATE_INCIDENTS: "/admin/logs/valeted-vehicles/:id/report-incident",

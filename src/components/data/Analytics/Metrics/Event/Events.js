@@ -1,12 +1,12 @@
 import React from "react";
-import { Box, Text } from "@chakra-ui/react";
+import { Box, Flex, Text } from "@chakra-ui/react";
 import Chart from "react-apexcharts";
 
-const Revenue = ({ dataa }) => {
+const Events = ({ dataa }) => {
   const series = [
     {
       name: "Revenue",
-      data: dataa?.map((item) => Number(item?.revenue)) || [],
+      data: dataa?.map((item) => Number(item?.eventCount)) || [],
     },
   ];
 
@@ -34,10 +34,7 @@ const Revenue = ({ dataa }) => {
     dataLabels: {
       enabled: true,
       formatter: (val) =>
-        `₦${val.toLocaleString(undefined, {
-          minimumFractionDigits: 2,
-          maximumFractionDigits: 2,
-        })}`,
+        `₦${val.toLocaleString()}`,
       style: {
         fontSize: "12px",
         colors: ["#000"],
@@ -79,7 +76,7 @@ const Revenue = ({ dataa }) => {
     },
     tooltip: {
       y: {
-        formatter: (value) => `₦${value.toLocaleString()}`,
+        formatter: (value) => value.toLocaleString(),
       },
     },
   };
@@ -92,15 +89,15 @@ const Revenue = ({ dataa }) => {
         fontSize="14px"
         fontWeight={700}
       >
-        revenue generated from each client
+        events Per client
       </Text>
 
-      <Box mt="30px">
+      <Box>
         <Chart
           options={options}
           series={series}
           type="bar"
-          height={300}
+          height={270}
           width={"100%"}
         />
       </Box>
@@ -108,4 +105,4 @@ const Revenue = ({ dataa }) => {
   );
 };
 
-export default Revenue;
+export default Events;

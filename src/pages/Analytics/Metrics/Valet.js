@@ -9,13 +9,11 @@ import {
   Skeleton,
 } from "@chakra-ui/react";
 import StartEnd from "../../../components/modals/StartEnd";
-import { formatDates } from "../../../utils/helpers";
+import { formatDates, getStartOfWeek } from "../../../utils/helpers";
 import { IoIosArrowDown, IoIosArrowForward } from "react-icons/io";
 import { PiExportLight } from "react-icons/pi";
 import Select from "react-select";
-import { IoStar } from "react-icons/io5";
 import Tips from "../../../components/data/Analytics/Metrics/Valet/Tips";
-import Ratings from "../../../components/data/Analytics/Metrics/Valet/Ratings";
 import { useGetValetOarkMetrics } from "../../../services/analytics/query/metrics";
 
 const Valet = () => {
@@ -49,7 +47,7 @@ const Valet = () => {
   };
   const [filter, setFilter] = useState("");
   const [showEndDate, setShowEndDate] = useState(false);
-  const [startValue, startChange] = useState(new Date());
+  const [startValue, startChange] = useState(getStartOfWeek(new Date()));
   const [endValue, endChange] = useState(new Date());
   const [showStartDate, setShowStartDate] = useState(false);
 
@@ -272,11 +270,9 @@ const Valet = () => {
                               data?.data?.averageValetWaitTime?.value
                             )?.toLocaleString()}`}
                       </Text>{" "}
-                      {/* {i === 0 ? <IoStar color="#EE383A" size="15px" /> : ""} */}
                     </Flex>
                   </Box>
 
-                  {console.log(data?.data)}
                   <Flex
                     colot="#000"
                     fontSize="12px"
@@ -307,9 +303,6 @@ const Valet = () => {
             <Tips dataa={data?.data?.totalTipsFromValetParking} />
           </Skeleton>
         </Box>
-        {/* <Box w={{ base: "100%", md: "40%" }}>
-          <Ratings />
-        </Box> */}
       </Flex>
     </Box>
   );

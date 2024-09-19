@@ -6,14 +6,16 @@ import {
   Button,
   Text,
   useDisclosure,
+  Skeleton,
 } from "@chakra-ui/react";
 import StartEnd from "../../../components/modals/StartEnd";
-import { formatDates } from "../../../utils/helpers";
+import { formatDates, getStartOfWeek } from "../../../utils/helpers";
 import { IoIosArrowDown, IoIosArrowForward } from "react-icons/io";
 import { PiExportLight } from "react-icons/pi";
 import Select from "react-select";
 import Breakdown from "../../../components/data/Analytics/Metrics/Vehicles/Breakdown";
 import Revenue from "../../../components/data/Analytics/Metrics/Vehicles/Revenue";
+import { useGetVehicleMetrics } from "../../../services/analytics/query/metrics";
 
 const Vehicles = () => {
   const customStyles = {
@@ -46,7 +48,7 @@ const Vehicles = () => {
   };
   const [filter, setFilter] = useState("");
   const [showEndDate, setShowEndDate] = useState(false);
-  const [startValue, startChange] = useState(new Date());
+  const [startValue, startChange] = useState(getStartOfWeek(new Date()));
   const [endValue, endChange] = useState(new Date());
   const [showStartDate, setShowStartDate] = useState(false);
 
@@ -61,6 +63,29 @@ const Vehicles = () => {
     label: time,
   }));
 
+  const [isRefetch, setIsRefetch] = useState(false);
+
+  const { data, isLoading, refetch } = useGetVehicleMetrics(
+    {
+      refetchOnWindowFocus: true,
+      onSuccess: () => {
+        setIsRefetch(false);
+      },
+      onError: () => {
+        setIsRefetch(false);
+      },
+      onSettled: () => {
+        setIsRefetch(false);
+      },
+    },
+    formatDates(startValue),
+    formatDates(endValue)
+  );
+
+  const handleRefreshClick = async () => {
+    setIsRefetch(true);
+    await refetch();
+  };
   return (
     <Box minH="75vh">
       <Flex
@@ -158,13 +183,14 @@ const Vehicles = () => {
             display={{ base: "none", md: "flex" }}
             transition=".3s ease-in-out"
             _hover={{ bg: "#F4F6F8" }}
+            onClick={handleRefreshClick}
             borderRadius="8px"
             border="1px solid #848688"
             p="10px"
           >
             <Image
               src="/assets/refresh.svg"
-              // className={isRefetch && "mirrored-icon"}
+              className={isRefetch && "mirrored-icon"}
               w="20px"
               h="20px"
             />
@@ -184,66 +210,70 @@ const Vehicles = () => {
         />
       </Flex>
 
-      <Box
-        borderRadius="8px"
-        bg="#F4F6F8"
-        w="full"
-        pt="5px"
-        my={{ base: "10px", md: "20px" }}
-        px="5px"
-        border="1px solid #E4E6E8"
-      >
-        <Box h="6px" w="full" bg="#000" borderRadius="full"></Box>
-        <Box p="15px" pt="0px" pb="20px">
-          <Text
-            mt="24px"
-            lineHeight="100%"
-            fontWeight={700}
-            textTransform="capitalize"
-            color="#242628"
-          >
-            registered vehicles
-          </Text>
-
-          <Flex
-            mt="24px"
-            align="flex-end"
-            justifyContent="space-between"
-            w="full"
-          >
-            <Box w="full">
-              <Flex mt="24px" align="center" gap="12px">
-                <Text
-                  fontSize="28px"
-                  lineHeight="100%"
-                  color="#646668"
-                  fontWeight={500}
-                >
-                  31
-                </Text>{" "}
-              </Flex>
-            </Box>
+      <Skeleton isLoaded={!isLoading} borderRadius="8px">
+        <Box
+          borderRadius="8px"
+          bg="#F4F6F8"
+          w="full"
+          pt="5px"
+          my={{ base: "10px", md: "20px" }}
+          px="5px"
+          border="1px solid #E4E6E8"
+        >
+          <Box h="6px" w="full" bg="#000" borderRadius="full"></Box>
+          <Box p="15px" pt="0px" pb="20px">
+            <Text
+              mt="24px"
+              lineHeight="100%"
+              fontWeight={700}
+              textTransform="capitalize"
+              color="#242628"
+            >
+              registered vehicles
+            </Text>
 
             <Flex
-              colot="#000"
-              fontSize="12px"
-              p="10px"
-              rounded="full"
-              bg="#FFFFFF"
+              mt="24px"
+              align="flex-end"
+              justifyContent="space-between"
+              w="full"
             >
-              +30.6%
+              <Box w="full">
+                <Flex mt="24px" align="center" gap="12px">
+                  <Text
+                    fontSize="28px"
+                    lineHeight="100%"
+                    color="#646668"
+                    fontWeight={500}
+                  >
+                    {Number(
+                      data?.data?.registeredVehicles?.registeredVehicles
+                    )?.toLocaleString()}
+                  </Text>{" "}
+                </Flex>
+              </Box>
+
+              <Flex
+                colot="#000"
+                fontSize="12px"
+                p="10px"
+                rounded="full"
+                bg="#FFFFFF"
+              >
+                +{Number(data?.data?.registeredVehicles?.percentageChange)}%
+              </Flex>
             </Flex>
-          </Flex>
+          </Box>
         </Box>
-      </Box>
+      </Skeleton>
 
       <Flex align="center" gap="24px" flexDir={{ base: "column", md: "row" }}>
-        <Box w={{ base: "100%", md: "60%" }}>
-          <Revenue />
+        <Box w={{ base: "100%", md: "100%" }}>
+          <Skeleton isLoaded={!isLoading} borderRadius="8px">
+            <Revenue dataa={data?.data?.revenueGeneratedFromEachClient} />
+          </Skeleton>
         </Box>
-        <Box w={{ base: "100%", md: "40%" }}>
-          <Breakdown />
-        </Box>
+        
       </Flex>
     </Box>
   );

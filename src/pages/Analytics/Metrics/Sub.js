@@ -1,28 +1,28 @@
 import React, { useState } from "react";
 import {
   Box,
-  Button,
   Flex,
   Image,
-  Skeleton,
+  Button,
   Text,
   useDisclosure,
+  Skeleton,
 } from "@chakra-ui/react";
 import StartEnd from "../../../components/modals/StartEnd";
 import { formatDates, getStartOfWeek } from "../../../utils/helpers";
 import { IoIosArrowDown, IoIosArrowForward } from "react-icons/io";
 import { PiExportLight } from "react-icons/pi";
 import Select from "react-select";
-import { IoStar } from "react-icons/io5";
-import Types from "../../../components/data/Analytics/Metrics/PayToPark/Types";
-import LocationDistro from "../../../components/data/Analytics/Metrics/PayToPark/LocationDistro";
-import PaidUnpaid from "../../../components/data/Analytics/Metrics/PayToPark/PaidUnpaid";
-import Paid from "../../../components/data/Analytics/Metrics/PayToPark/Paid";
-import Transaction from "../../../components/data/Analytics/Metrics/PayToPark/Transaction";
-import Sessions from "../../../components/data/Analytics/Metrics/PayToPark/Sessions";
-import { useGetPayToParkMetrics } from "../../../services/analytics/query/metrics";
+import { useGetSubMetrics } from "../../../services/analytics/query/metrics";
+import ActInact from "../../../components/data/Analytics/Metrics/Sub/ActInact";
+import Reg from "../../../components/data/Analytics/Metrics/Sub/Reg";
+import Per from "../../../components/data/Analytics/Metrics/Sub/Per";
+import RevenueChart from "../../../components/data/Analytics/Metrics/Sub/RevenueChart";
+import ActCorp from "../../../components/data/Analytics/Metrics/Sub/ActCorp";
+import ActCust from "../../../components/data/Analytics/Metrics/Sub/ActCust";
+import Gross from "../../../components/data/Analytics/Metrics/Sub/Gross";
 
-const PayToPark = () => {
+const Sub = () => {
   const customStyles = {
     control: (provided, state) => ({
       ...provided,
@@ -70,7 +70,7 @@ const PayToPark = () => {
 
   const [isRefetch, setIsRefetch] = useState(false);
 
-  const { data, isLoading, refetch } = useGetPayToParkMetrics(
+  const { data, isLoading, refetch } = useGetSubMetrics(
     {
       refetchOnWindowFocus: true,
       onSuccess: () => {
@@ -91,7 +91,6 @@ const PayToPark = () => {
     setIsRefetch(true);
     await refetch();
   };
-
   return (
     <Box minH="75vh">
       <Flex
@@ -189,9 +188,9 @@ const PayToPark = () => {
             display={{ base: "none", md: "flex" }}
             transition=".3s ease-in-out"
             _hover={{ bg: "#F4F6F8" }}
+            onClick={handleRefreshClick}
             borderRadius="8px"
             border="1px solid #848688"
-            onClick={handleRefreshClick}
             p="10px"
           >
             <Image
@@ -216,155 +215,124 @@ const PayToPark = () => {
         />
       </Flex>
 
-      <Flex
-        align="center"
-        flexDir={{ base: "column", md: "row" }}
-        gap={{ base: "usnet", md: "24px" }}
-      >
-        {[
-          "Average Pay to Park service Rating",
-          "Pay to Park transactions",
-          "paid parking sessions Revenue",
-        ].map((item, i) => (
-          <Skeleton
-            isLoaded={!isLoading}
-            borderRadius="8px"
-            my={{ base: "10px", md: "20px" }}
-            w="full"
-          >
-            <Box
-              borderRadius="8px"
-              key={i}
-              bg="#F4F6F8"
-              w="full"
-              pt="5px"
-              my={{ base: "10px", md: "20px" }}
-              px="5px"
-              border="1px solid #E4E6E8"
+      <Skeleton isLoaded={!isLoading} borderRadius="8px">
+        <Box
+          borderRadius="8px"
+          bg="#F4F6F8"
+          w="full"
+          pt="5px"
+          my={{ base: "10px", md: "20px" }}
+          px="5px"
+          border="1px solid #E4E6E8"
+        >
+          <Box h="6px" w="full" bg="#000" borderRadius="full"></Box>
+          <Box p="15px" pt="0px" pb="20px">
+            <Text
+              mt="24px"
+              lineHeight="100%"
+              fontWeight={700}
+              textTransform="capitalize"
+              color="#242628"
             >
-              <Box h="6px" w="full" bg="#000" borderRadius="full"></Box>
-              <Box p="15px" pt="0px" pb="20px">
-                <Text
-                  mt="24px"
-                  lineHeight="100%"
-                  fontWeight={700}
-                  textTransform="capitalize"
-                  color="#242628"
-                >
-                  {item}
-                </Text>
+              available subscription types
+            </Text>
 
-                <Flex
-                  mt="24px"
-                  align="flex-end"
-                  justifyContent="space-between"
-                  w="full"
-                >
-                  <Box w="full">
-                    <Flex mt="24px" align="center" gap="12px">
-                      <Text
-                        fontSize="28px"
-                        lineHeight="100%"
-                        color="#646668"
-                        fontWeight={500}
-                      >
-                        {i === 0
-                          ? Number(
-                              data?.data?.averageRating?.value
-                            )?.toLocaleString()
-                          : i === 1
-                          ? Number(
-                              data?.data?.transactionsCount?.value
-                            )?.toLocaleString()
-                          : `₦${Number(
-                              data?.data?.paidParkingRevenue?.value
-                            )?.toLocaleString()}`}
-                      </Text>{" "}
-                      {i === 0 ? <IoStar color="#EE383A" size="15px" /> : ""}
-                    </Flex>
-                  </Box>
-
-                  <Flex
-                    colot="#000"
-                    fontSize="12px"
-                    p="10px"
-                    rounded="full"
-                    bg="#FFFFFF"
+            <Flex
+              mt="24px"
+              align="flex-end"
+              justifyContent="space-between"
+              w="full"
+            >
+              <Box w="full">
+                <Flex mt="24px" align="center" gap="12px">
+                  <Text
+                    fontSize="28px"
+                    lineHeight="100%"
+                    color="#646668"
+                    fontWeight={500}
                   >
-                    +
-                    {i === 0
-                      ? Number(
-                          data?.data?.averageRating?.percentageChange
-                        )?.toFixed(1)
-                      : i === 1
-                      ? Number(
-                          data?.data?.transactionsCount?.percentageChange
-                        )?.toFixed(1)
-                      : Number(
-                          data?.data?.paidParkingRevenue?.percentageChange
-                        )?.toFixed(1)}
-                    %
-                  </Flex>
+                    {Number(
+                      data?.data?.availableSubscriptionTypes?.value
+                    )?.toLocaleString()}
+                  </Text>{" "}
                 </Flex>
               </Box>
-            </Box>
-          </Skeleton>
-        ))}
-      </Flex>
+
+              <Flex
+                colot="#000"
+                fontSize="12px"
+                p="10px"
+                rounded="full"
+                bg="#FFFFFF"
+              >
+                +
+                {Number(
+                  data?.data?.availableSubscriptionTypes?.percentageChange
+                )}
+                %
+              </Flex>
+            </Flex>
+          </Box>
+        </Box>
+      </Skeleton>
 
       <Flex align="center" gap="24px" flexDir={{ base: "column", md: "row" }}>
-        <Box w={{ base: "100%", md: "100%" }}>
+        <Box w={{ base: "100%", md: "60%" }}>
           <Skeleton isLoaded={!isLoading} borderRadius="8px">
-            <Types
-              isLoading={isLoading}
-              dataa={data?.data?.serviceRatingsDistribution}
-            />
+            <Reg dataa={data?.data?.registeredSubscriptions} />
           </Skeleton>
         </Box>
-        <Box w={{ base: "100%", md: "100%" }}>
+        <Box w={{ base: "100%", md: "40%" }}>
           <Skeleton isLoaded={!isLoading} borderRadius="8px">
-            <LocationDistro
-              isLoading={isLoading}
-              dataa={data?.data?.locationDistribution}
-            />
+            <ActInact dataa={data?.data?.subscriptionsBreakdown} />
           </Skeleton>
         </Box>
       </Flex>
 
       <Flex
-        my="24px"
+        align="flex-start"
+        gap="24px"
+        mt="24px"
+        flexDir={{ base: "column", md: "row" }}
+      >
+        <Box w={{ base: "100%", md: "60%" }}>
+          <Skeleton isLoaded={!isLoading} borderRadius="8px">
+            <RevenueChart dataa={data?.data?.totalRevenueGenerated} />
+          </Skeleton>
+        </Box>
+
+        <Box w={{ base: "100%", md: "40%" }}>
+          <Skeleton isLoaded={!isLoading} borderRadius="8px">
+            <Per dataa={data?.data?.revenuePerSubscription} />
+          </Skeleton>
+        </Box>
+      </Flex>
+
+      <Flex
+        mt="24px"
         align="center"
         gap="24px"
         flexDir={{ base: "column", md: "row" }}
       >
-        <Box w={{ base: "100%", md: "60%" }}>
+        <Box w={{ base: "100%", md: "50%" }}>
           <Skeleton isLoaded={!isLoading} borderRadius="8px">
-            <Paid dataa={data?.data?.paidParkingSessionsRevenue} />
+            <ActCorp dataa={data?.data?.corporateSubscriptionsCategories} />
           </Skeleton>
         </Box>
-        <Box w={{ base: "100%", md: "40%" }}>
+        <Box w={{ base: "100%", md: "50%" }}>
           <Skeleton isLoaded={!isLoading} borderRadius="8px">
-            <PaidUnpaid dataa={data?.data?.paidUnpaidInvoices} />
+            <ActCust dataa={data?.data?.membershipSubscriptionsCategories} />
           </Skeleton>
         </Box>
       </Flex>
 
-      <Flex align="center" gap="24px" flexDir={{ base: "column", md: "row" }}>
-        <Box w={{ base: "100%", md: "40%" }}>
-          <Skeleton isLoaded={!isLoading} borderRadius="8px">
-            <Transaction
-              dataa={data?.data?.transactionInitiationDistribution}
-            />
-          </Skeleton>
-        </Box>
-        <Box w={{ base: "100%", md: "60%" }}>
-          <Skeleton isLoaded={!isLoading} borderRadius="8px">
-            <Sessions dataa={data?.data?.paidParkingSessions} />
-          </Skeleton>
-        </Box>
-      </Flex>
+      <Box mt="24px" w={{ base: "100%", md: "100%" }}>
+        <Skeleton isLoaded={!isLoading} borderRadius="8px">
+          <Gross dataa={data?.data?.highestGrossingSubscriptions} />
+        </Skeleton>
+      </Box>
     </Box>
   );
 };
 
-export default PayToPark;
+export default Sub;

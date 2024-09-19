@@ -1,16 +1,20 @@
 import React from "react";
-import { Box, Text } from "@chakra-ui/react";
+import { Box, Flex, Text } from "@chakra-ui/react";
 import Chart from "react-apexcharts";
 
-const Revenue = ({ dataa }) => {
+const RevenueChart = ({ dataa }) => {
   const series = [
     {
       name: "Revenue",
-      data: dataa?.map((item) => Number(item?.revenue)) || [],
+      data: dataa?.monthlyRevenue?.map((item) => Number(item?.revenue)),
     },
   ];
 
-  const colors = ["#EE383A"];
+  const data = series[0]?.data;
+  const maxValue = data?.length > 0 ? Math.max(...data) : 0;
+  const colors = data?.map((value) =>
+    value === maxValue ? "#EE383A" : "#F9C8CB"
+  );
 
   const options = {
     chart: {
@@ -25,24 +29,14 @@ const Revenue = ({ dataa }) => {
     },
     plotOptions: {
       bar: {
-        horizontal: true,
+        horizontal: false,
         columnWidth: "65%",
         endingShape: "rounded",
         distributed: true,
       },
     },
     dataLabels: {
-      enabled: true,
-      formatter: (val) =>
-        `₦${val.toLocaleString(undefined, {
-          minimumFractionDigits: 2,
-          maximumFractionDigits: 2,
-        })}`,
-      style: {
-        fontSize: "12px",
-        colors: ["#000"],
-      },
-      offsetX: 30,
+      enabled: false,
     },
     stroke: {
       show: true,
@@ -51,11 +45,21 @@ const Revenue = ({ dataa }) => {
     },
     colors: colors,
     xaxis: {
-      categories: dataa?.map((item) => item?.clientName) || [],
+      categories: [
+        "Jan",
+        "Feb",
+        "Mar",
+        "Apr",
+        "May",
+        "Jun",
+        "Jul",
+        "Aug",
+        "Sept",
+        "Oct",
+        "Nov",
+        "Dec",
+      ],
       axisBorder: {
-        show: false,
-      },
-      labels: {
         show: false,
       },
       axisTicks: {
@@ -72,15 +76,19 @@ const Revenue = ({ dataa }) => {
     yaxis: {
       labels: {
         show: true,
+
+        formatter: (value) => `₦${value.toLocaleString()}`,
+      },
+    },
+    tooltip: {
+      y: {
+        formatter: function (val) {
+          return `₦${val?.toLocaleString()}`;
+        },
       },
     },
     fill: {
       opacity: 1,
-    },
-    tooltip: {
-      y: {
-        formatter: (value) => `₦${value.toLocaleString()}`,
-      },
     },
   };
 
@@ -92,15 +100,24 @@ const Revenue = ({ dataa }) => {
         fontSize="14px"
         fontWeight={700}
       >
-        revenue generated from each client
+        Total revenue generated
       </Text>
 
-      <Box mt="30px">
+      <Flex my="30px" align="flex-end" gap="10px">
+        <Text color="#646668" fontSize="28px" fontWeight={500}>
+          ₦{Number(dataa?.totalRevenue)?.toLocaleString()}
+        </Text>
+        <Text color="#0B841D" fontSize="12px">
+          {Number(dataa?.percentageChange)?.toFixed(1)}%
+        </Text>
+      </Flex>
+
+      <Box>
         <Chart
           options={options}
           series={series}
           type="bar"
-          height={300}
+          height={270}
           width={"100%"}
         />
       </Box>
@@ -108,4 +125,4 @@ const Revenue = ({ dataa }) => {
   );
 };
 
-export default Revenue;
+export default RevenueChart;

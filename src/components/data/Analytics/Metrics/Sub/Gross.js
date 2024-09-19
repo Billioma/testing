@@ -2,11 +2,11 @@ import React from "react";
 import { Box, Text } from "@chakra-ui/react";
 import Chart from "react-apexcharts";
 
-const Revenue = ({ dataa }) => {
+const Gross = ({ dataa }) => {
   const series = [
     {
       name: "Revenue",
-      data: dataa?.map((item) => Number(item?.revenue)) || [],
+      data: dataa?.map((item) => Number(item?.totalRevenue)) || [],
     },
   ];
 
@@ -51,7 +51,7 @@ const Revenue = ({ dataa }) => {
     },
     colors: colors,
     xaxis: {
-      categories: dataa?.map((item) => item?.clientName) || [],
+      categories: dataa?.map((item) => item?.name) || [],
       axisBorder: {
         show: false,
       },
@@ -92,7 +92,7 @@ const Revenue = ({ dataa }) => {
         fontSize="14px"
         fontWeight={700}
       >
-        revenue generated from each client
+        Highest grossing subscriptions
       </Text>
 
       <Box mt="30px">
@@ -108,4 +108,4 @@ const Revenue = ({ dataa }) => {
   );
 };
 
-export default Revenue;
+export default Gross;

@@ -808,7 +808,6 @@ const Filter = ({
                     : dat?.filter && dat?.filter}
                   "
                 </Text>
-                {console.log(dat?.title)}
 
                 <MdClose
                   cursor="pointer"

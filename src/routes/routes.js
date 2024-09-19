@@ -967,6 +967,10 @@ const CustomerMetrics = WithSuspense(
   lazy(() => import("../pages/Analytics/Metrics/Customers"))
 );
 
+const SubMetrics = WithSuspense(
+  lazy(() => import("../pages/Analytics/Metrics/Sub"))
+);
+
 const PaymentMetrics = WithSuspense(
   lazy(() => import("../pages/Analytics/Metrics/Payment"))
 );
@@ -1635,6 +1639,11 @@ export const PRIVATE_ROUTES = [
   {
     path: PRIVATE_PATHS.METRICS_CUSTOMERS,
     element: <CustomerMetrics />,
+  },
+
+  {
+    path: PRIVATE_PATHS.METRICS_SUB,
+    element: <SubMetrics />,
   },
 
   {

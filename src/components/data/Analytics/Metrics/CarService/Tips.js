@@ -2,17 +2,19 @@ import React from "react";
 import { Box, Flex, Text } from "@chakra-ui/react";
 import Chart from "react-apexcharts";
 
-const Inquiry = ({ dataa }) => {
+const Tips = ({ dataa }) => {
   const series = [
     {
-      name: "Active",
-      data: dataa?.monthlyData?.map((item) => item?.active),
-    },
-    {
-      name: "Inactive",
-      data: dataa?.monthlyData?.map((item) => item?.inactive),
+      name: "Revenue",
+      data: dataa?.monthlyTips?.map((item) => Number(item?.revenue)),
     },
   ];
+
+  const data = series[0]?.data;
+  const maxValue = data?.length > 0 ? Math.max(...data) : 0;
+  const colors = data?.map((value) =>
+    value === maxValue ? "#EE383A" : "#F9C8CB"
+  );
 
   const options = {
     chart: {
@@ -28,8 +30,9 @@ const Inquiry = ({ dataa }) => {
     plotOptions: {
       bar: {
         horizontal: false,
-        columnWidth: "45%",
+        columnWidth: "65%",
         endingShape: "rounded",
+        distributed: true,
       },
     },
     dataLabels: {
@@ -40,9 +43,22 @@ const Inquiry = ({ dataa }) => {
       width: 2,
       colors: ["transparent"],
     },
-    colors: ["#EE383A", "#F9C8CB"],
+    colors: colors,
     xaxis: {
-      categories: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
+      categories: [
+        "Jan",
+        "Feb",
+        "Mar",
+        "Apr",
+        "May",
+        "Jun",
+        "Jul",
+        "Aug",
+        "Sept",
+        "Oct",
+        "Nov",
+        "Dec",
+      ],
       axisBorder: {
         show: false,
       },
@@ -52,7 +68,7 @@ const Inquiry = ({ dataa }) => {
       gridLines: {
         show: true,
         borderColor: "#e4e4e4",
-        strokeDashArray: 3, // Make gridlines dotted
+        strokeDashArray: 3,
         offsetX: 0,
         offsetY: 0,
       },
@@ -60,6 +76,8 @@ const Inquiry = ({ dataa }) => {
     yaxis: {
       labels: {
         show: true,
+
+        formatter: (value) => `₦${value.toLocaleString()}`,
       },
     },
     fill: {
@@ -68,7 +86,7 @@ const Inquiry = ({ dataa }) => {
     tooltip: {
       y: {
         formatter: function (val) {
-          return "$ " + val + " thousands";
+          return `₦${val?.toLocaleString()}`;
         },
       },
     },
@@ -82,34 +100,16 @@ const Inquiry = ({ dataa }) => {
         fontSize="14px"
         fontWeight={700}
       >
-        inquiry resolution rate
+        tips from services
       </Text>
 
-      <Flex align="center" justifyContent="space-between">
-        <Flex mt="20px" mb="20px" align="flex-end" gap="10px">
-          <Text color="#646668" fontSize="28px" fontWeight={500}>
-            {dataa?.resolutionRate}%
-          </Text>
-          <Text color="#0B841D" fontSize="12px">
-            +{dataa?.resolutionRatePercentageChange || 0}%
-          </Text>
-        </Flex>
-
-        <Flex align="center" gap="24px">
-          <Flex align="center" gap="10px">
-            <Box bg="#EE383A" rounded="full" h="10px" w="10px" />
-            <Text color="#000" fontSize="12px">
-              Active
-            </Text>
-          </Flex>
-
-          <Flex align="center" gap="10px">
-            <Box bg="#F9C8CB" rounded="full" h="10px" w="10px" />
-            <Text color="#000" fontSize="12px">
-              Inactive
-            </Text>
-          </Flex>
-        </Flex>
+      <Flex my="30px" align="flex-end" gap="10px">
+        <Text color="#646668" fontSize="28px" fontWeight={500}>
+          ₦{Number(dataa?.totalTips)?.toLocaleString()}
+        </Text>
+        <Text color="#0B841D" fontSize="12px">
+          {Number(dataa?.percentageChange)?.toFixed(1)}%
+        </Text>
       </Flex>
 
       <Box>
@@ -125,4 +125,4 @@ const Inquiry = ({ dataa }) => {
   );
 };
 
-export default Inquiry;
+export default Tips;

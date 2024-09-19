@@ -2,7 +2,7 @@ import React from "react";
 import { Box, Flex, Text } from "@chakra-ui/layout";
 import ReactApexChart from "react-apexcharts";
 
-const Breakdown = ({ dataa }) => {
+const Price = ({ dataa }) => {
   const data = dataa?.map((item) => Number(item?.percentage)) || [];
 
   const options = {
@@ -26,8 +26,8 @@ const Breakdown = ({ dataa }) => {
     legend: {
       show: false,
     },
-    colors: ["#EE383A", "#F39197", "#FDECED"],
-    labels: ["Enquiry", "Feedback", "Complaint"],
+    colors: ["#EE383A", "#F39197", "#F9C8CB", "#FDECED"],
+    labels: dataa?.map((item) => item?.priceRange) || [],
     responsive: [
       {
         breakpoint: 768,
@@ -44,10 +44,18 @@ const Breakdown = ({ dataa }) => {
     ],
   };
 
+  const colors = ["#EE383A", "#F39197", "#F9C8CB", "#FDECED"];
+
   return (
     <Box border="1px solid #e4e6e8" borderRadius="8px" p="22px">
-      <Text textAlign="center" color="#242628" fontSize="14px" fontWeight={700}>
-        Interactions Breakdown
+      <Text
+        textTransform="capitalize"
+        textAlign="center"
+        color="#242628"
+        fontSize="14px"
+        fontWeight={700}
+      >
+        price distribution
       </Text>
 
       <Box mt="35px">
@@ -59,20 +67,19 @@ const Breakdown = ({ dataa }) => {
         />
       </Box>
 
-      <Flex
-        mt="30px"
-        align="center"
-        justifyContent="center"
-        flexWrap="wrap"
-        gap="24px"
-      >
-        <Flex align="center" gap="24px">
+      <Flex mt="30px" align="center" justifyContent="center" gap="24px">
+        <Flex align="center" gap="24px" flexWrap="wrap" justifyContent="center">
           {dataa?.length ? (
             dataa?.map((item, i) => (
               <Flex align="center" gap="10px" key={i}>
-                <Box bg="#EE383A" rounded="full" h="10px" w="10px" />
+                <Box
+                  bg={colors[i % colors?.length]}
+                  rounded="full"
+                  h="10px"
+                  w="10px"
+                />
                 <Text color="#000" fontSize="12px">
-                  {item?.type} ({Number(item?.percentage)}%)
+                  {item?.priceRange} ({Number(item?.percentage)}%)
                 </Text>
               </Flex>
             ))
@@ -81,8 +88,9 @@ const Breakdown = ({ dataa }) => {
           )}
         </Flex>
       </Flex>
+      
     </Box>
   );
 };
 
-export default Breakdown;
+export default Price;

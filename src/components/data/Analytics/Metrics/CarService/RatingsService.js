@@ -1,22 +1,18 @@
 import React from "react";
 import { Box, Flex, Text } from "@chakra-ui/react";
 import Chart from "react-apexcharts";
-import { IoStar } from "react-icons/io5";
 
-const ServiceChart = ({ dataa }) => {
-  // Extract months and services data dynamically
-  const months = dataa?.ratingsPerService.map(
-    (monthData) => Object.keys(monthData)[0]
-  );
+const RatingsService = ({ dataa }) => {
+  const months = dataa?.map((monthData) => Object.keys(monthData)[0]);
   const serviceNames = [
-    "payToPark",
-    "eventParking",
-    "reserveParking",
-    "carServices",
+    "Wash my car",
+    "Fuel my car",
+    "Gauge my tyres",
+    "Tow my car",
   ];
 
   const getRatingsByService = (serviceName) => {
-    return dataa?.ratingsPerService?.map((monthData) => {
+    return dataa?.map((monthData) => {
       const monthKey = Object.keys(monthData)[0];
       const monthServices = monthData[monthKey];
       const service = monthServices?.find(
@@ -26,12 +22,12 @@ const ServiceChart = ({ dataa }) => {
     });
   };
 
-  const series = serviceNames.map((serviceName) => {
+  const series = serviceNames?.map((serviceName) => {
     const serviceLabels = {
-      payToPark: "Pay To Park",
-      eventParking: "Event Parking",
-      reserveParking: "Reserve Parking",
-      carServices: "Car Service",
+      ["Wash my car"]: "Washing",
+      ["Fuel my car"]: "Fueling",
+      ["Gauge my tyres"]: "Gauging",
+      ["Tow my car"]: "Towing",
     };
     return {
       name: serviceLabels[serviceName],
@@ -77,7 +73,7 @@ const ServiceChart = ({ dataa }) => {
       gridLines: {
         show: true,
         borderColor: "#e4e4e4",
-        strokeDashArray: 3,
+        strokeDashArray: 3, // Make gridlines dotted
         offsetX: 0,
         offsetY: 0,
       },
@@ -94,59 +90,55 @@ const ServiceChart = ({ dataa }) => {
 
   return (
     <Box border="1px solid #e4e6e8" borderRadius="8px" p="22px">
-      <Text color="#242628" fontSize="14px" fontWeight={700}>
-        Average Customer Ratings
-      </Text>
       <Flex
-        mt="30px"
-        justifyContent="space-between"
         align={{ base: "flex-start", md: "center" }}
-        gap={{ base: "10px", md: "unset" }}
+        justifyContent="space-between"
         flexDir={{ base: "column", md: "row" }}
       >
-        <Flex align="center" gap="10px">
-          <IoStar color="#EE383A" size="13px" />
-          <Text color="#646668" fontSize="28px" fontWeight={500}>
-            {Number(dataa?.getAverageRating?.value)}
-          </Text>
-          <Text color="#0B841D" fontSize="12px">
-            +{Number(dataa?.getAverageRating?.percentageChange)}%
-          </Text>
-        </Flex>
-
-        <Flex align="center" gap="24px">
+        <Text
+          textTransform="capitalize"
+          color="#242628"
+          fontSize="14px"
+          fontWeight={700}
+        >
+          Ratings per service
+        </Text>
+        <Flex
+          align="center"
+          gap="24px"
+          flexWrap={{ base: "wrap", md: "nowrap" }}
+        >
           <Flex align="center" gap="10px">
             <Box bg="#EE383A" rounded="full" h="10px" w="10px" />
             <Text color="#000" fontSize="12px">
-              Pay To Park
+              Washing
             </Text>
           </Flex>
 
           <Flex align="center" gap="10px">
             <Box bg="#EF6C75" rounded="full" h="10px" w="10px" />
             <Text color="#000" fontSize="12px">
-              Event Parking
+              Fueling
             </Text>
           </Flex>
 
           <Flex align="center" gap="10px">
             <Box bg="#F39197" rounded="full" h="10px" w="10px" />
             <Text color="#000" fontSize="12px">
-              Reserve Parking
+              Gauging
             </Text>
           </Flex>
 
           <Flex align="center" gap="10px">
             <Box bg="#F9C8CB" rounded="full" h="10px" w="10px" />
             <Text color="#000" fontSize="12px">
-              Car Service
+              Towing
             </Text>
           </Flex>
         </Flex>
       </Flex>
-      {!dataa ||
-      !dataa?.ratingsPerService ||
-      dataa?.ratingsPerService?.length === 0 ? (
+
+      {!dataa || dataa?.length === 0 ? (
         <></>
       ) : (
         <Box mt="40px">
@@ -163,4 +155,4 @@ const ServiceChart = ({ dataa }) => {
   );
 };
 
-export default ServiceChart;
+export default RatingsService;

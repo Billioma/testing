@@ -30,5 +30,20 @@ export const getPayToParkMetrics = (from, to) =>
 export const getValetParkMetrics = (from, to) =>
   fetchMetrics(API.VALET_PARK_METRICS, from, to);
 
+export const getEventParkMetrics = (from, to) =>
+  fetchMetrics(API.EVENT_PARK_METRICS, from, to);
+
 export const getInteractionMetrics = (from, to) =>
   fetchMetrics(API.INTERACTIONS_METRICS, from, to);
+
+export const getCarMetrics = (from, to) =>
+  fetchMetrics(API.CAR_METRICS, from, to);
+
+export const getVehicleMetrics = (from, to) =>
+  fetchMetrics(API.VEHICLES_METRICS, from, to);
+
+export const getSubMetrics = (from, to) =>
+  fetchMetrics(API.SUB_METRICS, from, to);
+
+export const getServiceMetrics = (from, to) =>
+  fetchMetrics(API.SERVICE_RATING_METRICS, from, to);

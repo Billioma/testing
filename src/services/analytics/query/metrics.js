@@ -1,5 +1,5 @@
 import { useQuery } from "react-query";
-import { getClientMetrics, getCustomerMetrics, getInteractionMetrics, getOperatorMetrics, getPayToParkMetrics, getReserveParkingMetrics, getValetParkMetrics } from "../api/metrics";
+import { getCarMetrics, getClientMetrics, getCustomerMetrics, getEventParkMetrics, getInteractionMetrics, getOperatorMetrics, getPayToParkMetrics, getReserveParkingMetrics, getServiceMetrics, getSubMetrics, getValetParkMetrics, getVehicleMetrics } from "../api/metrics";
 
 const useGetMetrics = (
   key,
@@ -33,6 +33,36 @@ export const useGetClientMetrics = (options = {}, from = "", to = "") => {
   return useGetMetrics(
     "getClientMetrics",
     getClientMetrics,
+    options,
+    from,
+    to
+  );
+};
+
+export const useGetVehicleMetrics = (options = {}, from = "", to = "") => {
+  return useGetMetrics(
+    "getVehicleMetrics",
+    getVehicleMetrics,
+    options,
+    from,
+    to
+  );
+};
+
+export const useGetSubMetrics = (options = {}, from = "", to = "") => {
+  return useGetMetrics(
+    "getSubMetrics",
+    getSubMetrics,
+    options,
+    from,
+    to
+  );
+};
+
+export const useGetServiceMetrics = (options = {}, from = "", to = "") => {
+  return useGetMetrics(
+    "getServiceMetrics",
+    getServiceMetrics,
     options,
     from,
     to
@@ -91,6 +121,20 @@ export const useGetValetOarkMetrics = (
   );
 };
 
+export const useGetEventParkMetrics = (
+  options = {},
+  from = "",
+  to = ""
+) => {
+  return useGetMetrics(
+    "getEventParkMetrics",
+    getEventParkMetrics,
+    options,
+    from,
+    to
+  );
+};
+
 export const useGetInteractionMetrics = (
   options = {},
   from = "",
@@ -99,6 +143,20 @@ export const useGetInteractionMetrics = (
   return useGetMetrics(
     "getInteractionMetrics",
     getInteractionMetrics,
+    options,
+    from,
+    to
+  );
+};
+
+export const useGetCarMetrics = (
+  options = {},
+  from = "",
+  to = ""
+) => {
+  return useGetMetrics(
+    "getCarMetrics",
+    getCarMetrics,
     options,
     from,
     to

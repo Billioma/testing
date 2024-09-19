@@ -55,7 +55,7 @@ const Login = () => {
     >
       <Flex
         justifyContent="center"
-        w="50%"
+        w={{ base: "100%", md: "50%" }}
         flexDir="column"
       >
         <Text fontSize="24px" fontWeight={700}>

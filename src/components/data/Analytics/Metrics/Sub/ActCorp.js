@@ -2,8 +2,8 @@ import React from "react";
 import { Box, Flex, Text } from "@chakra-ui/layout";
 import ReactApexChart from "react-apexcharts";
 
-const Breakdown = ({ dataa }) => {
-  const data = dataa?.map((item) => Number(item?.percentage)) || [];
+const ActCorp = ({ dataa }) => {
+  const data = [Number(dataa?.active), Number(dataa?.inactive)] || [];
 
   const options = {
     maintainAspectRatio: false,
@@ -26,8 +26,8 @@ const Breakdown = ({ dataa }) => {
     legend: {
       show: false,
     },
-    colors: ["#EE383A", "#F39197", "#FDECED"],
-    labels: ["Enquiry", "Feedback", "Complaint"],
+    colors: ["#EE383A", "#F39197"],
+    labels: ["Active", "Inactive"],
     responsive: [
       {
         breakpoint: 768,
@@ -46,8 +46,14 @@ const Breakdown = ({ dataa }) => {
 
   return (
     <Box border="1px solid #e4e6e8" borderRadius="8px" p="22px">
-      <Text textAlign="center" color="#242628" fontSize="14px" fontWeight={700}>
-        Interactions Breakdown
+      <Text
+        textTransform="capitalize"
+        textAlign="center"
+        color="#242628"
+        fontSize="14px"
+        fontWeight={700}
+      >
+        active vS Inactive corporate subscriptions
       </Text>
 
       <Box mt="35px">
@@ -67,22 +73,22 @@ const Breakdown = ({ dataa }) => {
         gap="24px"
       >
         <Flex align="center" gap="24px">
-          {dataa?.length ? (
-            dataa?.map((item, i) => (
-              <Flex align="center" gap="10px" key={i}>
-                <Box bg="#EE383A" rounded="full" h="10px" w="10px" />
-                <Text color="#000" fontSize="12px">
-                  {item?.type} ({Number(item?.percentage)}%)
-                </Text>
-              </Flex>
-            ))
-          ) : (
-            <Text color="#000" fontSize="12px"></Text>
-          )}
+          <Flex align="center" gap="10px">
+            <Box bg="#EE383A" rounded="full" h="10px" w="10px" />
+            <Text textTransform="capitalize" color="#000" fontSize="12px">
+              Active ({Number(dataa?.active)}%)
+            </Text>
+          </Flex>
+          <Flex align="center" gap="10px">
+            <Box bg="#F39197" rounded="full" h="10px" w="10px" />
+            <Text textTransform="capitalize" color="#000" fontSize="12px">
+              Inactive ({Number(dataa?.inactive)}%)
+            </Text>
+          </Flex>
         </Flex>
       </Flex>
     </Box>
   );
 };
 
-export default Breakdown;
+export default ActCorp;

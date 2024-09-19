@@ -28,7 +28,7 @@ const Ratings = ({ dataa }) => {
       show: false,
     },
     colors: ["#EE383A", "#EF6C75", "#F39197", "#F9C8CB", "#FDECED"],
-    labels: ["1 Star", "2 Stars", "3 Stars", "4 Stars", "5 Stars"],
+    labels: dataa?.map((item) => item?.rating) || [],
     responsive: [
       {
         breakpoint: 768,
@@ -80,7 +80,7 @@ const Ratings = ({ dataa }) => {
             <Flex key={i} align="center" gap="10px">
               <IoStar color={colors[i % colors?.length]} size="13px" />
               <Text color="#000" fontSize="12px">
-                {i + 1} ({Number(item?.percentage)})%
+              {item?.rating} ({Number(item?.percentage)})%
               </Text>
             </Flex>
           ))

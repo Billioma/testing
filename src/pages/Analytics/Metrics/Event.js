@@ -9,12 +9,16 @@ import {
   Skeleton,
 } from "@chakra-ui/react";
 import StartEnd from "../../../components/modals/StartEnd";
-import { formatDates } from "../../../utils/helpers";
+import { formatDates, getStartOfWeek } from "../../../utils/helpers";
 import { IoIosArrowDown, IoIosArrowForward } from "react-icons/io";
 import { PiExportLight } from "react-icons/pi";
 import Select from "react-select";
-import Tips from "../../../components/data/Analytics/Metrics/Valet/Tips";
-import { useGetValetOarkMetrics } from "../../../services/analytics/query/metrics";
+import { useGetEventParkMetrics } from "../../../services/analytics/query/metrics";
+import RevenueChart from "../../../components/data/Analytics/Metrics/Event/RevenueChart";
+import Price from "../../../components/data/Analytics/Metrics/Event/Price";
+import ActiveInactive from "../../../components/data/Analytics/Metrics/Event/ActiveInactive";
+import Ratings from "../../../components/data/Analytics/Metrics/Event/Ratings";
+import Events from "../../../components/data/Analytics/Metrics/Event/Events";
 
 const Event = () => {
   const customStyles = {
@@ -47,7 +51,7 @@ const Event = () => {
   };
   const [filter, setFilter] = useState("");
   const [showEndDate, setShowEndDate] = useState(false);
-  const [startValue, startChange] = useState(new Date());
+  const [startValue, startChange] = useState(getStartOfWeek(new Date()));
   const [endValue, endChange] = useState(new Date());
   const [showStartDate, setShowStartDate] = useState(false);
 
@@ -64,7 +68,7 @@ const Event = () => {
 
   const [isRefetch, setIsRefetch] = useState(false);
 
-  const { data, isLoading, refetch } = useGetValetOarkMetrics(
+  const { data, isLoading, refetch } = useGetEventParkMetrics(
     {
       refetchOnWindowFocus: true,
       onSuccess: () => {
@@ -216,9 +220,8 @@ const Event = () => {
         gap={{ base: "usnet", md: "24px" }}
       >
         {[
-          // "Average valet Parking rating",
           "Event requests",
-          "EventmParking Transactions requests",
+          "Event Parking Transactions requests",
           "average event parking price",
         ].map((item, i) => (
           <Skeleton
@@ -266,10 +269,12 @@ const Event = () => {
                         {i === 2 ? "₦" : ""}{" "}
                         {i === 0
                           ? Number(
-                              data?.data?.valetRequestsCount?.count
+                              data?.data?.eventRequests?.count
                             )?.toLocaleString()
+                          : i === 1
+                          ? Number(data?.data?.eventTransactions?.count)
                           : `${Number(
-                              data?.data?.averageValetWaitTime?.value
+                              data?.data?.averageEventParkingPrice?.value
                             )?.toLocaleString()}`}
                       </Text>{" "}
                     </Flex>
@@ -284,10 +289,14 @@ const Event = () => {
                     +
                     {i === 0
                       ? Number(
-                          data?.data?.valetRequestsCount?.percentageChange
+                          data?.data?.eventRequests?.percentageChange
+                        )?.toFixed(1)
+                      : i === 1
+                      ? Number(
+                          data?.data?.eventTransactions?.percentageChange
                         )?.toFixed(1)
                       : Number(
-                          data?.data?.averageValetWaitTime?.percentageChange
+                          data?.data?.averageEventParkingPrice?.percentageChange
                         )?.toFixed(1)}
                     %
                   </Flex>
@@ -298,16 +307,47 @@ const Event = () => {
         ))}
       </Flex>
 
-      <Flex align="center" gap="24px" flexDir={{ base: "column", md: "row" }}>
-        <Box w={{ base: "100%", md: "100%" }}>
+      <Flex
+        align="flex-start"
+        gap="24px"
+        flexDir={{ base: "column", md: "row" }}
+      >
+        <Box w={{ base: "100%", md: "60%" }}>
           <Skeleton isLoaded={!isLoading} borderRadius="8px">
-            <Tips dataa={data?.data?.totalTipsFromValetParking} />
+            <RevenueChart dataa={data?.data?.revenueFromEventServices} />
           </Skeleton>
         </Box>
-        {/* <Box w={{ base: "100%", md: "40%" }}>
-          <Ratings />
-        </Box> */}
+
+        <Box w={{ base: "100%", md: "40%" }}>
+          <Skeleton isLoaded={!isLoading} borderRadius="8px">
+            <Price dataa={data?.data?.priceDistribution} />
+          </Skeleton>
+        </Box>
       </Flex>
+
+      <Flex
+        mt="24px"
+        align="flex-start"
+        gap="24px"
+        flexDir={{ base: "column", md: "row" }}
+      >
+        <Box w={{ base: "100%", md: "40%" }}>
+          <Skeleton isLoaded={!isLoading} borderRadius="8px">
+            <ActiveInactive dataa={data?.data?.activeVsInactiveEvents} />
+          </Skeleton>
+        </Box>
+
+        <Box w={{ base: "100%", md: "60%" }}>
+          <Skeleton isLoaded={!isLoading} borderRadius="8px">
+            <Ratings dataa={data?.data?.clientSatisfactionRatings} />
+          </Skeleton>
+        </Box>
+      </Flex>
+      <Box w="100%">
+        <Skeleton isLoaded={!isLoading} borderRadius="8px">
+          <Events dataa={data?.data?.eventsPerClient} />
+        </Skeleton>
+      </Box>
     </Box>
   );
 };

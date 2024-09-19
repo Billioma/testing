@@ -111,7 +111,6 @@ const UserTableLayer = () => {
       successToast("Reservation Cancelled");
       refetch();
       if (timeDifference <= 4 && timeDifference > 1) {
-        console.log("Within 4 hours");
         setShowPoint(true);
       } else if (timeDifference <= 4 && timeDifference <= 1) {
         console.log("Within one hour");

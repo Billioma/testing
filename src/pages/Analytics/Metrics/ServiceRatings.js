@@ -6,13 +6,15 @@ import {
   Button,
   Text,
   useDisclosure,
+  Skeleton,
 } from "@chakra-ui/react";
 import StartEnd from "../../../components/modals/StartEnd";
-import { formatDates } from "../../../utils/helpers";
+import { formatDates, getStartOfWeek } from "../../../utils/helpers";
 import { IoIosArrowDown, IoIosArrowForward } from "react-icons/io";
 import { PiExportLight } from "react-icons/pi";
 import Select from "react-select";
 import ServiceChart from "../../../components/data/Analytics/Metrics/ServiceRatings/ServiceChart";
+import { useGetServiceMetrics } from "../../../services/analytics/query/metrics";
 
 const ServiceRatings = () => {
   const customStyles = {
@@ -45,7 +47,7 @@ const ServiceRatings = () => {
   };
   const [filter, setFilter] = useState("");
   const [showEndDate, setShowEndDate] = useState(false);
-  const [startValue, startChange] = useState(new Date());
+  const [startValue, startChange] = useState(getStartOfWeek(new Date()));
   const [endValue, endChange] = useState(new Date());
   const [showStartDate, setShowStartDate] = useState(false);
 
@@ -60,6 +62,29 @@ const ServiceRatings = () => {
     label: time,
   }));
 
+  const [isRefetch, setIsRefetch] = useState(false);
+
+  const { data, isLoading, refetch } = useGetServiceMetrics(
+    {
+      refetchOnWindowFocus: true,
+      onSuccess: () => {
+        setIsRefetch(false);
+      },
+      onError: () => {
+        setIsRefetch(false);
+      },
+      onSettled: () => {
+        setIsRefetch(false);
+      },
+    },
+    formatDates(startValue),
+    formatDates(endValue)
+  );
+
+  const handleRefreshClick = async () => {
+    setIsRefetch(true);
+    await refetch();
+  };
   return (
     <Box minH="75vh">
       <Flex
@@ -156,6 +181,7 @@ const ServiceRatings = () => {
             cursor="pointer"
             display={{ base: "none", md: "flex" }}
             transition=".3s ease-in-out"
+            onClick={handleRefreshClick}
             _hover={{ bg: "#F4F6F8" }}
             borderRadius="8px"
             border="1px solid #848688"
@@ -163,7 +189,7 @@ const ServiceRatings = () => {
           >
             <Image
               src="/assets/refresh.svg"
-              // className={isRefetch && "mirrored-icon"}
+              className={isRefetch && "mirrored-icon"}
               w="20px"
               h="20px"
             />
@@ -184,7 +210,9 @@ const ServiceRatings = () => {
       </Flex>
 
       <Box mt={{ base: "10px", md: "20px" }}>
-        <ServiceChart />
+        <Skeleton isLoaded={!isLoading} borderRadius="8px">
+          <ServiceChart dataa={data?.data} />
+        </Skeleton>
       </Box>
     </Box>
   );

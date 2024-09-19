@@ -1,16 +1,54 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { Box, Flex, Text } from "@chakra-ui/react";
 import Chart from "react-apexcharts";
 
-const Inquiry = ({ dataa }) => {
+const Reg = ({ dataa }) => {
+  // Process the dataa to get series data
+  const processedData = useMemo(() => {
+    const months = [
+      "Jan",
+      "February",
+      "March",
+      "April",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December",
+    ];
+    const membershipData = Array(12).fill(0);
+    const corporateData = Array(12).fill(0);
+
+    // Loop through the monthly data and populate the arrays
+    dataa?.monthlyData?.forEach((monthData) => {
+      const [monthName, subscriptions] = Object.entries(monthData)[0]; // Get month and subscription array
+      const monthIndex = months.indexOf(monthName);
+
+      if (monthIndex !== -1) {
+        subscriptions.forEach((sub) => {
+          if (sub.subscriptionType === "membershipSubscription") {
+            membershipData[monthIndex] = Number(sub.count);
+          } else if (sub.subscriptionType === "corporateSubscription") {
+            corporateData[monthIndex] = Number(sub.count);
+          }
+        });
+      }
+    });
+
+    return { membershipData, corporateData };
+  }, [dataa]);
+
   const series = [
     {
-      name: "Active",
-      data: dataa?.monthlyData?.map((item) => item?.active),
+      name: "Membership sub",
+      data: processedData.membershipData,
     },
     {
-      name: "Inactive",
-      data: dataa?.monthlyData?.map((item) => item?.inactive),
+      name: "Corporate",
+      data: processedData.corporateData,
     },
   ];
 
@@ -42,19 +80,25 @@ const Inquiry = ({ dataa }) => {
     },
     colors: ["#EE383A", "#F9C8CB"],
     xaxis: {
-      categories: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
+      categories: [
+        "Jan",
+        "Feb",
+        "Mar",
+        "Apr",
+        "May",
+        "Jun",
+        "Jul",
+        "Aug",
+        "Sep",
+        "Oct",
+        "Nov",
+        "Dec",
+      ],
       axisBorder: {
         show: false,
       },
       axisTicks: {
         show: false,
-      },
-      gridLines: {
-        show: true,
-        borderColor: "#e4e4e4",
-        strokeDashArray: 3, // Make gridlines dotted
-        offsetX: 0,
-        offsetY: 0,
       },
     },
     yaxis: {
@@ -64,13 +108,6 @@ const Inquiry = ({ dataa }) => {
     },
     fill: {
       opacity: 1,
-    },
-    tooltip: {
-      y: {
-        formatter: function (val) {
-          return "$ " + val + " thousands";
-        },
-      },
     },
   };
 
@@ -82,16 +119,16 @@ const Inquiry = ({ dataa }) => {
         fontSize="14px"
         fontWeight={700}
       >
-        inquiry resolution rate
+        Registered subscriptions
       </Text>
 
       <Flex align="center" justifyContent="space-between">
         <Flex mt="20px" mb="20px" align="flex-end" gap="10px">
           <Text color="#646668" fontSize="28px" fontWeight={500}>
-            {dataa?.resolutionRate}%
+            {Number(dataa?.total)?.toLocaleString()}
           </Text>
           <Text color="#0B841D" fontSize="12px">
-            +{dataa?.resolutionRatePercentageChange || 0}%
+            +{dataa?.percentageChange || 0}%
           </Text>
         </Flex>
 
@@ -99,14 +136,14 @@ const Inquiry = ({ dataa }) => {
           <Flex align="center" gap="10px">
             <Box bg="#EE383A" rounded="full" h="10px" w="10px" />
             <Text color="#000" fontSize="12px">
-              Active
+              Membership
             </Text>
           </Flex>
 
           <Flex align="center" gap="10px">
             <Box bg="#F9C8CB" rounded="full" h="10px" w="10px" />
             <Text color="#000" fontSize="12px">
-              Inactive
+              Corporate
             </Text>
           </Flex>
         </Flex>
@@ -125,4 +162,4 @@ const Inquiry = ({ dataa }) => {
   );
 };
 
-export default Inquiry;
+export default Reg;
