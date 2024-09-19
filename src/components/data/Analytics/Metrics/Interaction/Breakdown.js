@@ -44,6 +44,7 @@ const Breakdown = ({ dataa }) => {
     ],
   };
 
+  const colors = ["#EE383A", "#F39197", "#FDECED"];
   return (
     <Box border="1px solid #e4e6e8" borderRadius="8px" p="22px">
       <Text textAlign="center" color="#242628" fontSize="14px" fontWeight={700}>
@@ -70,7 +71,12 @@ const Breakdown = ({ dataa }) => {
           {dataa?.length ? (
             dataa?.map((item, i) => (
               <Flex align="center" gap="10px" key={i}>
-                <Box bg="#EE383A" rounded="full" h="10px" w="10px" />
+                <Box
+                  bg={colors[i % colors?.length]}
+                  rounded="full"
+                  h="10px"
+                  w="10px"
+                />
                 <Text color="#000" fontSize="12px">
                   {item?.type} ({Number(item?.percentage)}%)
                 </Text>
