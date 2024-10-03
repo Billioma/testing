@@ -102,7 +102,7 @@ export const analyticsRoutes = [
       },
       {
         name: "Transactions & Invoices",
-        path: "/analytics/metrics/transacitons&invoices",
+        path: "/analytics/metrics/transactions&invoices",
       },
       {
         name: "Payments",
@@ -115,6 +115,18 @@ export const analyticsRoutes = [
       {
         name: "Incidents/Claims",
         path: "/analytics/metrics/incidents-claims",
+      },
+      {
+        name: "Businesses",
+        path: "/analytics/metrics/businesses",
+      },
+      {
+        name: "Attendants",
+        path: "/analytics/metrics/attendants",
+      },
+      {
+        name: "Points",
+        path: "/analytics/metrics/points",
       },
     ],
   },

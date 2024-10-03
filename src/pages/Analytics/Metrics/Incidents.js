@@ -1,23 +1,24 @@
 import React, { useState } from "react";
 import {
   Box,
+  Button,
   Flex,
   Image,
-  Button,
+  Skeleton,
   Text,
   useDisclosure,
-  Skeleton,
 } from "@chakra-ui/react";
 import StartEnd from "../../../components/modals/StartEnd";
 import { formatDates, getStartOfWeek } from "../../../utils/helpers";
 import { IoIosArrowDown, IoIosArrowForward } from "react-icons/io";
 import { PiExportLight } from "react-icons/pi";
 import Select from "react-select";
-import Method from "../../../components/data/Analytics/Metrics/Payment/Method";
-import Employee from "../../../components/data/Analytics/Metrics/Payment/Employee";
-import { useGetPaymentMetrics } from "../../../services/analytics/query/metrics";
+import { useGetIncidentsMetrics } from "../../../services/analytics/query/metrics";
+import Invalid from "../../../components/data/Analytics/Metrics/Incidents/Invalid";
+import Reported from "../../../components/data/Analytics/Metrics/Incidents/Reported";
+import Types from "../../../components/data/Analytics/Metrics/Incidents/Types";
 
-const Payment = () => {
+const Incidents = () => {
   const customStyles = {
     control: (provided, state) => ({
       ...provided,
@@ -65,7 +66,7 @@ const Payment = () => {
 
   const [isRefetch, setIsRefetch] = useState(false);
 
-  const { data, isLoading, refetch } = useGetPaymentMetrics(
+  const { data, isLoading, refetch } = useGetIncidentsMetrics(
     {
       refetchOnWindowFocus: true,
       onSuccess: () => {
@@ -115,7 +116,7 @@ const Payment = () => {
               h="20px"
               objectFit="contain"
             />
-            <Text>{formatDates(startValue)}</Text>
+            <Text>{startValue ? formatDates(startValue) : "From"}</Text>
           </Flex>
 
           <IoIosArrowForward size="20px" />
@@ -136,7 +137,7 @@ const Payment = () => {
               h="20px"
               objectFit="contain"
             />
-            <Text>{formatDates(endValue)}</Text>
+            <Text>{endValue ? formatDates(endValue) : "To"}</Text>
           </Flex>
         </Flex>
 
@@ -185,8 +186,8 @@ const Payment = () => {
             transition=".3s ease-in-out"
             _hover={{ bg: "#F4F6F8" }}
             borderRadius="8px"
-            border="1px solid #848688"
             onClick={handleRefreshClick}
+            border="1px solid #848688"
             p="10px"
           >
             <Image
@@ -216,7 +217,7 @@ const Payment = () => {
         flexDir={{ base: "column", md: "row" }}
         gap={{ base: "usnet", md: "24px" }}
       >
-        {["Payment Success Rate", "Average Transaction Value"].map(
+        {["reported incidents", "Average resolution time (Days)"].map(
           (item, i) => (
             <Skeleton
               isLoaded={!isLoading}
@@ -253,24 +254,22 @@ const Payment = () => {
                     w="full"
                   >
                     <Box w="full">
-                      <Flex mt="24px" align="center" gap="12px">
-                        <Text
-                          fontSize="28px"
-                          lineHeight="100%"
-                          color="#646668"
-                          fontWeight={500}
-                        >
-                          {i === 0
-                            ? `${Number(
-                                data?.data?.paymentSuccessRate?.value
-                              )?.toLocaleString()}%`
-                            : `₦${Number(
-                                data?.data?.averageTransactionValue?.value
-                              )?.toLocaleString()}`}
-                        </Text>
-                      </Flex>
+                      <Text
+                        mt="24px"
+                        fontSize="28px"
+                        lineHeight="100%"
+                        color="#646668"
+                        fontWeight={500}
+                      >
+                        {i === 0
+                          ? Number(
+                              data?.data?.reportedIncidents?.value
+                            )?.toLocaleString()
+                          : Number(
+                              data?.data?.averageResolutionTime?.value
+                            )?.toLocaleString()}
+                      </Text>
                     </Box>
-
                     <Flex
                       colot="#000"
                       fontSize="12px"
@@ -280,11 +279,10 @@ const Payment = () => {
                     >
                       {i === 0
                         ? Number(
-                            data?.data?.paymentSuccessRate?.percentageChange
+                            data?.data?.reportedIncidents?.percentageChange
                           )?.toFixed(1)
                         : Number(
-                            data?.data?.averageTransactionValue
-                              ?.percentageChange
+                            data?.data?.averageResolutionTime?.percentageChange
                           )?.toFixed(1)}
                       %
                     </Flex>
@@ -297,19 +295,25 @@ const Payment = () => {
       </Flex>
 
       <Flex align="center" gap="24px" flexDir={{ base: "column", md: "row" }}>
-        <Box w={{ base: "100%", md: "40%" }}>
+        {/* <Box w={{ base: "100%", md: "40%" }}>
           <Skeleton isLoaded={!isLoading} borderRadius="8px">
-            <Method dataa={data?.data?.paymentsByPaymentMethod} />
+            <Invalid dataa={data?.data?.serviceStatusDistribution} />
           </Skeleton>
-        </Box>
-        <Box w={{ base: "100%", md: "60%" }}>
+        </Box> */}
+        <Box w={{ base: "100%", md: "100%" }}>
           <Skeleton isLoaded={!isLoading} borderRadius="8px">
-            <Employee dataa={data?.data?.employeeDistributionOfTips} />
+            <Reported dataa={data?.data?.reportedVsPendingIncidents} />
           </Skeleton>
         </Box>
       </Flex>
+
+      {/* <Box mt="24px">
+        <Skeleton isLoaded={!isLoading} borderRadius="8px">
+          <Types dataa={data?.data?.reservationsMadeByMonth} />
+        </Skeleton>
+      </Box> */}
     </Box>
   );
 };
 
-export default Payment;
+export default Incidents;

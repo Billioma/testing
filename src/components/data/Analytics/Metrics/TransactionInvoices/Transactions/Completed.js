@@ -2,8 +2,8 @@ import React from "react";
 import { Box, Flex, Text } from "@chakra-ui/layout";
 import ReactApexChart from "react-apexcharts";
 
-const Method = ({ dataa }) => {
-  const data = dataa?.map((item) => Number(item?.percentage)) || [];
+const Completed = ({ dataa }) => {
+  const data = dataa?.map((item) => Number(item?.percentage));
 
   const options = {
     maintainAspectRatio: false,
@@ -12,6 +12,7 @@ const Method = ({ dataa }) => {
     },
     stroke: {
       show: true,
+      width: 13,
     },
     dataLabels: {
       enabled: false,
@@ -19,15 +20,15 @@ const Method = ({ dataa }) => {
     plotOptions: {
       pie: {
         donut: {
-          size: "50%",
+          size: "0%",
         },
       },
     },
     legend: {
       show: false,
     },
-    colors: ["#EE383A", "#EF6C75", "#F39197", "#F9C8CB", "#FDECED"],
-    labels: dataa?.map((item) => Number(item?.type)) || [],
+    colors: ["#EE383A", "#EF6C75"],
+    labels: dataa?.map((item) => item?.type),
     responsive: [
       {
         breakpoint: 768,
@@ -44,18 +45,23 @@ const Method = ({ dataa }) => {
     ],
   };
 
-  const colors = ["#EE383A", "#EF6C75", "#F39197", "#F9C8CB", "#FDECED"];
-
+  const colors = ["#EE383A", "#EF6C75"];
   return (
     <Box border="1px solid #e4e6e8" borderRadius="8px" p="22px">
-      <Text textAlign="center" color="#242628" fontSize="14px" fontWeight={700}>
-        Payment Method
+      <Text
+        textTransform="capitalize"
+        textAlign="center"
+        color="#242628"
+        fontSize="14px"
+        fontWeight={700}
+      >
+        completed vS cancelled Transactions
       </Text>
 
-      <Box mt="35px">
+      <Box mt="40px">
         {data?.length > 0 ? (
           <ReactApexChart
-            height={325}
+            height={342}
             options={options}
             series={data}
             type="donut"
@@ -66,32 +72,28 @@ const Method = ({ dataa }) => {
       </Box>
 
       <Flex
-        mt="30px"
+        mt="50px"
         align="center"
         justifyContent="center"
         flexWrap="wrap"
         gap="24px"
       >
-        {dataa?.length ? (
-          dataa?.map((item, i) => (
-            <Flex key={i} align="center" gap="10px">
-              <Box
-                bg={colors[i % colors?.length]}
-                rounded="full"
-                h="10px"
-                w="10px"
-              />
-              <Text color="#000" fontSize="12px">
-                {item?.type} ({Number(item?.percentage)})%
-              </Text>
-            </Flex>
-          ))
-        ) : (
-          <Text color="#000" fontSize="12px"></Text>
-        )}
+        {dataa?.map((item, i) => (
+          <Flex align="center" gap="10px">
+            <Box
+              bg={colors[i % colors?.length]}
+              rounded="full"
+              h="10px"
+              w="10px"
+            />
+            <Text color="#000" fontSize="12px">
+              {item?.type} ({Number(item?.percentage)?.toLocaleString()})%
+            </Text>
+          </Flex>
+        ))}
       </Flex>
     </Box>
   );
 };
 
-export default Method;
+export default Completed;

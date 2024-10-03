@@ -2,20 +2,20 @@ import React from "react";
 import { Box, Flex, Text } from "@chakra-ui/react";
 import Chart from "react-apexcharts";
 
-const Employee = ({ dataa }) => {
+const NewAtt = ({ dataa }) => {
   const series = [
     {
-      name: "Revenue",
-      data: dataa?.monthlyTips?.map((item) => Number(item?.revenue)),
+      name: "Attendants",
+      data: dataa?.attendants?.map((item) => Number(item?.count)),
     },
   ];
 
   const data = series[0]?.data;
-  const maxValue = data?.length ? Math.max(...data) : 0;
+  const maxValue = data?.length > 0 ? Math.max(...data) : 0;
   const colors = data?.map((value) =>
     value === maxValue ? "#EE383A" : "#F9C8CB"
   );
-
+  
   const options = {
     chart: {
       type: "bar",
@@ -30,9 +30,8 @@ const Employee = ({ dataa }) => {
     plotOptions: {
       bar: {
         horizontal: false,
-        columnWidth: "65%",
+        columnWidth: "45%",
         endingShape: "rounded",
-        distributed: true, // Enable distributed coloring
       },
     },
     dataLabels: {
@@ -43,7 +42,7 @@ const Employee = ({ dataa }) => {
       width: 2,
       colors: ["transparent"],
     },
-    colors: colors, // Set colors for individual bars
+    colors: colors,
     xaxis: {
       categories: [
         "Jan",
@@ -65,13 +64,6 @@ const Employee = ({ dataa }) => {
       axisTicks: {
         show: false,
       },
-      gridLines: {
-        show: true,
-        borderColor: "#e4e4e4",
-        strokeDashArray: 3, // Make gridlines dotted
-        offsetX: 0,
-        offsetY: 0,
-      },
     },
     yaxis: {
       labels: {
@@ -91,16 +83,18 @@ const Employee = ({ dataa }) => {
         fontSize="14px"
         fontWeight={700}
       >
-        employee distribution of tips
+        new attendants
       </Text>
 
-      <Flex mt="20px" mb="20px" align="flex-end" gap="10px">
-        <Text color="#646668" fontSize="28px" fontWeight={500}>
-          ₦{Number(dataa?.totalTips)?.toLocaleString()}
-        </Text>
-        <Text color="#0B841D" fontSize="12px">
-          {Number(dataa?.percentageChange)?.toFixed(1)}%
-        </Text>
+      <Flex align="center" justifyContent="space-between">
+        <Flex mt="20px" mb="20px" align="flex-end" gap="10px">
+          <Text color="#646668" fontSize="28px" fontWeight={500}>
+            {Number(dataa?.total)?.toLocaleString()}
+          </Text>
+          <Text color="#0B841D" fontSize="12px">
+            {Number(dataa?.percentageChange) || 0}%
+          </Text>
+        </Flex>
       </Flex>
 
       <Box>
@@ -116,4 +110,4 @@ const Employee = ({ dataa }) => {
   );
 };
 
-export default Employee;
+export default NewAtt;

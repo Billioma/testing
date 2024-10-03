@@ -13,11 +13,13 @@ import { formatDates, getStartOfWeek } from "../../../utils/helpers";
 import { IoIosArrowDown, IoIosArrowForward } from "react-icons/io";
 import { PiExportLight } from "react-icons/pi";
 import Select from "react-select";
-import Method from "../../../components/data/Analytics/Metrics/Payment/Method";
-import Employee from "../../../components/data/Analytics/Metrics/Payment/Employee";
-import { useGetPaymentMetrics } from "../../../services/analytics/query/metrics";
+import { useGetBusMetrics } from "../../../services/analytics/query/metrics";
+import Breakdown from "../../../components/data/Analytics/Metrics/Business/Breakdown";
+import Retention from "../../../components/data/Analytics/Metrics/Business/Retention";
+import Added from "../../../components/data/Analytics/Metrics/Business/Added";
+import ActiveInactive from "../../../components/data/Analytics/Metrics/Business/ActiveInactive";
 
-const Payment = () => {
+const Businesses = () => {
   const customStyles = {
     control: (provided, state) => ({
       ...provided,
@@ -65,7 +67,7 @@ const Payment = () => {
 
   const [isRefetch, setIsRefetch] = useState(false);
 
-  const { data, isLoading, refetch } = useGetPaymentMetrics(
+  const { data, isLoading, refetch } = useGetBusMetrics(
     {
       refetchOnWindowFocus: true,
       onSuccess: () => {
@@ -184,9 +186,9 @@ const Payment = () => {
             display={{ base: "none", md: "flex" }}
             transition=".3s ease-in-out"
             _hover={{ bg: "#F4F6F8" }}
+            onClick={handleRefreshClick}
             borderRadius="8px"
             border="1px solid #848688"
-            onClick={handleRefreshClick}
             p="10px"
           >
             <Image
@@ -216,95 +218,95 @@ const Payment = () => {
         flexDir={{ base: "column", md: "row" }}
         gap={{ base: "usnet", md: "24px" }}
       >
-        {["Payment Success Rate", "Average Transaction Value"].map(
-          (item, i) => (
-            <Skeleton
-              isLoaded={!isLoading}
-              borderRadius="8px"
-              my={{ base: "10px", md: "20px" }}
-              w="full"
-            >
-              <Box
-                borderRadius="8px"
-                key={i}
-                bg="#F4F6F8"
-                w="full"
-                pt="5px"
-                my={{ base: "10px", md: "20px" }}
-                px="5px"
-                border="1px solid #E4E6E8"
+        <Skeleton isLoaded={!isLoading} borderRadius="8px" w="full">
+          <Box
+            borderRadius="8px"
+            bg="#F4F6F8"
+            w="full"
+            pt="5px"
+            my={{ base: "10px", md: "20px" }}
+            px="5px"
+            border="1px solid #E4E6E8"
+          >
+            <Box h="6px" w="full" bg="#000" borderRadius="full"></Box>
+            <Box p="15px" pt="0px" pb="20px">
+              <Text
+                mt="24px"
+                lineHeight="100%"
+                fontWeight={700}
+                textTransform="capitalize"
+                color="#242628"
               >
-                <Box h="6px" w="full" bg="#000" borderRadius="full"></Box>
-                <Box p="15px" pt="0px" pb="20px">
-                  <Text
-                    mt="24px"
-                    lineHeight="100%"
-                    fontWeight={700}
-                    textTransform="capitalize"
-                    color="#242628"
-                  >
-                    {item}
-                  </Text>
+                number of Businesses
+              </Text>
 
-                  <Flex
-                    mt="24px"
-                    align="flex-end"
-                    justifyContent="space-between"
-                    w="full"
-                  >
-                    <Box w="full">
-                      <Flex mt="24px" align="center" gap="12px">
-                        <Text
-                          fontSize="28px"
-                          lineHeight="100%"
-                          color="#646668"
-                          fontWeight={500}
-                        >
-                          {i === 0
-                            ? `${Number(
-                                data?.data?.paymentSuccessRate?.value
-                              )?.toLocaleString()}%`
-                            : `₦${Number(
-                                data?.data?.averageTransactionValue?.value
-                              )?.toLocaleString()}`}
-                        </Text>
-                      </Flex>
-                    </Box>
-
-                    <Flex
-                      colot="#000"
-                      fontSize="12px"
-                      p="10px"
-                      rounded="full"
-                      bg="#FFFFFF"
+              <Flex
+                mt="24px"
+                align="flex-end"
+                justifyContent="space-between"
+                w="full"
+              >
+                <Box w="full">
+                  <Flex mt="24px" align="center" gap="12px">
+                    <Text
+                      fontSize="28px"
+                      lineHeight="100%"
+                      color="#646668"
+                      fontWeight={500}
                     >
-                      {i === 0
-                        ? Number(
-                            data?.data?.paymentSuccessRate?.percentageChange
-                          )?.toFixed(1)
-                        : Number(
-                            data?.data?.averageTransactionValue
-                              ?.percentageChange
-                          )?.toFixed(1)}
-                      %
-                    </Flex>
+                      {Number(data?.data?.clientsCount?.value)}
+                    </Text>
                   </Flex>
                 </Box>
-              </Box>
-            </Skeleton>
-          )
-        )}
+
+                <Flex
+                  colot="#000"
+                  fontSize="12px"
+                  p="10px"
+                  rounded="full"
+                  bg="#FFFFFF"
+                >
+                  {Number(data?.data?.clientsCount?.percentageChange)}%
+                </Flex>
+              </Flex>
+            </Box>
+          </Box>
+        </Skeleton>
       </Flex>
 
-      <Flex align="center" gap="24px" flexDir={{ base: "column", md: "row" }}>
+      <Flex
+        align="flex-start"
+        gap="24px"
+        flexDir={{ base: "column", md: "row" }}
+      >
         <Box w={{ base: "100%", md: "40%" }}>
           <Skeleton isLoaded={!isLoading} borderRadius="8px">
-            <Method dataa={data?.data?.paymentsByPaymentMethod} />
+            <Breakdown dataa={data?.data?.businessBreakdown} />
           </Skeleton>
         </Box>
+
         <Box w={{ base: "100%", md: "60%" }}>
           <Skeleton isLoaded={!isLoading} borderRadius="8px">
-            <Employee dataa={data?.data?.employeeDistributionOfTips} />
+            <Retention dataa={data?.data?.monthlyRetentionRate} />
+          </Skeleton>
+        </Box>
+      </Flex>
+
+      <Flex
+        mt="24px"
+        align="flex-start"
+        gap="24px"
+        flexDir={{ base: "column", md: "row" }}
+      >
+        <Box w={{ base: "100%", md: "60%" }}>
+          <Skeleton isLoaded={!isLoading} borderRadius="8px">
+            <Added dataa={data?.data?.recentlyAddedClients} />
+          </Skeleton>
+        </Box>
+
+        <Box w={{ base: "100%", md: "40%" }}>
+          <Skeleton isLoaded={!isLoading} borderRadius="8px">
+            <ActiveInactive dataa={data?.data?.activeVsInactive} />
           </Skeleton>
         </Box>
       </Flex>
@@ -312,4 +314,4 @@ const Payment = () => {
   );
 };
 
-export default Payment;
+export default Businesses;

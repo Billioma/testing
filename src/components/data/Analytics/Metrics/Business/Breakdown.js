@@ -2,7 +2,7 @@ import React from "react";
 import { Box, Flex, Text } from "@chakra-ui/layout";
 import ReactApexChart from "react-apexcharts";
 
-const Method = ({ dataa }) => {
+const Breakdown = ({ dataa }) => {
   const data = dataa?.map((item) => Number(item?.percentage)) || [];
 
   const options = {
@@ -26,8 +26,8 @@ const Method = ({ dataa }) => {
     legend: {
       show: false,
     },
-    colors: ["#EE383A", "#EF6C75", "#F39197", "#F9C8CB", "#FDECED"],
-    labels: dataa?.map((item) => Number(item?.type)) || [],
+    colors: ["#EE383A", "#F39197", "#F9C8CB", "#FDECED"],
+    labels: dataa?.map((item) => item?.type) || [],
     responsive: [
       {
         breakpoint: 768,
@@ -44,18 +44,18 @@ const Method = ({ dataa }) => {
     ],
   };
 
-  const colors = ["#EE383A", "#EF6C75", "#F39197", "#F9C8CB", "#FDECED"];
+  const colors = ["#EE383A", "#F39197", "#F9C8CB", "#FDECED"];
 
   return (
     <Box border="1px solid #e4e6e8" borderRadius="8px" p="22px">
       <Text textAlign="center" color="#242628" fontSize="14px" fontWeight={700}>
-        Payment Method
+        Breakdown
       </Text>
 
       <Box mt="35px">
         {data?.length > 0 ? (
           <ReactApexChart
-            height={325}
+            height={300}
             options={options}
             series={data}
             type="donut"
@@ -94,4 +94,4 @@ const Method = ({ dataa }) => {
   );
 };
 
-export default Method;
+export default Breakdown;

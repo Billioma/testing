@@ -1,23 +1,29 @@
 import React, { useState } from "react";
 import {
   Box,
+  Button,
   Flex,
   Image,
-  Button,
+  Skeleton,
   Text,
   useDisclosure,
-  Skeleton,
 } from "@chakra-ui/react";
 import StartEnd from "../../../components/modals/StartEnd";
 import { formatDates, getStartOfWeek } from "../../../utils/helpers";
 import { IoIosArrowDown, IoIosArrowForward } from "react-icons/io";
 import { PiExportLight } from "react-icons/pi";
 import Select from "react-select";
-import Method from "../../../components/data/Analytics/Metrics/Payment/Method";
-import Employee from "../../../components/data/Analytics/Metrics/Payment/Employee";
-import { useGetPaymentMetrics } from "../../../services/analytics/query/metrics";
 
-const Payment = () => {
+import Invoices from "../../../components/data/Analytics/Metrics/TransactionInvoices/Invoices/Invoices";
+
+import TransactionTab from "../../../components/data/Analytics/Metrics/TransactionInvoices/Transactions/Transactions";
+import {
+  useGetClientMetrics,
+  useGetOperatorMetrics,
+  useGetTransactionsMetrics,
+} from "../../../services/analytics/query/metrics";
+
+const Transactions = () => {
   const customStyles = {
     control: (provided, state) => ({
       ...provided,
@@ -46,26 +52,37 @@ const Payment = () => {
       backgroundColor: state.isFocused ? "#f4f6f8" : "",
     }),
   };
+
+  const [tab, setTab] = useState("Transactions");
   const [filter, setFilter] = useState("");
   const [showEndDate, setShowEndDate] = useState(false);
+
   const [startValue, startChange] = useState(getStartOfWeek(new Date()));
   const [endValue, endChange] = useState(new Date());
   const [showStartDate, setShowStartDate] = useState(false);
+  const [isRefetch, setIsRefetch] = useState(false);
+  const { data, isLoading, refetch } = useGetTransactionsMetrics(
+    {
+      refetchOnWindowFocus: true,
+      onSuccess: () => {
+        setIsRefetch(false);
+      },
+      onError: () => {
+        setIsRefetch(false);
+      },
+      onSettled: () => {
+        setIsRefetch(false);
+      },
+    },
+    formatDates(startValue),
+    formatDates(endValue)
+  );
 
   const {
-    isOpen: isDateOpen,
-    onClose: onDateClose,
-    onOpen: onDateOpen,
-  } = useDisclosure();
-
-  const filterOptions = ["This Month", "Last 3 Months"]?.map((time) => ({
-    value: time,
-    label: time,
-  }));
-
-  const [isRefetch, setIsRefetch] = useState(false);
-
-  const { data, isLoading, refetch } = useGetPaymentMetrics(
+    data: operators,
+    isLoading: isOperator,
+    refetch: refetchOperator,
+  } = useGetOperatorMetrics(
     {
       refetchOnWindowFocus: true,
       onSuccess: () => {
@@ -84,8 +101,19 @@ const Payment = () => {
 
   const handleRefreshClick = async () => {
     setIsRefetch(true);
-    await refetch();
+    await refetch(), refetchOperator();
   };
+
+  const {
+    isOpen: isDateOpen,
+    onClose: onDateClose,
+    onOpen: onDateOpen,
+  } = useDisclosure();
+
+  const filterOptions = ["This Month", "Last 3 Months"]?.map((time) => ({
+    value: time,
+    label: time,
+  }));
 
   return (
     <Box minH="75vh">
@@ -115,7 +143,7 @@ const Payment = () => {
               h="20px"
               objectFit="contain"
             />
-            <Text>{formatDates(startValue)}</Text>
+            <Text>{startValue ? formatDates(startValue) : "From"}</Text>
           </Flex>
 
           <IoIosArrowForward size="20px" />
@@ -136,7 +164,7 @@ const Payment = () => {
               h="20px"
               objectFit="contain"
             />
-            <Text>{formatDates(endValue)}</Text>
+            <Text>{endValue ? formatDates(endValue) : "To"}</Text>
           </Flex>
         </Flex>
 
@@ -184,9 +212,9 @@ const Payment = () => {
             display={{ base: "none", md: "flex" }}
             transition=".3s ease-in-out"
             _hover={{ bg: "#F4F6F8" }}
+            onClick={handleRefreshClick}
             borderRadius="8px"
             border="1px solid #848688"
-            onClick={handleRefreshClick}
             p="10px"
           >
             <Image
@@ -212,104 +240,131 @@ const Payment = () => {
       </Flex>
 
       <Flex
+        flexDir={{ base: "column", md: "row" }}
+        w="100%"
+        bg="#F4F6F8"
+        gap="24px"
+        my="24px"
+        align={{ base: "flex-start", md: "center" }}
+      >
+        {["Transactions", "Invoices"].map((item, i) => (
+          <Flex
+            py="11px"
+            px="20px"
+            fontSize="13px"
+            fontWeight={500}
+            w="fit-content"
+            cursor="pointer"
+            _hover={{ color: "#000" }}
+            transition=".3s ease-in-out"
+            justifyContent={{ base: "flex-start", md: "center" }}
+            color={tab === item ? "#444648" : "#949698"}
+            align="center"
+            key={i}
+            borderBottom={tab === item ? "2px solid #000" : "none"}
+            onClick={() => {
+              setTab(item);
+            }}
+          >
+            {item}
+          </Flex>
+        ))}
+      </Flex>
+
+      <Flex
         align="center"
         flexDir={{ base: "column", md: "row" }}
         gap={{ base: "usnet", md: "24px" }}
       >
-        {["Payment Success Rate", "Average Transaction Value"].map(
-          (item, i) => (
-            <Skeleton
-              isLoaded={!isLoading}
+        {(tab === "Transactions"
+          ? ["processed transactions", "total Revenue"]
+          : ["generated invoices"]
+        ).map((item, i) => (
+          <Skeleton
+            isLoaded={tab === "Transactions" ? !isLoading : !isOperator}
+            borderRadius="8px"
+            w="full"
+          >
+            <Box
               borderRadius="8px"
-              my={{ base: "10px", md: "20px" }}
+              key={i}
+              bg="#F4F6F8"
               w="full"
+              pt="5px"
+              my={{ base: "10px", md: "20px" }}
+              px="5px"
+              border="1px solid #E4E6E8"
             >
-              <Box
-                borderRadius="8px"
-                key={i}
-                bg="#F4F6F8"
-                w="full"
-                pt="5px"
-                my={{ base: "10px", md: "20px" }}
-                px="5px"
-                border="1px solid #E4E6E8"
-              >
-                <Box h="6px" w="full" bg="#000" borderRadius="full"></Box>
-                <Box p="15px" pt="0px" pb="20px">
-                  <Text
-                    mt="24px"
-                    lineHeight="100%"
-                    fontWeight={700}
-                    textTransform="capitalize"
-                    color="#242628"
-                  >
-                    {item}
-                  </Text>
+              <Box h="6px" w="full" bg="#000" borderRadius="full"></Box>
+              <Box p="15px" pt="0px" pb="20px">
+                <Text
+                  mt="24px"
+                  lineHeight="100%"
+                  fontWeight={700}
+                  textTransform="capitalize"
+                  color="#242628"
+                >
+                  {item}
+                </Text>
 
-                  <Flex
-                    mt="24px"
-                    align="flex-end"
-                    justifyContent="space-between"
-                    w="full"
-                  >
-                    <Box w="full">
-                      <Flex mt="24px" align="center" gap="12px">
-                        <Text
-                          fontSize="28px"
-                          lineHeight="100%"
-                          color="#646668"
-                          fontWeight={500}
-                        >
-                          {i === 0
-                            ? `${Number(
-                                data?.data?.paymentSuccessRate?.value
-                              )?.toLocaleString()}%`
-                            : `₦${Number(
-                                data?.data?.averageTransactionValue?.value
-                              )?.toLocaleString()}`}
-                        </Text>
-                      </Flex>
-                    </Box>
-
-                    <Flex
-                      colot="#000"
-                      fontSize="12px"
-                      p="10px"
-                      rounded="full"
-                      bg="#FFFFFF"
+                <Flex
+                  mt="24px"
+                  align="flex-end"
+                  justifyContent="space-between"
+                  w="full"
+                >
+                  <Box w="full">
+                    <Text
+                      mt="24px"
+                      fontSize="28px"
+                      lineHeight="100%"
+                      color="#646668"
+                      fontWeight={500}
                     >
-                      {i === 0
+                      {tab === "Transactions"
+                        ? i === 0
+                          ? Number(
+                              data?.data?.processedTransactions?.value
+                            )?.toLocaleString()
+                          : `₦${Number(
+                              data?.data?.totalRevenue?.value
+                            )?.toLocaleString()}`
+                        : ""}
+                    </Text>
+                  </Box>
+                  <Flex
+                    colot="#000"
+                    fontSize="12px"
+                    p="10px"
+                    rounded="full"
+                    bg="#FFFFFF"
+                  >
+                    {tab === "Transactions"
+                      ? i === 0
                         ? Number(
-                            data?.data?.paymentSuccessRate?.percentageChange
+                            data?.data?.processedTransactions?.percentageChange
                           )?.toFixed(1)
                         : Number(
-                            data?.data?.averageTransactionValue
-                              ?.percentageChange
-                          )?.toFixed(1)}
-                      %
-                    </Flex>
+                            data?.data?.totalRevenue?.percentageChange
+                          )?.toFixed(1)
+                      : ""}
+                    %
                   </Flex>
-                </Box>
+                </Flex>
               </Box>
-            </Skeleton>
-          )
-        )}
+            </Box>
+          </Skeleton>
+        ))}
       </Flex>
 
-      <Flex align="center" gap="24px" flexDir={{ base: "column", md: "row" }}>
-        <Box w={{ base: "100%", md: "40%" }}>
-          <Skeleton isLoaded={!isLoading} borderRadius="8px">
-            <Method dataa={data?.data?.paymentsByPaymentMethod} />
-          </Skeleton>
-        </Box>
-        <Box w={{ base: "100%", md: "60%" }}>
-          <Skeleton isLoaded={!isLoading} borderRadius="8px">
-            <Employee dataa={data?.data?.employeeDistributionOfTips} />
-          </Skeleton>
-        </Box>
-      </Flex>
+      {tab === "Transactions" && (
+        <TransactionTab data={data} isLoading={isLoading} />
+      )}
+      {tab === "Invoices" && (
+        <Invoices  />
+      )}
     </Box>
   );
 };
 
-export default Payment;
+export default Transactions;

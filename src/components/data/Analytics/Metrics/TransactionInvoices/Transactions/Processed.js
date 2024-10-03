@@ -2,16 +2,18 @@ import React from "react";
 import { Box, Flex, Text } from "@chakra-ui/react";
 import Chart from "react-apexcharts";
 
-const Employee = ({ dataa }) => {
+const Processed = ({ dataa, revenue }) => {
   const series = [
     {
       name: "Revenue",
-      data: dataa?.monthlyTips?.map((item) => Number(item?.revenue)),
+      data: dataa?.monthlyRevenue?.map((item) =>
+        Number(item?.numberOfCarsLogged)
+      ),
     },
   ];
 
   const data = series[0]?.data;
-  const maxValue = data?.length ? Math.max(...data) : 0;
+  const maxValue = data?.length > 0 ? Math.max(...data) : 0;
   const colors = data?.map((value) =>
     value === maxValue ? "#EE383A" : "#F9C8CB"
   );
@@ -32,7 +34,7 @@ const Employee = ({ dataa }) => {
         horizontal: false,
         columnWidth: "65%",
         endingShape: "rounded",
-        distributed: true, // Enable distributed coloring
+        distributed: true,
       },
     },
     dataLabels: {
@@ -43,7 +45,7 @@ const Employee = ({ dataa }) => {
       width: 2,
       colors: ["transparent"],
     },
-    colors: colors, // Set colors for individual bars
+    colors: colors,
     xaxis: {
       categories: [
         "Jan",
@@ -54,7 +56,7 @@ const Employee = ({ dataa }) => {
         "Jun",
         "Jul",
         "Aug",
-        "Sep",
+        "Sept",
         "Oct",
         "Nov",
         "Dec",
@@ -68,7 +70,7 @@ const Employee = ({ dataa }) => {
       gridLines: {
         show: true,
         borderColor: "#e4e4e4",
-        strokeDashArray: 3, // Make gridlines dotted
+        strokeDashArray: 3,
         offsetX: 0,
         offsetY: 0,
       },
@@ -76,10 +78,19 @@ const Employee = ({ dataa }) => {
     yaxis: {
       labels: {
         show: true,
+
+        formatter: (value) => `₦${value.toLocaleString()}`,
       },
     },
     fill: {
       opacity: 1,
+    },
+    tooltip: {
+      y: {
+        formatter: function (val) {
+          return `₦${val?.toLocaleString()}`;
+        },
+      },
     },
   };
 
@@ -91,29 +102,38 @@ const Employee = ({ dataa }) => {
         fontSize="14px"
         fontWeight={700}
       >
-        employee distribution of tips
+        Processed transactions
       </Text>
 
-      <Flex mt="20px" mb="20px" align="flex-end" gap="10px">
+      <Flex my="30px" align="flex-end" gap="10px">
         <Text color="#646668" fontSize="28px" fontWeight={500}>
-          ₦{Number(dataa?.totalTips)?.toLocaleString()}
+          {Number(
+            revenue?.data?.processedTransactions?.value
+          )?.toLocaleString()}
         </Text>
         <Text color="#0B841D" fontSize="12px">
-          {Number(dataa?.percentageChange)?.toFixed(1)}%
+          {Number(
+            revenue?.data?.processedTransactions?.percentageChange
+          )?.toFixed(1)}
+          %
         </Text>
       </Flex>
 
       <Box>
-        <Chart
-          options={options}
-          series={series}
-          type="bar"
-          height={270}
-          width={"100%"}
-        />
+        {data?.length > 0 ? (
+          <Chart
+            options={options}
+            series={series}
+            type="bar"
+            height={270}
+            width={"100%"}
+          />
+        ) : (
+          <Text color="#000" fontSize="12px" textAlign="center"></Text>
+        )}
       </Box>
     </Box>
   );
 };
 
-export default Employee;
+export default Processed;

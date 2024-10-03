@@ -32,7 +32,8 @@ const {
   // ADMIN routes
   ADMIN_RESET_PASSWORD_LINK,
   ADMIN_RESET_PASSWORD,
-  ADMIN_LOGIN,ANALYTICS_LOGIN,
+  ADMIN_LOGIN,
+  ANALYTICS_LOGIN,
 } = PUBLIC_PATHS;
 
 const {
@@ -967,6 +968,22 @@ const CustomerMetrics = WithSuspense(
   lazy(() => import("../pages/Analytics/Metrics/Customers"))
 );
 
+const LocationMetrics = WithSuspense(
+  lazy(() => import("../pages/Analytics/Metrics/Location"))
+);
+
+const LocationDetailsMetrics = WithSuspense(
+  lazy(() => import("../pages/Analytics/Metrics/LocationDetails"))
+);
+
+const TransactionMetrics = WithSuspense(
+  lazy(() => import("../pages/Analytics/Metrics/Transactions"))
+);
+
+const IncidentsMetrics = WithSuspense(
+  lazy(() => import("../pages/Analytics/Metrics/Incidents"))
+);
+
 const SubMetrics = WithSuspense(
   lazy(() => import("../pages/Analytics/Metrics/Sub"))
 );
@@ -1009,6 +1026,18 @@ const VehicleMetrics = WithSuspense(
 
 const CarMetrics = WithSuspense(
   lazy(() => import("../pages/Analytics/Metrics/CarService"))
+);
+
+const BusMetrics = WithSuspense(
+  lazy(() => import("../pages/Analytics/Metrics/Businesses"))
+);
+
+const AttendantMetrics = WithSuspense(
+  lazy(() => import("../pages/Analytics/Metrics/Attendants"))
+);
+
+const PointsMetric = WithSuspense(
+  lazy(() => import("../pages/Analytics/Metrics/Points"))
 );
 
 const InteractionMetrics = WithSuspense(
@@ -1642,6 +1671,26 @@ export const PRIVATE_ROUTES = [
   },
 
   {
+    path: PRIVATE_PATHS.METRICS_LOCATION,
+    element: <LocationMetrics />,
+  },
+
+  {
+    path: PRIVATE_PATHS.METRICS_LOCATION_DETAILS,
+    element: <LocationDetailsMetrics />,
+  },
+
+  {
+    path: PRIVATE_PATHS.METRICS_INCIDENTS,
+    element: <IncidentsMetrics />,
+  },
+
+  {
+    path: PRIVATE_PATHS.METRICS_TRANSACTIONS,
+    element: <TransactionMetrics />,
+  },
+
+  {
     path: PRIVATE_PATHS.METRICS_SUB,
     element: <SubMetrics />,
   },
@@ -1700,6 +1749,22 @@ export const PRIVATE_ROUTES = [
     path: PRIVATE_PATHS.METRICS_CAR_SERVICE,
     element: <CarMetrics />,
   },
+
+  {
+    path: PRIVATE_PATHS.METRICS_BUSINESS,
+    element: <BusMetrics />,
+  },
+
+  {
+    path: PRIVATE_PATHS.METRICS_ATTENDANTS,
+    element: <AttendantMetrics />,
+  },
+
+  {
+    path: PRIVATE_PATHS.METRICS_POINTS,
+    element: <PointsMetric />,
+  },
+
   { path: PRIVATE_PATHS.ADMIN_INCIDENTS, element: <AdminIncidents /> },
 
   {

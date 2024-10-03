@@ -1,20 +1,18 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { Box, Flex, Text } from "@chakra-ui/react";
 import Chart from "react-apexcharts";
 
-const Employee = ({ dataa }) => {
+const Retention = ({ dataa }) => {
   const series = [
     {
-      name: "Revenue",
-      data: dataa?.monthlyTips?.map((item) => Number(item?.revenue)),
+      name: "Active",
+      data: dataa?.monthlyRetentionRates?.map((item) => Number(item?.active)),
+    },
+    {
+      name: "Inactive",
+      data: dataa?.monthlyRetentionRates?.map((item) => Number(item?.inactive)),
     },
   ];
-
-  const data = series[0]?.data;
-  const maxValue = data?.length ? Math.max(...data) : 0;
-  const colors = data?.map((value) =>
-    value === maxValue ? "#EE383A" : "#F9C8CB"
-  );
 
   const options = {
     chart: {
@@ -30,9 +28,8 @@ const Employee = ({ dataa }) => {
     plotOptions: {
       bar: {
         horizontal: false,
-        columnWidth: "65%",
+        columnWidth: "45%",
         endingShape: "rounded",
-        distributed: true, // Enable distributed coloring
       },
     },
     dataLabels: {
@@ -43,7 +40,7 @@ const Employee = ({ dataa }) => {
       width: 2,
       colors: ["transparent"],
     },
-    colors: colors, // Set colors for individual bars
+    colors: ["#EE383A", "#F9C8CB"],
     xaxis: {
       categories: [
         "Jan",
@@ -65,13 +62,6 @@ const Employee = ({ dataa }) => {
       axisTicks: {
         show: false,
       },
-      gridLines: {
-        show: true,
-        borderColor: "#e4e4e4",
-        strokeDashArray: 3, // Make gridlines dotted
-        offsetX: 0,
-        offsetY: 0,
-      },
     },
     yaxis: {
       labels: {
@@ -91,16 +81,34 @@ const Employee = ({ dataa }) => {
         fontSize="14px"
         fontWeight={700}
       >
-        employee distribution of tips
+        business retention rate
       </Text>
 
-      <Flex mt="20px" mb="20px" align="flex-end" gap="10px">
-        <Text color="#646668" fontSize="28px" fontWeight={500}>
-          ₦{Number(dataa?.totalTips)?.toLocaleString()}
-        </Text>
-        <Text color="#0B841D" fontSize="12px">
-          {Number(dataa?.percentageChange)?.toFixed(1)}%
-        </Text>
+      <Flex align="center" justifyContent="space-between">
+        <Flex mt="20px" mb="20px" align="flex-end" gap="10px">
+          <Text color="#646668" fontSize="28px" fontWeight={500}>
+            {Number(dataa?.totalRetentionRate)?.toLocaleString()}
+          </Text>
+          <Text color="#0B841D" fontSize="12px">
+            {Number(dataa?.percentageChange) || 0}%
+          </Text>
+        </Flex>
+
+        <Flex align="center" gap="24px">
+          <Flex align="center" gap="10px">
+            <Box bg="#EE383A" rounded="full" h="10px" w="10px" />
+            <Text color="#000" fontSize="12px">
+              Active
+            </Text>
+          </Flex>
+
+          <Flex align="center" gap="10px">
+            <Box bg="#F9C8CB" rounded="full" h="10px" w="10px" />
+            <Text color="#000" fontSize="12px">
+              Inactive
+            </Text>
+          </Flex>
+        </Flex>
       </Flex>
 
       <Box>
@@ -116,4 +124,4 @@ const Employee = ({ dataa }) => {
   );
 };
 
-export default Employee;
+export default Retention;

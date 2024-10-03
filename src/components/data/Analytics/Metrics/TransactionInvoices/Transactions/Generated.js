@@ -2,19 +2,15 @@ import React from "react";
 import { Box, Flex, Text } from "@chakra-ui/react";
 import Chart from "react-apexcharts";
 
-const Employee = ({ dataa }) => {
+const Generated = ({ dataa }) => {
   const series = [
     {
       name: "Revenue",
-      data: dataa?.monthlyTips?.map((item) => Number(item?.revenue)),
+      data: dataa?.data?.map((item) => Number(item?.revenue)) || [],
     },
   ];
 
-  const data = series[0]?.data;
-  const maxValue = data?.length ? Math.max(...data) : 0;
-  const colors = data?.map((value) =>
-    value === maxValue ? "#EE383A" : "#F9C8CB"
-  );
+  const colors = ["#EE383A"];
 
   const options = {
     chart: {
@@ -29,37 +25,37 @@ const Employee = ({ dataa }) => {
     },
     plotOptions: {
       bar: {
-        horizontal: false,
+        horizontal: true,
         columnWidth: "65%",
         endingShape: "rounded",
-        distributed: true, // Enable distributed coloring
+        distributed: true,
       },
     },
     dataLabels: {
-      enabled: false,
+      enabled: true,
+      formatter: (val) =>
+        `₦${val.toLocaleString(undefined, {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2,
+        })}`,
+      style: {
+        fontSize: "12px",
+        colors: ["#000"],
+      },
+      offsetX: 30,
     },
     stroke: {
       show: true,
       width: 2,
       colors: ["transparent"],
     },
-    colors: colors, // Set colors for individual bars
+    colors: colors,
     xaxis: {
-      categories: [
-        "Jan",
-        "Feb",
-        "Mar",
-        "Apr",
-        "May",
-        "Jun",
-        "Jul",
-        "Aug",
-        "Sep",
-        "Oct",
-        "Nov",
-        "Dec",
-      ],
+      categories: dataa?.data?.map((item) => item?.operatorName) || [],
       axisBorder: {
+        show: false,
+      },
+      labels: {
         show: false,
       },
       axisTicks: {
@@ -68,7 +64,7 @@ const Employee = ({ dataa }) => {
       gridLines: {
         show: true,
         borderColor: "#e4e4e4",
-        strokeDashArray: 3, // Make gridlines dotted
+        strokeDashArray: 3,
         offsetX: 0,
         offsetY: 0,
       },
@@ -81,6 +77,11 @@ const Employee = ({ dataa }) => {
     fill: {
       opacity: 1,
     },
+    tooltip: {
+      y: {
+        formatter: (value) => `₦${value.toLocaleString()}`,
+      },
+    },
   };
 
   return (
@@ -91,12 +92,12 @@ const Employee = ({ dataa }) => {
         fontSize="14px"
         fontWeight={700}
       >
-        employee distribution of tips
+        Revenue by Operator
       </Text>
 
-      <Flex mt="20px" mb="20px" align="flex-end" gap="10px">
+      <Flex my="30px" align="flex-end" gap="10px">
         <Text color="#646668" fontSize="28px" fontWeight={500}>
-          ₦{Number(dataa?.totalTips)?.toLocaleString()}
+          ₦{Number(dataa?.total)?.toLocaleString()}
         </Text>
         <Text color="#0B841D" fontSize="12px">
           {Number(dataa?.percentageChange)?.toFixed(1)}%
@@ -108,7 +109,7 @@ const Employee = ({ dataa }) => {
           options={options}
           series={series}
           type="bar"
-          height={270}
+          height={200}
           width={"100%"}
         />
       </Box>
@@ -116,4 +117,4 @@ const Employee = ({ dataa }) => {
   );
 };
 
-export default Employee;
+export default Generated;

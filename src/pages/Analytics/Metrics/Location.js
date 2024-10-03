@@ -13,11 +13,14 @@ import { formatDates, getStartOfWeek } from "../../../utils/helpers";
 import { IoIosArrowDown, IoIosArrowForward } from "react-icons/io";
 import { PiExportLight } from "react-icons/pi";
 import Select from "react-select";
-import Method from "../../../components/data/Analytics/Metrics/Payment/Method";
-import Employee from "../../../components/data/Analytics/Metrics/Payment/Employee";
-import { useGetPaymentMetrics } from "../../../services/analytics/query/metrics";
+import { useGetLocationMetrics } from "../../../services/analytics/query/metrics";
+import RevenueChart from "../../../components/data/Analytics/Metrics/Locations/RevenueChart";
+import High from "../../../components/data/Analytics/Metrics/Locations/High";
+import ActiveInactive from "../../../components/data/Analytics/Metrics/Locations/ActiveInactive";
+import { useGetLocations } from "../../../services/admin/query/locations";
+import { useNavigate } from "react-router-dom";
 
-const Payment = () => {
+const Location = () => {
   const customStyles = {
     control: (provided, state) => ({
       ...provided,
@@ -47,6 +50,8 @@ const Payment = () => {
     }),
   };
   const [filter, setFilter] = useState("");
+  const [location, setLocation] = useState("");
+  const navigate = useNavigate();
   const [showEndDate, setShowEndDate] = useState(false);
   const [startValue, startChange] = useState(getStartOfWeek(new Date()));
   const [endValue, endChange] = useState(new Date());
@@ -58,14 +63,23 @@ const Payment = () => {
     onOpen: onDateOpen,
   } = useDisclosure();
 
+  const { data: locations } = useGetLocations({}, 1, 1000);
+
   const filterOptions = ["This Month", "Last 3 Months"]?.map((time) => ({
     value: time,
     label: time,
   }));
 
+  const locationOptions = locations?.data
+    ?.filter((item) => item?.client) // Filters items where 'client.name' exists
+    ?.map((place) => ({
+      value: place?.id,
+      label: place?.name,
+    }));
+console.log(locationOptions)
   const [isRefetch, setIsRefetch] = useState(false);
 
-  const { data, isLoading, refetch } = useGetPaymentMetrics(
+  const { data, isLoading, refetch } = useGetLocationMetrics(
     {
       refetchOnWindowFocus: true,
       onSuccess: () => {
@@ -86,11 +100,10 @@ const Payment = () => {
     setIsRefetch(true);
     await refetch();
   };
-
   return (
     <Box minH="75vh">
       <Flex
-        align="center"
+        align={{ base: "flex-start", md: "center" }}
         justifyContent="space-between"
         border="1px solid #d4d6d8"
         borderRadius="8px"
@@ -98,7 +111,13 @@ const Payment = () => {
         gap={{ base: "20px", md: "unset" }}
         p="24px 23px"
       >
-        <Flex align="center" gap="4px" color="#444648" fontSize="12px">
+        <Flex
+          align="center"
+          w={{ base: "unset", md: "50%" }}
+          gap="4px"
+          color="#444648"
+          fontSize="12px"
+        >
           <Flex
             align="center"
             gap="8px"
@@ -138,7 +157,62 @@ const Payment = () => {
             />
             <Text>{formatDates(endValue)}</Text>
           </Flex>
+
+          <Box
+            w={{ base: "100%", md: "50%" }}
+            display={{ base: "none", md: "block" }}
+            ml="15px"
+          >
+            <Select
+              styles={customStyles}
+              options={locationOptions}
+              placeholder="Select Location"
+              value={location}
+              defaultValue={location}
+              components={{
+                IndicatorSeparator: () => (
+                  <div style={{ display: "none" }}></div>
+                ),
+                DropdownIndicator: () => (
+                  <div>
+                    <IoIosArrowDown size="15px" color="#646668" />
+                  </div>
+                ),
+              }}
+              onChange={(selectedOption) => {
+                setLocation(selectedOption);
+                navigate(
+                  `/analytics/metrics/locations/${selectedOption?.value}`
+                );
+              }}
+            />
+          </Box>
         </Flex>
+
+        <Box
+          display={{ base: "block", md: "none" }}
+          w={{ base: "100%", md: "unset" }}
+        >
+          <Select
+            styles={customStyles}
+            options={locationOptions}
+            placeholder="Select Location"
+            value={location}
+            defaultValue={location}
+            components={{
+              IndicatorSeparator: () => <div style={{ display: "none" }}></div>,
+              DropdownIndicator: () => (
+                <div>
+                  <IoIosArrowDown size="15px" color="#646668" />
+                </div>
+              ),
+            }}
+            onChange={(selectedOption) => {
+              setLocation(selectedOption);
+              navigate(`/analytics/metrics/locations/${selectedOption?.value}`);
+            }}
+          />
+        </Box>
 
         <Flex align="center" gap="24px">
           <Box w={{ base: "100%", md: "unset" }}>
@@ -184,9 +258,9 @@ const Payment = () => {
             display={{ base: "none", md: "flex" }}
             transition=".3s ease-in-out"
             _hover={{ bg: "#F4F6F8" }}
+            onClick={handleRefreshClick}
             borderRadius="8px"
             border="1px solid #848688"
-            onClick={handleRefreshClick}
             p="10px"
           >
             <Image
@@ -216,7 +290,7 @@ const Payment = () => {
         flexDir={{ base: "column", md: "row" }}
         gap={{ base: "usnet", md: "24px" }}
       >
-        {["Payment Success Rate", "Average Transaction Value"].map(
+        {["parking locations available", "top Tipping Location"].map(
           (item, i) => (
             <Skeleton
               isLoaded={!isLoading}
@@ -226,7 +300,6 @@ const Payment = () => {
             >
               <Box
                 borderRadius="8px"
-                key={i}
                 bg="#F4F6F8"
                 w="full"
                 pt="5px"
@@ -243,7 +316,7 @@ const Payment = () => {
                     textTransform="capitalize"
                     color="#242628"
                   >
-                    {item}
+                    {item?.toLowerCase()}
                   </Text>
 
                   <Flex
@@ -262,12 +335,10 @@ const Payment = () => {
                         >
                           {i === 0
                             ? `${Number(
-                                data?.data?.paymentSuccessRate?.value
+                                data?.data?.parkingLocationsAvailable?.value
                               )?.toLocaleString()}%`
-                            : `₦${Number(
-                                data?.data?.averageTransactionValue?.value
-                              )?.toLocaleString()}`}
-                        </Text>
+                            : data?.data?.topTippingLocation?.locationName}
+                        </Text>{" "}
                       </Flex>
                     </Box>
 
@@ -276,16 +347,12 @@ const Payment = () => {
                       fontSize="12px"
                       p="10px"
                       rounded="full"
+                      display={i === 0 ? "flex" : "none"}
                       bg="#FFFFFF"
                     >
-                      {i === 0
-                        ? Number(
-                            data?.data?.paymentSuccessRate?.percentageChange
-                          )?.toFixed(1)
-                        : Number(
-                            data?.data?.averageTransactionValue
-                              ?.percentageChange
-                          )?.toFixed(1)}
+                      {Number(
+                        data?.data?.parkingLocationsAvailable?.percentageChange
+                      )?.toFixed(1)}
                       %
                     </Flex>
                   </Flex>
@@ -296,20 +363,32 @@ const Payment = () => {
         )}
       </Flex>
 
-      <Flex align="center" gap="24px" flexDir={{ base: "column", md: "row" }}>
-        <Box w={{ base: "100%", md: "40%" }}>
-          <Skeleton isLoaded={!isLoading} borderRadius="8px">
-            <Method dataa={data?.data?.paymentsByPaymentMethod} />
-          </Skeleton>
-        </Box>
+      <Flex
+        align="flex-start"
+        gap="24px"
+        mt="24px"
+        flexDir={{ base: "column", md: "row" }}
+      >
         <Box w={{ base: "100%", md: "60%" }}>
           <Skeleton isLoaded={!isLoading} borderRadius="8px">
-            <Employee dataa={data?.data?.employeeDistributionOfTips} />
+            <RevenueChart dataa={data?.data?.totalRevenueGenerated} />
+          </Skeleton>
+        </Box>
+
+        <Box w={{ base: "100%", md: "40%" }}>
+          <Skeleton isLoaded={!isLoading} borderRadius="8px">
+            <ActiveInactive dataa={data?.data?.activeVsInactive} />
           </Skeleton>
         </Box>
       </Flex>
+
+      <Box mt="24px" w={{ base: "100%", md: "100%" }}>
+        <Skeleton isLoaded={!isLoading} borderRadius="8px">
+          <High dataa={data?.data?.highestPerformingLocations} />
+        </Skeleton>
+      </Box>
     </Box>
   );
 };
 
-export default Payment;
+export default Location;
