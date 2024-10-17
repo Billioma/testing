@@ -2,8 +2,8 @@ import React from "react";
 import { Box, Flex, Text } from "@chakra-ui/layout";
 import ReactApexChart from "react-apexcharts";
 
-const LocationDistro = ({ dataa }) => {
-  const data = dataa?.map((item) => Number(item?.count));
+const ActiveInactive = ({ dataa }) => {
+  const data = dataa?.map((item) => Number(item?.percentage));
 
   const options = {
     maintainAspectRatio: false,
@@ -27,8 +27,8 @@ const LocationDistro = ({ dataa }) => {
     legend: {
       show: false,
     },
-    colors: ["#EE383A", "#F9C8CB"],
-    labels: dataa?.map((item) => item?.state),
+    colors: ["#EE383A", "#EF6C75"],
+    labels: dataa?.map((item) => item?.type),
     responsive: [
       {
         breakpoint: 768,
@@ -45,6 +45,7 @@ const LocationDistro = ({ dataa }) => {
     ],
   };
 
+  const colors = ["#EE383A", "#EF6C75"];
   return (
     <Box border="1px solid #e4e6e8" borderRadius="8px" p="22px">
       <Text
@@ -54,7 +55,7 @@ const LocationDistro = ({ dataa }) => {
         fontSize="14px"
         fontWeight={700}
       >
-        Operator location distribution
+        active VS inactive Operators
       </Text>
 
       <Box mt="40px">
@@ -66,23 +67,28 @@ const LocationDistro = ({ dataa }) => {
             type="donut"
           />
         ) : (
-          <Text color="#000" fontSize="12px" textAlign="center">
-            
-          </Text>
+          <Text color="#000" fontSize="12px" textAlign="center"></Text>
         )}
       </Box>
 
-      <Flex mt="50px" align="center" gap="24px" justifyContent="center">
+      <Flex
+        mt="50px"
+        align="center"
+        justifyContent="center"
+        flexWrap="wrap"
+        gap="24px"
+      >
         {dataa?.map((item, i) => (
           <Flex align="center" gap="10px">
             <Box
-              bg={item?.state === "Lagos" ? "#F9C8CB" : "#EE383A"}
+              bg={colors[i % colors?.length]}
               rounded="full"
               h="10px"
               w="10px"
             />
-            <Text color="#000" fontSize="12px">
-              {item?.state} ({Number(item?.count)?.toLocaleString()})
+            <Text color="#000" textTransform="capitalize" fontSize="12px">
+              {item?.type?.toLowerCase()} (
+              {Number(item?.percentage)?.toLocaleString()})%
             </Text>
           </Flex>
         ))}
@@ -91,4 +97,4 @@ const LocationDistro = ({ dataa }) => {
   );
 };
 
-export default LocationDistro;
+export default ActiveInactive;

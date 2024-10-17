@@ -6,7 +6,7 @@ const Generated = ({ dataa }) => {
   const series = [
     {
       name: "Revenue",
-      data: dataa?.data?.map((item) => Number(item?.revenue)) || [],
+      data: dataa?.map((item) => Number(item?.invoiceCount)) || [],
     },
   ];
 
@@ -33,11 +33,7 @@ const Generated = ({ dataa }) => {
     },
     dataLabels: {
       enabled: true,
-      formatter: (val) =>
-        `₦${val.toLocaleString(undefined, {
-          minimumFractionDigits: 2,
-          maximumFractionDigits: 2,
-        })}`,
+      formatter: (val) => `${val.toLocaleString()}`,
       style: {
         fontSize: "12px",
         colors: ["#000"],
@@ -51,7 +47,7 @@ const Generated = ({ dataa }) => {
     },
     colors: colors,
     xaxis: {
-      categories: dataa?.data?.map((item) => item?.operatorName) || [],
+      categories: dataa?.data?.map((item) => item?.client) || [],
       axisBorder: {
         show: false,
       },
@@ -79,7 +75,7 @@ const Generated = ({ dataa }) => {
     },
     tooltip: {
       y: {
-        formatter: (value) => `₦${value.toLocaleString()}`,
+        formatter: (value) => `${value.toLocaleString()}`,
       },
     },
   };
@@ -92,17 +88,8 @@ const Generated = ({ dataa }) => {
         fontSize="14px"
         fontWeight={700}
       >
-        Revenue by Operator
+        Top clients invoices
       </Text>
-
-      <Flex my="30px" align="flex-end" gap="10px">
-        <Text color="#646668" fontSize="28px" fontWeight={500}>
-          ₦{Number(dataa?.total)?.toLocaleString()}
-        </Text>
-        <Text color="#0B841D" fontSize="12px">
-          {Number(dataa?.percentageChange)?.toFixed(1)}%
-        </Text>
-      </Flex>
 
       <Box>
         <Chart

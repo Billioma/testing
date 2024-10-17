@@ -1,9 +1,8 @@
 import React from "react";
 import { Box, Flex, Text } from "@chakra-ui/layout";
 import ReactApexChart from "react-apexcharts";
-import { IoStar } from "react-icons/io5";
 
-const Ratings = ({ dataa }) => {
+const AdminvsUser = ({ dataa }) => {
   const data = dataa?.map((item) => Number(item?.percentage)) || [];
 
   const options = {
@@ -27,8 +26,8 @@ const Ratings = ({ dataa }) => {
     legend: {
       show: false,
     },
-    colors: ["#EE383A", "#EF6C75", "#F39197", "#F9C8CB", "#FDECED"],
-    labels: dataa?.map((item) => item?.rating) || [],
+    colors: ["#EE383A", "#F39197"],
+    labels: dataa?.map((item) => item?.type) || [],
     responsive: [
       {
         breakpoint: 768,
@@ -45,12 +44,12 @@ const Ratings = ({ dataa }) => {
     ],
   };
 
-  const colors = ["#EE383A", "#EF6C75", "#F39197", "#F9C8CB", "#FDECED"];
+  const colors = ["#EE383A", "#F39197"];
 
   return (
     <Box border="1px solid #e4e6e8" borderRadius="8px" p="22px">
       <Text textAlign="center" color="#242628" fontSize="14px" fontWeight={700}>
-        Customer Ratings
+        Administrators VS Operators
       </Text>
 
       <Box mt="35px">
@@ -62,9 +61,7 @@ const Ratings = ({ dataa }) => {
             type="donut"
           />
         ) : (
-          <Text color="#000" fontSize="12px" textAlign="center">
-       
-          </Text>
+          <Text color="#000" fontSize="12px" textAlign="center"></Text>
         )}
       </Box>
 
@@ -78,20 +75,23 @@ const Ratings = ({ dataa }) => {
         {dataa?.length ? (
           dataa?.map((item, i) => (
             <Flex key={i} align="center" gap="10px">
-              <IoStar color={colors[i % colors?.length]} size="13px" />
+              <Box
+                bg={colors[i % colors?.length]}
+                rounded="full"
+                h="10px"
+                w="10px"
+              />
               <Text color="#000" fontSize="12px">
-              {item?.rating} ({Number(item?.percentage)})%
+                {item?.type} ({Number(item?.percentage)})%
               </Text>
             </Flex>
           ))
         ) : (
-          <Text color="#000" fontSize="12px">
-           
-          </Text>
+          <Text color="#000" fontSize="12px"></Text>
         )}
       </Flex>
     </Box>
   );
 };
 
-export default Ratings;
+export default AdminvsUser;

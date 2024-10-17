@@ -19,3 +19,5 @@ export const BUS_METRICS = "analytics/admin/business";
 export const POINTS_METRICS = "analytics/admin/points";
 export const PAY_TO_PARK_METRICS = "analytics/admin/pay-to-park";
 export const PAYMENT_METRICS = "analytics/admin/payments";
+export const USERS_METRICS = "analytics/admin/users";
+export const INVOICE_METRICS = "analytics/admin/invoices";

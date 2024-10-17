@@ -346,6 +346,7 @@ const IncidentDetails = () => {
                   label="Date of Incident"
                   data={formatDateTime(data?.dateOfIncident)}
                 />
+                <Layout label="Type" data={data?.type} />
                 <Layout
                   label="Location"
                   data={data?.serviceLog?.location?.name || "N/A"}

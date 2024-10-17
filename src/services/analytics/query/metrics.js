@@ -9,6 +9,7 @@ import {
   getEventParkMetrics,
   getIncidentsMetrics,
   getInteractionMetrics,
+  getInvoiceMetrics,
   getLocationDetailsMetrics,
   getLocationMetrics,
   getOperatorMetrics,
@@ -19,6 +20,7 @@ import {
   getServiceMetrics,
   getSubMetrics,
   getTransactionsMetrics,
+  getUsersMetrics,
   getValetParkMetrics,
   getVehicleMetrics,
 } from "../api/metrics";
@@ -192,6 +194,26 @@ export const useGetPointsMetrics = (options = {}, from = "", to = "") => {
   return useGetMetrics(
     "getPointsMetric",
     getPointsMetric,
+    options,
+    from,
+    to
+  );
+};
+
+export const useGetUsersMetrics = (options = {}, from = "", to = "") => {
+  return useGetMetrics(
+    "getUsersMetrics",
+    getUsersMetrics,
+    options,
+    from,
+    to
+  );
+};
+
+export const useGetInvoiceMetrics = (options = {}, from = "", to = "") => {
+  return useGetMetrics(
+    "getInvoiceMetrics",
+    getInvoiceMetrics,
     options,
     from,
     to

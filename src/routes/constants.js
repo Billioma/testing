@@ -282,6 +282,7 @@ export const PRIVATE_PATHS = {
   METRICS_PAYMENT: "/analytics/metrics/payments",
   METRICS_SUPPORT: "/analytics/metrics/support",
   METRICS_EVENT: "/analytics/metrics/events",
+  METRICS_USERS: "/analytics/metrics/users",
   METRICS_CAR_SERVICE: "/analytics/metrics/car-services",
   METRICS_INTERACTION: "/analytics/metrics/interactions",
   METRICS_VEHICLE: "/analytics/metrics/vehicles",

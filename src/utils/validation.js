@@ -16,11 +16,13 @@ export const initAdminStaffValues = {
   guestEmail: "",
   dateOfIncident: new Date(),
   summary: "",
+  type: "",
   staffInvolved: [""],
 };
 
 export const validateAdminStaffSchema = Yup.object().shape({
   manager: Yup.object().required("Manager on Duty is required"),
+  type: Yup.object().required("Type is required"),
   summary: Yup.string().required("Summary is required"),
   staffInvolved: Yup.array().required("Staff is required"),
 });

@@ -41,6 +41,11 @@ const CreateIncident = () => {
     value: Number(staff?.id),
   }));
 
+  const typeOptions = ["Accident", "Damages", "Theft"]?.map((type) => ({
+    label: type,
+    value: type,
+  }));
+
   const managerOptions = managers?.data
     ?.filter((item) => item?.isManager)
     ?.map((staff) => ({
@@ -74,7 +79,7 @@ const CreateIncident = () => {
 
   const isDisabled = Object.values(fields).some((value) => !value);
   const handleSubmit = (values = "") => {
-    const { manager, staffInvolved, ...rest } = values;
+    const { manager, type, staffInvolved, ...rest } = values;
 
     mutate({
       ...rest,
@@ -88,6 +93,7 @@ const CreateIncident = () => {
       guestLastName: fields?.lastName,
       guestPhoneNumber: fields?.phone,
       guestEmail: fields?.email,
+      type: type?.value,
     });
   };
 
@@ -566,6 +572,58 @@ const CreateIncident = () => {
                           />
                         </Box>
 
+                        <Box w="full" mb={4}>
+                          <Text
+                            mb="8px"
+                            fontSize="12px"
+                            fontWeight={500}
+                            color="#444648"
+                          >
+                            Incident Type{" "}
+                            <span
+                              style={{
+                                color: "tomato",
+                                fontSize: "15px",
+                              }}
+                            >
+                              *
+                            </span>
+                          </Text>
+                          <Select
+                            styles={
+                              formSubmitted && !values?.type
+                                ? errorCustomStyles
+                                : customStyles
+                            }
+                            placeholder="Select type"
+                            options={typeOptions}
+                            name="type"
+                            onChange={(selectedOption) =>
+                              setValues({
+                                ...values,
+                                type: selectedOption,
+                              })
+                            }
+                            onBlur={handleBlur}
+                            components={{
+                              IndicatorSeparator: () => (
+                                <div style={{ display: "none" }}></div>
+                              ),
+                              DropdownIndicator: () => (
+                                <div>
+                                  <IoIosArrowDown size="15px" color="#646668" />
+                                </div>
+                              ),
+                            }}
+                          />
+
+                          {formSubmitted && !values?.type && (
+                            <Text mt="8px" fontSize="13px" color="tomato">
+                              Type is required
+                            </Text>
+                          )}
+                        </Box>
+                        {console.log(values)}
                         <Box w="full" mb={4}>
                           <Text
                             mb="8px"

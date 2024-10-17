@@ -1,26 +1,28 @@
 import React, { useState } from "react";
 import {
   Box,
-  Button,
   Flex,
   Image,
-  Skeleton,
+  Button,
   Text,
   useDisclosure,
+  Skeleton,
 } from "@chakra-ui/react";
 import StartEnd from "../../../components/modals/StartEnd";
 import { formatDates, getStartOfWeek } from "../../../utils/helpers";
 import { IoIosArrowDown, IoIosArrowForward } from "react-icons/io";
 import { PiExportLight } from "react-icons/pi";
 import Select from "react-select";
-import Invoices from "../../../components/data/Analytics/Metrics/TransactionInvoices/Invoices/Invoices";
-import TransactionTab from "../../../components/data/Analytics/Metrics/TransactionInvoices/Transactions/Transactions";
-import {
-  useGetInvoiceMetrics,
-  useGetTransactionsMetrics,
-} from "../../../services/analytics/query/metrics";
+import { useGetUsersMetrics } from "../../../services/analytics/query/metrics";
+import Unused from "../../../components/data/Analytics/Metrics/Points/Unused";
+import Service from "../../../components/data/Analytics/Metrics/Points/Service";
+import Award from "../../../components/data/Analytics/Metrics/Points/Award";
+import AdminvsUser from "../../../components/data/Analytics/Metrics/Users/AdminvsUser";
+import RetentionChart from "../../../components/data/Analytics/Metrics/Users/RetentionChart";
+import ActiveInactive from "../../../components/data/Analytics/Metrics/Users/ActiveInactive";
+import OperatState from "../../../components/data/Analytics/Metrics/Users/OperatState";
 
-const Transactions = () => {
+const Users = () => {
   const customStyles = {
     control: (provided, state) => ({
       ...provided,
@@ -49,37 +51,26 @@ const Transactions = () => {
       backgroundColor: state.isFocused ? "#f4f6f8" : "",
     }),
   };
-
-  const [tab, setTab] = useState("Transactions");
   const [filter, setFilter] = useState("");
   const [showEndDate, setShowEndDate] = useState(false);
-
   const [startValue, startChange] = useState(getStartOfWeek(new Date()));
   const [endValue, endChange] = useState(new Date());
   const [showStartDate, setShowStartDate] = useState(false);
-  const [isRefetch, setIsRefetch] = useState(false);
-  const { data, isLoading, refetch } = useGetTransactionsMetrics(
-    {
-      refetchOnWindowFocus: true,
-      onSuccess: () => {
-        setIsRefetch(false);
-      },
-      onError: () => {
-        setIsRefetch(false);
-      },
-      onSettled: () => {
-        setIsRefetch(false);
-      },
-    },
-    formatDates(startValue),
-    formatDates(endValue)
-  );
 
   const {
-    data: invoices,
-    isLoading: isInvoice,
-    refetch: refetchInvoice,
-  } = useGetInvoiceMetrics(
+    isOpen: isDateOpen,
+    onClose: onDateClose,
+    onOpen: onDateOpen,
+  } = useDisclosure();
+
+  const filterOptions = ["This Month", "Last 3 Months"]?.map((time) => ({
+    value: time,
+    label: time,
+  }));
+
+  const [isRefetch, setIsRefetch] = useState(false);
+
+  const { data, isLoading, refetch } = useGetUsersMetrics(
     {
       refetchOnWindowFocus: true,
       onSuccess: () => {
@@ -98,19 +89,8 @@ const Transactions = () => {
 
   const handleRefreshClick = async () => {
     setIsRefetch(true);
-    await refetch(), refetchInvoice();
+    await refetch();
   };
-
-  const {
-    isOpen: isDateOpen,
-    onClose: onDateClose,
-    onOpen: onDateOpen,
-  } = useDisclosure();
-
-  const filterOptions = ["This Month", "Last 3 Months"]?.map((time) => ({
-    value: time,
-    label: time,
-  }));
 
   return (
     <Box minH="75vh">
@@ -140,7 +120,7 @@ const Transactions = () => {
               h="20px"
               objectFit="contain"
             />
-            <Text>{startValue ? formatDates(startValue) : "From"}</Text>
+            <Text>{formatDates(startValue)}</Text>
           </Flex>
 
           <IoIosArrowForward size="20px" />
@@ -161,7 +141,7 @@ const Transactions = () => {
               h="20px"
               objectFit="contain"
             />
-            <Text>{endValue ? formatDates(endValue) : "To"}</Text>
+            <Text>{formatDates(endValue)}</Text>
           </Flex>
         </Flex>
 
@@ -237,133 +217,102 @@ const Transactions = () => {
       </Flex>
 
       <Flex
-        flexDir={{ base: "column", md: "row" }}
-        w="100%"
-        bg="#F4F6F8"
-        gap="24px"
-        my="24px"
-        align={{ base: "flex-start", md: "center" }}
-      >
-        {["Transactions", "Invoices"].map((item, i) => (
-          <Flex
-            py="11px"
-            px="20px"
-            fontSize="13px"
-            fontWeight={500}
-            w="fit-content"
-            cursor="pointer"
-            _hover={{ color: "#000" }}
-            transition=".3s ease-in-out"
-            justifyContent={{ base: "flex-start", md: "center" }}
-            color={tab === item ? "#444648" : "#949698"}
-            align="center"
-            key={i}
-            borderBottom={tab === item ? "2px solid #000" : "none"}
-            onClick={() => {
-              setTab(item);
-            }}
-          >
-            {item}
-          </Flex>
-        ))}
-      </Flex>
-
-      <Flex
         align="center"
         flexDir={{ base: "column", md: "row" }}
         gap={{ base: "usnet", md: "24px" }}
       >
-        {(tab === "Transactions"
-          ? ["processed transactions", "total Revenue"]
-          : ["generated invoices"]
-        ).map((item, i) => (
-          <Skeleton
-            isLoaded={tab === "Transactions" ? !isLoading : !isInvoice}
+        <Skeleton isLoaded={!isLoading} borderRadius="8px" w="full">
+          <Box
             borderRadius="8px"
+            bg="#F4F6F8"
             w="full"
+            pt="5px"
+            my={{ base: "10px", md: "20px" }}
+            px="5px"
+            border="1px solid #E4E6E8"
           >
-            <Box
-              borderRadius="8px"
-              key={i}
-              bg="#F4F6F8"
-              w="full"
-              pt="5px"
-              my={{ base: "10px", md: "20px" }}
-              px="5px"
-              border="1px solid #E4E6E8"
-            >
-              <Box h="6px" w="full" bg="#000" borderRadius="full"></Box>
-              <Box p="15px" pt="0px" pb="20px">
-                <Text
-                  mt="24px"
-                  lineHeight="100%"
-                  fontWeight={700}
-                  textTransform="capitalize"
-                  color="#242628"
-                >
-                  {item}
-                </Text>
+            <Box h="6px" w="full" bg="#000" borderRadius="full"></Box>
+            <Box p="15px" pt="0px" pb="20px">
+              <Text
+                mt="24px"
+                lineHeight="100%"
+                fontWeight={700}
+                textTransform="capitalize"
+                color="#242628"
+              >
+                Users
+              </Text>
 
-                <Flex
-                  mt="24px"
-                  align="flex-end"
-                  justifyContent="space-between"
-                  w="full"
-                >
-                  <Box w="full">
+              <Flex
+                mt="24px"
+                align="flex-end"
+                justifyContent="space-between"
+                w="full"
+              >
+                <Box w="full">
+                  <Flex mt="24px" align="center" gap="12px">
                     <Text
-                      mt="24px"
                       fontSize="28px"
                       lineHeight="100%"
                       color="#646668"
                       fontWeight={500}
                     >
-                      {tab === "Transactions"
-                        ? i === 0
-                          ? Number(
-                              data?.data?.processedTransactions?.value
-                            )?.toLocaleString()
-                          : `₦${Number(
-                              data?.data?.totalRevenue?.value
-                            )?.toLocaleString()}`
-                        : `₦${Number(
-                            invoices?.data?.generatedInvoices?.totalGenerated
-                          )?.toLocaleString()}`}
+                      {Number(data?.data?.usersCount?.value)}
                     </Text>
-                  </Box>
-                  <Flex
-                    colot="#000"
-                    fontSize="12px"
-                    p="10px"
-                    rounded="full"
-                    bg="#FFFFFF"
-                  >
-                    {tab === "Transactions"
-                      ? i === 0
-                        ? Number(
-                            data?.data?.processedTransactions?.percentageChange
-                          )?.toFixed(1)
-                        : Number(
-                            invoices?.data?.totalRevenue?.percentageChange
-                          )?.toFixed(1)
-                      : Number(
-                          invoices?.data?.generatedInvoices?.percentageChange
-                        )?.toFixed(1)}
-                    %
                   </Flex>
+                </Box>
+
+                <Flex
+                  colot="#000"
+                  fontSize="12px"
+                  p="10px"
+                  rounded="full"
+                  bg="#FFFFFF"
+                >
+                  {Number(data?.data?.usersCount?.percentageChange)}%
                 </Flex>
-              </Box>
+              </Flex>
             </Box>
-          </Skeleton>
-        ))}
+          </Box>
+        </Skeleton>
       </Flex>
 
-      {tab === "Transactions" && (
-        <TransactionTab data={data} isLoading={isLoading} />
-      )}
-      {tab === "Invoices" && <Invoices data={invoices} isLoading={isInvoice} />}
+      <Flex
+        align="flex-start"
+        gap="24px"
+        flexDir={{ base: "column", md: "row" }}
+      >
+        <Box w={{ base: "100%", md: "60%" }}>
+          <Skeleton isLoaded={!isLoading} borderRadius="8px">
+            <RetentionChart data={data?.data?.monthlyRetentionRate} />
+          </Skeleton>
+        </Box>
+        <Box w={{ base: "100%", md: "40%" }}>
+          <Skeleton isLoaded={!isLoading} borderRadius="8px">
+            <AdminvsUser dataa={data?.data?.adminVsOperators} />
+          </Skeleton>
+        </Box>
+      </Flex>
+
+      <Flex
+        mt="24px"
+        align="flex-start"
+        gap="24px"
+        flexDir={{ base: "column", md: "row" }}
+      >
+        <Box w={{ base: "100%", md: "60%" }}>
+          <Skeleton isLoaded={!isLoading} borderRadius="8px">
+            <ActiveInactive dataa={data?.data?.activeVsInactive} />
+          </Skeleton>
+        </Box>
+        <Box w={{ base: "100%", md: "40%" }}>
+          <Skeleton isLoaded={!isLoading} borderRadius="8px">
+            <OperatState dataa={data?.data?.locationDistribution} />
+          </Skeleton>
+        </Box>
+      </Flex>
     </Box>
   );
 };
 
-export default Transactions;
+export default Users;

@@ -128,6 +128,10 @@ export const analyticsRoutes = [
         name: "Points",
         path: "/analytics/metrics/points",
       },
+      {
+        name: "Users",
+        path: "/analytics/metrics/users",
+      },
     ],
   },
   {
