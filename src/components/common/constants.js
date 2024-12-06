@@ -128,10 +128,6 @@ export const analyticsRoutes = [
         name: "Points",
         path: "/analytics/metrics/points",
       },
-      {
-        name: "Users",
-        path: "/analytics/metrics/users",
-      },
     ],
   },
   {
@@ -2548,9 +2544,9 @@ export const customersReportOptions = [
 ];
 
 export const invoicesReportOptions = [
-  { label: "Client", value: "client" },
+  { label: "Client", value: "client.name" },
   { label: "Created By", value: "createdBy" },
-  { label: "Confirmed By", value: "confirmedBy" },
+  { label: "Confirmed By", value: "paymentConfirmedBy" },
   { label: "Created At", value: "createdAt" },
 ];
 
@@ -2570,10 +2566,10 @@ export const adminSubsReportOptions = [
 
 export const logsReportOptions = [
   { label: "Ticket Number", value: "ticketNumber" },
-  { label: "Customer", value: "customer" },
-  { label: "Vehicle", value: "vehicle" },
-  { label: "Service", value: "service" },
-  { label: "Location", value: "location" },
+  { label: "Customer", value: "vehicle.customerName" },
+  { label: "Vehicle", value: "vehicle.licensePlate" },
+  { label: "Service", value: "service.name" },
+  { label: "Location", value: "location.name" },
   { label: "Created At", value: "createdAt" },
 ];
 
