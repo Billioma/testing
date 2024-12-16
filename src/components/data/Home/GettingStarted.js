@@ -1,75 +1,118 @@
 import React from "react";
-import { started } from "../../common/constants";
+import { Box, Flex, Grid, Image, Text } from "@chakra-ui/react";
+import { getStarted } from "../../common/constants";
+import { motion } from "framer-motion";
 
 const GettingStarted = () => {
   return (
-    <div
+    <Flex
+      className="full_width"
+      color="#fff"
+      justifyContent="center"
+      bg="#131618"
+      px="20px"
       id="start"
-      className="pt-[80px] pb-[100px] md:pt-[120px] bg-[#131618] full_width"
+      pos="relative"
+      mt="-20px"
+      borderBottomRadius="24px"
     >
-      <div className="flex w-full flex-col justify-center items-center">
-        <div className="flex w-full flex-col justify-start lg:justify-center items-start lg:items-center">
-          <div className="flex justify-center items-center">
-            <div className="px-[20px] w-full lg:px-[unset] flex flex-col md:flex-row lg:justify-between gap-[60px] lg:gap-[160px] items-center">
-              <div className="text-center lg:text-start w-[100%]">
-                <span className="text-white text-center w-full leading-[120%] text-[20px]">
-                  Getting started with
-                </span>
-                <br />
-                <div className="my-[5px] text-white lg:my-[8px] font-[Cooper] text-[45px] lg:text-[64px] leading-[120%]">
-                  <span className="text-red">Parkin</span>Space
-                </div>
+      <Flex
+        flexDir={{ base: "column", xl: "row" }}
+        gap={{ base: "20px", xl: "unset" }}
+        w={{ base: "100%", lg: "1350px" }}
+        align={{ base: "center", xl: "flex-end" }}
+      >
+        <Box w={{ base: "100%", xl: "60%" }} py={{ base: "70px", xl: "100px" }}>
+          <Box
+            fontSize={{ base: "23px", xl: "38px" }}
+            lineHeight={{ base: "32px", xl: "50px" }}
+          >
+            <motion.div
+              initial={{ opacity: 0 }}
+              whileInView={{ x: [-50, 0], opacity: 1 }}
+              transition={{ duration: 1 }}
+            >
+              Get started with ParkinSpace
+            </motion.div>
+          </Box>
+          <Box
+            mt="8px"
+            fontSize={{ base: "16px", xl: "20px" }}
+            lineHeight={{ base: "24px", xl: "30px" }}
+            fontFamily="Satoshi"
+            textTransform="capitalize"
+          >
+            <motion.div
+              initial={{ opacity: 0 }}
+              whileInView={{ x: [50, 0], opacity: 1 }}
+              transition={{ duration: 1 }}
+            >
+              all your parking service needs, at your fingertips.
+            </motion.div>
+          </Box>
 
-                <div className="mt-[32px] justify-center lg:justify-start flex items-center font-medium text-sm">
-                  <a
-                    target="_blank"
-                    rel="noreferrer"
-                    href="https://app.parkinspace.ng/customer/auth/signup"
+          <Grid
+            mt={{ base: "60px", xl: "100px" }}
+            templateColumns={{ base: "repeat(2, 1fr)", xl: "repeat(2, 1fr)" }}
+            alignContent="center"
+            rowGap={{ base: "15px", xl: "55px" }}
+            columnGap={{ base: "15px", xl: "unset" }}
+          >
+            {getStarted.map((item, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0 }}
+                whileInView={{
+                  x: i % 2 === 0 ? [-50, 0] : [50, 0],
+                  opacity: 1,
+                }}
+                transition={{ duration: 1 }}
+              >
+                <Box
+                  key={i}
+                  bg="#fff"
+                  w={{ base: "", xl: "310px" }}
+                  h={{ base: "122px", xl: "192px" }}
+                  borderRadius="12px"
+                  color="#090C02"
+                  p={{ base: "16px", xl: "20px" }}
+                >
+                  <Text
+                    fontSize={{ base: "16px", xl: "28px" }}
+                    lineHeight={{ base: "28px", xl: "45px" }}
                   >
-                    <button className="bg-red rounded-[4px] px-[34px] py-[10px] text-white ">
-                      Sign Up
-                    </button>
-                  </a>
-                </div>
-              </div>
-
-              <div className="flex w-full lg:w-[120%] justify-end items-end">
-                <div className="w-[100%]">
-                  {started.map((data, i) => (
-                    <div
-                      key={data.id}
-                      className="mb-[40px] flex items-center gap-[20px] lg:gap-[40px]"
-                    >
-                      <div className="relative">
-                        <div className="text-white text-[20px] bg-[#EE383A] font-bold h-[30px] lg:h-[40px] w-[30px] lg:w-[40px] rounded-full flex flex-col justify-center items-center">
-                          {data.id}
-                        </div>
-                        {i !== 3 && (
-                          <img
-                            src="/assets/arrow.png"
-                            className="absolute top-[50px] right-[30%] z-[5]"
-                          />
-                        )}
-                      </div>
-
-                      <div className="w-[100%] bg-[#444648] text-white rounded-[8px] p-[24px]">
-                        <div className="flex items-center gap-[24px]">
-                          <img src={data?.img} className="w-[64px] h-[64px]" />
-
-                          <div className="text-sm lg:text-base leading-[150%]">
-                            {data?.text}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+                    0{i + 1}
+                  </Text>
+                  <Text
+                    mt="10px"
+                    fontSize={{ base: "15px", xl: "20px" }}
+                    lineHeight={{ base: "22px", xl: "30px" }}
+                  >
+                    {item}
+                  </Text>
+                </Box>
+              </motion.div>
+            ))}
+          </Grid>
+        </Box>
+        <Box pos="relative" w={{ base: "100%", xl: "45%" }}>
+          <motion.div
+            initial={{ opacity: 0 }}
+            whileInView={{ x: [50, 0], opacity: 1 }}
+            transition={{ duration: 1 }}
+          >
+            <Image
+              src="/assets/blur.png"
+              pos="absolute"
+              bottom="0"
+              w="full"
+              right="0"
+            />
+            <Image src="/assets/get.png" />
+          </motion.div>
+        </Box>
+      </Flex>
+    </Flex>
   );
 };
 

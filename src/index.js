@@ -5,6 +5,9 @@ import { QueryClient, QueryClientProvider } from "react-query";
 import { BrowserRouter } from "react-router-dom";
 import "./index.css";
 import { ChakraProvider } from "@chakra-ui/react";
+import "./styles/custom.css";
+import "./styles/satoshi.css";
+import { customTheme } from "./styles/theme";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 const queryClient = new QueryClient({
@@ -21,12 +24,12 @@ const queryClient = new QueryClient({
 
 root.render(
   <React.StrictMode>
-    <QueryClientProvider client={queryClient}>
-      <ChakraProvider>
+    <ChakraProvider theme={customTheme}>
+      <QueryClientProvider client={queryClient}>
         <BrowserRouter>
           <App />
         </BrowserRouter>
-      </ChakraProvider>
-    </QueryClientProvider>
+      </QueryClientProvider>
+    </ChakraProvider>
   </React.StrictMode>
 );

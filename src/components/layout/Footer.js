@@ -1,148 +1,204 @@
 import React from "react";
-import { companies, company, connect, information } from "../common/constants";
-import { useNavigate } from "react-router-dom";
-import { Link } from "react-scroll";
+import { Box, Flex, Grid, GridItem, Icon, Image, Text } from "@chakra-ui/react";
+import {
+  companies,
+  information,
+  locations,
+  socials,
+} from "../common/constants";
+import { scroller } from "react-scroll";
+import { Link as RouteLink } from "react-router-dom";
+import { motion } from "framer-motion";
 
 const Footer = () => {
-  const navigate = useNavigate();
-
   const today = new Date();
 
+  const scrollToSection = (sectionId, retryCount = 5) => {
+    const element = document.getElementById(sectionId);
+
+    if (element) {
+      scroller.scrollTo(sectionId, {
+        duration: 800,
+        delay: 0,
+        smooth: "easeInOutQuart",
+        offset: -100,
+      });
+    } else if (retryCount > 0) {
+      setTimeout(() => scrollToSection(sectionId, retryCount - 1), 500);
+    } else {
+      console.warn(`Element with ID ${sectionId} not found.`);
+    }
+  };
+
   return (
-    <div className="bg-[#242628] px-[20px] flex flex-col justify-center items-center w-full">
-      <div className="w-full lg:w-[1256px]">
-        <div className="text-white flex flex-col lg:flex-row items-start justify-between py-[56px] lg:py-[120px] lg:pb-[40px]">
-          <div className="flex flex-col gap-[16px] lg:gap-[24px] w-full lg:w-[40%]">
-            <div className="text-[28px] leading-[100%] lg:text-[36px] font-[Cooper]">
-              Download our free App
-            </div>
-
-            <div className="hidden lg:flex items-center gap-[24px] w-full">
-              <img src="/assets/play-store.png" className="cursor-pointer" />
-              <img src="/assets/app-store.png" className="cursor-pointer" />
-            </div>
-
-            <div className="flex lg:hidden items-center gap-[24px] w-full">
-              <img src="/assets/play-mini.png" className="cursor-pointer" />
-              <img src="/assets/app-mini.png" className="cursor-pointer" />
-            </div>
-          </div>
-
-          <div className="hidden lg:flex flex-col gap-[24px]">
-            <div className="font-medium">COMPANY</div>
-            <div>
-              {companies.map((dat, i) => (
-                <div className="mb-[21px] cursor-pointer" key={i}>
-                  <Link to={dat?.id} smooth={true} duration={500}>
-                    {dat?.name}
-                  </Link>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <div className="hidden lg:flex flex-col gap-[24px]">
-            <div className="font-medium">INFORMATION</div>
-            <div>
-              {information.map((dat, i) => (
-                <div
-                  className={`${
-                    i === 0 || i === 2 ? "cursor-pointer" : ""
-                  }  mb-[21px]`}
+    <Box fontFamily="Satoshi" py="70px">
+      <Grid
+        templateColumns={{ base: "repeat(2, 1fr)", lg: "repeat(6, 1fr)" }}
+        rowGap={{ base: "50px", lg: "unset" }}
+        columnGap={{ base: "30px", lg: "unset" }}
+      >
+        <GridItem colSpan={{ base: 2, lg: 3 }}>
+          <Box>
+            <motion.div
+              initial={{ opacity: 0 }}
+              whileInView={{ x: [-50, 0], opacity: 1 }}
+              transition={{ duration: 1 }}
+            >
+              <Image h="40px" src="/assets/logo.png" />
+            </motion.div>{" "}
+            <Box
+              my="12px"
+              fontSize={{ base: "14px", lg: "16px" }}
+              textTransform="capitalize"
+              lineHeight={{ base: "14px", lg: "16px" }}
+            >
+              <motion.div
+                initial={{ opacity: 0 }}
+                whileInView={{ x: [-50, 0], opacity: 1 }}
+                transition={{ duration: 1, delay: 0.3 }}
+              >
+                Parking solutions, everywhere, for everyone.
+              </motion.div>
+            </Box>
+            <Flex mt="20px" align="center" gap="24px">
+              {socials.map((item, i) => (
+                <motion.div
                   key={i}
+                  initial={{ opacity: 0 }}
+                  whileInView={{ x: [-50, 0], opacity: 1 }}
+                  transition={{ duration: 1, delay: i * 0.3 }}
                 >
-                  {i === 0 || i === 2 ? (
-                    <a target="_blank" rel="noreferrer" href={dat.link}>
-                      {dat.name}
-                    </a>
-                  ) : (
-                    <span>{dat.name}</span>
-                  )}
-                </div>
+                  <Icon key={i} as={item} w="18px" h="18px" color="red" />
+                </motion.div>
               ))}
-            </div>
-          </div>
+            </Flex>
+          </Box>
+        </GridItem>
 
-          <div className="hidden lg:flex flex-col gap-[24px]">
-            <div className="font-medium">LOCATIONS</div>
-            <div>
-              {company.map((dat, i) => (
-                <div className="mb-[21px]" key={i}>
-                  {dat}
-                </div>
-              ))}
-            </div>
-          </div>
+        <GridItem>
+          <Box
+            fontSize={{ base: "14px", lg: "16px" }}
+            lineHeight={{ base: "14px", lg: "16px" }}
+            fontWeight={700}
+          >
+            <motion.div
+              initial={{ opacity: 0 }}
+              whileInView={{ x: [-50, 0], opacity: 1 }}
+              transition={{ duration: 1 }}
+            >
+              COMPANY
+            </motion.div>
+          </Box>
 
-          <div className="hidden lg:flex flex-col gap-[24px]">
-            <div className="font-medium">CONNECT</div>
-            <div className="grid grid-cols-2 items-center gap-[24px]">
-              {connect.map((dat, i) => (
-                <div key={i}>
-                  <a href={dat?.link} target="_blank" rel="noreferrer">
-                    <div>{dat?.img}</div>
-                  </a>
-                </div>
-              ))}
-            </div>
-          </div>
+          <Flex flexDir="column" mt="24px" gap="21px">
+            {companies.map((item, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0 }}
+                whileInView={{ x: [50, 0], opacity: 1 }}
+                transition={{ duration: 1, delay: i * 0.3 }}
+              >
+                <Text
+                  key={i}
+                  cursor="pointer"
+                  onClick={() => scrollToSection(item?.id)}
+                  fontSize={{ base: "14px", lg: "16px" }}
+                  lineHeight={{ base: "14px", lg: "16px" }}
+                >
+                  {item?.name}
+                </Text>
+              </motion.div>
+            ))}
+          </Flex>
+        </GridItem>
 
-          <div className="flex lg:hidden mt-[56px] justify-between w-full items-start">
-            <div className="flex flex-col gap-[24px]">
-              <div className="font-medium">CONNECT</div>
-              <div className="flex items-center gap-[16px]">
-                {connect.map((dat, i) => (
-                  <div
-                    className="mb-[21px] flex justify-start items-center gap-[8px] "
-                    key={i}
+        <GridItem>
+          <Box
+            fontSize={{ base: "14px", lg: "16px" }}
+            lineHeight={{ base: "14px", lg: "16px" }}
+            fontWeight={700}
+          >
+            <motion.div
+              initial={{ opacity: 0 }}
+              whileInView={{ x: [-50, 0], opacity: 1 }}
+              transition={{ duration: 1 }}
+            >
+              INFORMATION
+            </motion.div>
+          </Box>
+
+          <Flex flexDir="column" mt="24px" gap="21px">
+            {information.map((item, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0 }}
+                whileInView={{ x: [50, 0], opacity: 1 }}
+                transition={{ duration: 1, delay: i * 0.3 }}
+              >
+                <RouteLink key={i} to={item?.link}>
+                  <Text
+                    fontSize={{ base: "14px", lg: "16px" }}
+                    lineHeight={{ base: "14px", lg: "16px" }}
                   >
-                    <img src={dat?.icon} className="w-[16px] h-[16px]" />
-                  </div>
-                ))}
-              </div>
-            </div>
+                    {item?.name}
+                  </Text>
+                </RouteLink>
+              </motion.div>
+            ))}
+          </Flex>
+        </GridItem>
 
-            <div className="flex lg:hidden flex-col gap-[24px]">
-              <div className="font-medium">INFORMATION</div>
-              <div>
-                {information.map((dat, i) => (
-                  <div
-                    onClick={() =>
-                      i === 0 || i === 2 ? navigate(dat?.link) : ""
-                    }
-                    className="cursor-pointer mb-[21px]"
+        <GridItem colSpan={{ base: 2, lg: 1 }}>
+          <Flex flexDir="column" align="center">
+            <Box
+              fontSize={{ base: "14px", lg: "16px" }}
+              lineHeight={{ base: "14px", lg: "16px" }}
+              fontWeight={700}
+            >
+              <motion.div
+                initial={{ opacity: 0 }}
+                whileInView={{ x: [-50, 0], opacity: 1 }}
+                transition={{ duration: 1 }}
+              >
+                LOCATIONS
+              </motion.div>
+            </Box>
+
+            <Flex flexDir="column" mt="24px" gap="21px">
+              {locations.map((item, i) => (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0 }}
+                  whileInView={{ x: [50, 0], opacity: 1 }}
+                  transition={{ duration: 1, delay: i * 0.3 }}
+                >
+                  <Text
                     key={i}
+                    fontSize={{ base: "14px", lg: "16px" }}
+                    lineHeight={{ base: "14px", lg: "16px" }}
                   >
-                    {dat?.name}
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
+                    {item}
+                  </Text>
+                </motion.div>
+              ))}
+            </Flex>
+          </Flex>
+        </GridItem>
+      </Grid>
 
-          <div className="flex lg:hidden mt-[40px] w-full flex-col justify-center items-center">
-            <div className="flex  flex-col justify-center items-center gap-[24px]">
-              <div className="font-medium">LOCATIONS</div>
-              <div className="flex items-center gap-[24px]">
-                {company.map((dat, i) => (
-                  <div className="mb-[21px]" key={i}>
-                    {dat}
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div className="flex flex-col justify-center items-center w-full">
-        <div className="flex justify-center items-center  border-t border-[#545658] w-[100%] lg:w-[50%] pt-[40px] pb-[64px]">
-          <div className="text-white text-sm leading-[100%]">
+      <Flex flexDir="column" align="center" w="full">
+        <Box my="40px" bg="#545658" h="1px" w={{ base: "80%", lg: "50%" }} />
+        <Box fontSize="14px" lineHeight="14px" coolor="#131618">
+          <motion.div
+            initial={{ opacity: 0 }}
+            whileInView={{ x: [-50, 0], opacity: 1 }}
+            transition={{ duration: 1 }}
+          >
             ©{today.getFullYear()} EZPark Limited. All rights reserved
-          </div>
-        </div>
-      </div>
-    </div>
+          </motion.div>
+        </Box>
+      </Flex>
+    </Box>
   );
 };
 

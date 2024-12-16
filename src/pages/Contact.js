@@ -1,16 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useSendMail } from "../services/query/mail";
 import useCustomToast from "../utils/notifications";
 import { Spinner } from "@chakra-ui/react";
 
-export const Layout = ({
-  label,
-  placeholder,
-  handleKeyPress,
-  value,
-  type,
-  onChange,
-}) => {
+export const Layout = ({ label, placeholder, value, type, onChange }) => {
   return (
     <div className="mb-[20px] w-full">
       <div className="text-[#757575] text-[10px] mb-[8px] font-medium">
@@ -27,7 +20,6 @@ export const Layout = ({
         <input
           type={type}
           value={value}
-          onKeyPress={handleKeyPress}
           onChange={onChange}
           placeholder={placeholder}
           className="w-full bg-[#E4E6E8] text-sm border border-[#D4D6D8] rounded-[4px] p-[14px] text-[#242628] placeholder:text-[#242628]"
@@ -60,23 +52,13 @@ const Contact = () => {
     message: "",
   });
 
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
-
   const handleSubmit = (e) => {
     e.preventDefault();
     mutate(values);
   };
 
-  const handleKeyPress = (e) => {
-    if (values?.phone?.length >= 11) {
-      e.preventDefault();
-    }
-  };
-
   return (
-    <div className="full_width" id="top">
+    <div className="full_width">
       <div className="relative bg-white px-[20px] lg:px-[120px] pt-[100px] pb-[56px] lg:pb-[60px] lg:pt-[130px]">
         <div className="text-center font-[Cooper] text-[#242628] text-[40px] lg:text-[56px] font-[900]">
           Contact us
@@ -110,7 +92,6 @@ const Contact = () => {
                 <Layout
                   type="number"
                   label="Phone Number"
-                  handleKeyPress={handleKeyPress}
                   placeholder="Enter your phone number"
                   value={values?.phone}
                   onChange={(e) =>

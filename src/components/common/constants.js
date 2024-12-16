@@ -2,12 +2,27 @@ import { FaRegComment } from "react-icons/fa";
 import { AiOutlineRetweet } from "react-icons/ai";
 import { MdOutlineFavoriteBorder } from "react-icons/md";
 import { GoUpload } from "react-icons/go";
-import { BsLinkedin } from "react-icons/bs";
 import {
   RiInstagramFill,
   RiFacebookFill,
+  RiLinkedinBoxFill,
   RiTwitterXLine,
 } from "react-icons/ri";
+
+export const phones = [
+  {
+    title: "Android",
+    version: "10.0+",
+    icon: "/assets/android.png",
+    img: "/assets/google-play.png",
+  },
+  {
+    title: "iOS",
+    version: "15.2+",
+    icon: "/assets/ios.png",
+    img: "/assets/appstore.png",
+  },
+];
 
 export const BusinessIcon = ({ fill }) => {
   return (
@@ -149,28 +164,30 @@ export const headers = [
   },
 ];
 
+export const getStarted = [
+  "Download app or visit our website",
+  "Sign Up for a free account",
+  "Enter your vehicle details",
+  "Start parking",
+];
+
 export const plus = [
   {
     id: 1,
-    title: "Benefits",
+    title: "Standard",
+    subs: ["Access all ParkinSpace Services", "Fund & Pay with Wallet"],
+  },
+  {
+    id: 2,
+    title: "Plus",
     subs: [
-      "Free Account Sign Up",
-      "Access all ParkinSpace Services",
-      "Fund & Pay with Wallet",
       "Discounted Parking Fees",
       "Priority Access to reserved parking spaces",
       "Reward Points redeemable at select vendors",
       "Exclusive Deals on vehicle maintenance services",
       "Expedited Entry to major events",
+      "Free Account Sign Up",
     ],
-  },
-  {
-    id: 2,
-    title: "",
-  },
-  {
-    id: 3,
-    title: "",
   },
 ];
 
@@ -202,7 +219,7 @@ export const services = [
   {
     id: 4,
     title: "Car Services",
-    desc: "Access vehicle maintenance services with ease",
+    desc: "From car washes to maintenance bookings, everything is just a tap away",
     pic: "/assets/car-service.png",
     button: "Book a Car Service",
     path: "https://app.parkinspace.ng//customer/auth/login/redirect_car-service",
@@ -253,7 +270,8 @@ export const mobileTwitterActions = [
   <GoUpload size="10px" />,
 ];
 
-export const company = ["Lagos", "Abuja"];
+export const locations = ["Lagos", "Abuja"];
+
 export const companies = [
   {
     name: "About ParkinSpace",
@@ -271,47 +289,14 @@ export const companies = [
     name: "Getting Started",
     id: "start",
   },
-  {
-    name: "How it Works",
-    id: "how",
-  },
-];
-
-export const connect = [
-  {
-    id: 1,
-    name: "Facebook",
-    link: "https://web.facebook.com/EZParkLimited/?_rdc=1&_rdr",
-    icon: "/assets/facebook_icon.png",
-    img: <RiFacebookFill color="white" size={20} />,
-  },
-  {
-    id: 2,
-    name: "Twitter",
-    link: "https://twitter.com/ParkinspaceNG",
-    icon: "/assets/twitter_icon.png",
-    img: <RiTwitterXLine color="white" size={20} />,
-  },
-  {
-    id: 3,
-    name: "Instagram",
-    link: "https://instagram.com/parkinspace.africa",
-    icon: "/assets/instagram_icon.png",
-    img: <RiInstagramFill color="white" size={20} />,
-  },
-  {
-    id: 4,
-    name: "LinkedIn",
-    link: "https://www.linkedin.com/company/ezpark-limited/",
-    icon: "/assets/linkedin_icon.png",
-    img: <BsLinkedin color="white" size={20} />,
-  },
+  // {
+  //   name: "How it Works",
+  //   id: "how",
+  // },
 ];
 
 export const information = [
   { name: "Contact Us", link: "/contact-us" },
-  { name: "Terms & Conditions", link: "" },
-  { name: "Privacy & Policy", link: "/privacy-policy" },
   { name: "Terms & Conditions", link: "" },
   { name: "Frequently Asked Questions", link: "" },
   { name: "Careers", link: "" },
@@ -325,29 +310,6 @@ export const operatorMenu = [
   "Contact",
 ];
 
-export const started = [
-  {
-    id: 1,
-    img: "/assets/download.png",
-    text: "Download app or visit our website",
-  },
-  {
-    id: 2,
-    img: "/assets/sign.png",
-    text: "Sign Up for a free account",
-  },
-  {
-    id: 3,
-    img: "/assets/car.png",
-    text: "Enter your Vehicle details",
-  },
-  {
-    id: 4,
-    img: "/assets/wallet.png",
-    text: "Start parking",
-  },
-];
-
 export const benefits = [
   { id: 1, name: "Grow Revenue", img: "/assets/ben1.png" },
   { id: 2, name: "Decrease Costs", img: "/assets/ben2.png" },
@@ -357,94 +319,28 @@ export const benefits = [
   { id: 6, name: "Enhance Customer Experience", img: "/assets/ben6.png" },
 ];
 
-export const payPark = [
+export const reviews = [
   {
-    id: 1,
-    pic: "/assets/scan.png",
-    text: "Scan the QR code or enter the zone number",
+    name: "John Doe",
+    body: "Our professional valet services add a touch of luxury and convenience to any event or establishment. Experienced attendants ensure your guests' vehicles are parked securely and efficiently, providing a seamless experience from arrival to departure. ",
   },
   {
-    id: 2,
-    pic: "/assets/time.png",
-    text: "Select time",
+    name: "Jane Doe",
+    body: "Our professional valet services add a touch of luxury and convenience to any event or establishment. Experienced attendants ensure your guests' vehicles are parked securely and efficiently, providing a seamless experience from arrival to departure. ",
   },
   {
-    id: 3,
-    pic: "/assets/wallet.png",
-    text: "Confirm payment",
+    name: "His Doe",
+    body: "Our professional valet services add a touch of luxury and convenience to any event or establishment. Experienced attendants ensure your guests' vehicles are parked securely and efficiently, providing a seamless experience from arrival to departure. ",
   },
   {
-    id: 4,
-    pic: "/assets/alerts.png",
-    text: "Get alerts on your parking status",
+    name: "Her Doe",
+    body: "Our professional valet services add a touch of luxury and convenience to any event or establishment. Experienced attendants ensure your guests' vehicles are parked securely and efficiently, providing a seamless experience from arrival to departure. ",
   },
 ];
 
-export const reservePark = [
-  {
-    id: 1,
-    pic: "/assets/search.png",
-    text: "Search parking options at your planned destination",
-  },
-  {
-    id: 2,
-    pic: "/assets/bus.png",
-    text: "Choose parking facility of your preference",
-  },
-  {
-    id: 3,
-    pic: "/assets/spot.png",
-    text: "Book and pay to reserve your parking spot",
-  },
-  {
-    id: 4,
-    pic: "/assets/instruction.png",
-    text: "Receive confirmation of your reservation",
-  },
-];
-
-export const carService = [
-  {
-    id: 1,
-    pic: "/assets/bus.png",
-    text: "Select Car Services",
-  },
-  {
-    id: 2,
-    pic: "/assets/message.png",
-    text: "Choose a car service",
-  },
-  {
-    id: 3,
-    pic: "/assets/wallet.png",
-    text: "Book and pay for car service",
-  },
-  {
-    id: 4,
-    pic: "/assets/notification.png",
-    text: "Receive confirmation",
-  },
-];
-
-export const eventPark = [
-  {
-    id: 1,
-    pic: "/assets/search.png",
-    text: "Browse or Search for Event",
-  },
-  {
-    id: 2,
-    pic: "/assets/message.png",
-    text: "Choose from available parking options",
-  },
-  {
-    id: 3,
-    pic: "/assets/arrive.png",
-    text: "Confirm selection and make payment",
-  },
-  {
-    id: 4,
-    pic: "/assets/instruction.png",
-    text: "Receive e-mail confirmation",
-  },
+export const socials = [
+  RiFacebookFill,
+  RiTwitterXLine,
+  RiInstagramFill,
+  RiLinkedinBoxFill,
 ];

@@ -10,19 +10,18 @@ const Header = () => {
   return (
     <div
       style={{ boxShadow: "0px 2px 24px 0px rgba(100, 102, 104, 0.15)" }}
-      className="w-full flex justify-center items-center font-medium fixed top-0 bg-[#fff] z-10"
+      className="w-full font-[Satoshi] flex justify-center items-center font-medium fixed top-0 bg-[#fff] z-10"
     >
-      <div className="w-[1326px] px-[20px] py-[24px] lg:py-[16px]">
+      <div className="w-[1350px] px-[20px] lg:px-0 py-[24px] lg:py-[16px]">
         <div className="flex items-center w-full justify-between">
-          <div className="w-[100%] lg:w-[55%]">
+          <div className="w-[100%] lg:w-[40%]">
             <img
               src="/assets/logo.png"
               className="flex lg:hidden w-[134px] h-[28px]"
-              onClick={() => navigate("/")}
             />
             <img
               src="/assets/logo.png"
-              className="hidden lg:flex w-[268px] h-[56px] cursor-pointer"
+              className="hidden lg:flex h-[40px] object-contain cursor-pointer"
               onClick={() => navigate("/")}
             />
           </div>
@@ -49,7 +48,7 @@ const Header = () => {
             </div>
           </div>
 
-          <div className="mt-[15px] sm:hidden lg:flex gap-[24px] items-center w-[30%]">
+          <div className="font-[Sailec] mt-[15px] sm:hidden lg:flex gap-[24px] items-center w-[30%]">
             <div onClick={() => navigate("/redirect=")}>
               <button className="text-[#EE383A] bg-transparent">Login</button>
             </div>
@@ -59,7 +58,7 @@ const Header = () => {
               rel="noreferrer"
               href="https://app.parkinspace.ng/customer/auth/signup"
             >
-              <button className="text-white bg-red rounded-[4px] w-[156px] py-[12px]">
+              <button className="text-white bg-red rounded-[4px] w-[140px] h-[40px]">
                 Sign Up
               </button>
             </a>

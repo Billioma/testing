@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Link } from "react-scroll";
+F;
 
 const PrivacyPolicy = () => {
   useEffect(() => {
@@ -96,6 +96,7 @@ const PrivacyPolicy = () => {
             href="https://parkinspace.ng"
             target="_blank"
             className="text-[blue]"
+            rel="noreferrer"
           >
             parkinspace.ng
           </a>
@@ -428,6 +429,7 @@ const PrivacyPolicy = () => {
             className="text-[blue]"
             href="https://nitda.gov.ng/nit/)"
             target="_blank"
+            rel="noreferrer"
             //
           >
             NITDA
@@ -471,6 +473,7 @@ const PrivacyPolicy = () => {
             href="https://parkinspace.ng/contact-us"
             target="_blank"
             className="text-[blue]"
+            rel="noreferrer"
           >
             https://parkinspace.ng/contact-us
           </a>
