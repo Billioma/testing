@@ -74,22 +74,11 @@ export const customTheme = extendTheme({
         primary: {
           field: {
             bgColor: "#fff",
+            fontFamily: "Satoshi",
             borderRadius: "4px",
             color: "#000",
             _placeholder: {
               color: "gray",
-            },
-          },
-        },
-        alternate: {
-          field: {
-            bgColor: "#F2F2F2",
-            border: "1px solid #E0E0E0",
-            borderRadius: "5px",
-            color: "#000",
-            _placeholder: {
-              color: "#333333",
-              fontSize: "13px",
             },
           },
         },

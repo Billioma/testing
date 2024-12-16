@@ -1,37 +1,85 @@
+import { Box, Button, Flex, Image, Input, Text } from "@chakra-ui/react";
 import React from "react";
 
 const Hero = () => {
   return (
-    <div className="relative h-screen full_width">
-      <img
-        className="absolute w-full z-[-1] h-screen object-cover"
+    <Box pos="relative" h="100vh" className="full_width">
+      <Image
+        pos="absolute"
+        zIndex={1}
+        h="100vh"
+        objectFit="cover"
+        w="full"
         src="/assets/heroo.png"
       />
 
-      <div className="z-[100] flex flex-col justify-center h-[80vh] md:h-screen items-center">
-        <div className="flex justify-center items-center w-full">
-          <div className="text-white text-center text-[32px] md:text-[64px] font-[900] leading-[128%] md:w-[70%] font-[Cooper]">
+      <Flex
+        flexDir="column"
+        justifyContent="center"
+        align="center"
+        pos="relative"
+        h={{ base: "80vh", md: "100vh" }}
+        zIndex={100}
+      >
+        <Flex justifyContent="center" align="center" w="full">
+          <Text
+            color="#fff"
+            textAlign="center"
+            fontSize={{ base: "32px", md: "64px" }}
+            fontWeight={900}
+            lineHeight="128%"
+            w={{ base: "", md: "70%" }}
+            fontFamily="Cooper"
+          >
             ParkinSpace operator provides solutions for parking providers
-          </div>
-        </div>
-        <div className="mt-[24px] text-[18px] text-center md:w-[50%] leading-[150%] text-white flex justify-center items-center">
+          </Text>
+        </Flex>
+        <Flex
+          justifyContent="center"
+          align="center"
+          mt="24px"
+          fontSize="18px"
+          fontFamily="Satoshi"
+          textAlign="center"
+          w={{ base: "", md: "50%" }}
+          lineHeight="150%"
+          color="#fff"
+        >
           ParkinSpace Operator our easy-to-use, web-based technology solution
           for parking providers that fosters simplifies the management of
           dailyparking operations
-        </div>
+        </Flex>
 
-        <div className="flex mt-[40px] items-center gap-[12px]">
-          <input
-            className="bg-transparent border border-white text-sm placeholder:text-white text-white px-[16px] font-medium w-[100%] md:w-[230px] lg:w-[280px] py-[12px] lg:py-[15px]"
+        <Flex mt="40px" align="center" gap="12px">
+          <Input
+            bg="transparent"
+            border="1px solid white"
+            fontSize="12px"
+            _placeholder={{ color: "#fff" }}
+            color="#fff"
+            px="16px"
+            fontWeight={500}
+            w={{ base: "100%", md: "230px", lg: "280px" }}
+            py={{ base: "12px", md: "150x" }}
             placeholder="enter your email address"
           />
 
-          <button className="bg-white border border-white text-sm text-black px-[16px] font-medium w-full md:w-[50%] py-[12px] lg:py-[15px]">
+          <Button
+            bg="#fff"
+            border="1px solid #fff"
+            fontSize="12px"
+            color="#000"
+            px="16px"
+            fontWeight={500}
+            borderRadius="4px"
+            w={{ base: "100%", md: "50%" }}
+            py={{ base: "12px", md: "15px" }}
+          >
             Get download link
-          </button>
-        </div>
-      </div>
-    </div>
+          </Button>
+        </Flex>
+      </Flex>
+    </Box>
   );
 };
 
