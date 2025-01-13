@@ -18,3 +18,24 @@
 *::-webkit-scrollbar-thumb {
   background-color: transparent;
 }
+
+.toast {
+  animation: toast-line 5s ease infinite;
+  background: var(--toast-background);
+  height: 3px;
+  width: 0%;
+}
+
+@keyframes toast-line {
+  0% {
+    width: 0%;
+  }
+
+  50% {
+    width: 100%;
+  }
+
+  100% {
+    width: 0%;
+  }
+}

@@ -8,7 +8,6 @@ const Hero = () => {
     <Flex
       justifyContent="center"
       bg="red"
-      mt={{ base: "80px", lg: "0px" }}
       px="20px"
       color="#fff"
       borderBottomRadius="24px"
@@ -28,7 +27,7 @@ const Hero = () => {
       <Flex
         flexDir="column"
         align="center"
-        pt={{ base: "50px", lg: "220px" }}
+        pt={{ base: "50px", lg: "130px" }}
         w={{ base: "100%", lg: "1350px" }}
       >
         <Box

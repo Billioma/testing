@@ -3,7 +3,7 @@ import { Box, Button, Flex, Image, Text } from "@chakra-ui/react";
 import { FaStar } from "react-icons/fa";
 import { motion } from "framer-motion";
 
-const MobileApp = () => {
+const MobileApp = ({ dash }) => {
   return (
     <Flex
       className="full_width"
@@ -12,7 +12,7 @@ const MobileApp = () => {
       bg="red"
       px="20px"
       mt="-20px"
-      borderBottomRadius="24px"
+      borderBottomRadius={dash ? "24px" : "0"}
     >
       <Flex
         w={{ base: "100%", lg: "1350px" }}

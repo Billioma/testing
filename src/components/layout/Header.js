@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 const Header = () => {
   const navigate = useNavigate();
   const [show, setShow] = React.useState(false);
+
   return (
     <div
       style={{ boxShadow: "0px 2px 24px 0px rgba(100, 102, 104, 0.15)" }}
@@ -14,37 +15,39 @@ const Header = () => {
     >
       <div className="w-[1350px] px-[20px] lg:px-0 py-[24px] lg:py-[16px]">
         <div className="flex items-center w-full justify-between">
-          <div className="w-[100%] lg:w-[40%]">
-            <img
-              src="/assets/logo.png"
-              className="flex lg:hidden w-[134px] h-[28px]"
-            />
-            <img
-              src="/assets/logo.png"
-              className="hidden lg:flex h-[40px] object-contain cursor-pointer"
-              onClick={() => navigate("/")}
-            />
-          </div>
+          <div className="flex items-center w-full gap-8">
+            <div className="w-[100%] lg:w-[20%]">
+              <img
+                src="/assets/logo.png"
+                className="flex lg:hidden w-[134px] h-[28px]"
+              />
+              <img
+                src="/assets/logo.png"
+                className="hidden lg:flex h-[40px] object-contain cursor-pointer"
+                onClick={() => navigate("/")}
+              />
+            </div>
 
-          <div
-            onClick={() => setShow((prev) => !prev)}
-            className="w-full flex justify-end lg:hidden"
-          >
-            <HiOutlineMenuAlt3 size="24px" />
-          </div>
+            <div
+              onClick={() => setShow((prev) => !prev)}
+              className="w-full flex justify-end lg:hidden"
+            >
+              <HiOutlineMenuAlt3 size="24px" />
+            </div>
 
-          <div className="w-[100%] sm:hidden lg:flex mt-[15px] text-sm">
-            <div className=" flex w-full items-center gap-[32px] text-[#444648]">
-              {headers.map((data, i) => (
-                <div
-                  key={i}
-                  className="dropdown hover-underline-animation cursor-pointer"
-                >
-                  <a href={data?.path} target="_blank" rel="noreferrer">
-                    {data?.name}
-                  </a>
-                </div>
-              ))}
+            <div className="w-[100%] sm:hidden lg:flex mt-[8px] text-sm">
+              <div className="flex w-full items-center gap-[32px] text-[#444648]">
+                {headers.map((data, i) => (
+                  <div
+                    key={i}
+                    className="dropdown hover-underline-animation cursor-pointer"
+                  >
+                    <a href={data?.path} target="_blank" rel="noreferrer">
+                      {data?.name}
+                    </a>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
 

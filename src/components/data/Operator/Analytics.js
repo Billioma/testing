@@ -1,49 +1,100 @@
 import React from "react";
+import { Box, Button, Flex, Image } from "@chakra-ui/react";
+import { motion } from "framer-motion";
+
 const Analytics = () => {
   return (
-    <div className="full_width">
-      <div className="flex w-full bg-[#fff] flex-col items-center justify-center px-[20px] lg:px-[120px] py-[56px] lg:py-[120px]">
-        <div className="flex flex-col md:flex-row w-full lg:w-[1326px] justify-between gap-[40px] items-center">
-          <div className="bg-[#444648] flex flex-col items-center justify-center w-full text-white rounded-[4px] p-[32px]">
-            <img src="/assets/anal1.png" />
+    <Box
+      mt={{ base: "50px", md: "100px" }}
+      bg="#090C02"
+      borderRadius="24px"
+      p={{ base: "24px", md: "50px" }}
+      color="#fff"
+    >
+      <Flex
+        align="center"
+        flexDir={{ base: "column", md: "row" }}
+        gap={{ base: "32px", md: "" }}
+      >
+        <Flex
+          flexDir="column"
+          align={{ base: "center", md: "flex-start" }}
+          w={{ base: "", md: "60%" }}
+        >
+          <Box
+            fontSize={{ base: "24px", md: "48px" }}
+            lineHeight={{ base: "33px", md: "58px" }}
+            fontFamily="Recoleta"
+            textTransform="capitalize"
+          >
+            <motion.div
+              initial={{ opacity: 0 }}
+              whileInView={{ x: [-50, 0], opacity: 1 }}
+              transition={{ duration: 1 }}
+            >
+              Tailored Solutions for{" "}
+              <span style={{ color: "#EE383A" }}>Every Parking</span> Operation
+            </motion.div>
+          </Box>
 
-            <div className="mt-[32px] mb-[24px] font-[Cooper] text-[32px] font-[900]">
-              Analytics for you
-            </div>
-            <div className="lg:text-[20px] leading-[180%] lg:leading-[150%]">
-              Stay informed on your business with the different tools and
-              functionalities including Analytics, Reporting, Rates & Policy
-              Management, Payments and Administration.
-            </div>
+          <Box
+            mt={{ base: "8px", md: "28px" }}
+            fontFamily="Satoshi"
+            w={{ base: "", md: "90%" }}
+            fontSize={{ base: "14px", md: "20px" }}
+            lineHeight={{ base: "21px", md: "30px" }}
+          >
+            <motion.div
+              initial={{ opacity: 0 }}
+              whileInView={{ x: [50, 0], opacity: 1 }}
+              transition={{ duration: 1 }}
+            >
+              The set up is easy and flexible to suit your parking operations.
+              We cater to Municipalities, Transit & Airports, Private Operators,
+              Event Venues & Organizers, Malls & Shopping Centers, Hospitality
+              Venues and more.
+            </motion.div>
+          </Box>
 
-            <div className="mt-[32px] w-[70%] md:w-[50%]">
-              <button className="w-full py-[17px] text-black text-sm bg-white">
-                Sign Up
-              </button>
-            </div>
-          </div>
-
-          <div className="bg-[#F4F6F8] flex flex-col items-center justify-center w-full rounded-[4px] p-[32px]">
-            <img src="/assets/anal2.png" />
-
-            <div className="mt-[32px] text-[#242424] mb-[24px] font-[Cooper] text-[32px] font-[900]">
-              Simple but flexible
-            </div>
-            <div className="lg:text-[20px] leading-[180%] lg:leading-[150%] text-[#101410] ">
-              Stay informed on your business with the different tools and
-              functionalities including Analytics, Reporting, Rates & Policy
-              Management, Payments and Administration.
-            </div>
-
-            <div className="mt-[32px] w-[70%] md:w-[50%]">
-              <button className="w-full py-[17px] text-white text-sm bg-[#242424]">
-                Request a Demo
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+          <motion.div
+            initial={{ opacity: 0 }}
+            whileInView={{ x: [-50, 0], opacity: 1 }}
+            transition={{ duration: 1 }}
+          >
+            <Button
+              bg="#fff"
+              mt={{ base: "24px", md: "40px" }}
+              fontSize="16px"
+              fontWeight={400}
+              color="#000"
+              h={{ base: "44px", md: "60px" }}
+              borderRadius={{ base: "4px", md: "12px" }}
+              w={{ base: "154px", md: "245px" }}
+            >
+              Request a Demo
+            </Button>
+          </motion.div>
+        </Flex>
+        <Flex
+          flexDir="column"
+          w={{ base: "", md: "40%" }}
+          align={{ base: "center", md: "flex-start" }}
+        >
+          <motion.div
+            initial={{ opacity: 0 }}
+            whileInView={{ x: [50, 0], opacity: 1 }}
+            transition={{ duration: 1 }}
+          >
+            <Image
+              src="/assets/demo.png"
+              borderRadius="12px"
+              h={{ base: "192px", md: "384px" }}
+              w={{ base: "248px", md: "494px" }}
+            />
+          </motion.div>
+        </Flex>
+      </Flex>
+    </Box>
   );
 };
 

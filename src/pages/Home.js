@@ -19,7 +19,7 @@ const Home = () => {
       <Plus />
       <GettingStarted />
       <Testimonials />
-      <MobileApp />
+      <MobileApp dash />
     </Box>
   );
 };

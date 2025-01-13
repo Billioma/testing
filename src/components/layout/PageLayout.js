@@ -6,7 +6,7 @@ import OperatorHeader from "./OperatorHeader";
 import { Box, Flex } from "@chakra-ui/react";
 
 const PageLayout = ({ children }) => {
-  const location = useLocation();
+  const { pathname } = useLocation();
 
   return (
     <Flex
@@ -17,12 +17,16 @@ const PageLayout = ({ children }) => {
       flexDir="column"
       minH="100vh"
     >
-      {location.pathname === "/operators" ? <OperatorHeader /> : <Header />}
+      {pathname === "/operators" ? <OperatorHeader /> : <Header />}
       <Flex justifyContent="center" align="center">
-        <Box w={{ base: "full", lg: "1390px" }} px="20px">
+        <Box
+          mt={{ base: "80px", lg: "90px" }}
+          w={{ base: "full", lg: "1390px" }}
+          px="20px"
+        >
           {children}
 
-          {location.pathname !== "/redirect=" ? <Footer /> : ""}
+          {pathname !== "/redirect=" ? <Footer /> : ""}
         </Box>
       </Flex>
     </Flex>

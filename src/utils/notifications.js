@@ -23,7 +23,7 @@ const BaseAlert = (props) => {
           fontFamily="Sailec"
           fontSize="16px"
           lineHeight="100%"
-          color={`${style.colorScheme}.700`}
+          color={`${style.color}.700`}
           fontWeight="500"
         >
           {props.title}
@@ -47,17 +47,17 @@ const BaseAlert = (props) => {
 };
 
 export const SuccessAlert = (props) => {
-  return <BaseAlert backgroundColor="green" colorScheme="green" {...props} />;
+  return <BaseAlert backgroundColor="green" color="green" {...props} />;
 };
 
 export const ErrorAlert = (props) => {
-  return <BaseAlert backgroundColor="orange" colorScheme="orange" {...props} />;
+  return <BaseAlert backgroundColor="orange" color="orange" {...props} />;
 };
 export const WarningAlert = (props) => {
-  return <BaseAlert backgroundColor="orange" colorScheme="orange" {...props} />;
+  return <BaseAlert backgroundColor="orange" color="orange" {...props} />;
 };
 export const InfoAlert = (props) => {
-  return <BaseAlert backgroundColor="blue" colorScheme="blue" {...props} />;
+  return <BaseAlert backgroundColor="blue" color="blue" {...props} />;
 };
 
 const useCustomToast = () => {

@@ -30,7 +30,9 @@ const Menu = ({ isOpen, onClose }) => {
               key={i}
               className="hover-underline-animation cursor-pointer"
             >
-              {data?.name}
+              <a href={data?.path} target="_blank" rel="noreferrer">
+                {data?.name}
+              </a>
             </div>
           ))}
           <button

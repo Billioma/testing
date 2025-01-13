@@ -297,8 +297,8 @@ export const companies = [
 
 export const information = [
   { name: "Contact Us", link: "/contact-us" },
-  { name: "Terms & Conditions", link: "" },
-  { name: "Frequently Asked Questions", link: "" },
+  { name: "Terms & Conditions", link: "/terms-condition" },
+  { name: "Frequently Asked Questions", link: "/faq" },
   { name: "Careers", link: "" },
 ];
 
@@ -311,12 +311,42 @@ export const operatorMenu = [
 ];
 
 export const benefits = [
-  { id: 1, name: "Grow Revenue", img: "/assets/ben1.png" },
-  { id: 2, name: "Decrease Costs", img: "/assets/ben2.png" },
-  { id: 3, name: "Attract More Customers", img: "/assets/ben3.png" },
-  { id: 4, name: "Improve Operational Efficiency", img: "/assets/ben4.png" },
-  { id: 5, name: "Solve Multiple Parking Needs", img: "/assets/ben5.png" },
-  { id: 6, name: "Enhance Customer Experience", img: "/assets/ben6.png" },
+  {
+    id: 1,
+    name: "Grow Revenue",
+    body: "Unlock new revenue streams and maximize profitability through optimized parking space utilization and dynamic pricing strategies tailored to your business needs.",
+    img: "/assets/ben1.png",
+  },
+  {
+    id: 2,
+    name: "Decrease Costs",
+    img: "/assets/ben2.png",
+    body: "Streamline operations and reduce overhead expenses by leveraging our cost-saving tools, from automated payment systems to efficient resource management",
+  },
+  {
+    id: 3,
+    name: "Attract More Customers",
+    img: "/assets/ben3.png",
+    body: "Draw in more visitors with convenient parking solutions, real-time availability updates, and seamless user experiences that encourage repeat customers.",
+  },
+  {
+    id: 4,
+    name: "Improve Operational Efficiency",
+    img: "/assets/ben4.png",
+    body: "Enhance day-to-day operations by automating routine tasks, enabling better coordination, and providing actionable insights through advanced reporting tools.",
+  },
+  {
+    id: 5,
+    name: "Solve Multiple Parking Needs",
+    img: "/assets/ben5.png",
+    body: "Meet diverse parking requirements, whether for daily commuters, event guests, or reserved spaces, with flexible and customizable solutions.",
+  },
+  {
+    id: 6,
+    name: "Enhance Customer Experience",
+    img: "/assets/ben6.png",
+    body: "Deliver a superior customer journey with intuitive navigation, fast payment options, and proactive support that leaves a lasting impression.",
+  },
 ];
 
 export const reviews = [
@@ -343,4 +373,55 @@ export const socials = [
   RiTwitterXLine,
   RiInstagramFill,
   RiLinkedinBoxFill,
+];
+
+export const terms = [
+  {
+    title: "Agreement Acceptance ",
+    body: "By utilizing the parking and valet management services provided by EZPark, you agree to be bound by these terms and conditions. Please read them carefully before using our services.",
+  },
+  {
+    title: "Service Description",
+    body: "EZPark offers professional parking and valet management services for various establishments and events. Our services may include parking facility management, valet parking, traffic control, and related services, as agreed upon with the client.",
+  },
+  {
+    title: "Parking Rules and Regulations ",
+    body: "All users of our parking facilities must comply with the posted rules and regulations. Vehicles parked in our facilities are subject to our guidelines, including parking time limits, designated areas, and any other specific rules communicated on-site.",
+  },
+  {
+    title: "Vehicle Damage and Liability ",
+    body: "While we take utmost care in managing vehicles, EZPark and its employees shall not be held liable for any damage, loss, theft, or vandalism that may occur to vehicles parked or driven by our staff. Vehicle owners are advised to remove valuable items and lock their vehicles.",
+  },
+  {
+    title: "Indemnification ",
+    body: "Users of our services agree to indemnify and hold EZPark, its employees, and agents harmless from any claims, liabilities, damages, losses, or expenses arising out of or related to the use of our parking and valet management services.",
+  },
+  {
+    title: "Fees and Payments ",
+    body: "Fees for our services will be communicated and agreed upon with the client. Payment terms and methods will also be specified in the agreement between EZPark and the client. Failure to make timely payments may result in additional charges and potential suspension of services.",
+  },
+  {
+    title: "Termination of Services",
+    body: "Either party may terminate the agreement for parking and valet management services by providing written notice within the agreed-upon timeframe or as specified in the contract. Termination does not relieve the client from any outstanding financial obligations.",
+  },
+  {
+    title: "Modifications and Amendments ",
+    body: "EZPark reserves the right to modify, amend, or update these terms and conditions at any time. Clients will be notified of any changes, and their continued use of our services will indicate acceptance of the updated terms and conditions.",
+  },
+  {
+    title: "Governing Law and Jurisdiction ",
+    body: "These terms and conditions are governed by the laws of Nigeria. Any disputes or claims arising from the use of our services will fall under the exclusive jurisdiction of Nigerian courts.",
+  },
+  {
+    title: "Severability ",
+    body: "If any provision of these terms and conditions is deemed invalid or unenforceable, it shall not affect the validity and enforceability of the remaining provisions.",
+  },
+];
+
+export const faqs = [
+  { img: "", question: "", answer: "" },
+  { img: "", question: "", answer: "" },
+  { img: "", question: "", answer: "" },
+  { img: "", question: "", answer: "" },
+  { img: "", question: "", answer: "" },
 ];
