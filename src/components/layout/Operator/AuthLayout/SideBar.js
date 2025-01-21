@@ -252,8 +252,9 @@ const SideBar = ({ show, setShow }) => {
                       pb="2"
                       gap={0}
                     >
-                      {item.sub.map((subItem) => (
+                      {item.sub.map((subItem, index) => (
                         <Flex
+                          key={index}
                           align="center"
                           mt="15px"
                           style={{

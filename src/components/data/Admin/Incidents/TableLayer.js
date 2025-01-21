@@ -55,9 +55,10 @@ const TableLayer = ({
           alignFirstHeader
           alignSecondHeader
           header={[
-            "INCIDENT ID",
             "ZONE",
             "SERVICE TYPE",
+            "CUSTOMER",
+            "LICENSE PLATE",
             "STATUS",
             "DATE SUBMITTED",
             "ACTIONS",
@@ -84,10 +85,17 @@ const TableLayer = ({
               fontSize="14px"
               lineHeight="100%"
             >
-              <Td>{item?.id}</Td>
               <Td>{item?.serviceLog?.zone?.name}</Td>
 
               <Td textAlign="center">{item?.serviceLog?.service?.name}</Td>
+              <Td textAlign="center" textTransform="capitalize">
+                {item?.serviceLog?.customer
+                  ? `${item?.serviceLog?.customer?.profile?.firstName} ${item?.serviceLog?.customer?.profile?.lastName}`
+                  : item?.serviceLog?.vehicle?.customerName}
+              </Td>
+              <Td textAlign="center">
+                {item?.serviceLog?.vehicle?.licensePlate}
+              </Td>
               <Td>
                 <Flex justifyContent="center" align="center" w="full">
                   <Flex

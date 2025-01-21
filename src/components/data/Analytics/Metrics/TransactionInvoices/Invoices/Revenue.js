@@ -6,7 +6,7 @@ const Revenue = ({ dataa }) => {
   const series = [
     {
       name: "Revenue",
-      data: dataa?.dueInvoices?.map((item) => Number(item?.count)),
+      data: dataa?.monthlyRevenue?.map((item) => Number(item?.revenue)),
     },
   ];
 
@@ -77,11 +77,18 @@ const Revenue = ({ dataa }) => {
       labels: {
         show: true,
 
-        formatter: (value) => `${value.toLocaleString()}`,
+        formatter: (value) => `₦${value.toLocaleString()}`,
       },
     },
     fill: {
       opacity: 1,
+    },
+    tooltip: {
+      y: {
+        formatter: function (val) {
+          return `₦${val?.toLocaleString()}`;
+        },
+      },
     },
   };
 
@@ -93,12 +100,12 @@ const Revenue = ({ dataa }) => {
         fontSize="14px"
         fontWeight={700}
       >
-        due invoices
+        Total revenue generated
       </Text>
 
       <Flex my="30px" align="flex-end" gap="10px">
         <Text color="#646668" fontSize="28px" fontWeight={500}>
-          {Number(dataa?.total)?.toLocaleString()}
+          ₦{Number(dataa?.totalRevenue)?.toLocaleString()}
         </Text>
         <Text color="#0B841D" fontSize="12px">
           {Number(dataa?.percentageChange)?.toFixed(1)}%
@@ -106,17 +113,20 @@ const Revenue = ({ dataa }) => {
       </Flex>
 
       <Box>
-        {data?.length > 0 ? (
+      {data?.length > 0 ? (
           <Chart
-            options={options}
-            series={series}
-            type="bar"
-            height={270}
-            width={"100%"}
+          options={options}
+          series={series}
+          type="bar"
+          height={270}
+          width={"100%"}
           />
         ) : (
-          <Text color="#000" fontSize="12px" textAlign="center"></Text>
+          <Text color="#000" fontSize="12px" textAlign="center">
+          
+          </Text>
         )}
+       
       </Box>
     </Box>
   );

@@ -14,13 +14,13 @@ import { MdClose } from "react-icons/md";
 import { useReUpload } from "../../services/admin/query/reports";
 import useCustomToast from "../../utils/notifications";
 
-const ViewDoc = ({ isOpen, data, id, onClose, mutate }) => {
+const ViewDoc = ({ isOpen, data, id, refetch, onClose }) => {
   const { errorToast, successToast } = useCustomToast();
   const { mutate: uploadMutate, isLoading } = useReUpload({
     onSuccess: () => {
-      successToast("Status updated successfully!");
+      successToast("Customer will be notified!");
       onClose();
-      mutate(id);
+      refetch();
     },
     onError: (error) => {
       errorToast(

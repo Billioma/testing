@@ -419,7 +419,7 @@ const AddSubscription = () => {
                               </Text>
                             </Box>
 
-                            <Box w="90%">
+                            <Flex flexDir="column" align="flex-end" w="100%">
                               <Text
                                 fontSize="14px"
                                 color="#242628"
@@ -435,9 +435,9 @@ const AddSubscription = () => {
                               >
                                 {Object.values(intervals[dat?.interval])[0]}
                               </Text>
-                            </Box>
+                            </Flex>
 
-                            <Flex
+                            {/* <Flex
                               display={{ base: "none", md: "flex" }}
                               justifyContent="flex-end"
                               w="30%"
@@ -450,7 +450,7 @@ const AddSubscription = () => {
                               >
                                 Details
                               </Text>
-                            </Flex>
+                            </Flex> */}
                           </Flex>
 
                           <Flex
@@ -634,7 +634,7 @@ const AddSubscription = () => {
                     </Text>
                   </Box>
 
-                  <Box w="90%">
+                  <Flex flexDir="column" align="flex-end" w="100%">
                     <Text fontSize="14px" color="#242628" lineHeight="100%">
                       Duration
                     </Text>
@@ -646,9 +646,9 @@ const AddSubscription = () => {
                     >
                       {Object.values(intervals[currentSub?.interval])[0]}
                     </Text>
-                  </Box>
+                  </Flex>
 
-                  <Flex
+                  {/* <Flex
                     display={{ base: "none", md: "flex" }}
                     justifyContent="flex-end"
                     w="30%"
@@ -661,7 +661,7 @@ const AddSubscription = () => {
                     >
                       Details
                     </Text>
-                  </Flex>
+                  </Flex> */}
                 </Flex>
 
                 <Flex

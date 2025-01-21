@@ -75,9 +75,6 @@ const Header = ({ showSidebar }) => {
       case locationRoute.includes("metrics/subsc"):
         return setTitle("Subscriptions");
 
-      case locationRoute.includes("metrics/users"):
-        return setTitle("Users");
-
       case locationRoute.includes("metrics/locations"):
         return setTitle("Locations");
 

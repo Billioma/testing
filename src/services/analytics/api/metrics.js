@@ -45,12 +45,6 @@ export const getAttendantMetrics = (from, to) =>
 export const getPointsMetric = (from, to) =>
   fetchMetrics(API.POINTS_METRICS, from, to);
 
-export const getUsersMetrics = (from, to) =>
-  fetchMetrics(API.USERS_METRICS, from, to);
-
-export const getInvoiceMetrics = (from, to) =>
-  fetchMetrics(API.INVOICE_METRICS, from, to);
-
 export const getBusinessMetrics = (from, to) =>
   fetchMetrics(API.BUSINESS_METRICS, from, to);
 

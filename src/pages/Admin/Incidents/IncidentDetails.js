@@ -12,7 +12,7 @@ import {
   Text,
   useDisclosure,
 } from "@chakra-ui/react";
-import { MdCheck } from "react-icons/md";
+import { MdCheck, MdOutlineCancel } from "react-icons/md";
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 import { useNavigate, useParams } from "react-router-dom";
 import {
@@ -24,6 +24,7 @@ import useCustomToast from "../../../utils/notifications";
 import { PRIVATE_PATHS } from "../../../routes/constants";
 import ViewDoc from "../../../components/modals/ViewDoc";
 import { useIncidentStatus } from "../../../services/customer/query/user";
+import { FaCheck } from "react-icons/fa";
 
 export const Layout = ({ label, data }) => {
   return (
@@ -56,7 +57,7 @@ export const Layout = ({ label, data }) => {
           md: "full",
         }}
       >
-        <Text fontWeight={500}>{data}</Text>
+        <Text fontWeight={500} textAlign="end">{data}</Text>
       </Flex>
     </Flex>
   );
@@ -95,7 +96,7 @@ const IncidentDetails = () => {
     };
   }, []);
 
-  const { mutate, data, isLoading } = useGetAdminIncident();
+  const { refetch, data, isLoading } = useGetAdminIncident(id);
 
   useEffect(() => {
     if (data?.documents?.length) {
@@ -110,7 +111,7 @@ const IncidentDetails = () => {
   }, [data]);
 
   useEffect(() => {
-    mutate(id);
+    refetch();
   }, []);
 
   const documentTypes = [
@@ -138,6 +139,7 @@ const IncidentDetails = () => {
         );
       },
     });
+
   const { mutate: statusMutate, isLoading: isStatus } = useIncidentStatus({
     onSuccess: () => {
       successToast("Status updated successfully!");
@@ -233,7 +235,7 @@ const IncidentDetails = () => {
   return (
     <Box minH="75vh">
       <ViewDoc
-        mutate={mutate}
+        refetch={refetch}
         id={id}
         isOpen={isOpen}
         data={currentImage}
@@ -351,8 +353,10 @@ const IncidentDetails = () => {
                   label="Location"
                   data={data?.serviceLog?.location?.name || "N/A"}
                 />
-                <Layout label="Staff Involved" data="John Doe" />
-                {/* <Layout label="Supervisor on Duty" data="Jane Doe" /> */}
+                <Layout
+                  label="Staff Involved"
+                  data={data?.staffInvolved[0]?.fullName}
+                />
                 <Layout
                   label="Manager on Duty"
                   data={`${data?.locationManager?.firstName} ${data?.locationManager?.lastName}`}
@@ -366,18 +370,36 @@ const IncidentDetails = () => {
                   data={formatDateTime(data?.dateOfReport)}
                 />
 
-                <Button
-                  fontSize="14px"
-                  variant="adminPrimary"
-                  display={show ? "none" : "flex"}
-                  fontWeight={500}
-                  onClick={() => setShow(true)}
-                  lineHeight="100%"
-                  w="full"
-                  py="17px"
+                <Flex
+                  mt={values?.others ? "24px" : "10px"}
+                  align="center"
+                  gap="12px"
+                  w="100%"
                 >
-                  Select Documents
-                </Button>
+                  <Button
+                    fontSize="14px"
+                    variant="adminPrimary"
+                    fontWeight={500}
+                    onClick={() => navigate(`/admin/claims/${id}/update`)}
+                    lineHeight="100%"
+                    w="full"
+                    py="17px"
+                  >
+                    Edit Report
+                  </Button>
+                  <Button
+                    fontSize="14px"
+                    variant="adminSecondary"
+                    display={show ? "none" : "flex"}
+                    fontWeight={500}
+                    onClick={() => setShow(true)}
+                    lineHeight="100%"
+                    w="full"
+                    py="17px"
+                  >
+                    Select Documents
+                  </Button>
+                </Flex>
               </Flex>
 
               <Flex
@@ -477,6 +499,12 @@ const IncidentDetails = () => {
                       >
                         {item?.name}
                       </Text>
+
+                      {item?.url ? (
+                        <FaCheck size="12px" color="green" />
+                      ) : (
+                        <MdOutlineCancel size="12px" color="red" />
+                      )}
                     </Flex>
                     // </a>
                   ))}
@@ -623,21 +651,43 @@ const IncidentDetails = () => {
                     border="1px solid #E4E6E8"
                   />
                 </Box>
-                <Button
-                  mt={values?.others ? "24px" : "0"}
-                  fontSize="14px"
-                  variant="adminPrimary"
-                  fontWeight={500}
-                  isLoading={isUploading || isStatus}
-                  onClick={() =>
-                    data?.documents?.length ? handleStatus() : handleSubmit()
-                  }
-                  lineHeight="100%"
-                  w="full"
-                  py="17px"
+
+                <Flex
+                  align="center"
+                  gap="12px"
+                  w={{ base: "100%", md: "20rem" }}
                 >
-                  {data?.documents?.length ? "Update" : "Submit Request"}
-                </Button>
+                  <Button
+                    mt={values?.others ? "24px" : "0"}
+                    fontSize="14px"
+                    variant="adminPrimary"
+                    fontWeight={500}
+                    onClick={() => navigate(`/admin/claims/${id}/update`)}
+                    lineHeight="100%"
+                    w="full"
+                    py="17px"
+                  >
+                    Edit Report
+                  </Button>
+
+                  <Button
+                    mt={values?.others ? "24px" : "0"}
+                    fontSize="14px"
+                    variant="adminSecondary"
+                    fontWeight={500}
+                    isLoading={isUploading || isStatus}
+                    onClick={() =>
+                      data?.documents?.length ? handleStatus() : handleSubmit()
+                    }
+                    lineHeight="100%"
+                    w="full"
+                    py="17px"
+                  >
+                    {data?.documents?.length
+                      ? "Update Status"
+                      : "Submit Request"}
+                  </Button>
+                </Flex>
               </Flex>
             </Flex>{" "}
           </>

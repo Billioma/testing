@@ -12,6 +12,7 @@ import {
   getReportsExports,
   getTrans,
   reUpload,
+  updateIncident,
   uploadIncidentDocs,
 } from "../api/report";
 
@@ -101,12 +102,16 @@ export const useGetAdminIncidents = (
   return { isLoading, data, refetch };
 };
 
-export const useGetAdminIncident = (options = {}) => {
-  const { mutate, isLoading, data } = useMutation(getAdminIncident, {
-    mutationKey: "getAdminIncident",
-    ...options,
-  });
-  return { mutate, isLoading, data };
+export const useGetAdminIncident = (id = "", options = {}) => {
+  const { data, isLoading, refetch } = useQuery(
+    ["getAdminIncident", id],
+    () => getAdminIncident(id),
+    {
+      ...options,
+    }
+  );
+
+  return { isLoading, data, refetch };
 };
 
 export const useCreateIncident = (options = {}) => {
@@ -120,6 +125,14 @@ export const useCreateIncident = (options = {}) => {
 export const useReUpload = (options = {}) => {
   const { mutate, isLoading, data } = useMutation(reUpload, {
     mutationKey: "reUpload",
+    ...options,
+  });
+  return { mutate, isLoading, data };
+};
+
+export const useUpdateIncident = (options = {}) => {
+  const { mutate, isLoading, data } = useMutation(updateIncident, {
+    mutationKey: "updateIncident",
     ...options,
   });
   return { mutate, isLoading, data };

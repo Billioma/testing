@@ -992,10 +992,6 @@ const PaymentMetrics = WithSuspense(
   lazy(() => import("../pages/Analytics/Metrics/Payment"))
 );
 
-const UserMetrics = WithSuspense(
-  lazy(() => import("../pages/Analytics/Metrics/Users"))
-);
-
 const SupportMetrics = WithSuspense(
   lazy(() => import("../pages/Analytics/Metrics/Support"))
 );
@@ -1058,6 +1054,10 @@ const AdminCreateIncidents = WithSuspense(
 
 const AdminIncidentsDetails = WithSuspense(
   lazy(() => import("../pages/Admin/Incidents/IncidentDetails"))
+);
+
+const AdminEditIncident = WithSuspense(
+  lazy(() => import("../pages/Admin/Incidents/EditIncident"))
 );
 
 export const PUBLIC_ROUTES = [
@@ -1705,11 +1705,6 @@ export const PRIVATE_ROUTES = [
   },
 
   {
-    path: PRIVATE_PATHS.METRICS_USERS,
-    element: <UserMetrics />,
-  },
-
-  {
     path: PRIVATE_PATHS.METRICS_SUPPORT,
     element: <SupportMetrics />,
   },
@@ -1784,6 +1779,11 @@ export const PRIVATE_ROUTES = [
   {
     path: PRIVATE_PATHS.ADMIN_INCIDENTS_DETAILS,
     element: <AdminIncidentsDetails />,
+  },
+
+  {
+    path: PRIVATE_PATHS.ADMIN_EDIT_INCIDENT,
+    element: <AdminEditIncident />,
   },
 
   {

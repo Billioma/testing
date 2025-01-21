@@ -58,8 +58,8 @@ export const getAdminIncidents = async (type, page, limit, query) => {
   return res.data;
 };
 
-export const getAdminIncident = async (query) => {
-  const res = await axiosInstance.get(API.INCIDENT(query));
+export const getAdminIncident = async (id) => {
+  const res = await axiosInstance.get(`${API.INCIDENT}/${id}`);
   return res.data;
 };
 
@@ -73,13 +73,18 @@ export const reUpload = async ({ query, body }) => {
   return res.data;
 };
 
+export const updateIncident = async ({ query, body }) => {
+  const res = await axiosInstance.patch(API.INCIDENT_UPDATE(query), body);
+  return res.data;
+};
+
 export const delAdminIncident = async (query) => {
-  const res = await axiosInstance.delete(API.INCIDENT(query));
+  const res = await axiosInstance.delete(API.INCIDENT_UPDATE(query));
   return res.data;
 };
 
 export const uploadIncidentDocs = async ({ query, body }) => {
-  const res = await axiosInstance.patch(API.INCIDENT(query), body);
+  const res = await axiosInstance.patch(API.INCIDENT_DOC(query), body);
   return res.data;
 };
 

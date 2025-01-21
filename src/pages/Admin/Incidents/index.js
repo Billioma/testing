@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { Box, Flex, Image, Text } from "@chakra-ui/react";
 import TableLayer from "../../../components/data/Admin/Incidents/TableLayer";
 import Filter from "../../../components/common/Filter";
-import { useNavigate } from "react-router-dom";
 import { useGetAdminIncidents } from "../../../services/admin/query/reports";
 import { incidentOptions } from "../../../components/common/constants";
 import { formatFilterDate } from "../../../utils/helpers";

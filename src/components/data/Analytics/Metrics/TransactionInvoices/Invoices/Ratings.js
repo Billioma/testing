@@ -1,8 +1,9 @@
 import React from "react";
 import { Box, Flex, Text } from "@chakra-ui/layout";
 import ReactApexChart from "react-apexcharts";
+import { IoStar } from "react-icons/io5";
 
-const AdminvsUser = ({ dataa }) => {
+const Ratings = ({ dataa }) => {
   const data = dataa?.map((item) => Number(item?.percentage)) || [];
 
   const options = {
@@ -26,8 +27,8 @@ const AdminvsUser = ({ dataa }) => {
     legend: {
       show: false,
     },
-    colors: ["#EE383A", "#F39197"],
-    labels: dataa?.map((item) => item?.type) || [],
+    colors: ["#EE383A", "#EF6C75", "#F39197", "#F9C8CB", "#FDECED"],
+    labels: dataa?.map((item) => item?.rating) || [],
     responsive: [
       {
         breakpoint: 768,
@@ -44,12 +45,12 @@ const AdminvsUser = ({ dataa }) => {
     ],
   };
 
-  const colors = ["#EE383A", "#F39197"];
+  const colors = ["#EE383A", "#EF6C75", "#F39197", "#F9C8CB", "#FDECED"];
 
   return (
     <Box border="1px solid #e4e6e8" borderRadius="8px" p="22px">
       <Text textAlign="center" color="#242628" fontSize="14px" fontWeight={700}>
-        Administrators VS Operators
+        Customer Ratings
       </Text>
 
       <Box mt="35px">
@@ -61,7 +62,9 @@ const AdminvsUser = ({ dataa }) => {
             type="donut"
           />
         ) : (
-          <Text color="#000" fontSize="12px" textAlign="center"></Text>
+          <Text color="#000" fontSize="12px" textAlign="center">
+       
+          </Text>
         )}
       </Box>
 
@@ -75,23 +78,20 @@ const AdminvsUser = ({ dataa }) => {
         {dataa?.length ? (
           dataa?.map((item, i) => (
             <Flex key={i} align="center" gap="10px">
-              <Box
-                bg={colors[i % colors?.length]}
-                rounded="full"
-                h="10px"
-                w="10px"
-              />
+              <IoStar color={colors[i % colors?.length]} size="13px" />
               <Text color="#000" fontSize="12px">
-                {item?.type} ({Number(item?.percentage)})%
+              {item?.rating} ({Number(item?.percentage)})%
               </Text>
             </Flex>
           ))
         ) : (
-          <Text color="#000" fontSize="12px"></Text>
+          <Text color="#000" fontSize="12px">
+           
+          </Text>
         )}
       </Flex>
     </Box>
   );
 };
 
-export default AdminvsUser;
+export default Ratings;

@@ -13,10 +13,13 @@ import { formatDates, getStartOfWeek } from "../../../utils/helpers";
 import { IoIosArrowDown, IoIosArrowForward } from "react-icons/io";
 import { PiExportLight } from "react-icons/pi";
 import Select from "react-select";
+
 import Invoices from "../../../components/data/Analytics/Metrics/TransactionInvoices/Invoices/Invoices";
+
 import TransactionTab from "../../../components/data/Analytics/Metrics/TransactionInvoices/Transactions/Transactions";
 import {
-  useGetInvoiceMetrics,
+  useGetClientMetrics,
+  useGetOperatorMetrics,
   useGetTransactionsMetrics,
 } from "../../../services/analytics/query/metrics";
 
@@ -76,10 +79,10 @@ const Transactions = () => {
   );
 
   const {
-    data: invoices,
-    isLoading: isInvoice,
-    refetch: refetchInvoice,
-  } = useGetInvoiceMetrics(
+    data: operators,
+    isLoading: isOperator,
+    refetch: refetchOperator,
+  } = useGetOperatorMetrics(
     {
       refetchOnWindowFocus: true,
       onSuccess: () => {
@@ -98,7 +101,7 @@ const Transactions = () => {
 
   const handleRefreshClick = async () => {
     setIsRefetch(true);
-    await refetch(), refetchInvoice();
+    await refetch(), refetchOperator();
   };
 
   const {
@@ -278,7 +281,7 @@ const Transactions = () => {
           : ["generated invoices"]
         ).map((item, i) => (
           <Skeleton
-            isLoaded={tab === "Transactions" ? !isLoading : !isInvoice}
+            isLoaded={tab === "Transactions" ? !isLoading : !isOperator}
             borderRadius="8px"
             w="full"
           >
@@ -326,9 +329,7 @@ const Transactions = () => {
                           : `₦${Number(
                               data?.data?.totalRevenue?.value
                             )?.toLocaleString()}`
-                        : `₦${Number(
-                            invoices?.data?.generatedInvoices?.totalGenerated
-                          )?.toLocaleString()}`}
+                        : ""}
                     </Text>
                   </Box>
                   <Flex
@@ -344,11 +345,9 @@ const Transactions = () => {
                             data?.data?.processedTransactions?.percentageChange
                           )?.toFixed(1)
                         : Number(
-                            invoices?.data?.totalRevenue?.percentageChange
+                            data?.data?.totalRevenue?.percentageChange
                           )?.toFixed(1)
-                      : Number(
-                          invoices?.data?.generatedInvoices?.percentageChange
-                        )?.toFixed(1)}
+                      : ""}
                     %
                   </Flex>
                 </Flex>
@@ -361,7 +360,9 @@ const Transactions = () => {
       {tab === "Transactions" && (
         <TransactionTab data={data} isLoading={isLoading} />
       )}
-      {tab === "Invoices" && <Invoices data={invoices} isLoading={isInvoice} />}
+      {tab === "Invoices" && (
+        <Invoices  />
+      )}
     </Box>
   );
 };

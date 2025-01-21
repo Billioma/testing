@@ -1,20 +1,38 @@
 import React from "react";
-import { Box, Flex, Text } from "@chakra-ui/react";
+import { Box, Text } from "@chakra-ui/react";
 import Chart from "react-apexcharts";
 
-const Paid = ({ dataa }) => {
+const TimesChart = ({ dataa }) => {
   const series = [
     {
-      name: "Revenue",
-      data: dataa?.paidInvoices?.map((item) => Number(item?.count)),
+      name: "Peak Time",
+      data: dataa
+        ?.filter((_, index) => index % 2 === 0)
+        ?.map((item) => Number(item?.count)),
     },
   ];
 
   const data = series[0]?.data;
-  const maxValue = data?.length > 0 ? Math.max(...data) : 0;
+
+  const maxValue = data?.length ? Math.max(...data) : 0;
+  const maxIndex = data?.indexOf(maxValue);
   const colors = data?.map((value) =>
     value === maxValue ? "#EE383A" : "#F9C8CB"
   );
+  const categories = [
+    "00:00",
+    "02:00",
+    "04:00",
+    "06:00",
+    "08:00",
+    "10:00",
+    "12:00",
+    "14:00",
+    "16:00",
+    "18:00",
+    "20:00",
+    "22:00",
+  ];
 
   const options = {
     chart: {
@@ -30,7 +48,7 @@ const Paid = ({ dataa }) => {
     plotOptions: {
       bar: {
         horizontal: false,
-        columnWidth: "65%",
+        columnWidth: "75%",
         endingShape: "rounded",
         distributed: true,
       },
@@ -45,20 +63,7 @@ const Paid = ({ dataa }) => {
     },
     colors: colors,
     xaxis: {
-      categories: [
-        "Jan",
-        "Feb",
-        "Mar",
-        "Apr",
-        "May",
-        "Jun",
-        "Jul",
-        "Aug",
-        "Sept",
-        "Oct",
-        "Nov",
-        "Dec",
-      ],
+      categories: categories,
       axisBorder: {
         show: false,
       },
@@ -76,12 +81,33 @@ const Paid = ({ dataa }) => {
     yaxis: {
       labels: {
         show: true,
-
-        formatter: (value) => `${value.toLocaleString()}`,
       },
     },
     fill: {
       opacity: 1,
+    },
+    annotations: {
+      points: [
+        {
+          x: categories[maxIndex],
+          y: maxValue,
+          marker: {
+            size: 0,
+            fillColor: "transparent",
+            strokeColor: "transparent",
+          },
+          label: {
+            borderColor: "#FF4560",
+            borderRadius: "8px",
+            offsetY: -4,
+            style: {
+              color: "#fff",
+              background: "#FF4560",
+            },
+            text: maxValue,
+          },
+        },
+      ],
     },
   };
 
@@ -93,33 +119,26 @@ const Paid = ({ dataa }) => {
         fontSize="14px"
         fontWeight={700}
       >
-        paid invoices
+        Average Peak times
       </Text>
 
-      <Flex my="30px" align="flex-end" gap="10px">
-        <Text color="#646668" fontSize="28px" fontWeight={500}>
-          {Number(dataa?.total)?.toLocaleString()}
-        </Text>
-        <Text color="#0B841D" fontSize="12px">
-          {Number(dataa?.percentageChange)?.toFixed(1)}%
-        </Text>
-      </Flex>
-
-      <Box>
+      <Box mt="30px">
         {data?.length > 0 ? (
           <Chart
             options={options}
             series={series}
             type="bar"
-            height={270}
+            height={300}
             width={"100%"}
           />
         ) : (
-          <Text color="#000" fontSize="12px" textAlign="center"></Text>
+          <Text color="#000" fontSize="12px" textAlign="center">
+        
+          </Text>
         )}
       </Box>
     </Box>
   );
 };
 
-export default Paid;
+export default TimesChart;

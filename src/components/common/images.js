@@ -290,14 +290,14 @@ export const IncidentIcon = ({ fill }) => {
         stroke={fill}
         strokeWidth="1.25"
         strokeLinecap="round"
-        strokeLlinejoin="round"
+        strokeLinejoin="round"
       />
       <path
         d="M8 5.33301V8.66634"
         stroke={fill}
         strokeWidth="1.25"
         strokeLinecap="round"
-        strokeLlinejoin="round"
+        strokeLinejoin="round"
       />
       <path
         d="M7.99609 10.667H8.00208"

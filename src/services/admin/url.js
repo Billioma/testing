@@ -62,7 +62,10 @@ export const ATTACH_CLIENT_USER = (id = "", email = "") =>
 export const MANAGERS = "admin/entity-selectors/users/?search=&manager=1";
 export const CUSTOMERS = "admin/entity-selectors/customers/";
 export const INCIDENTS = "admin/incident-report";
-export const INCIDENT = (id = "") => `admin/incident-report/${id}`;
+export const INCIDENT = "admin/incident-report";
+export const INCIDENT_UPDATE = (id = "") => `admin/incident-report/${id}`;
+export const INCIDENT_DOC = (id = "") =>
+  `admin/incident-report/documents/${id}`;
 
 export const ADMIN_LOCATIONS = "admin/locations";
 export const ADMIN_LOCATIONS_LIST = (
