@@ -87,16 +87,22 @@ const MobileApp = ({ dash }) => {
             whileInView={{ x: [-50, 0], opacity: 1 }}
             transition={{ duration: 1 }}
           >
-            <Button
-              bg="#000"
-              fontWeight={400}
-              h={{ base: "55px", xl: "70px" }}
-              w={{ base: "130px", xl: "173px" }}
-              fontSize={{ base: "16px", xl: "20px" }}
-              lineHeight={{ base: "23px", xl: "30px" }}
+            <a
+              href="https://app.parkinspace.ng/customer/auth/login"
+              rel="noreferrer"
+              target="_blank"
             >
-              Get Started
-            </Button>
+              <Button
+                bg="#000"
+                fontWeight={400}
+                h={{ base: "55px", xl: "70px" }}
+                w={{ base: "130px", xl: "173px" }}
+                fontSize={{ base: "16px", xl: "20px" }}
+                lineHeight={{ base: "23px", xl: "30px" }}
+              >
+                Get Started
+              </Button>
+            </a>
           </motion.div>
         </Box>
 

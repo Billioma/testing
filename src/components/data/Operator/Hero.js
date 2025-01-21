@@ -8,7 +8,7 @@ const Hero = () => {
       <Image
         pos="absolute"
         zIndex={1}
-        minH={{ base: "70vh", md: "80vh" }}
+        h={{ base: "70vh", md: "80vh" }}
         objectFit="cover"
         w="full"
         borderRadius="24px"

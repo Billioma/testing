@@ -112,142 +112,147 @@ const Contact = () => {
   };
 
   return (
-    <Box p={{ base: "", md: "60px 30px" }} w={{ base: "100%", md: "58rem" }}>
-      <Box
-        color="#EE383A"
-        fontSize={{ base: "28px", xl: "43px" }}
-        lineHeight={{ base: "35px", xl: "52px" }}
-        fontWeight={500}
-        fontFamily="Recoleta"
-      >
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ x: [-50, 0], opacity: 1 }}
-          transition={{ duration: 1 }}
+    <Box p={{ base: "", md: "60px 30px" }}>
+      <Box w={{ base: "100%", md: "58rem" }}>
+        <Box
+          color="#EE383A"
+          fontSize={{ base: "28px", xl: "43px" }}
+          lineHeight={{ base: "35px", xl: "52px" }}
+          fontWeight={500}
+          fontFamily="Recoleta"
         >
-          Contact us
-        </motion.div>
-      </Box>
-      <Box
-        color="#444648"
-        mt="24px"
-        fontSize={{ base: "16px", xl: "20px" }}
-        lineHeight={{ base: "25px", xl: "32px" }}
-      >
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ x: [50, 0], opacity: 1 }}
-          transition={{ duration: 1 }}
-        >
-          Have a question or need assistance? Send us a message below, and we'll
-          respond within 6 hours.
-        </motion.div>
-      </Box>
-
-      <Flex flexDir="column" gap="24px" mt="40px" mb="180px">
-        <motion.div
-          initial={{ opacity: 0 }}
-          style={{ width: "100%" }}
-          whileInView={{ x: [-50, 0], opacity: 1 }}
-          transition={{ duration: 1 }}
-        >
-          <Layout
-            label="Full Name"
-            value={values?.name}
-            onChange={(e) => setValues({ ...values, name: e.target.value })}
-          />
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0 }}
-          style={{ width: "100%" }}
-          whileInView={{ x: [50, 0], opacity: 1 }}
-          transition={{ duration: 1 }}
-        >
-          <Layout
-            label="Email"
-            value={values?.email}
-            onChange={(e) => setValues({ ...values, email: e.target.value })}
-          />
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0 }}
-          style={{ width: "100%" }}
-          whileInView={{ x: [-50, 0], opacity: 1 }}
-          transition={{ duration: 1 }}
-        >
-          <Layout
-            label="Mobile Number"
-            type="number"
-            value={values?.phone}
-            onChange={(e) => setValues({ ...values, phone: e.target.value })}
-          />
-        </motion.div>
-        <motion.div
-          initial={{ opacity: 0 }}
-          style={{ width: "100%" }}
-          whileInView={{ x: [50, 0], opacity: 1 }}
-          transition={{ duration: 1 }}
-        >
-          <Layout
-            label="Message"
-            value={values?.message}
-            onChange={(e) => setValues({ ...values, message: e.target.value })}
-          />
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0 }}
-          style={{ width: "100%" }}
-          whileInView={{ x: [-50, 0], opacity: 1 }}
-          transition={{ duration: 1 }}
-        >
-          <Flex align="center">
-            <Checkbox
-              isChecked={checked}
-              onChange={() => setChecked(!checked)}
-            />
-            <Text
-              pl="12px"
-              onClick={() => setChecked(!checked)}
-              color="#444648"
-              fontSize="15px"
-              cursor="pointer"
-            >
-              You agree to our{" "}
-              <a
-                href="/terms-condition"
-                style={{ textDecoration: "underline" }}
-                target="_blank"
-                rel="noreferrer"
-              >
-                Terms and Conditions.
-              </a>
-            </Text>
-          </Flex>
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0 }}
-          style={{ width: "100%" }}
-          whileInView={{ x: [50, 0], opacity: 1 }}
-          transition={{ duration: 1 }}
-        >
-          <Button
-            mt="30px"
-            isDisabled={!checked}
-            isLoading={isLoading}
-            onClick={handleSubmit}
-            bg="#131618"
-            borderRadius="12px"
-            h="60px"
-            w="full"
+          <motion.div
+            initial={{ opacity: 0 }}
+            whileInView={{ x: [-50, 0], opacity: 1 }}
+            transition={{ duration: 1 }}
           >
-            Send Message
-          </Button>
-        </motion.div>
-      </Flex>
+            Contact us
+          </motion.div>
+        </Box>
+        <Box
+          color="#444648"
+          mt="24px"
+          fontSize={{ base: "16px", xl: "20px" }}
+          lineHeight={{ base: "25px", xl: "32px" }}
+        >
+          <motion.div
+            initial={{ opacity: 0 }}
+            whileInView={{ x: [50, 0], opacity: 1 }}
+            transition={{ duration: 1 }}
+          >
+            Have a question or need assistance? Send us a message below, and
+            we'll respond within 6 hours.
+          </motion.div>
+        </Box>
+
+        <Flex flexDir="column" gap="24px" mt="40px" mb="180px">
+          <motion.div
+            initial={{ opacity: 0 }}
+            style={{ width: "100%" }}
+            whileInView={{ x: [-50, 0], opacity: 1 }}
+            transition={{ duration: 1 }}
+          >
+            <Layout
+              label="Full Name"
+              value={values?.name}
+              onChange={(e) => setValues({ ...values, name: e.target.value })}
+            />
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0 }}
+            style={{ width: "100%" }}
+            whileInView={{ x: [50, 0], opacity: 1 }}
+            transition={{ duration: 1 }}
+          >
+            <Layout
+              label="Email"
+              value={values?.email}
+              onChange={(e) => setValues({ ...values, email: e.target.value })}
+            />
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0 }}
+            style={{ width: "100%" }}
+            whileInView={{ x: [-50, 0], opacity: 1 }}
+            transition={{ duration: 1 }}
+          >
+            <Layout
+              label="Mobile Number"
+              type="number"
+              value={values?.phone}
+              onChange={(e) => setValues({ ...values, phone: e.target.value })}
+            />
+          </motion.div>
+          <motion.div
+            initial={{ opacity: 0 }}
+            style={{ width: "100%" }}
+            whileInView={{ x: [50, 0], opacity: 1 }}
+            transition={{ duration: 1 }}
+          >
+            <Layout
+              label="Message"
+              value={values?.message}
+              onChange={(e) =>
+                setValues({ ...values, message: e.target.value })
+              }
+            />
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0 }}
+            style={{ width: "100%" }}
+            whileInView={{ x: [-50, 0], opacity: 1 }}
+            transition={{ duration: 1 }}
+          >
+            <Flex align="center">
+              <Checkbox
+                isChecked={checked}
+                onChange={() => setChecked(!checked)}
+              />
+              <Text
+                pl="12px"
+                onClick={() => setChecked(!checked)}
+                color="#444648"
+                fontSize="15px"
+                cursor="pointer"
+              >
+                You agree to our{" "}
+                <a
+                  href="/terms-condition"
+                  style={{ textDecoration: "underline" }}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  Terms and Conditions.
+                </a>
+              </Text>
+            </Flex>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0 }}
+            style={{ width: "100%" }}
+            whileInView={{ x: [50, 0], opacity: 1 }}
+            transition={{ duration: 1 }}
+          >
+            <Button
+              mt="30px"
+              isDisabled={!checked}
+              isLoading={isLoading}
+              onClick={handleSubmit}
+              bg="#131618"
+              borderRadius="12px"
+              h="60px"
+              w="full"
+            >
+              Send Message
+            </Button>
+          </motion.div>
+        </Flex>
+      </Box>
+
       <MobileApp />
     </Box>
   );

@@ -7,10 +7,11 @@ import {
   socials,
 } from "../common/constants";
 import { scroller } from "react-scroll";
-import { Link as RouteLink } from "react-router-dom";
+import { Link as RouteLink, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 
 const Footer = () => {
+  const navigate = useNavigate();
   const today = new Date();
 
   const scrollToSection = (sectionId, retryCount = 5) => {
@@ -27,6 +28,14 @@ const Footer = () => {
       setTimeout(() => scrollToSection(sectionId, retryCount - 1), 500);
     } else {
       console.warn(`Element with ID ${sectionId} not found.`);
+    }
+  };
+
+  const handleNavigation = (targetPath) => {
+    if (window.location.pathname !== "/") {
+      navigate("/", { state: { section: targetPath } });
+    } else {
+      scrollToSection(targetPath);
     }
   };
 
@@ -101,7 +110,7 @@ const Footer = () => {
                 <Text
                   key={i}
                   cursor="pointer"
-                  onClick={() => scrollToSection(item?.id)}
+                  onClick={() => handleNavigation(item?.id)}
                   fontSize={{ base: "14px", lg: "16px" }}
                   lineHeight={{ base: "14px", lg: "16px" }}
                 >

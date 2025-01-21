@@ -70,14 +70,20 @@ const About = () => {
               align="center"
               gap="6px"
             >
-              <Text
-                fontFamily="Satoshi"
-                fontSize={{ base: "16px", xl: "20px" }}
-                lineHeight={{ base: "23px", xl: "30px" }}
-                textDecor="underline"
+              <a
+                href="https://app.parkinspace.ng/customer/auth/login"
+                rel="noreferrer"
+                target="_blank"
               >
-                Get Started
-              </Text>
+                <Text
+                  fontFamily="Satoshi"
+                  fontSize={{ base: "16px", xl: "20px" }}
+                  lineHeight={{ base: "23px", xl: "30px" }}
+                  textDecor="underline"
+                >
+                  Get Started
+                </Text>
+              </a>
               <RiArrowRightUpFill size="13px" />
             </Flex>
           </motion.div>
