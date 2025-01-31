@@ -26,6 +26,11 @@ export const incidentStatus = async ({ query, body }) => {
   return res.data;
 };
 
+export const incidentDoc = async ({ query, body }) => {
+  const res = await axiosInstance.patch(API.INCIDENT_DOCS(query), body);
+  return res.data;
+};
+
 export const getIncident = async (query) => {
   const res = await axiosInstance.get(API.INCIDENT(query));
   return res.data;

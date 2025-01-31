@@ -14,7 +14,7 @@ import { FiMoreVertical } from "react-icons/fi";
 import { TbListDetails } from "react-icons/tb";
 import { useNavigate } from "react-router-dom";
 import TableFormat from "../../../components/common/TableFormat";
-import { IncidentStatus, Status } from "../../../components/common/constants";
+import { IncidentStatus } from "../../../components/common/constants";
 import { IoWarningOutline } from "react-icons/io5";
 import ClaimDocs from "../../../components/modals/ClaimDocs";
 import { useGetIncidents } from "../../../services/customer/query/user";

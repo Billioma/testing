@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-
 import GoBackTab from "../../../components/data/Admin/GoBackTab";
 import {
   Box,
@@ -12,19 +11,22 @@ import {
   Text,
   useDisclosure,
 } from "@chakra-ui/react";
-import { MdCheck, MdOutlineCancel } from "react-icons/md";
+import { MdCheck } from "react-icons/md";
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 import { useNavigate, useParams } from "react-router-dom";
 import {
   useGetAdminIncident,
+  useUpdateIncident,
   useUploadIncidentDocs,
 } from "../../../services/admin/query/reports";
 import { formatDateTime } from "../../../utils/helpers";
 import useCustomToast from "../../../utils/notifications";
 import { PRIVATE_PATHS } from "../../../routes/constants";
 import ViewDoc from "../../../components/modals/ViewDoc";
-import { useIncidentStatus } from "../../../services/customer/query/user";
-import { FaCheck } from "react-icons/fa";
+import {
+  useCustomerUploadPic,
+  useIncidentStatus,
+} from "../../../services/customer/query/user";
 
 export const Layout = ({ label, data }) => {
   return (
@@ -57,7 +59,9 @@ export const Layout = ({ label, data }) => {
           md: "full",
         }}
       >
-        <Text fontWeight={500} textAlign="end">{data}</Text>
+        <Text fontWeight={500} textAlign="end">
+          {data}
+        </Text>
       </Flex>
     </Flex>
   );
@@ -76,12 +80,81 @@ const IncidentDetails = () => {
   });
 
   const [selectedDocuments, setSelectedDocuments] = useState([]);
+  const [fileLimit, setFileLimit] = useState({});
+  const [files, setFiles] = useState([]);
   const [otherDocument, setOtherDocument] = useState("");
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [status, setStatus] = useState("");
   const [showStatus, setShowStatus] = useState(false);
   const [currentImage, setCurrentImage] = useState("");
+  const [currentItem, setCurrentItem] = useState("");
   const { id } = useParams();
+
+  const { mutate: upMutate, isLoading: isUpload } = useCustomerUploadPic({
+    onError: (err) => {
+      errorToast(
+        err?.response?.data?.message || err?.message || "An Error occurred"
+      );
+      setUploadingFileName("");
+    },
+    onSuccess: (data, variables) => {
+      const { fileType } = variables;
+      const url = data?.path;
+
+      setFiles((prevFiles) => {
+        const fileIndex = prevFiles.findIndex((file) => file.id === fileType);
+        if (fileIndex !== -1) {
+          // Update the existing file's URL
+          const updatedFiles = [...prevFiles];
+          updatedFiles[fileIndex] = { ...updatedFiles[fileIndex], url };
+          return updatedFiles;
+        }
+        // Add a new file entry if it doesn't exist
+        return [...prevFiles, { id: fileType, url }];
+      });
+    },
+  });
+
+  const handleChange = (e, fileType) => {
+    const selectedFile = e.target.files[0];
+    if (!selectedFile) {
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("file", selectedFile);
+
+    const fileSizeInBytes = selectedFile.size;
+    const limitInMB = Math.ceil(fileSizeInBytes / 1048576);
+
+    if (limitInMB > 2) {
+      setFileLimit((prevLimits) => ({
+        ...prevLimits,
+        [fileType]: true,
+      }));
+    } else {
+      setFileLimit((prevLimits) => ({
+        ...prevLimits,
+        [fileType]: false,
+      }));
+
+      upMutate({
+        fileType,
+        entityType: "customer",
+        file: formData.get("file"),
+      });
+
+      setFiles((prevFiles) => {
+        const fileIndex = prevFiles.findIndex((file) => file.id === fileType);
+        if (fileIndex !== -1) {
+          const updatedFiles = [...prevFiles];
+          updatedFiles[fileIndex] = { id: fileType, file: selectedFile };
+          return updatedFiles;
+        }
+        return [...prevFiles, { id: fileType, file: selectedFile }];
+      });
+    }
+  };
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -125,6 +198,18 @@ const IncidentDetails = () => {
   const navigate = useNavigate();
 
   const { errorToast, successToast, infoToast } = useCustomToast();
+  const { mutate, isLoading: isUpdating } = useUpdateIncident({
+    onSuccess: () => {
+      setFiles([]);
+      successToast("Document updated successfully!");
+      refetch();
+    },
+    onError: (error) => {
+      errorToast(
+        error?.response?.data?.message || error?.message || "An Error occurred"
+      );
+    },
+  });
   const { mutate: uploadMutate, isLoading: isUploading } =
     useUploadIncidentDocs({
       onSuccess: () => {
@@ -151,6 +236,20 @@ const IncidentDetails = () => {
       );
     },
   });
+
+  const handleUpload = () => {
+    const transformedBody = files?.map(({ id, url }) => ({
+      id,
+      url,
+    }));
+
+    mutate({
+      query: data?.id,
+      body: {
+        documents: transformedBody,
+      },
+    });
+  };
 
   const handleSubmit = () => {
     uploadMutate({
@@ -244,7 +343,7 @@ const IncidentDetails = () => {
       <Flex
         align="flex-start"
         flexDir={{ md: "row", base: "column" }}
-        gap={{ base: "", md: "30px" }}
+        gap={{ base: "", md: "100px" }}
       >
         <Box w="fit-content">
           <GoBackTab />
@@ -474,40 +573,92 @@ const IncidentDetails = () => {
                 >
                   {data?.documents?.map((item, i) => (
                     <Flex
-                      key={i}
-                      onClick={() =>
-                        item?.url
-                          ? (onOpen(), setCurrentImage(item))
-                          : infoToast("Customer has not uploaded this document")
-                      }
-                      mb="14px"
+                      key={item.id}
                       align="center"
-                      cursor="pointer"
-                      gap="12px"
-                      w="fit-content"
+                      justifyContent="space-between"
+                      border="1px solid #D4D6D8"
+                      borderRadius="4px"
+                      mb="14px"
+                      p="12px"
                     >
-                      <Image
-                        src="/assets/folders.svg"
-                        w="16px"
-                        h="16px"
-                        objectFit="contain"
-                      />
-                      <Text
-                        textDecor="underline"
-                        color="#646668"
-                        fontSize="14px"
-                      >
-                        {item?.name}
-                      </Text>
+                      <Flex align="center" gap="12px" w="full">
+                        <Image
+                          src="/assets/folders.svg"
+                          w="16px"
+                          h="16px"
+                          objectFit="contain"
+                        />
+                        <Text
+                          textDecor="underline"
+                          color="#646668"
+                          fontSize="14px"
+                        >
+                          {item?.name}
+                        </Text>
+                      </Flex>
 
-                      {item?.url ? (
-                        <FaCheck size="12px" color="green" />
-                      ) : (
-                        <MdOutlineCancel size="12px" color="red" />
-                      )}
+                      <Input
+                        id={`image_upload_${item.id}`}
+                        onChange={(file) => handleChange(file, item.id)}
+                        type="file"
+                        display="none"
+                      />
+                      <label htmlFor={`image_upload_${item.id}`}>
+                        <Flex
+                          bg="#F4F6F8"
+                          borderRadius="4px"
+                          h="30px"
+                          w="74px"
+                          cursor={isUpdating || isUpload ? "" : "pointer"}
+                          onClick={(e) => {
+                            if (item?.url) {
+                              e.stopPropagation();
+                              e.preventDefault();
+                              onOpen();
+                              setCurrentImage(item);
+                            } else {
+                              isUpdating || isUpload
+                                ? ""
+                                : setCurrentItem(item);
+                            }
+                          }}
+                          color="#646668"
+                          fontSize="12px"
+                          lineHeight="12px"
+                          justifyContent="center"
+                          align="center"
+                        >
+                          {item?.url ? (
+                            "View"
+                          ) : isUpload && currentItem?.id === item.id ? (
+                            <Spinner size="sm" />
+                          ) : files?.some((file) => file.id === item.id) ? (
+                            "Uploaded"
+                          ) : (
+                            "Upload"
+                          )}
+                        </Flex>
+                      </label>
                     </Flex>
-                    // </a>
                   ))}
+
+                  <Flex
+                    justifyContent="flex-end"
+                    display={files?.length ? "flex" : "none"}
+                  >
+                    <Button
+                      w="200px"
+                      fontSize="12px"
+                      variant="adminPrimary"
+                      fontWeight={500}
+                      isLoading={isUpdating}
+                      lineHeight="100%"
+                      h="40px"
+                      onClick={handleUpload}
+                    >
+                      Upload Documents
+                    </Button>
+                  </Flex>
                 </Box>
 
                 <Text
@@ -584,6 +735,7 @@ const IncidentDetails = () => {
                       "Under Review",
                     ].map((item, i) => (
                       <Text
+                        key={i}
                         px="16px"
                         py="8px"
                         _hover={{ bg: "#d4d6d8" }}
@@ -655,9 +807,9 @@ const IncidentDetails = () => {
                 <Flex
                   align="center"
                   gap="12px"
-                  w={{ base: "100%", md: "20rem" }}
+                  w={{ base: "100%", md: "100%" }}
                 >
-                  <Button
+                  {/* <Button
                     mt={values?.others ? "24px" : "0"}
                     fontSize="14px"
                     variant="adminPrimary"
@@ -668,7 +820,7 @@ const IncidentDetails = () => {
                     py="17px"
                   >
                     Edit Report
-                  </Button>
+                  </Button> */}
 
                   <Button
                     mt={values?.others ? "24px" : "0"}

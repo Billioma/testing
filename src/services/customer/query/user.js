@@ -17,6 +17,7 @@ import {
   getUserSub,
   getUserSubs,
   getUserSubscriptions,
+  incidentDoc,
   incidentStatus,
   renewSub,
   sendMail,
@@ -61,6 +62,14 @@ export const useUploadIncidentDocs = (options = {}) => {
 export const useIncidentStatus = (options = {}) => {
   const { mutate, isLoading, data } = useMutation(incidentStatus, {
     mutationKey: "incidentStatus",
+    ...options,
+  });
+  return { mutate, isLoading, data };
+};
+
+export const useIncidentDoc = (options = {}) => {
+  const { mutate, isLoading, data } = useMutation(incidentDoc, {
+    mutationKey: "incidentDoc",
     ...options,
   });
   return { mutate, isLoading, data };

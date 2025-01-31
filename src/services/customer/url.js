@@ -18,6 +18,7 @@ export const DEL_VEHICLES = (id = "") => `vehicles/${id}`;
 export const INCIDENT = (id = "") => `customer/incident-report/${id}`;
 export const INCIDENT_STATUS = (id = "") =>
   `/admin/incident-report/${id}/update-status`;
+export const INCIDENT_DOCS = (id = "") => `/admin/incident-report/documents/${id}`;
 export const CLAIM_VEHICLES = (id = "") =>
   `vehicles/claim-vehicle?licenseNumber=${id}`;
 export const DEL_CARDS = (id = "") => `cards/${id}`;

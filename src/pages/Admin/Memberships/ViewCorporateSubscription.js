@@ -230,7 +230,7 @@ export default function ViewCorporateSubscription() {
                       Start Date
                     </Text>
                     <DateTimePicker
-                      selectedDate={values?.startDate || new Date()}
+                      selectedDate={new Date(values?.startDate) || new Date()}
                       isDisabled
                     />
                   </Box>
@@ -245,7 +245,9 @@ export default function ViewCorporateSubscription() {
                       Next Payment Date
                     </Text>
                     <DateTimePicker
-                      selectedDate={values?.nextPaymentDate || new Date()}
+                      selectedDate={
+                        new Date(values?.nextPaymentDate) || new Date()
+                      }
                       isDisabled
                     />
                   </Box>
