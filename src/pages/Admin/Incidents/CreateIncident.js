@@ -79,13 +79,13 @@ const CreateIncident = () => {
 
   const isDisabled = Object.values(fields).some((value) => !value);
   const handleSubmit = (values = "") => {
-    const { manager, type, staffInvolved, ...rest } = values;
+    const { manager, locationManager, type, staffInvolved, ...rest } = values;
 
     mutate({
       ...rest,
       serviceLog: Number(incident?.id),
-      manager: Number(incident?.location?.managers[0]?.id),
-      locationManager: Number(manager?.value),
+      manager: Number(manager?.value),
+      locationManager: Number(locationManager?.value),
       location: Number(incident?.location?.id),
       dateOfReport: new Date(),
       staffInvolved: staffInvolved?.map((item) => Number(item?.value)),
@@ -597,6 +597,7 @@ const CreateIncident = () => {
                             }
                             placeholder="Select type"
                             options={typeOptions}
+                            value={values.type}
                             name="type"
                             onChange={(selectedOption) =>
                               setValues({
@@ -623,7 +624,7 @@ const CreateIncident = () => {
                             </Text>
                           )}
                         </Box>
-                        {console.log(values)}
+                        
                         <Box w="full" mb={4}>
                           <Text
                             mb="8px"
@@ -675,6 +676,7 @@ const CreateIncident = () => {
                             placeholder="Select staff"
                             isMulti
                             options={staffOptions}
+                            value={values.staffInvolved}
                             name="staffInvolved"
                             onChange={(selectedOption) =>
                               setValues({
@@ -727,6 +729,7 @@ const CreateIncident = () => {
                             }
                             placeholder="Select manager"
                             options={managerOptions}
+                            value={values?.manager}
                             name="manager"
                             onChange={(selectedOption) =>
                               setValues({
@@ -771,12 +774,40 @@ const CreateIncident = () => {
                               *
                             </span>
                           </Text>
-                          <CustomInput
-                            mb
-                            auth
-                            value={`${incident?.location?.managers[0]?.firstName} ${incident?.location?.managers[0]?.lastName}`}
-                            isDisabled
+                          <Select
+                            styles={
+                              formSubmitted && !values?.locationManager
+                                ? errorCustomStyles
+                                : customStyles
+                            }
+                            placeholder="Select location manager"
+                            options={managerOptions}
+                            name="locationManager"
+                            onChange={(selectedOption) =>
+                              setValues({
+                                ...values,
+                                locationManager: selectedOption,
+                              })
+                            }
+                            onBlur={handleBlur}
+                            value={values?.locationManager}
+                            components={{
+                              IndicatorSeparator: () => (
+                                <div style={{ display: "none" }}></div>
+                              ),
+                              DropdownIndicator: () => (
+                                <div>
+                                  <IoIosArrowDown size="15px" color="#646668" />
+                                </div>
+                              ),
+                            }}
                           />
+
+                          {formSubmitted && !values?.locationManager && (
+                            <Text mt="8px" fontSize="13px" color="tomato">
+                              Location Manager is required
+                            </Text>
+                          )}
                         </Box>
 
                         <Box w="full" mb={4}>

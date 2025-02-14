@@ -21,6 +21,7 @@ import {
 const EditIncident = () => {
   const [values, setValues] = useState({
     manager: "",
+    locationManager: "",
     guestFirstName: "",
     guestLastName: "",
     guestPhoneNumber: "",
@@ -51,7 +52,7 @@ const EditIncident = () => {
   const { data: staffs } = useGetAllStaff({}, 1, 1000);
   const { data: managers } = useGetAdministrators({}, 1, 1000);
 
-  const { refetch, data, isLoading: isGetting } = useGetAdminIncident(id);
+  const { data, isLoading: isGetting } = useGetAdminIncident(id);
 
   const staffOptions = staffs?.map((staff) => ({
     label: staff?.fullName,
@@ -88,15 +89,15 @@ const EditIncident = () => {
   const isDisabled = Object.values(values).some((value) => !value);
 
   const handleSubmit = () => {
-    const { manager, type, staffInvolved, ...rest } = values;
+    const { manager, locationManager, type, staffInvolved, ...rest } = values;
 
     mutate({
       query: id,
       body: {
         ...rest,
         serviceLog: Number(data?.serviceLog?.id),
+        locationManager: Number(locationManager?.value),
         manager: Number(manager?.value),
-        locationManager: Number(data?.locationManager?.id),
         location: Number(data?.serviceLog?.location?.id),
         staffInvolved: staffInvolved?.map((item) => Number(item?.value)),
         type: type?.value,
@@ -111,7 +112,10 @@ const EditIncident = () => {
     const selectedManager = managerOptions?.find(
       (option) => option.value === Number(data?.manager?.id)
     );
-
+    const selectedLocationManager = managerOptions?.find(
+      (option) => option.value === Number(data?.locationManager?.id)
+    );
+console.log(selectedLocationManager)
     const selectedStaff = data?.staffInvolved
       ?.map((item) => {
         const matchedStaff = staffs?.find((staff) => staff.id === item?.id);
@@ -132,9 +136,11 @@ const EditIncident = () => {
       type: selectedType,
       staffInvolved: selectedStaff,
       manager: selectedManager,
+      locationManager: selectedLocationManager,
       summary: data?.summary,
+      documents: [],
     });
-  }, [data, staffs]);
+  }, [data, staffs, managers]);
 
   const isTrue = data?.serviceLog?.customer;
 
@@ -756,11 +762,28 @@ const EditIncident = () => {
                             *
                           </span>
                         </Text>
-                        <CustomInput
-                          mb
-                          auth
-                          value={`${data?.locationManager?.firstName} ${data?.locationManager?.lastName}`}
-                          isDisabled
+                        <Select
+                          styles={customStyles}
+                          placeholder="Select location manager"
+                          options={managerOptions}
+                          value={values?.locationManager}
+                          name="locationManager"
+                          onChange={(selectedOption) =>
+                            setValues({
+                              ...values,
+                              locationManager: selectedOption,
+                            })
+                          }
+                          components={{
+                            IndicatorSeparator: () => (
+                              <div style={{ display: "none" }}></div>
+                            ),
+                            DropdownIndicator: () => (
+                              <div>
+                                <IoIosArrowDown size="15px" color="#646668" />
+                              </div>
+                            ),
+                          }}
                         />
                       </Box>
 
