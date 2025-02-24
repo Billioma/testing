@@ -15,7 +15,10 @@ import { IoIosArrowDown } from "react-icons/io";
 import { useGetZones } from "../../../services/admin/query/locations";
 import { QRCodeCanvas } from "qrcode.react";
 import DateTimePicker from "../../../components/data/Admin/DateTimePicker";
-import { formatDateToISOString } from "../../../utils/helpers";
+import {
+  formatDateNewTime,
+  formatDateToISOString,
+} from "../../../utils/helpers";
 
 export default function ViewPayToPark() {
   const { id } = useParams();
@@ -287,7 +290,7 @@ export default function ViewPayToPark() {
                   </Text>
 
                   <DateTimePicker
-                    selectedDate={values?.arrival || new Date()}
+                    selectedDate={new Date(values?.arrival) || new Date()}
                     onChange={(date) =>
                       setValues({
                         ...values,
@@ -310,7 +313,7 @@ export default function ViewPayToPark() {
                   </Text>
 
                   <DateTimePicker
-                    selectedDate={values?.departure || new Date()}
+                    selectedDate={new Date(values?.departure) || new Date()}
                     onChange={(date) =>
                       setValues({ ...values, departure: new Date(date) })
                     }
