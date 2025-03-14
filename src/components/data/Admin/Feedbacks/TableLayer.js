@@ -170,7 +170,10 @@ const TableLayer = ({
                         border="1px solid #F4F6F8"
                         boxShadow="0px 8px 16px 0px rgba(0, 0, 0, 0.08)"
                       >
-                        {["View", "Mark As Replied"].map((dat, i) => (
+                        {(item?.isReplied
+                          ? ["View"]
+                          : ["View", "Mark As Replied"]
+                        ).map((dat, i) => (
                           <MenuItem
                             key={i}
                             gap="12px"
