@@ -18,6 +18,9 @@ export const GET_SERVICES_METRICS = "admin/dashboard/services-metrics";
 export const GET_ACTIVITIES_METRICS = "admin/dashboard/activities-metrics";
 
 export const CREATE_SERVICE = "admin/services";
+export const GET_SALES_REPORT = "admin/sales-reports";
+export const GET_SALES_REPORT_LOCATION_GRID = "/admin/sales-reports/grid";
+export const GET_SALES_REPORT_LOCATION_TRANSACTION = "/admin/sales-reports/transactions";
 export const ADMIN_ATTENDANTS = "admin/attendants";
 export const ADMIN_ATTENDANT = (id = "") => `admin/attendants/${id}`;
 export const ADMIN_ATTENDANTS_LIST = (
@@ -68,6 +71,7 @@ export const INCIDENT_DOC = (id = "") =>
   `admin/incident-report/documents/${id}`;
 
 export const ADMIN_LOCATIONS = "admin/locations";
+export const MARK_AS_REPLIED = "admin/feedbacks/mark-as-replied";
 export const ADMIN_LOCATIONS_LIST = (
   filterString = "",
   limit = "",

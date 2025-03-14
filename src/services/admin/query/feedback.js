@@ -5,6 +5,7 @@ import {
   getFeedbacks,
   getRatings,
   getRatingsMetric,
+  markAsRead,
 } from "../api/feedback";
 
 export const useGetFeedbacks = (
@@ -24,6 +25,17 @@ export const useGetFeedbacks = (
 
   return { isLoading, data, refetch };
 };
+
+
+export const useMarkAsRead = (options = {}) => {
+  const { isLoading, mutate } = useMutation(markAsRead, {
+    mutationKey: ["markAsRead"],
+    ...options,
+  });
+
+  return { isLoading, mutate };
+};
+
 
 export const useGetRatingsMetric = (options = {}) => {
   const { data, isLoading, refetch } = useQuery(

@@ -41,8 +41,7 @@ const TableLayer = ({
           <TableFormat
             header={clientLogPayHeader}
             opt
-            alignFirstHeader
-            alignSecondHeader
+            alignIndices={[0, 1]}
             paginationValues={{
               startRow,
               endRow,

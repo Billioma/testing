@@ -89,7 +89,7 @@ const EvTableLayer = ({
           <TableFormat
             header={operatorPtpHeader}
             opt
-            alignFirstHeader
+            alignIndices={[0]}
             paginationValues={{
               startRow,
               endRow,

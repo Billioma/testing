@@ -13,20 +13,15 @@ const TableFormat = ({
   header,
   tab,
   act,
+  br = false,
   title,
   filter,
   minH,
   maxH,
   opt,
   bg = "#F4F6F8",
-  alignFirstHeader,
-  alignSecondHeader,
-  alignThirdHeader,
-  alignForthHeader,
-  alignFifthHeader,
-  alignSixthHeader,
   newOpt,
-  alignSeventhHeader,
+  alignIndices = [],
 }) => {
   return (
     <Box
@@ -68,19 +63,17 @@ const TableFormat = ({
               <Tr>
                 {header?.map((data, i) => (
                   <Th
+                    borderRight={
+                      !br ? "none" : br && i === 0 && "1px solid #E2E5DC"
+                    }
                     textAlign={
-                      data.toLowerCase() === "status" ||
-                      data.toLowerCase() === "date" ||
-                      data.toLowerCase() === "action"
+                      alignIndices.includes(i)
+                        ? "start"
+                        : data.toLowerCase() === "status" ||
+                          data.toLowerCase() === "date" ||
+                          data.toLowerCase() === "action"
                         ? "center"
-                        : act ||
-                          (alignFirstHeader && i === 0) ||
-                          (alignSecondHeader && i === 1) ||
-                          (alignThirdHeader && i === 2) ||
-                          (alignForthHeader && i === 3) ||
-                          (alignFifthHeader && i === 4) ||
-                          (alignSixthHeader && i === 5) ||
-                          (alignSeventhHeader && i === 6)
+                        : act
                         ? "start"
                         : "center"
                     }

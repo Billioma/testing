@@ -28,7 +28,7 @@ const HistoryTableLayer = ({
           <TableFormat
             header={adminRepTranHeader}
             opt
-            alignFirstHeader
+            alignIndices={[0]}
             paginationValues={{
               startRow,
               endRow,

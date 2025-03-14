@@ -59,6 +59,9 @@ const Header = ({ showSidebar }) => {
       case locationRoute.includes("profile"):
         return setTitle("Profile");
 
+      case locationRoute.includes("audit"):
+        return setTitle("Audit");
+
       case locationRoute.includes("locations"):
         return setTitle("Locations");
 
@@ -95,6 +98,12 @@ const Header = ({ showSidebar }) => {
 
       case locationRoute.includes("configurations/faq"):
         return setSecTitle("FAQs");
+
+      case locationRoute.includes("audit/locations"):
+        return setSecTitle("Locations");
+
+      case locationRoute.includes("audit/managers"):
+        return setSecTitle("Managers");
 
       case locationRoute.includes("update-profile"):
         return setSecTitle("Update Profile");

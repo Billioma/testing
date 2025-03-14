@@ -26,6 +26,11 @@ export const getRatings = async (type, page, limit, query) => {
   return response.data;
 };
 
+export const markAsRead = async (id) => {
+  const response = await axiosInstance.patch(`${API.MARK_AS_REPLIED}/${id}`);
+  return response.data;
+};
+
 export const getFeedback = async (query) => {
   const res = await axiosInstance.get(API.ADMIN_FEEDBACK(query.id));
   return res.data;

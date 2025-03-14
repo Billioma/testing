@@ -627,6 +627,18 @@ const AdminMembershipFeatures = WithSuspense(
   lazy(() => import("../pages/Admin/Memberships/MembershipFeatures"))
 );
 
+const AdminAuditLocations = WithSuspense(
+  lazy(() => import("../pages/Admin/Audit/Locations"))
+);
+
+const AdminAuditLocationDetails = WithSuspense(
+  lazy(() => import("../pages/Admin/Audit/Locations/ViewLocation"))
+);
+
+const AdminAuditManagers = WithSuspense(
+  lazy(() => import("../pages/Admin/Audit/Managers"))
+);
+
 const AdminAddMembershipFeature = WithSuspense(
   lazy(() => import("../pages/Admin/Memberships/AddMembershipFeature"))
 );
@@ -1428,6 +1440,21 @@ export const PRIVATE_ROUTES = [
   {
     path: PRIVATE_PATHS.ADMIN_VIEW_LOCATION,
     element: <AdminViewLocation />,
+  },
+
+  {
+    path: PRIVATE_PATHS.ADMIN_AUDIT_LOCATIONS,
+    element: <AdminAuditLocations />,
+  },
+
+  {
+    path: PRIVATE_PATHS.ADMIN_AUDIT_LOCATIONS_DETAILS,
+    element: <AdminAuditLocationDetails />,
+  },
+
+  {
+    path: PRIVATE_PATHS.ADMIN_AUDIT_MANAGERS,
+    element: <AdminAuditManagers />,
   },
 
   {

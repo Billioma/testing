@@ -25,7 +25,7 @@ const VehicleTableLayer = ({
           <TableFormat
             header={adminRepVehicleHeader}
             opt
-            alignFirstHeader
+            alignIndices={[0]}
             paginationValues={{
               startRow,
               endRow,

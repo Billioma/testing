@@ -1,9 +1,24 @@
-import React from "react";
-import { Box, Flex, Td, Text, Tr, Image } from "@chakra-ui/react";
+import React, { useState } from "react";
+import {
+  Box,
+  Flex,
+  Td,
+  Text,
+  Tr,
+  Image,
+  MenuList,
+  MenuButton,
+  Menu,
+  MenuItem,
+} from "@chakra-ui/react";
 import TableFormat from "../../../common/TableFormat";
 import { formatDateNewTime } from "../../../../utils/helpers";
 import TableLoader from "../../../loaders/TableLoader";
 import { useNavigate } from "react-router-dom";
+import useCustomToast from "../../../../utils/notifications";
+import { useMarkAsRead } from "../../../../services/admin/query/feedback";
+import { BsChevronDown } from "react-icons/bs";
+import AdminDeleteModal from "../../../modals/AdminDeleteModal";
 
 const TableLayer = ({
   data,
@@ -12,6 +27,7 @@ const TableLayer = ({
   setPage,
   startRow,
   endRow,
+  refetch,
   limit,
   setLimit,
 }) => {
@@ -24,9 +40,44 @@ const TableLayer = ({
     "ACTIONS",
   ];
 
+  const [selectedRow, setSelectedRow] = useState({ isOpen: false, id: null });
   const navigate = useNavigate();
+  const { errorToast, successToast } = useCustomToast();
+
+  const { mutate, isLoading: isMark } = useMarkAsRead({
+    onSuccess: (res) => {
+      successToast(res?.message);
+      refetch();
+      setSelectedRow({ isOpen: false, id: null });
+    },
+    onError: (err) => {
+      errorToast(
+        err?.response?.data?.message || err?.message || "An Error occurred"
+      );
+    },
+  });
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    mutate(selectedRow.id);
+  };
+
+  const openOption = (i, item) => {
+    i === 0
+      ? navigate(`/admin/support/feedback/${item?.id}`)
+      : setSelectedRow({ isOpen: true, id: item.id });
+  };
+
   return (
     <Box>
+      <AdminDeleteModal
+        isOpen={selectedRow.isOpen}
+        onClose={() => setSelectedRow({ ...selectedRow, isOpen: false })}
+        title="Mark As Read"
+        subTitle="Are you sure you want to mark this feedback as read?"
+        handleSubmit={handleSubmit}
+        isLoading={isMark}
+      />
       {isLoading ? (
         <TableLoader />
       ) : data?.data?.length ? (
@@ -34,8 +85,7 @@ const TableLayer = ({
           <TableFormat
             header={headers}
             opt
-            alignFirstHeader
-            alignSecondHeader
+            alignIndices={[0, 1]}
             paginationValues={{
               startRow,
               endRow,
@@ -108,17 +158,36 @@ const TableLayer = ({
                   </Flex>
                 </Td>
                 <Td textAlign="center">{formatDateNewTime(item?.createdAt)}</Td>
-                <Td textAlign="center">
+                <Td>
                   <Flex justifyContent="center" align="center">
-                    <Text
-                      textDecor="underline"
-                      cursor="pointer"
-                      onClick={() =>
-                        navigate(`/admin/support/feedback/${item?.id}`)
-                      }
-                    >
-                      View
-                    </Text>
+                    <Menu>
+                      <MenuButton as={Text} cursor="pointer">
+                        <BsChevronDown />
+                      </MenuButton>
+                      <MenuList
+                        borderRadius="4px"
+                        p="10px"
+                        border="1px solid #F4F6F8"
+                        boxShadow="0px 8px 16px 0px rgba(0, 0, 0, 0.08)"
+                      >
+                        {["View", "Mark As Replied"].map((dat, i) => (
+                          <MenuItem
+                            key={i}
+                            gap="12px"
+                            borderRadius="2px"
+                            mb="8px"
+                            py="6px"
+                            px="8px"
+                            _hover={{ bg: "#F4F6F8" }}
+                            align="center"
+                            fontWeight="500"
+                            onClick={() => openOption(i, item)}
+                          >
+                            {dat}
+                          </MenuItem>
+                        ))}
+                      </MenuList>
+                    </Menu>
                   </Flex>
                 </Td>
               </Tr>

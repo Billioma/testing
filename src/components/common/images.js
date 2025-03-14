@@ -534,6 +534,24 @@ export const LogsIcon = ({ fill, stroke = "white" }) => (
   </svg>
 );
 
+export const AuditIcon = ({ fill, stroke = "white" }) => (
+  <svg
+    width="16"
+    height="16"
+    viewBox="0 0 16 16"
+    fill={fill}
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path
+      d="M10 6.66667L7.33333 9.33333L6 8M8 14C4.68629 14 2 11.3137 2 8C2 4.68629 4.68629 2 8 2C11.3137 2 14 4.68629 14 8C14 11.3137 11.3137 14 8 14Z"
+      stroke={stroke}
+      strokeWidth="1.2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </svg>
+);
+
 export const ReportsIcon = ({ fill, stroke = "white" }) => (
   <svg
     width="12"

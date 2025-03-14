@@ -24,9 +24,7 @@ const PaymentTableLayer = ({
           <TableFormat
             header={operatorRepPaymentHeader}
             opt
-            alignFirstHeader
-            alignSecondHeader
-            alignThirdHeader
+            alignIndices={[0, 1, 2]}
             paginationValues={{
               startRow,
               endRow,

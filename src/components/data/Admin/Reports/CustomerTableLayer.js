@@ -24,9 +24,7 @@ const CustomerTableLayer = ({
           <TableFormat
             header={adminRepCustomerHeader}
             opt
-            alignFirstHeader
-            alignThirdHeader
-            alignSecondHeader
+            alignIndices={[0, 1, 2]}
             paginationValues={{
               startRow,
               endRow,

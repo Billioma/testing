@@ -24,9 +24,7 @@ const InvoiceTableLayer = ({
           <TableFormat
             header={adminRepInvoiceeHeader}
             opt
-            alignFirstHeader
-            alignSecondHeader
-            alignThirdHeader
+            alignIndices={[0, 1, 2]}
             paginationValues={{
               startRow,
               endRow,

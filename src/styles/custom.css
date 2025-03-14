@@ -312,3 +312,10 @@ textarea::placeholder {
   border: 1px solid #444648;
   margin-bottom: 10px !important;
 }
+
+.greyed-out {
+  color: #b4b4b4;
+}
+.greyed-out:hover {
+  cursor: not-allowed;
+}

@@ -52,15 +52,32 @@ export const formatDate = (date, fallback = "", withTime = false) => {
 };
 
 export const getStartOfWeek = (date) => {
-  const currentMonth = date.getMonth(); // Get the current month (0 = January, ..., 11 = December)
-  date.setMonth(currentMonth - 12); // Subtract one month
-  return new Date(date.setDate(1)); // Set the date to the 1st of the previous month
+  const currentMonth = date.getMonth();
+  date.setMonth(currentMonth - 12);
+  return new Date(date.setDate(1));
+};
+
+export const getStartWeek = (date) => {
+  const start = new Date(date);
+  const day = start.getDay();
+  const diff = start.getDate() - day;
+  start.setDate(diff);
+  start.setHours(0, 0, 0, 0);
+  return start;
+};
+
+export const getEndOfWeek = (date) => {
+  const end = new Date(date);
+  const day = end.getDay();
+  const diff = end.getDate() + (6 - day);
+  end.setDate(diff);
+  end.setHours(23, 59, 59, 999);
+  return end;
 };
 
 export const formatNewDates = (date, fallback = "", withTime = false) => {
   const formattedDate = new Date(date);
 
-  // Check if the date is valid
   if (isNaN(formattedDate)) return fallback;
 
   const year = formattedDate.getFullYear();

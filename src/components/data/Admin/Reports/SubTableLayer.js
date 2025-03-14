@@ -24,8 +24,7 @@ const SubTableLayer = ({
           <TableFormat
             header={adminRepSubHeader}
             opt
-            alignFirstHeader
-            alignSecondHeader
+            alignIndices={[0, 1]}
             paginationValues={{
               startRow,
               endRow,

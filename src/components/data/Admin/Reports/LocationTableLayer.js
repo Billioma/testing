@@ -25,7 +25,7 @@ const LocationTableLayer = ({
           <TableFormat
             header={adminRepLocationHeader}
             opt
-            alignFirstHeader
+            alignIndices={[0]}
             paginationValues={{
               startRow,
               endRow,

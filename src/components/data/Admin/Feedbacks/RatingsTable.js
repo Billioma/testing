@@ -27,8 +27,7 @@ const RatingsTable = ({
           <TableFormat
             header={headers}
             opt
-            alignFirstHeader
-            // alignSecondHeader
+            alignIndices={[0]}
             paginationValues={{
               startRow,
               endRow,

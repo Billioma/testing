@@ -74,8 +74,7 @@ const TableLayer = ({
             header={headers}
             bg="#fff"
             opt
-            alignFirstHeader
-            alignSecondHeader
+            alignIndices={[0, 1]}
             paginationValues={{
               startRow,
               endRow,

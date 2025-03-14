@@ -166,6 +166,7 @@ export default function () {
           isLoading={isLoading}
           page={page}
           limit={limit}
+          refetch={refetch}
           setPage={setPage}
           startRow={startRow}
           endRow={endRow}

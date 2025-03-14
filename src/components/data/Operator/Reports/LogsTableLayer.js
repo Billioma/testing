@@ -24,10 +24,7 @@ const LogsTableLayer = ({
           <TableFormat
             header={operatorRepLogHeader}
             opt
-            alignFirstHeader
-            alignSecondHeader
-            alignThirdHeader
-            alignForthHeader
+            alignIndices={[0, 1, 2, 3]}
             paginationValues={{
               startRow,
               endRow,

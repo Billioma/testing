@@ -28,7 +28,7 @@ const ParkedTableLayer = ({
           <TableFormat
             header={operatorLogHeader}
             opt
-            alignFirstHeader
+            alignIndices={[0]}
             paginationValues={{
               startRow,
               endRow,

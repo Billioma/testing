@@ -282,7 +282,7 @@ const SideBar = ({ show, setShow }) => {
           >
             ADMINSTRATOR
           </Text>
-          {sidebarItems?.slice(9, 14)?.map((item, i) => {
+          {sidebarItems?.slice(9, 15)?.map((item, i) => {
             return (
               <VStack
                 key={i}

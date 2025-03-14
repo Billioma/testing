@@ -52,8 +52,7 @@ const TableLayer = ({
       ) : data?.data?.length ? (
         <TableFormat
           opt
-          alignFirstHeader
-          alignSecondHeader
+          alignIndices={[0, 1]}
           header={[
             "ZONE",
             "SERVICE TYPE",

@@ -13,9 +13,6 @@ import {
   MetricsIcon,
   SubscriptionIcon,
   VehicleIcon,
-} from "./images";
-
-import {
   AdminDashboardIcon,
   ServicesIcon,
   UserIcon,
@@ -27,7 +24,9 @@ import {
   LogsIcon,
   ReportsIcon,
   ConfigIcon,
+  AuditIcon,
 } from "./images";
+
 import { FcCancel } from "react-icons/fc";
 import { BsTrash } from "react-icons/bs";
 import { AiOutlineEdit } from "react-icons/ai";
@@ -344,8 +343,26 @@ export const sidebarItems = [
       },
     ],
   },
+  // {
+  //   id: 10,
+  //   name: "Audit",
+  //   path: "/admin/audit",
+  //   icon: <AuditIcon fill={"#fff"} stroke="#000" />,
+  //   hover: <AuditIcon fill={"#fff"} stroke="#EE383A" />,
+  //   sec: <AuditIcon fill="#EE383A" stroke="#fff" />,
+  //   subItems: [
+  //     {
+  //       name: "Locations",
+  //       path: "/admin/audit/locations",
+  //     },
+  //     {
+  //       name: "Managers",
+  //       path: "/admin/audit/managers",
+  //     },
+  //   ],
+  // },
   {
-    id: 10,
+    id: 11,
     name: "Claims",
     path: "/admin/claims",
     icon: <IncidentIcon fill={"#000"} />,
@@ -353,7 +370,7 @@ export const sidebarItems = [
     sec: <IncidentIcon fill="#fff" />,
   },
   {
-    id: 11,
+    id: 12,
     name: "Reports",
     path: "/admin/indic",
     icon: <ReportsIcon fill={"#fff"} stroke="#000" />,
@@ -403,7 +420,7 @@ export const sidebarItems = [
     ],
   },
   {
-    id: 12,
+    id: 13,
     name: "Support",
     path: "/admin/support",
     icon: <FeedbackIcon fill={"#fff"} stroke="#000" />,
@@ -421,7 +438,7 @@ export const sidebarItems = [
     ],
   },
   {
-    id: 13,
+    id: 14,
     name: "Configurations",
     path: "/admin/configurations",
     icon: <ConfigIcon fill={"#fff"} stroke="#000" />,
@@ -1382,6 +1399,12 @@ export const NewStatus = [
 export const SecStatus = [
   { color: "#E81313", name: "Inactive", bg: "#F9D0CD" },
   { color: "#008000", name: "Active", bg: "#E5FFE5" },
+  { color: "#F9A11E", name: "Pending", bg: "#FDF6E7" },
+];
+
+export const AuditStatus = [
+  { color: "#E81313", name: "FAIL", bg: "#F9D0CD" },
+  { color: "#008000", name: "Pass", bg: "#E5FFE5" },
   { color: "#F9A11E", name: "Pending", bg: "#FDF6E7" },
 ];
 

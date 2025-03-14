@@ -85,9 +85,7 @@ const TableLayer = ({
         <>
           <TableFormat
             header={headers}
-            alignFirstHeader
-            alignSecondHeader
-            alignThirdHeader
+            alignIndices={[0, 1, 2]}
             opt
             paginationValues={{
               startRow,

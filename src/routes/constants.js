@@ -221,6 +221,9 @@ export const PRIVATE_PATHS = {
   ADMIN_VIEW_POLICY: "/admin/locations/policies/details/:id",
   ADMIN_ADD_POLICY: "/admin/locations/policies/create",
 
+  ADMIN_AUDIT_LOCATIONS: "/admin/audit/locations",
+  ADMIN_AUDIT_LOCATIONS_DETAILS: "/admin/audit/locations/:id/:managerId",
+  ADMIN_AUDIT_MANAGERS: "/admin/audit/managers",
   ADMIN_VALETED_VEHICLES: "/admin/logs/valeted-vehicles",
   ADMIN_VIEW_VALETED_VEHICLE: "/admin/logs/valeted-vehicles/details/:id",
 

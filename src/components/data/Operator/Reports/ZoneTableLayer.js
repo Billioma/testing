@@ -24,8 +24,7 @@ const ZoneTableLayer = ({
           <TableFormat
             header={operatorRepZoneHeader}
             opt
-            alignFirstHeader
-            alignSecondHeader
+            alignIndices={[0, 1]}
             paginationValues={{
               startRow,
               endRow,

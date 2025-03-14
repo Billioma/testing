@@ -24,7 +24,7 @@ const PaymentTableLayer = ({
           <TableFormat
             header={adminRepPaymentHeader}
             opt
-            alignFirstHeader
+            alignIndices={[0]}
             paginationValues={{
               startRow,
               endRow,

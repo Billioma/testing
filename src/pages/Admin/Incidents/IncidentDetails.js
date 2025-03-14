@@ -90,6 +90,25 @@ const IncidentDetails = () => {
   const [currentItem, setCurrentItem] = useState("");
   const { id } = useParams();
 
+  const handleDownload = async (item) => {
+    try {
+      const response = await fetch(
+        process.env.REACT_APP_BASE_URL + item?.url.replace("/", "")
+      );
+      const blob = await response.blob();
+      const href = window.URL.createObjectURL(blob);
+
+      const link = document.createElement("a");
+      link.href = href;
+      link.download = item?.name;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    } catch (error) {
+      console.error("Error downloading file:", error);
+    }
+  };
+
   const { mutate: upMutate, isLoading: isUpload } = useCustomerUploadPic({
     onError: (err) => {
       errorToast(
@@ -597,48 +616,74 @@ const IncidentDetails = () => {
                         </Text>
                       </Flex>
 
-                      <Input
-                        id={`image_upload_${item.id}`}
-                        onChange={(file) => handleChange(file, item.id)}
-                        type="file"
-                        display="none"
-                      />
-                      <label htmlFor={`image_upload_${item.id}`}>
+                      <Flex align="center" gap="16px">
+                        <Input
+                          id={`image_upload_${item.id}`}
+                          onChange={(file) => handleChange(file, item.id)}
+                          type="file"
+                          display="none"
+                        />
+                        <label htmlFor={`image_upload_${item.id}`}>
+                          <Flex
+                            bg="#F4F6F8"
+                            borderRadius="4px"
+                            h="30px"
+                            w="74px"
+                            cursor={isUpdating || isUpload ? "" : "pointer"}
+                            onClick={(e) => {
+                              if (item?.url) {
+                                e.stopPropagation();
+                                e.preventDefault();
+                                if (item?.url.includes("pdf")) {
+                                  window.open(
+                                    process.env.REACT_APP_BASE_URL +
+                                      item?.url.replace("/", "")
+                                  );
+                                } else {
+                                  onOpen();
+                                  setCurrentImage(item);
+                                }
+                              } else {
+                                isUpdating || isUpload
+                                  ? ""
+                                  : setCurrentItem(item);
+                              }
+                            }}
+                            color="#646668"
+                            fontSize="12px"
+                            lineHeight="12px"
+                            justifyContent="center"
+                            align="center"
+                          >
+                            {item?.url ? (
+                              "View"
+                            ) : isUpload && currentItem?.id === item.id ? (
+                              <Spinner size="sm" />
+                            ) : files?.some((file) => file.id === item.id) ? (
+                              "Uploaded"
+                            ) : (
+                              "Upload"
+                            )}
+                          </Flex>
+                        </label>
+
                         <Flex
                           bg="#F4F6F8"
                           borderRadius="4px"
                           h="30px"
+                          display={item?.url ? "flex" : "none"}
                           w="74px"
-                          cursor={isUpdating || isUpload ? "" : "pointer"}
-                          onClick={(e) => {
-                            if (item?.url) {
-                              e.stopPropagation();
-                              e.preventDefault();
-                              onOpen();
-                              setCurrentImage(item);
-                            } else {
-                              isUpdating || isUpload
-                                ? ""
-                                : setCurrentItem(item);
-                            }
-                          }}
+                          cursor="pointer"
+                          onClick={(e) => handleDownload(item)}
                           color="#646668"
                           fontSize="12px"
                           lineHeight="12px"
                           justifyContent="center"
                           align="center"
                         >
-                          {item?.url ? (
-                            "View"
-                          ) : isUpload && currentItem?.id === item.id ? (
-                            <Spinner size="sm" />
-                          ) : files?.some((file) => file.id === item.id) ? (
-                            "Uploaded"
-                          ) : (
-                            "Upload"
-                          )}
+                          Download
                         </Flex>
-                      </label>
+                      </Flex>
                     </Flex>
                   ))}
 

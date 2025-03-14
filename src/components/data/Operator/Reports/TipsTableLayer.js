@@ -24,9 +24,7 @@ const TipsTableLayer = ({
           <TableFormat
             header={adminTipsHeader}
             opt
-            alignFirstHeader
-            alignThirdHeader
-            alignSecondHeader
+            alignIndices={[0, 1, 2]}
             paginationValues={{
               startRow,
               endRow,
