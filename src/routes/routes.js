@@ -639,6 +639,10 @@ const AdminAuditManagers = WithSuspense(
   lazy(() => import("../pages/Admin/Audit/Managers"))
 );
 
+const AdminAuditManagerDetails = WithSuspense(
+  lazy(() => import("../pages/Admin/Audit/Managers/ViewManager"))
+);
+
 const AdminAddMembershipFeature = WithSuspense(
   lazy(() => import("../pages/Admin/Memberships/AddMembershipFeature"))
 );
@@ -1455,6 +1459,11 @@ export const PRIVATE_ROUTES = [
   {
     path: PRIVATE_PATHS.ADMIN_AUDIT_MANAGERS,
     element: <AdminAuditManagers />,
+  },
+
+  {
+    path: PRIVATE_PATHS.ADMIN_AUDIT_MANAGER_DETAILS,
+    element: <AdminAuditManagerDetails />,
   },
 
   {

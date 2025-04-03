@@ -622,6 +622,7 @@ const IncidentDetails = () => {
                           onChange={(file) => handleChange(file, item.id)}
                           type="file"
                           display="none"
+                          accept=".jpg, .jpeg, .png, .pdf, .svg"
                         />
                         <label htmlFor={`image_upload_${item.id}`}>
                           <Flex

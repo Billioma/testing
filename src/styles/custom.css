@@ -302,6 +302,23 @@ textarea::placeholder {
   padding: 12px !important;
   height: 44px !important;
 }
+.ne_class .rmdp-input {
+  background-color: #f4f6f8 !important;
+  border: none !important;
+  border-right: none !important;
+  border-radius: 8px !important;
+  width: 100% !important;
+  font-size: 13px !important;
+  color: #444648;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 12px !important;
+  height: 44px !important;
+  -webkit-border-radius: 8px !important;
+  -moz-border-radius: 8px !important;
+  -ms-border-radius: 8px !important;
+  -o-border-radius: 8px !important;
+}
 
 #reload_href {
   color: red !important;

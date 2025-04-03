@@ -1,6 +1,8 @@
 import { useMutation, useQuery } from "react-query";
 import {
   deleteSalesReport,
+  getManagerGrid,
+  getManagerSalesReports,
   getSalesReports,
   getSalesReportsLocationGrid,
   getSalesReportsLocationTrans,
@@ -15,6 +17,54 @@ export const useGetSalesReports = (
   const { data, isLoading, refetch } = useQuery(
     ["getSalesReports", limit, page, query],
     () => getSalesReports(page, limit, query),
+    {
+      ...options,
+    }
+  );
+
+  return { isLoading, data, refetch };
+};
+
+export const useGetManagerSalesReports = (
+  options = {},
+  search = "",
+  page = 1,
+  limit = 25,
+  startDate,
+  endDate
+) => {
+  const { data, isLoading, refetch } = useQuery(
+    ["getManagerSalesReports", search, limit, page, startDate, endDate],
+    () => getManagerSalesReports(search, page, limit, startDate, endDate),
+    {
+      ...options,
+    }
+  );
+
+  return { isLoading, data, refetch };
+};
+
+export const useGetManagerGrid = (
+  options = {},
+  managerId = "",
+  locationName = "",
+  page = 1,
+  limit = 25,
+  startDate,
+  endDate
+) => {
+  const { data, isLoading, refetch } = useQuery(
+    [
+      "getManagerGrid",
+      managerId,
+      locationName,
+      page,
+      limit,
+      startDate,
+      endDate,
+    ],
+    () =>
+      getManagerGrid(managerId, locationName, page, limit, startDate, endDate),
     {
       ...options,
     }

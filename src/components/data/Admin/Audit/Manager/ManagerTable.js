@@ -17,11 +17,11 @@ import { useNavigate } from "react-router-dom";
 import AdminDeleteModal from "../../../../modals/AdminDeleteModal";
 import useCustomToast from "../../../../../utils/notifications";
 import { BsChevronDown } from "react-icons/bs";
-import { AuditStatus, viewDeleteOption } from "../../../../common/constants";
+import { viewDeleteOption } from "../../../../common/constants";
 import TableLoader from "../../../../loaders/TableLoader";
 import { useDeleteSalesReport } from "../../../../../services/admin/query/audit";
 
-const LocationTable = ({
+const ManagerTable = ({
   data,
   isLoading,
   page,
@@ -34,13 +34,12 @@ const LocationTable = ({
 }) => {
   const headers = [
     "MANAGER NAME",
-    "LOCATION",
-    "TOTAL REVENUE",
-    "CARS PARKED",
-    "DATE",
-    "AUDIT",
+    "total revenue recorded",
+    "locations",
+    "performance",
     "ACTIONS",
   ];
+
   const [selectedRow, setSelectedRow] = useState({ isOpen: false, id: null });
   const navigate = useNavigate();
   const { errorToast, successToast } = useCustomToast();
@@ -65,10 +64,8 @@ const LocationTable = ({
 
   const openOption = (i, audit) => {
     i === 0
-      ? (navigate(
-          `/admin/audit/locations/${audit?.location?.id}/${audit?.manager?.id}`
-        ),
-        sessionStorage.setItem("audit_status", audit?.audit))
+      ? (navigate(`/admin/audit/managers/${audit?.managerId}`),
+        sessionStorage.setItem("managerName", audit?.managerName))
       : i === 1 && setSelectedRow({ isOpen: true, id: audit.id });
   };
 
@@ -81,7 +78,7 @@ const LocationTable = ({
           <TableFormat
             header={headers}
             opt
-            alignIndices={[0, 1, 2]}
+            alignIndices={[0, 1]}
             paginationValues={{
               startRow,
               endRow,
@@ -104,32 +101,28 @@ const LocationTable = ({
                 fontSize="14px"
                 lineHeight="100%"
               >
+                <Td>{audit?.managerName}</Td>
                 <Td>
-                  {audit?.manager?.firstName} {audit?.manager?.lastName}
+                  ₦ {Number(audit?.totalRevenueRecorded)?.toLocaleString()}
                 </Td>
-                <Td>{audit?.location?.name}</Td>
-                <Td>
-                  ₦ {Number(audit?.totalRevenueCollected)?.toLocaleString()}
-                </Td>
-                <Td textAlign="center">{audit?.totalCarsParked}</Td>
-                <Td textAlign="center">{audit?.date}</Td>
+                <Td textAlign="center">{audit?.locations}</Td>
 
                 <Td>
                   <Flex align="center" w="full" justifyContent="center">
                     <Flex
                       color={
-                        AuditStatus.find(
-                          (dat) =>
-                            dat.name?.toLowerCase() ===
-                            audit?.audit?.toLowerCase()
-                        )?.color || ""
+                        Number(audit?.performance) < 40
+                          ? "#E81313"
+                          : Number(audit?.performance < 70)
+                          ? "#F9A11E"
+                          : "#008000"
                       }
                       bg={
-                        AuditStatus.find(
-                          (dat) =>
-                            dat.name?.toLowerCase() ===
-                            audit?.audit?.toLowerCase()
-                        )?.bg || ""
+                        Number(audit?.performance) < 40
+                          ? "#F9D0CD"
+                          : Number(audit?.performance < 70)
+                          ? "#FDF6E7"
+                          : "#E5FFE5"
                       }
                       justifyContent="center"
                       align="center"
@@ -138,7 +131,7 @@ const LocationTable = ({
                       px="16px"
                       borderRadius="4px"
                     >
-                      {audit?.audit?.toLowerCase()}
+                      {audit?.performance}
                     </Flex>
                   </Flex>
                 </Td>
@@ -211,4 +204,4 @@ const LocationTable = ({
   );
 };
 
-export default LocationTable;
+export default ManagerTable;

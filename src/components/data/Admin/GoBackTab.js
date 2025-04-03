@@ -3,7 +3,7 @@ import { Box, Flex } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import { HiOutlineArrowNarrowLeft } from "react-icons/hi";
 
-const BackButtonBox = () => {
+const GoBackTab = () => {
   const navigate = useNavigate();
 
   const goBack = () => {
@@ -36,4 +36,4 @@ const BackButtonBox = () => {
   );
 };
 
-export default BackButtonBox;
+export default GoBackTab;

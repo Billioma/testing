@@ -343,24 +343,24 @@ export const sidebarItems = [
       },
     ],
   },
-  // {
-  //   id: 10,
-  //   name: "Audit",
-  //   path: "/admin/audit",
-  //   icon: <AuditIcon fill={"#fff"} stroke="#000" />,
-  //   hover: <AuditIcon fill={"#fff"} stroke="#EE383A" />,
-  //   sec: <AuditIcon fill="#EE383A" stroke="#fff" />,
-  //   subItems: [
-  //     {
-  //       name: "Locations",
-  //       path: "/admin/audit/locations",
-  //     },
-  //     {
-  //       name: "Managers",
-  //       path: "/admin/audit/managers",
-  //     },
-  //   ],
-  // },
+  {
+    id: 10,
+    name: "Audit",
+    path: "/admin/audit",
+    icon: <AuditIcon fill={"#fff"} stroke="#000" />,
+    hover: <AuditIcon fill={"#fff"} stroke="#EE383A" />,
+    sec: <AuditIcon fill="#EE383A" stroke="#fff" />,
+    subItems: [
+      {
+        name: "Locations",
+        path: "/admin/audit/locations",
+      },
+      {
+        name: "Managers",
+        path: "/admin/audit/managers",
+      },
+    ],
+  },
   {
     id: 11,
     name: "Claims",
@@ -2243,6 +2243,14 @@ export const locationsOptions = [
   { label: "Operator", value: "operator.name" },
   { label: "State", value: "state" },
   { label: "Status", value: "status" },
+  { label: "Created At", value: "createdAt" },
+];
+
+export const auditMOptions = [
+  { label: "Manager Name", value: "managerName" },
+  { label: "Revenue", value: "totalRevenueRecorded" },
+  { label: "Locations", value: "" },
+  { label: "Performance", value: "performance" },
   { label: "Created At", value: "createdAt" },
 ];
 

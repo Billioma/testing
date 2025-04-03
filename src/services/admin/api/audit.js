@@ -10,6 +10,33 @@ export const getSalesReports = async (page, limit, query) => {
   return response.data;
 };
 
+export const getManagerSalesReports = async (
+  search,
+  page,
+  limit,
+  startDate,
+  endDate
+) => {
+  const response = await axiosInstance.get(
+    `${API.GET_MANAGER_SALES_REPORT}?search=${search}&page=${page}&limit=${limit}&startDate=${startDate}&endDate=${endDate}&sort=createdAt,DESC`
+  );
+  return response.data;
+};
+
+export const getManagerGrid = async (
+  managerId,
+  locationName,
+  page,
+  limit,
+  startDate,
+  endDate
+) => {
+  const response = await axiosInstance.get(
+    `${API.GET_MANAGER_GRID}?managerId=${managerId}&locationName=${locationName}&page=${page}&limit=${limit}&startDate=${startDate}&endDate=${endDate}`
+  );
+  return response.data;
+};
+
 export const getSalesReportsLocationGrid = async (
   id,
   managerId,

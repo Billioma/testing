@@ -35,6 +35,7 @@ const Locations = () => {
       gte: yesterday.toISOString().split("T")[0],
       lte: today.toISOString().split("T")[0],
     }));
+
     setSearchFilters({
       ...values,
       gte: yesterday.toISOString().split("T")[0],
@@ -53,6 +54,12 @@ const Locations = () => {
       status: "",
     });
   };
+
+  useEffect(() => {
+    sessionStorage.removeItem("loc_start");
+    sessionStorage.removeItem("loc_end");
+  }, []);
+
   const { data: locations } = useGetLocations({}, 1, 1000);
   const { data: managers } = useGetAdministrators({}, 1, 1000);
 
@@ -84,11 +91,11 @@ const Locations = () => {
             searchFilters.manager.label.split(" ")[0]
           }`,
         searchFilters.gte &&
-          `filter=createdAt||$gte||${formatFilterDate(
+          `filter=date||$gte||${formatFilterDate(
             searchFilters.gte
           )}T00:00:00`,
         searchFilters.lte &&
-          `filter=createdAt||$lte||${formatFilterDate(
+          `filter=date||$lte||${formatFilterDate(
             searchFilters.lte
           )}T23:59:59`,
         searchFilters.status &&
@@ -255,6 +262,10 @@ const Locations = () => {
                     value={values?.gte}
                     onChange={(date) => {
                       setValues({ ...values, gte: date });
+                      sessionStorage.setItem(
+                        "loc_start",
+                        `${formatFilterDate(date)}T00:00:00`
+                      );
                     }}
                   />
                 </Box>
@@ -285,6 +296,10 @@ const Locations = () => {
                     value={values?.lte}
                     onChange={(date) => {
                       setValues({ ...values, lte: date });
+                      sessionStorage.setItem(
+                        "loc_end",
+                        `${formatFilterDate(date)}T23:59:59`
+                      );
                     }}
                   />
                 </Box>

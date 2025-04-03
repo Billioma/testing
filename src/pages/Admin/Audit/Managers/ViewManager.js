@@ -1,44 +1,42 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import {
-  useGetSalesReportsLocationGrid,
-  useGetSalesReportsLocationTrans,
-} from "../../../../services/admin/query/audit";
+import { useGetManagerGrid } from "../../../../services/admin/query/audit";
 import { Box, Flex, Grid, GridItem, Skeleton, Text } from "@chakra-ui/react";
+import { formatFilterDate } from "../../../../utils/helpers";
 import GoBackTab from "../../../../components/data/Admin/GoBackTab";
-import Table from "../../../../components/data/Admin/Audit/Locations/Table";
-import { AuditStatus } from "../../../../components/common/constants";
+import GridTable from "../../../../components/data/Admin/Audit/Manager/GridTable";
 
-const ViewLocation = () => {
+const ViewManager = () => {
+  const { managerId } = useParams();
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(25);
   const [startRow, setStartRow] = useState(1);
   const [endRow, setEndRow] = useState(0);
-  const { id, managerId } = useParams();
+  const [search, setSearch] = useState("");
 
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedSearch(search);
+      refetch();
+    }, 500);
+
+    return () => clearTimeout(handler);
+  }, [search]);
+
+  const [debouncedSearch, setDebouncedSearch] = useState(search);
+  const today = new Date();
+  const yesterday = new Date();
+  yesterday.setDate(today.getDate() - 1);
+  const managerName = sessionStorage.getItem("managerName");
   const start =
-    sessionStorage.getItem("loc_start") ||
-    yesterday.toISOString().split("T")[0];
-  const end =
-    sessionStorage.getItem("loc_end") || `${formatFilterDate(start)}T23:59:59`;
-  const { data, isLoading } = useGetSalesReportsLocationGrid(
-    id,
+    sessionStorage.getItem("start") || yesterday.toISOString().split("T")[0];
+  const end = sessionStorage.getItem("end") || `${formatFilterDate(start)}T23:59:59`;
+  const { data, isLoading, refetch } = useGetManagerGrid(
     {
       refetchOnWindowFocus: true,
     },
     managerId,
-    page,
-    limit,
-    start,
-    end
-  );
-
-  const { data: trans, isLoading: isTrans } = useGetSalesReportsLocationTrans(
-    id,
-    {
-      refetchOnWindowFocus: true,
-    },
-    managerId,
+    debouncedSearch,
     page,
     limit,
     start,
@@ -46,52 +44,29 @@ const ViewLocation = () => {
   );
 
   useEffect(() => {
-    if (!trans?.data) {
+    if (!data) {
       return;
     }
 
     const currentPage = page;
     const itemsPerPage = limit;
-    const totalItems = trans?.total;
+    const totalItems = data?.total;
 
     const currentStartRow = (currentPage - 1) * itemsPerPage + 1;
     const currentEndRow = Math.min(currentPage * itemsPerPage, totalItems);
 
     setStartRow(currentStartRow);
     setEndRow(currentEndRow);
-  }, [data, page, limit, trans]);
+  }, [data, page, limit]);
 
-  const audit_status = sessionStorage.getItem("audit_status");
   return (
     <Box>
       <Box w="fit-content">
         <GoBackTab />
       </Box>
-
-      <Flex align="flex-end" justifyContent="space-between">
-        <Box>
-          <Text color="#3D3D3D" fontSize="20px" fontWeight={700}>
-            {data?.metrics?.location?.name}
-          </Text>
-          <Box
-            bg="#F4F6F8"
-            mt="8px"
-            borderRadius="4px"
-            color="#949698"
-            p="6px"
-            textAlign="center"
-            w="fit-content"
-            fontWeight={500}
-            fontSize="12px"
-          >
-            Manager:{" "}
-            <span style={{ color: "#3D3D3D" }}>
-              {data?.metrics?.manager?.firstName}{" "}
-              {data?.metrics?.manager?.lastName}
-            </span>
-          </Box>
-        </Box>
-      </Flex>
+      <Text color="#3D3D3D" fontSize="20px" fontWeight={700}>
+        {managerName}
+      </Text>
 
       <Box mt="24px">
         <Grid
@@ -105,8 +80,8 @@ const ViewLocation = () => {
           ]}
         >
           {[
+            "Manager's Rating",
             "Total Revenue Reported by Manager",
-            "Total Revenue Recorded by System",
             "Total Recorded Transactions",
           ]?.map((dat, i) => (
             <GridItem key={i}>
@@ -140,57 +115,32 @@ const ViewLocation = () => {
                           mt="24px"
                           fontSize="28px"
                           lineHeight="100%"
-                          color="#646668"
+                          color={
+                            i === 0
+                              ? Number(data?.metrics?.managerRating) < 40
+                                ? "#E81313"
+                                : Number(data?.metrics?.managerRating < 70)
+                                ? "#F9A11E"
+                                : "#008000"
+                              : "#646668"
+                          }
                           fontWeight={500}
                         >
                           {" "}
-                          {i !== 2 && "₦"}{" "}
+                          {i === 1 ? "₦" : ""}{" "}
                           {i === 0
                             ? Number(
-                                data?.metrics?.totalRevenueReported
+                                data?.metrics?.managerRating
                               )?.toLocaleString()
                             : i === 1
                             ? Number(
-                                data?.metrics?.totalRevenueRecordedBySystem
+                                data?.metrics?.totalRevenueReported
                               )?.toLocaleString()
                             : i === 2 &&
                               data?.metrics?.totalTransactions?.toLocaleString()}
+                          {i === 0 ? "%" : ""}
                         </Text>
                       </Box>
-
-                      <Flex
-                        align="center"
-                        w="full"
-                        display={i === 0 ? "flex" : "none"}
-                        fontSize="14px"
-                        justifyContent="flex-end"
-                      >
-                        <Flex
-                          color={
-                            AuditStatus.find(
-                              (dat) =>
-                                dat.name?.toLowerCase() ===
-                                audit_status?.toLowerCase()
-                            )?.color || ""
-                          }
-                          bg={
-                            AuditStatus.find(
-                              (dat) =>
-                                dat.name?.toLowerCase() ===
-                                audit_status?.toLowerCase()
-                            )?.bg || ""
-                          }
-                          justifyContent="center"
-                          align="center"
-                          fontWeight={500}
-                          py="5px"
-                          textTransform="capitalize"
-                          px="16px"
-                          borderRadius="4px"
-                        >
-                          {audit_status?.toLowerCase()}
-                        </Flex>
-                      </Flex>
                     </Flex>
                   </Box>
                 </Box>
@@ -202,17 +152,19 @@ const ViewLocation = () => {
 
       <Box border="1px solid #d4d6d8" borderRadius="8px" p="30px 23px 24px">
         <Text fontWeight={500} mb="15px" lineHeight="100%" color="#242628">
-          Transaction History
+          {managerName} Locations
         </Text>
 
-        <Table
-          data={trans}
-          isLoading={isTrans}
+        <GridTable
+          data={data}
+          isLoading={isLoading}
           page={page}
           limit={limit}
           setPage={setPage}
           startRow={startRow}
           endRow={endRow}
+          start={start}
+          end={end}
           setLimit={setLimit}
         />
       </Box>
@@ -220,4 +172,4 @@ const ViewLocation = () => {
   );
 };
 
-export default ViewLocation;
+export default ViewManager;
