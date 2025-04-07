@@ -8,6 +8,7 @@ import { Box, Flex, Grid, GridItem, Skeleton, Text } from "@chakra-ui/react";
 import GoBackTab from "../../../../components/data/Admin/GoBackTab";
 import Table from "../../../../components/data/Admin/Audit/Locations/Table";
 import { AuditStatus } from "../../../../components/common/constants";
+import { formatFilterDate } from "../../../../utils/helpers";
 
 const ViewLocation = () => {
   const [page, setPage] = useState(1);

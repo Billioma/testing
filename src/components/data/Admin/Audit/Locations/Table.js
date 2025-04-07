@@ -20,6 +20,7 @@ const Table = ({
     "TIME",
     "PAYMENT METHOD ",
   ];
+  console.log(data)
   
   return (
     <Box>
