@@ -71,12 +71,12 @@ const Location = () => {
   }));
 
   const locationOptions = locations?.data
-    ?.filter((item) => item?.client) // Filters items where 'client.name' exists
+    ?.filter((item) => item?.client)
     ?.map((place) => ({
       value: place?.id,
       label: place?.name,
     }));
-console.log(locationOptions)
+
   const [isRefetch, setIsRefetch] = useState(false);
 
   const { data, isLoading, refetch } = useGetLocationMetrics(

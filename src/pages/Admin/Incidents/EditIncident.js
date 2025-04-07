@@ -115,7 +115,7 @@ const EditIncident = () => {
     const selectedLocationManager = managerOptions?.find(
       (option) => option.value === Number(data?.locationManager?.id)
     );
-console.log(selectedLocationManager)
+
     const selectedStaff = data?.staffInvolved
       ?.map((item) => {
         const matchedStaff = staffs?.find((staff) => staff.id === item?.id);

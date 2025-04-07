@@ -37,20 +37,6 @@ export const getManagerGrid = async (
   return response.data;
 };
 
-export const getSalesReportsLocationGrid = async (
-  id,
-  managerId,
-  page,
-  limit,
-  startDate,
-  endDate
-) => {
-  const response = await axiosInstance.get(
-    `${API.GET_SALES_REPORT_LOCATION_GRID}/${id}?managerId=${managerId}&page=${page}&limit=${limit}&startDate=${startDate}&endDate=${endDate}`
-  );
-  return response.data;
-};
-
 export const getSalesReportsLocationTrans = async (
   id,
   managerId,

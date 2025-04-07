@@ -21,7 +21,6 @@ export const CREATE_SERVICE = "admin/services";
 export const GET_SALES_REPORT = "admin/sales-reports";
 export const GET_MANAGER_SALES_REPORT = "admin/sales-reports/manager/sales-reports";
 export const GET_MANAGER_GRID = "admin/sales-reports/manager/grid";
-export const GET_SALES_REPORT_LOCATION_GRID = "/admin/sales-reports/grid";
 export const GET_SALES_REPORT_LOCATION_TRANSACTION = "/admin/sales-reports/transactions";
 export const ADMIN_ATTENDANTS = "admin/attendants";
 export const ADMIN_ATTENDANT = (id = "") => `admin/attendants/${id}`;

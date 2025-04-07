@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import {
-  useGetSalesReportsLocationGrid,
   useGetSalesReportsLocationTrans,
 } from "../../../../services/admin/query/audit";
 import { Box, Flex, Grid, GridItem, Skeleton, Text } from "@chakra-ui/react";
@@ -22,17 +21,6 @@ const ViewLocation = () => {
     yesterday.toISOString().split("T")[0];
   const end =
     sessionStorage.getItem("loc_end") || `${formatFilterDate(start)}T23:59:59`;
-  const { data, isLoading } = useGetSalesReportsLocationGrid(
-    id,
-    {
-      refetchOnWindowFocus: true,
-    },
-    managerId,
-    page,
-    limit,
-    start,
-    end
-  );
 
   const { data: trans, isLoading: isTrans } = useGetSalesReportsLocationTrans(
     id,
@@ -60,7 +48,7 @@ const ViewLocation = () => {
 
     setStartRow(currentStartRow);
     setEndRow(currentEndRow);
-  }, [data, page, limit, trans]);
+  }, [page, limit, trans]);
 
   const audit_status = sessionStorage.getItem("audit_status");
   return (
@@ -72,7 +60,7 @@ const ViewLocation = () => {
       <Flex align="flex-end" justifyContent="space-between">
         <Box>
           <Text color="#3D3D3D" fontSize="20px" fontWeight={700}>
-            {data?.metrics?.location?.name}
+            {trans?.metrics?.location?.name}
           </Text>
           <Box
             bg="#F4F6F8"
@@ -87,8 +75,8 @@ const ViewLocation = () => {
           >
             Manager:{" "}
             <span style={{ color: "#3D3D3D" }}>
-              {data?.metrics?.manager?.firstName}{" "}
-              {data?.metrics?.manager?.lastName}
+              {trans?.metrics?.manager?.firstName}{" "}
+              {trans?.metrics?.manager?.lastName}
             </span>
           </Box>
         </Box>
@@ -111,7 +99,7 @@ const ViewLocation = () => {
             "Total Recorded Transactions",
           ]?.map((dat, i) => (
             <GridItem key={i}>
-              <Skeleton borderRadius="8px" isLoaded={!isLoading} h="10rem">
+              <Skeleton borderRadius="8px" isLoaded={!isTrans} h="10rem">
                 <Box
                   borderRadius="8px"
                   bg="#F4F6F8"
@@ -148,14 +136,14 @@ const ViewLocation = () => {
                           {i !== 2 && "₦"}{" "}
                           {i === 0
                             ? Number(
-                                data?.metrics?.totalRevenueReported
+                                trans?.metrics?.totalRevenueReported
                               )?.toLocaleString()
                             : i === 1
                             ? Number(
-                                data?.metrics?.totalRevenueRecordedBySystem
+                                trans?.metrics?.totalRevenueRecordedBySystem
                               )?.toLocaleString()
                             : i === 2 &&
-                              data?.metrics?.totalTransactions?.toLocaleString()}
+                              trans?.metrics?.totalTransactions?.toLocaleString()}
                         </Text>
                       </Box>
 

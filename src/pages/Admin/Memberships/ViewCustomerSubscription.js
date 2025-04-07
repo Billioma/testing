@@ -274,7 +274,7 @@ export default function ViewMembershipSubscription() {
                     >
                       Start Date
                     </Text>
-                    {console.log(state)}
+
                     <DateTimePicker
                       selectedDate={new Date(state?.startDate) || new Date()}
                       isDisabled
@@ -291,7 +291,9 @@ export default function ViewMembershipSubscription() {
                       Next Payment Date
                     </Text>
                     <DateTimePicker
-                      selectedDate={new Date(state?.nextPaymentDate) || new Date()}
+                      selectedDate={
+                        new Date(state?.nextPaymentDate) || new Date()
+                      }
                       isDisabled
                     />
                   </Box>

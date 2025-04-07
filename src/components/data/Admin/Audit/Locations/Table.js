@@ -20,8 +20,7 @@ const Table = ({
     "TIME",
     "PAYMENT METHOD ",
   ];
-  console.log(data)
-  
+
   return (
     <Box>
       {isLoading ? (
@@ -44,7 +43,7 @@ const Table = ({
                   : null,
               onPrevious: () =>
                 Number(data?.page) !== 1 ? setPage(page - 1) : null,
-           setLimit,
+              setLimit,
               limit,
             }}
             useDefaultPagination

@@ -4,7 +4,6 @@ import {
   getManagerGrid,
   getManagerSalesReports,
   getSalesReports,
-  getSalesReportsLocationGrid,
   getSalesReportsLocationTrans,
 } from "../api/audit";
 
@@ -65,42 +64,6 @@ export const useGetManagerGrid = (
     ],
     () =>
       getManagerGrid(managerId, locationName, page, limit, startDate, endDate),
-    {
-      ...options,
-    }
-  );
-
-  return { isLoading, data, refetch };
-};
-
-export const useGetSalesReportsLocationGrid = (
-  id,
-  options = {},
-  managerId,
-  page = 1,
-  limit = 25,
-  startDate,
-  endDate
-) => {
-  const { data, isLoading, refetch } = useQuery(
-    [
-      "getSalesReportsLocationGrid",
-      id,
-      managerId,
-      page,
-      limit,
-      startDate,
-      endDate,
-    ],
-    () =>
-      getSalesReportsLocationGrid(
-        id,
-        managerId,
-        page,
-        limit,
-        startDate,
-        endDate
-      ),
     {
       ...options,
     }
