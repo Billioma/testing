@@ -78,7 +78,7 @@ const ManagerTable = ({
           <TableFormat
             header={headers}
             opt
-            alignIndices={[0, 1]}
+            alignIndices={[0]}
             paginationValues={{
               startRow,
               endRow,
@@ -102,7 +102,7 @@ const ManagerTable = ({
                 lineHeight="100%"
               >
                 <Td>{audit?.managerName}</Td>
-                <Td>
+                <Td textAlign="center">
                   ₦ {Number(audit?.totalRevenueRecorded)?.toLocaleString()}
                 </Td>
                 <Td textAlign="center">{audit?.locations}</Td>
