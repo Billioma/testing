@@ -91,7 +91,7 @@ const ViewLocation = () => {
           {[
             "Total Revenue Reported by Manager",
             "Total Revenue Recorded by System",
-            "Total Cars Parked",
+            "Total Recorded Transactions",
           ]?.map((dat, i) => (
             <GridItem key={i}>
               <Skeleton borderRadius="8px" isLoaded={!isTrans} h="10rem">
