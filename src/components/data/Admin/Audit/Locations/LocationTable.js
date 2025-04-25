@@ -20,6 +20,7 @@ import { BsChevronDown } from "react-icons/bs";
 import { AuditStatus, viewDeleteOption } from "../../../../common/constants";
 import TableLoader from "../../../../loaders/TableLoader";
 import { useDeleteSalesReport } from "../../../../../services/admin/query/audit";
+import { formatFilterDate } from "../../../../../utils/helpers";
 
 const LocationTable = ({
   data,
@@ -65,9 +66,13 @@ const LocationTable = ({
 
   const openOption = (i, audit) => {
     i === 0
-      ? (navigate(
+      ? ((navigate(
           `/admin/audit/locations/${audit?.location?.id}/${audit?.manager?.id}`
         ),
+        sessionStorage.setItem(
+          "loc_start",
+          `${formatFilterDate(audit?.date)}T00:00:00`
+        )),
         sessionStorage.setItem("audit_status", audit?.audit))
       : i === 1 && setSelectedRow({ isOpen: true, id: audit.id });
   };

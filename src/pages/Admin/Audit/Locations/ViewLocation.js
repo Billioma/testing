@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import {
-  useGetSalesReportsLocationTrans,
-} from "../../../../services/admin/query/audit";
+import { useGetSalesReportsLocationTrans } from "../../../../services/admin/query/audit";
 import { Box, Flex, Grid, GridItem, Skeleton, Text } from "@chakra-ui/react";
 import GoBackTab from "../../../../components/data/Admin/GoBackTab";
 import Table from "../../../../components/data/Admin/Audit/Locations/Table";
@@ -16,11 +14,8 @@ const ViewLocation = () => {
   const [endRow, setEndRow] = useState(0);
   const { id, managerId } = useParams();
 
-  const start =
-    sessionStorage.getItem("loc_start") ||
-    yesterday.toISOString().split("T")[0];
-  const end =
-    sessionStorage.getItem("loc_end") || `${formatFilterDate(start)}T23:59:59`;
+  const start = sessionStorage.getItem("loc_start");
+  const end = `${formatFilterDate(start)}T23:59:59`;
 
   const { data: trans, isLoading: isTrans } = useGetSalesReportsLocationTrans(
     id,

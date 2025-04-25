@@ -91,13 +91,9 @@ const Locations = () => {
             searchFilters.manager.label.split(" ")[0]
           }`,
         searchFilters.gte &&
-          `filter=date||$gte||${formatFilterDate(
-            searchFilters.gte
-          )}T00:00:00`,
+          `filter=date||$gte||${formatFilterDate(searchFilters.gte)}T00:00:00`,
         searchFilters.lte &&
-          `filter=date||$lte||${formatFilterDate(
-            searchFilters.lte
-          )}T23:59:59`,
+          `filter=date||$lte||${formatFilterDate(searchFilters.lte)}T23:59:59`,
         searchFilters.status &&
           searchFilters.status.value !== "ALL" &&
           `filter=audit||$cont||${searchFilters.status.value}`,
@@ -260,13 +256,7 @@ const Locations = () => {
                   <DatePicker
                     placeholder="Select Date"
                     value={values?.gte}
-                    onChange={(date) => {
-                      setValues({ ...values, gte: date });
-                      sessionStorage.setItem(
-                        "loc_start",
-                        `${formatFilterDate(date)}T00:00:00`
-                      );
-                    }}
+                    onChange={(date) => setValues({ ...values, gte: date })}
                   />
                 </Box>
               </Flex>
@@ -294,13 +284,7 @@ const Locations = () => {
                   <DatePicker
                     placeholder="Select Date"
                     value={values?.lte}
-                    onChange={(date) => {
-                      setValues({ ...values, lte: date });
-                      sessionStorage.setItem(
-                        "loc_end",
-                        `${formatFilterDate(date)}T23:59:59`
-                      );
-                    }}
+                    onChange={(date) => setValues({ ...values, lte: date })}
                   />
                 </Box>
               </Flex>
