@@ -91,7 +91,7 @@ const ViewLocation = () => {
           {[
             "Total Revenue Reported by Manager",
             "Total Revenue Recorded by System",
-            "Total Recorded Transactions",
+            "Total Cars Parked",
           ]?.map((dat, i) => (
             <GridItem key={i}>
               <Skeleton borderRadius="8px" isLoaded={!isTrans} h="10rem">
@@ -127,7 +127,6 @@ const ViewLocation = () => {
                           color="#646668"
                           fontWeight={500}
                         >
-                          {" "}
                           {i !== 2 && "₦"}{" "}
                           {i === 0
                             ? Number(
