@@ -30,7 +30,7 @@ const Table = ({
           <TableFormat
             header={headers}
             opt
-            alignIndices={[0, 1]}
+            alignIndices={[0]}
             paginationValues={{
               startRow,
               endRow,
@@ -57,7 +57,7 @@ const Table = ({
                 lineHeight="100%"
               >
                 <Td>{trans?.id}</Td>
-                <Td textTransform="capitalize">
+                <Td textAlign="center" textTransform="capitalize">
                   ₦ {Number(trans?.amount)?.toLocaleString()}
                 </Td>
                 <Td textAlign="center">
