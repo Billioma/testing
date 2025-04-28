@@ -20,6 +20,7 @@ import { BsChevronDown } from "react-icons/bs";
 import { viewDeleteOption } from "../../../../common/constants";
 import TableLoader from "../../../../loaders/TableLoader";
 import { useDeleteSalesReport } from "../../../../../services/admin/query/audit";
+import { formatDateNewTime } from "../../../../../utils/helpers";
 
 const ManagerTable = ({
   data,
@@ -37,6 +38,7 @@ const ManagerTable = ({
     "total revenue recorded",
     "locations",
     "performance",
+    "date",
     "ACTIONS",
   ];
 
@@ -135,7 +137,7 @@ const ManagerTable = ({
                     </Flex>
                   </Flex>
                 </Td>
-
+                <Td textAlign="center">{formatDateNewTime(audit?.date)}</Td>
                 <Td>
                   <Flex justifyContent="center" align="center">
                     <Menu>

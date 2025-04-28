@@ -16,6 +16,7 @@ const Table = ({
 }) => {
   const headers = [
     "TICKET NUMBER",
+    "LICENSE PLATE",
     "AMOUNT REQUESTED",
     "TIME",
     "PAYMENT METHOD ",
@@ -30,7 +31,7 @@ const Table = ({
           <TableFormat
             header={headers}
             opt
-            alignIndices={[0]}
+            alignIndices={[0, 1]}
             paginationValues={{
               startRow,
               endRow,
@@ -57,6 +58,7 @@ const Table = ({
                 lineHeight="100%"
               >
                 <Td>{trans?.id}</Td>
+                <Td>{trans?.vehicle?.licensePlate}</Td>
                 <Td textAlign="center" textTransform="capitalize">
                   ₦ {Number(trans?.amount)?.toLocaleString()}
                 </Td>
