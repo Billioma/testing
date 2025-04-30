@@ -33,14 +33,7 @@ const ManagerTable = ({
   limit,
   setLimit,
 }) => {
-  const headers = [
-    "MANAGER NAME",
-    "total revenue recorded",
-    "locations",
-    "performance",
-    "date",
-    "ACTIONS",
-  ];
+  const headers = ["MANAGER NAME", "performance", "ACTIONS"];
 
   const [selectedRow, setSelectedRow] = useState({ isOpen: false, id: null });
   const navigate = useNavigate();
@@ -104,10 +97,6 @@ const ManagerTable = ({
                 lineHeight="100%"
               >
                 <Td>{audit?.managerName}</Td>
-                <Td textAlign="center">
-                  ₦ {Number(audit?.totalRevenueRecorded)?.toLocaleString()}
-                </Td>
-                <Td textAlign="center">{audit?.locations}</Td>
 
                 <Td>
                   <Flex align="center" w="full" justifyContent="center">
@@ -137,7 +126,7 @@ const ManagerTable = ({
                     </Flex>
                   </Flex>
                 </Td>
-                <Td textAlign="center">{formatDateNewTime(audit?.date)}</Td>
+
                 <Td>
                   <Flex justifyContent="center" align="center">
                     <Menu>

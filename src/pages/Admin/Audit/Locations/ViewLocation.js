@@ -85,16 +85,17 @@ const ViewLocation = () => {
             "repeat(1,1fr)",
             "repeat(1,1fr)",
             "repeat(2,1fr)",
-            "repeat(3,1fr)",
+            "repeat(4,1fr)",
           ]}
         >
           {[
-            "Total Revenue Reported by Manager",
-            "Total Revenue Recorded by System",
-            "Total Recorded Transactions",
+            "Revenue Recorded (Manager)",
+            "Revenue Recorded (System)",
+            "Transactions Recorded (Manager)",
+            "Transactions Recorded (System)",
           ]?.map((dat, i) => (
             <GridItem key={i}>
-              <Skeleton borderRadius="8px" isLoaded={!isTrans} h="10rem">
+              <Skeleton borderRadius="8px" isLoaded={!isTrans} minH="10rem">
                 <Box
                   borderRadius="8px"
                   bg="#F4F6F8"
@@ -127,7 +128,7 @@ const ViewLocation = () => {
                           color="#646668"
                           fontWeight={500}
                         >
-                          {i !== 2 && "₦"}{" "}
+                          {i < 2 && "₦"}{" "}
                           {i === 0
                             ? Number(
                                 trans?.metrics?.totalRevenueReported
@@ -136,8 +137,13 @@ const ViewLocation = () => {
                             ? Number(
                                 trans?.metrics?.totalRevenueRecordedBySystem
                               )?.toLocaleString()
-                            : i === 2 &&
-                              trans?.metrics?.totalTransactions?.toLocaleString()}
+                            : i === 2
+                            ? Number(
+                                trans?.metrics?.totalCarsParked
+                              )?.toLocaleString()
+                            : Number(
+                                trans?.metrics?.totalTransactions
+                              )?.toLocaleString()}
                         </Text>
                       </Box>
 

@@ -12,31 +12,22 @@ const ViewManager = () => {
   const [limit, setLimit] = useState(25);
   const [startRow, setStartRow] = useState(1);
   const [endRow, setEndRow] = useState(0);
-  const [search, setSearch] = useState("");
 
-  useEffect(() => {
-    const handler = setTimeout(() => {
-      setDebouncedSearch(search);
-      refetch();
-    }, 500);
-
-    return () => clearTimeout(handler);
-  }, [search]);
-
-  const [debouncedSearch, setDebouncedSearch] = useState(search);
   const today = new Date();
   const yesterday = new Date();
   yesterday.setDate(today.getDate() - 1);
   const managerName = sessionStorage.getItem("managerName");
   const start =
-    sessionStorage.getItem("start") || yesterday.toISOString().split("T")[0];
-  const end = sessionStorage.getItem("end") || `${formatFilterDate(start)}T23:59:59`;
-  const { data, isLoading, refetch } = useGetManagerGrid(
+    sessionStorage.getItem("start") ||
+    new Date(today.getFullYear(), 0, 1).toLocaleDateString("en-CA");
+  const end =
+    sessionStorage.getItem("end") ||
+    `${formatFilterDate(today.toLocaleDateString("en-CA"))}T23:59:59`;
+  const { data, isLoading } = useGetManagerGrid(
     {
       refetchOnWindowFocus: true,
     },
     managerId,
-    debouncedSearch,
     page,
     limit,
     start,

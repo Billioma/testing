@@ -46,7 +46,6 @@ export const useGetManagerSalesReports = (
 export const useGetManagerGrid = (
   options = {},
   managerId = "",
-  locationName = "",
   page = 1,
   limit = 25,
   startDate,
@@ -56,14 +55,13 @@ export const useGetManagerGrid = (
     [
       "getManagerGrid",
       managerId,
-      locationName,
       page,
       limit,
       startDate,
       endDate,
     ],
     () =>
-      getManagerGrid(managerId, locationName, page, limit, startDate, endDate),
+      getManagerGrid(managerId, page, limit, startDate, endDate),
     {
       ...options,
     }

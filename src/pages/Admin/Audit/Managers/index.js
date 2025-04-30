@@ -17,12 +17,10 @@ const index = () => {
   const [debouncedSearch, setDebouncedSearch] = useState(search);
 
   const today = new Date();
-  const yesterday = new Date();
-  yesterday.setDate(today.getDate() - 1);
 
   const [values, setValues] = useState({
-    gte: yesterday.toISOString().split("T")[0],
-    lte: today.toISOString().split("T")[0],
+    gte: new Date(today.getFullYear(), 0, 1).toLocaleDateString("en-CA"),
+    lte: today.toLocaleDateString("en-CA"),
   });
 
   useEffect(() => {

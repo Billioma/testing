@@ -36,6 +36,7 @@ const LocationTable = ({
   const headers = [
     "MANAGER NAME",
     "LOCATION",
+    "PERFORMANCE",
     "TOTAL REVENUE",
     "CARS PARKED",
     "DATE",
@@ -113,6 +114,34 @@ const LocationTable = ({
                   {audit?.manager?.firstName} {audit?.manager?.lastName}
                 </Td>
                 <Td>{audit?.location?.name}</Td>
+                <Td>
+                  <Flex align="center" w="full" justifyContent="center">
+                    <Flex
+                      color={
+                        Number(audit?.locationPerformance) < 40
+                          ? "#E81313"
+                          : Number(audit?.locationPerformance < 70)
+                          ? "#F9A11E"
+                          : "#008000"
+                      }
+                      bg={
+                        Number(audit?.locationPerformance) < 40
+                          ? "#F9D0CD"
+                          : Number(audit?.locationPerformance < 70)
+                          ? "#FDF6E7"
+                          : "#E5FFE5"
+                      }
+                      justifyContent="center"
+                      align="center"
+                      py="5px"
+                      textTransform="capitalize"
+                      px="16px"
+                      borderRadius="4px"
+                    >
+                      {audit?.locationPerformance}
+                    </Flex>
+                  </Flex>
+                </Td>
                 <Td>
                   ₦ {Number(audit?.totalRevenueCollected)?.toLocaleString()}
                 </Td>
