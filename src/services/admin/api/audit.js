@@ -10,6 +10,18 @@ export const getSalesReports = async (page, limit, query) => {
   return response.data;
 };
 
+export const getSalesReportLocations = async (
+  page,
+  limit,
+  startDate,
+  endDate
+) => {
+  const response = await axiosInstance.get(
+    `${API.GET_SALES_REPORT_LOCATION}?page=${page}&limit=${limit}&startDate=${startDate}&endDate=${endDate}&sort=createdAt,DESC`
+  );
+  return response.data;
+};
+
 export const getManagerSalesReports = async (
   search,
   page,

@@ -70,74 +70,55 @@ const ViewManager = () => {
             "repeat(3,1fr)",
           ]}
         >
-          {[
-            "Manager's Rating",
-            "Total Revenue Reported by Manager",
-            "Total Recorded Transactions",
-          ]?.map((dat, i) => (
-            <GridItem key={i}>
-              <Skeleton borderRadius="8px" isLoaded={!isLoading} h="10rem">
-                <Box
-                  borderRadius="8px"
-                  bg="#F4F6F8"
-                  pt="5px"
-                  px="5px"
-                  border="1px solid #E4E6E8"
-                >
-                  <Box h="6px" w="full" bg="#000" borderRadius="full"></Box>
-                  <Box px="15px" pt="0px" pb="20px">
-                    <Text
-                      mt="24px"
-                      lineHeight="100%"
-                      fontWeight={700}
-                      color="#242628"
-                    >
-                      {dat}
-                    </Text>
+          <GridItem>
+            <Skeleton borderRadius="8px" isLoaded={!isLoading} h="10rem">
+              <Box
+                borderRadius="8px"
+                bg="#F4F6F8"
+                pt="5px"
+                px="5px"
+                border="1px solid #E4E6E8"
+              >
+                <Box h="6px" w="full" bg="#000" borderRadius="full"></Box>
+                <Box px="15px" pt="0px" pb="20px">
+                  <Text
+                    mt="24px"
+                    lineHeight="100%"
+                    fontWeight={700}
+                    color="#242628"
+                  >
+                    Manager's Rating
+                  </Text>
 
-                    <Flex
-                      mt="24px"
-                      align="flex-end"
-                      justifyContent="space-between"
-                      w="full"
-                    >
-                      <Box w="full">
-                        <Text
-                          mt="24px"
-                          fontSize="28px"
-                          lineHeight="100%"
-                          color={
-                            i === 0
-                              ? Number(data?.metrics?.managerRating) < 40
-                                ? "#E81313"
-                                : Number(data?.metrics?.managerRating < 70)
-                                ? "#F9A11E"
-                                : "#008000"
-                              : "#646668"
-                          }
-                          fontWeight={500}
-                        >
-                          {" "}
-                          {i === 1 ? "₦" : ""}{" "}
-                          {i === 0
-                            ? Number(
-                                data?.metrics?.managerRating
-                              )?.toLocaleString()
-                            : i === 1
-                            ? Number(
-                                data?.metrics?.totalRevenueReported
-                              )?.toLocaleString()
-                            : i === 2 &&
-                              data?.metrics?.totalTransactions?.toLocaleString()}
-                          {i === 0 ? "%" : ""}
-                        </Text>
-                      </Box>
-                    </Flex>
-                  </Box>
+                  <Flex
+                    mt="24px"
+                    align="flex-end"
+                    justifyContent="space-between"
+                    w="full"
+                  >
+                    <Box w="full">
+                      <Text
+                        mt="24px"
+                        fontSize="28px"
+                        lineHeight="100%"
+                        color={
+                          Number(data?.metrics?.managerRating) < 40
+                            ? "#E81313"
+                            : Number(data?.metrics?.managerRating < 70)
+                            ? "#F9A11E"
+                            : "#008000"
+                        }
+                        fontWeight={500}
+                      >
+                        {Number(data?.metrics?.managerRating)?.toLocaleString()}{" "}
+                        %
+                      </Text>
+                    </Box>
+                  </Flex>
                 </Box>
-              </Skeleton>
-            </GridItem>
-          ))}
+              </Box>
+            </Skeleton>
+          </GridItem>
         </Grid>
       </Box>
 

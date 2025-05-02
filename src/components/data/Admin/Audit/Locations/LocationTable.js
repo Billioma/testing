@@ -57,7 +57,7 @@ const LocationTable = ({
   };
 
   const openOption = (audit) => {
-    (navigate(`/admin/audit/locations/${audit?.location?.id}`),
+    (navigate(`/admin/audit/locations/${audit?.id}`),
     sessionStorage.setItem(
       "loc_start",
       `${formatFilterDate(audit?.date)}T00:00:00`
@@ -65,16 +65,11 @@ const LocationTable = ({
       sessionStorage.setItem("audit_status", audit?.audit);
   };
 
-  const filteredData = data?.data?.filter(
-    (item, index, self) =>
-      index === self.findIndex((t) => t.location.name === item.location.name)
-  );
-
   return (
     <Box>
       {isLoading ? (
         <TableLoader />
-      ) : filteredData?.length ? (
+      ) : data?.data?.length ? (
         <>
           <TableFormat
             header={headers}
@@ -94,7 +89,7 @@ const LocationTable = ({
             }}
             useDefaultPagination
           >
-            {filteredData?.map((audit, i) => (
+            {data?.data?.map((audit, i) => (
               <Tr
                 key={i}
                 color="#646668"
@@ -102,21 +97,21 @@ const LocationTable = ({
                 fontSize="14px"
                 lineHeight="100%"
               >
-                <Td>{audit?.location?.name}</Td>
+                <Td>{audit?.name}</Td>
                 <Td>
                   <Flex align="center" w="full" justifyContent="center">
                     <Flex
                       color={
-                        Number(audit?.locationPerformance) < 40
+                        Number(audit?.performance) < 40
                           ? "#E81313"
-                          : Number(audit?.locationPerformance < 70)
+                          : Number(audit?.performance < 70)
                           ? "#F9A11E"
                           : "#008000"
                       }
                       bg={
-                        Number(audit?.locationPerformance) < 40
+                        Number(audit?.performance) < 40
                           ? "#F9D0CD"
-                          : Number(audit?.locationPerformance < 70)
+                          : Number(audit?.performance < 70)
                           ? "#FDF6E7"
                           : "#E5FFE5"
                       }
@@ -127,7 +122,7 @@ const LocationTable = ({
                       px="16px"
                       borderRadius="4px"
                     >
-                      {audit?.locationPerformance}
+                      {audit?.performance}
                     </Flex>
                   </Flex>
                 </Td>

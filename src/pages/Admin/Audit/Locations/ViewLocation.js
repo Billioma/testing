@@ -46,6 +46,7 @@ const ViewLocation = () => {
   }, [page, limit, trans]);
 
   const audit_status = sessionStorage.getItem("audit_status");
+  
   return (
     <Box>
       <Box w="fit-content">

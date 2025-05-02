@@ -165,44 +165,7 @@ const SingleLocation = () => {
         borderRadius="8px"
         p="16px 23px 24px"
       >
-        <Flex
-          align={{ base: "flex-end", md: "flex-start" }}
-          flexDir={{ base: "column-reverse", md: "row" }}
-          justifyContent="space-between"
-        >
-          <Flex align="center" gap="24px">
-            <Box
-              w={{ base: "100%", md: "20rem" }}
-              mb="32px"
-              pos="relative"
-              zIndex={43}
-            >
-              <Text mb="8px" fontSize="12px" fontWeight={500} color="#444648">
-                Manager
-              </Text>
-              <Select
-                styles={customStyles}
-                placeholder="Select manager"
-                options={managerOptions}
-                name="manager"
-                value={values.manager}
-                onChange={(selectedOption) => {
-                  setValues({
-                    ...values,
-                    manager: selectedOption,
-                  });
-                }}
-                components={{
-                  IndicatorSeparator: () => (
-                    <div style={{ display: "none" }}></div>
-                  ),
-                  DropdownIndicator: () => (
-                    <IoIosArrowDown size="15px" color="#646668" />
-                  ),
-                }}
-              />
-            </Box>
-          </Flex>
+        <Flex justifyContent="flex-end" w="full">
           <MdClose
             size="20px"
             cursor="pointer"

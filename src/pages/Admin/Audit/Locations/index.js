@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Box, Flex, Text } from "@chakra-ui/react";
 import { IoIosArrowForward } from "react-icons/io";
 import DatePicker from "react-multi-date-picker";
-import { useGetSalesReports } from "../../../../services/admin/query/audit";
+import { useGetSalesReportLocations } from "../../../../services/admin/query/audit";
 import LocationTable from "../../../../components/data/Admin/Audit/Locations/LocationTable";
 import { formatFilterDate } from "../../../../utils/helpers";
 
@@ -18,22 +18,16 @@ const Locations = () => {
     lte: today.toLocaleDateString("en-CA"),
   });
 
-  const query = [
-    values.gte && `filter=date||$gte||${formatFilterDate(values.gte)}`,
-    values.lte && `filter=date||$lte||${formatFilterDate(values.lte)}`,
-  ]
-    .filter(Boolean)
-    .join("&");
-
-  const { data, isLoading, refetch } = useGetSalesReports(
+  const { data, isLoading, refetch } = useGetSalesReportLocations(
     {
       refetchOnWindowFocus: true,
     },
     page,
     limit,
-    query
+    formatFilterDate(values.gte),
+    formatFilterDate(values.lte)
   );
- 
+
   useEffect(() => {
     setPage(1);
   }, [limit]);

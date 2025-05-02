@@ -36,7 +36,7 @@ const SingleLocationTable = ({
   const headers = [
     "MANAGER NAME",
     "TOTAL REVENUE",
-    "CARS PARKED",
+    "TRANSACTIONS",
     "DATE",
     "AUDIT",
     "ACTIONS",
