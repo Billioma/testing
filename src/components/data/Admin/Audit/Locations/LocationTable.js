@@ -17,10 +17,10 @@ import { useNavigate } from "react-router-dom";
 import AdminDeleteModal from "../../../../modals/AdminDeleteModal";
 import useCustomToast from "../../../../../utils/notifications";
 import { BsChevronDown } from "react-icons/bs";
-import { viewDeleteOption } from "../../../../common/constants";
 import TableLoader from "../../../../loaders/TableLoader";
 import { useDeleteSalesReport } from "../../../../../services/admin/query/audit";
 import { formatFilterDate } from "../../../../../utils/helpers";
+import { HiOutlineInformationCircle } from "react-icons/hi";
 
 const LocationTable = ({
   data,
@@ -56,22 +56,20 @@ const LocationTable = ({
     mutate(selectedRow.id);
   };
 
-  const openOption = (i, audit) => {
-    i === 0
-      ? ((navigate(`/admin/audit/locations/${audit?.location?.id}`),
-        sessionStorage.setItem(
-          "loc_start",
-          `${formatFilterDate(audit?.date)}T00:00:00`
-        )),
-        sessionStorage.setItem("audit_status", audit?.audit))
-      : i === 1 && setSelectedRow({ isOpen: true, id: audit.id });
+  const openOption = (audit) => {
+    (navigate(`/admin/audit/locations/${audit?.location?.id}`),
+    sessionStorage.setItem(
+      "loc_start",
+      `${formatFilterDate(audit?.date)}T00:00:00`
+    )),
+      sessionStorage.setItem("audit_status", audit?.audit);
   };
 
   const filteredData = data?.data?.filter(
     (item, index, self) =>
       index === self.findIndex((t) => t.location.name === item.location.name)
   );
-  
+
   return (
     <Box>
       {isLoading ? (
@@ -146,23 +144,20 @@ const LocationTable = ({
                         border="1px solid #F4F6F8"
                         boxShadow="0px 8px 16px 0px rgba(0, 0, 0, 0.08)"
                       >
-                        {viewDeleteOption.map((dat, i) => (
-                          <MenuItem
-                            key={i}
-                            gap="12px"
-                            borderRadius="2px"
-                            mb="8px"
-                            py="6px"
-                            px="8px"
-                            _hover={{ bg: "#F4F6F8" }}
-                            align="center"
-                            fontWeight="500"
-                            onClick={() => openOption(i, audit)}
-                          >
-                            <Icon as={dat.icon} />
-                            {dat?.name}
-                          </MenuItem>
-                        ))}
+                        <MenuItem
+                          gap="12px"
+                          borderRadius="2px"
+                          mb="8px"
+                          py="6px"
+                          px="8px"
+                          _hover={{ bg: "#F4F6F8" }}
+                          align="center"
+                          fontWeight="500"
+                          onClick={() => openOption(audit)}
+                        >
+                          <Icon as={HiOutlineInformationCircle} />
+                          View
+                        </MenuItem>
                       </MenuList>
                     </Menu>
                   </Flex>
