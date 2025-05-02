@@ -59,6 +59,8 @@ const GridTable = ({
                           ? "#E5FFE5"
                           : status === "FAIL"
                           ? "#FEF1F1"
+                          : status === "PENDING"
+                          ? "#FDF6E7"
                           : ""
                       }
                       color={
@@ -66,6 +68,8 @@ const GridTable = ({
                           ? "#0B841D"
                           : status === "FAIL"
                           ? "#EE383A"
+                          : status === "PENDING"
+                          ? "#F9A11E"
                           : ""
                       }
                       textAlign="center"

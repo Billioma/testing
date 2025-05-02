@@ -631,6 +631,10 @@ const AdminAuditLocations = WithSuspense(
   lazy(() => import("../pages/Admin/Audit/Locations"))
 );
 
+const AdminAuditLocation = WithSuspense(
+  lazy(() => import("../pages/Admin/Audit/Locations/SingleLocation"))
+);
+
 const AdminAuditLocationDetails = WithSuspense(
   lazy(() => import("../pages/Admin/Audit/Locations/ViewLocation"))
 );
@@ -1449,6 +1453,11 @@ export const PRIVATE_ROUTES = [
   {
     path: PRIVATE_PATHS.ADMIN_AUDIT_LOCATIONS,
     element: <AdminAuditLocations />,
+  },
+
+  {
+    path: PRIVATE_PATHS.ADMIN_AUDIT_LOCATION,
+    element: <AdminAuditLocation />,
   },
 
   {

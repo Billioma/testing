@@ -17,12 +17,12 @@ import { useNavigate } from "react-router-dom";
 import AdminDeleteModal from "../../../../modals/AdminDeleteModal";
 import useCustomToast from "../../../../../utils/notifications";
 import { BsChevronDown } from "react-icons/bs";
-import { viewDeleteOption } from "../../../../common/constants";
+import { AuditStatus, viewDeleteOption } from "../../../../common/constants";
 import TableLoader from "../../../../loaders/TableLoader";
 import { useDeleteSalesReport } from "../../../../../services/admin/query/audit";
 import { formatFilterDate } from "../../../../../utils/helpers";
 
-const LocationTable = ({
+const SingleLocationTable = ({
   data,
   isLoading,
   page,
@@ -33,7 +33,14 @@ const LocationTable = ({
   limit,
   setLimit,
 }) => {
-  const headers = ["LOCATION", "PERFORMANCE", "ACTIONS"];
+  const headers = [
+    "MANAGER NAME",
+    "TOTAL REVENUE",
+    "CARS PARKED",
+    "DATE",
+    "AUDIT",
+    "ACTIONS",
+  ];
   const [selectedRow, setSelectedRow] = useState({ isOpen: false, id: null });
   const navigate = useNavigate();
   const { errorToast, successToast } = useCustomToast();
@@ -58,7 +65,9 @@ const LocationTable = ({
 
   const openOption = (i, audit) => {
     i === 0
-      ? ((navigate(`/admin/audit/locations/${audit?.location?.id}`),
+      ? ((navigate(
+          `/admin/audit/locations/${audit?.location?.id}/${audit?.manager?.id}`
+        ),
         sessionStorage.setItem(
           "loc_start",
           `${formatFilterDate(audit?.date)}T00:00:00`
@@ -67,16 +76,11 @@ const LocationTable = ({
       : i === 1 && setSelectedRow({ isOpen: true, id: audit.id });
   };
 
-  const filteredData = data?.data?.filter(
-    (item, index, self) =>
-      index === self.findIndex((t) => t.location.name === item.location.name)
-  );
-  
   return (
     <Box>
       {isLoading ? (
         <TableLoader />
-      ) : filteredData?.length ? (
+      ) : data?.data?.length ? (
         <>
           <TableFormat
             header={headers}
@@ -96,7 +100,7 @@ const LocationTable = ({
             }}
             useDefaultPagination
           >
-            {filteredData?.map((audit, i) => (
+            {data?.data?.map((audit, i) => (
               <Tr
                 key={i}
                 color="#646668"
@@ -104,23 +108,32 @@ const LocationTable = ({
                 fontSize="14px"
                 lineHeight="100%"
               >
-                <Td>{audit?.location?.name}</Td>
+                <Td>
+                  {audit?.manager?.firstName} {audit?.manager?.lastName}
+                </Td>
+                
+                <Td textAlign="center">
+                  ₦ {Number(audit?.totalRevenueCollected)?.toLocaleString()}
+                </Td>
+                <Td textAlign="center">{audit?.totalCarsParked}</Td>
+                <Td textAlign="center">{audit?.date}</Td>
+
                 <Td>
                   <Flex align="center" w="full" justifyContent="center">
                     <Flex
                       color={
-                        Number(audit?.locationPerformance) < 40
-                          ? "#E81313"
-                          : Number(audit?.locationPerformance < 70)
-                          ? "#F9A11E"
-                          : "#008000"
+                        AuditStatus.find(
+                          (dat) =>
+                            dat.name?.toLowerCase() ===
+                            audit?.audit?.toLowerCase()
+                        )?.color || ""
                       }
                       bg={
-                        Number(audit?.locationPerformance) < 40
-                          ? "#F9D0CD"
-                          : Number(audit?.locationPerformance < 70)
-                          ? "#FDF6E7"
-                          : "#E5FFE5"
+                        AuditStatus.find(
+                          (dat) =>
+                            dat.name?.toLowerCase() ===
+                            audit?.audit?.toLowerCase()
+                        )?.bg || ""
                       }
                       justifyContent="center"
                       align="center"
@@ -129,7 +142,7 @@ const LocationTable = ({
                       px="16px"
                       borderRadius="4px"
                     >
-                      {audit?.locationPerformance}
+                      {audit?.audit?.toLowerCase()}
                     </Flex>
                   </Flex>
                 </Td>
@@ -202,4 +215,4 @@ const LocationTable = ({
   );
 };
 
-export default LocationTable;
+export default SingleLocationTable;

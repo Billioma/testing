@@ -52,7 +52,7 @@ const ViewLocation = () => {
         <GoBackTab />
       </Box>
 
-      <Flex align="flex-end" justifyContent="space-between">
+      <Flex align="flex-end" gap="24px">
         <Box>
           <Text color="#3D3D3D" fontSize="20px" fontWeight={700}>
             {trans?.metrics?.location?.name}
@@ -75,6 +75,29 @@ const ViewLocation = () => {
             </span>
           </Box>
         </Box>
+
+        <Flex
+          fontSize="14px"
+          color={
+            AuditStatus.find(
+              (dat) => dat.name?.toLowerCase() === audit_status?.toLowerCase()
+            )?.color || ""
+          }
+          bg={
+            AuditStatus.find(
+              (dat) => dat.name?.toLowerCase() === audit_status?.toLowerCase()
+            )?.bg || ""
+          }
+          justifyContent="center"
+          align="center"
+          fontWeight={500}
+          py="5px"
+          textTransform="capitalize"
+          px="16px"
+          borderRadius="4px"
+        >
+          {audit_status?.toLowerCase()}
+        </Flex>
       </Flex>
 
       <Box mt="24px">
@@ -89,10 +112,10 @@ const ViewLocation = () => {
           ]}
         >
           {[
-            "Revenue Recorded (Manager)",
-            "Revenue Recorded (System)",
-            "Transactions Recorded (Manager)",
-            "Transactions Recorded (System)",
+            "Revenue (Manager)",
+            "Revenue (System)",
+            "Transactions (Manager)",
+            "Transactions (System)",
           ]?.map((dat, i) => (
             <GridItem key={i}>
               <Skeleton borderRadius="8px" isLoaded={!isTrans} minH="10rem">
@@ -114,12 +137,7 @@ const ViewLocation = () => {
                       {dat}
                     </Text>
 
-                    <Flex
-                      mt="24px"
-                      align="flex-end"
-                      justifyContent="space-between"
-                      w="full"
-                    >
+                    <Box mt="24px" w="full">
                       <Box w="full">
                         <Text
                           mt="24px"
@@ -146,41 +164,7 @@ const ViewLocation = () => {
                               )?.toLocaleString()}
                         </Text>
                       </Box>
-
-                      <Flex
-                        align="center"
-                        w="full"
-                        display={i === 0 ? "flex" : "none"}
-                        fontSize="14px"
-                        justifyContent="flex-end"
-                      >
-                        <Flex
-                          color={
-                            AuditStatus.find(
-                              (dat) =>
-                                dat.name?.toLowerCase() ===
-                                audit_status?.toLowerCase()
-                            )?.color || ""
-                          }
-                          bg={
-                            AuditStatus.find(
-                              (dat) =>
-                                dat.name?.toLowerCase() ===
-                                audit_status?.toLowerCase()
-                            )?.bg || ""
-                          }
-                          justifyContent="center"
-                          align="center"
-                          fontWeight={500}
-                          py="5px"
-                          textTransform="capitalize"
-                          px="16px"
-                          borderRadius="4px"
-                        >
-                          {audit_status?.toLowerCase()}
-                        </Flex>
-                      </Flex>
-                    </Flex>
+                    </Box>
                   </Box>
                 </Box>
               </Skeleton>
