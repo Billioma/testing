@@ -1,14 +1,5 @@
 import React, { useState } from "react";
-import {
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalBody,
-  Flex,
-  Text,
-  Box,
-  Button,
-} from "@chakra-ui/react";
+import { Flex, Text, Box, Button } from "@chakra-ui/react";
 import Select from "react-select";
 import CustomInput from "../common/CustomInput";
 import useCustomToast from "../../utils/notifications";
@@ -16,6 +7,7 @@ import { useCreateService } from "../../services/admin/query/services";
 import TextInput from "../common/TextInput";
 import { IoIosArrowDown } from "react-icons/io";
 import { errorCustomStyles } from "../common/constants";
+import ModalLayout from "./ModalLayout";
 
 const AdminAddServiceModal = ({ isOpen, refetch, onClose }) => {
   const [values, setValues] = useState({
@@ -99,176 +91,162 @@ const AdminAddServiceModal = ({ isOpen, refetch, onClose }) => {
   };
 
   return (
-    <Modal isCentered trapFocus={false} isOpen={isOpen} onClose={close}>
-      <ModalOverlay backdropFilter="auto" backdropBlur="2px" />
-      <ModalContent
-        py="40px"
-        px="24px"
-        overflowY="auto"
-        borderRadius="8px"
-        bg="#fff"
-        color="#000"
+    <ModalLayout isOpen={isOpen} onClose={close}>
+      <Flex justifyContent="center" align="center" flexDir="column">
+        <Text
+          mb="24px"
+          color="#242628"
+          fontWeight={700}
+          fontSize="24px"
+          lineHeight="100%"
+        >
+          Add Service
+        </Text>
+      </Flex>
+
+      <form
+        onSubmit={(e) => {
+          isDisabled
+            ? setFormSubmitted(true)
+            : (setFormSubmitted(true), handleSubmit(e));
+          e.preventDefault();
+        }}
       >
-        <ModalBody>
-          <Flex justifyContent="center" align="center" flexDir="column">
-            <Text
-              mb="24px"
-              color="#242628"
-              fontWeight={700}
-              fontSize="24px"
-              lineHeight="100%"
-            >
-              Add Service
-            </Text>
-          </Flex>
-
-          <form
-            onSubmit={(e) => {
-              isDisabled
-                ? setFormSubmitted(true)
-                : (setFormSubmitted(true), handleSubmit(e));
-              e.preventDefault();
-            }}
+        <Box mb="24px">
+          <Text
+            color="#444648"
+            lineHeight="100%"
+            fontSize="12px"
+            mb="8px"
+            fontWeight={500}
           >
-            <Box mb="24px">
-              <Text
-                color="#444648"
-                lineHeight="100%"
-                fontSize="12px"
-                mb="8px"
-                fontWeight={500}
-              >
-                Name{" "}
-                <span
-                  style={{
-                    color: "tomato",
-                    fontSize: "15px",
-                  }}
-                >
-                  *
-                </span>
-              </Text>
-              <CustomInput
-                value={values.name}
-                auth
-                error={formSubmitted && !values?.name ? true : false}
-                onChange={(e) =>
-                  setValues({
-                    ...values,
-                    name: e.target.value,
-                  })
-                }
-              />
+            Name{" "}
+            <span
+              style={{
+                color: "tomato",
+                fontSize: "15px",
+              }}
+            >
+              *
+            </span>
+          </Text>
+          <CustomInput
+            value={values.name}
+            auth
+            error={formSubmitted && !values?.name ? true : false}
+            onChange={(e) =>
+              setValues({
+                ...values,
+                name: e.target.value,
+              })
+            }
+          />
 
-              {formSubmitted && !values?.name && (
-                <Text mt="-22px" fontSize="12px" color="tomato">
-                  Name is required
-                </Text>
-              )}
-            </Box>
+          {formSubmitted && !values?.name && (
+            <Text mt="-22px" fontSize="12px" color="tomato">
+              Name is required
+            </Text>
+          )}
+        </Box>
 
-            <Box mb="24px">
-              <Text
-                color="#444648"
-                lineHeight="100%"
-                fontSize="12px"
-                mb="8px"
-                fontWeight={500}
-              >
-                Description{" "}
-                <span
-                  style={{
-                    color: "tomato",
-                    fontSize: "15px",
-                  }}
-                >
-                  *
-                </span>
-              </Text>
-              <TextInput
-                value={values.description}
-                error={formSubmitted && !values?.description ? true : false}
-                onChange={(e) =>
-                  setValues({
-                    ...values,
-                    description: e.target.value,
-                  })
-                }
-              />
+        <Box mb="24px">
+          <Text
+            color="#444648"
+            lineHeight="100%"
+            fontSize="12px"
+            mb="8px"
+            fontWeight={500}
+          >
+            Description{" "}
+            <span
+              style={{
+                color: "tomato",
+                fontSize: "15px",
+              }}
+            >
+              *
+            </span>
+          </Text>
+          <TextInput
+            value={values.description}
+            error={formSubmitted && !values?.description ? true : false}
+            onChange={(e) =>
+              setValues({
+                ...values,
+                description: e.target.value,
+              })
+            }
+          />
 
-              {formSubmitted && !values?.description && (
-                <Text mt="-11px" fontSize="12px" color="tomato">
-                  Description is required
-                </Text>
-              )}
-            </Box>
+          {formSubmitted && !values?.description && (
+            <Text mt="-11px" fontSize="12px" color="tomato">
+              Description is required
+            </Text>
+          )}
+        </Box>
 
-            <Box mb="24px">
-              <Text
-                color="#444648"
-                lineHeight="100%"
-                fontSize="12px"
-                fontWeight={500}
-                mb="8px"
-              >
-                Service Type{" "}
-                <span
-                  style={{
-                    color: "tomato",
-                    fontSize: "15px",
-                  }}
-                >
-                  *
-                </span>
-              </Text>
-              <Select
-                styles={
-                  formSubmitted && !values?.serviceType
-                    ? errorCustomStyles
-                    : customStyles
-                }
-                options={selectOptions}
-                onChange={(selectedOption) =>
-                  handleSelectChange(selectedOption, {
-                    name: "serviceType",
-                  })
-                }
-                value={values?.serviceType}
-                components={{
-                  IndicatorSeparator: () => (
-                    <div style={{ display: "none" }}></div>
-                  ),
-                  DropdownIndicator: () => (
-                    <div>
-                      <IoIosArrowDown size="15px" color="#646668" />
-                    </div>
-                  ),
-                }}
-              />
-              {formSubmitted && !values?.serviceType && (
-                <Text mt="8px" fontSize="12px" color="tomato">
-                  Service Type is required
-                </Text>
-              )}
-            </Box>
+        <Box mb="24px">
+          <Text
+            color="#444648"
+            lineHeight="100%"
+            fontSize="12px"
+            fontWeight={500}
+            mb="8px"
+          >
+            Service Type{" "}
+            <span
+              style={{
+                color: "tomato",
+                fontSize: "15px",
+              }}
+            >
+              *
+            </span>
+          </Text>
+          <Select
+            styles={
+              formSubmitted && !values?.serviceType
+                ? errorCustomStyles
+                : customStyles
+            }
+            options={selectOptions}
+            onChange={(selectedOption) =>
+              handleSelectChange(selectedOption, {
+                name: "serviceType",
+              })
+            }
+            value={values?.serviceType}
+            components={{
+              IndicatorSeparator: () => <div style={{ display: "none" }}></div>,
+              DropdownIndicator: () => (
+                <div>
+                  <IoIosArrowDown size="15px" color="#646668" />
+                </div>
+              ),
+            }}
+          />
+          {formSubmitted && !values?.serviceType && (
+            <Text mt="8px" fontSize="12px" color="tomato">
+              Service Type is required
+            </Text>
+          )}
+        </Box>
 
-            <Flex align="center" gap="24px">
-              <Button variant="adminSecondary" onClick={close} w="100%">
-                Cancel
-              </Button>
-              <Button
-                isLoading={isLoading}
-                type="submit"
-                w="100%"
-                variant="adminPrimary"
-              >
-                Save
-              </Button>
-            </Flex>
-          </form>
-        </ModalBody>
-      </ModalContent>
-    </Modal>
+        <Flex align="center" gap="24px">
+          <Button variant="adminSecondary" onClick={close} w="100%">
+            Cancel
+          </Button>
+          <Button
+            isLoading={isLoading}
+            type="submit"
+            w="100%"
+            variant="adminPrimary"
+          >
+            Save
+          </Button>
+        </Flex>
+      </form>
+    </ModalLayout>
   );
 };
 

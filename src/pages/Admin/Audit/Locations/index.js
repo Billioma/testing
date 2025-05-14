@@ -2,7 +2,10 @@ import React, { useEffect, useState } from "react";
 import { Box, Flex, Text } from "@chakra-ui/react";
 import { IoIosArrowForward } from "react-icons/io";
 import DatePicker from "react-multi-date-picker";
-import { useGetSalesReportLocations } from "../../../../services/admin/query/audit";
+import {
+  useGetLocationPerf,
+  useGetSalesReportLocations,
+} from "../../../../services/admin/query/audit";
 import LocationTable from "../../../../components/data/Admin/Audit/Locations/LocationTable";
 import { formatFilterDate } from "../../../../utils/helpers";
 
@@ -16,6 +19,10 @@ const Locations = () => {
   const [values, setValues] = useState({
     gte: new Date(today.getFullYear(), 0, 1).toLocaleDateString("en-CA"),
     lte: today.toLocaleDateString("en-CA"),
+  });
+
+  const { data: performance, isLoading: isPerformance } = useGetLocationPerf({
+    refetchOnWindowFocus: true,
   });
 
   const { data, isLoading, refetch } = useGetSalesReportLocations(
@@ -50,40 +57,89 @@ const Locations = () => {
 
   return (
     <Box border="1px solid #d4d6d8" borderRadius="8px" p="16px 23px 24px">
-      <Flex flexDir={{ base: "column", lg: "row" }} align="center" gap="32px">
-        <Text color="#242628" fontSize="14px" fontWeight={500}>
-          All Locations
-        </Text>
-        <Flex align="center" gap="10px">
-          <Box className="ne_class" w={{ base: "100%", md: "113px" }}>
-            <DatePicker
-              placeholder="Select Date"
-              value={values?.gte}
-              onChange={(date) => {
-                setValues({ ...values, gte: date });
-                sessionStorage.setItem(
-                  "start",
-                  `${formatFilterDate(date)}T00:00:00`
-                );
-              }}
-            />
-          </Box>
+      <Flex
+        flexDir={{ base: "column", lg: "row" }}
+        align={{ base: "flex-start", md: "center" }}
+        gap={{ base: "20px", md: "32px" }}
+        justifyContent="space-between"
+      >
+        <Flex
+          flexDir={{ base: "column", lg: "row" }}
+          align={{ base: "flex-start", md: "center" }}
+          gap={{ base: "20px", md: "32px" }}
+        >
+          <Text color="#242628" fontSize="14px" fontWeight={500}>
+            All Locations
+          </Text>
+          <Flex align="center" gap="10px">
+            <Box className="ne_class" w={{ base: "100%", md: "113px" }}>
+              <DatePicker
+                placeholder="Select Date"
+                value={values?.gte}
+                onChange={(date) => {
+                  setValues({ ...values, gte: date });
+                  sessionStorage.setItem(
+                    "start",
+                    `${formatFilterDate(date)}T00:00:00`
+                  );
+                }}
+              />
+            </Box>
 
-          <IoIosArrowForward />
+            <IoIosArrowForward />
 
-          <Box className="ne_class" w={{ base: "100%", md: "113px" }}>
-            <DatePicker
-              placeholder="Select Date"
-              value={values?.lte}
-              onChange={(date) => {
-                setValues({ ...values, lte: date });
-                sessionStorage.setItem(
-                  "end",
-                  `${formatFilterDate(date)}T23:59:59`
-                );
-              }}
-            />
-          </Box>
+            <Box className="ne_class" w={{ base: "100%", md: "113px" }}>
+              <DatePicker
+                placeholder="Select Date"
+                value={values?.lte}
+                onChange={(date) => {
+                  setValues({ ...values, lte: date });
+                  sessionStorage.setItem(
+                    "end",
+                    `${formatFilterDate(date)}T23:59:59`
+                  );
+                }}
+              />
+            </Box>
+          </Flex>
+        </Flex>
+
+        <Flex
+          align="center"
+          display={isPerformance ? "none" : "flex"}
+          gap="16px"
+          w={{ base: "full", md: "unset" }}
+          justifyContent={{ base: "space-between", md: "unset" }}
+        >
+          <Text color="#242628" fontSize="14px" fontWeight={500}>
+            Overall Performance
+          </Text>
+          <Flex
+            fontWeight={500}
+            fontSize="14px"
+            color={
+              Number(performance) < 40
+                ? "#E81313"
+                : Number(performance < 70)
+                ? "#F9A11E"
+                : "#008000"
+            }
+            bg={
+              Number(performance) < 40
+                ? "#F9D0CD"
+                : Number(performance < 70)
+                ? "#FDF6E7"
+                : "#E5FFE5"
+            }
+            justifyContent="center"
+            align="center"
+            py="5px"
+            textTransform="capitalize"
+            px="16px"
+            borderRadius="4px"
+          >
+            {performance}
+          </Flex>
         </Flex>
       </Flex>
 

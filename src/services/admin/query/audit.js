@@ -1,8 +1,12 @@
 import { useMutation, useQuery } from "react-query";
 import {
   deleteSalesReport,
+  editSales,
+  getLocationPerf,
   getManagerGrid,
+  getManagerPerf,
   getManagerSalesReports,
+  getSalesReport,
   getSalesReportLocations,
   getSalesReports,
   getSalesReportsLocationTrans,
@@ -17,6 +21,42 @@ export const useGetSalesReports = (
   const { data, isLoading, refetch } = useQuery(
     ["getSalesReports", limit, page, query],
     () => getSalesReports(page, limit, query),
+    {
+      ...options,
+    }
+  );
+
+  return { isLoading, data, refetch };
+};
+
+export const useGetSalesReport = (options = {}, id = "") => {
+  const { data, isLoading, refetch } = useQuery(
+    ["getSalesReport", id],
+    () => getSalesReport(id),
+    {
+      ...options,
+    }
+  );
+
+  return { isLoading, data, refetch };
+};
+
+export const useGetLocationPerf = (options = {}) => {
+  const { data, isLoading, refetch } = useQuery(
+    "getLocationPerf",
+    getLocationPerf,
+    {
+      ...options,
+    }
+  );
+
+  return { isLoading, data, refetch };
+};
+
+export const useGetManagerPerf = (options = {}) => {
+  const { data, isLoading, refetch } = useQuery(
+    "getManagerPerf",
+    getManagerPerf,
     {
       ...options,
     }
@@ -120,6 +160,15 @@ export const useGetSalesReportsLocationTrans = (
 export const useDeleteSalesReport = (options = {}) => {
   const { isLoading, mutate } = useMutation(deleteSalesReport, {
     mutationKey: ["deleteSalesReport"],
+    ...options,
+  });
+
+  return { isLoading, mutate };
+};
+
+export const useEditSales = (options = {}) => {
+  const { isLoading, mutate } = useMutation(editSales, {
+    mutationKey: ["editSales"],
     ...options,
   });
 

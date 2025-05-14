@@ -1,17 +1,6 @@
 import React, { useState } from "react";
-import {
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalBody,
-  Flex,
-  Image,
-  Text,
-  Box,
-  Button,
-} from "@chakra-ui/react";
+import { Flex, Image, Text, Box, Button } from "@chakra-ui/react";
 import ConfirmVehicleModal from "./ConfirmVehicleModal";
-
 import Select from "react-select";
 import CustomInput from "../common/CustomInput";
 import { allStates, colorTypes } from "../common/constants";
@@ -21,6 +10,7 @@ import {
 } from "../../services/customer/query/vehicles";
 import useCustomToast from "../../utils/notifications";
 import { IoIosArrowDown } from "react-icons/io";
+import ModalLayout from "./ModalLayout";
 
 const AddVehicleModal = ({
   isOpen,
@@ -222,233 +212,214 @@ const AddVehicleModal = ({
   );
 
   return (
-    <Modal isCentered trapFocus={false} isOpen={isOpen} onClose={close}>
-      <ModalOverlay backdropFilter="auto" backdropBlur="2px" />
-      <ModalContent
-        py="32px"
-        px="24px"
-        overflowY="auto"
-        borderRadius="12px"
-        bg="#fff"
-        color="#000"
-      >
-        <ModalBody px="0">
-          <Flex justifyContent="center" align="center" flexDir="column">
-            <Image w="56px" h="40px" src="/assets/car.png" />
-            <Text
-              my="18px"
-              color="#242628"
-              fontWeight={700}
-              fontSize="22px"
-              lineHeight="100%"
-            >
-              Add Vehicle
-            </Text>
-            {noVehicle && (
-              <Text
-                mb="18px"
-                color="#444648"
-                fontWeight={500}
-                fontSize="13px"
-                lineHeight="100%"
-              >
-                Kindly add a vehicle to your account
-              </Text>
-            )}
-          </Flex>
+    <ModalLayout isOpen={isOpen} onClose={close}>
+      <Flex justifyContent="center" align="center" flexDir="column">
+        <Image w="56px" h="40px" src="/assets/car.png" />
+        <Text
+          my="18px"
+          color="#242628"
+          fontWeight={700}
+          fontSize="22px"
+          lineHeight="100%"
+        >
+          Add Vehicle
+        </Text>
+        {noVehicle && (
+          <Text
+            mb="18px"
+            color="#444648"
+            fontWeight={500}
+            fontSize="13px"
+            lineHeight="100%"
+          >
+            Kindly add a vehicle to your account
+          </Text>
+        )}
+      </Flex>
 
-          <Box mb="18px">
-            <Text
-              color="#444648"
-              lineHeight="100%"
-              fontSize="10px"
-              fontWeight={500}
-              mb="5px"
-            >
-              Vehicle State
-            </Text>
-            <Select
-              styles={customStyles}
-              options={stateOptions}
-              components={{
-                IndicatorSeparator: () => (
-                  <div style={{ display: "none" }}></div>
-                ),
-                DropdownIndicator: () => (
-                  <div>
-                    <IoIosArrowDown size="15px" color="#646668" />
-                  </div>
-                ),
-              }}
-              onChange={(selectedOption) =>
-                handleSelectChange(selectedOption?.value, { name: "state" })
-              }
-            />
-          </Box>
+      <Box mb="18px">
+        <Text
+          color="#444648"
+          lineHeight="100%"
+          fontSize="10px"
+          fontWeight={500}
+          mb="5px"
+        >
+          Vehicle State
+        </Text>
+        <Select
+          styles={customStyles}
+          options={stateOptions}
+          components={{
+            IndicatorSeparator: () => <div style={{ display: "none" }}></div>,
+            DropdownIndicator: () => (
+              <div>
+                <IoIosArrowDown size="15px" color="#646668" />
+              </div>
+            ),
+          }}
+          onChange={(selectedOption) =>
+            handleSelectChange(selectedOption?.value, { name: "state" })
+          }
+        />
+      </Box>
 
-          <Box mb="18px">
-            <Text
-              color="#444648"
-              lineHeight="100%"
-              fontSize="10px"
-              mb="5px"
-              fontWeight={500}
-            >
-              License Plate Number
-            </Text>
-            <CustomInput
-              value={values.plate}
-              auth
-              handleKeyPress={handleKeyPress}
-              onChange={(e) =>
-                setValues({
-                  ...values,
-                  plate: e.target.value,
-                })
-              }
-            />
-          </Box>
+      <Box mb="18px">
+        <Text
+          color="#444648"
+          lineHeight="100%"
+          fontSize="10px"
+          mb="5px"
+          fontWeight={500}
+        >
+          License Plate Number
+        </Text>
+        <CustomInput
+          value={values.plate}
+          auth
+          handleKeyPress={handleKeyPress}
+          onChange={(e) =>
+            setValues({
+              ...values,
+              plate: e.target.value,
+            })
+          }
+        />
+      </Box>
 
-          <Box mb="18px">
-            <Text
-              color="#444648"
-              lineHeight="100%"
-              fontSize="10px"
-              fontWeight={500}
-              mb="5px"
-            >
-              Vehicle Color
-            </Text>
-            <Select
-              styles={customStyles}
-              onMenuOpen={() => setMenuIsOpen(true)}
-              menuIsOpen={menuIsOpen}
-              onMenuClose={() => setMenuIsOpen(false)}
-              components={{
-                SingleValue: ColorOptio,
-                Option: ColorOption,
-                IndicatorSeparator: () => (
-                  <div style={{ display: "none" }}></div>
-                ),
-                DropdownIndicator: () => (
-                  <div>
-                    <IoIosArrowDown size="15px" color="#646668" />
-                  </div>
-                ),
-              }}
-              onChange={(selectedOption) =>
-                handleSelectChange(selectedOption, { name: "color" })
-              }
-              value={values?.color}
-              options={colorOptions}
-              getOptionLabel={getOptionLabel}
-              getOptionValue={getOptionValue}
-            />
-          </Box>
-          <Box mb="18px">
-            <Text
-              color="#444648"
-              lineHeight="100%"
-              fontSize="10px"
-              fontWeight={500}
-              mb="5px"
-            >
-              Vehicle Make
-            </Text>
-            <Select
-              styles={customStyles}
-              value={values.make}
-              components={{
-                IndicatorSeparator: () => (
-                  <div style={{ display: "none" }}></div>
-                ),
-                DropdownIndicator: () => (
-                  <div>
-                    <IoIosArrowDown size="15px" color="#646668" />
-                  </div>
-                ),
-              }}
-              options={makeOptions}
-              onChange={(selectedOption) =>
-                handleSelectChange(selectedOption, { name: "make" })
-              }
-            />
-          </Box>
+      <Box mb="18px">
+        <Text
+          color="#444648"
+          lineHeight="100%"
+          fontSize="10px"
+          fontWeight={500}
+          mb="5px"
+        >
+          Vehicle Color
+        </Text>
+        <Select
+          styles={customStyles}
+          onMenuOpen={() => setMenuIsOpen(true)}
+          menuIsOpen={menuIsOpen}
+          onMenuClose={() => setMenuIsOpen(false)}
+          components={{
+            SingleValue: ColorOptio,
+            Option: ColorOption,
+            IndicatorSeparator: () => <div style={{ display: "none" }}></div>,
+            DropdownIndicator: () => (
+              <div>
+                <IoIosArrowDown size="15px" color="#646668" />
+              </div>
+            ),
+          }}
+          onChange={(selectedOption) =>
+            handleSelectChange(selectedOption, { name: "color" })
+          }
+          value={values?.color}
+          options={colorOptions}
+          getOptionLabel={getOptionLabel}
+          getOptionValue={getOptionValue}
+        />
+      </Box>
+      <Box mb="18px">
+        <Text
+          color="#444648"
+          lineHeight="100%"
+          fontSize="10px"
+          fontWeight={500}
+          mb="5px"
+        >
+          Vehicle Make
+        </Text>
+        <Select
+          styles={customStyles}
+          value={values.make}
+          components={{
+            IndicatorSeparator: () => <div style={{ display: "none" }}></div>,
+            DropdownIndicator: () => (
+              <div>
+                <IoIosArrowDown size="15px" color="#646668" />
+              </div>
+            ),
+          }}
+          options={makeOptions}
+          onChange={(selectedOption) =>
+            handleSelectChange(selectedOption, { name: "make" })
+          }
+        />
+      </Box>
 
-          <Box mb="18px">
-            <Text
-              color="#444648"
-              lineHeight="100%"
-              fontSize="10px"
-              fontWeight={500}
-              mb="5px"
-            >
-              Vehicle Model
-            </Text>
-            <Select
-              styles={customStyles}
-              value={values.model}
-              options={modelOptions}
-              components={{
-                IndicatorSeparator: () => (
-                  <div style={{ display: "none" }}></div>
-                ),
-                DropdownIndicator: () => (
-                  <div>
-                    <IoIosArrowDown size="15px" color="#646668" />
-                  </div>
-                ),
-              }}
-              onChange={(selectedOption) =>
-                handleSelectChange(selectedOption, { name: "model" })
-              }
-            />
-          </Box>
+      <Box mb="18px">
+        <Text
+          color="#444648"
+          lineHeight="100%"
+          fontSize="10px"
+          fontWeight={500}
+          mb="5px"
+        >
+          Vehicle Model
+        </Text>
+        <Select
+          styles={customStyles}
+          value={values.model}
+          options={modelOptions}
+          components={{
+            IndicatorSeparator: () => <div style={{ display: "none" }}></div>,
+            DropdownIndicator: () => (
+              <div>
+                <IoIosArrowDown size="15px" color="#646668" />
+              </div>
+            ),
+          }}
+          onChange={(selectedOption) =>
+            handleSelectChange(selectedOption, { name: "model" })
+          }
+        />
+      </Box>
 
-          <Flex align="center" mb="18px" gap="15px">
-            {!noVehicle && (
-              <Button
-                bg="transparent"
-                color="#0D0718"
-                fontSize="14px"
-                onClick={close}
-                w="full"
-                border="1px solid #0D0718"
-                py="17px"
-              >
-                Cancel
-              </Button>
-            )}
+      <Flex align="center" mb="18px" gap="15px">
+        {!noVehicle && (
+          <Button
+            bg="transparent"
+            color="#0D0718"
+            fontSize="14px"
+            onClick={close}
+            w="full"
+            border="1px solid #0D0718"
+            py="17px"
+          >
+            Cancel
+          </Button>
+        )}
 
-            <Button
-              fontSize="14px"
-              fontWeight={500}
-              onClick={handleSubmit}
-              isDisabled={isDisabled}
-              isLoading={isLoading}
-              lineHeight="100%"
-              w="full"
-              py="17px"
-            >
-              Save
-            </Button>
-          </Flex>
+        <Button
+          fontSize="14px"
+          fontWeight={500}
+          onClick={handleSubmit}
+          isDisabled={isDisabled}
+          isLoading={isLoading}
+          lineHeight="100%"
+          w="full"
+          py="17px"
+        >
+          Save
+        </Button>
+      </Flex>
 
-          {noVehicle && (
-            <Text
-              onClick={close}
-              cursor="pointer"
-              color="#848688"
-              fontWeight={500}
-              textAlign="center"
-              lineHeight="100%"
-              fontSize="14px"
-            >
-              Skip for later
-            </Text>
-          )}
-        </ModalBody>
-      </ModalContent>
+      {noVehicle && (
+        <Text
+          onClick={close}
+          cursor="pointer"
+          color="#848688"
+          fontWeight={500}
+          textAlign="center"
+          lineHeight="100%"
+          fontSize="14px"
+        >
+          Skip for later
+        </Text>
+      )}
+
       <ConfirmVehicleModal
         action={handleClaim}
         isLoading={isClaim}
@@ -456,7 +427,7 @@ const AddVehicleModal = ({
         isOpen={show}
         onClose={() => setShow(false)}
       />
-    </Modal>
+    </ModalLayout>
   );
 };
 

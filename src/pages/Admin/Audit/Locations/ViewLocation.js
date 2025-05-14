@@ -1,14 +1,30 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { useGetSalesReportsLocationTrans } from "../../../../services/admin/query/audit";
-import { Box, Flex, Grid, GridItem, Skeleton, Text } from "@chakra-ui/react";
+import {
+  useGetSalesReport,
+  useGetSalesReportsLocationTrans,
+} from "../../../../services/admin/query/audit";
+import {
+  Box,
+  Flex,
+  Grid,
+  GridItem,
+  Skeleton,
+  Text,
+  useDisclosure,
+} from "@chakra-ui/react";
 import GoBackTab from "../../../../components/data/Admin/GoBackTab";
 import Table from "../../../../components/data/Admin/Audit/Locations/Table";
 import { AuditStatus } from "../../../../components/common/constants";
 import { formatFilterDate } from "../../../../utils/helpers";
+import { PiGridNine, PiPencilSimpleLine, PiTableLight } from "react-icons/pi";
+import ManagerReport from "../../../../components/data/Admin/Audit/Locations/ManagerReport";
+import EditSales from "../../../../components/modals/EditSales";
 
 const ViewLocation = () => {
   const [page, setPage] = useState(1);
+  const edit = useDisclosure();
+  const [tab, setTab] = useState("Manager Report");
   const [limit, setLimit] = useState(25);
   const [startRow, setStartRow] = useState(1);
   const [endRow, setEndRow] = useState(0);
@@ -29,6 +45,17 @@ const ViewLocation = () => {
     end
   );
 
+  const {
+    data: sales,
+    isLoading: isSales,
+    refetch,
+  } = useGetSalesReport(
+    {
+      refetchOnWindowFocus: true,
+    },
+    id
+  );
+
   useEffect(() => {
     if (!trans?.data) {
       return;
@@ -46,7 +73,7 @@ const ViewLocation = () => {
   }, [page, limit, trans]);
 
   const audit_status = sessionStorage.getItem("audit_status");
-  
+
   return (
     <Box>
       <Box w="fit-content">
@@ -174,22 +201,80 @@ const ViewLocation = () => {
         </Grid>
       </Box>
 
+      <Flex mb="24px" bg="#F4F6F8" align="center" gap="28px">
+        {["Manager Report", "Transaction History"].map((item, i) => (
+          <Flex
+            align="center"
+            p="10px 16px"
+            gap="8px"
+            cursor="pointer"
+            _hover={{ color: "#444648" }}
+            transition=".3s ease-in-out"
+            onClick={() => {
+              setTab(item);
+              setLimit(25);
+              setEndRow(0);
+              setStartRow(1);
+              setPage(1);
+            }}
+            borderBottom={tab === item ? "2px solid #444648" : "none"}
+            color={tab === item ? "#444648" : "#949698"}
+          >
+            {i === 0 ? <PiTableLight /> : <PiGridNine />}
+            <Text fontSize="12px" fontWeight={500}>
+              {item}
+            </Text>
+          </Flex>
+        ))}
+      </Flex>
+
       <Box border="1px solid #d4d6d8" borderRadius="8px" p="30px 23px 24px">
         <Text fontWeight={500} mb="15px" lineHeight="100%" color="#242628">
-          Transaction History
+          {tab}
         </Text>
 
-        <Table
-          data={trans}
-          isLoading={isTrans}
-          page={page}
-          limit={limit}
-          setPage={setPage}
-          startRow={startRow}
-          endRow={endRow}
-          setLimit={setLimit}
-        />
+        {tab.includes("Rep") ? (
+          <ManagerReport data={sales} isLoading={isSales} />
+        ) : (
+          <Table
+            data={trans}
+            isLoading={isTrans}
+            page={page}
+            limit={limit}
+            setPage={setPage}
+            startRow={startRow}
+            endRow={endRow}
+            setLimit={setLimit}
+          />
+        )}
       </Box>
+
+      <Flex
+        border="1px solid #999999"
+        align="center"
+        gap="10px"
+        justifyContent="center"
+        borderRadius="4px"
+        mt="50px"
+        display={tab.includes("Rep") ? "flex" : "none"}
+        h="54px"
+        color="#3D3D3D"
+        onClick={edit.onOpen}
+        w="180px"
+        fontSize="14px"
+        cursor="pointer"
+        fontWeight={500}
+      >
+        <Text>Edit</Text>
+        <PiPencilSimpleLine size="20px" />
+      </Flex>
+
+      <EditSales
+        data={sales}
+        isOpen={edit.isOpen}
+        onClose={edit.onClose}
+        refetch={refetch}
+      />
     </Box>
   );
 };

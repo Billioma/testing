@@ -19,7 +19,10 @@ export const GET_ACTIVITIES_METRICS = "admin/dashboard/activities-metrics";
 
 export const CREATE_SERVICE = "admin/services";
 export const GET_SALES_REPORT = "admin/sales-reports";
+export const UPDATE_SALES = (id = "") => `admin/sales-reports/${id}`;
 export const GET_SALES_REPORT_LOCATION = "admin/sales-reports/locations";
+export const GET_LOCATION_PERF = "admin/sales-reports/locations/performance";
+export const GET_MANAGER_PERF = "admin/sales-reports/managers/performance";
 export const GET_MANAGER_SALES_REPORT = "admin/sales-reports/manager/sales-reports";
 export const GET_MANAGER_GRID = "admin/sales-reports/manager/grid";
 export const GET_SALES_REPORT_LOCATION_TRANSACTION = "/admin/sales-reports/transactions";

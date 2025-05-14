@@ -18,6 +18,17 @@ export const useLogOut = () => {
   };
 };
 
+export const getNumber = (str) => {
+  const arr = str.split("");
+  const out = [];
+  for (let i = 0; i < arr.length; i++) {
+    if (!isNaN(arr[i])) {
+      out.push(arr[i]);
+    }
+  }
+  return Number(out.join(""));
+};
+
 export const formatDat = (date, fallback = "") => {
   if (!date) return fallback;
 

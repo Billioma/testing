@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Box, Flex, Text } from "@chakra-ui/react";
-import { useGetManagerSalesReports } from "../../../../services/admin/query/audit";
+import {
+  useGetManagerPerf,
+  useGetManagerSalesReports,
+} from "../../../../services/admin/query/audit";
 import ManagerTable from "../../../../components/data/Admin/Audit/Manager/ManagerTable";
 import { formatFilterDate } from "../../../../utils/helpers";
 import DatePicker from "react-multi-date-picker";
@@ -21,6 +24,10 @@ const index = () => {
   const [values, setValues] = useState({
     gte: new Date(today.getFullYear(), 0, 1).toLocaleDateString("en-CA"),
     lte: today.toLocaleDateString("en-CA"),
+  });
+
+  const { data: performance, isLoading: isPerformance } = useGetManagerPerf({
+    refetchOnWindowFocus: true,
   });
 
   useEffect(() => {
@@ -73,10 +80,15 @@ const index = () => {
     <Box border="1px solid #d4d6d8" borderRadius="8px" p="16px 23px 24px">
       <Flex
         flexDir={{ base: "column", lg: "row" }}
-        align="center"
+        align={{ base: "flex-start", md: "center" }}
+        gap={{ base: "20px", md: "32px" }}
         justifyContent="space-between"
       >
-        <Flex flexDir={{ base: "column", lg: "row" }} align="center" gap="32px">
+        <Flex
+          flexDir={{ base: "column", lg: "row" }}
+          align={{ base: "flex-start", md: "center" }}
+          gap={{ base: "20px", md: "32px" }}
+        >
           <Text color="#242628" fontSize="14px" fontWeight={500}>
             All Managers
           </Text>
@@ -113,15 +125,56 @@ const index = () => {
           </Flex>
         </Flex>
 
-        <Box w={{ base: "", md: "15rem" }}>
-          <CustomInput
-            search
-            holder="Search by name"
-            auth
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-          />
-        </Box>
+        <Flex
+          align={{ base: "flex-start", md: "center" }}
+          display={isPerformance ? "none" : "flex"}
+          gap="16px"
+          flexDir={{ base: "column", lg: "row" }}
+          w={{ base: "full", md: "unset" }}
+          justifyContent={{ base: "space-between", md: "unset" }}
+        >
+          <Flex align="center" gap={{ base: "20px", md: "32px" }}>
+            <Text color="#242628" fontSize="14px" fontWeight={500}>
+              Overall Performance
+            </Text>
+            <Flex
+              fontWeight={500}
+              fontSize="14px"
+              color={
+                Number(performance) < 40
+                  ? "#E81313"
+                  : Number(performance < 70)
+                  ? "#F9A11E"
+                  : "#008000"
+              }
+              bg={
+                Number(performance) < 40
+                  ? "#F9D0CD"
+                  : Number(performance < 70)
+                  ? "#FDF6E7"
+                  : "#E5FFE5"
+              }
+              justifyContent="center"
+              align="center"
+              py="5px"
+              textTransform="capitalize"
+              px="16px"
+              borderRadius="4px"
+            >
+              {performance}
+            </Flex>
+          </Flex>
+          <Box w={{ base: "100%", md: "15rem" }}>
+            <CustomInput
+              search
+              mb
+              holder="Search by name"
+              auth
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+            />
+          </Box>
+        </Flex>
       </Flex>
 
       <ManagerTable
