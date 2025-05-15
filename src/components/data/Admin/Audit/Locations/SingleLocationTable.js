@@ -66,7 +66,7 @@ const SingleLocationTable = ({
   const openOption = (i, audit) => {
     i === 0
       ? ((navigate(
-          `/admin/audit/locations/${audit?.location?.id}/${audit?.manager?.id}`
+          `/admin/audit/locations/${audit?.id}/${audit?.location?.id}/${audit?.manager?.id}`
         ),
         sessionStorage.setItem(
           "loc_start",

@@ -28,13 +28,13 @@ const ViewLocation = () => {
   const [limit, setLimit] = useState(25);
   const [startRow, setStartRow] = useState(1);
   const [endRow, setEndRow] = useState(0);
-  const { id, managerId } = useParams();
+  const { id, locationId, managerId } = useParams();
 
   const start = sessionStorage.getItem("loc_start");
   const end = `${formatFilterDate(start)}T23:59:59`;
 
   const { data: trans, isLoading: isTrans } = useGetSalesReportsLocationTrans(
-    id,
+    locationId,
     {
       refetchOnWindowFocus: true,
     },
