@@ -85,23 +85,40 @@ const ViewLocation = () => {
           <Text color="#3D3D3D" fontSize="20px" fontWeight={700}>
             {trans?.metrics?.location?.name}
           </Text>
-          <Box
-            bg="#F4F6F8"
-            mt="8px"
-            borderRadius="4px"
-            color="#949698"
-            p="6px"
-            textAlign="center"
-            w="fit-content"
-            fontWeight={500}
-            fontSize="12px"
-          >
-            Manager:{" "}
-            <span style={{ color: "#3D3D3D" }}>
-              {trans?.metrics?.manager?.firstName}{" "}
-              {trans?.metrics?.manager?.lastName}
-            </span>
-          </Box>
+          <Flex align="center" gap="16px">
+            <Box
+              bg="#F4F6F8"
+              mt="8px"
+              borderRadius="4px"
+              color="#949698"
+              p="6px"
+              textAlign="center"
+              w="fit-content"
+              fontWeight={500}
+              fontSize="12px"
+            >
+              Manager:{" "}
+              <span style={{ color: "#3D3D3D" }}>
+                {trans?.metrics?.manager?.firstName}{" "}
+                {trans?.metrics?.manager?.lastName}
+              </span>
+            </Box>
+
+            <Box
+              bg="#F4F6F8"
+              mt="8px"
+              borderRadius="4px"
+              color="#949698"
+              p="6px"
+              textAlign="center"
+              w="fit-content"
+              fontWeight={500}
+              fontSize="12px"
+            >
+              Zone:{" "}
+              <span style={{ color: "#3D3D3D" }}>{sales?.zone?.name}</span>
+            </Box>
+          </Flex>
         </Box>
 
         <Flex

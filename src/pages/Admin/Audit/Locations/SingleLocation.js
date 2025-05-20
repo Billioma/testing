@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Box, Button, Flex, Text } from "@chakra-ui/react";
-import { useGetLocations } from "../../../../services/admin/query/locations";
+import {
+  useGetLocations,
+  useGetZones,
+} from "../../../../services/admin/query/locations";
 import { IoIosArrowDown } from "react-icons/io";
 import { customStyles } from "../../../../components/common/constants";
 import Select from "react-select";
@@ -21,6 +24,7 @@ const SingleLocation = () => {
   const [endRow, setEndRow] = useState(0);
   const [values, setValues] = useState({
     location: "",
+    zone: "",
     gte: "",
     manager: "",
     lte: "",
@@ -53,6 +57,7 @@ const SingleLocation = () => {
       lte: today.toLocaleDateString("en-CA"),
       manager: "",
       status: "",
+      zone: "",
     });
   };
 
@@ -61,15 +66,9 @@ const SingleLocation = () => {
     sessionStorage.removeItem("loc_end");
   }, []);
 
-  const { data: locations } = useGetLocations({}, 1, 1000);
-  const { data: managers } = useGetAdministrators({}, 1, 1000);
+  const { data: zones } = useGetZones({}, 1, 1000);
 
-  const managerOptions = managers?.data?.map((staff) => ({
-    label: `${staff?.firstName} ${staff?.lastName}`,
-    value: Number(staff?.id),
-  }));
-
-  const locationOptions = locations?.data?.map((location) => ({
+  const zoneOptions = zones?.data?.map((location) => ({
     label: location.name,
     value: parseInt(location.id),
   }));
@@ -84,10 +83,8 @@ const SingleLocation = () => {
   const query = searchFilters
     ? [
         `filter=location.id||$eq||${id}`,
-        searchFilters.manager &&
-          `filter=manager.firstName||$cont||${
-            searchFilters.manager.label.split(" ")[0]
-          }`,
+        searchFilters.zone &&
+          `filter=zone.name||$cont||${searchFilters.zone.label.split(" ")[0]}`,
         searchFilters.gte &&
           `filter=date||$gte||${formatFilterDate(searchFilters.gte)}T00:00:00`,
         searchFilters.lte &&
@@ -165,12 +162,43 @@ const SingleLocation = () => {
         borderRadius="8px"
         p="16px 23px 24px"
       >
-        <Flex justifyContent="flex-end" w="full">
+        <Flex justifyContent="space-between" w="full">
+          <Box
+            w={{ base: "100%", md: "20rem" }}
+            mb="32px"
+            pos="relative"
+            zIndex={33}
+          >
+            <Text mb="8px" fontSize="12px" fontWeight={500} color="#444648">
+              Zones
+            </Text>
+            <Select
+              styles={customStyles}
+              placeholder="Select zone"
+              options={zoneOptions}
+              name="zone"
+              value={values.zone}
+              onChange={(selectedOption) => {
+                setValues({
+                  ...values,
+                  zone: selectedOption,
+                });
+              }}
+              components={{
+                IndicatorSeparator: () => (
+                  <div style={{ display: "none" }}></div>
+                ),
+                DropdownIndicator: () => (
+                  <IoIosArrowDown size="15px" color="#646668" />
+                ),
+              }}
+            />
+          </Box>
           <MdClose
             size="20px"
             cursor="pointer"
             onClick={() => (
-              setShow(false),
+              // setShow(false),
               resetAllValues(),
               setSearchFilters({
                 gte: new Date(today.getFullYear(), 0, 1).toLocaleDateString(

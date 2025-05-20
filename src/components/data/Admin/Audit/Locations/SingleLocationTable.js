@@ -35,6 +35,7 @@ const SingleLocationTable = ({
 }) => {
   const headers = [
     "MANAGER NAME",
+    "ZONE",
     "TOTAL REVENUE",
     "TRANSACTIONS",
     "DATE",
@@ -85,7 +86,7 @@ const SingleLocationTable = ({
           <TableFormat
             header={headers}
             opt
-            alignIndices={[0]}
+            alignIndices={[0, 1]}
             paginationValues={{
               startRow,
               endRow,
@@ -111,7 +112,8 @@ const SingleLocationTable = ({
                 <Td>
                   {audit?.manager?.firstName} {audit?.manager?.lastName}
                 </Td>
-                
+                <Td>{audit?.zone?.name || "N/A"}</Td>
+
                 <Td textAlign="center">
                   ₦ {Number(audit?.totalRevenueCollected)?.toLocaleString()}
                 </Td>

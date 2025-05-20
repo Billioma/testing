@@ -102,16 +102,16 @@ const LocationTable = ({
                   <Flex align="center" w="full" justifyContent="center">
                     <Flex
                       color={
-                        Number(audit?.performance) < 40
+                        Number(audit?.performance) < 76
                           ? "#E81313"
-                          : Number(audit?.performance < 70)
+                          : Number(audit?.performance < 98)
                           ? "#F9A11E"
                           : "#008000"
                       }
                       bg={
-                        Number(audit?.performance) < 40
+                        Number(audit?.performance) < 76
                           ? "#F9D0CD"
-                          : Number(audit?.performance < 70)
+                          : Number(audit?.performance < 98)
                           ? "#FDF6E7"
                           : "#E5FFE5"
                       }
