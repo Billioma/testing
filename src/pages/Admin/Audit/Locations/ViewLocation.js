@@ -28,17 +28,18 @@ const ViewLocation = () => {
   const [limit, setLimit] = useState(25);
   const [startRow, setStartRow] = useState(1);
   const [endRow, setEndRow] = useState(0);
-  const { id, locationId, managerId } = useParams();
+  const { id, locationId, managerId, zoneId } = useParams();
 
   const start = sessionStorage.getItem("loc_start");
   const end = `${formatFilterDate(start)}T23:59:59`;
 
-  const { data: trans, isLoading: isTrans } = useGetSalesReportsLocationTrans(
-    locationId,
+  const { data: trans, isLoading: isTrans, refetch:refetchTrans } = useGetSalesReportsLocationTrans(
     {
       refetchOnWindowFocus: true,
     },
+    locationId,
     managerId,
+    zoneId,
     page,
     limit,
     start,
@@ -291,6 +292,7 @@ const ViewLocation = () => {
         isOpen={edit.isOpen}
         onClose={edit.onClose}
         refetch={refetch}
+        refetchTrans={refetchTrans}
       />
     </Box>
   );

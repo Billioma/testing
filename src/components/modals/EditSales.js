@@ -33,7 +33,7 @@ const Layout = ({ title, value, onChange, name }) => {
   );
 };
 
-const EditSales = ({ isOpen, onClose, data, refetch }) => {
+const EditSales = ({ isOpen, onClose, data, refetch, refetchTrans }) => {
   const [values, setValues] = useState({});
 
   useEffect(() => {
@@ -81,6 +81,7 @@ const EditSales = ({ isOpen, onClose, data, refetch }) => {
     onSuccess: (res) => {
       successToast(res?.message);
       refetch();
+      refetchTrans();
       onClose();
     },
     onError: (err) => {
@@ -90,14 +91,14 @@ const EditSales = ({ isOpen, onClose, data, refetch }) => {
     },
   });
 
-  const { id, managerId } = useParams();
+  const { locationId, managerId } = useParams();
   const handleSubmit = () => {
     const sanitizeAmount = (value) => Number(String(value).replace(/,/g, ""));
 
     mutate({
       query: data?.id,
       body: {
-        location: Number(id),
+        location: Number(locationId),
         manager: Number(managerId),
         cashPayment: sanitizeAmount(values.cashPayment),
         bankTransfer: sanitizeAmount(values.bankTransfer),

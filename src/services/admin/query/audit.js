@@ -122,9 +122,10 @@ export const useGetManagerGrid = (
 };
 
 export const useGetSalesReportsLocationTrans = (
-  id,
   options = {},
+  id,
   managerId,
+  zoneId,
   page = 1,
   limit = 25,
   startDate,
@@ -135,6 +136,7 @@ export const useGetSalesReportsLocationTrans = (
       "getSalesReportsLocationTrans",
       id,
       managerId,
+      zoneId,
       page,
       limit,
       startDate,
@@ -144,6 +146,7 @@ export const useGetSalesReportsLocationTrans = (
       getSalesReportsLocationTrans(
         id,
         managerId,
+        zoneId,
         page,
         limit,
         startDate,
