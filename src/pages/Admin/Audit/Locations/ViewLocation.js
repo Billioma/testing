@@ -33,7 +33,11 @@ const ViewLocation = () => {
   const start = sessionStorage.getItem("loc_start");
   const end = `${formatFilterDate(start)}T23:59:59`;
 
-  const { data: trans, isLoading: isTrans, refetch:refetchTrans } = useGetSalesReportsLocationTrans(
+  const {
+    data: trans,
+    isLoading: isTrans,
+    refetch: refetchTrans,
+  } = useGetSalesReportsLocationTrans(
     {
       refetchOnWindowFocus: true,
     },
@@ -81,69 +85,85 @@ const ViewLocation = () => {
         <GoBackTab />
       </Box>
 
-      <Flex align="flex-end" gap="24px">
-        <Box>
-          <Text color="#3D3D3D" fontSize="20px" fontWeight={700}>
-            {trans?.metrics?.location?.name}
-          </Text>
-          <Flex align="center" gap="16px">
-            <Box
-              bg="#F4F6F8"
-              mt="8px"
-              borderRadius="4px"
-              color="#949698"
-              p="6px"
-              textAlign="center"
-              w="fit-content"
-              fontWeight={500}
-              fontSize="12px"
-            >
-              Manager:{" "}
-              <span style={{ color: "#3D3D3D" }}>
-                {trans?.metrics?.manager?.firstName}{" "}
-                {trans?.metrics?.manager?.lastName}
-              </span>
-            </Box>
+      <Flex justifyContent="space-between" align="center">
+        <Flex align="flex-end" gap="24px">
+          <Box>
+            <Text color="#3D3D3D" fontSize="20px" fontWeight={700}>
+              {trans?.metrics?.location?.name}
+            </Text>
+            <Flex align="center" gap="16px">
+              <Box
+                bg="#F4F6F8"
+                mt="8px"
+                borderRadius="4px"
+                color="#949698"
+                p="6px"
+                textAlign="center"
+                w="fit-content"
+                fontWeight={500}
+                fontSize="12px"
+              >
+                Manager:{" "}
+                <span style={{ color: "#3D3D3D" }}>
+                  {trans?.metrics?.manager?.firstName}{" "}
+                  {trans?.metrics?.manager?.lastName}
+                </span>
+              </Box>
 
-            <Box
-              bg="#F4F6F8"
-              mt="8px"
-              borderRadius="4px"
-              color="#949698"
-              p="6px"
-              textAlign="center"
-              w="fit-content"
-              fontWeight={500}
-              fontSize="12px"
-            >
-              Zone:{" "}
-              <span style={{ color: "#3D3D3D" }}>{sales?.zone?.name}</span>
-            </Box>
+              <Box
+                bg="#F4F6F8"
+                mt="8px"
+                borderRadius="4px"
+                color="#949698"
+                p="6px"
+                textAlign="center"
+                w="fit-content"
+                fontWeight={500}
+                fontSize="12px"
+              >
+                Zone:{" "}
+                <span style={{ color: "#3D3D3D" }}>{sales?.zone?.name}</span>
+              </Box>
+            </Flex>
+          </Box>
+
+          <Flex
+            fontSize="14px"
+            color={
+              AuditStatus.find(
+                (dat) => dat.name?.toLowerCase() === audit_status?.toLowerCase()
+              )?.color || ""
+            }
+            bg={
+              AuditStatus.find(
+                (dat) => dat.name?.toLowerCase() === audit_status?.toLowerCase()
+              )?.bg || ""
+            }
+            justifyContent="center"
+            align="center"
+            fontWeight={500}
+            py="5px"
+            textTransform="capitalize"
+            px="16px"
+            borderRadius="4px"
+          >
+            {audit_status?.toLowerCase()}
           </Flex>
-        </Box>
-
-        <Flex
-          fontSize="14px"
-          color={
-            AuditStatus.find(
-              (dat) => dat.name?.toLowerCase() === audit_status?.toLowerCase()
-            )?.color || ""
-          }
-          bg={
-            AuditStatus.find(
-              (dat) => dat.name?.toLowerCase() === audit_status?.toLowerCase()
-            )?.bg || ""
-          }
-          justifyContent="center"
-          align="center"
-          fontWeight={500}
-          py="5px"
-          textTransform="capitalize"
-          px="16px"
-          borderRadius="4px"
-        >
-          {audit_status?.toLowerCase()}
         </Flex>
+
+        <Box
+          bg="#F4F6F8"
+          mt="8px"
+          borderRadius="4px"
+          color="#949698"
+          p="6px"
+          textAlign="center"
+          w="fit-content"
+          fontWeight={500}
+          fontSize="12px"
+        >
+          Date: <span style={{ color: "#3D3D3D" }}>{sales?.date}</span>
+        </Box>
       </Flex>
 
       <Box mt="24px">
