@@ -219,21 +219,9 @@ export default function AddOperator() {
                       color="#444648"
                     >
                       Assign Customer{" "}
-                      <span
-                        style={{
-                          color: "tomato",
-                          fontSize: "15px",
-                        }}
-                      >
-                        *
-                      </span>
                     </Text>
                     <Select
-                      styles={
-                        formSubmitted && !values?.customer
-                          ? errorCustomStyles
-                          : customStyles
-                      }
+                      styles={customStyles}
                       placeholder="Select customer"
                       options={customerOptions}
                       name="customer"
@@ -256,11 +244,6 @@ export default function AddOperator() {
                         ),
                       }}
                     />
-                    {formSubmitted && !values?.customer && (
-                      <Text mt="8px" fontSize="12px" color="tomato">
-                        Customer is required
-                      </Text>
-                    )}
                   </Box>
                   <Box mb={4}>
                     <Text

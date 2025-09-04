@@ -3,7 +3,7 @@ import { Box, Flex } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import { HiOutlineArrowNarrowLeft } from "react-icons/hi";
 
-const GoBackTab = () => {
+const GoBackTab = (alt) => {
   const navigate = useNavigate();
 
   const goBack = () => {
@@ -15,7 +15,7 @@ const GoBackTab = () => {
     <Box
       w="fit-content"
       py={2}
-      mb={3}
+      mb={alt ? 0 : 3}
       color="#242628"
       display="flex"
       alignItems="center"

@@ -21,6 +21,7 @@ export const uploadIncidentDocs = async ({ query, body }) => {
   return res.data;
 };
 
+
 export const incidentStatus = async ({ query, body }) => {
   const res = await axiosInstance.patch(API.INCIDENT_STATUS(query), body);
   return res.data;

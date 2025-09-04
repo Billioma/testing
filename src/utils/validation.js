@@ -511,7 +511,6 @@ export const validateAdminSchema = Yup.object().shape({
 
 export const validateVehicleSchema = Yup.object().shape({
   licensePlate: Yup.string().required("License Plate is required"),
-  customer: Yup.object().required("Customer is required"),
   color: Yup.object().required("Color is required"),
   state: Yup.object().required("State is required"),
   make: Yup.object().required("Make is required"),

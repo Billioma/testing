@@ -9,6 +9,8 @@ export const PUBLIC_PATHS = {
   CUST_SIGNUP: "/customer/auth/signup",
   CUST_PARK: "/customer/pay-to-park/:zoneCode",
   CUST_SCAN_PARK: "/customer/scan-qr",
+  CUST_RETRIEVE_VEHICLE: "/customer/retrieve-vehicle",
+  CUST_TICKET_DETAILS: "/customer/retrieve-vehicle/:id",
 
   // CLIENT ROUTES
   CLIENT_LOGIN: "/client/auth/login",

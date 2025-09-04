@@ -31,3 +31,13 @@ export const getZone = async (query) => {
   const res = await axiosInstance.get(API.GET_ZONE(query));
   return res.data;
 };
+
+export const getTicket = async (id) => {
+  const res = await axiosInstance.get(API.GET_TICKET(id));
+  return res.data;
+};
+
+export const retrieveVehicle = async ({ query, body }) => {
+  const res = await axiosInstance.post(API.RETRIEVE(query), body);
+  return res.data;
+};

@@ -16,6 +16,7 @@ export const GET_VEHICLES = "vehicles";
 export const INCIDENTS = "customer/incident-report";
 export const DEL_VEHICLES = (id = "") => `vehicles/${id}`;
 export const INCIDENT = (id = "") => `customer/incident-report/${id}`;
+export const RETRIEVE = (id = "") => `/public/retrieve-ticket/${id}`;
 export const INCIDENT_STATUS = (id = "") =>
   `/admin/incident-report/${id}/update-status`;
 export const INCIDENT_DOCS = (id = "") => `/admin/incident-report/documents/${id}`;
@@ -67,6 +68,7 @@ export const SERVICE_BOOKINGS_RATE = (id = "") =>
   `customer/service-bookings/rate/${id}`;
 export const BOOKING_RATES = "service-bookings/rates";
 export const GET_ZONE = (zone = "") => `public/zone?term=${zone}`;
+export const GET_TICKET = (id = "") => `public/get-ticket/${id}`;
 export const GET_SERVICES = "public/services";
 export const GET_STATES = "https://locus.fkkas.com/api/states";
 export const SEND_MAIL = "support-email/send-message";
