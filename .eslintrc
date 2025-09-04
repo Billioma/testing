@@ -7,7 +7,7 @@
     "no-unsafe-optional-chaining": "off",
     "react/no-unescaped-entities": "off",
     "react/no-children-prop": "off",
-    "no-prototype-builtins":"off",
+    "no-prototype-builtins": "off",
     "react/jsx-key": "off",
     "react/display-name": "off",
     "jsx-a11y/no-autofocus": "off",
