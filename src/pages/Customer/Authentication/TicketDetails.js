@@ -96,6 +96,21 @@ const TicketDetails = () => {
     handleSubmit();
   };
 
+  const handleRetrieveClick = () => {
+    if (data?.paymentStatus) {
+      handleSubmit();
+    } else {
+      if (typeof initializePayment === "function") {
+        initializePayment(() => {
+          // This callback always runs after payment completes successfully
+          onSuccess();
+        });
+      } else {
+        errorToast("Payment system not loaded yet");
+      }
+    }
+  };
+
   useEffect(() => {
     if (id !== "") {
       mutate(id);
@@ -280,9 +295,7 @@ const TicketDetails = () => {
       <Skeleton isLoaded={!isLoading} borderRadius="12px">
         <Button
           isLoading={isRetrieve}
-          onClick={() =>
-            data?.paymentStatus ? handleSubmit() : initializePayment(onSuccess)
-          }
+          onClick={handleRetrieveClick}
           h="50px"
           w="full"
           mb="50px"
