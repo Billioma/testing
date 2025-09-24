@@ -301,7 +301,7 @@ const TicketDetails = () => {
           mb="50px"
           mt="108px"
         >
-          Retrieve Vehicle
+          Request Vehicle
         </Button>
       </Skeleton>
     </Box>
