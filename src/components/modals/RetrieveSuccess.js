@@ -29,7 +29,7 @@ const RetrieveSuccess = ({ isOpen, onClose, isRetrieve }) => {
         </Text>
 
         <Text textAlign="center" mt="10px">
-          Your Vehicle has successfully been retrieved
+          {isRetrieve ? "" : "Your Vehicle has successfully been retrieved"}
         </Text>
 
         <Flex mt="32px" w="full" display={isRetrieve ? "none" : "flex"}>
