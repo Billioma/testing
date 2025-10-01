@@ -16,7 +16,7 @@ export const GET_VEHICLES = "vehicles";
 export const INCIDENTS = "customer/incident-report";
 export const DEL_VEHICLES = (id = "") => `vehicles/${id}`;
 export const INCIDENT = (id = "") => `customer/incident-report/${id}`;
-export const RETRIEVE = (id = "") => `/public/retrieve-ticket/${id}`;
+export const RETRIEVE = (id = "") => `/public/request-ticket/${id}`;
 export const INCIDENT_STATUS = (id = "") =>
   `/admin/incident-report/${id}/update-status`;
 export const INCIDENT_DOCS = (id = "") => `/admin/incident-report/documents/${id}`;

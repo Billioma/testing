@@ -1,4 +1,3 @@
-import React from "react";
 import { Box, Button, Flex, Image, Spinner, Text } from "@chakra-ui/react";
 import ModalLayout from "./ModalLayout";
 import { useNavigate } from "react-router-dom";

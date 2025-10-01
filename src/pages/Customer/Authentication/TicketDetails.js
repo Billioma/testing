@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import GoBackTab from "../../../components/data/Admin/GoBackTab";
 import {
   Box,
@@ -19,10 +19,13 @@ import { PaymentMethods } from "../../../components/common/constants";
 import RetrieveSuccess from "../../../components/modals/RetrieveSuccess";
 import useCustomToast from "../../../utils/notifications";
 import { usePaystackPayment } from "react-paystack";
+import Msg from "../../../components/modals/Msg";
 
 const TicketDetails = () => {
   const { id } = useParams();
+  const [msgs, setMsgs] = useState("");
   const { isOpen, onClose, onOpen } = useDisclosure();
+  const msg = useDisclosure();
   const { errorToast } = useCustomToast();
   const { mutate, isLoading, data } = useGetTicket({
     onError: (err) => {
@@ -47,9 +50,9 @@ const TicketDetails = () => {
     reference: new Date().getTime().toString(),
     amount: Number(`${data?.amount}00`),
     publicKey: process.env.REACT_APP_PAYSTACK_KEY,
-    serviceLogId: data?.id,
     email: data?.location?.client?.email,
     metadata: {
+      serviceLogId: data?.id,
       custom_fields: [
         {
           display_name: "Transaction Type",
@@ -63,30 +66,11 @@ const TicketDetails = () => {
   const initializePayment = usePaystackPayment(config);
 
   const handleSubmit = () => {
-    const latestPaymentMethod = data?.paymentStatus
-      ? data?.payments
-          ?.filter(
-            (p) => p.paymentMethod !== null && p.paymentMethod !== undefined
-          )
-          .reduce(
-            (latest, current) =>
-              new Date(current.createdAt) > new Date(latest.createdAt)
-                ? current
-                : latest,
-            data?.payments?.[0]
-          )?.paymentMethod
-      : "6";
-
     retrieveMutate({
       query: id,
       body: {
-        timeOut: new Date(),
-        comment: null,
-        status: 1,
-        delivered: 1,
-        paymentMethod: latestPaymentMethod?.toString() ?? "6",
-        amountPaid: data?.amount,
-        paid: 1,
+        message: msgs,
+        ticketNumber: data?.ticketNumber,
       },
     });
   };
@@ -97,12 +81,12 @@ const TicketDetails = () => {
   };
 
   const handleRetrieveClick = () => {
+    msg.onClose();
     if (data?.paymentStatus) {
       handleSubmit();
     } else {
       if (typeof initializePayment === "function") {
         initializePayment(() => {
-          // This callback always runs after payment completes successfully
           onSuccess();
         });
       } else {
@@ -123,6 +107,15 @@ const TicketDetails = () => {
         isOpen={isOpen}
         onClose={onClose}
         isRetrieve={isRetrieve}
+      />
+      <Msg
+        isLoading={isRetrieve}
+        action={handleRetrieveClick}
+        msg
+        setMsgs={setMsgs}
+        msgs={msgs}
+        isOpen={msg.isOpen}
+        onClose={msg.onClose}
       />
       <Flex align="center" justifyContent="space-between" w="full">
         <Box w="25%">
@@ -294,8 +287,8 @@ const TicketDetails = () => {
 
       <Skeleton isLoaded={!isLoading} borderRadius="12px">
         <Button
-          isLoading={isRetrieve}
-          onClick={handleRetrieveClick}
+          // onClick={handleRetrieveClick}
+          onClick={msg.onOpen}
           h="50px"
           w="full"
           mb="50px"
