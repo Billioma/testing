@@ -142,8 +142,8 @@ const TableLayer = ({
                     <Flex
                       bg={invoice?.paymentStatus ? "#E5FFE5" : "#FEF1F1"}
                       color={invoice?.paymentStatus ? "#0B841D" : "#EE383A"}
-                      justifyContent={"center"}
-                      alignItems="center"
+                      justifyContent="center"
+                      align="center"
                       py="5px"
                       px="16px"
                       borderRadius="4px"

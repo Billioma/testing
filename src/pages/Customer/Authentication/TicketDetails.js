@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import GoBackTab from "../../../components/data/Admin/GoBackTab";
 import {
   Box,
   Button,
@@ -14,7 +13,7 @@ import {
   useRetrieveVehicle,
 } from "../../../services/customer/query/locations";
 import { useParams } from "react-router-dom";
-import { formatDate, formatTime } from "../../../utils/helpers";
+import { formatDateTime } from "../../../utils/helpers";
 import { PaymentMethods } from "../../../components/common/constants";
 import RetrieveSuccess from "../../../components/modals/RetrieveSuccess";
 import useCustomToast from "../../../utils/notifications";
@@ -38,6 +37,7 @@ const TicketDetails = () => {
   const { mutate: retrieveMutate, isLoading: isRetrieve } = useRetrieveVehicle({
     onSuccess: () => {
       onOpen();
+      msg.onClose();
     },
     onError: (err) => {
       errorToast(
@@ -81,10 +81,10 @@ const TicketDetails = () => {
   };
 
   const handleRetrieveClick = () => {
-    msg.onClose();
     if (data?.paymentStatus) {
       handleSubmit();
     } else {
+      msg.onClose();
       if (typeof initializePayment === "function") {
         initializePayment(() => {
           onSuccess();
@@ -102,7 +102,7 @@ const TicketDetails = () => {
   }, [id]);
 
   return (
-    <Box w="full" color="#242628" mt="20px">
+    <Flex flexDir="column" h="80vh" w="full" color="#242628" mt="40px">
       <RetrieveSuccess
         isOpen={isOpen}
         onClose={onClose}
@@ -117,16 +117,10 @@ const TicketDetails = () => {
         isOpen={msg.isOpen}
         onClose={msg.onClose}
       />
-      <Flex align="center" justifyContent="space-between" w="full">
-        <Box w="25%">
-          <GoBackTab alt />
-        </Box>
 
-        <Text w="50%" fontSize="15px">
-          Transaction Summary
-        </Text>
-        <Box w="25%" />
-      </Flex>
+      <Text textAlign="center" fontWeight={600} fontSize="15px">
+        Transaction Summary
+      </Text>
 
       <Skeleton isLoaded={!isLoading} borderRadius="12px">
         <Flex
@@ -169,97 +163,37 @@ const TicketDetails = () => {
           my="16px"
           p="24px"
         >
-          <Text fontWeight={700}>Customer Details</Text>
+          <Text fontWeight={700} textAlign="center">
+            Ticket Details
+          </Text>
 
           <Flex mt="24px" align="center" justifyContent="space-between">
-            <Text>Phone Number</Text>
+            <Text fontWeight={500}>Phone Number</Text>
             <Text>{data?.vehicle?.customerPhoneNumber || "N/A"}</Text>
           </Flex>
-        </Box>
-      </Skeleton>
 
-      <Skeleton isLoaded={!isLoading} borderRadius="12px">
-        <Box
-          fontSize="14px"
-          border="1px solid #E4E6E8"
-          borderRadius="12px"
-          my="16px"
-          p="24px"
-        >
-          <Text fontWeight={700}>Car Details</Text>
-
-          <Flex mt="24px" align="center" justifyContent="space-between">
-            <Text>Vehicles</Text>
+          <Flex my="16px" align="center" justifyContent="space-between">
+            <Text fontWeight={500}>Vehicle</Text>
             <Text>
-              {data?.vehicle?.nake?.name} {data?.vehicle?.model?.name}
+              {data?.vehicle?.make?.name} {data?.vehicle?.model?.name} (
+              {data?.vehicle?.licensePlate}) - {data?.vehicle?.color}
+            </Text>
+          </Flex>
+
+          <Flex align="center" justifyContent="space-between">
+            <Text fontWeight={500}>Location - Zone</Text>
+            <Text>
+              {data?.location?.name} - {data?.zone?.name}
             </Text>
           </Flex>
 
           <Flex my="16px" align="center" justifyContent="space-between">
-            <Text>License Plate</Text>
-            <Text>{data?.vehicle?.licensePlate}</Text>
+            <Text fontWeight={500}>Date</Text>
+            <Text>{formatDateTime(data?.timeIn)}</Text>
           </Flex>
 
           <Flex align="center" justifyContent="space-between">
-            <Text>Color</Text>
-            <Text>{data?.vehicle?.color}</Text>
-          </Flex>
-        </Box>
-      </Skeleton>
-
-      <Skeleton isLoaded={!isLoading} borderRadius="12px">
-        <Box
-          fontSize="14px"
-          border="1px solid #E4E6E8"
-          borderRadius="12px"
-          mb="16px"
-          p="24px"
-        >
-          <Text fontWeight={700}>Service Details</Text>
-
-          <Flex mt="24px" align="center" justifyContent="space-between">
-            <Text>Location</Text>
-            <Text>{data?.location?.name}</Text>
-          </Flex>
-
-          <Flex my="16px" align="center" justifyContent="space-between">
-            <Text>Zone</Text>
-            <Text>{data?.zone?.name}</Text>
-          </Flex>
-
-          <Flex align="center" justifyContent="space-between">
-            <Text>Date</Text>
-            <Text>{formatDate(data?.timeIn)}</Text>
-          </Flex>
-
-          <Flex my="16px" align="center" justifyContent="space-between">
-            <Text>Entry Time</Text>
-            <Text>{formatTime(data?.timeIn)}</Text>
-          </Flex>
-
-          <Flex align="center" justifyContent="space-between">
-            <Text>Service Type</Text>
-            <Text>N/A</Text>
-          </Flex>
-        </Box>
-      </Skeleton>
-
-      <Skeleton isLoaded={!isLoading} borderRadius="12px">
-        <Box
-          fontSize="14px"
-          border="1px solid #E4E6E8"
-          borderRadius="12px"
-          p="24px"
-        >
-          <Text fontWeight={700}>Payment Details</Text>
-
-          <Flex mt="24px" align="center" justifyContent="space-between">
-            <Text>Fee</Text>
-            <Text>₦ {Number(data?.finalAmount)?.toLocaleString()}</Text>
-          </Flex>
-
-          <Flex my="16px" align="center" justifyContent="space-between">
-            <Text>Payment Method</Text>
+            <Text fontWeight={500}>Payment Method</Text>
             <Text>
               {PaymentMethods[
                 data?.payments
@@ -272,32 +206,20 @@ const TicketDetails = () => {
                       new Date(current.createdAt) > new Date(latest.createdAt)
                         ? current
                         : latest,
-                    data?.payments?.[0] // fallback
+                    data?.payments?.[0]
                   )?.paymentMethod
               ] ?? "Unknown"}
             </Text>
           </Flex>
-
-          <Flex align="center" justifyContent="space-between">
-            <Text>Payment Status</Text>
-            <Text>{data?.paymentStatus ? "Paid" : "Unpaid"}</Text>
-          </Flex>
         </Box>
       </Skeleton>
 
-      <Skeleton isLoaded={!isLoading} borderRadius="12px">
-        <Button
-          // onClick={handleRetrieveClick}
-          onClick={msg.onOpen}
-          h="50px"
-          w="full"
-          mb="50px"
-          mt="108px"
-        >
+      <Skeleton mt="auto" isLoaded={!isLoading} borderRadius="12px">
+        <Button onClick={msg.onOpen} h="50px" w="full" mt="24px">
           Request Vehicle
         </Button>
       </Skeleton>
-    </Box>
+    </Flex>
   );
 };
 

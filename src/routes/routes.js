@@ -9,11 +9,11 @@ const {
   CUST_LOGIN_REDIRECT,
   CUST_SIGNUP,
   CUST_RESET_PASS,
+  CUST_HISTORY_TICKETS_GUEST,
   CUST_RESET_SENT,
   CUST_CHANGE_PASS,
   CUST_PARK,
   CUST_SCAN_PARK,
-  CUST_RETRIEVE_VEHICLE,
   CUST_TICKET_DETAILS,
   CUST_CHANGE_SUCCESS,
 
@@ -45,6 +45,7 @@ const {
   CUST_SERVICE_PARK_DETAILS,
   CUST_HISTORY_PARK_DETAILS,
   CUST_HISTORY_USER,
+  CUST_HISTORY_TICKETS,
   CUST_HISTORY_US,
   CUST_SERVICES_CAR_SERVICE_DETAILS,
   CUST_SERVICES_RESERVE_PARK,
@@ -207,10 +208,6 @@ const CustScan = WithSuspense(
   lazy(() => import("../pages/Customer/Authentication/ScanPark"))
 );
 
-const CustRetrieve = WithSuspense(
-  lazy(() => import("../pages/Customer/Authentication/RetrieveVehicle"))
-);
-
 const CustTicket = WithSuspense(
   lazy(() => import("../pages/Customer/Authentication/TicketDetails"))
 );
@@ -302,6 +299,12 @@ const CustMail = WithSuspense(
 );
 const CustHistoryUs = WithSuspense(
   lazy(() => import("../pages/Customer/History/Us"))
+);
+const CustHistoryTickets = WithSuspense(
+  lazy(() => import("../pages/Customer/History/Tickets"))
+);
+const CustHistoryGuestTickets = WithSuspense(
+  lazy(() => import("../pages/Customer/Authentication/Tickets"))
 );
 const CustHistoryUser = WithSuspense(
   lazy(() => import("../pages/Customer/History/User"))
@@ -1098,10 +1101,10 @@ export const PUBLIC_ROUTES = [
   { path: CUST_CHANGE_PASS, element: <CustChangePassword /> },
   { path: CUST_CHANGE_SUCCESS, element: <CustChangeSuccess /> },
   { path: CUST_SIGNUP, element: <CustSignup /> },
+  { path: CUST_HISTORY_TICKETS_GUEST, element: <CustHistoryGuestTickets /> },
   { path: CUST_RESET_SENT, element: <CustResetSent /> },
   { path: CUST_PARK, element: <CustPark /> },
   { path: CUST_SCAN_PARK, element: <CustScan /> },
-  { path: CUST_RETRIEVE_VEHICLE, element: <CustRetrieve /> },
   { path: CUST_TICKET_DETAILS, element: <CustTicket /> },
 
   //CLIENT ROUTES
@@ -1181,6 +1184,7 @@ export const PRIVATE_ROUTES = [
   { path: CUST_HELP_CENTER_FAQ, element: <CustFaq /> },
   { path: CUST_VEHICLES, element: <CustVehicles /> },
   { path: CUST_HISTORY_US, element: <CustHistoryUs /> },
+  { path: CUST_HISTORY_TICKETS, element: <CustHistoryTickets /> },
   { path: CUST_HISTORY_USER, element: <CustHistoryUser /> },
   { path: CUST_SETTINGS, element: <CustSettings /> },
   { path: CUST_PAYMENT, element: <CustPayment /> },

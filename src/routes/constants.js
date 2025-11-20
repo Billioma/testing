@@ -9,8 +9,8 @@ export const PUBLIC_PATHS = {
   CUST_SIGNUP: "/customer/auth/signup",
   CUST_PARK: "/customer/pay-to-park/:zoneCode",
   CUST_SCAN_PARK: "/customer/scan-qr",
-  CUST_RETRIEVE_VEHICLE: "/customer/retrieve-vehicle",
   CUST_TICKET_DETAILS: "/customer/retrieve-vehicle/:id",
+  CUST_HISTORY_TICKETS_GUEST: "/customer/auth/guest-tickets",
 
   // CLIENT ROUTES
   CLIENT_LOGIN: "/client/auth/login",
@@ -57,6 +57,7 @@ export const PRIVATE_PATHS = {
 
   CUST_HISTORY_USER: "/customer/history/user",
   CUST_HISTORY_US: "/customer/history/company",
+  CUST_HISTORY_TICKETS: "/customer/history/tickets",
   CUST_HELP_CENTER: "/customer/help-center",
   CUST_HELP_CENTER_MAIL: "/customer/help-center/contact-us",
   CUST_HELP_CENTER_FAQ: "/customer/help-center/FAQs",

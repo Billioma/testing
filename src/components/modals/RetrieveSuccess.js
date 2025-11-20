@@ -34,12 +34,12 @@ const RetrieveSuccess = ({ isOpen, onClose, isRetrieve }) => {
         <Flex mt="32px" w="full" display={isRetrieve ? "none" : "flex"}>
           <Button
             w="full"
-            onClick={() => navigate("/customer/auth/login")}
+            onClick={() => navigate("/customer/auth/signup")}
             fontSize="13px"
             borderRadius="4px"
             py="17px"
           >
-            Go Home
+            Create an Account
           </Button>
         </Flex>
       </Box>

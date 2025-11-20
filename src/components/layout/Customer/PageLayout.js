@@ -105,10 +105,17 @@ export const NonAuthLayout = ({ children }) => {
       <Flex
         flexDir="column"
         justifyContent={
-          location.pathname === "/customer/scan-qr" ? "flex-start" : "center"
+          location.pathname === "/customer/scan-qr" ||
+          location.pathname.includes("/customer/retrieve") ||
+          location.pathname.includes("/guest-tickets")
+            ? "flex-start"
+            : "center"
         }
         align={
-          location.pathname === "/customer/scan-qr" ? "flex-start" : "center"
+          location.pathname === "/customer/scan-qr" ||
+          location.pathname.includes("/customer/retrieve")
+            ? "flex-start"
+            : "center"
         }
         minH={
           location.pathname === "/customer/pay-to-park"

@@ -56,6 +56,7 @@ export const GET_ZONE = "operator/zones";
 export const GET_POLICY = "operator/policies";
 export const GET_RATE = "operator/rates";
 export const GET_AMENITIES = "public/amenities";
+export const GET_TICKETS = (phone = "") => `public/get-tickets/${phone}`;
 
 export const OP_PTP = "operator/pay-to-park";
 export const OP_RP = "operator/reservations";
