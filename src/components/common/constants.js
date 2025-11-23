@@ -511,10 +511,10 @@ export const general = [
         name: "Created by Us",
         path: "/customer/history/company",
       },
-      {
-        name: "Ticket History",
-        path: "/customer/history/tickets",
-      },
+      // {
+      //   name: "Ticket History",
+      //   path: "/customer/history/tickets",
+      // },
     ],
   },
   {

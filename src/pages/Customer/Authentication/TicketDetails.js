@@ -104,7 +104,7 @@ const TicketDetails = () => {
   return (
     <Flex flexDir="column" h="80vh" w="full" color="#242628" mt="40px">
       <RetrieveSuccess
-        isOpen={isOpen}
+        isOpen={true}
         onClose={onClose}
         isRetrieve={isRetrieve}
       />

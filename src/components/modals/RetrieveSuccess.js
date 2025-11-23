@@ -31,7 +31,13 @@ const RetrieveSuccess = ({ isOpen, onClose, isRetrieve }) => {
           {isRetrieve ? "" : "Your Vehicle has successfully been retrieved"}
         </Text>
 
-        <Flex mt="32px" w="full" display={isRetrieve ? "none" : "flex"}>
+        <Flex
+          mt="32px"
+          w="full"
+          align="center"
+          gap="12px"
+          display={isRetrieve ? "none" : "flex"}
+        >
           <Button
             w="full"
             onClick={() => navigate("/customer/auth/signup")}
@@ -40,6 +46,16 @@ const RetrieveSuccess = ({ isOpen, onClose, isRetrieve }) => {
             py="17px"
           >
             Create an Account
+          </Button>
+          <Button
+            w="full"
+            onClick={() => navigate("/customer/auth/guest-tickets")}
+            fontSize="13px"
+            variant="adminDanger"
+            borderRadius="4px"
+            py="17px"
+          >
+            View Transaction History
           </Button>
         </Flex>
       </Box>
