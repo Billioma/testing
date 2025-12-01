@@ -16,7 +16,7 @@ export const getAdminGuestLogs = async (page, limit, query) => {
   const response = await axiosInstance.get(
     `${
       API.ADMIN_SERVICE_LOGS
-    }?page=${page}&limit=${limit}&sort=createdAt,DESC&filter=vehicle.customerName||$eq||Guest&${
+    }?page=${page}&limit=${limit}&sort=createdAt,DESC&filter=vehicle.customerName||$eq||Guest&filter=customerId||$isnull&${
       query || ""
     }`
   );
