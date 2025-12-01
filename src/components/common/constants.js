@@ -341,6 +341,10 @@ export const sidebarItems = [
         name: "Serviced Vehicles",
         path: "/admin/logs/serviced-vehicles",
       },
+      {
+        name: "Guest Logs",
+        path: "/admin/logs/guests",
+      },
     ],
   },
   {
@@ -2262,6 +2266,18 @@ export const valetedVehiclesOptions = [
   { label: "Ticket Number", value: "ticketNumber" },
   { label: "License Plate", value: "vehicle.licensePlate" },
   { label: "Customer Name", value: "vehicle.customerName" },
+  { label: "Location", value: "location.name" },
+  { label: "Zone", value: "zone.name" },
+  { label: "Attendant", value: "attendant.name" },
+  { label: "Amount", value: "amount" },
+  { label: "Status", value: "status" },
+  { label: "Created At", value: "createdAt" },
+];
+
+export const guestVehiclesOptions = [
+  { label: "Ticket Number", value: "ticketNumber" },
+  { label: "License Plate", value: "vehicle.licensePlate" },
+  { label: "Service Type", value: "service.serviceType" },
   { label: "Location", value: "location.name" },
   { label: "Zone", value: "zone.name" },
   { label: "Attendant", value: "attendant.name" },

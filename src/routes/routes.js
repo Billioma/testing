@@ -895,6 +895,10 @@ const AdminServicedVehicles = WithSuspense(
   lazy(() => import("../pages/Admin/Logs/ServicedVehicles"))
 );
 
+const AdminGuestLogs = WithSuspense(
+  lazy(() => import("../pages/Admin/Logs/Guests"))
+);
+
 const AdminViewServicedVehicle = WithSuspense(
   lazy(() => import("../pages/Admin/Logs/ViewServicedVehicle"))
 );
@@ -1614,6 +1618,11 @@ export const PRIVATE_ROUTES = [
   {
     path: PRIVATE_PATHS.ADMIN_SERVICED_VEHICLES,
     element: <AdminServicedVehicles />,
+  },
+
+  {
+    path: PRIVATE_PATHS.ADMIN_GUESTS,
+    element: <AdminGuestLogs />,
   },
 
   {

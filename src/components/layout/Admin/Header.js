@@ -153,6 +153,9 @@ const Header = ({ showSidebar }) => {
       case locationRoute.includes("logs/valeted-vehicles"):
         return setSecTitle("Valeted Vehicles");
 
+      case locationRoute.includes("logs/guests"):
+        return setSecTitle("Guest Logs");
+
       case locationRoute.includes("logs/parked-vehicles"):
         return setSecTitle("Parked Vehicles");
 

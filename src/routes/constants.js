@@ -236,6 +236,7 @@ export const PRIVATE_PATHS = {
   ADMIN_VIEW_PARKED_VEHICLE: "/admin/logs/parked-vehicles/details/:id",
 
   ADMIN_SERVICED_VEHICLES: "/admin/logs/serviced-vehicles",
+  ADMIN_GUESTS: "/admin/logs/guests",
   ADMIN_VIEW_SERVICED_VEHICLE: "/admin/logs/serviced-vehicles/details/:id",
 
   ADMIN_CONFIG_ROLES: "/admin/configurations/roles",

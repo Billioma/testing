@@ -14,6 +14,7 @@ import {
   editServiceLogs,
   makePaymentServiceLog,
   retrieveTickets,
+  getAdminGuestLogs,
 } from "../api/logs";
 
 export const useGetAdminServiceLogs = (options = {}) => {
@@ -65,6 +66,23 @@ export const useGetValetedVehicles = (
   const { data, isLoading, refetch } = useQuery(
     ["GET_VALETED_VEHICLES", page, limit, query],
     () => getValetedVehicles(page, limit, query),
+    {
+      ...options,
+    }
+  );
+
+  return { isLoading, data, refetch };
+};
+
+export const useGetAdminGuestLogs = (
+  options = {},
+  page = 1,
+  limit = 25,
+  query
+) => {
+  const { data, isLoading, refetch } = useQuery(
+    ["getAdminGuestLogs", page, limit, query],
+    () => getAdminGuestLogs(page, limit, query),
     {
       ...options,
     }
