@@ -46,9 +46,12 @@ const SingleLocation = () => {
 
     setSearchFilters({
       ...values,
-      gte: new Date(today.getFullYear(), 0, 1).toLocaleDateString("en-CA"),
-      lte: today.toLocaleDateString("en-CA"),
+      gte:
+        audit?.gte ||
+        new Date(today.getFullYear(), 0, 1).toLocaleDateString("en-CA"),
+      lte: audit?.lte || today.toLocaleDateString("en-CA"),
       location: id,
+      status: audit?.status || "",
     });
   }, []);
 
