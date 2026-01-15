@@ -55,6 +55,10 @@ const Locations = () => {
     setEndRow(currentEndRow);
   }, [data, page, limit]);
 
+  useEffect(() => {
+    sessionStorage.removeItem("audit");
+  }, []);
+
   return (
     <Box border="1px solid #d4d6d8" borderRadius="8px" p="16px 23px 24px">
       <Flex

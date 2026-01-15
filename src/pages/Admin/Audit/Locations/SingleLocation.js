@@ -13,7 +13,6 @@ import SingleLocationTable from "../../../../components/data/Admin/Audit/Locatio
 import { BsFilter } from "react-icons/bs";
 import { MdClose } from "react-icons/md";
 import { formatFilterDate } from "../../../../utils/helpers";
-import { useGetAdministrators } from "../../../../services/admin/query/users";
 import { useParams } from "react-router-dom";
 import GoBackTab from "../../../../components/data/Admin/GoBackTab";
 
@@ -42,6 +41,7 @@ const SingleLocation = () => {
         new Date(today.getFullYear(), 0, 1).toLocaleDateString("en-CA"),
       lte: audit?.lte || today.toLocaleDateString("en-CA"),
       status: audit?.status || "",
+      zone: audit?.zone || "",
     }));
 
     setSearchFilters({
@@ -52,6 +52,7 @@ const SingleLocation = () => {
       lte: audit?.lte || today.toLocaleDateString("en-CA"),
       location: id,
       status: audit?.status || "",
+      zone: audit?.zone || "",
     });
   }, []);
 
