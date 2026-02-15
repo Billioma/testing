@@ -23,11 +23,9 @@ export const UPDATE_SALES = (id = "") => `admin/sales-reports/${id}`;
 export const GET_SALES_REPORT_LOCATION = "admin/sales-reports/locations";
 export const GET_LOCATION_PERF = "admin/sales-reports/locations/performance";
 export const GET_MANAGER_PERF = "admin/sales-reports/managers/performance";
-export const GET_MANAGER_SALES_REPORT =
-  "admin/sales-reports/manager/sales-reports";
+export const GET_MANAGER_SALES_REPORT = "admin/sales-reports/manager/sales-reports";
 export const GET_MANAGER_GRID = "admin/sales-reports/manager/grid";
-export const GET_SALES_REPORT_LOCATION_TRANSACTION =
-  "/admin/sales-reports/transactions";
+export const GET_SALES_REPORT_LOCATION_TRANSACTION = "/admin/sales-reports/transactions";
 export const ADMIN_ATTENDANTS = "admin/attendants";
 export const ADMIN_ATTENDANT = (id = "") => `admin/attendants/${id}`;
 export const ADMIN_ATTENDANTS_LIST = (
@@ -280,9 +278,6 @@ export const ADMIN_SERVICE_LOGS_LIST = (
   page = ""
 ) =>
   `admin/service-logs?filter=service.serviceType||$eq||${type}&${filterString}&limit=${limit}&page=${page}&sort=createdAt,DESC`;
-
-export const ADMIN_GUEST_LOGS_LIST = (limit = "", page = "") =>
-  `admin/service-logs?filter=vehicle.customerName||$eq||Guest&limit=${limit}&page=${page}&sort=createdAt,DESC`;
 
 export const ADMIN_SERVICE_LOGS_DETAIL = (id = "") =>
   `admin/service-logs/${id}`;

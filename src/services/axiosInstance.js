@@ -29,6 +29,7 @@ export const uploadInstance = axios.create({
 
 const onRequest = (request) => {
   const customer = JSON.parse(localStorage.getItem("customer"));
+  const attendant = JSON.parse(localStorage.getItem("attendant"));
   const admin = JSON.parse(localStorage.getItem("admin"));
   const analytics = JSON.parse(localStorage.getItem("analytics"));
   const client = JSON.parse(localStorage.getItem("client"));
@@ -39,6 +40,8 @@ const onRequest = (request) => {
         ? operator
         : location.pathname.includes("admin/")
         ? admin
+        : location.pathname.includes("attendant/")
+        ? attendant
         : location.pathname.includes("analytics/")
         ? analytics
         : location.pathname.includes("client/")
@@ -53,6 +56,7 @@ const onRequest = (request) => {
 const onRefreshRequest = (request) => {
   const customer = JSON.parse(localStorage.getItem("customer"));
   const admin = JSON.parse(localStorage.getItem("admin"));
+  const attendant = JSON.parse(localStorage.getItem("attendant"));
   const client = JSON.parse(localStorage.getItem("client"));
   const operator = JSON.parse(localStorage.getItem("operator"));
   request.headers.Authorization =
@@ -61,6 +65,8 @@ const onRefreshRequest = (request) => {
         ? operator
         : location.pathname.includes("admin/")
         ? admin
+        : location.pathname.includes("attendant/")
+        ? attendant
         : location.pathname.includes("analytics/")
         ? analytics
         : location.pathname.includes("client/")
@@ -81,8 +87,9 @@ const onResponse = (response) => {
 };
 
 const pathPrefix =
-  location.pathname.match(/(operator|admin|analytics|client)\//)?.[0] ||
-  "customer";
+  location.pathname.match(
+    /(operator|admin|analytics|client|attendant)\//,
+  )?.[0] || "customer";
 const newPath = pathPrefix?.replace("/", "");
 const refreshAccessToken = async (refreshToken) => {
   try {
@@ -92,7 +99,7 @@ const refreshAccessToken = async (refreshToken) => {
         headers: {
           Authorization: `Bearer ${refreshToken}`,
         },
-      }
+      },
     );
 
     const newAccessToken = response.data;
@@ -109,12 +116,19 @@ const refreshAccessToken = async (refreshToken) => {
 };
 
 const onResponseError = async (error) => {
-  const userTypes = ["operator", "admin", "analytics", "client", "customer"];
+  const userTypes = [
+    "operator",
+    "admin",
+    "attendant",
+    "analytics",
+    "client",
+    "customer",
+  ];
   const user = userTypes
     .map((type) =>
       location.pathname.includes(type)
         ? JSON.parse(localStorage.getItem(type))
-        : null
+        : null,
     )
     .find((user) => user !== null);
   const statusCode = error.response?.status;

@@ -6,7 +6,7 @@ export const useLogOut = () => {
     };
 
     const pathPrefix =
-      location.pathname.match(/(operator|admin|analytics|client)\//)?.[0] ||
+      location.pathname.match(/(operator|admin|analytics|client|attendant)\//)?.[0] ||
       "customer";
     const newPath = pathPrefix?.replace("/", "");
 
@@ -27,33 +27,6 @@ export const getNumber = (str) => {
     }
   }
   return Number(out.join(""));
-};
-
-export const getNumbers = (str) => {
-  const arr = str.split("");
-  const out = [];
-  let hasDecimal = false;
-  let decimalCount = 0;
-
-  for (let i = 0; i < arr.length; i++) {
-    const char = arr[i];
-
-    if (!isNaN(char)) {
-      if (hasDecimal) {
-        if (decimalCount < 2) {
-          out.push(char);
-          decimalCount++;
-        }
-      } else {
-        out.push(char);
-      }
-    } else if (char === "." && !hasDecimal) {
-      hasDecimal = true;
-      out.push(char);
-    }
-  }
-
-  return out.join("");
 };
 
 export const formatDat = (date, fallback = "") => {

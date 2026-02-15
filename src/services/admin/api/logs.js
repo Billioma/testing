@@ -12,17 +12,6 @@ export const getValetedVehicles = async (page, limit, query) => {
   return response.data;
 };
 
-export const getAdminGuestLogs = async (page, limit, query) => {
-  const response = await axiosInstance.get(
-    `${
-      API.ADMIN_SERVICE_LOGS
-    }?page=${page}&limit=${limit}&sort=createdAt,DESC&filter=vehicle.customerName||$eq||Guest&filter=customerId||$isnull&${
-      query || ""
-    }`
-  );
-  return response.data;
-};
-
 export const getAdminServiceLogs = async (query) => {
   const res = await axiosInstance.get(
     API.ADMIN_SERVICE_LOGS_LIST(

@@ -4,17 +4,18 @@ import { PUBLIC_PATHS, PRIVATE_PATHS } from "./constants";
 import { Navigate } from "react-router-dom";
 
 const {
+  // ATTENDANT ROUTES
+  ATT_LOGIN,
+
   // CUSTOMER ROUTES
   CUST_LOGIN,
   CUST_LOGIN_REDIRECT,
   CUST_SIGNUP,
   CUST_RESET_PASS,
-  CUST_HISTORY_TICKETS_GUEST,
   CUST_RESET_SENT,
   CUST_CHANGE_PASS,
   CUST_PARK,
   CUST_SCAN_PARK,
-  CUST_TICKET_DETAILS,
   CUST_CHANGE_SUCCESS,
 
   // CLIENT ROUTES
@@ -39,13 +40,21 @@ const {
 } = PUBLIC_PATHS;
 
 const {
+  // ATTENDANT ROUTES
+  ATT_LOCATIONS,
+  ATT_ZONE,
+  ATT_DASHBOARD,
+  ATT_VALET,
+  ATT_HISTORY,
+  ATT_HISTORY_DETAILS,
+  ATT_VEHICLE,
+
   // CUSTOMER ROUTES
   CUST_DASHBOARD,
   CUST_SERVICES_PARK,
   CUST_SERVICE_PARK_DETAILS,
   CUST_HISTORY_PARK_DETAILS,
   CUST_HISTORY_USER,
-  CUST_HISTORY_TICKETS,
   CUST_HISTORY_US,
   CUST_SERVICES_CAR_SERVICE_DETAILS,
   CUST_SERVICES_RESERVE_PARK,
@@ -184,920 +193,935 @@ const {
   ADMIN_VIEW_CLIENT,
 } = PRIVATE_PATHS;
 
+//ATTENDANT PAGES
+const AttLogin = WithSuspense(
+  lazy(() => import("../pages/Attendant/Authentication/Login")),
+);
+const AttLocations = WithSuspense(
+  lazy(() => import("../pages/Attendant/Locations")),
+);
+const AttZones = WithSuspense(
+  lazy(() => import("../pages/Attendant/Locations/Zone")),
+);
+const AttDashboard = WithSuspense(
+  lazy(() => import("../pages/Attendant/Dashboard")),
+);
+const AttValet = WithSuspense(lazy(() => import("../pages/Attendant/Valet")));
+const AttHistory = WithSuspense(
+  lazy(() => import("../pages/Attendant/History")),
+);
+const AttHistoryDetails = WithSuspense(
+  lazy(() => import("../pages/Attendant/History/Details")),
+);
+const AttVehicle = WithSuspense(
+  lazy(() => import("../pages/Attendant/Vehicle")),
+);
+
 //CUSTOMER PAGES
 const CustLogin = WithSuspense(
-  lazy(() => import("../pages/Customer/Authentication/Login"))
+  lazy(() => import("../pages/Customer/Authentication/Login")),
 );
 
 const CustResetPassword = WithSuspense(
-  lazy(() => import("../pages/Customer/Authentication/ResetPassword"))
+  lazy(() => import("../pages/Customer/Authentication/ResetPassword")),
 );
 
 const CustResetSent = WithSuspense(
-  lazy(() => import("../pages/Customer/Authentication/ResetSent"))
+  lazy(() => import("../pages/Customer/Authentication/ResetSent")),
 );
 
 const CustChangePassword = WithSuspense(
-  lazy(() => import("../pages/Customer/Authentication/ChangePassword"))
+  lazy(() => import("../pages/Customer/Authentication/ChangePassword")),
 );
 const CustChangeSuccess = WithSuspense(
-  lazy(() => import("../pages/Customer/Authentication/ChangeSuccess"))
+  lazy(() => import("../pages/Customer/Authentication/ChangeSuccess")),
 );
 
 const CustScan = WithSuspense(
-  lazy(() => import("../pages/Customer/Authentication/ScanPark"))
-);
-
-const CustTicket = WithSuspense(
-  lazy(() => import("../pages/Customer/Authentication/TicketDetails"))
+  lazy(() => import("../pages/Customer/Authentication/ScanPark")),
 );
 const CustPark = WithSuspense(
-  lazy(() => import("../pages/Customer/Authentication/PayToPark"))
+  lazy(() => import("../pages/Customer/Authentication/PayToPark")),
 );
 const CustSignup = WithSuspense(
-  lazy(() => import("../pages/Customer/Authentication/Signup"))
+  lazy(() => import("../pages/Customer/Authentication/Signup")),
 );
 const CustSettings = WithSuspense(
-  lazy(() => import("../pages/Customer/Account/Settings"))
+  lazy(() => import("../pages/Customer/Account/Settings")),
 );
 const CustProfile = WithSuspense(
-  lazy(() => import("../pages/Customer/Account/Profile"))
+  lazy(() => import("../pages/Customer/Account/Profile")),
 );
 const CustPayment = WithSuspense(
-  lazy(() => import("../pages/Customer/Account/Payment"))
+  lazy(() => import("../pages/Customer/Account/Payment")),
 );
 const CustEditProfile = WithSuspense(
-  lazy(() => import("../pages/Customer/Account/EditProfile"))
+  lazy(() => import("../pages/Customer/Account/EditProfile")),
 );
 const CustIncidents = WithSuspense(
-  lazy(() => import("../pages/Customer/Incidents/index"))
+  lazy(() => import("../pages/Customer/Incidents/index")),
 );
 const CustIncidentsDetails = WithSuspense(
-  lazy(() => import("../pages/Customer/Incidents/IncidentDetails"))
+  lazy(() => import("../pages/Customer/Incidents/IncidentDetails")),
 );
 
 const CustDashboard = WithSuspense(
-  lazy(() => import("../pages/Customer/Dashboard/Dashboard"))
+  lazy(() => import("../pages/Customer/Dashboard/Dashboard")),
 );
 
 const CustServicesPark = WithSuspense(
-  lazy(() => import("../pages/Customer/Services/Park"))
+  lazy(() => import("../pages/Customer/Services/Park")),
 );
 
 const CustServicesParkDetails = WithSuspense(
   lazy(() =>
-    import("../components/data/Customer/History/User/PaytoParkDetails")
-  )
+    import("../components/data/Customer/History/User/PaytoParkDetails"),
+  ),
 );
 
 const CustCompanyParkDetails = WithSuspense(
-  lazy(() => import("../components/data/Customer/History/Us/PaytoParkDetails"))
+  lazy(() => import("../components/data/Customer/History/Us/PaytoParkDetails")),
 );
 const CustUsValetParking = WithSuspense(
   lazy(() =>
-    import("../components/data/Customer/History/Us/ValetServiceDetails")
-  )
+    import("../components/data/Customer/History/Us/ValetServiceDetails"),
+  ),
 );
 const CustServicesReserveParkDetails = WithSuspense(
   lazy(() =>
-    import("../components/data/Customer/History/User/ReserveParkingDetails")
-  )
+    import("../components/data/Customer/History/User/ReserveParkingDetails"),
+  ),
 );
 const CustUsReserveParkDetails = WithSuspense(
   lazy(() =>
-    import("../components/data/Customer/History/Us/ReserveParkingDetails")
-  )
+    import("../components/data/Customer/History/Us/ReserveParkingDetails"),
+  ),
 );
 const CustServicesCarServiceDetails = WithSuspense(
-  lazy(() => import("../components/data/Customer/History/Us/CarServiceDetails"))
+  lazy(() =>
+    import("../components/data/Customer/History/Us/CarServiceDetails"),
+  ),
 );
 const CustServicesEventParkDetails = WithSuspense(
   lazy(() =>
-    import("../components/data/Customer/History/User/EventParkingDetails")
-  )
+    import("../components/data/Customer/History/User/EventParkingDetails"),
+  ),
 );
 const CustUsEventParkDetails = WithSuspense(
   lazy(() =>
-    import("../components/data/Customer/History/Us/EventParkingDetails")
-  )
+    import("../components/data/Customer/History/Us/EventParkingDetails"),
+  ),
 );
 const CustServicesCar = WithSuspense(
-  lazy(() => import("../pages/Customer/Services/CarServices"))
+  lazy(() => import("../pages/Customer/Services/CarServices")),
 );
 const CustServicesReservePark = WithSuspense(
-  lazy(() => import("../pages/Customer/Services/ReserveParking"))
+  lazy(() => import("../pages/Customer/Services/ReserveParking")),
 );
 const CustServicesEventPark = WithSuspense(
-  lazy(() => import("../pages/Customer/Services/EventParking"))
+  lazy(() => import("../pages/Customer/Services/EventParking")),
 );
 const CustHelp = WithSuspense(
-  lazy(() => import("../pages/Customer/Help/Help"))
+  lazy(() => import("../pages/Customer/Help/Help")),
 );
 const CustFaq = WithSuspense(lazy(() => import("../pages/Customer/Help/Faq")));
 const CustMail = WithSuspense(
-  lazy(() => import("../pages/Customer/Help/ContactUs"))
+  lazy(() => import("../pages/Customer/Help/ContactUs")),
 );
 const CustHistoryUs = WithSuspense(
-  lazy(() => import("../pages/Customer/History/Us"))
-);
-const CustHistoryTickets = WithSuspense(
-  lazy(() => import("../pages/Customer/History/Tickets"))
-);
-const CustHistoryGuestTickets = WithSuspense(
-  lazy(() => import("../pages/Customer/Authentication/Tickets"))
+  lazy(() => import("../pages/Customer/History/Us")),
 );
 const CustHistoryUser = WithSuspense(
-  lazy(() => import("../pages/Customer/History/User"))
+  lazy(() => import("../pages/Customer/History/User")),
 );
 const CustSubscriptions = WithSuspense(
-  lazy(() => import("../pages/Customer/Subscriptions/Subscriptions"))
+  lazy(() => import("../pages/Customer/Subscriptions/Subscriptions")),
 );
 const CustAddSubscriptions = WithSuspense(
-  lazy(() => import("../pages/Customer/Subscriptions/AddSubscription"))
+  lazy(() => import("../pages/Customer/Subscriptions/AddSubscription")),
 );
 const CustVehicles = WithSuspense(
-  lazy(() => import("../pages/Customer/Vehicles/Vehicles"))
+  lazy(() => import("../pages/Customer/Vehicles/Vehicles")),
 );
 
 //CUSTOMER PAGES
 const ClientLogin = WithSuspense(
-  lazy(() => import("../pages/Client/Authentication/Login"))
+  lazy(() => import("../pages/Client/Authentication/Login")),
 );
 
 const ClientResetPassword = WithSuspense(
-  lazy(() => import("../pages/Client/Authentication/ResetPassword"))
+  lazy(() => import("../pages/Client/Authentication/ResetPassword")),
 );
 
 const ClientResetSent = WithSuspense(
-  lazy(() => import("../pages/Client/Authentication/ResetSent"))
+  lazy(() => import("../pages/Client/Authentication/ResetSent")),
 );
 
 const ClientChangePassword = WithSuspense(
-  lazy(() => import("../pages/Client/Authentication/ChangePassword"))
+  lazy(() => import("../pages/Client/Authentication/ChangePassword")),
 );
 const ClientChangeSuccess = WithSuspense(
-  lazy(() => import("../pages/Client/Authentication/ChangeSuccess"))
+  lazy(() => import("../pages/Client/Authentication/ChangeSuccess")),
 );
 const ClientProfile = WithSuspense(
-  lazy(() => import("../pages/Client/Account/Profile"))
+  lazy(() => import("../pages/Client/Account/Profile")),
 );
 const ClientDashboard = WithSuspense(
-  lazy(() => import("../pages/Client/Dashboard/Dashboard"))
+  lazy(() => import("../pages/Client/Dashboard/Dashboard")),
 );
 const ClientAddSub = WithSuspense(
-  lazy(() => import("../pages/Client/Subscriptions/AddSub"))
+  lazy(() => import("../pages/Client/Subscriptions/AddSub")),
 );
 const ClientViewSub = WithSuspense(
-  lazy(() => import("../pages/Client/Subscriptions/Subscriptions"))
+  lazy(() => import("../pages/Client/Subscriptions/Subscriptions")),
 );
 const ClientEvents = WithSuspense(
-  lazy(() => import("../pages/Client/Events/Events"))
+  lazy(() => import("../pages/Client/Events/Events")),
 );
 const ClientLogs = WithSuspense(
-  lazy(() => import("../pages/Client/Logs/Logs"))
+  lazy(() => import("../pages/Client/Logs/Logs")),
 );
 const ClientLogsDetails = WithSuspense(
-  lazy(() => import("../pages/Client/Logs/ParkDetails"))
+  lazy(() => import("../pages/Client/Logs/ParkDetails")),
 );
 
 const ClientLogsValet = WithSuspense(
-  lazy(() => import("../pages/Client/Logs/Valet"))
+  lazy(() => import("../pages/Client/Logs/Valet")),
 );
 const ClientLogsValetDetails = WithSuspense(
-  lazy(() => import("../pages/Client/Logs/ValetDetails"))
+  lazy(() => import("../pages/Client/Logs/ValetDetails")),
 );
 const ClientLogsServiced = WithSuspense(
-  lazy(() => import("../pages/Client/Logs/Service"))
+  lazy(() => import("../pages/Client/Logs/Service")),
 );
 const ClientLogsServicedDetails = WithSuspense(
-  lazy(() => import("../pages/Client/Logs/ServiceDetails"))
+  lazy(() => import("../pages/Client/Logs/ServiceDetails")),
 );
 const ClientTran = WithSuspense(
-  lazy(() => import("../pages/Client/Transactions/Transactions"))
+  lazy(() => import("../pages/Client/Transactions/Transactions")),
 );
 const ClientTranDetails = WithSuspense(
-  lazy(() => import("../pages/Client/Transactions/TransactionDetails"))
+  lazy(() => import("../pages/Client/Transactions/TransactionDetails")),
 );
 const ClientAddEvent = WithSuspense(
-  lazy(() => import("../pages/Client/Events/AddEvent"))
+  lazy(() => import("../pages/Client/Events/AddEvent")),
 );
 const ClientEditEvent = WithSuspense(
-  lazy(() => import("../pages/Client/Events/EditEvent"))
+  lazy(() => import("../pages/Client/Events/EditEvent")),
 );
 const ClientAddUser = WithSuspense(
-  lazy(() => import("../pages/Client/Users/AddUser"))
+  lazy(() => import("../pages/Client/Users/AddUser")),
 );
 const ClientUsers = WithSuspense(
-  lazy(() => import("../pages/Client/Users/Users"))
+  lazy(() => import("../pages/Client/Users/Users")),
 );
 
 //OPERATOR PAGES
 const OperatorLogin = WithSuspense(
-  lazy(() => import("../pages/Operator/Authentication/Login"))
+  lazy(() => import("../pages/Operator/Authentication/Login")),
 );
 const OperatorResetPassword = WithSuspense(
-  lazy(() => import("../pages/Operator/Authentication/ResetPassword"))
+  lazy(() => import("../pages/Operator/Authentication/ResetPassword")),
 );
 const OperatorResetSent = WithSuspense(
-  lazy(() => import("../pages/Operator/Authentication/ResetSent"))
+  lazy(() => import("../pages/Operator/Authentication/ResetSent")),
 );
 
 const OperatorChangePassword = WithSuspense(
-  lazy(() => import("../pages/Operator/Authentication/ChangePassword"))
+  lazy(() => import("../pages/Operator/Authentication/ChangePassword")),
 );
 const OperatorChangeSuccess = WithSuspense(
-  lazy(() => import("../pages/Operator/Authentication/ChangeSuccess"))
+  lazy(() => import("../pages/Operator/Authentication/ChangeSuccess")),
 );
 const OpDashboard = WithSuspense(
-  lazy(() => import("../pages/Operator/Dashboard/Dashboard"))
+  lazy(() => import("../pages/Operator/Dashboard/Dashboard")),
 );
 const OpAttendant = WithSuspense(
-  lazy(() => import("../pages/Operator/Users/Attendants"))
+  lazy(() => import("../pages/Operator/Users/Attendants")),
 );
 const OpAddAttendant = WithSuspense(
-  lazy(() => import("../pages/Operator/Users/AddAttendant"))
+  lazy(() => import("../pages/Operator/Users/AddAttendant")),
 );
 const OpAttendantDetails = WithSuspense(
-  lazy(() => import("../pages/Operator/Users/AttendantDetails"))
+  lazy(() => import("../pages/Operator/Users/AttendantDetails")),
 );
 const OpLocation = WithSuspense(
-  lazy(() => import("../pages/Operator/Locations/Locations/Locations"))
+  lazy(() => import("../pages/Operator/Locations/Locations/Locations")),
 );
 const OpLocationDetails = WithSuspense(
-  lazy(() => import("../pages/Operator/Locations/Locations/LocationDetails"))
+  lazy(() => import("../pages/Operator/Locations/Locations/LocationDetails")),
 );
 const OpAddLocation = WithSuspense(
-  lazy(() => import("../pages/Operator/Locations/Locations/AddLocation"))
+  lazy(() => import("../pages/Operator/Locations/Locations/AddLocation")),
 );
 const OpZone = WithSuspense(
-  lazy(() => import("../pages/Operator/Locations/Zones/Zones"))
+  lazy(() => import("../pages/Operator/Locations/Zones/Zones")),
 );
 const OpTransactions = WithSuspense(
-  lazy(() => import("../pages/Operator/Transactions/Transactions"))
+  lazy(() => import("../pages/Operator/Transactions/Transactions")),
 );
 const OpTransactionDetails = WithSuspense(
-  lazy(() => import("../pages/Operator/Transactions/TransactionDetails"))
+  lazy(() => import("../pages/Operator/Transactions/TransactionDetails")),
 );
 const OpPtpTransactions = WithSuspense(
-  lazy(() => import("../pages/Operator/Transactions/PayToPark"))
+  lazy(() => import("../pages/Operator/Transactions/PayToPark")),
 );
 const OpPtpTransactionDetails = WithSuspense(
-  lazy(() => import("../pages/Operator/Transactions/ViewPayToPark"))
+  lazy(() => import("../pages/Operator/Transactions/ViewPayToPark")),
 );
 const OpRpTransactions = WithSuspense(
-  lazy(() => import("../pages/Operator/Transactions/ReserveParking"))
+  lazy(() => import("../pages/Operator/Transactions/ReserveParking")),
 );
 const OpRpTransactionDetails = WithSuspense(
-  lazy(() => import("../pages/Operator/Transactions/ViewReserveParking"))
+  lazy(() => import("../pages/Operator/Transactions/ViewReserveParking")),
 );
 const OpEvTransactions = WithSuspense(
-  lazy(() => import("../pages/Operator/Transactions/EventParking"))
+  lazy(() => import("../pages/Operator/Transactions/EventParking")),
 );
 const OpEvTransactionDetails = WithSuspense(
-  lazy(() => import("../pages/Operator/Transactions/ViewEventParking"))
+  lazy(() => import("../pages/Operator/Transactions/ViewEventParking")),
 );
 const OpServiceTransactions = WithSuspense(
-  lazy(() => import("../pages/Operator/Transactions/ServiceBooking"))
+  lazy(() => import("../pages/Operator/Transactions/ServiceBooking")),
 );
 const OpServiceTransactionDetails = WithSuspense(
-  lazy(() => import("../pages/Operator/Transactions/ViewServiceBookings"))
+  lazy(() => import("../pages/Operator/Transactions/ViewServiceBookings")),
 );
 const OpZoneDetails = WithSuspense(
-  lazy(() => import("../pages/Operator/Locations/Zones/ZoneDetails"))
+  lazy(() => import("../pages/Operator/Locations/Zones/ZoneDetails")),
 );
 const OpAddZone = WithSuspense(
-  lazy(() => import("../pages/Operator/Locations/Zones/AddZone"))
+  lazy(() => import("../pages/Operator/Locations/Zones/AddZone")),
 );
 const OpRate = WithSuspense(
-  lazy(() => import("../pages/Operator/Locations/Rates/Rates"))
+  lazy(() => import("../pages/Operator/Locations/Rates/Rates")),
 );
 const OpRateDetails = WithSuspense(
-  lazy(() => import("../pages/Operator/Locations/Rates/RateDetails"))
+  lazy(() => import("../pages/Operator/Locations/Rates/RateDetails")),
 );
 const OpAddRate = WithSuspense(
-  lazy(() => import("../pages/Operator/Locations/Rates/AddRate"))
+  lazy(() => import("../pages/Operator/Locations/Rates/AddRate")),
 );
 const OpPolicies = WithSuspense(
-  lazy(() => import("../pages/Operator/Locations/Policies/Policies"))
+  lazy(() => import("../pages/Operator/Locations/Policies/Policies")),
 );
 const OpAddPolicy = WithSuspense(
-  lazy(() => import("../pages/Operator/Locations/Policies/AddPolicy"))
+  lazy(() => import("../pages/Operator/Locations/Policies/AddPolicy")),
 );
 const OpPolicyDetails = WithSuspense(
-  lazy(() => import("../pages/Operator/Locations/Policies/PolicyDetails"))
+  lazy(() => import("../pages/Operator/Locations/Policies/PolicyDetails")),
 );
 const OpValeted = WithSuspense(
-  lazy(() => import("../pages/Operator/Logs/Valet/Vehicles"))
+  lazy(() => import("../pages/Operator/Logs/Valet/Vehicles")),
 );
 const OpValetedDetails = WithSuspense(
-  lazy(() => import("../pages/Operator/Logs/Valet/Details"))
+  lazy(() => import("../pages/Operator/Logs/Valet/Details")),
 );
 const OpParked = WithSuspense(
-  lazy(() => import("../pages/Operator/Logs/Parked/Vehicles"))
+  lazy(() => import("../pages/Operator/Logs/Parked/Vehicles")),
 );
 const OpParkedDetails = WithSuspense(
-  lazy(() => import("../pages/Operator/Logs/Parked/Details"))
+  lazy(() => import("../pages/Operator/Logs/Parked/Details")),
 );
 const OpServiced = WithSuspense(
-  lazy(() => import("../pages/Operator/Logs/Serviced/Vehicles"))
+  lazy(() => import("../pages/Operator/Logs/Serviced/Vehicles")),
 );
 const OpServicedDetails = WithSuspense(
-  lazy(() => import("../pages/Operator/Logs/Serviced/Details"))
+  lazy(() => import("../pages/Operator/Logs/Serviced/Details")),
 );
 const OpRepPayment = WithSuspense(
-  lazy(() => import("../pages/Operator/Reports/Payment"))
+  lazy(() => import("../pages/Operator/Reports/Payment")),
 );
 const OpRepLocation = WithSuspense(
-  lazy(() => import("../pages/Operator/Reports/Locations"))
+  lazy(() => import("../pages/Operator/Reports/Locations")),
 );
 const OpRepZone = WithSuspense(
-  lazy(() => import("../pages/Operator/Reports/Zones"))
+  lazy(() => import("../pages/Operator/Reports/Zones")),
 );
 const OpRepLog = WithSuspense(
-  lazy(() => import("../pages/Operator/Reports/Logs"))
+  lazy(() => import("../pages/Operator/Reports/Logs")),
 );
 const OpProfile = WithSuspense(
-  lazy(() => import("../pages/Operator/Account/Profile"))
+  lazy(() => import("../pages/Operator/Account/Profile")),
 );
 
 // ADMIN PAGES
 const AdminDashboard = WithSuspense(
-  lazy(() => import("../pages/Admin/Dashboard/Dashboard"))
+  lazy(() => import("../pages/Admin/Dashboard/Dashboard")),
 );
 
 const AdminLogin = WithSuspense(
-  lazy(() => import("../pages/Admin/Auth/Login"))
+  lazy(() => import("../pages/Admin/Auth/Login")),
 );
 
 const AnalyticsLogin = WithSuspense(
-  lazy(() => import("../pages/Analytics/Auth/Login"))
+  lazy(() => import("../pages/Analytics/Auth/Login")),
 );
 
 const AdminResetPassword = WithSuspense(
-  lazy(() => import("../pages/Admin/Auth/ResetPassword"))
+  lazy(() => import("../pages/Admin/Auth/ResetPassword")),
 );
 
 const AdminResetPasswordLink = WithSuspense(
-  lazy(() => import("../pages/Admin/Auth/ResetPasswordLinkConfirmation"))
+  lazy(() => import("../pages/Admin/Auth/ResetPasswordLinkConfirmation")),
 );
 
 const AdminServices = WithSuspense(
-  lazy(() => import("../pages/Admin/Services/Services"))
+  lazy(() => import("../pages/Admin/Services/Services")),
 );
 
 const AdminAttendants = WithSuspense(
-  lazy(() => import("../pages/Admin/Users/Attendants"))
+  lazy(() => import("../pages/Admin/Users/Attendants")),
 );
 
 const AdminCustomers = WithSuspense(
-  lazy(() => import("../pages/Admin/Users/Customers"))
+  lazy(() => import("../pages/Admin/Users/Customers")),
 );
 
 const AdminAddAttendant = WithSuspense(
-  lazy(() => import("../pages/Admin/Users/AddAttendant"))
+  lazy(() => import("../pages/Admin/Users/AddAttendant")),
 );
 
 const AdminProfile = WithSuspense(
-  lazy(() => import("../pages/Admin/Profile/Profile"))
+  lazy(() => import("../pages/Admin/Profile/Profile")),
 );
 
 const AdminUpdateProfile = WithSuspense(
-  lazy(() => import("../pages/Admin/Profile/EditProfile"))
+  lazy(() => import("../pages/Admin/Profile/EditProfile")),
 );
 
 const AdminViewAttendant = WithSuspense(
-  lazy(() => import("../pages/Admin/Users/ViewAttendant"))
+  lazy(() => import("../pages/Admin/Users/ViewAttendant")),
 );
 
 const AdminAddCustomer = WithSuspense(
-  lazy(() => import("../pages/Admin/Users/AddCustomer"))
+  lazy(() => import("../pages/Admin/Users/AddCustomer")),
 );
 
 const AdminViewCustomer = WithSuspense(
-  lazy(() => import("../pages/Admin/Users/ViewCustomer"))
+  lazy(() => import("../pages/Admin/Users/ViewCustomer")),
 );
 
 const AdminOperators = WithSuspense(
-  lazy(() => import("../pages/Admin/Users/Operators"))
+  lazy(() => import("../pages/Admin/Users/Operators")),
 );
 
 const AdminAddOperator = WithSuspense(
-  lazy(() => import("../pages/Admin/Users/AddOperator"))
+  lazy(() => import("../pages/Admin/Users/AddOperator")),
 );
 
 const AdminViewOperator = WithSuspense(
-  lazy(() => import("../pages/Admin/Users/ViewOperator"))
+  lazy(() => import("../pages/Admin/Users/ViewOperator")),
 );
 
 const AdminAdministrators = WithSuspense(
-  lazy(() => import("../pages/Admin/Users/Administrators"))
+  lazy(() => import("../pages/Admin/Users/Administrators")),
 );
 
 const AdminAddAdministrator = WithSuspense(
-  lazy(() => import("../pages/Admin/Users/AddAdministrator"))
+  lazy(() => import("../pages/Admin/Users/AddAdministrator")),
 );
 
 const AdminViewAdministrator = WithSuspense(
-  lazy(() => import("../pages/Admin/Users/ViewAdministrator"))
+  lazy(() => import("../pages/Admin/Users/ViewAdministrator")),
 );
 
 const AdminSuppFeedback = WithSuspense(
-  lazy(() => import("../pages/Admin/Support/Feedback"))
+  lazy(() => import("../pages/Admin/Support/Feedback")),
 );
 
 const AdminRateFeedback = WithSuspense(
-  lazy(() => import("../pages/Admin/Support/Ratings"))
+  lazy(() => import("../pages/Admin/Support/Ratings")),
 );
 
 const AdminViewFeedback = WithSuspense(
-  lazy(() => import("../pages/Admin/Support/ViewFeedbackComplaints"))
+  lazy(() => import("../pages/Admin/Support/ViewFeedbackComplaints")),
 );
 
 const AdminVehicles = WithSuspense(
-  lazy(() => import("../pages/Admin/Vehicles/Vehicles"))
+  lazy(() => import("../pages/Admin/Vehicles/Vehicles")),
 );
 
 const AdminAddVehicle = WithSuspense(
-  lazy(() => import("../pages/Admin/Vehicles/AddVehicle"))
+  lazy(() => import("../pages/Admin/Vehicles/AddVehicle")),
 );
 const AdminViewVehicle = WithSuspense(
-  lazy(() => import("../pages/Admin/Vehicles/ViewVehicle"))
+  lazy(() => import("../pages/Admin/Vehicles/ViewVehicle")),
 );
 
 const AdminMembershipPlans = WithSuspense(
-  lazy(() => import("../pages/Admin/Memberships/MembershipPlans"))
+  lazy(() => import("../pages/Admin/Memberships/MembershipPlans")),
 );
 
 const AdminAddMembershipPlan = WithSuspense(
-  lazy(() => import("../pages/Admin/Memberships/AddMembershipPlan"))
+  lazy(() => import("../pages/Admin/Memberships/AddMembershipPlan")),
 );
 
 const AdminViewMembershipPlan = WithSuspense(
-  lazy(() => import("../pages/Admin/Memberships/ViewMembershipPlan"))
+  lazy(() => import("../pages/Admin/Memberships/ViewMembershipPlan")),
 );
 
 const AdminMembershipFeatures = WithSuspense(
-  lazy(() => import("../pages/Admin/Memberships/MembershipFeatures"))
+  lazy(() => import("../pages/Admin/Memberships/MembershipFeatures")),
 );
 
 const AdminAuditLocations = WithSuspense(
-  lazy(() => import("../pages/Admin/Audit/Locations"))
+  lazy(() => import("../pages/Admin/Audit/Locations")),
 );
 
 const AdminAuditLocation = WithSuspense(
-  lazy(() => import("../pages/Admin/Audit/Locations/SingleLocation"))
+  lazy(() => import("../pages/Admin/Audit/Locations/SingleLocation")),
 );
 
 const AdminAuditLocationDetails = WithSuspense(
-  lazy(() => import("../pages/Admin/Audit/Locations/ViewLocation"))
+  lazy(() => import("../pages/Admin/Audit/Locations/ViewLocation")),
 );
 
 const AdminAuditManagers = WithSuspense(
-  lazy(() => import("../pages/Admin/Audit/Managers"))
+  lazy(() => import("../pages/Admin/Audit/Managers")),
 );
 
 const AdminAuditManagerDetails = WithSuspense(
-  lazy(() => import("../pages/Admin/Audit/Managers/ViewManager"))
+  lazy(() => import("../pages/Admin/Audit/Managers/ViewManager")),
 );
 
 const AdminAddMembershipFeature = WithSuspense(
-  lazy(() => import("../pages/Admin/Memberships/AddMembershipFeature"))
+  lazy(() => import("../pages/Admin/Memberships/AddMembershipFeature")),
 );
 
 const AdminViewMembershipFeature = WithSuspense(
-  lazy(() => import("../pages/Admin/Memberships/ViewMembershipFeature"))
+  lazy(() => import("../pages/Admin/Memberships/ViewMembershipFeature")),
 );
 
 const AdminCustomerSubscriptions = WithSuspense(
-  lazy(() => import("../pages/Admin/Memberships/CustomerSubscriptions"))
+  lazy(() => import("../pages/Admin/Memberships/CustomerSubscriptions")),
 );
 
 const AdminAddCustomerSubscription = WithSuspense(
-  lazy(() => import("../pages/Admin/Memberships/AddCustomerSubscription"))
+  lazy(() => import("../pages/Admin/Memberships/AddCustomerSubscription")),
 );
 
 const AdminViewCustomerSubscription = WithSuspense(
-  lazy(() => import("../pages/Admin/Memberships/ViewCustomerSubscription"))
+  lazy(() => import("../pages/Admin/Memberships/ViewCustomerSubscription")),
 );
 
 const AdminCorporateSubscriptions = WithSuspense(
-  lazy(() => import("../pages/Admin/Memberships/CorporateSubscriptions"))
+  lazy(() => import("../pages/Admin/Memberships/CorporateSubscriptions")),
 );
 
 const AdminAddCorporateSubscription = WithSuspense(
-  lazy(() => import("../pages/Admin/Memberships/AddCorporateSubscription"))
+  lazy(() => import("../pages/Admin/Memberships/AddCorporateSubscription")),
 );
 
 const AdminViewCorporateSubscription = WithSuspense(
-  lazy(() => import("../pages/Admin/Memberships/ViewCorporateSubscription"))
+  lazy(() => import("../pages/Admin/Memberships/ViewCorporateSubscription")),
 );
 
 const AdminPayToPark = WithSuspense(
-  lazy(() => import("../pages/Admin/Transactions/PayToPark"))
+  lazy(() => import("../pages/Admin/Transactions/PayToPark")),
 );
 
 const AdminViewPayToPark = WithSuspense(
-  lazy(() => import("../pages/Admin/Transactions/ViewPayToPark"))
+  lazy(() => import("../pages/Admin/Transactions/ViewPayToPark")),
 );
 
 const AdminReservedParking = WithSuspense(
-  lazy(() => import("../pages/Admin/Transactions/ReservedParking"))
+  lazy(() => import("../pages/Admin/Transactions/ReservedParking")),
 );
 
 const AdminViewReservedParking = WithSuspense(
-  lazy(() => import("../pages/Admin/Transactions/ViewReservedParking"))
+  lazy(() => import("../pages/Admin/Transactions/ViewReservedParking")),
 );
 
 const AdminTips = WithSuspense(
-  lazy(() => import("../pages/Admin/Transactions/Tips"))
+  lazy(() => import("../pages/Admin/Transactions/Tips")),
 );
 
 const AdminViewTips = WithSuspense(
-  lazy(() => import("../pages/Admin/Transactions/ViewTips"))
+  lazy(() => import("../pages/Admin/Transactions/ViewTips")),
 );
 
 const AdminPoints = WithSuspense(
-  lazy(() => import("../pages/Admin/Transactions/Points"))
+  lazy(() => import("../pages/Admin/Transactions/Points")),
 );
 
 const AdminViewPoints = WithSuspense(
-  lazy(() => import("../pages/Admin/Transactions/ViewPoints"))
+  lazy(() => import("../pages/Admin/Transactions/ViewPoints")),
 );
 
 const AdminEventParking = WithSuspense(
-  lazy(() => import("../pages/Admin/Transactions/EventParking"))
+  lazy(() => import("../pages/Admin/Transactions/EventParking")),
 );
 
 const AdminViewEventParking = WithSuspense(
-  lazy(() => import("../pages/Admin/Transactions/ViewEventParking"))
+  lazy(() => import("../pages/Admin/Transactions/ViewEventParking")),
 );
 
 const AdminAddReservedParking = WithSuspense(
-  lazy(() => import("../pages/Admin/Transactions/AddReservedParking"))
+  lazy(() => import("../pages/Admin/Transactions/AddReservedParking")),
 );
 
 const AdminCarServices = WithSuspense(
-  lazy(() => import("../pages/Admin/Transactions/CarServices"))
+  lazy(() => import("../pages/Admin/Transactions/CarServices")),
 );
 
 const AdminViewCarService = WithSuspense(
-  lazy(() => import("../pages/Admin/Transactions/ViewCarService"))
+  lazy(() => import("../pages/Admin/Transactions/ViewCarService")),
 );
 
 const AdminAddCarService = WithSuspense(
-  lazy(() => import("../pages/Admin/Transactions/AddCarService"))
+  lazy(() => import("../pages/Admin/Transactions/AddCarService")),
 );
 
 const AdminClients = WithSuspense(
-  lazy(() => import("../pages/Admin/Clients/ClientList"))
+  lazy(() => import("../pages/Admin/Clients/ClientList")),
 );
 
 const AdminAddClient = WithSuspense(
-  lazy(() => import("../pages/Admin/Clients/AddClient"))
+  lazy(() => import("../pages/Admin/Clients/AddClient")),
 );
 
 const AdminViewClient = WithSuspense(
-  lazy(() => import("../pages/Admin/Clients/ViewClient"))
+  lazy(() => import("../pages/Admin/Clients/ViewClient")),
 );
 
 const AdminClientsInvoices = WithSuspense(
-  lazy(() => import("../pages/Admin/Clients/ClientsInvoices"))
+  lazy(() => import("../pages/Admin/Clients/ClientsInvoices")),
 );
 
 const AdminAddClientInvoice = WithSuspense(
-  lazy(() => import("../pages/Admin/Clients/AddClientInvoice"))
+  lazy(() => import("../pages/Admin/Clients/AddClientInvoice")),
 );
 
 const AdminViewClientInvoice = WithSuspense(
-  lazy(() => import("../pages/Admin/Clients/ViewClientInvoice"))
+  lazy(() => import("../pages/Admin/Clients/ViewClientInvoice")),
 );
 
 const AdminClientsEvents = WithSuspense(
-  lazy(() => import("../pages/Admin/Clients/Events"))
+  lazy(() => import("../pages/Admin/Clients/Events")),
 );
 
 const AdminViewClientsEvent = WithSuspense(
-  lazy(() => import("../pages/Admin/Clients/ViewEvent"))
+  lazy(() => import("../pages/Admin/Clients/ViewEvent")),
 );
 
 const AdminAddClientsEvent = WithSuspense(
-  lazy(() => import("../pages/Admin/Clients/AddEvent"))
+  lazy(() => import("../pages/Admin/Clients/AddEvent")),
 );
 
 const AdminLocations = WithSuspense(
-  lazy(() => import("../pages/Admin/Locations/Locations"))
+  lazy(() => import("../pages/Admin/Locations/Locations")),
 );
 
 const AdminAddLocation = WithSuspense(
-  lazy(() => import("../pages/Admin/Locations/AddLocation"))
+  lazy(() => import("../pages/Admin/Locations/AddLocation")),
 );
 
 const AdminViewLocation = WithSuspense(
-  lazy(() => import("../pages/Admin/Locations/ViewLocation"))
+  lazy(() => import("../pages/Admin/Locations/ViewLocation")),
 );
 
 const AdminZones = WithSuspense(
-  lazy(() => import("../pages/Admin/Locations/Zones"))
+  lazy(() => import("../pages/Admin/Locations/Zones")),
 );
 
 const AdminAddZone = WithSuspense(
-  lazy(() => import("../pages/Admin/Locations/AddZone"))
+  lazy(() => import("../pages/Admin/Locations/AddZone")),
 );
 
 const AdminRepCustomer = WithSuspense(
-  lazy(() => import("../pages/Admin/Reports/Customers"))
+  lazy(() => import("../pages/Admin/Reports/Customers")),
 );
 
 const AdminRepTips = WithSuspense(
-  lazy(() => import("../pages/Admin/Reports/Tips"))
+  lazy(() => import("../pages/Admin/Reports/Tips")),
 );
 
 const AdminRepHistory = WithSuspense(
-  lazy(() => import("../pages/Admin/Reports/History"))
+  lazy(() => import("../pages/Admin/Reports/History")),
 );
 
 const AdminRepInvoice = WithSuspense(
-  lazy(() => import("../pages/Admin/Reports/Invoices"))
+  lazy(() => import("../pages/Admin/Reports/Invoices")),
 );
 
 const AdminRepLocation = WithSuspense(
-  lazy(() => import("../pages/Admin/Reports/Locations"))
+  lazy(() => import("../pages/Admin/Reports/Locations")),
 );
 
 const AdminRepLog = WithSuspense(
-  lazy(() => import("../pages/Admin/Reports/Logs"))
+  lazy(() => import("../pages/Admin/Reports/Logs")),
 );
 
 const AdminRepPayment = WithSuspense(
-  lazy(() => import("../pages/Admin/Reports/Payments"))
+  lazy(() => import("../pages/Admin/Reports/Payments")),
 );
 
 const AdminRepSubs = WithSuspense(
-  lazy(() => import("../pages/Admin/Reports/Subs"))
+  lazy(() => import("../pages/Admin/Reports/Subs")),
 );
 
 const AdminRepVehicle = WithSuspense(
-  lazy(() => import("../pages/Admin/Reports/Vehicles"))
+  lazy(() => import("../pages/Admin/Reports/Vehicles")),
 );
 
 const AdminRepZones = WithSuspense(
-  lazy(() => import("../pages/Admin/Reports/Zones"))
+  lazy(() => import("../pages/Admin/Reports/Zones")),
 );
 const AdminViewZone = WithSuspense(
-  lazy(() => import("../pages/Admin/Locations/ViewZone"))
+  lazy(() => import("../pages/Admin/Locations/ViewZone")),
 );
 
 const AdminRates = WithSuspense(
-  lazy(() => import("../pages/Admin/Locations/Rates"))
+  lazy(() => import("../pages/Admin/Locations/Rates")),
 );
 
 const AdminAddRate = WithSuspense(
-  lazy(() => import("../pages/Admin/Locations/AddRate"))
+  lazy(() => import("../pages/Admin/Locations/AddRate")),
 );
 
 const AdminViewRate = WithSuspense(
-  lazy(() => import("../pages/Admin/Locations/ViewRate"))
+  lazy(() => import("../pages/Admin/Locations/ViewRate")),
 );
 
 const AdminAmenities = WithSuspense(
-  lazy(() => import("../pages/Admin/Locations/Amenities"))
+  lazy(() => import("../pages/Admin/Locations/Amenities")),
 );
 
 const AdminAddAmenity = WithSuspense(
-  lazy(() => import("../pages/Admin/Locations/AddAmenity"))
+  lazy(() => import("../pages/Admin/Locations/AddAmenity")),
 );
 
 const AdminViewAmenity = WithSuspense(
-  lazy(() => import("../pages/Admin/Locations/ViewAmenity"))
+  lazy(() => import("../pages/Admin/Locations/ViewAmenity")),
 );
 
 const AdminPolicies = WithSuspense(
-  lazy(() => import("../pages/Admin/Locations/Policies"))
+  lazy(() => import("../pages/Admin/Locations/Policies")),
 );
 
 const AdminAddPolicy = WithSuspense(
-  lazy(() => import("../pages/Admin/Locations/AddPolicy"))
+  lazy(() => import("../pages/Admin/Locations/AddPolicy")),
 );
 
 const AdminViewPolicy = WithSuspense(
-  lazy(() => import("../pages/Admin/Locations/ViewPolicy"))
+  lazy(() => import("../pages/Admin/Locations/ViewPolicy")),
 );
 
 const AdminValetedVehicles = WithSuspense(
-  lazy(() => import("../pages/Admin/Logs/ValetedVehicles"))
+  lazy(() => import("../pages/Admin/Logs/ValetedVehicles")),
 );
 
 const AdminViewValetedVehicle = WithSuspense(
-  lazy(() => import("../pages/Admin/Logs/ViewValetedVehice"))
+  lazy(() => import("../pages/Admin/Logs/ViewValetedVehice")),
 );
 
 const AdminServicedVehicles = WithSuspense(
-  lazy(() => import("../pages/Admin/Logs/ServicedVehicles"))
-);
-
-const AdminGuestLogs = WithSuspense(
-  lazy(() => import("../pages/Admin/Logs/Guests"))
+  lazy(() => import("../pages/Admin/Logs/ServicedVehicles")),
 );
 
 const AdminViewServicedVehicle = WithSuspense(
-  lazy(() => import("../pages/Admin/Logs/ViewServicedVehicle"))
+  lazy(() => import("../pages/Admin/Logs/ViewServicedVehicle")),
 );
 
 const AdminParkedVehicles = WithSuspense(
-  lazy(() => import("../pages/Admin/Logs/ParkedVehicles"))
+  lazy(() => import("../pages/Admin/Logs/ParkedVehicles")),
 );
 
 const AdminViewParkedVehicle = WithSuspense(
-  lazy(() => import("../pages/Admin/Logs/ViewParkedVehicle"))
+  lazy(() => import("../pages/Admin/Logs/ViewParkedVehicle")),
 );
 
 const AdminConfigRoles = WithSuspense(
-  lazy(() => import("../pages/Admin/Configurations/Roles"))
+  lazy(() => import("../pages/Admin/Configurations/Roles")),
 );
 
 const AdminConfigViewRole = WithSuspense(
-  lazy(() => import("../pages/Admin/Configurations/ViewRole"))
+  lazy(() => import("../pages/Admin/Configurations/ViewRole")),
 );
 
 const AdminConfigAddRole = WithSuspense(
-  lazy(() => import("../pages/Admin/Configurations/AddRole"))
+  lazy(() => import("../pages/Admin/Configurations/AddRole")),
 );
 
 const AdminConfigPermissions = WithSuspense(
-  lazy(() => import("../pages/Admin/Configurations/Permissions"))
+  lazy(() => import("../pages/Admin/Configurations/Permissions")),
 );
 
 const AdminConfigViewPermission = WithSuspense(
-  lazy(() => import("../pages/Admin/Configurations/ViewPermission"))
+  lazy(() => import("../pages/Admin/Configurations/ViewPermission")),
 );
 
 const AdminConfigAddPermission = WithSuspense(
-  lazy(() => import("../pages/Admin/Configurations/AddPermission"))
+  lazy(() => import("../pages/Admin/Configurations/AddPermission")),
 );
 
 const AdminConfigVehicleMakes = WithSuspense(
-  lazy(() => import("../pages/Admin/Configurations/VehicleMakes"))
+  lazy(() => import("../pages/Admin/Configurations/VehicleMakes")),
 );
 
 const AdminConfigViewVehicleMake = WithSuspense(
-  lazy(() => import("../pages/Admin/Configurations/ViewVehicleMake"))
+  lazy(() => import("../pages/Admin/Configurations/ViewVehicleMake")),
 );
 
 const AdminConfigAddVehicleMake = WithSuspense(
-  lazy(() => import("../pages/Admin/Configurations/AddVehicleMake"))
+  lazy(() => import("../pages/Admin/Configurations/AddVehicleMake")),
 );
 
 const AdminConfigVehicleModels = WithSuspense(
-  lazy(() => import("../pages/Admin/Configurations/VehicleModels"))
+  lazy(() => import("../pages/Admin/Configurations/VehicleModels")),
 );
 
 const AdminConfigViewVehicleModel = WithSuspense(
-  lazy(() => import("../pages/Admin/Configurations/ViewVehicleModel"))
+  lazy(() => import("../pages/Admin/Configurations/ViewVehicleModel")),
 );
 
 const AdminConfigAddVehicleModel = WithSuspense(
-  lazy(() => import("../pages/Admin/Configurations/AddVehicleModel"))
+  lazy(() => import("../pages/Admin/Configurations/AddVehicleModel")),
 );
 
 const AdminConfigBankDetails = WithSuspense(
-  lazy(() => import("../pages/Admin/Configurations/BankDetails"))
+  lazy(() => import("../pages/Admin/Configurations/BankDetails")),
 );
 
 const AdminConfigViewBankDetail = WithSuspense(
-  lazy(() => import("../pages/Admin/Configurations/ViewBankDetail"))
+  lazy(() => import("../pages/Admin/Configurations/ViewBankDetail")),
 );
 
 const AdminConfigAddBankDetail = WithSuspense(
-  lazy(() => import("../pages/Admin/Configurations/AddBankDetail"))
+  lazy(() => import("../pages/Admin/Configurations/AddBankDetail")),
 );
 
 const AdminConfigFaqs = WithSuspense(
-  lazy(() => import("../pages/Admin/Configurations/Faqs"))
+  lazy(() => import("../pages/Admin/Configurations/Faqs")),
 );
 
 const AdminConfigViewFaq = WithSuspense(
-  lazy(() => import("../pages/Admin/Configurations/ViewFaq"))
+  lazy(() => import("../pages/Admin/Configurations/ViewFaq")),
 );
 
 const AdminConfigAddFaq = WithSuspense(
-  lazy(() => import("../pages/Admin/Configurations/AddFaq"))
+  lazy(() => import("../pages/Admin/Configurations/AddFaq")),
 );
 
 const AdminConfigQrCode = WithSuspense(
-  lazy(() => import("../pages/Admin/Configurations/QrCode"))
+  lazy(() => import("../pages/Admin/Configurations/QrCode")),
 );
 
 // Analytics
 
 const AnalyticsDashboard = WithSuspense(
-  lazy(() => import("../pages/Analytics/Dashboard/Dashboard"))
+  lazy(() => import("../pages/Analytics/Dashboard/Dashboard")),
 );
 
 const AnalyticsSettings = WithSuspense(
-  lazy(() => import("../pages/Analytics/Settings/Settings"))
+  lazy(() => import("../pages/Analytics/Settings/Settings")),
 );
 
 const AnalyticsReports = WithSuspense(
-  lazy(() => import("../pages/Analytics/Reports/Reports"))
+  lazy(() => import("../pages/Analytics/Reports/Reports")),
 );
 
 const CustomerMetrics = WithSuspense(
-  lazy(() => import("../pages/Analytics/Metrics/Customers"))
+  lazy(() => import("../pages/Analytics/Metrics/Customers")),
 );
 
 const LocationMetrics = WithSuspense(
-  lazy(() => import("../pages/Analytics/Metrics/Location"))
+  lazy(() => import("../pages/Analytics/Metrics/Location")),
 );
 
 const LocationDetailsMetrics = WithSuspense(
-  lazy(() => import("../pages/Analytics/Metrics/LocationDetails"))
+  lazy(() => import("../pages/Analytics/Metrics/LocationDetails")),
 );
 
 const TransactionMetrics = WithSuspense(
-  lazy(() => import("../pages/Analytics/Metrics/Transactions"))
+  lazy(() => import("../pages/Analytics/Metrics/Transactions")),
 );
 
 const IncidentsMetrics = WithSuspense(
-  lazy(() => import("../pages/Analytics/Metrics/Incidents"))
+  lazy(() => import("../pages/Analytics/Metrics/Incidents")),
 );
 
 const SubMetrics = WithSuspense(
-  lazy(() => import("../pages/Analytics/Metrics/Sub"))
+  lazy(() => import("../pages/Analytics/Metrics/Sub")),
 );
 
 const PaymentMetrics = WithSuspense(
-  lazy(() => import("../pages/Analytics/Metrics/Payment"))
+  lazy(() => import("../pages/Analytics/Metrics/Payment")),
 );
 
 const SupportMetrics = WithSuspense(
-  lazy(() => import("../pages/Analytics/Metrics/Support"))
+  lazy(() => import("../pages/Analytics/Metrics/Support")),
 );
 
 const ServiceRatingsMetrics = WithSuspense(
-  lazy(() => import("../pages/Analytics/Metrics/ServiceRatings"))
+  lazy(() => import("../pages/Analytics/Metrics/ServiceRatings")),
 );
 
 const ReserveMetrics = WithSuspense(
-  lazy(() => import("../pages/Analytics/Metrics/ReserveParking"))
+  lazy(() => import("../pages/Analytics/Metrics/ReserveParking")),
 );
 
 const ClientMetrics = WithSuspense(
-  lazy(() => import("../pages/Analytics/Metrics/ClientOperators"))
+  lazy(() => import("../pages/Analytics/Metrics/ClientOperators")),
 );
 
 const ParkMetrics = WithSuspense(
-  lazy(() => import("../pages/Analytics/Metrics/PayToPark"))
+  lazy(() => import("../pages/Analytics/Metrics/PayToPark")),
 );
 
 const EventMetrics = WithSuspense(
-  lazy(() => import("../pages/Analytics/Metrics/Event"))
+  lazy(() => import("../pages/Analytics/Metrics/Event")),
 );
 
 const ValetMetrics = WithSuspense(
-  lazy(() => import("../pages/Analytics/Metrics/Valet"))
+  lazy(() => import("../pages/Analytics/Metrics/Valet")),
 );
 
 const VehicleMetrics = WithSuspense(
-  lazy(() => import("../pages/Analytics/Metrics/Vehicles"))
+  lazy(() => import("../pages/Analytics/Metrics/Vehicles")),
 );
 
 const CarMetrics = WithSuspense(
-  lazy(() => import("../pages/Analytics/Metrics/CarService"))
+  lazy(() => import("../pages/Analytics/Metrics/CarService")),
 );
 
 const BusMetrics = WithSuspense(
-  lazy(() => import("../pages/Analytics/Metrics/Businesses"))
+  lazy(() => import("../pages/Analytics/Metrics/Businesses")),
 );
 
 const AttendantMetrics = WithSuspense(
-  lazy(() => import("../pages/Analytics/Metrics/Attendants"))
+  lazy(() => import("../pages/Analytics/Metrics/Attendants")),
 );
 
 const PointsMetric = WithSuspense(
-  lazy(() => import("../pages/Analytics/Metrics/Points"))
+  lazy(() => import("../pages/Analytics/Metrics/Points")),
 );
 
 const InteractionMetrics = WithSuspense(
-  lazy(() => import("../pages/Analytics/Metrics/Interactions"))
+  lazy(() => import("../pages/Analytics/Metrics/Interactions")),
 );
 
 const AdminIncidents = WithSuspense(
-  lazy(() => import("../pages/Admin/Incidents/index"))
+  lazy(() => import("../pages/Admin/Incidents/index")),
 );
 
 const AdminCreateIncidents = WithSuspense(
-  lazy(() => import("../pages/Admin/Incidents/CreateIncident"))
+  lazy(() => import("../pages/Admin/Incidents/CreateIncident")),
 );
 
 const AdminIncidentsDetails = WithSuspense(
-  lazy(() => import("../pages/Admin/Incidents/IncidentDetails"))
+  lazy(() => import("../pages/Admin/Incidents/IncidentDetails")),
 );
 
 const AdminEditIncident = WithSuspense(
-  lazy(() => import("../pages/Admin/Incidents/EditIncident"))
+  lazy(() => import("../pages/Admin/Incidents/EditIncident")),
 );
 
 export const PUBLIC_ROUTES = [
+  //ATTENDANT ROUTES
+  { path: ATT_LOGIN, element: <AttLogin /> },
+
   //CUSTOMER ROUTES
   { path: CUST_LOGIN, element: <CustLogin /> },
   { path: CUST_LOGIN_REDIRECT, element: <CustLogin /> },
@@ -1105,11 +1129,9 @@ export const PUBLIC_ROUTES = [
   { path: CUST_CHANGE_PASS, element: <CustChangePassword /> },
   { path: CUST_CHANGE_SUCCESS, element: <CustChangeSuccess /> },
   { path: CUST_SIGNUP, element: <CustSignup /> },
-  { path: CUST_HISTORY_TICKETS_GUEST, element: <CustHistoryGuestTickets /> },
   { path: CUST_RESET_SENT, element: <CustResetSent /> },
   { path: CUST_PARK, element: <CustPark /> },
   { path: CUST_SCAN_PARK, element: <CustScan /> },
-  { path: CUST_TICKET_DETAILS, element: <CustTicket /> },
 
   //CLIENT ROUTES
   { path: CLIENT_LOGIN, element: <ClientLogin /> },
@@ -1138,6 +1160,8 @@ export const PUBLIC_ROUTES = [
         to={
           location.pathname.includes("operator")
             ? "/operator/auth/login"
+            : location.pathname.includes("attendant")
+            ? "/attendant/auth/login"
             : location.pathname.includes("admin")
             ? "/admin/auth/login"
             : location.pathname.includes("analytics")
@@ -1153,6 +1177,15 @@ export const PUBLIC_ROUTES = [
 ];
 
 export const PRIVATE_ROUTES = [
+  // ATTENDANT ROUTES
+  { path: ATT_LOCATIONS, element: <AttLocations /> },
+  { path: ATT_ZONE, element: <AttZones /> },
+  { path: ATT_DASHBOARD, element: <AttDashboard /> },
+  { path: ATT_VALET, element: <AttValet /> },
+  { path: ATT_HISTORY, element: <AttHistory /> },
+  { path: ATT_HISTORY_DETAILS, element: <AttHistoryDetails /> },
+  { path: ATT_VEHICLE, element: <AttVehicle /> },
+
   // CUSTOMER ROUTES
   { path: CUST_DASHBOARD, element: <CustDashboard /> },
   { path: CUST_SERVICES_PARK, element: <CustServicesPark /> },
@@ -1188,7 +1221,6 @@ export const PRIVATE_ROUTES = [
   { path: CUST_HELP_CENTER_FAQ, element: <CustFaq /> },
   { path: CUST_VEHICLES, element: <CustVehicles /> },
   { path: CUST_HISTORY_US, element: <CustHistoryUs /> },
-  { path: CUST_HISTORY_TICKETS, element: <CustHistoryTickets /> },
   { path: CUST_HISTORY_USER, element: <CustHistoryUser /> },
   { path: CUST_SETTINGS, element: <CustSettings /> },
   { path: CUST_PAYMENT, element: <CustPayment /> },
@@ -1621,11 +1653,6 @@ export const PRIVATE_ROUTES = [
   },
 
   {
-    path: PRIVATE_PATHS.ADMIN_GUESTS,
-    element: <AdminGuestLogs />,
-  },
-
-  {
     path: PRIVATE_PATHS.ADMIN_VIEW_SERVICED_VEHICLE,
     element: <AdminViewServicedVehicle />,
   },
@@ -1865,6 +1892,8 @@ export const PRIVATE_ROUTES = [
             ? "/operator/dashboard"
             : location.pathname.includes("client")
             ? "/client/dashboard"
+            : location.pathname.includes("attendant")
+            ? "/attendant/dashboard"
             : location.pathname.includes("analytics")
             ? "/analytics/dashboard"
             : location.pathname.includes("admin")

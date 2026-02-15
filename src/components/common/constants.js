@@ -341,10 +341,6 @@ export const sidebarItems = [
         name: "Serviced Vehicles",
         path: "/admin/logs/serviced-vehicles",
       },
-      {
-        name: "Guest Logs",
-        path: "/admin/logs/guests",
-      },
     ],
   },
   {
@@ -492,6 +488,37 @@ export const adminHeaderOptions = [
   },
 ];
 
+export const attRoute = [
+  {
+    id: 0,
+    name: "Dashboard",
+    path: "/attendant/dashboard",
+    icon: <DashboardIcon fill="#242628" />,
+    sec: <DashboardIcon fill="#EE383A" />,
+  },
+  {
+    id: 1,
+    name: "History",
+    path: "/attendant/history",
+    icon: <HistoryIcon fill="#242628" />,
+    sec: <HistoryIcon fill="#EE383A" />,
+  },
+  {
+    id: 2,
+    name: "Reservations",
+    path: "/attendant/reservations",
+    icon: <VehicleIcon fill="#242628" />,
+    sec: <VehicleIcon fill="#EE383A" />,
+  },
+  {
+    id: 3,
+    name: "Profile",
+    path: "/attendant/profile",
+    icon: <UserIcon fill="#242628" />,
+    sec: <UserIcon fill="#EE383A" />,
+  },
+];
+
 export const general = [
   {
     id: 0,
@@ -515,10 +542,6 @@ export const general = [
         name: "Created by Us",
         path: "/customer/history/company",
       },
-      // {
-      //   name: "Ticket History",
-      //   path: "/customer/history/tickets",
-      // },
     ],
   },
   {
@@ -2099,6 +2122,35 @@ export const serviceTabs = [
 
 export const usServiceTabs = ["Valet Parking", "Pay-To-Park", "Car Services"];
 
+export const attStyles = {
+  control: (provided, state) => ({
+    ...provided,
+    width: "100%",
+    minHeight: "44px",
+    color: "#646668",
+    fontSize: "16px",
+    cursor: "pointer",
+    borderRadius: "4px",
+    border: state.hasValue ? "none" : "1px solid #D4D6D8",
+    paddingRight: "16px",
+    background: "#fff",
+    boxShadow: state.isFocused ? "none" : "none",
+    "&:hover": {
+      boxShadow: "none",
+    },
+  }),
+  menu: (provided) => ({
+    ...provided,
+    fontSize: "15px",
+    backgroundColor: "#fff",
+  }),
+  option: (provided, state) => ({
+    ...provided,
+    color: state.isFocused ? "" : "",
+    backgroundColor: state.isFocused ? "#f4f6f8" : "",
+  }),
+};
+
 export const customStyles = {
   control: (provided, state) => ({
     ...provided,
@@ -2266,18 +2318,6 @@ export const valetedVehiclesOptions = [
   { label: "Ticket Number", value: "ticketNumber" },
   { label: "License Plate", value: "vehicle.licensePlate" },
   { label: "Customer Name", value: "vehicle.customerName" },
-  { label: "Location", value: "location.name" },
-  { label: "Zone", value: "zone.name" },
-  { label: "Attendant", value: "attendant.name" },
-  { label: "Amount", value: "amount" },
-  { label: "Status", value: "status" },
-  { label: "Created At", value: "createdAt" },
-];
-
-export const guestVehiclesOptions = [
-  { label: "Ticket Number", value: "ticketNumber" },
-  { label: "License Plate", value: "vehicle.licensePlate" },
-  { label: "Service Type", value: "service.serviceType" },
   { label: "Location", value: "location.name" },
   { label: "Zone", value: "zone.name" },
   { label: "Attendant", value: "attendant.name" },

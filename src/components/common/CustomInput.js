@@ -20,6 +20,7 @@ const CustomInput = ({
   auth,
   show,
   password,
+  white,
   name,
   isDisabled,
   suffix,
@@ -101,7 +102,7 @@ const CustomInput = ({
           isReadOnly={isDisabled}
           onKeyPress={handleKeyPress}
           onChange={handleInputChange}
-          bg={reserve ? "#f4f6f8" : getBackgroundColor()}
+          bg={white ? "#fff" : reserve ? "#f4f6f8" : getBackgroundColor()}
           borderRadius={reserve ? "8px" : "4px"}
           border={reserve ? "none" : getBorderColor()}
           onBlur={(e) => (!auth ? handleInputBlur(e) : setIsTyping(false))}

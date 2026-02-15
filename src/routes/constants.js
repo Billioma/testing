@@ -1,4 +1,7 @@
 export const PUBLIC_PATHS = {
+  // ATTENDNT ROUTES
+  ATT_LOGIN: "/attendant/auth/login",
+
   // CUSTOMER ROUTES
   CUST_LOGIN: "/customer/auth/login",
   CUST_LOGIN_REDIRECT: "/customer/auth/login/:redirect",
@@ -9,8 +12,6 @@ export const PUBLIC_PATHS = {
   CUST_SIGNUP: "/customer/auth/signup",
   CUST_PARK: "/customer/pay-to-park/:zoneCode",
   CUST_SCAN_PARK: "/customer/scan-qr",
-  CUST_TICKET_DETAILS: "/customer/retrieve-vehicle/:id",
-  CUST_HISTORY_TICKETS_GUEST: "/customer/auth/guest-tickets",
 
   // CLIENT ROUTES
   CLIENT_LOGIN: "/client/auth/login",
@@ -34,6 +35,16 @@ export const PUBLIC_PATHS = {
 };
 
 export const PRIVATE_PATHS = {
+  // ATTENDNT ROUTES
+  ATT_LOCATIONS: "/attendant/locations",
+  ATT_ZONE: "/attendant/locations/:id/zones",
+  ATT_DASHBOARD: "/attendant/dashboard",
+  ATT_VALET: "/attendant/valet",
+  ATT_HISTORY: "/attendant/history",
+  ATT_HISTORY_DETAILS: "/attendant/history/:id",
+  ATT_VEHICLE: "/attendant/vehicle/create",
+
+
   // CUSTOMER ROUTES
   CUST_DASHBOARD: "/customer/dashboard",
   CUST_SERVICES_PARK: "/customer/services/pay-to-park",
@@ -57,7 +68,6 @@ export const PRIVATE_PATHS = {
 
   CUST_HISTORY_USER: "/customer/history/user",
   CUST_HISTORY_US: "/customer/history/company",
-  CUST_HISTORY_TICKETS: "/customer/history/tickets",
   CUST_HELP_CENTER: "/customer/help-center",
   CUST_HELP_CENTER_MAIL: "/customer/help-center/contact-us",
   CUST_HELP_CENTER_FAQ: "/customer/help-center/FAQs",
@@ -226,7 +236,8 @@ export const PRIVATE_PATHS = {
 
   ADMIN_AUDIT_LOCATIONS: "/admin/audit/locations",
   ADMIN_AUDIT_LOCATION: "/admin/audit/locations/:id",
-  ADMIN_AUDIT_LOCATIONS_DETAILS: "/admin/audit/locations/:id/:locationId/:managerId/:zoneId",
+  ADMIN_AUDIT_LOCATIONS_DETAILS:
+    "/admin/audit/locations/:id/:locationId/:managerId/:zoneId",
   ADMIN_AUDIT_MANAGERS: "/admin/audit/managers",
   ADMIN_AUDIT_MANAGER_DETAILS: "/admin/audit/managers/:managerId",
   ADMIN_VALETED_VEHICLES: "/admin/logs/valeted-vehicles",
@@ -236,7 +247,6 @@ export const PRIVATE_PATHS = {
   ADMIN_VIEW_PARKED_VEHICLE: "/admin/logs/parked-vehicles/details/:id",
 
   ADMIN_SERVICED_VEHICLES: "/admin/logs/serviced-vehicles",
-  ADMIN_GUESTS: "/admin/logs/guests",
   ADMIN_VIEW_SERVICED_VEHICLE: "/admin/logs/serviced-vehicles/details/:id",
 
   ADMIN_CONFIG_ROLES: "/admin/configurations/roles",

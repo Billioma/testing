@@ -20,8 +20,3 @@ export const getOperatorLocation = async () => {
   const res = await axiosInstance.get(API.GET_LOCATION);
   return res.data;
 };
-
-export const getTickets = async (phone) => {
-  const res = await axiosInstance.get(API.GET_TICKETS(phone));
-  return res.data;
-};

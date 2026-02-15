@@ -13,6 +13,7 @@ import SingleLocationTable from "../../../../components/data/Admin/Audit/Locatio
 import { BsFilter } from "react-icons/bs";
 import { MdClose } from "react-icons/md";
 import { formatFilterDate } from "../../../../utils/helpers";
+import { useGetAdministrators } from "../../../../services/admin/query/users";
 import { useParams } from "react-router-dom";
 import GoBackTab from "../../../../components/data/Admin/GoBackTab";
 
@@ -25,34 +26,25 @@ const SingleLocation = () => {
     location: "",
     zone: "",
     gte: "",
+    manager: "",
     lte: "",
     status: "",
   });
 
   const { id } = useParams();
   const today = new Date();
-
   useEffect(() => {
-    const audit = JSON.parse(sessionStorage.getItem("audit"));
     setValues((prev) => ({
       ...prev,
-      gte:
-        audit?.gte ||
-        new Date(today.getFullYear(), 0, 1).toLocaleDateString("en-CA"),
-      lte: audit?.lte || today.toLocaleDateString("en-CA"),
-      status: audit?.status || "",
-      zone: audit?.zone || "",
+      gte: new Date(today.getFullYear(), 0, 1).toLocaleDateString("en-CA"),
+      lte: today.toLocaleDateString("en-CA"),
     }));
 
     setSearchFilters({
       ...values,
-      gte:
-        audit?.gte ||
-        new Date(today.getFullYear(), 0, 1).toLocaleDateString("en-CA"),
-      lte: audit?.lte || today.toLocaleDateString("en-CA"),
+      gte: new Date(today.getFullYear(), 0, 1).toLocaleDateString("en-CA"),
+      lte: today.toLocaleDateString("en-CA"),
       location: id,
-      status: audit?.status || "",
-      zone: audit?.zone || "",
     });
   }, []);
 
@@ -63,6 +55,7 @@ const SingleLocation = () => {
       location: id,
       gte: new Date(today.getFullYear(), 0, 1).toLocaleDateString("en-CA"),
       lte: today.toLocaleDateString("en-CA"),
+      manager: "",
       status: "",
       zone: "",
     });
@@ -86,6 +79,7 @@ const SingleLocation = () => {
   }));
 
   const [searchFilters, setSearchFilters] = useState(null);
+  console.log(searchFilters);
   const query = searchFilters
     ? [
         `filter=location.id||$eq||${id}`,
@@ -114,7 +108,6 @@ const SingleLocation = () => {
 
   const handleSearch = () => {
     setSearchFilters(values);
-    sessionStorage.setItem("audit", JSON.stringify(values));
   };
 
   useEffect(() => {
@@ -207,13 +200,13 @@ const SingleLocation = () => {
             onClick={() => (
               // setShow(false),
               resetAllValues(),
-              sessionStorage.removeItem("audit"),
               setSearchFilters({
                 gte: new Date(today.getFullYear(), 0, 1).toLocaleDateString(
                   "en-CA"
                 ),
                 lte: today.toLocaleDateString("en-CA"),
                 location: id,
+                manager: "",
                 status: "",
               })
             )}

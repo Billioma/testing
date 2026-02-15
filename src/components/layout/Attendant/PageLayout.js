@@ -5,7 +5,7 @@ import { useLocation } from "react-router-dom";
 import { useMediaQuery } from "@chakra-ui/react";
 import Header from "./AuthLayout/Header";
 import SideBar from "./AuthLayout/SideBar";
-import { useGetUser } from "../../../services/customer/query/user";
+import { useGetUser } from "../../../services/attendant/query/user";
 
 export const AuthLayout = ({ children }) => {
   const [isMobile] = useMediaQuery("(max-width: 991px)");
@@ -25,37 +25,38 @@ export const AuthLayout = ({ children }) => {
 
   return (
     <Box
+      pt="24px"
       color="#000"
       fontFamily="Sailec"
-      bg="#fff"
       h="100vh"
-      p="15px"
-      py="24px"
+      px={isMobile ? "5px" : "24px"}
+      bg="#F4F6F8"
+      overflowX="hidden"
+      borderRadius="40px"
     >
-      <Box
-        pt="24px"
-        px={isMobile ? "5px" : "24px"}
-        bg="#F4F6F8"
-        overflowX="hidden"
-        h="full"
-        borderRadius="40px"
-      >
-        <Box px={!isMobile ? (show ? "310px" : "88px") : "20px"}>
-          <Header showSidebar={show} />
-        </Box>{" "}
-        {!isMobile && <SideBar show={show} setShow={setShow} />}
-        <Box overflow="auto" className="no_scroller">
-          <Box
+      <Box px={!isMobile ? (show ? "310px" : "88px") : "10px"}>
+        <Header showSidebar={show} />
+      </Box>{" "}
+      {!isMobile && <SideBar show={show} setShow={setShow} />}
+      <Box overflow="auto" className="no_scroller">
+        <Box
+          w="100%"
+          pt={isMobile ? "150px" : "95px"}
+          color="#828282"
+          maxHeight="87vh"
+          pl={!isMobile ? (show ? "310px" : "88px") : "10px"}
+          pr={!isMobile ? "" : "10px"}
+          pb={10}
+        >
+          <Flex
+            flexDir="column"
+            align={{ base: "flex-start", md: "center" }}
             w="100%"
-            pt={isMobile ? "150px" : "95px"}
-            color="#828282"
-            maxHeight="87vh"
-            pl={!isMobile ? (show ? "310px" : "88px") : "20px"}
-            pr={!isMobile ? "" : "20px"}
-            pb={10}
           >
-            {children}
-          </Box>
+            <Flex flexDir="column" w={{ base: "100%", md: "30rem" }}>
+              {children}
+            </Flex>
+          </Flex>
         </Box>
       </Box>
     </Box>
@@ -105,10 +106,17 @@ export const NonAuthLayout = ({ children }) => {
       <Flex
         flexDir="column"
         justifyContent={
-          location.pathname === "/customer/scan-qr" ? "flex-start" : "center"
+          location.pathname === "/customer/scan-qr" ||
+          location.pathname.includes("/customer/retrieve") ||
+          location.pathname.includes("/guest-tickets")
+            ? "flex-start"
+            : "center"
         }
         align={
-          location.pathname === "/customer/scan-qr" ? "flex-start" : "center"
+          location.pathname === "/customer/scan-qr" ||
+          location.pathname.includes("/customer/retrieve")
+            ? "flex-start"
+            : "center"
         }
         minH={
           location.pathname === "/customer/pay-to-park"

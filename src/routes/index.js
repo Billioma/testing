@@ -21,6 +21,10 @@ import {
   AuthLayout as AnalyticsAuthLayout,
   NonAuthLayout as AnalyticsNonAuthLayout,
 } from "../components/layout/Analytics/PageLayout";
+import {
+  AuthLayout as AttendantAuthLayout,
+  NonAuthLayout as AttendantNonAuthLayout,
+} from "../components/layout/Attendant/PageLayout";
 
 const PublicRouteWrapper = () => {
   const routes = useRoutes(PUBLIC_ROUTES);
@@ -36,6 +40,7 @@ const Pages = () => {
   const admin = localStorage.getItem("admin");
   const customer = localStorage.getItem("customer");
   const operator = localStorage.getItem("operator");
+  const attendant = localStorage.getItem("attendant");
   const client = localStorage.getItem("client");
   const analytics = localStorage.getItem("analytics");
   const location = useLocation();
@@ -58,6 +63,16 @@ const Pages = () => {
       <AnalyticsNonAuthLayout>
         <PublicRouteWrapper key={location.pathname} />
       </AnalyticsNonAuthLayout>
+    )
+  ) : location.pathname.includes("attendant") ? (
+    attendant ? (
+      <AttendantAuthLayout>
+        <PrivateRouteWrapper key={location.pathname} />
+      </AttendantAuthLayout>
+    ) : (
+      <AttendantNonAuthLayout>
+        <PublicRouteWrapper key={location.pathname} />
+      </AttendantNonAuthLayout>
     )
   ) : location.pathname.includes("client") ? (
     client ? (

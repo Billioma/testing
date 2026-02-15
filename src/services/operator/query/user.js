@@ -2,7 +2,6 @@ import { useMutation, useQuery } from "react-query";
 import {
   getOperatorLocation,
   getOperatorProfile,
-  getTickets,
   updateOperatorPassword,
   updateOperatorProfile,
 } from "../api/user";
@@ -30,14 +29,6 @@ export const useGetOperatorLocation = (options = {}) => {
 export const useUpdateOpProfile = (options = {}) => {
   const { mutate, isLoading, data } = useMutation(updateOperatorProfile, {
     mutationKey: "UPDATE_OP_PROFILE",
-    ...options,
-  });
-  return { mutate, isLoading, data };
-};
-
-export const useGetTickets = (options = {}) => {
-  const { mutate, isLoading, data } = useMutation(getTickets, {
-    mutationKey: "getTickets",
     ...options,
   });
   return { mutate, isLoading, data };

@@ -37,6 +37,11 @@ export const initValues = {
   password: "",
 };
 
+export const attInitValues = {
+  userid: "",
+  password: "",
+};
+
 export const initPolicyValues = {
   body: "",
   location: "",
@@ -545,6 +550,16 @@ export const validateClientInvoiceSchema = Yup.object().shape({
 
 export const validateSchema = Yup.object().shape({
   username: Yup.string().email().required("Email is required"),
+  password: Yup.string()
+    .required("Password required")
+    .matches(
+      passwordRegex,
+      "Minimum of 8 characters, and must contain at least one uppercase, one lowercase and one number"
+    ),
+});
+
+export const validateAttLoginSchema = Yup.object().shape({
+  userid: Yup.string().required("User ID is required"),
   password: Yup.string()
     .required("Password required")
     .matches(

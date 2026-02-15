@@ -6,7 +6,6 @@ import {
   Icon,
   Select,
   useDisclosure,
-  Text,
 } from "@chakra-ui/react";
 import { CalendarIcon } from "@chakra-ui/icons";
 import DatePicker from "react-datepicker";
@@ -28,7 +27,6 @@ const parseFormattedDate = (dateString) => {
   return new Date(dateString);
 };
 
-
 const DateTimePicker = ({
   onChange,
   selectedDate = new Date(),
@@ -46,7 +44,11 @@ const DateTimePicker = ({
   return (
     <Flex align="center">
       <DatePicker
-        selected={isValidDate(selectedDate) ? parseFormattedDate(selectedDate) : new Date()}
+        selected={
+          isValidDate(selectedDate)
+            ? parseFormattedDate(selectedDate)
+            : new Date()
+        }
         disabled={isDisabled}
         onChange={handleDateChange}
         showTimeSelect={hasTime}
