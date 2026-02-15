@@ -28,11 +28,10 @@ export const AuthLayout = ({ children }) => {
       pt="24px"
       color="#000"
       fontFamily="Sailec"
-      h="100vh"
+      h={{ base: `calc(100vh - ${isMobile ? 100 : 122}px)`, md: "100vh" }}
       px={isMobile ? "5px" : "24px"}
       bg="#F4F6F8"
       overflowX="hidden"
-      borderRadius="40px"
     >
       <Box px={!isMobile ? (show ? "310px" : "88px") : "10px"}>
         <Header showSidebar={show} />
@@ -53,7 +52,7 @@ export const AuthLayout = ({ children }) => {
             align={{ base: "flex-start", md: "center" }}
             w="100%"
           >
-            <Flex flexDir="column" w={{ base: "100%", md: "30rem" }}>
+            <Flex flexDir="column"  w={{ base: "100%", md: "30rem" }}>
               {children}
             </Flex>
           </Flex>
