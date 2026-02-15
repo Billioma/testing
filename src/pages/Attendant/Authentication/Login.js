@@ -36,8 +36,7 @@ const Login = () => {
     if (checked) {
       mutate(values);
     } else {
-      mutate(values);
-      // errorToast("Please check the box");
+      errorToast("Please check the box");
     }
   };
 
@@ -140,16 +139,15 @@ const Login = () => {
                   Forgot Password
                 </Text>
               </Flex>
-              {/* <ReCAPTCHA
+              <ReCAPTCHA
                 sitekey="6LdN7d4UAAAAAGGTI0wkD2ZlpJLfm6PbpFOQnFx9"
                 onChange={onChange}
-              /> */}
+              />
 
               <Button
                 mt="20px"
                 isLoading={isLoading}
-                // isDisabled={!isValid || !dirty || !checked}
-                isDisabled={!isValid || !dirty}
+                isDisabled={!isValid || !dirty || !checked}
                 type="submit"
                 w="full"
               >
