@@ -118,27 +118,12 @@ const Login = () => {
                   type={show ? "text" : "password"}
                 />
               </Box>
-              <Flex
-                fontSize="12px"
-                my="24px"
-                w="full"
-                align="center"
-                justifyContent="space-between"
-              >
-                <Flex gap="8px" align="center">
-                  <Checkbox />
-                  <Text color="#646668">Remember me</Text>
-                </Flex>
 
-                <Text
-                  onClick={() => navigate("/customer/auth/forgot-password")}
-                  cursor="pointer"
-                  fontWeight={700}
-                  color="red"
-                >
-                  Forgot Password
-                </Text>
+              <Flex my="24px" fontSize="12px" gap="8px" align="center">
+                <Checkbox />
+                <Text color="#646668">Remember me</Text>
               </Flex>
+
               <ReCAPTCHA
                 sitekey="6LdN7d4UAAAAAGGTI0wkD2ZlpJLfm6PbpFOQnFx9"
                 onChange={onChange}

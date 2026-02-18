@@ -8,6 +8,40 @@ export const getUserVehicles = async (query) => {
   return res.data;
 };
 
+export const checkReserve = async (query) => {
+  const res = await axiosInstance.get(
+    API.CHECK_RESERVE(query.zoneId, query.reservationId),
+  );
+  return res.data;
+};
+
+export const checkPtp = async (query) => {
+  const res = await axiosInstance.get(
+    API.CHECK_PTP(query.zoneId, query.ticketNumber),
+  );
+  return res.data;
+};
+
+export const processReserve = async (query) => {
+  const res = await axiosInstance.get(API.PROCESS_RESERVE(query));
+  return res.data;
+};
+
+export const processPtp = async (query) => {
+  const res = await axiosInstance.get(API.PROCESS_PTP(query));
+  return res.data;
+};
+
+export const checkEvent = async (query) => {
+  const res = await axiosInstance.get(API.CHECK_EVENT(query));
+  return res.data;
+};
+
+export const processEvent = async (query) => {
+  const res = await axiosInstance.get(API.PROCESS_EVENT(query));
+  return res.data;
+};
+
 export const getUserRates = async ({ queryKey }) => {
   const [, id] = queryKey;
   const res = await axiosInstance.get(`${API.GET_USER_RATES}/${id}`);

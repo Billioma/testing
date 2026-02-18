@@ -151,7 +151,7 @@ const SideDrawer = ({ isOpen, onClose }) => {
               >
                 ACCOUNT
               </Text>
-              {attRoute.slice(3, 4)?.map((item, i) => {
+              {attRoute.slice(3, 5)?.map((item, i) => {
                 return (
                   <VStack
                     key={i}

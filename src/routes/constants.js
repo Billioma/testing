@@ -40,10 +40,17 @@ export const PRIVATE_PATHS = {
   ATT_ZONE: "/attendant/locations/:id/zones",
   ATT_DASHBOARD: "/attendant/dashboard",
   ATT_VALET: "/attendant/valet",
+  ATT_PARK: "/attendant/park",
+  ATT_PARK_DETAILS: "/attendant/park/:id",
   ATT_HISTORY: "/attendant/history",
   ATT_HISTORY_DETAILS: "/attendant/history/:id",
   ATT_VEHICLE: "/attendant/vehicle/create",
-
+  ATT_RESERVATION: "/attendant/reservations",
+  ATT_RESERVATION_DETAILS: "/attendant/reservations/:id",
+  ATT_NOTI: "/attendant/notifications",
+  ATT_PROFILE: "/attendant/profile",
+  ATT_SETTINGS: "/attendant/settings",
+  ATT_PROFILE_EDIT: "/attendant/profile/update",
 
   // CUSTOMER ROUTES
   CUST_DASHBOARD: "/customer/dashboard",

@@ -14,6 +14,8 @@ import { CiLocationOn } from "react-icons/ci";
 import { useNavigate } from "react-router-dom";
 import { useGetUserVehicles } from "../../../services/attendant/query/logs";
 import GuestVeh from "../../../components/modals/GuestVeh";
+import { IoIosArrowForward } from "react-icons/io";
+import { VehicleIcon } from "../../../components/common/images";
 
 const index = () => {
   const [license, setLicense] = useState("");
@@ -32,7 +34,7 @@ const index = () => {
       console.log(error === "Vehicle Not Found");
       if (error === "Vehicle Not Found") {
         guest.onOpen();
-      localStorage.setItem("guestVeh", license);
+        localStorage.setItem("guestVeh", license);
       }
     },
   });
@@ -133,6 +135,28 @@ const index = () => {
             Change
           </Text>
         </Box>
+      </Flex>
+
+      <Flex
+        align="center"
+        border="1px solid #E4E6E8"
+        borderRadius="12px"
+        display={data?.accountType === "PARKING" ? "flex" : "none"}
+        mt="35px"
+        p="24px"
+        bg="#fff"
+        onClick={() => navigate("/attendant/park")}
+        fontSize="14px"
+        justifyContent="space-between"
+      >
+        <Flex align="center" gap="10px">
+          <VehicleIcon fill="#242628" />
+          <Text color="#444648" fontSize="14px">
+            Park Online Customers
+          </Text>
+        </Flex>
+
+        <IoIosArrowForward />
       </Flex>
     </Box>
   );

@@ -86,7 +86,7 @@ export default function ViewEvent() {
   } = useCustomerUploadPic({
     onError: (err) => {
       errorToast(
-        err?.response?.data?.message || err?.message || "An Error occurred"
+        err?.response?.data?.message || err?.message || "An Error occurred",
       );
     },
   });
@@ -128,7 +128,7 @@ export default function ViewEvent() {
     },
     onError: (error) => {
       errorToast(
-        error?.response?.data?.message || error?.message || "An Error occurred"
+        error?.response?.data?.message || error?.message || "An Error occurred",
       );
     },
   });
@@ -142,10 +142,10 @@ export default function ViewEvent() {
 
   useEffect(() => {
     const selectedStatusOption = statusOptions?.find(
-      (option) => option?.value === data?.status
+      (option) => option?.value === data?.status,
     );
     const selectedClientOption = clientOptions?.find(
-      (option) => option?.value === Number(data?.client?.id)
+      (option) => option?.value === Number(data?.client?.id),
     );
     const selectedZonesOption = data?.zones?.map((item) => ({
       value: item?.id,
@@ -160,8 +160,8 @@ export default function ViewEvent() {
       website: data?.website,
       price: data?.price,
       paymentRequired: data?.paymentRequired,
-      eventStartDateTime: data?.eventStartDateTime,
-      eventEndDateTime: data?.eventEndDateTime,
+      eventStartDateTime: new Date(data?.eventStartDateTime),
+      eventEndDateTime: new Date(data?.eventEndDateTime),
       status: selectedStatusOption,
       client: selectedClientOption,
       zones: selectedZonesOption,
@@ -181,7 +181,7 @@ export default function ViewEvent() {
             price: values?.price,
             paymentRequired: 1,
             eventStartDateTime: formatDateToISOString(
-              values?.eventStartDateTime
+              values?.eventStartDateTime,
             ),
             zones: values?.zones?.map((item) => item?.value),
 
@@ -202,7 +202,7 @@ export default function ViewEvent() {
 
             paymentRequired: 0,
             eventStartDateTime: formatDateToISOString(
-              values?.eventStartDateTime
+              values?.eventStartDateTime,
             ),
             eventEndDateTime: formatDateToISOString(values?.eventEndDateTime),
             status: values?.status?.value,

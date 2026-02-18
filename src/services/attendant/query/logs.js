@@ -1,6 +1,9 @@
 import { useMutation, useQuery } from "react-query";
 import {
   addVehicle,
+  checkEvent,
+  checkPtp,
+  checkReserve,
   getAttMakes,
   getAttModels,
   getTickets,
@@ -8,12 +11,63 @@ import {
   getUserVehicles,
   makePayment,
   newTicket,
+  processEvent,
+  processPtp,
+  processReserve,
   retrieveTicket,
 } from "../api/logs";
 
 export const useGetUserVehicles = (options = {}) => {
   const { mutate, isLoading, data } = useMutation(getUserVehicles, {
     mutationKey: "getUserVehicles",
+    ...options,
+  });
+  return { mutate, isLoading, data };
+};
+
+export const useCheckReserve = (options = {}) => {
+  const { mutate, isLoading, data } = useMutation(checkReserve, {
+    mutationKey: "checkReserve",
+    ...options,
+  });
+  return { mutate, isLoading, data };
+};
+
+export const useCheckPtp = (options = {}) => {
+  const { mutate, isLoading, data } = useMutation(checkPtp, {
+    mutationKey: "checkPtp",
+    ...options,
+  });
+  return { mutate, isLoading, data };
+};
+
+export const useProcessPtp = (options = {}) => {
+  const { mutate, isLoading, data } = useMutation(processPtp, {
+    mutationKey: "processPtp",
+    ...options,
+  });
+  return { mutate, isLoading, data };
+};
+
+export const useCheckEvent = (options = {}) => {
+  const { mutate, isLoading, data } = useMutation(checkEvent, {
+    mutationKey: "checkEvent",
+    ...options,
+  });
+  return { mutate, isLoading, data };
+};
+
+export const useProcessReserve = (options = {}) => {
+  const { mutate, isLoading, data } = useMutation(processReserve, {
+    mutationKey: "processReserve",
+    ...options,
+  });
+  return { mutate, isLoading, data };
+};
+
+export const useProcessEvent = (options = {}) => {
+  const { mutate, isLoading, data } = useMutation(processEvent, {
+    mutationKey: "processEvent",
     ...options,
   });
   return { mutate, isLoading, data };

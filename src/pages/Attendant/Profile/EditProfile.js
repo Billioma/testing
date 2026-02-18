@@ -1,0 +1,232 @@
+import React, { useEffect, useState } from "react";
+import {
+  Box,
+  Button,
+  Flex,
+  Image,
+  Input,
+  Spinner,
+  Text,
+} from "@chakra-ui/react";
+import { useNavigate } from "react-router-dom";
+import CustomInput from "../../../components/common/CustomInput";
+import { useCustomerUploadPic } from "../../../services/customer/query/user";
+import useCustomToast from "../../../utils/notifications";
+import {
+  useUpdateAtt,
+  useGetUser,
+} from "../../../services/attendant/query/user";
+
+const EditProfile = () => {
+  const [fileType, setFileType] = useState("");
+  const navigate = useNavigate();
+  const { data: userData, refetch } = useGetUser();
+
+  const { errorToast, successToast } = useCustomToast();
+  const { mutate, isLoading } = useUpdateAtt({
+    onSuccess: (res) => {
+      successToast(res?.message);
+      refetch();
+      setTimeout(() => {
+        navigate("/attendant/profile");
+      }, 200);
+    },
+    onError: (err) => {
+      errorToast(
+        err?.response?.data?.message || err?.message || "An Error occurred",
+      );
+    },
+  });
+
+  const {
+    mutate: uploadMutate,
+    isLoading: isUploading,
+    data: profilePicData,
+  } = useCustomerUploadPic({
+    onError: (err) => {
+      errorToast(
+        err?.response?.data?.message || err?.message || "An Error occurred",
+      );
+    },
+  });
+
+  const [fileLimit, setFileLimit] = useState(false);
+
+  const handleUpload = (e) => {
+    const selectedFile = e.target.files[0];
+    if (!selectedFile) {
+      return;
+    }
+
+    const fileSizeInBytes = selectedFile.size;
+    setFileType(URL.createObjectURL(selectedFile));
+    const formData = new FormData();
+    formData.append("profilePicture", selectedFile);
+
+    const limitInMB = Math.ceil(fileSizeInBytes / 1048576);
+    if (limitInMB > 2) {
+      setFileLimit(true);
+    } else {
+      setFileLimit(false);
+      uploadMutate({
+        fileType: "avatar",
+        entityType: "attendant",
+        file: formData.get("profilePicture"),
+      });
+    }
+  };
+
+  const [values, setValues] = useState({
+    name: "",
+    avatar: "",
+  });
+
+  const handleChange = (e, { name }) => {
+    setValues({
+      ...values,
+      [name]: e.target.value,
+    });
+  };
+
+  const handleSubmit = () => {
+    mutate({
+      name: values.name,
+      avatar: profilePicData?.path || values.pic,
+    });
+  };
+
+  useEffect(() => {
+    if (userData) {
+      setValues({
+        ...values,
+        name: userData?.name,
+
+        avatar:
+          userData?.avatar?.replace("https://staging-api.ezpark.ng/", "") || "",
+      });
+    }
+  }, [userData]);
+
+  return (
+    <Box minH="75vh">
+      <Flex justifyContent="center" align="center" w="full" flexDir="column">
+        <Flex
+          bg="#fff"
+          borderRadius="12px"
+          py="40px"
+          px={{ base: "24px", md: "32px" }}
+          w={{ md: "30rem", base: "100%", "3xl": "35rem" }}
+          flexDir="column"
+        >
+          <Flex
+            justifyContent="center"
+            align="center"
+            w="full"
+            flexDir="column"
+          >
+            <Text
+              mb="32px"
+              fontSize="20px"
+              fontWeight={500}
+              lineHeight="100%"
+              color="#242628"
+            >
+              Edit Profile
+            </Text>
+
+            <Box as="form">
+              <Input
+                id="image_upload"
+                onChange={handleUpload}
+                type="file"
+                display="none"
+                borderColor="black"
+              />
+              <label htmlFor="image_upload">
+                <Flex
+                  cursor="pointer"
+                  border="4px solid #ee383a"
+                  p={
+                    isUploading
+                      ? "44px"
+                      : fileType || userData?.avatar
+                      ? ""
+                      : "44px"
+                  }
+                  rounded="full"
+                  w="fit-content"
+                  bg="#D4D6D8"
+                  justifyContent="center"
+                  align="center"
+                  flexDir="column"
+                >
+                  {isUploading ? (
+                    <Spinner />
+                  ) : (
+                    <Image
+                      w={fileType || userData?.avatar ? "120px" : "32px"}
+                      rounded={fileType || userData?.avatar ? "full" : ""}
+                      objectFit="cover"
+                      h={fileType || userData?.avatar ? "120px" : "32px"}
+                      src={
+                        fileType
+                          ? fileType
+                          : process.env.REACT_APP_BASE_URL + userData?.avatar ||
+                            "/assets/cam.svg"
+                      }
+                    />
+                  )}
+                </Flex>
+                <Text
+                  color="tomato"
+                  display={fileLimit ? "block" : "none"}
+                  textAlign="center"
+                  mt="8px"
+                  fontSize="14px"
+                >
+                  File size exceeds 2MB limit!
+                </Text>
+              </label>
+            </Box>
+          </Flex>
+          <Box w="full" mt="16px">
+            <Text mb="8px" fontWeight={500} color="#444648" fontSize="12px">
+              Name
+            </Text>
+            <CustomInput
+              auth
+              mb
+              value={values?.name}
+              onChange={(value) =>
+                handleChange(value, {
+                  name: "name",
+                })
+              }
+              holder="Enter First Name"
+            />
+          </Box>
+
+          <Box w="full" mt="16px">
+            <Text mb="8px" fontWeight={500} color="#444648" fontSize="12px">
+              Account Type
+            </Text>
+            <CustomInput auth mb isDisabled value={userData?.accountType} />
+          </Box>
+
+          <Button
+            mt="24px"
+            onClick={handleSubmit}
+            isDisabled={isUploading || isLoading}
+            isLoading={isLoading}
+            type="submit"
+            w="full"
+          >
+            Save Changes
+          </Button>
+        </Flex>
+      </Flex>
+    </Box>
+  );
+};
+
+export default EditProfile;

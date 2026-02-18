@@ -45,9 +45,17 @@ const {
   ATT_ZONE,
   ATT_DASHBOARD,
   ATT_VALET,
+  ATT_PARK,
+  ATT_PARK_DETAILS,
   ATT_HISTORY,
   ATT_HISTORY_DETAILS,
   ATT_VEHICLE,
+  ATT_RESERVATION,
+  ATT_RESERVATION_DETAILS,
+  ATT_NOTI,
+  ATT_PROFILE,
+  ATT_SETTINGS,
+  ATT_PROFILE_EDIT,
 
   // CUSTOMER ROUTES
   CUST_DASHBOARD,
@@ -207,6 +215,12 @@ const AttDashboard = WithSuspense(
   lazy(() => import("../pages/Attendant/Dashboard")),
 );
 const AttValet = WithSuspense(lazy(() => import("../pages/Attendant/Valet")));
+const AttPark = WithSuspense(
+  lazy(() => import("../pages/Attendant/Valet/Park")),
+);
+const AttParkDetails = WithSuspense(
+  lazy(() => import("../pages/Attendant/Valet/ParkDetails")),
+);
 const AttHistory = WithSuspense(
   lazy(() => import("../pages/Attendant/History")),
 );
@@ -215,6 +229,24 @@ const AttHistoryDetails = WithSuspense(
 );
 const AttVehicle = WithSuspense(
   lazy(() => import("../pages/Attendant/Vehicle")),
+);
+const AttReservation = WithSuspense(
+  lazy(() => import("../pages/Attendant/Reservation")),
+);
+const AttReservationDetails = WithSuspense(
+  lazy(() => import("../pages/Attendant/Reservation/Details")),
+);
+const AttProfile = WithSuspense(
+  lazy(() => import("../pages/Attendant/Profile")),
+);
+const AttProfileEdit = WithSuspense(
+  lazy(() => import("../pages/Attendant/Profile/EditProfile")),
+);
+const AttSettings = WithSuspense(
+  lazy(() => import("../pages/Attendant/Profile/Settings")),
+);
+const AttNoti = WithSuspense(
+  lazy(() => import("../pages/Attendant/Profile/Notification")),
 );
 
 //CUSTOMER PAGES
@@ -1182,9 +1214,17 @@ export const PRIVATE_ROUTES = [
   { path: ATT_ZONE, element: <AttZones /> },
   { path: ATT_DASHBOARD, element: <AttDashboard /> },
   { path: ATT_VALET, element: <AttValet /> },
+  { path: ATT_PARK, element: <AttPark /> },
+  { path: ATT_PARK_DETAILS, element: <AttParkDetails /> },
   { path: ATT_HISTORY, element: <AttHistory /> },
   { path: ATT_HISTORY_DETAILS, element: <AttHistoryDetails /> },
   { path: ATT_VEHICLE, element: <AttVehicle /> },
+  { path: ATT_RESERVATION, element: <AttReservation /> },
+  { path: ATT_RESERVATION_DETAILS, element: <AttReservationDetails /> },
+  { path: ATT_NOTI, element: <AttNoti /> },
+  { path: ATT_PROFILE, element: <AttProfile /> },
+  { path: ATT_PROFILE_EDIT, element: <AttProfileEdit /> },
+  { path: ATT_SETTINGS, element: <AttSettings /> },
 
   // CUSTOMER ROUTES
   { path: CUST_DASHBOARD, element: <CustDashboard /> },

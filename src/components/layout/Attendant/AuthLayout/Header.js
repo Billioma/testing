@@ -2,10 +2,11 @@ import React, { useEffect, useState } from "react";
 import { Flex, Text } from "@chakra-ui/layout";
 import { IoIosArrowDown, IoMdMenu } from "react-icons/io";
 import { Image, useDisclosure, useMediaQuery } from "@chakra-ui/react";
+import { RiNotification2Line } from "react-icons/ri";
 import { useLocation, useNavigate } from "react-router-dom";
 import SideDrawer from "./SideDrawer";
 import { useGetUser } from "../../../../services/attendant/query/user";
-import { accountDrop } from "../../../common/constants";
+import { attDrop } from "../../../common/constants";
 import { useLogOut } from "../../../../utils/helpers";
 
 const Header = ({ showSidebar }) => {
@@ -33,11 +34,26 @@ const Header = ({ showSidebar }) => {
       case locationRoute.includes("valet"):
         return setTitle("Valet");
 
+      case locationRoute.includes("park"):
+        return setTitle("Park");
+
       case locationRoute.includes("history"):
         return setTitle("History");
 
       case locationRoute.includes("vehicle"):
         return setTitle("Guest Parking");
+
+      case locationRoute.includes("reservations"):
+        return setTitle("Reservations");
+
+      case locationRoute.includes("notifications"):
+        return setTitle("Notifications");
+
+      case locationRoute.includes("profile"):
+        return setTitle("Profile");
+
+      case locationRoute.includes("settings"):
+        return setTitle("Settings");
 
       default:
         return setTitle("");
@@ -48,6 +64,9 @@ const Header = ({ showSidebar }) => {
     switch (true) {
       case locationRoute.includes("/locations/"):
         return setSecTitle("Zones");
+
+      case locationRoute.includes("reservations/"):
+        return setSecTitle("Details");
 
       default:
         return setSecTitle("");
@@ -170,14 +189,13 @@ const Header = ({ showSidebar }) => {
                   src={
                     isUser
                       ? "/assets/user.png"
-                      : !userData?.profile?.avatarUrl?.includes("null")
-                      ? userData?.profile?.avatarUrl
-                      : "/assets/user.png"
+                      : process.env.REACT_APP_BASE_URL + userData?.avatar ||
+                        "/assets/user.png"
                   }
                 />
 
                 <Text fontSize="14px" fontWeight={500} lineHeight="100%">
-                  Hi {userData?.profile?.firstName || ""}
+                  Hi {userData?.name || ""}
                 </Text>
                 <IoIosArrowDown />
               </Flex>
@@ -196,7 +214,7 @@ const Header = ({ showSidebar }) => {
                   py="12px"
                   px="16px"
                 >
-                  {accountDrop.map((data, i) => (
+                  {attDrop.map((data, i) => (
                     <Text
                       key={i}
                       fontSize="14px"
@@ -232,17 +250,22 @@ const Header = ({ showSidebar }) => {
             </Flex>
 
             {isMobile && (
-              <Flex
-                color="#BDBDBD"
-                borderRadius="20px"
-                border="1px solid rgba(104, 132, 202, 0.5)"
-                p="7px"
-                onClick={onOpen}
-                w="fit-content"
-                ml={isMobile ? "25px" : "320px"}
-                cursor="pointer"
-              >
-                <IoMdMenu size="20px" />
+              <Flex align="center" gap="16px" color="#BDBDBD">
+                <RiNotification2Line
+                  onClick={() => navigate("/attendant/notifications")}
+                  size="25px"
+                />
+                <Flex
+                  borderRadius="20px"
+                  border="1px solid rgba(104, 132, 202, 0.5)"
+                  p="7px"
+                  onClick={onOpen}
+                  w="fit-content"
+                  ml={isMobile ? "0" : "320px"}
+                  cursor="pointer"
+                >
+                  <IoMdMenu size="20px" />
+                </Flex>
               </Flex>
             )}
           </Flex>

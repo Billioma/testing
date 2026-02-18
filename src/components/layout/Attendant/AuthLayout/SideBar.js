@@ -222,34 +222,6 @@ const SideBar = ({ show, setShow }) => {
                     )
                   )}
                 </Flex>
-
-                {item.subItems && show && (
-                  <Collapse in={showMenu && currentIndex === item.id}>
-                    <VStack align="stretch">
-                      {item.subItems.map((subItems, i) => (
-                        <Flex
-                          align="center"
-                          key={i}
-                          style={{
-                            textDecoration: "none",
-                            fontWeight: pathname.includes(subItems.path)
-                              ? "700"
-                              : "400",
-                            color: pathname.includes(subItems.path)
-                              ? "#444648"
-                              : "#848688",
-                          }}
-                        >
-                          <Box fontSize="13px" pb="12px" ml="20px">
-                            <Link key={subItems.name} to={subItems.path}>
-                              {subItems.name}
-                            </Link>
-                          </Box>
-                        </Flex>
-                      ))}
-                    </VStack>
-                  </Collapse>
-                )}
               </VStack>
             );
           })}

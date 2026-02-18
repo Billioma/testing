@@ -4,7 +4,6 @@ import { Flex, Skeleton, Text } from "@chakra-ui/react";
 import { CiLocationOn } from "react-icons/ci";
 import { IoIosArrowForward } from "react-icons/io";
 import { useNavigate, useParams } from "react-router-dom";
-import Select from "react-select";
 
 const Zone = () => {
   const { id } = useParams();

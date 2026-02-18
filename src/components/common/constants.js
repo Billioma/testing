@@ -514,8 +514,15 @@ export const attRoute = [
     id: 3,
     name: "Profile",
     path: "/attendant/profile",
-    icon: <UserIcon fill="#242628" />,
-    sec: <UserIcon fill="#EE383A" />,
+    icon: <UserIcon fill="#242628" stroke="#242628" />,
+    sec: <UserIcon fill="#EE383A" stroke="#EE383A" />,
+  },
+  {
+    id: 4,
+    name: "Settings",
+    path: "/attendant/settings",
+    icon: <ConfigIcon stroke="#242628" />,
+    sec: <ConfigIcon stroke="#EE383A" />,
   },
 ];
 
@@ -1667,6 +1674,20 @@ export const accountDrop = [
   {
     name: "Settings",
     link: "/customer/account/settings",
+  },
+  {
+    name: "Logout",
+  },
+];
+
+export const attDrop = [
+  {
+    name: "Profile",
+    link: "/attendant/profile",
+  },
+  {
+    name: "Settings",
+    link: "/attendant/settings",
   },
   {
     name: "Logout",
