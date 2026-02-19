@@ -144,11 +144,20 @@ const Details = () => {
           <Text fontWeight={700}>Service Details</Text>
 
           <Flex mt="24px" gap="16px" flexDir="column">
-            <Layout label="Location" value={dataToMap?.location?.name} />
+            <Layout label="Location" value={dataToMap?.zone?.location?.name} />
             <Layout label="Zone" value={dataToMap?.zone?.name} />
-            <Layout label="Date" value={formatDat(dataToMap?.arrival)} />
-            <Layout label="Time" value={formatTime(dataToMap?.arrival)} />
-            <Layout label="Service Type" value={dataToMap?.service?.name} />
+            <Layout
+              label="Date"
+              value={formatDat(dataToMap?.arrival || dataToMap?.reservedDate)}
+            />
+            <Layout
+              label="Time"
+              value={formatTime(dataToMap?.arrival || dataToMap?.reservedDate)}
+            />
+            <Layout
+              label="Service Type"
+              value={dataToMap?.service?.name || "N/A"}
+            />
           </Flex>
         </Box>
 

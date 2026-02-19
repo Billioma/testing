@@ -282,7 +282,7 @@ const index = () => {
         }
         w="full"
       >
-        {step === 1 ? "Continue" : "Valet"}
+        {step === 1 ? "Continue" : "Proceed"}
       </Button>
     </Flex>
   );
